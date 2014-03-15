@@ -51,11 +51,10 @@ ZSH_THEME="ys"
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
-export PATH="/usr/local/bin:/Users/yuya373/.rbenv/shims:/Users/yuya373/.rbenv/bin:/Users/yuya373/.cabal/bin:$PATH"
+export PATH="/usr/local/bin:~/.rbenv/bin:~/.cabal/bin:$PATH"
 
 eval "$(rbenv init - zsh)"
 
-#:/Users/yuya373/.rbenv/shims:/Users/yuya373/.rbenv/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/yuya373/.rbenv/shims:/Users/yuya373/.rbenv/bin
 
 
 # alias less="less -R"
