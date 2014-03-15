@@ -1,0 +1,10 @@
+class CreatePreBookingConversations < ActiveRecord::Migration
+  def change
+    create_table :pre_booking_conversations do |t|
+      t.belongs_to :pre_booking
+      t.belongs_to :conversation
+
+      t.timestamps
+    end
+  end
+end

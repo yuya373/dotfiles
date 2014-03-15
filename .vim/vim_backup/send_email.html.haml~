@@ -1,0 +1,12 @@
+%p= "#{@receiver.name}様"
+%p この度は、貸しスペース・会議室検索予約サイトSpacee（スペイシー）をご利用頂きありがとうございます。
+%p= "#{@receiver.name}様に新着メッセージが届きました"
+%p 以下のURLからご確認の上ご返信をお願いします。
+\
+%p
+  - if @receiver.is_a?(User)
+    = user_message_url(@message)
+  - else
+    = provider_messages_url(@message)
+\
+= render 'provider_pre_booking_mailer/mail_footer'

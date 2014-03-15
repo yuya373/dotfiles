@@ -1,0 +1,51 @@
+require 'rubygems'
+require 'nokogiri'
+require 'open-uri'
+require 'csv'
+
+def get_a(td)
+  td.next.next.css('a').text
+end
+
+num = 1
+
+while num < 48
+  url = "http://www.kaigishitu.com/asp/kaijyo_list.asp?Cmb_Ken_Cd=#{sprintf("%03d",num)}"
+
+  doc = Nokogiri::HTML(open(url))
+
+  p doc.css('font.text12 a')[0].attr('href')
+
+  com_url = []
+
+
+  doc.css('font.text12 a').each do |a|
+    title = a.parent.parent.previous.previous.text
+    com_url << [ title, a.attr('href').gsub("../",'') ]
+  end
+
+  root_url = "http://www.kaigishitu.com/"
+
+  com_info = []
+  com_url.each do |title, url|
+    url = root_url + url
+    # url = "http://www.kaigishitu.com/asp/tateya_details.asp?Hdn_Kigyo_Cd=00200953&Hdn_Tateya_Cd=001"
+    doc = Nokogiri::HTML(open(url))
+    td = doc.css('td.cell_left_12')
+    address = td.select{ |td| td.text == "住所" }.map{ |td| get_a(td) }
+    url = td.select{ |td| td.text == "ホームページ" }.map{ |td| get_a(td) }
+    tel = td.select{ |td| td.text == "TEL" }
+    .map{ |td| td.next.next.text.gsub(/(\n|\t)/, '').tr("※お問合せの際は「会議室.COMを見た」とお伝え頂くとスムーズです。",'')}
+    fax = td.select{ |td| td.text == "FAX" }
+    .map{ |td| td.next.next.text.gsub(/(\n|\t)/, '') }
+
+    com_info << [title, address[0], url[0], tel[0], fax[0]]
+  end
+
+  CSV.open("kaigishitu_#{num}.csv",'wb',headers: true) do |csv|
+    csv << %w(title address url tel fax)
+    com_info.each do |com_info|
+      csv << com_info
+    end
+  end
+end

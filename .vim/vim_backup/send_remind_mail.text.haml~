@@ -1,0 +1,21 @@
+= "#{@provider.name} 様"
+\
+この度は、貸しスペース・会議室検索予約サイトSpacee（スペイシー）を ご利用頂きありがとうございます。
+このメールは一週間以上空室情報の更新がない掲載者様へ送信しています。
+以下のスペースの空室情報の入力をお願い致します。
+\
+- @listings.each do |listing|
+  = "#{listing.title}"
+  = scheduler_provider_listing_room_calendars_url(listing)
+\
+\
+━━━━━━━━━━━━━━━━━━━━
+貸し会議室・貸しスペースのマーケットプレイス
+Spacee［スペイシー］ https://www.spacee.jp
+
+……………………………………………………
+Spacee運営事務局  mail: info@spacee.jp
+Twitter: https://twitter.com/one_coin_room
+Facebook: https://www.facebook.com/spacee.jp
+━━━━━━━━━━━━━━━━━━━━
+

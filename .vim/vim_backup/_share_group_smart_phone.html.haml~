@@ -1,0 +1,18 @@
+
+.listing-main-share-group
+  .container
+    .space-group
+      %ul.share-buttons-list
+        %li
+          = mail_to nil, class: "share-button", subject: "1時間500円から借りられる安いレンタルスペース特集", body: request.original_url do
+            =image_tag "icons/mail.png"
+            メールで送る
+        %li
+          = link_to "http://line.naver.jp/R/msg/text/?[] -  #{ request.original_url }", {class: "share-button"} do
+            =image_tag "icons/line.png"
+            LINEで送る
+
+.listing-social-share-group
+  = link_to "Tweet", "https://twitter.com/share", "data-count" => "none",
+    "data-lang" => "en", class: "twitter-share-button"
+  %iframe{allowtransparency: "true", frameborder: "0", scrolling: "no", src: "//www.facebook.com/plugins/like.php?href=#{request.original_url}&width=210px&layout=button_count&action=like&show_faces=false&share=false&height=21&appId=594549643941274", style: "border:none; overflow:hidden; display:inline-block; width:150px; height:21px;"}

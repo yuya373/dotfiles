@@ -1,0 +1,27 @@
+class ContactsController < UserApplicationController
+  before_action :set_listing
+
+  def new
+  end
+
+  def create
+    @context = contact_params[:context]
+    render :new and return if @context.blank?
+    subject = "#{@listing.title.truncate(15)}宛のお問い合わせ"
+    current_user.send_message(@listing.provider.provider_users.first, @context, subject )
+    ContactMailer.delay.
+      send_to_listing(current_user.id, @listing.id, @context, request.user_agent)
+    flash[:notice] = "お問い合わせを送信致しました。メールアドレス宛てに返信が来るまでお待ち下さい。"
+    redirect_to user_root_path
+  end
+
+  private
+
+  def set_listing
+    @listing = Listing.find params[:listing_id]
+  end
+
+  def contact_params
+    params.require(:contact).permit(:context)
+  end
+end

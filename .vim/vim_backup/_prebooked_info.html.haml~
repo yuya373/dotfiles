@@ -1,0 +1,70 @@
+%table.table.table-bordered.prebooking-info-table
+  %tr
+    %th 予約No
+    %td= @pre_booking.id_to_num
+  %tr
+    %th 仮予約スペース
+    %td= link_to @pre_booking.listing.title, @pre_booking.listing
+  %tr
+    %th ご利用希望日時
+    %td= "#{datetime_str(@pre_booking.start_at)}〜#{time_str()}"
+
+  %tr
+    %th ご利用希望時間
+    %td= "#{@pre_booking.hours} 時間"
+
+  %tr
+    %th ご利用人数
+    %td= "#{@pre_booking.party} 人"
+
+  - if @pre_booking.price > 1 #TOOD remove
+    %tr
+      %th ご利用料金
+      %td= "#{@pre_booking.price} 円"
+
+  - if @pre_booking.extend_minutes > 1
+    %tr
+      %th 延長時間
+      %td= "#{@pre_booking.extend_minutes} 分"
+
+  %tr
+    %th お名前
+    %td= "#{@pre_booking.name} 様"
+
+  %tr
+    %th 会社名または団体名
+    %td= @pre_booking.company_name
+
+  - if @pre_booking.approved? || user_signed_in?
+    = render 'location', listing_location: @pre_booking.listing.listing_location
+    %tr
+      %th 電話番号
+      %td= @pre_booking.phone
+    %tr
+      %th メールアドレス
+      %td= @pre_booking.email
+
+  %tr
+    %th ご利用目的・用途
+    %td= @pre_booking.usage
+
+  %tr
+    %th ご質問・ご要望
+    %td= @pre_booking.message
+
+  - if @pre_booking.approved? && !!@pre_booking.listing.mail_template.try(:content)
+    %tr
+      %th.template-head 掲載者からのお知らせ
+      %td
+        .mail-template= nl_to_br(@pre_booking.listing.mail_template.content)
+
+
+  %tr
+    %th= Review.model_name.human
+    %td
+      - if @pre_booking.review.present?
+        = link_to "レビューを見る", [:user, @pre_booking.review]
+      - elsif @pre_booking.reviewable?
+        = link_to "レビューを作成", [:new, @pre_booking, :review]
+      - else
+        ご利用後にレビューの作成をお願い致します。

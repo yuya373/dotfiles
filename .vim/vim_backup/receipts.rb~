@@ -1,0 +1,29 @@
+# == Schema Information
+#
+# Table name: receipts
+#
+#  id            :integer          not null, primary key
+#  receiver_id   :integer
+#  receiver_type :string(255)
+#  message_id    :integer          not null
+#  is_read       :boolean          default(FALSE)
+#  deleated      :boolean          default(FALSE)
+#  created_at    :datetime
+#  updated_at    :datetime
+#
+
+FactoryGirl.define do
+  factory :receipt do
+    :receiver   message
+    is_read false
+    deleated false
+
+    factory :provider_user_receipt do
+      association :receiver, factory: :provider_user
+    end
+
+    factory :user_receipt do
+      association :receiver, factory: :user
+    end
+  end
+end

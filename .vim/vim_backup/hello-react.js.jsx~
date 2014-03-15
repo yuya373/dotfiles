@@ -1,0 +1,68 @@
+/** @jsx React.DOM */
+
+var SetIntervalMixin = {
+  componentWillMount: function () {
+    this.intervals = [];
+  },
+  setInterval: function () {
+    console.log("arguments",arguments);
+    this.intervals.push(setInterval.apply(null,arguments));
+  },
+  conponentWillMount: function () {
+    this.intervals.map(clearInterval);
+  }
+};
+
+var TickTock = React.createClass({
+  mixins: [SetIntervalMixin],
+  getInitialState: function () {
+    return {seconds: 0};
+  },
+  componentDidMount: function () {
+    this.setInterval(this.tick, 1000);
+  },
+  tick: function () {
+    this.setState({seconds: this.state.seconds + 1});
+  },
+  render: function () {
+    console.log(this);
+    return (
+      <p>
+        React has been running for {this.state.seconds} secondes
+      </p>
+    )
+  }
+});
+
+
+React.renderComponent(
+  <TickTock />,
+  document.getElementById('example')
+);
+// var LikeButton = React.createClass({
+  // getInitialState: function () {
+    // return { liked: false };
+  // },
+  // handleClick: function () {
+    // this.setState({ liked: !this.state.liked });
+  // },
+  // render: function () {
+    // var text = this.state.liked ? 'like' : 'unlike';
+    // return (
+      // <div>
+        // <button onClick={this.handleClick}>
+          // Do you like?
+        // </button>
+
+        // <p>
+          // You {text} this. Click the button to toggle.
+        // </p>
+      // </div>
+    // );
+  // }
+// })
+
+// React.renderComponent(
+  // <LikeButton />,
+  // document.getElementById('example')
+// )

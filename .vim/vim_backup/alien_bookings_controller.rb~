@@ -1,0 +1,70 @@
+class Provider::AlienBookingsController < ProviderApplicationController
+  include ProvidersListing
+  include TimeParamParser
+  before_action :set_listing, only: [:new,:create]
+
+  def index
+    @listing = set_listing if params[:listing_id]
+    s = @listing || current_provider
+    @alien_bookings = s.alien_bookings.order(:start_at)
+    respond_to do |format|
+      format.html { @alien_bookings = @alien_bookings.page(params[:page]) }
+      format.csv { send_data @alien_bookings.to_csv }
+    end
+  end
+
+  def show
+    find_alien_booking
+
+  end
+
+  def new
+    param = params.permit(:start_at, :end_at, :date, :listing_id)
+
+    start_at = params_date_time_to_dt(param[:date], param[:start_at])
+    end_at = params_date_time_to_dt(param[:date], param[:end_at])
+    minutes = ( (end_at - start_at) / 60 ).ceil
+
+    @alien_booking = AlienBooking.new(listing_id: param[:listing_id],
+                                      start_at: start_at, minutes: minutes)
+  end
+
+  def edit
+    find_alien_booking
+  end
+
+  def create
+    @alien_booking = AlienBooking.new(alien_booking_params)
+    if @alien_booking.save
+      redirect_to provider_alien_booking_url(@alien_booking)
+    else
+      render :new
+    end
+  end
+
+  def update
+    find_alien_booking
+    if @alien_booking.update(alien_booking_params)
+      redirect_to provider_listing_alien_bookings_url(@alien_booking.listing_id)
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+    find_alien_booking
+    @alien_booking.destroy
+    redirect_to provider_listing_alien_bookings_url(@alien_booking.listing_id)
+  end
+
+  private
+
+  def alien_booking_params
+    params.require(:alien_booking).permit(:listing_id, :start_at, :minutes, :party, :price, :name, :phone, :email, :memo)
+  end
+
+  def find_alien_booking
+    @alien_booking = AlienBooking.find params[:id]
+    @listing = current_provider.listings.find @alien_booking.listing_id
+  end
+end

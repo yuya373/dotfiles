@@ -1,0 +1,30 @@
+#
+# Cookbook Name:: ruby
+# Recipe:: default
+#
+# Copyright 2014, YOUR_COMPANY_NAME
+#
+# All rights reserved - Do Not Redistribute
+#
+
+execute "install ruby 2.0.0-p451" do
+  user "vagrant"
+  group "vagrant"
+  command "/home/vagrant/.rbenv/bin/rbenv install 2.0.0-p451"
+end
+
+execute "install ruby 2.1.0" do
+  user "vagrant"
+  group "vagrant"
+  command "/home/vagrant/.rbenv/bin/rbenv install 2.1.0"
+end
+
+execute "use 2.0.0-p451" do
+  user "vagrant"
+  group "vagrant"
+  command "/home/vagrant/.rbenv/bin/rbenv global 2.0.0-p451"
+end
+
+def ruby_installed?
+    ::File.exists?("#{@prefix_path}/bin/ruby")
+end

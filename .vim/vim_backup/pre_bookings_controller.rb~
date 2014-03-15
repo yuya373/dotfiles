@@ -1,0 +1,84 @@
+class PreBookingsController < UserApplicationController
+  include TimeParamParser
+  include RoomAvailable
+  before_action :set_listing, only: [:new, :create]
+  before_action :set_pre_booking, only: [:show]
+  skip_before_action :authenticate_user!, only: [:new]
+  before_action :redirect_if_not_pre_booking_params_fill, only: [:new]
+
+  def index
+    @pre_bookings = current_user.pre_bookings.order(start_at: :desc).
+      includes(:listing, :review)
+  end
+
+  def bill
+    @pre_booking = current_user.pre_bookings.includes(:listing).find(params[:id])
+    @user_profile = current_user.pre_booking_bill
+    render layout: "user/bill_application"
+  end
+
+  def show
+    redirect_to user_root_path and return unless @pre_booking
+  end
+
+  def new
+    @pre_booking = @listing.pre_bookings.new(default_pre_booking_params)
+    #see redirect_if_not_fill
+    @pre_booking.price = @room_avail.price
+    render layout: 'user/single_pane_application'
+  end
+
+  def create
+    @pre_booking = PreBooking.new(pre_booking_params)
+    PreBooking.transaction do
+      @pre_booking.do_transaction(@listing, current_user)
+    end
+    send_pre_booking_mail(@pre_booking)
+    flash.notice = thanks_notice
+    redirect_to pre_booking_path(@pre_booking, conv: true)
+  rescue ActiveRecord::RecordInvalid => e
+    logger.error e
+    render :new, layout: 'user/single_pane_application'
+  end
+
+  private
+
+  def thanks_notice
+    """
+      ご予約お申込みありがとうございます。
+      スペース運営担当者よりメール又はお電話にてご連絡差し上げますのでお待ちください。
+    """
+  end
+
+  def set_listing
+    @listing = Listing.find params[:listing_id]
+  end
+
+  def set_pre_booking
+    @pre_booking = current_user.pre_bookings.find params[:id]
+  end
+
+  def pre_booking_params
+    params[:pre_booking].
+      permit(:start_at, :hours, :minutes,
+             :party, :company_name, :phone,
+             :usage, :message, :listing_id, :agreement)
+  end
+
+  def default_pre_booking_params
+    {
+      start_at: params_date_time_to_dt(params[:date], params[:time]),
+      minutes: params[:hours].to_i * 60,
+      party: params[:party].to_i,
+      name: current_user.name,
+      email: current_user.email,
+      phone: current_user.phone,
+      agreement: true,
+    }
+  end
+
+  def send_pre_booking_mail(pre_booking)
+    PreBookingMailer.delay.to_user(pre_booking.id)
+    PreBookingMailer.delay.to_provider(pre_booking.id)
+  end
+end

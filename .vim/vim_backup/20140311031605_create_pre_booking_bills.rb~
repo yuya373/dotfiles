@@ -1,0 +1,15 @@
+class CreateUserProfile < ActiveRecord::Migration
+  def change
+    create_table :user_profiles do |t|
+      t.belongs_to :user, null: false
+      t.string :address
+      t.string :company
+
+      t.string :name
+
+      t.timestamps
+    end
+
+    add_index :pre_booking_bills, :user_id, unique: true
+  end
+end

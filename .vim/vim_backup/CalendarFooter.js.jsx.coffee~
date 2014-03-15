@@ -1,0 +1,17 @@
+###* @jsx React.DOM ###
+
+define [ "react", "components/mixins/DatetimeHelper", "components/pc/AgendaHeader"], (React, DatetimeHepler, AgendaHeader) ->
+  CalendarFooter = React.createClass
+    mixins: [AgendaHeader]
+    getInitialState: ->
+      { "days": @.props.days }
+    render: ->
+      `(
+        <thead className="agenda-thead">
+          <tr key="thead1">
+            <th className="cell-margin th-day-label"></th>
+            {this.state.days.map(this.renderDayLabel)}
+          </tr>
+        </thead>
+       )`
+

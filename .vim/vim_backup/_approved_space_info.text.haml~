@@ -1,0 +1,2 @@
+= render 'space_info', listing: listing, provider: provider
+

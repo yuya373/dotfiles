@@ -1,0 +1,67 @@
+module Provider::HelpsHelper
+	def link_to_image(path)
+		link_to image_tag(path), image_path(path)
+	end
+
+	def thumbnail(path, phrase)
+		content_tag(:li, class: 'help-thumb well') do
+			image(path) + caption(phrase)
+		end
+	end
+
+	def caption(phrase)
+		content_tag(:div, class: 'caption') do
+			content_tag(:p)do
+				phrase.html_safe
+			end
+		end
+	end
+
+	def image(path)
+		content_tag(:div, class: 'help-image-block-shell') do
+			image_tag(path)
+		end
+	end
+
+	def toggle_button(target)
+		content_tag(:div, class: "btn", "data-toggle" => "collapse", "data-target" => target) do
+			"更に詳しく"
+		end
+	end
+
+	def help_first_nav()
+		menus = [
+			["はじめに", provider_helps_path, ""],
+			["スペース", space_provider_helps_path, ""],
+			["仮予約", pre_bookings_provider_helps_path, ""],
+			["アカウント情報", account_provider_helps_path, ""]
+		]
+		new_menus = []
+		menus.each do |menu|
+			if current_page?(menu[1])
+				menu[2] = "active"
+			end
+			new_menus.push(menu)
+		end
+		return new_menus
+	end
+
+	def help_second_nav()
+		menus = [
+			["空室管理について", calendar_overview_provider_helps_path, ""],
+			["空室情報の更新",   calendar_management_provider_helps_path, ""],
+			["営業時間の更新",   calendar_hours_provider_helps_path, ""],
+			["料金プランの更新", calendar_prices_provider_helps_path]
+		]
+		new_menus = []
+		menus.each do |menu|
+			if current_page?(menu[1])
+				menu[2] = "active"
+			end
+			new_menus.push(menu)
+		end
+		return new_menus
+	end
+
+end
+

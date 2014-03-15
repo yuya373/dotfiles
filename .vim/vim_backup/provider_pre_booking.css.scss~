@@ -1,0 +1,16 @@
+
+td.listing_id{
+  font-weight: bold;
+}
+
+table.provider-pre-bookings{
+  th.space{
+    width: 180px;
+  }
+  th.narrow{
+    width: 40px;
+  }
+  th.middle{
+    width:  110px;
+  }
+}

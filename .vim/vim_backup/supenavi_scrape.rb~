@@ -1,0 +1,82 @@
+require 'rubygems' if info.size > 2
+require 'nokogiri'
+require 'open-uri'
+require 'csv'
+class String
+  def tr_str
+    self.tr("\r\n", '')
+  end
+end
+
+
+root_url = "http://supenavi.com/space/"
+url = "http://supenavi.com/space/search_space/?action=Search&pref_code=21300"
+
+url_container = []
+url_container << "/?action=Search&pref_code=21300"
+
+doc = Nokogiri::HTML(open(url))
+paging = doc.css('p.paging a')
+paging.each do |p|
+  url_container << p.attribute('href').text.tr(".", '')
+end
+
+ url_container
+
+
+surl_container = []
+url_container.each do |url|
+  url = "http://supenavi.com/space/search_space" + url.to_s
+  # url = "http://supenavi.com/space/search_space/?action=Search&pref_code=21300"
+
+  doc = Nokogiri::HTML(open(url))
+  th = doc.css('div.fr table th')
+  th.each do |th|
+    if th.text == "スペース名"
+      space_url = th.next.next.css('a').attr('href').text.tr("../", '')
+      surl_container << space_url
+    end
+  end
+end
+
+p surl_container.uniq!
+
+companys_info = []
+surl_container.each do |url|
+  url = root_url + url
+  doc = Nokogiri::HTML(open(url))
+  th = doc.css('div.detail table th')
+  company_info = []
+  th.each do |th|
+    case th.text
+    when "スペース名"
+      company_info << th.next.next.text
+    when "所在地"
+      company_info << th.next.next.text
+    when "利用目的"
+      company_info << th.next.next.text.tr_str
+    when "設備・サービス"
+      company_info << th.next.next.text
+    when "平均料金"
+      company_info << th.next.next.text
+    when "運営者"
+      company_info << th.next.next.text
+    when "ＨＰ"
+      company_info << th.next.next.text
+    end
+  end
+  companys_info << company_info
+end
+
+p companys_info
+
+CSV.open('supenavi.csv', 'wb', headers: true) do |csv|
+  csv << %w(name address usage equipement price owner url)
+  companys_info.each do |info|
+    csv << info
+  end
+end
+
+
+
+

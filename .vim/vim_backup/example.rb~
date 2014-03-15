@@ -1,0 +1,10 @@
+require 'spec_helper'
+
+feature 'my feature' do
+  background do
+
+  end
+
+  scenario do
+  end
+end

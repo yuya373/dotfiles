@@ -1,0 +1,62 @@
+define(["core/component"], ->
+  component.extend {
+    install: ->
+      _.bindAll this, "updateTime", "activate", "submitForm"
+      @.select("submit").bind("click", @.submitForm)
+      @.activate()
+      @.formData = {
+        "date"  : null
+        "time"  : null
+        "hours" : null
+        "party" : null
+      }
+      return
+
+    setFormData: (key, value) ->
+      this.formData[key] = value
+      return
+
+    getFormData: ->
+      @.formData
+
+    activate: ->
+      @.select("data").pickadate(@.pickadateOptions())
+      $time = @.select("time")
+      @.timePicker = $time.timepicker {
+        minuteStep   : 15
+        showSeconds  : false
+        showMeridian : false
+        defaultTime  : false
+        showWidgetOnAddonClick: false
+      }
+
+      @.timePicker.on("show.timepicker", (e) ->
+        unless $time.val()
+          $time.timepicker('setTime', '12:00')
+          return
+      )
+
+      neighbor = @.select("neighborhood")
+
+      if neighbor.length > 0
+        neighbor.select2()
+        return
+    updateTime: (e) ->
+
+    pickadateOptions: ->
+      {
+        "today" : ""
+        "clear" : ""
+        "min"   : new Date()
+      }
+    serialize: (obj, prefix) ->
+      str = []
+      for p in obj
+        # k = prefix ? "#{prefix} []" : p, v = obj[p]
+        if prefix?
+          k = "#{prefix} []"
+        else
+          # p, v = obj[p]
+
+  }
+)

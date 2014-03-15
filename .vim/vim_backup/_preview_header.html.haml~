@@ -1,0 +1,11 @@
+
+.well.provider-preview-header
+  .container
+    %span.provider-preview-title 以下はスペースを公開した場合のプレビューです。
+    %span.provider-preview-buttons
+      = link_to "カレンダーを編集",  scheduler_provider_listing_room_calendars_path(@listing), class: "btn btn-info"
+      = link_to '情報を編集', edit_provider_listing_path(@listing), class: "btn "
+      = form_tag publish_provider_listing_path(@listing), method: :patch, style: 'display: inline' do
+        = submit_tag 'この内容で公開する', class: "btn"
+
+      = link_to '戻る', provider_listing_path(@listing), class: "btn"

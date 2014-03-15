@@ -1,0 +1,18 @@
+class CreateListingLocations < ActiveRecord::Migration
+  def change
+    create_table :listing_locations do |t|
+      t.belongs_to :listing, null: false
+      t.string :zip_code_before
+      t.string :zip_code_after
+      t.float :longitude
+      t.float :latitude
+      t.string :prefecture
+      t.string :city
+      t.string :lot_number
+      t.string :building
+
+      t.timestamps
+    end
+    add_index :listing_locations, :listing_id, unique: true
+  end
+end

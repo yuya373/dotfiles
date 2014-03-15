@@ -1,0 +1,108 @@
+/*
+ * LsForm.js
+ */
+define([
+  "core/component",
+  "components/mixins/DatetimeHelper"
+  ], function(Component, DatetimeHelper) {
+  return Component.extend({
+    timePolyfill: false,
+    datePolyfill: false,
+    hasNeighborhood: true,
+    install: function() {
+      // console.log("installed");
+      _.bindAll(this, "submitForm", "handleSetDate", "handleSetTime", "setFormData", "getFormData");
+
+      // Initialize Data
+      this.formData = {
+        "date"  : null,
+        "time"  : null,
+        "hours" : null,
+        "party" : null
+      };
+
+      if(this.hasNeighborhood === true) { this.formData["neighborhood"] = true; }
+
+      // Bind
+      this.select("submit").bind("click", this.submitForm);
+
+      // Test
+      // this.installDatePolyfill();
+      // this.installTimePolyfill();
+      // Install Polyfill
+      if(!Modernizr.inputtypes.date) { this.installDatePolyfill(); }
+      if(!Modernizr.inputtypes.time) { this.installTimePolyfill(); }
+    },
+    setFormData: function(key, value) {
+      this.formData[key] = value;
+      // console.log("this.formData", this.formData);
+    },
+    getFormData: function() {
+      return this.formData;
+    },
+    installDatePolyfill: function() {
+      this.datePolyfill = true;
+      this.select("date").pickadate({
+        "onSet": this.handleSetDate,
+        "min"     : new Date(),
+        "today"   : "",
+        "clear"   : "",
+        "klass": {
+          picker: "picker picker-listing-search",
+          holder: "picker__holder picker__holder-listing-search"
+        }
+      });
+    },
+    installTimePolyfill: function() {
+      this.select("time").attr("readonly", true);  // Watch
+      // this.timePolyfill = true;
+      this.timePicker= this.select("time").timepicker({
+        minuteStep   : 15,
+        showSeconds  : false,
+        showMeridian : false,
+        defaultTime  : false,
+        showWidgetOnAddonClick: false
+      });
+      this.timePicker.on("changeTime.timepicker", this.handleSetTime);
+    },
+    handleSetDate: function(event) {
+      // console.log("event", event);
+      var date = new Date(event.select);
+      // console.log("date", date);
+      this.setFormData("date", DatetimeHelper.dateIntToYmdInt(date));
+    },
+    handleSetTime: function(event) {
+      // console.log("event", event);
+      var h = parseInt(event.time.hours, 10),
+          m = parseInt(event.time.minutes, 10);
+      if(event.time.meridian === "PM") {
+        h += 12;
+      }
+      var value = DatetimeHelper.intToTwoChars(h) + ":" + DatetimeHelper.intToTwoChars(m);
+      this.setFormData("time", value);
+    },
+    submitForm: function(event) {
+      event.preventDefault();
+      if(!this.datePolyfill) {
+        var date = this.select("date").val().replace(/-/g, "");
+        this.setFormData("date", date);
+      }
+      if(!this.timePolyfill) {
+        var hour = this.select("date_hour").val();
+        var minute = this.select("date_minute").val();
+        var time = hour + ":" + minute
+        // var time = this.select("time").val();
+        this.setFormData("time", time);
+      }
+      this.setFormData("hours", this.select("hours").val());
+      this.setFormData("party", this.select("party").val());
+      this.setFormData("q", _.values(this.getFormData()).join(","));
+
+      if(this.hasNeighborhood === true) {
+        this.setFormData("neighborhood", this.select("neighborhood").val());
+      }
+      console.log("formData", _.values(this.getFormData()));
+      window.location = Arg.url(this.props.nextUrl, this.getFormData());
+    }
+  });
+});

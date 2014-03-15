@@ -1,0 +1,16 @@
+class Provider::PreviewController < ProviderApplicationController
+  before_action :set_listing
+
+  def show
+  end
+
+  def price_plan
+  end
+
+  private
+
+  def set_listing
+    @listing = current_provider.listings.find params[:id]
+  end
+
+end

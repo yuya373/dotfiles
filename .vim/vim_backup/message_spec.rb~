@@ -1,0 +1,89 @@
+# == Schema Information
+#
+# Table name: messages
+#
+#  id              :integer          not null, primary key
+#  conversation_id :integer          not null
+#  sender_id       :integer
+#  sender_type     :string(255)
+#  attachment      :string(255)
+#  body            :text             not null
+#  created_at      :datetime
+#  updated_at      :datetime
+#  subject         :string(255)      not null
+#
+
+require 'spec_helper'
+
+describe Message do
+  let(:user){create :user}
+  let(:provider_user){create :provider_user}
+  describe "#receiver" do
+    context "from user to provider_userの場合" do
+      it do
+        msg = create(:user_message)
+        receipt = create(:provider_user_receipt, message: msg)
+        expect(msg.receiver).to be_a_kind_of(ProviderUser)
+      end
+    end
+
+    context "from provider_user to userの場合" do
+      it do
+        msg = create(:provider_user_message)
+        receipt = create(:user_receipt, message: msg)
+        expect(msg.receiver).to be_a_kind_of(User)
+      end
+    end
+  end
+
+  describe "#is_unread?" do
+    let(:msg){ create(:message) }
+    let(:receipt){ create(:receipt, message: msg) }
+
+    it "既読のとき" do
+      receipt.update_attributes(is_read: true)
+      expect(msg.is_unread?).to be_false
+    end
+
+    it "未読の時" do
+      receipt
+      expect(msg.is_unread?).to be_true
+    end
+  end
+
+  describe "#deliver" do
+    let(:receiver){ create :user }
+    let(:msg){create :provider_user_message}
+    it do
+      expect(msg.deliver(receiver,  true)).to have_one(:receipt)
+      expect(Sidekiq::Extensions::DelayedMailer).to have(1).jobs
+    end
+  end
+
+  describe "#next" do
+    it "return next message included in same conversation" do
+      conv = create(:conversation)
+      msg1 = create(:user_message, sender: user, conversation: conv, created_at: Time.now.days_ago(1) )
+      msg2 = create(:provider_user_message, sender: provider_user, conversation: conv, created_at: Time.now.days_ago(2))
+      msg3 = create(:user_message, sender: user, conversation: conv, created_at: Time.now.days_ago(3))
+
+      expect(msg1.next).to eq(msg2)
+      expect(msg2.next).to eq(msg3)
+      expect(msg3.next).to be_nil
+    end
+
+  end
+
+  describe "#previous" do
+    it "return previous message included in same conversation" do
+      conv = create(:conversation)
+      msg1 = create(:user_message, sender: user, conversation: conv, created_at: Time.now.days_ago(1) )
+      msg2 = create(:provider_user_message, sender: provider_user, conversation: conv, created_at: Time.now.days_ago(2))
+      msg3 = create(:user_message, sender: user, conversation: conv, created_at: Time.now.days_ago(3))
+
+      expect(msg3.previous).to eq(msg2)
+      expect(msg2.previous).to eq(msg1)
+      expect(msg1.previous).to be_nil
+    end
+  end
+end

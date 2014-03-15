@@ -1,0 +1,3 @@
+var sample =  require('./require_sample');
+sample.sample1();
+sample.sample2();

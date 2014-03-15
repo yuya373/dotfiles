@@ -1,0 +1,20 @@
+= render "preview_header"
+.container.top-container.last-container
+  .listing-shell
+    = render "listings/top_section"
+
+    .listing-body.clearfix
+      .listing-left-pane.listing-detail-mods
+
+        - @price_plans.each do |price_plan|
+          .listing-detail-mod
+            .mod-header.mod-header-lighter
+              %h2= price_plan.name
+            .mod-body
+              %table.table.listing-price-table
+                - price_plan.price_plan_timetables.each do |timetable|
+                  %tr
+                    %th #{strf_time(timetable.start_at)}-#{strf_time(timetable.end_at)}
+                    %td #{number_to_currency(timetable.price)}
+
+      = render "listings/listing_right_pane"

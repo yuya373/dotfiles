@@ -1,0 +1,6 @@
+var sample = require('./module_sample')
+
+sample.setProp( 'name', 'yuya' );
+sample.setProp( 'age', 22 )
+
+sample.print();

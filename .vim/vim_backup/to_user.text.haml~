@@ -1,0 +1,36 @@
+= "#{@pre_booking.name}" + " 様"
+\
+\
+この度は、貸しスペース・会議室検索予約サイトSpacee（スペイシー）を
+ご利用頂きありがとうございます。
+\
+※本メールは予約お申込みの確認メールとなり、ご予約は確定しておりません。
+※貸しスペース運営者からのご連絡の上で予約となりますので、ご連絡をお待ち
+下さい。
+※スペースについてのご質問などは、スペース掲載者までご連絡お願いいたします。
+\
+= render 'provider_pre_booking_mailer/space_info', listing: @listing, provider: @provider, listing_location: @listing.listing_location, is_hide_tel: true
+\
+————————————
+スペースご利用までの流れ
+————————————
+STEP1 : 貸しスペース運営者からメールまたはお電話にて営業日24時間以内にご連絡致します。
+STEP2 : 予約確定
+STEP3 : 貸しスペースのご利用／ご利用料金のお支払い
+\
+※お支払い方法・お支払いのタイミングは各運営会社により異なります。
+※ご確認の上ご対応ください。
+\
+—————
+ご注意事項
+—————
+・ご予約確定後、キャンセルされたい場合は必ず貸しスペース運営者宛にご連絡ください。
+
+・予約お申込み後、営業日24時間経っても貸しスペース運営者より連絡がない場合は
+下記スペース運営者までお問い合わせください。
+
+・その他、会議室の利用について不明点の確認やご相談は直接、下記の貸しスペース運営者にご連絡下さい。
+\
+= render 'pre_booking_mailer/pre_booking_info', pre_booking: @pre_booking, listing: @listing
+\
+= render 'provider_pre_booking_mailer/mail_footer'

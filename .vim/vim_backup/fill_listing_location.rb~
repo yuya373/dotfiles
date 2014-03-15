@@ -1,0 +1,18 @@
+# 東京都渋谷区千駄ヶ谷5-28-10 ドルミ第２御苑604
+require 'nkf'
+Listing.all.each do |listing|
+  loc = NKF.nkf('-m0Z1 -w', listing.location )
+  pre = loc.slice!(/.*?都/)
+  city = loc.slice!(/.*?区/)
+  lot = loc.slice!(/(.*?\d+\W*?\d+*?\d+?)|\s/, 1)
+
+  ListingLocation.create(
+    listing_id: listing.id,
+    prefecture: pre,
+    city: city,
+    lot_number: lot,
+    building: loc
+  )
+
+  p listing.listing_location
+end

@@ -1,0 +1,47 @@
+.listing-right-pane
+  .mod-group.rel#statusLsForm
+    .mod.mod-lighter-grad.mod-semi-wide.mod-round.mod-listing-book.mod-shell.ls-price-mod
+      .inner-mod
+        .ls-price-group
+          .ls-price-label
+            最安料金(1時間・1室あたり)
+            = link_to "料金の詳細", listing_price_plans_path(@listing)
+          %h4.listing-price-stressed
+            &yen;#{@listing.price}
+            %span<> 〜
+          .ls-price-label
+            = "（#{min_booking_time_units_only(@listing)}からご利用頂けます）"
+        = render "listings/status_ls_form", listing: @listing
+
+      .inner-mod.book-button-holder.bg-white
+        #listingStatusApp
+        - if @listing.is_display
+          - $castro.add_js_component("statusLsForm", "StatusLsForm", {}, {:id=>@listing.id});
+          - $castro.add_react_component("listingStatusApp", "ListingStatusApp", {}, @js_params);
+        - else
+          .btn.btn-success.btn-block.btn-large
+            予約する
+          .btn.btn-primary.btn-block.btn-large
+            空室スケジュールを見る
+
+    - if @sub_listings.present?
+      .mod.mod-default.mod-round.sub-listing-mod.mod-shell
+        .mod-header.mod-header-lighter
+          - if keeped_query[:date]
+            %h4 空室のあるスペース
+          - else
+            %h4 お近くのスペース
+        .sub-listing-group
+          - @sub_listings.each do |listing|
+            .sub-listing
+              .sub-listing-inner
+                .photo-sub-listing
+                  = link_to listing_path(listing, keeped_query ) do
+                    = image_tag listing.thumb, size: "60x60", alt: listing.title
+                .desc-sub-listing
+                  %p.desc-caption
+                    =link_to listing.title, listing_path(listing, keeped_query)
+                  %p.tx-gray
+                    &yen;#{listing.price}~ / 時間
+                  %p.tx-gray
+                    = access_in_words(listing.listing_station)

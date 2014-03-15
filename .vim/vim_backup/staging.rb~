@@ -1,0 +1,17 @@
+#pu Deploy for staging
+set :stage, :staging
+set :rails_env, :staging
+set :unicorn_env, :staging
+fetch(:default_env).merge!(rails_env: fetch(:rails_env))
+set :sidekiq_processes, ->{ 1 }
+
+set :branch, "dev"
+# ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
+
+set :database_username, 'root'
+set :database_password, ENV['SPACEE_DB_PASSWD']
+
+#TODO mv
+
+# Application Settings
+server "staging.spacee.jp", user: fetch(:user), roles: [:app, :web, :db], primary: true

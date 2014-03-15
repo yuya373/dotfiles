@@ -1,0 +1,6 @@
+  %h5 用途から探す
+  %ul.unstyled
+    - Usage.featured.each do |usage|
+      %li
+        %i.icon-caret-right.tx-gray-light
+        = link_to(usage.name, usage_listings_path(usage))

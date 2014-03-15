@@ -1,0 +1,40 @@
+- set_page_meta_tags("アカウントの編集")
+
+.container.top-container.last-container
+  = render "user/users/tabs"
+
+  %h4 アカウント情報を編集
+
+  = render "partials/flashes"
+
+  - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+    .alert.alert-warning
+      メールアドレスの確認をしてください : #{resource.unconfirmed_email}
+      [#{link_to "確認メールの再送", new_user_confirmation_path}]
+
+  = form_for resource, as: resource_name, url: registration_path(resource_name),
+    html: {method: :put, class: "form-horizontal"} do |f|
+
+    = devise_error_messages!
+
+    .control-group
+      = f.label :name, class: "control-label"
+      .controls
+        - name = resource.name.split("\s")
+        = text_field_tag :lname, name[0], placeholder: "姓", autofocus: true, class: "input-block-level"
+        = text_field_tag :fname, name[1], placeholder: "名", autofocus: true, class: "input-block-level"
+
+    .control-group
+      = f.label :email, class: "control-label"
+      .controls
+        = f.email_field :email, class: "input-block-level"
+
+    .control-group
+      = f.label :phone, class: "control-label"
+      .controls
+        = f.email_field :phone, class: "input-block-level"
+
+    .control-group
+      .controls.block-buttons-group
+        = f.submit "変更", class: "btn btn-large btn-primary btn-block"
+        = link_to "キャンセル", [:user, :user], class: "btn btn-block btn-large"

@@ -1,0 +1,41 @@
+# == Schema Information
+#
+# Table name: listing_locations
+#
+#  id              :integer          not null, primary key
+#  listing_id      :integer          not null
+#  zip_code_before :string(10)
+#  zip_code_after  :string(10)
+#  longitude       :float
+#  latitude        :float
+#  zoom            :integer
+#  prefecture      :string(255)      not null
+#  city            :string(255)      not null
+#  lot_number      :string(255)      not null
+#  building        :string(255)
+#  created_at      :datetime
+#  updated_at      :datetime
+#
+# Indexes
+#
+#  listing_id  (listing_id) UNIQUE
+#
+
+class ListingLocation < ActiveRecord::Base
+  belongs_to :listing, touch: true
+  validates_presence_of :prefecture, :city, :lot_number
+
+  geocoded_by :address
+  # after_validation :geocode, if: ->(o){
+    # h = o.changed_attributes
+    # %w(prefecture city lot_number).any?{|e| h.key?(e) }
+  # }
+
+  def address
+    "#{prefecture}#{city}#{lot_number}"
+  end
+
+  def full_address
+    "#{address} #{building}"
+  end
+end

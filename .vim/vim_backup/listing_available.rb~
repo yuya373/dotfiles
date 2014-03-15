@@ -1,0 +1,21 @@
+listing_ids = Listing.pluck(:id)
+
+listing_available = {}
+listing_ids.each do |listing_id|
+  listing_available[listing_id] = 0
+  RoomSchedule.available.listing_is(listing_id).each do |available|
+    available_time = ( available.end_at - available.start_at ) / 360
+    listing_available[listing_id] += available_time.ceil
+  end
+end
+
+CSV.open('../listing_available.csv','wb', headers: true).each do |csv|
+  listing_id = csv[:listing_id]
+  csv << listing_available[listing_id]
+end
+
+
+
+
+
+

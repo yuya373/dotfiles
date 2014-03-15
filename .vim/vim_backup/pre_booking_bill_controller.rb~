@@ -1,0 +1,41 @@
+class User::PreBookingBillsController < UserApplicationController
+
+  def new
+    @pre_booking_bill = PreBookingBill.new
+  end
+
+  def edit
+    @pre_booking_bill = current_user.pre_booking_bill
+  end
+
+  def create
+    @pre_booking_bill = PreBookingBill.new(pre_booking_bill_params)
+    @pre_booking_bill.user_id = current_user.id
+
+    if @pre_booking_bill.save
+      redirect_to user_pre_booking_bill_url
+    else
+      render :new
+    end
+  end
+
+  def update
+    @pre_booking_bill = current_user.pre_booking_bill
+    @pre_booking_bill.update(pre_booking_bill_params)
+    if @pre_booking_bill.save
+      redirect_to user_pre_booking_bill_url
+    else
+      render :edit
+    end
+  end
+
+  def show
+    @pre_booking_bill = current_user.pre_booking_bill
+  end
+
+  private
+
+  def pre_booking_bill_params
+    params.require(:pre_booking_bill).permit(:name, :company, :address)
+  end
+end

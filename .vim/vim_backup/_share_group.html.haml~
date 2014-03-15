@@ -1,0 +1,4 @@
+  = mail_to nil, subject: "", body: request.original_url, class: "button-listing-share" do
+    %i.icon-envelope
+  = link_to "Tweet", "https:twitter.com/share", "data-count" => "none", "data-lang" => "en", class: "twitter-share-button"
+  %iframe{allowtransparency: "true", frameborder: "0", scrolling: "no", src: "//www.facebook.com/plugins/like.php?href=#{request.original_url}&width=210px&layout=button_count&action=like&show_faces=false&share=false&height=21&appId=594549643941274", style: "border:none; overflow:hidden; display:inline-block; width:150px; height:21px;"}

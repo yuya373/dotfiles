@@ -1,0 +1,310 @@
+# == Schema Information
+#
+# Table name: room_calendars
+#
+#  id            :integer          not null, primary key
+#  listing_id    :integer          not null
+#  day           :date             not null
+#  price_plan_id :integer          not null
+#  price         :integer          default(0), not null
+#  is_open       :boolean          not null
+#  open_at       :time             not null
+#  close_at      :time             not null
+#  created_at    :datetime
+#  updated_at    :datetime
+#
+# Indexes
+#
+#  listing_id_and_day  (listing_id,day) UNIQUE
+#
+
+class RoomCalendar < ActiveRecord::Base
+  self.primary_key = :id
+  belongs_to :listing
+  belongs_to :price_plan
+  include PriceRangeValidatable
+  include RangePartition
+  include EndOfDayTweak
+
+  validates :day, timeliness: {type: :date,
+    on_or_after: ->{ Date.today }, before: ->{ Date.today + 4.month } },
+  on: :create
+  validates :close_at, timeliness: {type: :time, after: :open_at}
+
+  validate :cannot_overlap_room_schedule
+  validate :cannot_close_has_room_schedules
+
+  scope :within, ->(date_range){
+    where day: date_range
+  }
+  scope :day_is, ->(date){
+    within(date)
+  }
+  scope :day_asc, ->{
+    order arel_table[:day].asc
+  }
+  scope :day_gteq, ->(date){
+    where arel_table[:day].gteq(date)
+  }
+  scope :for_price, ->(date){
+    day_is(date).open.price_plan_eager_load
+  }
+  scope :listing_id_is, ->(listing_id){
+    where listing_id: listing_id
+  }
+  scope :open, ->{
+    where is_open: true
+  }
+  scope :price_plan_eager_load, ->{
+    includes(:price_plan => :price_plan_timetables)
+  }
+  scope :pruning, ->(from=Date.today){
+    day_gteq(from)
+  }
+
+  before_save do
+    set_price_cache if price_plan_id_changed?
+  end
+
+  class << self
+    def find_or_new_a_day(listing, date)
+      listing.room_calendars.day_is(date).first ||
+        new_a_day(listing, date)
+    end
+
+    def find_or_create_a_day(listing, date, lock=false)
+      listing.room_calendars.day_is(date).lock(lock).first ||
+        create_a_day(listing, date)
+    end
+
+    def room_schedules(listing, first, last)
+      RoomSchedule.range_room_schedules(listing.id,
+                                        first.open_at_dt,
+                                        last.close_at_dt)
+    end
+
+    def room_schedules_gteq(listing, room_calendars, time)
+      date = time.to_date
+      room_calendars = room_calendars.select{|e| e.day >= date }
+      return RoomSchedule.none if room_calendars.blank?
+      RoomSchedule.range_room_schedules(listing.id, time,
+                                        room_calendars.last.close_at_dt)
+    end
+
+    def one_week(listing, from, room_calendars=nil)
+      range = from..(from + 6)
+      room_calendars ||= listing.room_calendars
+      room_calendars = room_calendars.within(range).day_asc
+      return room_calendars if room_calendars.size == range.size
+      fill_blank_wday(listing, room_calendars, range)
+    end
+
+    def update_the_day(listing, date, params)
+      transaction do
+        room_calendar = find_or_create_a_day(listing, date, true)
+        room_calendar.update!(params)
+        room_calendar
+      end
+    end
+
+    private
+
+    def fill_blank_wday(listing, room_calendars, date_range)
+      configs = listing.calendar_configurations
+      date_range.map do |day|
+        find_or_build_a_day(day, room_calendars, configs)
+      end
+    end
+
+    def find_or_build_a_day(day, room_calendars, configs)
+      a = room_calendars.find{|e| e.day.wday == day.wday }
+      return a if a.present?
+      config = CalendarConfiguration.collection_find_days_config(configs, day)
+      new config.room_calendar_params(day)
+    end
+
+    def create_a_day(listing, date)
+      conf = CalendarConfiguration.find_days_config(listing, date)
+      create! conf.room_calendar_params(date)
+    end
+
+    def new_a_day(listing, date)
+      conf = CalendarConfiguration.find_days_config(listing, date)
+      new conf.room_calendar_params(date)
+    end
+  end
+
+  def error_business_hour
+    errors.add :start_at, "は営業時間内に設定してください"
+    raise ActiveRecord::RecordInvalid, self
+  end
+
+  def fill_day(status)
+    error_non_business_day if !is_open?
+    room_schedules = RoomSchedule.
+      range_room_schedules(listing_id, open_at_dt, close_at_dt).presence || []
+    blank_ranges(room_schedules).each do |start_at, end_at|
+      fill_between_range(start_at, end_at, status)
+    end
+  end
+
+  def add_range(start_at, end_at, status)
+    error_non_business_day if !is_open?
+    start_at, end_at = str_range_to_dt(start_at, end_at)
+    add_range_schedule(start_at, end_at, status)
+  end
+
+  def update_range(from_start_at, from_end_at,
+                   to_start_at, to_end_at)
+    error_non_business_day if !is_open?
+    fstart_at, fend_at = str_range_to_dt(from_start_at, from_end_at)
+    tstart_at, tend_at = str_range_to_dt(to_start_at, to_end_at)
+    room_schedule = RoomSchedule.listing_is(listing_id).contains(fstart_at).first!
+    room_schedule.update_range(fstart_at, fend_at, tstart_at, tend_at)
+    update_timestamp
+    room_schedule
+  end
+
+  def delete_range(start_at, end_at)
+    start_at, end_at = str_range_to_dt(start_at, end_at)
+    room_schedule = RoomSchedule.listing_is(listing_id).contains(start_at).first!
+    room_schedule.delete_range(start_at, end_at)
+    update_timestamp
+    room_schedule
+  end
+
+  def holiday?
+    CalendarConfiguration.holiday?(day)
+  end
+
+  def slice_room_schedules(room_schedules)
+    adjust_slot(room_schedules.select do |e|
+                  open_at_dt <= e.end_at && e.start_at <= close_at_dt
+                end)
+  end
+
+  def range_price(start_at, end_at)
+    if end_at > close_at_dt
+      return unless non_close? #TODO error?
+      return price_plan.total_price(start_at, close_at_dt) +
+        next_day_room_calendar.price_plan.total_price(close_at_dt, end_at)
+    end
+    price_plan.total_price(start_at, end_at)
+  end
+
+  def open_at_dt
+    @open_at_dt ||= time_to_dt(open_at)
+  end
+
+  def close_at_dt
+    @close_at_dt ||= time_to_dt(close_at)
+  end
+
+  def within_a_day?(start_at, end_at)
+    open_at_dt <= start_at && end_at <= close_at_dt
+  end
+
+  def within?(time)
+    open_at_dt <= time && time <= close_at_dt
+  end
+
+  def str_range_to_dt(start_at, end_at)
+    st, en = str_to_dt(start_at), str_to_dt(end_at)
+    if st >= en
+      errors.add :day, "不正なスケジュールです start:#{st} end:#{en}"
+      raise ActiveRecord::RecordInvalid, self
+    end
+    [st, en]
+  end
+
+  def add_range_schedule(start_at, end_at, status)
+    error_business_hour if start_at < open_at_dt
+    update_timestamp
+    RoomSchedule.add_schedule(listing_id, start_at, end_at, status)
+  end
+
+  private
+
+  def str_to_dt(str)
+    time = Time.parse(str) rescue nil
+    return if time.blank?
+    time_to_dt(time)
+  end
+
+  def adjust_slot(room_schedules)
+    room_schedules.map do |e|
+      e.start_at = open_at_dt if e.start_at <= open_at_dt
+      e.end_at = close_at_dt if e.end_at >= close_at_dt
+      e
+    end
+  end
+
+  def room_schedules
+    RoomSchedule.listing_is(listing_id)
+  end
+
+  def non_close?
+    n = next_day_room_calendar
+    n && n.open_at.truncate_ymd == (self.close_at + 1).truncate_ymd
+  end
+
+  def next_day_room_calendar
+    @next_day_room_calendar ||= RoomCalendar.price_plan_eager_load.
+      find_by(listing_id: listing_id, day: (day + 1))
+  end
+
+  def time_to_dt(time)
+    d = day
+    time.change(year: d.year, month: d.month, day: d.day)
+  end
+
+  def error_non_business_day
+    errors.add :is_open, "休日です"
+    raise ActiveRecord::RecordInvalid, self
+  end
+
+  def cannot_close_has_room_schedules
+    if !is_open? && room_schedules.start_at_lt(day.end_of_day).
+        end_at_gt(day.beginning_of_day).exists?
+      errors.add :is_open, "登録済みのスケジュールがあります"
+    end
+  end
+
+  def overlap_room_schedule?(time)
+    room_schedules.start_at_lt(time).end_at_gt(time).exists?
+  end
+
+  def cannot_overlap_room_schedule
+    message = "登録済みのスケジュールがあります".freeze
+    if overlap_room_schedule?(open_at_dt)
+      errors.add :open_at, message
+    end
+    if overlap_room_schedule?(close_at_dt)
+      errors.add :close_at, message
+    end
+  end
+
+  def set_price_cache
+    self.price = price_plan_timetables.minimum(:price)
+  end
+
+  def update_timestamp
+    touch if persisted?
+  end
+
+  def blank_ranges(room_schedules)
+    mine = [OpenStruct.new(start_at: close_at_dt, end_at: open_at_dt)]
+    mine += (room_schedules + mine)
+    mine.each_cons(2).map do |lhs, rhs|
+      next if lhs.end_at >= rhs.start_at
+      [lhs.end_at, rhs.start_at]
+    end.compact
+  end
+
+  def fill_between_range(start_at, end_at, status)
+    return if start_at >= end_at || close_at_dt <= start_at
+    end_at = close_at_dt if close_at_dt < end_at
+    return if start_at == end_at
+    add_range_schedule(start_at, end_at, status)
+  end
+end

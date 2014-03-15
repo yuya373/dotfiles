@@ -1,0 +1,150 @@
+
+.nav-link.btn {
+  margin-bottom: 0;
+}
+
+.pre-header {
+  font-size: 0.8em;
+  background: #00b0ff;
+  // background: #76cef6;
+  // color: $gray;
+  color: white;
+  line-height: 20px;
+
+  .site-desc {
+    float: left;
+    padding-left: 10px;
+    display: block;
+  }
+}
+
+$_logo_w: 166px / 2;
+$_logo_h: 46px / 2;
+
+
+.navbar-brand {
+  text-decoration: none;
+  display: block;
+  line-height: 42px;
+  margin-left: 0;
+  margin-top: (42px - $_logo_h) / 2 + 1px;
+  margin-right: 15px;
+  float: left;
+  width:  $_logo_w;
+  height: $_logo_h;
+  background: image-url("logos/logo-header-pc.png");
+  background-repeat: no-repeat;
+  background-size: $_logo_w $_logo_h;
+
+  @media all and (-webkit-min-device-pixel-ratio: 2) {
+    background-size: $_logo_w $_logo_h;
+  }
+
+  text-indent: -9999px;
+}
+
+
+.navbar-header {
+  // z-index: 99999;
+  position: relative;
+  z-index: 99;
+  margin-bottom: 0;
+
+  .navbar-inner {
+    background: -webkit-linear-gradient(top, white 0%, #fafafa 50%, #f0f0f0 51%, whitesmoke 100%);
+    border-bottom: .1em solid #d7d7d7;
+    @include border-radius(0);
+  }
+
+  ul.nav {
+    li a {
+      line-height: 42px;
+    }
+  }
+
+  .header-nav-bordered {
+    li {
+      border-right: 1px solid #e6e6e6;
+      &:first-child {
+        border-left: 1px solid #e6e6e6;
+      }
+    }
+  }
+
+  .header-nav {
+    li a.nav-link {
+      padding-top: 0;
+      padding-bottom: 0;
+      font-weight: bold;
+      font-size: 13px;
+      color: $gray;
+      i {
+        color: $grayDark;
+      }
+    }
+  }
+
+  .btn {
+    margin-top: 0 !important;
+  }
+
+  .navbar-text {
+    line-height: 42px;
+  }
+
+  .site-desc {
+    text-shadow: 0 1px 0 white;
+    color: $grayLight;
+    font-size: 12px;
+    line-height: 42px;
+  }
+
+  .campaign-link {
+    padding-right: 10px;
+    font-weight: bold;
+    font-size: 12px;
+  }
+
+ .login-link {
+    padding-right: 10px;
+    // font-weight: bold;
+    font-size: 12px;
+  }
+
+}
+
+
+.logout-form-group {
+  form {
+    margin: 0;
+  }
+
+  .btn-logout {
+    display: inline;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 20px;
+    color: #333333;
+    white-space: nowrap;
+    border: none;
+    background: white;
+  }
+}
+
+.nav-link.btn-apply,
+.nav-link.btn-apply:hover {
+  background-position: 0 0 !important;
+  height: 30px;
+  line-height: 30px !important;
+  margin-top: 5px !important;
+  padding-top: 0;
+  padding-bottom: 0;
+  outline: none;
+}
+
+// .nav-link.btn-apply:focus,
+// .nav-link.btn-apply:active,
+// .nav-link.btn-apply.active {
+//   background-position: 0 0 !important;
+// }

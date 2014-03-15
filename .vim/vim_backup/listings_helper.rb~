@@ -1,0 +1,72 @@
+# -*- coding: utf-8 -*-
+module ListingsHelper
+  include ReviewHelper
+  def line_name(listing_station)
+    return if listing_station.blank?
+    listing_station.station.line.line_name
+  end
+
+  def default_date_str(value)
+    return if value.blank?
+    date = Date.parse(value.gsub(/[^0-9]/, "")) rescue nil
+    return if date.blank?
+    date.strftime("%Y年%m月%d日")
+  end
+
+  def access_in_words(listing_station)
+    if listing_station.blank?
+      logger.debug listing_station
+      return
+    end
+    "#{listing_station.station.station_name}駅から徒歩"\
+    "#{listing_station.access_minutes}分"
+  end
+
+  def map_image_tag(latitude, longitude, zoom=20, width=640, height=400)
+    image_url = "http://maps.googleapis.com/maps/api/staticmap?center=#{latitude},#{longitude}&size=#{width}x#{height}&zoom=#{zoom}&markers=size:mid|#{latitude},#{longitude}&sensor=false"
+    link_to content_tag(:section, image_tag(image_url), class: "listing-map"),
+      "https://maps.google.com/maps?q=#{latitude},#{longitude}", target: "_blank"
+  end
+
+  def line_url(listing)
+    "http://line.naver.jp/R/msg/text/?" + listing.title + " - " + request.original_url
+  end
+
+  def to_mobile_search_date(str)
+    return if str.blank?
+    date = Date.parse(str) rescue (Date.today + 1)
+    date.strftime("%Y-%m-%d")
+  end
+
+  def link_to_tommorow_listings(collection)
+    tomorrow = 1.day.from_now
+    search_collection_listing_collections_path(collection, date: tomorrow.to_date)
+  end
+
+  def link_to_related(listing, keeped_query)
+    if keeped_query[:date].present?
+       link_to "他に空室のあるレンタルスペースをすべて見る", related_listing_path(listing, keeped_query), class: "btn btn-large pull-right"
+    else
+       link_to "お近くのレンタルスペースをすべて見る", related_listing_path(@listing, keeped_query), class: "btn btn-large pull-right"
+    end
+  end
+
+  def related_head
+    if keeped_query[:date].present?
+      head = "空室のある"
+    else
+      head = "お近くの"
+    end
+     head + "レンタルスペース・貸し会議室"
+  end
+
+  def related_description
+    if keeped_query[:date].present?
+      desc = "ご指定の日時で空室のある"
+    else
+      desc = "お近くの"
+    end
+
+    desc + "レンタルスペース・貸し会議室の一覧です。"
+  end
+end

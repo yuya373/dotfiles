@@ -1,0 +1,11 @@
+class StationsController < ApplicationController
+  def index
+    if request.xhr?
+      @line = Line.find params[:line_id]
+      @stations = @line.stations
+      render 'index.js', layout: false
+    else
+      @stations = Station.published_listing_exists.distinct()
+    end
+  end
+end

@@ -1,0 +1,55 @@
+# == Schema Information
+#
+# Table name: payments
+#
+#  id             :integer          not null, primary key
+#  pre_booking_id :integer          not null
+#  payment_status :integer          not null
+#  created_at     :datetime
+#  updated_at     :datetime
+#  type           :string(30)       not null
+#
+# Indexes
+#
+#  pre_booking_id  (pre_booking_id)
+#
+
+class Payment < ActiveRecord::Base
+  belongs_to :pre_booking
+
+  scope :payment_status_is, ->(payment_status){
+    where payment_status: payment_status
+  }
+
+  attr_accessor :payment_method_id
+
+  class << self
+    def build_for_new(params)
+      if params[:card_id]
+        Payment::CardPayment.new(payment_method_id: params[:card_id])
+      else
+        Payment::BankPayment.new
+      end
+    end
+  end
+
+  def confirmed?
+    !!(payment_status == 2)
+  end
+
+  def payment_method_key
+    return :card_id if is_a?(Payment::CardPayment)
+  end
+
+  def payment_status_str
+    payment_statuses.invert[payment_status].to_s
+  end
+
+  def payment_status_str=(str)
+    self.payment_status = payment_statuses[str.to_sym]
+  end
+
+  def status_key
+    "payment.#{key}.#{payment_status_str}"
+  end
+end

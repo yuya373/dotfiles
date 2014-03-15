@@ -1,0 +1,29 @@
+%p
+  .btn-group
+    = link_to "すべて表示", all_admin_listings_path(is_approved: ""), { class: "btn"}
+    = link_to "承認済みを表示", all_admin_listings_path(is_approved: "true"), { class: "btn"}
+    = link_to "承認待ちを表示", all_admin_listings_path(is_approved: "false"), { class: "btn"}
+    = link_to "公開済みを表示", all_admin_listings_path(is_published: "true"), class: "btn"
+%table.table.table-striped.table-bordered
+  %thead
+    %tr
+      %th= listings_sort_link("id", sort_by: :id, order: reverse_order) + arrow(:id)
+      %th= t("activerecord.attributes.listing.title")
+      %th= t("activerecord.attributes.listing.capacity")
+      %th= listings_sort_link(t("activerecord.attributes.listing.price"), sort_by: :price, order: reverse_order) + arrow(:price)
+      %th= t("activerecord.attributes.listing.is_display")
+      %th= t("activerecord.attributes.listing.is_approved")
+      %th 売上保証
+      %th= listings_sort_link("仮予約数", sort_by: :pre_bookings, order: reverse_order) + arrow(:pre_bookings)
+  %tbody
+    - @listings.each do |listing|
+      %tr
+        %td= listing.id
+        %td= render 'listing_with_provider', listing: listing
+
+        %td= listing.capacity
+        %td= listing.price
+        %td{class: listing.is_display?.to_s}= listing.is_display?
+        %td{class: listing.is_approved?.to_s}= listing.is_approved?
+        %td{class: listing.sales_gurantee?.to_s}= listing.sales_gurantee?
+        %td= listing.booking_status.booking_count

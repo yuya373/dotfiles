@@ -1,0 +1,19 @@
+class UserPreBookingRemindScheduler
+  include Sidekiq::Worker
+  include Sidetiq::Schedulable
+
+  recurrence do
+    daily.hour_of_day(11).minute_of_hour(0).second_of_minute(0)
+  end
+
+  def perform
+    pre_bookings.each do |e|
+      PreBookingMailer.send_remind(e).deliver
+    end
+  end
+
+  def pre_bookings
+    day = Date.tomorrow
+    PreBooking.where(start_at: day.beginning_of_day..day.end_of_day).approved
+  end
+end

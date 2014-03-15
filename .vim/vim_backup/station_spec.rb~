@@ -1,0 +1,38 @@
+# == Schema Information
+#
+# Table name: stations
+#
+#  id             :integer          not null, primary key
+#  station_g_cd   :integer          not null
+#  station_name   :string(255)      not null
+#  station_name_k :string(255)
+#  station_name_r :string(255)
+#  line_id        :integer          not null
+#  pref_cd        :integer          not null
+#  post           :string(255)      not null
+#  add            :string(255)      not null
+#  lon            :float            not null
+#  lat            :float            not null
+#  open_ymd       :string(255)
+#  close_ymd      :string(255)
+#  e_status       :integer          not null
+#  e_sort         :integer          not null
+#  created_at     :datetime
+#  updated_at     :datetime
+#
+# Indexes
+#
+#  line_id       (line_id)
+#  station_g_cd  (station_g_cd)
+#
+
+require 'spec_helper'
+
+describe Station do
+  it do
+    should have_many :listing_stations
+  end
+
+  it do 
+  end
+end

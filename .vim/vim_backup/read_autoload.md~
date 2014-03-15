@@ -1,0 +1,84 @@
+# Module Autoload
+
+## Example
+
+     module MyLib
+       extend ActiveSupport::Autoload
+
+       autoload :Model
+
+       eager_autoload do
+         autoload :Cache
+       end
+     end
+
+> line #26~33
+
+    def self.extended(base) # :nodoc:
+      base.class_eval do
+        @_autoloads = {}
+        @_under_path = nil
+        @_at_path = nil
+        @_eager_autoload = false
+      end
+    end
+
+- selfがincludeされた時includeしたオブジェクトを引数に``extended``が呼ばれる
+- class_evalでbaseのコンテキストでblockを実行する
+
+> line #35~47
+
+    def autoload(const_name, path = @_at_path)
+      unless path
+        full = [name, @_under_path, const_name.to_s].compact.join("::")
+        path = Inflector.underscore(full)
+      end
+
+      if @_eager_autoload
+        @_autoloads[const_name] = path
+      end
+
+      super const_name, path
+    end
+
+- 不明点: name
+- super
+ - rubyのModule#autoloadを呼び出す。
+ - Module#autoloadは2つ引数が必要だがAutoload#autoloadはconst_nameがあれば良い？
+- Inflector.underscore
+
+  > Makes an underscored, lowercase form from the expression in the string.
+  >
+  > Changes '::' to '/' to convert namespaces to paths.
+  >
+  >   'ActiveModel'.underscore         # => "active_model"
+  >   'ActiveModel::Errors'.underscore # => "active_model/errors"
+  >
+  > As a rule of thumb you can think of +underscore+ as the inverse of
+  > +camelize+, though there are cases where that does not hold:
+  >
+  >   'SSLError'.underscore.camelize # => "SslError"
+
+
+    def eager_autoload
+      old_eager, @_eager_autoload = @_eager_autoload, true
+      yield
+    ensure
+      @_eager_autoload = old_eager
+    end
+
+
+    def autoload_under(path)
+      @_under_path, old_path = path, @_under_path
+      yield
+    ensure
+      @_under_path = old_path
+    end
+
+
+    def autoload_at(path)
+      @_at_path, old_path = path, @_at_path
+      yield
+    ensure
+      @_at_path = old_path
+    end

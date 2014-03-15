@@ -1,0 +1,12 @@
+require "spec_helper"
+
+describe Admin::EquipmentsController do
+
+  describe "GET index" do
+    it "assigns Equipment.new to @equipment" do
+      get :index
+      expect(assigns(:equipment)).to be_a_new(Equipment)
+    end
+  end
+
+end

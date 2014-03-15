@@ -1,0 +1,85 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id                     :integer          not null, primary key
+#  email                  :string(255)      default(""), not null
+#  encrypted_password     :string(255)      default(""), not null
+#  reset_password_token   :string(255)
+#  reset_password_sent_at :datetime
+#  remember_created_at    :datetime
+#  sign_in_count          :integer          default(0), not null
+#  current_sign_in_at     :datetime
+#  last_sign_in_at        :datetime
+#  current_sign_in_ip     :string(255)
+#  last_sign_in_ip        :string(255)
+#  confirmation_token     :string(255)
+#  confirmed_at           :datetime
+#  confirmation_sent_at   :datetime
+#  unconfirmed_email      :string(255)
+#  created_at             :datetime
+#  updated_at             :datetime
+#  name                   :string(255)
+#  agreement              :boolean
+#  phone                  :string(255)
+#  deleted_at             :datetime
+#  pc_user_agent          :string(255)
+#  mobile_user_agent      :string(255)
+#
+# Indexes
+#
+#  confirmation_token    (confirmation_token) UNIQUE
+#  email                 (email) UNIQUE
+#  reset_password_token  (reset_password_token) UNIQUE
+#
+
+class User < ActiveRecord::Base
+  acts_as_paranoid
+
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :async, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable, :confirmable
+
+  validates :name, presence: true
+  validates :agreement, acceptance: { accept: true }
+  validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i }
+  # validates :password, format: /\A[0-9A-Za-z]+\z/
+
+  has_many :booking_requests
+  has_many :pre_bookings
+  has_many :cards
+  has_many :bills
+  has_many :orders
+  has_many :reviews
+  has_one :pre_booking_bill
+
+  before_save :zen_han, :only_number
+
+  def save_phone(value)
+    return if phone.present?
+    update(phone: value)
+  end
+
+  def zen_han
+    return if phone.blank?
+    phone.tr!('０-９\−\―\－\ー','0-9\-')
+  end
+
+  def only_number
+    return if phone.blank?
+    phone.tr!('^0-9', '')
+  end
+
+  def new_user?
+    confirmed_at.blank? && sign_in_count == 1
+  end
+
+  def after_sign_in?
+    @after_sign_in ||= (Time.now - current_sign_in_at <= 15)
+  end
+
+  def tester?
+    Settings.test_users.include? id
+  end
+end

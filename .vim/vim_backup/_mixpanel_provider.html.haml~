@@ -1,0 +1,24 @@
+%script
+  - unless Rails.env.production?
+    -# mixpanel.disable();
+  mixpanel.track('page viewed', {'page name' : document.title,'url' : window.location.pathname});
+  mixpanel.register_once({'landing page': "#{request.path}"});
+- return '' if current_provider_user.blank?
+%script
+  - unless Rails.env.production?
+    mixpanel.disable();
+  - if flash[:provider_created].present? && current_provider_user.new_provider_user?
+    mixpanel.alias("#{ current_provider_user.id}");
+    mixpanel.track("provider_signup");
+  - elsif flash[:provider_session_created].present? && current_provider_user.after_sign_in?
+    mixpanel.identify("#{current_provider_user.id}");
+    mixpanel.track("provider_signin");
+
+  - if current_provider_user.after_sign_in?
+    mixpanel.people.set({
+    "$email": "#{current_provider_user.email}",
+    "$created": "#{current_provider_user.created_at}",
+    "$last_login": "#{current_provider_user.current_sign_in_at}",
+    "$name": "#{current_provider_user.name}",
+    "sign_in_count": "#{current_provider_user.sign_in_count}",
+    "credits": 0});

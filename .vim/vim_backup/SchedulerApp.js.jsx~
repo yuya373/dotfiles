@@ -1,0 +1,244 @@
+/** @jsx React.DOM */
+
+// Inspiration: http://arshaw.com/fullcalendar/
+
+define([
+    "react",
+    "components/mixins/AjaxMixin",
+    "components/mixins/SlotMixin",
+    "components/mixins/MessageHandlerMixin",
+    "components/pc/AgendaHeader",
+    "components/pc/scheduler/AgendaBlankHeader",
+    "components/pc/SchedulerSlots",
+    "components/mixins/SchedulerHelper",
+    "components/pc/scheduler/PricePlanManager",
+    "components/pc/scheduler/AgendaBody",
+    "components/pc/scheduler/TimeFrame",
+    "components/pc/scheduler/SchedulerPager",
+    "components/pc/scheduler/SlotsManager",
+    "components/pc/scheduler/DaysHeader"
+    ], function(React, AjaxMixin, SlotMixin, MessageHandlerMixin, AgendaHeader, AgendaBlankHeader, SchedulerSlots, SchedulerHelper, PricePlanManager, AgendaBody, TimeFrame, SchedulerPager, SlotsManager, DaysHeader) {
+
+  // Scheduler App
+  return React.createClass({
+    mixins: [AjaxMixin, SlotMixin, MessageHandlerMixin, SchedulerHelper],
+    getInitialState: function() {
+      return {
+        "datasource"  : {},
+        "hourlySlots" : _.range(4),
+        "slotHeight"  : 25,
+        "slotWidth"   : 124,  // hard-coding from scheduler.css.scss because $.fn.outerWidth() and width() value varies on the browser
+        "pricePlanDay": null,
+        "pricePlans"  : {}
+      };
+    },
+    updateState: function(postData, params) {
+      var data = _.extend(postData || {}, {
+            "listingId": this.props.properties.listingId
+          }),
+         callback = params.callback;
+        if(!data["startsAt"]){
+            data["startsAt"] = this.props.properties.date;
+        }
+        this.ajaxGet({
+            "api"      : this.props.properties.apiGetSchedule,
+            "data"     : data,
+            "callback" : callback,
+            "messageCallback": this.handleMessage,
+            "showSuccessMessage": false
+        });
+    },
+    onUpdateState: function(params) {
+      if(!params) { console.log("no params"); return; }
+      this.setState({
+        "datasource":params.datasource,
+        "pricePlans": this.props.properties.pricePlans
+      });
+      // this.scrollToDefaultTime(this.props.properties.defaultTime);
+    },
+    renderEventCanvas: function(hourlySlots) {
+      if( _.isEmpty(this.state.datasource) ) { return; }
+
+      var slotNum         = hourlySlots.length,
+          cleaningSlotNum = 1;
+
+      return <SchedulerSlots
+        ref="eventCanvas"
+        pricePlans        ={this.state.pricePlans}
+        listingId         ={this.props.properties.listingId}
+        slotNum           ={slotNum}
+        slotWidth         ={this.state.slotWidth}
+        slotHeight        ={this.state.slotHeight}
+        days              ={this.state.datasource.days}
+        defaultTime       ={this.props.properties.defaultTime}
+        apiAddSchedule    ={this.props.properties.apiAddSchedule}
+        apiRemoveSchedule ={this.props.properties.apiRemoveSchedule}
+        apiUpdateSchedule ={this.props.properties.apiUpdateSchedule}
+        showMessage       ={this.handleMessage}
+        cleaningSlotNum   ={cleaningSlotNum} />;
+    },
+    render: function() {
+      var hours = _.range(24);
+      return (
+        <div className="scheduler-app">
+          <SchedulerPager
+            days={this.state.datasource.days}
+            onWeekChange={this.handleWeekChange}
+            forProvider={true}
+            ref="pager" />
+          <PricePlanManager
+            apiSelectPricePlan ={this.props.properties.apiSelectPricePlan}
+            apiUpdatePricePlans ={this.props.properties.apiUpdatePricePlans}
+            listingId          ={this.props.properties.listingId}
+            plans              ={this.state.pricePlans}
+            day                ={this.state.pricePlanDay}
+            onDismiss          ={this.closePricePlanManager}
+            onUpdate           ={this.updatePricePlan}
+            onPricePlanSelect  ={this.updateSeletedPricePlan}
+            showMessage        ={this.handleMessage}
+            ref="pricePlanManager" />
+          {this.makeFixedAlertView()}
+          <div className="scheduler-main">
+            {this.renderAgenda()}
+            <div className="scheduler-time-frame">
+              <div ref="shell" className="scheduler-rows-shell">
+                <TimeFrame ref="timeFrame" hours={hours} hourlySlots={this.state.hourlySlots} />
+                <div ref="canvasVeil" className="scheduler-canvas-veil"></div>
+                {this.renderEventCanvas(this.state.hourlySlots)}
+              </div>
+            </div>
+            {this.makeSlotsManager()}
+            {this.makeCalendarFooter()}
+          </div>
+        </div>
+      );
+    },
+    makeCalendarFooter: function () {
+      if(!this.state.datasource.days) { return; }
+      return (
+        <table className="schedule-agenda-table">
+          <thead className="agenda-thead">
+            <DaysHeader
+              ref="daysFooter"
+              days={this.state.datasource.days}
+            />
+          </thead>
+        </table>
+      )
+      
+    },
+    renderAgenda: function() {
+      return (
+        <div className="scheduler-agenda-frame">
+          <table className="schedule-agenda-table">
+            {this.makeAgendaHeader()}
+            <AgendaBody />
+          </table>
+        </div>
+      );
+    },
+    makeAgendaHeader: function() {
+      if(!this.state.datasource.days) {
+        return <AgendaBlankHeader />;
+      }
+
+      return (
+        <AgendaHeader
+          ref="header"
+          listingId             ={this.props.properties.listingId}
+          showMessage           ={this.handleMessage}
+          days                  ={this.state.datasource.days}
+          onBusinessHourUpdate  ={this.businessHourDidUpdate}
+          onVeilUpdate          ={this.updateVeilView}
+          onPricePlanClick      ={this.openPricePlanManager}
+          pricePlans            ={this.state.pricePlans}
+          apiUpdateBusinessHour ={this.props.properties.apiUpdateBusinessHour} />
+      );
+    },
+    makeSlotsManager: function() {
+      if(!this.state.datasource.days) { return; }
+      return (
+        <SlotsManager
+          ref="slotsManager"
+          days={this.state.datasource.days}
+          onFillBlank={this.fillBlank} />
+      );
+    },
+    componentDidMount: function() {
+      if( _.isEmpty(this.state.datasource) ) {
+        this.updateState({}, {"callback":this.onUpdateState});
+        return;
+      }
+    },
+    businessHourDidUpdate: function(data, date) {
+      // console.log("businessHourDidUpdate");
+      var dayIndex = this.getDayIndexFromDays(this.state.datasource.days, date);
+      this.refs.eventCanvas.renderClosedBlock(data.day, dayIndex, true);
+      this.refs.header.businessHourDidUpdate(data.day, dayIndex);
+      this.refs.slotsManager.dayDidUpdate(data.day, dayIndex);
+    },
+    openPricePlanManager: function(data) {
+      this.updateVeilView(true);
+      this.setState({"pricePlanDay":data.day});
+    },
+    closePricePlanManager: function() {
+      // console.log("pricePlans", this.state.pricePlans);
+      this.setState({"pricePlanDay":null});
+      this.updateVeilView(false);
+    },
+    updatePricePlan: function(plan) {
+      var t = this,
+          pricePlans = _.extend({}, this.state.pricePlans);
+      _.keys(pricePlans).map(function(key) {
+        if(plan.id == key) {
+          // console.log("plan", plan);
+          // console.log("pricePlans[key]", pricePlans[key]);
+          pricePlans[key] = plan;
+          t.setState({"pricePlans":pricePlans}, function() {
+            t.refs.eventCanvas.didPricePlanUpdate(plan);
+          });
+        }
+      });
+    },
+    updateSeletedPricePlan: function(planId) {
+      var currentDay = this.state.pricePlanDay,
+          days = _.uniq(this.state.datasource.days);
+      for(var i=0;i<days.length;i++) {
+        if(days[i].date == currentDay.date) {
+          days[i].priceId = planId;
+          datasource      = _.extend({}, this.state.datasource);
+          datasource.days = days;
+          this.setState({"datasource":datasource});
+          // this.refs.eventCanvas.updateBlockPriceForDay(days[i], i);  //i = day index
+          break;
+        }
+      }
+    },
+    fillBlank: function(data) {
+      console.log("root:fillBalnk", data);
+      this.ajaxPost({
+        "api"      : this.props.properties.apiMakeAllSlotsAvailable,
+        "data"     : data,
+        "callback" : this.onFillBlank,
+        "messageCallback"   : this.handleMessage,
+        "showSuccessMessage": true
+      });
+    },
+    onFillBlank: function(params) {
+      var data   = params.datasource,
+          day    = data.day;
+      if(data.result !== "success") {
+        this.handleMessage({
+          "type": data.result,
+          "messages": data.messages
+        });
+        return;
+      }
+      this.refs.eventCanvas.updateSlotsForDay(day);
+    },
+    updateVeilView: function(shouldVeil) {
+      var display = (shouldVeil === true) ? "block" : "none";
+      $(this.refs.canvasVeil.getDOMNode()).css({"display":display});
+    }
+  });
+});

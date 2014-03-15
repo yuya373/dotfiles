@@ -1,0 +1,42 @@
+# == Schema Information
+#
+# Table name: listing_locations
+#
+#  id         :integer          not null, primary key
+#  listing_id :integer          not null
+#  zip_code   :string(255)
+#  prefecture :string(255)
+#  city       :string(255)
+#  lot_number :string(255)
+#  building   :string(255)
+#  created_at :datetime
+#  updated_at :datetime
+#
+# Indexes
+#
+#  listing_id  (listing_id) UNIQUE
+#
+
+require 'spec_helper'
+
+describe ListingLocation do
+  it { should belong_to(:listing) }
+  it { should validate_presence_of(:prefecture) }
+  it { should validate_presence_of(:city) }
+  it { should validate_presence_of(:lot_number) }
+
+  let(:location){build(:listing_location)}
+  describe '#address' do
+    it "return location without zip_code" do
+      expect(location.address).to match /東京都中央区銀座１丁目１−１ 101/
+    end
+  end
+
+  describe '#full_address' do
+    it "return full location" do
+      expect(location.full_address).
+        to match /東京都中央区銀座１丁目１−１ 101/
+    end
+
+  end
+end

@@ -1,0 +1,237 @@
+require 'nkf'
+
+module ApplicationHelper
+  include MetaTagHelper
+
+  def my_number_field(form, field, options)
+    if android? || is_old_ie_browser
+      return form.text_field field, options
+    end
+    form.number_field field, options
+  end
+
+  def my_number_field_tag(field, value, options)
+    if android? || is_old_ie_browser
+      return text_field_tag field, value, options
+    end
+    number_field_tag field, value, options
+  end
+
+  def calendar_dayname(wday)
+    wday_name(wday) || "祝日"
+  end
+
+  def calendar_short_dayname(wday)
+    wday_short_name(wday) || "祝"
+  end
+
+  def wday_name(i)
+    ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"][i]
+  end
+
+  def wday_short_name(i)
+    ["日", "月", "火", "水", "木", "金", "土"][i]
+  end
+
+  def get_castro(controller, action, options={})
+    $castro.add_js_component(controller, action, options)
+  end
+
+  def render_castro
+    $castro.render_js_code()
+  end
+
+  def user_agent
+    @user_agent ||= UserAgent.parse(request.user_agent)
+  end
+
+  def ie?(browser)
+    browser == "Internet Explorer"
+  end
+
+  def is_old_ie_browser
+    ie?(user_agent.browser) && user_agent.version < "10"
+  end
+
+  def android?
+    request.mobile.is_a?(Jpmobile::Mobile::Android)
+  end
+
+  def old_android?
+    android? && request.user_agent.include?("Android 2")
+  end
+
+  def old_safari?
+    return false if user_agent.browser != 'Safari'
+    user_agent.version && user_agent.version < "6"
+  end
+
+  def body_css_class
+    return (is_old_ie_browser) ? "ie-old" : ""
+  end
+
+  def body_css_class_smart_phone
+    return old_android? ? "android-old" : ""
+  end
+
+  def keeped_query
+    @query ||=
+      begin
+        query = params.slice(:date, :time, :hours, :neighborhood, :party, :usage_id,
+                             :station_id, :price_min, :party_min,
+                             :category_id, :equipment_id, :prefecture_id)
+        query.each{|k, v| v.strip! if v.respond_to? :strip! }
+        if query[:date].present?
+          query[:date] = query[:date].try(:gsub, /[^0-9]/, "")
+        end
+        if query[:time].present?
+          time = Time.parse(query[:time]) rescue nil
+          query[:time] = time.try(:strftime, "%H:%M")
+        end
+        if query[:party].present?
+          query[:party] = zen_to_han(query[:party]).try(:gsub, /[^0-9]+/, "")
+        end
+        if query[:hours].present?
+          query[:hours] = zen_to_han(query[:hours]).try(:gsub, /[^0-9]+/, "")
+        end
+        if query[:price_min].present?
+          query[:price_min] = zen_to_han(query[:price_min]).
+            try(:gsub, /[^0-9]+/, "").to_i
+          query[:price_max] = price_max_(query[:price_min])
+        end
+        if query[:party_min].present?
+          query[:party_min] = zen_to_han(query[:party_min]).
+            try(:gsub, /[^0-9]+/, "").to_i
+          query[:party_max] = party_max_(query[:party_min])
+        end
+        query.each do |k, v|
+          query.delete(k) if v.blank?
+        end
+        query
+      end
+  end
+
+  def neighborhood_options_for_select
+    @neighborhood_options_for_select ||=
+      begin
+        opts = [["都内全域", '_']] + Neighborhood.for_options
+        options_for_select(opts, keeped_query[:neighborhood])
+      end
+  end
+
+  def nl_to_br(str)
+    sanitize(str.gsub("\n", "<br />"),
+             tags: %w(br), attributes: %w(class)) if str.present?
+  end
+
+  def zen_to_han(str)
+    return unless str
+    NKF.nkf('-m0Z1 -w', str)
+  end
+
+  def datetime_str(time)
+    return "" if time.blank?
+    time.strftime("%Y年%m月%d日 %H:%M")
+  end
+
+  def date_str(time)
+    return "" if time.blank?
+    time.strftime("%Y年%1m月%1d日")
+  end
+
+  def time_str(time)
+    return "" if time.blank?
+    time.strftime("%H:%M")
+  end
+
+  def admin_app?
+     controller_namespace == "Admin"
+  end
+
+  def provider_app?
+    controller_namespace == "Provider"
+  end
+
+  def nav_cls(*link_paths)
+    active_if(link_paths.any? do |e|
+      current_page?(e)
+    end)
+  end
+
+  def active_if(cond)
+    cond ? "active" : ""
+  end
+
+  def mobile_request?
+    request.mobile? || request.smart_phone?
+  end
+
+  def g_search_header
+    if keeped_query[:neighborhood]
+      x = Neighborhood.key_is(keeped_query[:neighborhood]).pluck(:name).
+        join("・") + "の"
+    end
+    if keeped_query[:usage_id]
+      usage = Usage.find(keeped_query[:usage_id]).name + "向け"
+    end
+    "#{x}#{usage}レンタルスペース、貸し会議室の検索結果"
+  end
+
+  def party_min_options_for_select(value)
+    options_for_select([["〜10人",1],
+                        ["10人〜20人",10],
+                        ["20人〜30人",20],
+                        ["30人〜",30]],
+                       value)
+  end
+
+  def price_min_options_for_select(value)
+    options_for_select([["〜1,000円",1],
+                        ["1,000円〜3,000円",1000],
+                        ["3,000円〜",3000]],
+                       value)
+  end
+
+  def unread_count(user)
+    user.mailbox.inbox.select{|co| co.is_unread?(user)}.count
+  end
+
+  def has_unread_messages?(user)
+    return true if unread_count(user) > 0
+    false
+  end
+
+  def define_people
+    current_user || current_provider_user
+  end
+
+  private
+
+  def party_max_(min)
+    case min
+    when 0...10
+      10
+    when 10...20
+      20
+    when 20...30
+      30
+    else
+      nil
+    end
+  end
+
+  def price_max_(min)
+    case min
+    when 0...1000
+      1000
+    when 1000...3000
+      3000
+    else
+      nil
+    end
+  end
+
+  def controller_namespace
+    controller.class.name.split("::").first
+  end
+end

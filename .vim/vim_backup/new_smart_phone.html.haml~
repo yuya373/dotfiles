@@ -1,0 +1,21 @@
+- set_page_meta_tags("空室お問い合わせ #{@listing.title}")
+.group-header.group-header-brand.group-header-default
+  %h1
+    %i.icon-envelope
+      空室状況のお問い合わせ
+= render "partials/flashes"
+= form_for [@listing, @booking_request] do |f|
+  .group-header.group-header-short.group-header-lighter
+    %h4 お問い合わせ先
+  .container.app-inner
+    = render "listings/listing_card", listing: @listing
+
+  .group-header.group-header-short.group-header-lighter
+    %h4 お問い合わせ日時
+  .container.app-inner
+    = render "form", f: f
+
+    = f.submit "この内容で送信", class: "btn btn-primary btn-block btn-large",
+      data: {disable_with: "送信中..."}
+    = link_to "キャンセル", @listing, class: "btn btn-large"
+

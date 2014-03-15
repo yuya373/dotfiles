@@ -1,0 +1,48 @@
+.container.top-container.last-container
+  .span9.offset1
+    - if @user_profile.present?
+      .bill.clearfix
+        .page-header
+          %h2 請求書
+        .bill-header-misc
+          %p 発行日: #{date_str(@pre_booking.respond_at)}
+          %p 請求書番号: #{@pre_booking.id_to_num}
+      .bill
+        .row-fluid
+          .span7
+            .bill-to
+              %p #{@user_profile.address}
+              %p #{@user_profile.company}
+              - if @user_profile.name.present?
+                %p #{@user_profile.name}様
+
+          .span5
+            .pull-right
+              %p 東京都渋谷区千駄ヶ谷5-28-10
+              %p 株式会社Spacee
+      .bill
+        %p 下記のとおり御請求申し上げます。
+        %table.table.table-bordered.table-striped
+          %thead
+            %tr
+              %th.span2 日付
+              %th 内容
+              %th.price 金額
+          %tbody
+            %tr
+              %td #{date_str(@pre_booking.start_at)}
+              %td #{@pre_booking.listing.title} 
+              %td.price #{@pre_booking.without_tax_price}円
+            %tr
+              %td
+              %th.tax 消費税
+              %td.tax #{@pre_booking.tax}円
+            %tr
+              %td
+              %th.total 合計
+              %td.total #{@pre_booking.price}円
+    - else
+      %h5 請求先情報が登録されていません。
+      %p 請求先情報を登録していただくと請求書が閲覧できます。
+      %p= link_to "登録する", new_user_profiles_path
+

@@ -1,0 +1,12 @@
+= "#{@pre_booking.name} 様"
+\
+\
+いつもSpacee（スペイシー）をご利用頂きありがとうございます。
+誠に申し訳ございませんが、スペース運営者の都合によりご予約を受け付けることができませんでした。
+大変恐縮ですが、他のスペースのご利用を検討頂けますと幸いです。 以下のページを開くと、ご希望日時で空室のあるスペースを閲覧して頂けます
+= search_listings_url(@pre_booking.to_search_params)
+
+= render 'provider_pre_booking_mailer/pre_booking_info', pre_booking: @pre_booking
+= render 'provider_pre_booking_mailer/space_info', listing: @listing, provider: @provider, listing_location: @listing.listing_location
+= render 'provider_pre_booking_mailer/mail_footer'
+

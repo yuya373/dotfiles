@@ -1,0 +1,20 @@
+
+= "#{@provider.name}" + " 様"
+\
+\
+この度は、貸しスペース・会議室検索予約サイトSpacee（スペイシー）を
+ご利用頂きありがとうございます。
+\
+新しい仮予約がありましたので、お知らせいたします。
+\
+以下のリンクをクリックして、24時間以内に仮予約の確定または拒否を行って下さい。その後、予約者様にメールで通知させて頂きます。
+\
+= provider_pre_booking_url(@pre_booking)
+━━━━━
+予約スペース
+━━━━━
+= "#{@listing.title}"
+\
+= render 'provider_pre_booking_mailer/pre_booking_info', pre_booking: @pre_booking, listing: @listing
+\
+= render 'provider_pre_booking_mailer/mail_footer'

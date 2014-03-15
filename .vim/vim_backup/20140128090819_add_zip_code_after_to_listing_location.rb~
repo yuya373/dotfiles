@@ -1,0 +1,7 @@
+class AddZipCodeAfterToListingLocation < ActiveRecord::Migration
+  def change
+    add_column :listing_locations, :zip_code_after, :integer, limit: 4
+    change_column :listing_locations, :zip_code, :integer, limit: 3
+    rename_column :listing_locations, :zip_code, :zip_code_before
+  end
+end

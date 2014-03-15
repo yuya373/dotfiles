@@ -1,0 +1,15 @@
+CommentList = React.createClass {
+  render: ->
+    return `(
+      <div className="commentList">
+        Hello, world! I am a CommentList.
+      </div>
+    )`
+}
+
+CommentForm = React.createClass {
+  render: ->
+    `<div className="commentForm">
+    Hello, world! I am a CommentForm
+    </div>`
+}

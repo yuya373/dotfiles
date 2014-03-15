@@ -1,0 +1,28 @@
+class RoomScheduleRemindScheduler
+  include Sidekiq::Worker
+  include Sidetiq::Schedulable
+
+  recurrence do
+    weekly.day(1).hour_of_day(10).minute_of_hour(0)
+  end
+
+  def perform
+    listing_ids = set_listings
+    ProviderScheduleMailer.send_to_provider(listing_ids).deliver
+  end
+
+  def set_listings
+    lazy_listings = []
+    pruning_at = 1.week.ago(Time.now.beginning_of_day)
+
+    Listing.published.pluck(:id).each do |listing_id|
+      last_updated_at = RoomCalendar.where(listing_id: listing_id).
+        pruning(pruning_at).order(updated_at: :desc).first.try(:updated_at)
+      if last_updated_at.blank? || last_updated_at < pruning_at
+        lazy_listings << listing_id
+      end
+    end
+
+    lazy_listings
+  end
+end

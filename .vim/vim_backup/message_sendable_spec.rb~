@@ -1,0 +1,87 @@
+require 'spec_helper'
+
+describe "MessageSendable" do
+  let(:user){create :user}
+  let(:provider){create(:provider)}
+  let(:provider_user){create(:provider_user, provider: provider)}
+  let(:listing){create(:d_listing, provider: provider)}
+  let(:conversation){create(:conversation)}
+  let(:message){create(:user_message, sender: user, conversation: conversation, created_at: Time.now.days_ago(2))}
+  let(:receipt){create(:provider_user_receipt, receiver: provider_user, message: message)}
+
+
+  describe "#send_message" do
+    subject{ user.send_message(provider_user, "test", "sub", conv_subject: "c_sub") }
+    it "create message" do
+      expect{subject}.to change{ Message.sender_is(user).count }.by(1)
+      msg = Message.sender_is(user).first
+      expect(msg.body).to eq("test")
+      expect(msg.subject).to eq("sub")
+    end
+    it "create conversation" do
+      expect{subject}.to change{ Conversation.sentbox(user).count }.by(1)
+      conv = Conversation.sentbox(user).first
+      expect(conv.subject).to eq('c_sub')
+    end
+    it "create receipt" do
+      expect{subject}.to change{ Receipt.receiver_is(provider_user).count }.by(1)
+    end
+
+    context "通知が必要なとき" do
+      it "notify: true" do
+        user.send_message(provider_user, "test", "sub", notify: true)
+        expect(Sidekiq::Extensions::DelayedMailer).to have(1).jobs
+      end
+    end
+
+    context "association = pre_prebookingのとき" do
+      let(:pre_booking){create( :pre_booking, user: user, listing: listing )}
+      subject{
+        user.send_message(provider_user, "test", "sub", conv_subject: "c_sub", association: pre_booking)
+      }
+      it "create pre_booking_conversation" do
+        expect{subject}.to change{ PreBookingConversation.count }.by(1)
+      end
+    end
+
+    context "association = BookingRequest のとき" do
+      let(:booking_request){ create(:booking_request, listing: listing, user: user) }
+      subject{
+        user.send_message(provider_user, "test", "sub", conv_subject: "c_sub", association: booking_request)
+      }
+      it "create_booking_request_conversation" do
+        expect{subject}.to change{ BookingRequestConversation.count }.by(1)
+      end
+    end
+  end
+
+  describe "#reply" do
+    subject{ user.reply(conversation, "test") }
+
+    it "create message" do
+      receipt
+      expect{ subject }.to change{ Message.sender_is(user).count }.by(1)
+      p msg = Message.sender_is(user).order(created_at: :desc).first
+      expect(msg.body).to eq("test")
+    end
+
+    it "create receipt" do
+      receipt
+      expect{ subject }.to change{ Receipt.receiver_is(provider_user).count }.by(1)
+    end
+  end
+
+  describe "#unread_count" do
+    it "return conversation count which include unread messages" do
+      conversation1 = create(:conversation)
+      message1_1 = create(:user_message, conversation: conversation1, sender: user)
+      receipt1 = create(:provider_user_receipt, receiver: provider_user, is_read: false)
+
+      conversation2 = create(:conversation)
+      message2_1 = create(:user_message, conversation: conversation2, sender: user)
+      receipt2 = create(:provider_user_receipt, receiver: provider_user, is_read: true)
+
+      expect(provider_user.unread_count).to be 1
+    end
+  end
+end

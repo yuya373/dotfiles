@@ -1,0 +1,24 @@
+module Provider::PreBookingHelper
+  def pre_bookings_sort_link(text, opts)
+    link_to(text,
+            params.slice(:order, :sort_by, :page).merge(opts))
+  end
+
+  def reverse_order
+    return 'asc' if params[:order] == 'desc'
+    'desc'
+  end
+
+  def arrow(item)
+    return '' if params[:sort_by] != item.to_s
+    (params[:order] == 'asc' ? "<i class='icon-arrow-up'></i>" : "<i class='icon-arrow-down'></i>" ).html_safe
+  end
+
+  def active_li(to_active)
+    if action_name.to_sym == to_active.to_sym
+      return 'active'
+    else
+      return ' '
+    end
+  end
+end

@@ -1,0 +1,7 @@
+exports.sample1 = function () {
+  console.log(new Date());
+};
+
+exports.sayhello = function () {
+  console-log
+}

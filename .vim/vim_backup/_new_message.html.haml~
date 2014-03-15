@@ -1,0 +1,3 @@
+= form_tag user_conversation_path, style: "display: inline;" do
+  = hidden_field_tag :pre_booking, pre_booking.id
+  = submit_tag 'メッセージを送信', class: "btn btn-small"

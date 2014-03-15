@@ -1,0 +1,20 @@
+class Animal
+  constructor: (@name, @type) ->
+
+  say: (words) ->
+    "#{@name}: #{words}"
+
+
+class Dog extends Animal
+  say: (words) ->
+    super(words)
+
+wise = new Dog('wise', 'love')
+console.log wise
+console.log wise.say('Wow!')
+
+console.log(Dog.prototype)
+console.log(Animal.prototype)
+console.log(Dog.constructor)
+
+

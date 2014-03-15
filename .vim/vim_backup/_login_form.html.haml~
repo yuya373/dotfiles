@@ -1,0 +1,13 @@
+- if flash.present?
+  %p.alert= flash[:alert]
+
+
+= form_tag login_path, class: 'new_session' do
+  = label_tag :username, 'ユーザー名'
+  = text_field_tag 'username'
+
+  = label_tag :password, 'パスワード'
+  = password_field_tag 'password'
+
+  = submit_tag 'login'
+

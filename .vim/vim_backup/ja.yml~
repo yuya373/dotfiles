@@ -1,0 +1,9 @@
+ja:
+  activerecord:
+    models:
+      user_profile: 請求先情報
+    attributes:
+      pre_booking_bill:
+        address: 住所
+        company: 会社名
+        name: 氏名

@@ -1,0 +1,20 @@
+module Messageable
+  extend ActiveSupport::Concern
+
+  included do
+    layout :define_layout
+  end
+
+
+  def show
+    @message = Message.find params[:id]
+  end
+
+  private
+
+  def define_layout
+    klass = self.to_s.slice(/(?<class>\w+):+?/, "class").downcase
+
+    "#{klass}/single_pane_application"
+  end
+end

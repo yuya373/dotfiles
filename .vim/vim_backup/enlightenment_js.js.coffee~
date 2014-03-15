@@ -1,0 +1,11 @@
+class Person
+  constructor: (@living, @age, @gender) ->
+  getGender: ->
+    @gender
+
+cody = new Person(true, 33, 'male')
+console.log cody
+console.log cody.getGender()
+
+myString = new String('foo')
+console.log myString

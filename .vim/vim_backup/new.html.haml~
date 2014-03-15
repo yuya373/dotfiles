@@ -1,0 +1,34 @@
+- set_provider_user_signin_meta_tags()
+
+.jcontainer.top-container.last-container
+  .row
+    .span9
+      .gateway-with-sidebar
+        %legend 掲載者様ログイン
+        = form_for(resource, :as => resource_name, :url => session_path(resource_name), html:{class: "form-horizontal"}) do |f|
+
+          - if flash[:error]
+            .alert.alert-error
+              #{flash[:error]}
+
+          .control-group
+            = f.label :email, class: "control-label"
+            .controls
+              = f.email_field :email, :autofocus => true, class: "span4"
+          .control-group
+            = f.label :password, class: "control-label"
+            .controls
+              = f.password_field :password, class: "span4"
+          - if devise_mapping.rememberable?
+            .control-group
+              .controls
+                %label.checkbox.inline
+                  = f.check_box :remember_me
+                  ログインを記憶する
+          .control-group
+            .controls        
+              = f.submit "ログイン", class: "btn btn-large btn-primary"
+
+    .span3
+      .gateway-sidebar
+        = render "provider_users/shared/links"

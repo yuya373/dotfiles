@@ -1,0 +1,7 @@
+User.all.find_each do |user|
+  if user.phone.present?
+    phone = user.tr('０-９\−\―\－\ー','0-9\-').tr('^0-9','')
+    user.phone = phone
+    user.save
+  end
+end

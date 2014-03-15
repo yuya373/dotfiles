@@ -1,0 +1,30 @@
+# == Schema Information
+#
+# Table name: listing_locations
+#
+#  id         :integer          not null, primary key
+#  listing_id :integer          not null
+#  zip_code   :string(255)
+#  prefecture :string(255)
+#  city       :string(255)
+#  lot_number :string(255)
+#  building   :string(255)
+#  created_at :datetime
+#  updated_at :datetime
+#
+# Indexes
+#
+#  listing_id  (listing_id) UNIQUE
+#
+
+FactoryGirl.define do
+  factory :listing_location do
+    zip_code '123-4567'
+    zip_code_before '123'
+    zip_code_after '4567'
+    prefecture '東京都'
+    city '中央区'
+    lot_number '銀座１丁目１−１'
+    building '101'
+  end
+end

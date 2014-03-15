@@ -1,0 +1,9 @@
+require 'spec_helper'
+
+describe BookingRequestConversation do
+  it do 
+    belong_to :conversation
+  end
+  it do
+  end
+end

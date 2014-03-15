@@ -1,0 +1,16 @@
+
+%h2
+  受信メッセージ
+  %small
+    = "#{@conversations.count}件"
+    未読:
+    = "#{unread_count(current_provider_user)}件"
+- if @conversations.present?
+  %table.table.table-striped.table-bordered.messages
+    %thead
+      %tr
+        %th.date 日時
+        %th 件名
+        %th.people 送信者
+    %tbody
+      = render partial: 'conversation', collection: @conversations

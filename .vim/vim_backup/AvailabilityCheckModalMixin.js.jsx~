@@ -1,0 +1,153 @@
+/** @jsx React.DOM */
+
+define([
+    "react",
+    "components/mixins/DatetimeHelper",
+    "components/mixins/AjaxMixin"
+  ], function(React, DatetimeHelper, AjaxMixin) {
+  return {
+    mixins: [AjaxMixin],
+    renderModalHeader: function() {
+      return (
+        <div className="modal-header">
+          <button className="close" onClick={this.dismiss}>&times;</button>
+          <h4>空室確認</h4>
+        </div>
+      );
+    },
+    renderFooter: function() {
+      if(!_.isBoolean(this.state.available)) { return this.makeDefaultFooter(); }
+      if(this.state.available === true)      { return this.makeAvailableFooter();}
+      return this.makeUnavailableFooter();
+    },
+    makeDefaultFooter: function() {
+      var btnClass = this.getButtonClass(),
+          btnPrimaryClass = btnClass + " btn-primary",
+          btnCancelClass  = btnClass + " btn-danger";
+      return (
+        <div className="modal-footer">
+          <div className="button-control al-c">
+            <a className={btnPrimaryClass} onClick={this.checkStatus}>空室を確認</a>
+            <a className={btnCancelClass}  onClick={this.dismiss}>キャンセル</a>
+          </div>
+        </div>
+      );
+    },
+    makeAvailableFooter: function() {
+      return (
+        <div>
+          <div className="av-result av-result-true">
+            <div className="total-price-group">
+              <span className="yen">合計 &yen;</span>
+              <span className="total-price">{this.state.totalPrice}</span>
+              <span className="suf">でご利用頂けます。</span>
+            </div>
+          </div>
+          <div className="modal-footer">
+            <a className="btn btn-large btn-block btn-success" onClick={this.handleProceed}>仮予約へ進む</a>
+          </div>
+        </div>
+      );
+    },
+    makeUnavailableFooter: function() {
+      var nextUrl = Arg.url(this.props.otherListingsUri, this.state.query);
+      return (
+        <div>
+          <div className="av-result av-result-false">
+            満室です。
+            <div className="mt1">
+              <a href={nextUrl} className="btn btn-primary">この条件で空室のあるスペースを表示</a>
+            </div>
+          </div>
+          {this.makeDefaultFooter()}
+        </div>
+      );
+    },
+    dismiss: function() {
+      if(_.isFunction(this.willDismiss)) { this.willDismiss(); }
+      this.setState({
+        "available":null
+      });
+      this.props.onDismiss();
+    },
+    checkStatus: function() {
+      // console.log("checkStatus");
+      var hours  = $(this.refs.hours.getDOMNode()).val(),
+          party  = $(this.refs.party.getDOMNode()).val(),
+          data   = this.props.selectedSlotData,
+          errors = [];
+
+      // TODO: validation for time
+      if(!party || party === "") {
+        errors.push("人数を入力して下さい。");
+      }
+      if(!hours || hours === "") {
+        errors.push("利用時間を入力して下さい。");
+      }
+      if (hours && (hours * 60) < this.props.minBookingMinutes) {
+        errors.push("利用時間は最小ご利用時間以上を入力して下さい。");
+      }
+      this.setState({"errors":errors});
+
+      if(errors.length > 0) { return; }
+      this.setState({ "loading":true });
+
+      var data = {
+          "date" : data.day.date,
+          "time" : this.getInputTime(),
+          "hours": hours,
+          "party": party
+      };
+
+      this.ajaxGet({
+        "api"               : this.props.apiGetStatus,
+        "data"              : data,
+        "callback"          : this.onCheckStatusSuccess,
+        "errorCallback"     : this.onCheckStatusError,
+        "showSuccessMessage": false
+      });
+    },
+    availableResponse: function(datasource){
+      if(datasource.unknown)
+          return "unknown";
+      return ""+(datasource.available === true);
+    },
+    listingPath: function(listing_id){
+      return '/listings/' + listing_id + '/calendar';
+    },
+    timeToGaVal: function(time){
+      return time.split(":")[0] || time.substr(0, 2);
+    },
+    onCheckStatusSuccess: function(params) {
+      var datasource = params.datasource,
+          available  = datasource.available,
+          // available  = false,
+          totalPrice = (available === true) ? datasource.totalPrice : null;
+      console.log("datasource",datasource);
+
+      ga('send', 'event', 'available', this.availableResponse(datasource),
+         this.timeToGaVal(datasource.query['time']),
+         parseInt(datasource.query['hours']),
+         {'page': this.listingPath(datasource.query['listing_id'])});
+      var state = {
+        "available" : available,
+        "unknown"   : datasource.unknown,
+        "totalPrice": totalPrice,
+        "query"     : datasource.query
+      };
+      mixpanel.track('available', state);
+      state.loading = false;
+      this.setState(state);
+    },
+    onCheckStatusError: function(params) {
+      this.setState({
+        "available" : null,
+        "loading"   : false,
+        "query"     : datasource.query
+      });
+    },
+    handleProceed: function() {
+      this.props.onProceed(this.state.query);
+    }
+  };
+});

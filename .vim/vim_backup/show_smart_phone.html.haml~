@@ -1,0 +1,28 @@
+.container.top-container.mobile-accounts
+  = render "tabs"
+
+  = render "partials/flashes"
+
+  %table.table.table-bordered.table-striped.table-small.account-info
+    %tr
+      %th= User.human_attribute_name("name")
+    %tr
+      %td.span8= @user.name
+    %tr
+      %th= User.human_attribute_name("email")
+    %tr
+      %td= @user.email
+    %tr
+      %th= User.human_attribute_name("phone")
+    %tr
+      %td= @user.phone
+  .facebook-auth{style: "margin-bottom: 10px;"}
+    - if current_user.omni_users.blank?
+      = link_to "Facebookを登録", user_omniauth_authorize_path(:facebook)
+    - elsif @user.encrypted_password.present?
+      = form_tag users_omni_user_path(@user.omni_users.first), method: :delete do
+        = submit_tag "Facebookの登録解除", class: 'btn'
+
+
+.container.last-container
+  = link_to "編集", edit_user_registration_path, class: "btn btn-info btn-large btn-block"

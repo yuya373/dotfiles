@@ -1,0 +1,67 @@
+class Provider::RoomCalendarsController < ProviderApplicationController
+  include ProviderScheduler
+  include ProvidersListing
+  before_action :set_listing, except: [:scheduler]
+  layout "provider/after_sign_in"
+
+  rescue_from ActiveRecord::RecordInvalid do |e|
+    render_scheduler_error_room_calendar(e)
+  end
+
+  def scheduler
+    @listing = current_provider.listings.price_plan_eager_load.
+      find params[:listing_id]
+    @app_data = {}
+    @app_props = scheduler_app_props(@listing)
+  end
+
+  def price_plan
+    day = Date.parse params[:date]
+    price_plan = @listing.price_plans.find params[:planId]
+    RoomCalendar.update_the_day(@listing, day, price_plan_id: price_plan.id)
+    render json: {
+      result: "success",
+      messages: [],
+      planId: price_plan.id
+    }
+  end
+
+  def index
+    @room_calendars = RoomCalendar.one_week(@listing, start_at_date)
+    @room_schedules = RoomCalendar.room_schedules(@listing,
+                                                  @room_calendars.first,
+                                                  @room_calendars.last)
+    @bookings = @listing.pre_bookings.active.
+      start_at_gteq(@room_calendars.first.open_at_dt)
+  end
+
+  def show
+  end
+
+  def new
+    @room_calendar = RoomCalendar.new
+  end
+
+  def business_hour
+    param = room_calendar_params
+    day = params_to_date(param)
+    @room_calendar = RoomCalendar.update_the_day(@listing, day, param)
+    render json: {
+      result: "success",
+      messages: ["営業時間を更新しました。"],
+      day: {
+        date: to_scheduler_date(@room_calendar.day),
+        isOpen: @room_calendar.is_open?,
+        opensAt: strf_time(@room_calendar.open_at),
+        closesAt: strf_time(@room_calendar.close_at),
+      }
+    }
+    #render json: @room_calendar.errors, status: :unprocessable_entity
+  end
+
+  private
+
+  def room_calendar_params
+    from_scheduler_room_calendar(params)
+  end
+end

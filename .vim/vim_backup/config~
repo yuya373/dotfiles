@@ -1,0 +1,23 @@
+StrictHostKeyChecking no
+Host github.com
+  HostName github.com
+  IdentityFile ~/.ssh/id_rsa
+  User yuya373
+  StrictHostKeyChecking no
+Host bitbucket.org
+  HostName bitbucket.org
+  IdentityFile ~/.ssh/id_rsa
+  User yuya373
+  StrictHostKeyChecking no
+Host ubuntu
+  HostName 127.0.0.1
+  User vagrant
+  Port 2222
+  UserKnownHostsFile /dev/null
+  StrictHostKeyChecking no
+  PasswordAuthentication no
+  IdentityFile /Users/yuya373/.vagrant.d/insecure_private_key
+  IdentitiesOnly yes
+  LogLevel FATAL
+  ForwardAgent yes
+

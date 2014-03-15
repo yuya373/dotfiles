@@ -1,0 +1,7 @@
+= render 'space_info', listing: listing, provider: provider
+%tr
+  %td.five.sub-columns 住所
+  %td.seven.sub-columns= listing.listing_location.full_address
+%tr
+  %td.five.sub-columns 地図
+  %td.seven.sub-columns= link_to 'google mapへのリンク', "https://maps.google.com/maps?q=#{listing.latitude},#{listing.longitude}"

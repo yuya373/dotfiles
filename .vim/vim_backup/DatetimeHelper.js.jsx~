@@ -1,0 +1,150 @@
+/** @jsx React.DOM */
+
+define([
+    "react"
+  ], function(React) {
+  return {
+    wdayShortLabels: ["日", "月", "火", "水", "木", "金", "土"],
+    wdayToShortLabel: function(index) {
+      return this.wdayShortLabels[index];
+    },
+    shouldSplitSlot: function(date1, date2) {
+      return( (date1 - date2)/1000/60 > 15 );
+    },
+    hoursToMinutes: function(hours) {
+      return hours * 60;
+    },
+    intToTwoChars: function(num) {
+      return (num > 9) ? num.toString() : "0" + num.toString();
+    },
+    zenToHan: function(zen) {
+      zenreplace(/[０-９]/g, function(match){ zen.value += String.fromCharCode(match.charCodeAt(0) - 0xFEE0)  })
+    },
+    labelToHour: function(label) {
+      return label.split(":")[0];
+    },
+    labelToMin: function(label) {
+      return label.split(":")[1];
+    },
+    timeLabelToInt: function(label) {
+      return parseInt( label.replace(":", "") , 10);
+    },
+    timeLabelToFourChars: function(label) {
+      var arr = label.split(":"),
+          h = this.intToTwoChars(parseInt(arr[0]), 10),
+          m = this.intToTwoChars(parseInt(arr[1]), 10);
+
+      return h + m;
+    },
+    timeLabelToMinutes: function(label) {
+      var arr = label.split(":");
+      return this.hoursToMinutes(parseInt(arr[0]) ) + parseInt(arr[1]);
+    },
+    fourDigitToTimeStr: function(str) {
+      return str[0] + str[1] + ":" + str[2] + str[3];
+    },
+    datetimeToTimeStr: function(datetime) {
+      return this.intToTwoChars(datetime.getHours()) + ":" + this.intToTwoChars(datetime.getMinutes());
+    },
+    datetimeToFourChars: function(datetime) {
+      return this.intToTwoChars(datetime.getHours()) + this.intToTwoChars(datetime.getMinutes());
+    },
+    dateIntToYmdInt: function(datetime) {
+      // console.log("getmonth", datetime.getMonth());
+      return parseInt(
+        (datetime.getFullYear().toString() + this.intToTwoChars(datetime.getMonth() + 1) + this.intToTwoChars(datetime.getDate())),
+        10
+      );
+    },
+    dateIntToLabel: function(dateInt) {  // e.g.20131007
+      var s = dateInt.toString();
+      if(!_.isString(s) || s.length != 8) { console.error("invalid format: ", s); return; }
+      // return parseInt(s.substring(4, 6)) + "/" + parseInt(s.substring(6, 8));
+      return parseInt(s.substring(4, 6), 10) + "/" + parseInt(s.substring(6, 8), 10);
+    },
+    addMinutes: function(date, minutes) {
+      return new Date(date.getTime() + minutes*60000);
+    },
+    dateIntToFullLabel: function(dateInt, omitYear) {
+      var o = this.dateIntToYmdKeys(dateInt),
+          yearString = "";
+      if(!omitYear) { yearString = o.y + "年"; }
+      return yearString + o.m + "月" + o.d + "日";
+    },
+    dateIntToDatetime: function(dateInt) {
+      var o = this.dateIntToYmdKeys(dateInt);
+      // console.log("o", o);
+      return new Date(o.y, (parseInt(o.m, 10) - 1), o.d, 0, 0, 0, 0);
+    },
+    dateIntToYmdKeys: function(dateInt) {
+      var dateStr = dateInt.toString();
+      return {
+        "y": dateStr.substring(0, 4),
+        "m": dateStr.substring(4, 6),
+        "d": dateStr.substring(6)
+      };
+    },
+    timeCharsToKeys: function(timeStr) {
+      return {
+        "h": timeStr.substring(0, 2),
+        "m": timeStr.substring(2)
+      }
+    },
+    timeLabelToDatetime: function(timeLabel) {
+      var str = this.timeLabelToFourChars(timeLabel),
+          o   = this.timeCharsToKeys(str);
+      return new Date(2013, 1, 1, o.h, o.m, 0, 0);
+    },
+    timeTableKeysInRange: function(startsLabel, endsLabel) {
+      var startsDatetime  = this.timeLabelToDatetime(startsLabel),
+          endsDatetime    = this.timeLabelToDatetime(endsLabel),
+          currentDatetime = this.timeLabelToDatetime(startsLabel),
+          timeTableKeys   = [];
+      while(currentDatetime < endsDatetime) {
+        timeTableKeys.push( this.datetimeToFourChars(currentDatetime) );
+        currentDatetime = this.addMinutes(currentDatetime, 15);
+      }
+      return timeTableKeys;
+    },
+    timeTableKeys: function() {  // returns like [0000, 0015, 0030, 0800, 0815, 0830...]
+      var timeTableKeys = [],
+          t = this;
+      _.range(24).map(function(hour) {
+        [0,15,30,45].map(function(min) {
+          timeTableKeys.push( (t.intToTwoChars(hour) + t.intToTwoChars(min) ) );
+        });
+      });
+      // if(addLastTime === true) { timeTableKeys.push("2400"); }
+      return timeTableKeys;
+    },
+    convertTimeLabelToMeridian: function(timeLabel) {
+      var str = this.timeLabelToFourChars(timeLabel),
+          o   = this.timeCharsToKeys(str);
+      if(o.h > 11) {
+        o.h = this.intToTwoChars( parseInt(o.h, 10) - 12 );
+        return o.h + ":" + o.m + " PM";
+      }
+      return timeLabel + " AM";
+    },
+    convertTimeLabelFromMeridian: function(meridianLabel) {
+      var timeLabel = meridianLabel.split(" ")[0],
+          meridian  = meridianLabel.split(" ")[1],
+          str       = this.timeLabelToFourChars(timeLabel),
+          o         = this.timeCharsToKeys(str);
+      if(meridian == "PM") {
+        o.h = ( parseInt(o.h, 10) + 12 ).toString();
+      }
+      return o.h + ":" + o.m;
+    },
+    getDayIndexFromDays: function(days, date) {
+      for(var i=0;i<days.length;i++) {
+        if(days[i].date == date) {
+          return i;
+          break;
+        }
+      }
+      return -1;
+    }
+  };
+
+});

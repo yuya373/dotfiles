@@ -1,0 +1,14 @@
+- end_at = @booking_request.listing.add_cleaning_minutes(@booking_request.end_at)
+#{@booking_request.user.name} 様
+\
+いつもSpacee（スペイシー）をご利用頂きありがとうございます。
+\
+「#{@listing.title}」への以下の日時における空室状況問い合わせが完了しました。
+スペース掲載者からの返答しばらくお待ちください。
+\
+#{date_str(@booking_request.start_at)} #{time_str(@booking_request.start_at)} 〜 #{time_str(end_at)}
+\
+\
+どうぞ、今後ともSpacee（スペイシー）をよろしくお願い致します。
+\
+= render 'provider_pre_booking_mailer/mail_footer'

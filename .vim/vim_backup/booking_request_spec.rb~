@@ -1,0 +1,38 @@
+# == Schema Information
+#
+# Table name: booking_requests
+#
+#  id         :integer          not null, primary key
+#  listing_id :integer          not null
+#  user_id    :integer          not null
+#  party      :integer          not null
+#  minutes    :integer          not null
+#  start_at   :datetime         not null
+#  status     :integer          default(0), not null
+#  created_at :datetime
+#  updated_at :datetime
+#
+# Indexes
+#
+#  listing_id  (listing_id)
+#  user_id     (user_id)
+#
+
+require 'spec_helper'
+
+describe BookingRequest do
+  it do
+    should have_one :booking_request_conversation
+  end
+  it do
+  end
+  let(:listing){ create :d_listing }
+  describe ".acceptable" do
+    subject {
+      build :booking_request, start_at: Time.now
+    }
+    it "return false when empty listing" do
+      subject.acceptable?(listing).should be_false
+    end
+  end
+end

@@ -1,0 +1,5 @@
+class AddLongitudeLatitudeToListingLocation < ActiveRecord::Migration
+  def change
+    add_column :longitude
+  end
+end

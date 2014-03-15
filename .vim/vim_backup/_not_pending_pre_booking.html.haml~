@@ -1,0 +1,28 @@
+%tr
+  %td= pre_booking.try(:id_to_num) || pre_booking.id
+
+  - if pre_booking.is_a?(PreBooking)
+    %td= link_to pre_booking.listing.title.truncate(20, separator: /\s/), provider_listing_path(pre_booking.listing_id)
+  - else
+    %td= link_to pre_booking.listing.title.truncate(25, separator: /\s/), provider_alien_booking_path(pre_booking)
+
+  %td= "#{datetime_str(pre_booking.start_at)}〜#{time_str(pre_booking.end_at)}"
+  %td= "#{pre_booking.hours} 時間"
+  %td
+    - if pre_booking.try(:party)
+      #{pre_booking.party} 人
+  %td= pre_booking.name
+  %td= pre_booking.price
+  %td
+    - if pre_booking.is_a?(PreBooking)
+      %p
+        = link_to "詳細", provider_pre_booking_path(pre_booking)
+      %p
+        = link_to "メッセージを送信", provider_pre_booking_messages_path(pre_booking), method: :patch
+      %p
+        - if pre_booking.try(:pending?)
+          = render 'provider/pre_bookings/approve_button', pre_booking: pre_booking
+          = render 'provider/pre_bookings/decline_button', pre_booking: pre_booking
+    - else
+      %p
+        = link_to "詳細", provider_alien_booking_path(pre_booking)

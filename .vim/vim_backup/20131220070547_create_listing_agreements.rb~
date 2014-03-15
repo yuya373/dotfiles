@@ -1,0 +1,10 @@
+class CreateListingAgreements < ActiveRecord::Migration
+  def change
+    create_table :listing_agreements do |t|
+      t.belongs_to :listing, null: false
+      t.text :content
+      t.index :listing_id, unique: true
+      t.timestamps
+    end
+  end
+end

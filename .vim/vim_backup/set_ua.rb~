@@ -1,0 +1,20 @@
+module SetUa
+  def set_provider_ua
+
+    provider_user = current_provider_user
+    ua = request.user_agent
+    provider_user.user_agent = ua
+    provider_user.save
+  end
+
+  def set_user_ua
+    user = current_user
+    ua = request.user_agent
+    if mobile_request?
+      user.mobile_user_agent = ua
+    else
+      user.pc_user_agent = ua
+    end
+    user.save
+  end
+end

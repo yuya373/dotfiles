@@ -1,0 +1,6 @@
+git clone git@github.com:sstephenson/rbenv.git ~/.rbenv
+chmod -R 777 ~/.rbenv/plugins
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
+echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
+cd ~/.rbenv/plugins/ruby-build"
+git clone git@github.com:sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build

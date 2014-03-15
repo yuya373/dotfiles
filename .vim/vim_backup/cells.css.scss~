@@ -1,0 +1,52 @@
+
+.list-group {
+  border-top: 1px solid #e6e6e6;
+}
+
+/*
+  Listing Cell
+*/
+$_size: 20px;
+$_lh: ceil($_size * 1.4);
+.listing-cell {
+  text-shadow: 0 1px 0 rgba(white, 0.7);
+
+  .cell-item-caption {
+    padding-bottom: 5px;
+  }
+
+  .item-footer {
+    display: -webkit-box;
+    -webkit-box-align: center;
+    position: relative;
+  }
+
+  .item-capacity {
+    -webkit-box-flex: 1;
+    display: block;
+    height: $_lh;
+
+    .capacity-tag {
+      margin-top: 6px;
+      padding: 3px 4px;
+      display: inline-block;
+      @include border-radius(2px);
+      background: #c6c6c6;
+      color: #fff;
+      font-size: $fontSizeSmall - 1px;
+      line-height: 1;
+      text-shadow: 0 -1px 0 rgba(black, 0.2);
+    }
+  }
+
+  .item-price {
+    color: $pink;
+    font-size: $_size;
+    font-weight: bold;
+    line-height: $_lh;
+    display: inline-block;
+    vertical-align: middle;
+
+  }
+}
+

@@ -1,0 +1,10 @@
+class CreateBookingRequestConversations < ActiveRecord::Migration
+  def change
+    create_table :booking_request_conversations do |t|
+      t.belongs_to :booking_request, null: false
+      t.belongs_to :conversation, null: false
+
+      t.timestamps
+    end
+  end
+end

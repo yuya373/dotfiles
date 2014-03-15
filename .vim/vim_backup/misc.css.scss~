@@ -1,0 +1,25 @@
+.about-table {
+  font-size: $fontSizeSmall;
+  th {
+    background: #efefef;
+    font-weight: normal;
+    color: $gray;
+  }
+}
+
+.long-passage {
+  h4 {
+    font-size: $baseFontSize;
+    margin: 5px;
+  }
+
+  p {
+    color: $gray;
+    font-size: $fontSizeSmall;
+    padding-bottom: 15px;
+  }
+}
+td.td1{
+  width: 100px;
+
+}

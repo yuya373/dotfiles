@@ -1,0 +1,76 @@
+class Admin::NeighborhoodsController < AdminApplicationController
+  before_action :set_neighborhood, only: [:destroy, :show]
+
+  def index
+    @neighborhoods = Neighborhood.all
+    @neighborhood = Neighborhood.new
+class Admin::NeighborhoodsController < AdminApplicationController
+  before_action :set_neighborhood, only: [:destroy, :show]
+
+  def index
+    @neighborhoods = Neighborhood.all
+    @neighborhood = Neighborhood.new
+  end
+
+  def show
+    @stations = @neighborhood.stations
+    @station = NeighborhoodStation.new
+  end
+
+  def create
+    @neighborhood = Neighborhood.new(neighborhood_params)
+    if @neighborhood.save
+      redirect_to admin_neighborhood_path(@neighborhood)
+    else
+      @neighborhoods = Neighborhood.all
+      render :index
+    end
+  end
+
+  def destroy
+    @neighborhood.destroy
+    redirect_to admin_neighborhoods_path
+  end
+
+  private
+
+  def set_neighborhood
+    @neighborhood = Neighborhood.find params[:id]
+  end
+
+  def neighborhood_params
+    params[:neighborhood].permit(:name, :key)
+  end
+end
+  end
+
+  def show
+    @stations = @neighborhood.stations
+    @station = NeighborhoodStation.new
+  end
+
+  def create
+    @neighborhood = Neighborhood.new(neighborhood_params)
+    if @neighborhood.save
+      redirect_to admin_neighborhood_path(@neighborhood)
+    else
+      @neighborhoods = Neighborhood.all
+      render :index
+    end
+  end
+
+  def destroy
+    @neighborhood.destroy
+    redirect_to admin_neighborhoods_path
+  end
+
+  private
+
+  def set_neighborhood
+    @neighborhood = Neighborhood.find params[:id]
+  end
+
+  def neighborhood_params
+    params[:neighborhood].permit(:name, :key)
+  end
+end

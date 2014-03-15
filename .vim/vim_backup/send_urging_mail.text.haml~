@@ -1,0 +1,9 @@
+= "#{@provider.name}様"
+
+
+以下の仮予約が未対応です。 仮予約のステータスを変更して下さい。
+
+= render 'space_info', listing: @listing, provider: @provider, listing_location: @listing.listing_location
+= render 'pre_booking_mailer/pre_booking_info', pre_booking: @pre_booking
+
+= render 'mail_footer'

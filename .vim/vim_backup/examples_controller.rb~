@@ -1,0 +1,4 @@
+class ExamplesController < ApplicationController
+  def castro
+  end
+end

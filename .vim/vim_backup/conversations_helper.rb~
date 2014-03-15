@@ -1,0 +1,9 @@
+module Provider::ConversationsHelper
+  def active?(action)
+    'active' if action == action_name
+  end
+
+  def conv_status
+
+  end
+end

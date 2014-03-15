@@ -1,0 +1,87 @@
+/** @jsx React.DOM */
+
+define([
+    "react",
+    "components/mixins/AjaxMixin",
+    "components/mixins/SchedulerAjaxMixin",
+    "components/mixins/SlotMixin",
+    "components/pc/scheduler/BusinessHour",
+    "components/pc/scheduler/PricePlanLabel",
+    "components/mixins/DatetimeHelper",
+    "components/pc/scheduler/DaysHeader"
+    ], function(React, SchedulerAjaxMixin, AjaxMixin, SlotMixin, BusinessHour, PricePlanLabel, DatetimeHelper, DaysHeader) {
+  var AgendaHeader = React.createClass({
+    mixins: [AjaxMixin, SchedulerAjaxMixin],
+    getInitialState: function() {
+      return {"days":this.props.days};
+    },
+    updateDays: function(days) {
+      this.setState({"days":days});
+    },
+    renderPricePlan: function(day, index) {
+      return <PricePlanLabel
+        index     ={index}
+        day       ={day}
+        pricePlans={this.props.pricePlans}
+        onVeilUpdate={this.props.onVeilUpdate}
+        onClick   ={this.handlePricePlanClick} />;
+    },
+    renderBusinessHour: function(day, index) {
+      return <BusinessHour
+        index   ={index}
+        day     ={day}
+        onVeilUpdate={this.props.onVeilUpdate}
+        onUpdate={this.updateBusinessHour} />;
+    },
+    render: function() {
+      return (
+        <thead className="agenda-thead">
+          <DaysHeader ref="daysHeader"days={ this.state.days } />
+          <tr key="thead2">
+            <th className="cell-margin th-action-label">営業時間</th>
+            {this.state.days.map(this.renderBusinessHour)}
+          </tr>
+          <tr key="thead3">
+            <th className="cell-margin th-action-label">料金プラン</th>
+            {this.state.days.map(this.renderPricePlan)}
+          </tr>
+        </thead>
+      );
+    },
+    /*
+     * For Business Hour
+     */
+    updateBusinessHour: function(data) {
+      this.ajaxPost({
+        "api"               : this.props.apiUpdateBusinessHour,
+        "data"              : _.extend(data,
+                                       {"listingId":this.props.listingId,
+                                       "_method":"patch"}),
+        "callback"          : this.onUpdateBusinessHour,
+        "messageCallback"   : this.props.showMessage,
+        "showSuccessMessage": true
+      });
+    },
+    onUpdateBusinessHour: function(params) {
+      var obj = this.onSchedulerAjaxPost(params);
+      this.props.onBusinessHourUpdate(obj.data, obj.date);
+    },
+    businessHourDidUpdate: function(newDay, dayIndex) {
+      var days = _.uniq(this.state.days);
+      days[dayIndex] = _.extend(days[dayIndex], newDay);
+      this.setState({"days":days});
+    },
+    weekDidChange: function(days) {
+      // console.log("AgendaHeader weekDidChange");
+      this.setState({"days":days});
+    },
+    /*
+     * For Price Plan Label
+     */
+    handlePricePlanClick: function(params) {
+      this.props.onPricePlanClick(params);
+    }
+  });
+
+  return AgendaHeader;
+});

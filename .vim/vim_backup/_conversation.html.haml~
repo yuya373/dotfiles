@@ -1,0 +1,12 @@
+- if action_name == 'sent'
+  - conv = conversation.last_sender_is(current_user)
+- else
+  - conv = conversation
+%tr
+  %td= datetime_str(conv.created_at)
+  %td=link_to conversation.subject, user_conversation_path(conversation)
+  %td.people
+    - if action_name == 'sent'
+      = conv.receiver.name
+    -else
+      = conversation.originator.name

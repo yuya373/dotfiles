@@ -1,0 +1,20 @@
+module UserMessageable
+  extend ActiveSupport::Concern
+
+  included do
+    has_many :messages, as: :sender
+    has_many :receipts, as: :receiver
+  end
+
+  def send_msg(receiver, body, subject, association=nil, attachment=nil)
+    conv = Conversation.new(subject: subject)
+    message = conv.messages.build(body: body, sender: self)
+    receipt = message.build_receipt(receiver: receiver)
+    conv.save
+    message.deliver
+  end
+
+  def reply
+
+  end
+end

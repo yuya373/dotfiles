@@ -1,0 +1,127 @@
+/** @jsx React.DOM */
+
+define([
+    "react",
+    "components/mixins/DatetimeHelper"
+  ], function(React, DatetimeHelper) {
+  var SchedulerPage = React.createClass({
+    getInitialState: function() {
+      return {
+      "today"  : new Date()
+      };
+    },
+    render: function() {
+      if(!this.props.days) { return <div></div>; }
+      var pickerStyle = {
+           "display": "none"
+          },
+          prevClass = "btn",
+          canRewind = this.canRewind();
+      if(canRewind === false) {
+        prevClass += " disabled";
+      }
+      return (
+        <div className="scheduler-pager">
+          <div className="btn-group">
+            <a ref="prev" className={prevClass} onClick={this.rewindWeek}><i className="icon-chevron-left"></i></a>
+            <a ref="next" className="btn" onClick={this.forwardWeek}><i className="icon-chevron-right"></i></a>
+          </div>
+          <div className="period-label">
+            {this.makeDatespanLabel()}
+          </div>
+          <div className="period-selector-group">
+            <a ref="openPicker" className="picker-button" onClick={this.openPicker}>週を選択</a>
+            <input type="hidden" ref="picker" style={pickerStyle} />
+          </div>
+          {this.makeLabelGuideForViewer()}
+          {this.makeGuideForProvider()}
+        </div>
+      );
+    },
+    canRewind: function() {
+      var firstDay      = _.first(this.props.days),
+          firstDatetime = DatetimeHelper.dateIntToDatetime(firstDay.date);
+      return (firstDatetime > this.state.today);
+    },
+    makeLabelGuideForViewer: function() {
+      if(this.props.forViewer !== true) {return;}
+      return (
+        <div className="scheduler-slot-guide-group">
+          <div className="slot-guide">
+            <span className="guide-rect rect-unavailable"></span>
+            <span className="guide-text">満室</span>
+          </div>
+          <div className="slot-guide">
+            <span className="guide-rect rect-available"></span>
+            <span className="guide-text">予約可</span>
+          </div>
+        </div>
+      );
+    },
+    makeGuideForProvider: function() {
+      if(this.props.forProvider !== true){ return; }
+      return (
+        <div className="scheduler-slot-guide-group">
+          <div className="slot-guide">
+            <a href="/provider/help/calendar_overview" className="guide-link-text" target='_blank'>使い方ガイド &raquo;</a>
+          </div>
+        </div>
+      );
+    },
+    makeDatespanLabel: function() {
+      var firstDay   = _.first(this.props.days),
+          lastDay    = _.last(this.props.days),
+          omitYear   = (firstDay.date.toString().substring(0, 4) == lastDay.date.toString().substring(0, 4)),
+          firstLabel = DatetimeHelper.dateIntToFullLabel(firstDay.date),
+          lastLabel  = DatetimeHelper.dateIntToFullLabel(lastDay.date, omitYear);
+      return firstLabel + "〜" + lastLabel;
+    },
+    forwardWeek: function() {
+      var date          = DatetimeHelper.dateIntToDatetime(_.last(this.props.days).date),
+          nextFirstDate = date.addDays(1);
+      // console.log("date", _.last(this.props.days).date);
+      // console.log("datetime", DatetimeHelper.dateIntToDatetime( _.last(this.props.days).date));
+      // console.log("nextFirstDate", nextFirstDate);
+      this.triggerWeekChange(nextFirstDate);
+    },
+    rewindWeek: function() {
+      if( $(this.refs.prev.getDOMNode()).hasClass("disabled") ) {
+        return;
+      }
+      var date          = DatetimeHelper.dateIntToDatetime(_.first(this.props.days).date),
+          nextFirstDate = date.deductDays(7);
+      this.triggerWeekChange(nextFirstDate);
+    },
+    triggerWeekChange: function(startsAt, endsAt) {
+      console.log("DatetimeHelper.dateIntToYmdInt(startsAt)" ,DatetimeHelper.dateIntToYmdInt(startsAt) );
+      this.props.onWeekChange({
+        "startsAt": DatetimeHelper.dateIntToYmdInt(startsAt)
+      });
+    },
+    openPicker: function() {
+      if(!this.picker) {
+        _.bindAll(this, "onPickerClose");
+        this.picker = $(this.refs.picker.getDOMNode()).pickadate({
+          "format"    : "yyyymmdd",
+          "onClose"   : this.onPickerClose,
+          "disable"   : [2,3,4,5,6,7],
+          "today"     : "",
+          "clear"     : "",
+          "min"       : this.state.today
+        });
+      }
+      $(this.refs.picker.getDOMNode()).trigger("click");
+    },
+    onPickerClose: function() {
+      var value = $(this.refs.picker.getDOMNode()).val();
+      if(value && value.length > 0 && parseInt(this.props.days[0].date) != parseInt(value) ) {
+        this.props.onWeekChange({
+          "startsAt": value
+        });
+      }
+    },
+  });
+
+  return SchedulerPage;
+
+});

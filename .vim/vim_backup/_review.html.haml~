@@ -1,0 +1,4 @@
+%tr
+%td.review-day= date_str(review.updated_at)
+%td.review-point= review_stars( review.point )
+%td.review-comment= review.comment

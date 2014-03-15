@@ -1,0 +1,61 @@
+define([
+  "components/pc/Thing",
+  "components/common/test/TestComponent",
+  "components/common/test/SampleComponent",
+  "components/common/test/TestReactComponent",
+  "components/common/test/SampleReactComponent",
+  "components/provider/ListingForm",
+  "components/provider/ListingCollectionForm",
+  "components/pc/listingSearch/LandingLsForm",
+  "components/pc/listingSearch/SidebarLsForm",
+  "components/pc/listingSearch/HeaderLsForm",
+  "components/pc/listingSearch/StatusLsForm",
+  "components/pc/listingSearch/ListingStatusApp",
+  "components/pc/listingSearch/ListingAvailabilityApp",
+  "components/pc/scheduleViewer/ScheduleViewerApp",
+  "components/common/uis/EventButton",
+  "scripts/fb"
+  ],
+  function(
+    Thing,
+    TestComponent,
+    SampleComponent,
+    TestReactComponent,
+    SampleReactComponent,
+    ListingForm,
+    ListingCollectionForm,
+    LandingLsForm,
+    SidebarLsForm,
+    HeaderLsForm,
+    StatusLsForm,
+    ListingStatusApp,
+    ListingAvailabilityApp,
+    ScheduleViewerApp,
+    EventButton,
+    fb
+  ) {
+  return {
+    "components": {
+      Thing                   :Thing,
+      TestComponent           :TestComponent,
+      SampleComponent         :SampleComponent,
+      TestReactComponent      :TestReactComponent,
+      SampleReactComponent    :SampleReactComponent,
+      ListingForm             :ListingForm,
+      ListingCollectionForm   :ListingCollectionForm,
+      LandingLsForm           :LandingLsForm,
+      SidebarLsForm           :SidebarLsForm,
+      HeaderLsForm            :HeaderLsForm,
+      StatusLsForm            :StatusLsForm,
+      ListingStatusApp        :ListingStatusApp,
+      ListingAvailabilityApp  :ListingAvailabilityApp,
+      ScheduleViewerApp       :ScheduleViewerApp,
+      EventButton             :EventButton
+    },
+    "scripts": {
+      fb: fb
+    }
+  };
+});
+
+

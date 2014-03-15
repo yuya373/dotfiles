@@ -1,0 +1,100 @@
+class ProviderUsers::RegistrationsController < Devise::RegistrationsController
+  prepend_before_filter :authenticate_scope!, only: [:edit, :edit_password, :update, :destroy]
+  layout "provider/before_sign_in"
+  include SetUa
+
+  after_action :set_provider_ua, only: [:create]
+
+  def edit_password
+  end
+
+  def update
+    self.resource = resource_class.to_adapter.get!(send(:"current_#{resource_name}").to_key)
+    prev_unconfirmed_email = resource.unconfirmed_email if resource.respond_to?(:unconfirmed_email)
+
+    if params[:update_type] == "edit_password"
+      if params[:provider_user][:password].blank?
+        flash[:error] = "新しいパスワードを入力してください"
+        clean_up_passwords resource
+        render :edit_password and return
+      end
+
+      if update_password_resource(resource, account_update_password_params)
+        if is_navigational_format?
+          flash_key = update_needs_confirmation?(resource, prev_unconfirmed_email) ?
+            :update_needs_confirmation : :updated
+          set_flash_message :notice, flash_key
+        end
+        sign_in resource_name, resource, bypass: true
+        flash[:notice] = "パスワードを変更しました"
+        respond_with resource, location: after_update_password_path_for(resource)
+      else
+        clean_up_passwords resource
+        render :edit_password
+      end
+    else
+      if update_resource(resource, account_update_params)
+        if is_navigational_format?
+          flash_key = update_needs_confirmation?(resource, prev_unconfirmed_email) ?
+            :update_needs_confirmation : :updated
+          set_flash_message :notice, flash_key
+        end
+        sign_in resource_name, resource, bypass: true
+        flash[:notice] = "情報を変更しました"
+        respond_with resource, location: after_update_path_for(resource)
+      else
+        clean_up_passwords resource
+        render :edit
+      end
+    end
+  end
+
+
+  protected
+
+  def build_resource(hash=nil)
+    self.resource = resource_class.new_with_session(hash || {}, session)
+  end
+
+  def sign_up_params
+    params.require(:provider_user).permit(
+      :email, :password, :name, :position, :department, :agreement,
+    )
+  end
+
+  def account_update_params
+    params.require(:provider_user).permit(
+      :email, :name, :position, :department
+    )
+  end
+
+  def account_update_password_params
+    params.require(:provider_user).permit(
+      :current_password, :password, :password_confirmation
+    )
+  end
+
+  def after_sign_up_path_for(resource)
+    provider_root_path
+  end
+
+  def after_inactive_sign_up_path_for(resource)
+    provider_users_after_inactive_sign_up_path
+  end
+
+  def after_update_path_for(resource)
+    edit_provider_user_registration_path
+  end
+
+  def after_update_password_path_for(resource)
+    password_provider_provider_user_path
+  end
+
+  def update_resource(resource, params)
+    resource.update_without_password(params)
+  end
+
+  def update_password_resource(resource, params)
+    resource.update_with_password(params)
+  end
+end

@@ -1,0 +1,38 @@
+class RewardManager
+  attr_accessor :customer
+
+  def initialize(customer)
+    self.customer = customer
+  end
+
+  def grant_login_points
+    if customer.rewards.present?
+      reject_double_points
+    else
+      plus_point
+    end
+  end
+
+  def reject_double_points
+    Time.zone = 'Tokyo'
+    now = Time.now
+    last_sign_in = customer.rewards.order(created_at: :desc).first.created_at
+    if ( now.beginning_of_day .. now.beginning_of_day + 5.hours ).cover?(last_sign_in) && (now.beginning_of_day + 5.hours <= now)
+      plus_point
+    end
+  end
+
+  def plus_point
+    ActiveRecord::Base.transaction do
+      if check_saturday
+        customer.rewards.create(points: 3)
+      else
+        customer.rewards.create(points: 1)
+      end
+  end
+
+  def check_saturday
+    Time.zone = 'Tokyo'
+    return true if Time.now.saturday?
+  end
+end

@@ -1,0 +1,29 @@
+
+- if controller_name != 'sessions'
+  = render "partials/device_box", title: "登録済みの方", link: new_session_path(resource_name), button_title: "こちらからログイン頂けます。", button_class: ""
+
+
+- if devise_mapping.registerable? && controller_name != 'registrations'
+  = render "partials/device_box", title: "未登録の方", link: new_registration_path(resource_name), button_title: "こちらから登録頂けます。", button_class: ""
+
+
+- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations'
+  = render "partials/device_box", title: "パスワードをお忘れの方", link: new_password_path(resource_name), button_title: "こちらから再設定して頂けます。", button_class: ""
+
+
+- if devise_mapping.confirmable? && controller_name != 'confirmations' 
+  = render "partials/device_box", title: "登録案内メールが届かない方", link: new_confirmation_path(resource_name), button_title: "案内メールを再送して下さい。", button_class: ""
+
+
+-# - if controller_name != 'sessions'
+= render "partials/device_box", title: "スペースを掲載したい方", link:new_provider_user_session_path, button_title: "掲載者ログイン", button_class: ""
+
+
+- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks'
+  = link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name)
+
+
+- if devise_mapping.omniauthable?
+  - resource_class.omniauth_providers.each do |provider|
+    = link_to "Sign in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider)
+

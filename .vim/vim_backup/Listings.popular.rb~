@@ -1,0 +1,164 @@
+#!/usr/bin/env ruby
+
+require "csv"
+
+ga = "lib/scripts/ga/pv-20140101-20140204.csv"
+output = "lib/scripts/outputs/listings-20140101-20140204.csv"
+
+def get_all_listings()
+  Listing.all.published
+end
+
+def pre_booking_stats(pre_bookings)
+  accumulates = {
+    distance_from_create: ->(e){
+      ((e.start_at - e.created_at)/(3600*24)).floor
+    },
+    day_of_week: ->(e){
+      e.start_at.wday
+    },
+    hour_of_day: ->(e){
+      e.start_at.hour
+    },
+    party: ->(e){
+      e.party
+    },
+    hours: ->(e){
+      (e.minutes.to_f / 60).round
+    },
+    price_per_hour: ->(e){
+      ((e.price*60 / e.minutes.to_f)/ 500).round * 500
+    },
+    listing: ->(e){
+      e.listing_id
+    }
+  }.map do |key, f|
+    [key, Hash.new{|h, k| h[k] = 0 }, f]
+  end
+
+  pre_bookings.each do |e|
+    accumulates.each do |k, h, f|
+      index = f.(e)
+      next if index < 0
+      h[index] += 1
+    end
+  end
+
+  # kpi = ""
+  Hash[accumulates.map do |k,h,_|
+    [k,h]
+  end]
+  # accumulates.each do |k,h,_|
+  #   kpi += "#{k}\n"
+  #   r = h.sort
+  #   kpi += r.map(&:first).join(",") + "\n"
+  #   kpi += r.map(&:last).join(",") + "\n"
+  #   kpi += "\n"
+  # end
+end
+
+
+def active_pre_bookings(lt=Time.now)
+  bc = '2014-01-01 00:00:00'
+  PreBooking.where("created_at > ?", bc).start_at_gteq(bc)
+end
+
+def listings_ga(path)
+  listings = {}
+  reader = CSV.open(path, "r")
+  header = reader.take(1)[0]
+  reader.each do |row|
+    if row[0].nil?
+      next
+    end
+    lid_s = row[0].sub! "/listings/", ""
+    lid   = lid_s.to_i
+    pv    = row[1].to_i
+#    puts "pv=#{pv.to_s}"
+    listings[lid] = {
+      :pv => pv
+    }
+  end
+  listings
+end
+
+# All Public Listings
+all_listings = get_all_listings()
+
+# Popular Bookings
+time = Time.now.beginning_of_day
+pre_bookings = active_pre_bookings(time)
+stats = pre_booking_stats(pre_bookings)
+
+listing_bookings = stats[:listing]
+
+
+# Make listing hash & store pre_bookings count
+listing_data = {}
+all_listings.each do |listing|
+  lid = listing.id
+  listing_data[lid] = {}
+  if listing_bookings.has_key?(lid)
+    listing_data[lid][:bookings] = listing_bookings[lid]
+  else
+    listing_data[lid][:bookings] = 0
+  end
+end
+
+
+# Listing Ga
+pvs = listings_ga(ga)
+# puts "pvs"
+# puts pvs
+
+# Put listings ga to listing_data
+listing_data.each do |k,v|
+  if pvs.has_key?(k)
+    # puts "pvs[k][:pv]"
+    # puts pvs[k][:pv]
+    listing_data[k][:pv] = pvs[k][:pv]
+  else
+    listing_data[k][:pv] = 0
+  end
+end
+
+#listing available_hours
+#2週間のうちカレンダーに登録された時間
+listing_data.each do |listing_id, v|
+  available_pct = []
+  available_hours = 0
+  uniq_bc = RoomSchedule.listing_is(listing_id).pluck(:start_at).map{|day| day.beginning_of_day}.uniq!
+  uniq_bc.each do |bc|
+    available_time = 0
+    range = bc.beginning_of_day .. bc.end_of_day.weeks_since(2).days_ago(1)
+    RoomSchedule.listing_is(listing_id).where(start_at: range).
+      each do |two_weeks|
+      start_at, end_at = two_weeks.start_at, two_weeks.end_at
+      available_time += ( end_at - start_at ) / 3600
+      #listing available_hours
+      #11:00~18:00に入った時間の合計
+      available_hours += (end_at - start_at) / 3600 if start_at >= Time.parse('11:00') || end_at <= Time.parse('18:00')
+    end
+    available_pct << ( ( available_time / 336 ) * 100 ).round(1)
+    # next
+  end if uniq_bc.present?
+
+  listing_data[listing_id][:available_time] =
+    [ available_pct.min, available_pct.max ]
+  listing_data[listing_id][:available_hours] = available_hours.ceil
+end
+
+
+
+
+# puts listing_data
+
+CSV.open(output, "w") do |csv|
+  csv << ["listing_id", "bookings", "pv", "cv", "available_hours[min_pct, max_pct]", "available_time(11:00~18:00)"]
+  listing_data.each do |k,v|
+    cv  = ( ( v[:bookings].to_f / v[:pv].to_f ) * 100 ).round(2)
+    row = [k, v[:bookings], v[:pv], cv, v[:available_time], v[:available_hours]]
+    csv << row
+  end
+end
+

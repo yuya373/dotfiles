@@ -1,0 +1,70 @@
+.listing-left-pane.listing-detail-mods
+
+  - if @listing.photos.present?
+    .listing-detail-mod
+      = render "partials/flipsnap"
+
+  .listing-detail-mod
+    .mod-header.mod-header-lighter
+      %h2 レンタルスペース概要
+    .mod-body
+      = render "listings/detail_pane", listing: @listing
+
+  .listing-detail-mod
+    .mod-header.mod-header-lighter
+      %h3 設備
+    .mod-body
+      .clearfix.eq-list
+        = render "listings/equipments_pane", listing: @listing
+
+  .listing-detail-mod
+    .mod-header.mod-header-lighter
+      %h3 アクセス
+    .mod-body
+      .listing-location-row
+        = @listing.listing_location.address
+
+      %ul.unstyled
+        - @listing.listing_stations.each do |listing_station|
+          %li #{line_name(listing_station)} #{access_in_words(listing_station)}
+      = render "listings/map", listing_location: @listing.listing_location
+
+
+  - if @listing.long_description.present?
+    .listing-detail-mod
+      .mod-header.mod-header-lighter
+        %h2 詳細説明
+      .mod-body
+        .listing-detail-pane.clearfix
+          .pane-main
+            .pane-content
+              .pane-desc
+                = nl_to_br(@listing.long_description)
+
+  - if @listing.pickup_reviews.present?
+    .listing-detail-mod
+      .mod-header.mod-header-lighter
+        %h4 口コミ・感想
+        %span.link-all-review= link_to "全ての口コミを見る", reviews_listing_path(@listing, keeped_query)
+        %p 実際にご利用頂いた方からの感想のみご紹介しています。
+      %ul.review-list
+        = render partial: 'review', collection: @listing.pickup_reviews
+
+  - if @listing.note.description.present?
+    .listing-detail-mod
+      .mod-header.mod-header-lighter
+        %h4 注意事項
+      .mod-body.tx-semi-small.tx-gray
+        = nl_to_br(@listing.note.try(:description))
+        - if @listing.has_agreement?
+          .listing-agreement.pull-right
+            = link_to "利用規約を表示する", terms_listing_path(@listing), target: "_blank"
+        = render "listings/contact_link"
+
+  - if @listing.has_cancellation_policy?
+    .listing-detail-mod
+      .mod-header.mod-header-lighter
+        %h4 キャンセルポリシー
+      .mod-body.tx-semi-small.tx-gray
+        = nl_to_br(@listing.listing_cancellation_policy.content)
+

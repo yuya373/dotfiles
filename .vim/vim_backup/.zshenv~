@@ -1,0 +1,2 @@
+# export JLESSCHARSET="japanese-utf8"
+# export LESS='-N'

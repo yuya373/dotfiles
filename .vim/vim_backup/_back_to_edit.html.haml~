@@ -1,0 +1,6 @@
+
+= form_tag path, method: :patch, style: 'display: inline;' do
+  = hidden_field_tag :mail_template, mail_template
+  = hidden_field_tag :subject, subject
+  = hidden_field_tag :pre_booking, @pre_booking.id
+  = submit_tag '編集', class: "btn btn-info"

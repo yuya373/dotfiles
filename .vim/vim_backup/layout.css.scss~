@@ -1,0 +1,33 @@
+.p1 {
+    padding: 1em;
+}
+
+.p-v1 {
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+.mt1   { margin-top: 10px; }
+.mt1_5 { margin-top: 15px; }
+.mt2   { margin-top: 20px; }
+
+.mb2   { margin-bottom: 20px; }
+
+.hidden { display: none !important; }
+.al-c { text-align: center; }
+.al-r { text-align: right; }
+
+.abs { position: absolute; }
+.rel  { position: relative; }
+
+.hidden { display: none; }
+.skip-margin{ margin: 0px; }
+
+.btn-group-collapse {
+  .btn {
+    margin-right: 7px;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}

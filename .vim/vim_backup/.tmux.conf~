@@ -1,0 +1,32 @@
+set-option -g default-command "reattach-to-user-namespace -l zsh"
+set-window-option -g mode-mouse on
+set -s escape-time 0
+
+# Prefix
+# set-option -g prefix C-z
+
+# 日本語環境なら必須？？
+setw -g utf8 on
+set -g status-utf8 on
+
+# status
+set -g status-interval 10
+
+# shell
+set-option -g default-shell /bin/zsh
+set-option -g default-command /bin/zsh
+
+# default statusbar colors
+set-option -g status-bg black #base02
+set-option -g status-fg yellow #yellow
+set-option -g status-attr default
+
+# default window title colors
+set-window-option -g window-status-fg brightblue #base0
+set-window-option -g window-status-bg default
+set-window-option -g window-status-attr dim
+
+# active window title colors
+set-window-option -g window-status-current-fg brightred #orange
+set-window-option -g window-status-current-bg default
+set-window-option -g window-status-current-attr bright

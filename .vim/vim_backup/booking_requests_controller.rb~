@@ -1,0 +1,47 @@
+class User::BookingRequestsController < UserApplicationController
+  include TimeParamParser
+  before_action :set_listing, only: [:index,:new,:create]
+  layout "user/single_pane_application", only: [:new, :show]
+
+  def index
+    @booking_requests = current_user.booking_requests.page params[:page]
+  end
+
+  def show
+    @booking_request = current_user.booking_requests.includes(:listing).
+      find params[:id]
+    @listing = @booking_request.listing
+  end
+
+  def new
+    @booking_request = @listing.booking_requests.new(availability_query_to_params)
+  end
+
+  def create
+    # booking_request = @listing.booking_requests.
+      # create!(booking_request_params.merge(user_id: current_user.id))
+
+    param = booking_request_params.merge(user_id: current_user.id)
+    booking_request = BookingRequest.find_or_create(@listing, param)
+    booking_request.save!
+
+    BookingRequestMailer.delay.ask(booking_request.id)
+    BookingRequestMailer.delay.confirmation_for_user(booking_request.id)
+    redirect_to booking_request_url(booking_request, conv: true)
+  end
+
+  private
+
+  def availability_query_to_params
+    params.slice(:party, :hours).to_hash.
+      merge(start_at: params_date_time_to_dt(params[:date], params[:time]))
+  end
+
+  def booking_request_params
+    params[:booking_request].permit(:start_at, :party, :hours, :minutes)
+  end
+
+  def set_listing
+    @listing = Listing.published.find params[:listing_id]
+  end
+end

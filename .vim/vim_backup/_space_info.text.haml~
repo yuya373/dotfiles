@@ -1,0 +1,18 @@
+━━━━━
+お申込みスペース
+━━━━━
+\
+= listing.title
+
+= "URL: " + listing_url(listing)
+= "運営: " + provider.name
+- is_hide_tel ||= false
+- unless is_hide_tel
+  = "電話: " + listing.tel
+= "MAIL: " + listing.email
+- if action_name == "approved"
+  add = listing_location.full_address
+- else
+  add = listing_location.address
+= "住所: " + add
+= "MAP: " + listing_location.google_map_url

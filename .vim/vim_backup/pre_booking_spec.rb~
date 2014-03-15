@@ -1,0 +1,129 @@
+# == Schema Information
+#
+# Table name: pre_bookings
+#
+#  id                 :integer          not null, primary key
+#  start_at           :datetime         not null
+#  minutes            :integer          not null
+#  party              :integer          not null
+#  name               :string(255)      not null
+#  company_name       :string(255)
+#  phone              :string(255)      not null
+#  email              :string(255)      not null
+#  usage              :string(255)
+#  message            :text
+#  created_at         :datetime
+#  updated_at         :datetime
+#  listing_id         :integer          not null
+#  user_id            :integer          not null
+#  agreement          :boolean
+#  status             :integer          default(0), not null
+#  price              :integer          not null
+#  cleaning_minutes   :integer          default(0), not null
+#  deleted_at         :datetime
+#  is_review_notified :boolean          default(FALSE), not null
+#  extend_minutes     :integer          default(0), not null
+#
+# Indexes
+#
+#  listing_id_and_start_at_and_status  (listing_id,start_at,status)
+#  user_id_and_deleted_at              (user_id,deleted_at)
+#
+
+require 'spec_helper'
+
+describe PreBooking do
+  let(:listing){ create :d_listing }
+  it do
+    should have_one :review
+  end
+  describe "validates" do
+    subject{ build :pre_booking, listing: listing }
+    it { should_not allow_value(0).for(:party) }
+    it { should_not allow_value(5.month.from_now).for(:start_at) }
+  end
+
+  describe "validate min_booking_minutes" do
+    subject{ build :pre_booking, listing: listing }
+    it do
+      subject.should_not allow_value(listing.min_booking_minutes - 1).for(:minutes)
+    end
+    it do
+      subject.should allow_value(listing.min_booking_minutes).for(:minutes)
+    end
+  end
+
+  describe ".active" do
+    it do
+      expect(PreBooking).to receive(:status_is).with([0,1])
+      PreBooking.active
+    end
+  end
+
+  describe "#fill_booking" do
+    let(:pre_booking){ build :pre_booking, cleaning_minutes: 5 }
+    let(:user){ mock_model User }
+    let(:price){ 100 }
+    let(:room_calendar){ mock_model RoomCalendar }
+
+    context "重複した予約がないならば" do
+      it "priceをsetする" do
+        expect(room_calendar).to receive(:range_price).
+          with(pre_booking.start_at, pre_booking.end_at){ price }
+        expect(pre_booking).to receive(:find_room_calendar).
+          with(listing){room_calendar}
+        pre_booking.fill_booking(user, listing)
+        pre_booking.price.should == price
+      end
+    end
+  end
+
+  describe "#end_at" do
+    let(:start_at){ 1.day.from_now }
+    let(:pre_booking){ build :pre_booking, start_at: start_at,
+      minutes: 10 }
+    it do
+      pre_booking.end_at.should == (start_at + 10.minutes)
+    end
+  end
+
+  describe "#occupy_room_schedule" do
+    let(:end_at){ 3.hours.from_now }
+    let(:pre_booking){ build :pre_booking,
+      start_at: 1.hour.from_now, cleaning_minutes: 5 }
+    let(:listing){ mock_model Listing }
+    let(:room_schedule){ mock_model RoomSchedule }
+    it do
+      expect(pre_booking).to receive(:valid?){ true }
+      expect(pre_booking).to receive(:available_room_schedule).
+        with(listing){ room_schedule }
+      expect(pre_booking).to receive(:end_at){ end_at }
+      expect(room_schedule).to receive(:create_booking).
+        with(pre_booking.start_at, end_at + pre_booking.cleaning_minutes.minutes)
+      pre_booking.occupy_room_schedule(listing)
+    end
+  end
+
+  describe "#extend_time" do
+    let(:cleaning_minutes){ 5 }
+    let(:listing){ create :d_listing }
+    let(:pre_booking){ create :pre_booking, minutes: 60, listing_id: listing.id,
+      start_at: 1.hour.from_now, cleaning_minutes: cleaning_minutes }
+    let(:room_schedule){ mock_model RoomSchedule }
+    it "pre_bookingの延長する" do
+      minutes = 10
+      orig_end_at = pre_booking.end_at + cleaning_minutes.minutes
+      pre_booking.stub_chain(:occupying_room_schedule, :first!){ room_schedule }
+      expect(room_schedule).to receive(:extend_booking).
+        with(orig_end_at + minutes.minutes)
+      pre_booking.extend_time(minutes)
+    end
+  end
+
+  describe "#id_to_num" do
+    it "5 -> 00005" do
+      pre_booking = create(:pre_booking, id: '1', agreement: true, listing: listing)
+      expect(pre_booking.id_to_num).to eq('00001')
+    end
+  end
+end

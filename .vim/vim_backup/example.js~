@@ -1,0 +1,46 @@
+
+console.log("--------------------------------")
+
+var countup = function (){
+  var n = 1;
+ return function count () {
+    n += 1
+    console.log(n)
+  }
+}();
+
+
+
+countup()
+countup()
+countup()
+countup()
+
+console.log("--------------------------------")
+
+function countUp(){
+  function (){
+    var n = 1;
+    return function (){
+      n += 1
+      console.log(n)
+    }
+  }
+};
+
+countUp()
+
+
+console.log("--------------------------------")
+var module = function () {
+  var n = 1;
+  return function () {
+      n += 1;
+      console.log(n)
+    }
+}();
+
+module()
+module()
+module()
+module()

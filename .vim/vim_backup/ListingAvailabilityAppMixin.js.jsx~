@@ -1,0 +1,215 @@
+/** @jsx React.DOM */
+
+define([
+    "react",
+    "components/mixins/AjaxMixin",
+    "components/mixins/MessageHandlerMixin"
+  ], function(React, AjaxMixin, MessageHandlerMixin) {
+
+  return {
+    mixins: [AjaxMixin, MessageHandlerMixin],
+    componentDidMount: function() {
+      $("#statusLsForm").bind("checkStatus", this.checkStatus);
+    },
+    isLteqMinBookingTime: function() {
+      return this.state.data.hours*60 < this.props.properties.minBookingMinutes;
+    },
+    isUnavailable: function() {
+      return this.state.available === false;
+    },
+    isUnknown: function() {
+      return this.props.properties.isEmptyStock || (this.isUnavailable() && this.state.unknown);
+    },
+    makeStatusView: function() {
+      if(this.state.loading === true) {
+        return (
+          <div className="result-loading">
+            <i className="icon-spinner icon-spin"></i> 確認中...
+          </div>
+        );
+      }
+      var av = this.state.available;
+      if(this.state.noBookingButton === true) {
+        if(!_.isBoolean(av)){
+          return(
+            <div className="prompt tx0-9">
+            全ての項目を入力すると、お問い合せボタンが表示されます。
+            </div>
+          );
+        }
+          return;
+      }
+      if(!_.isBoolean(av) ) {
+        return(
+            <div className="prompt tx0-9">
+                全ての項目を入力すると、料金が表示されます
+            </div>
+        );
+      }
+      if(av === false) {
+        if(this.isLteqMinBookingTime()){
+          return (
+          <div className="not-available">{this.props.properties.minBookingMinutes}時間以上からご利用頂けます。</div>
+          );
+        } else if(this.isUnknown()) {
+          return (
+          <div className="unknown">空室状況が登録されていません。</div>
+          );
+        } else {
+          return (
+          <div className="not-available">ご指定の日時は満室となっております。</div>
+          );
+        }
+      }
+      else {
+        return (
+          <div className="ls-price-group tall">
+            <div className="ls-price-label">合計（1室料金）</div>
+            <h4 className="listing-price-stressed">&yen;{this.state.totalPrice}</h4>
+          </div>
+        );
+      }
+    },
+    render: function() {
+      return (
+        <div className="ls-availability-result">
+          {this.makeNormalAlertView()}
+          {this.makeStatusView()}
+          {this.makePrimaryButton()}
+        </div>
+      );
+    },
+    isFillForm: function(data) {
+      if(!data) return false;
+      return _.every(["date","hours","party","time"], function(e){
+          return !!data[e];
+      });
+    },
+    isFillQuery: function(){
+      return this.isFillForm(this.state.query);
+    },
+    listingPath: function(){
+      return '/listings/' + this.props.properties.id;
+    },
+    timeToGaVal: function(time){
+      return time.split(":")[0] || time.substr(0, 2);
+    },
+    checkStatus: function(event) {
+      var data = event.params.data;
+      if (!this.isFillForm(data)) {
+        return;
+      }
+      this.setState({
+        "loading":true,
+        "data": data
+      });
+      if (!this.isFillForm(data)) {
+        return;
+      }
+      this.ajaxGet({
+        "api"               : this.props.properties.apiGetStatus,
+        "data"              : data,
+        "callback"          : this.onCheckStatusSuccess,
+        "errorCallback"     : this.onCheckStatusError,
+        "messageCallback"   : this.handleMessage,
+        "showSuccessMessage": false
+      });
+    },
+    availableResponse: function(available){
+      if(this.isUnknown())
+          return "unknown";
+      return ""+(available === true);
+    },
+    onCheckStatusSuccess: function(params) {
+      var datasource = params.datasource,
+          available  = datasource.available,
+          totalPrice = (available === true) ? datasource.totalPrice : null;
+      ga('send', 'event', 'available', this.availableResponse(available),
+         this.timeToGaVal(datasource.query['time']),
+         parseInt(datasource.query['hours']),
+         {'page': this.listingPath()});
+      var state = {
+        "available" : available,
+        "unknown"   : datasource.unknown,
+        "totalPrice": totalPrice,
+        "query"     : datasource.query
+      };
+      mixpanel.track('available', state);
+      state.loading = false;
+      this.setState(state);
+    },
+    onCheckStatusError: function(params) {
+      this.setState({
+        "available": null,
+        "loading"  : false,
+        "query"    : null
+      });
+    },
+    makeQuery: function() {
+      if(!this.state.query) { return ""; }
+      return $.param(this.state.query);
+    },
+    onClickCalendarLink: function() {
+      mixpanel.track('click', {'link':'lsform/calendar',
+                               'listing_id': this.props.properties.id});
+    },
+    makePrimaryButton: function() {
+      var disabled = !this.isFillQuery();
+      console.log(this.props.properties);
+      if(this.state.noBookingButton === true){
+        var url = "#";
+        if (!disabled){
+          url = this.props.properties.bookingRequestsUri + "?" + this.makeQuery();
+          return (
+            <div>
+            <a href={url}  disabled={disabled} className="btn btn-primary btn-block btn-large">空室状況を問い合わせる</a>
+            <div className="mt1 tx-gray-light tx0-9">
+            入力した日時の空室状況をワンクリックでお問い合わせできます。
+            </div>
+            </div>
+          );
+        }
+        return;
+      }
+      if(this.state.loading === true) { return; }
+      if(this.isUnknown()) {
+        var url = "#";
+        if(!disabled)
+          url = this.props.properties.bookingRequestsUri + "?" + this.makeQuery();
+        return (
+          <div>
+            <a href={url}  disabled={disabled} className="btn btn-primary btn-block btn-large">空室状況を問い合わせる</a>
+            <div className="mt1 tx-gray-light tx0-9">
+              入力した日時の空室状況をワンクリックでお問い合わせできます。
+            </div>
+          </div>
+        );
+      }
+      var calendarUrl = this.props.properties.calendarUri + "?" + this.makeQuery();
+      calendarUrl += "&lsform=" + this.props.properties.id;
+      if(this.isUnavailable()) {
+        var url = this.props.properties.otherListingsUri + "?" + this.makeQuery();
+        return (
+          <div>
+            <a href={url} className="btn btn-block btn-large">他のスペースを見る</a>
+            <div className="mt1 tx-gray-light tx0-9">
+              入力した日時で使えるスペースをご覧頂けます。
+            </div>
+            <a href={calendarUrl} className="btn btn-primary btn-block btn-large">空室カレンダーを見る</a>
+          </div>
+        );
+     }
+     var url = "#";
+     if(!disabled)
+       url = this.props.properties.prebookingUri + "?" + this.makeQuery();
+     return (
+       <div>
+         <a href={url} disabled={disabled} className="btn btn-success btn-block btn-large">予約する</a>
+         <div className="al-c btn-block" onClick={this.onClickCalendarLink.bind(this)}>
+             <a href={calendarUrl}>空室カレンダーを見る</a>
+         </div>
+       </div>
+     );
+   }
+  };
+});

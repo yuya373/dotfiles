@@ -1,0 +1,8 @@
+%h5 エリアから探す
+%ul.unstyled
+  .row-fluid
+    - Neighborhood.all.pluck(:name, :key).each do |name, key|
+      .span6
+        %li
+          %i.icon-caret-right.tx-gray-light
+          = link_to name, locations_path("tokyo", key)

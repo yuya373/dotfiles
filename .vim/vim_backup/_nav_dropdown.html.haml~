@@ -1,0 +1,14 @@
+%li
+  = link_to "#", class: "nav-link",
+    "data-toggle" => "dropdown" do
+    利用者メニュー
+    %i.icon-caret-down
+  %ul.dropdown-menu
+    %li
+      = link_to "会員トップ", user_root_path
+    %li
+      = link_to "アカウント情報", user_user_path
+    %li.divider
+    %li.logout-form-group.al-c
+      = form_tag destroy_user_session_path, method: :delete do
+        = submit_tag "ログアウト", class: "btn-logout"

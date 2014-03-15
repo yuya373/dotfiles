@@ -1,0 +1,55 @@
+require 'rubygems'
+require 'nokogiri'
+require 'open-uri'
+require 'csv'
+class String
+  def tr_str
+    self.tr("\r\n", '')
+  end
+end
+
+num = 1
+
+
+companys_info = []
+while num < 1500
+  p num
+  url = "http://supenavi.com/space/space_detail/?id=#{num}"
+
+  begin
+    doc = Nokogiri::HTML(open(url))
+  rescue => e
+    p e
+    next
+  end
+
+  th = doc.css('div.detail table th')
+  company_info = []
+  th.each do |th|
+    case th.text
+    when "スペース名"
+      company_info << th.next.next.text
+    when "所在地"
+      company_info << th.next.next.text
+    when "利用目的"
+      company_info << th.next.next.text.tr_str
+    when "設備・サービス"
+      company_info << th.next.next.text
+    when "平均料金"
+      company_info << th.next.next.text
+    when "運営者"
+      company_info << th.next.next.text
+    when "ＨＰ"
+      company_info << th.next.next.text
+    end
+  end
+  companys_info << company_info
+  num += 1
+end
+
+CSV.open('supenavi.csv', 'wb', headers: true) do |csv|
+  csv << %w(name address usage equipement price owner url)
+  companys_info.each do |info|
+    csv << info
+  end
+end

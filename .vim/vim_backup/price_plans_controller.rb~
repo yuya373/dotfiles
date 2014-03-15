@@ -1,0 +1,24 @@
+class PricePlansController < ApplicationController
+  include TimeParamParser
+  include ListingSearchable
+  before_action :set_listing
+  layout :resolve_layout
+  def index
+    @price_plans = @listing.price_plans.includes(:price_plan_timetables)
+    @sub_listings = related_search( keeped_query, params[:id] )
+  end
+
+  private
+
+  def set_listing
+    @listing = Listing.find params[:listing_id]
+  end
+
+  def resolve_layout
+    if mobile_request?
+      "calendar_application"
+    else
+      "listing_application"
+    end
+  end
+end

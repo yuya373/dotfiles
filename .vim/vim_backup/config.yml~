@@ -1,0 +1,79 @@
+default: &default
+  default_site: Spacee [スペイシー]
+  default_title: Spacee [スペイシー]
+  default_site_ja: スペイシー
+  default_reverse: true
+  site:
+    url: "https://www.spacee.jp"
+    domain: "www.spacee.jp"
+  mail:
+    info: "info@spacee.jp"
+    sys: "no-reply@spacee.jp"
+    mail: mail@spacee.co.jp
+
+  meta_keywords: "レンタルスペース,貸し会議室,貸会議室,東京"
+  meta_description: "東京、新宿、渋谷のレンタルスペース・貸し会議室ガイドの Spacee [スペイシー] は、個室貸会議室や研修、セミナー会場をはじめ、レンタルキッチンスタジオ、撮影スタジオ、パーティー用レンタルルームまで格安な情報を掲載しています。"
+
+  top_title: "東京 レンタルスペース・貸し会議室ガイド Spacee [スペイシー]"
+
+  listing_title_suffix: ""
+  listing_desc_suffix: へようこそ。気になる詳細情報は是非アクセスして確認下さい。
+  listing_keywords: "レンタルスペース,貸し会議室,貸会議室"
+
+  short_site_description: "東京、新宿、渋谷のレンタルスペース・貸し会議室ガイドの Spacee [スペイシー] は、個室貸会議室や研修、セミナー会場をはじめ、レンタルキッチンスタジオ、撮影スタジオ、パーティー用レンタルルームまで格安な情報を掲載しています。"
+
+  footer_summary: "東京、新宿、渋谷のレンタルスペース・貸し会議室ガイドの Spacee [スペイシー] は、個室貸会議室や研修、セミナー会場をはじめ、レンタルキッチンスタジオ、撮影スタジオ、パーティー用レンタルルームまで格安な情報を掲載しています。"
+  default_phone: 03-6869-3659
+
+  provider_meta_keywords: "レンタルスペース, 貸し会議室, 集客, 空室対策, 予約システム, 空室管理, レンタルオフィス"
+  provider_meta_description: "空室対策ならスペイシー！空室スペースを高い集客力で収益化！会議室やレンタルスペース、会議室、オフィスを時間貸しできるサービスです。"
+
+  seo_landing:
+    title:       "東京 レンタルスペース・貸し会議室ガイド Spacee [スペイシー]"
+    site:        ""
+    keywords:    "レンタルスペース,貸し会議室,貸会議室,東京,新宿,渋谷"
+    description: "東京、新宿、渋谷のレンタルスペース・貸し会議室ガイドの Spacee [スペイシー] は、個室貸会議室や研修、セミナー会場をはじめ、レンタルキッチンスタジオ、撮影スタジオ、パーティー用レンタルルームまで格安な情報を掲載しています。"
+
+  seo_station_show:
+    title:       駅のレンタルスペース・貸し会議室
+    keywords:    "レンタルスペース,貸し会議室,貸会議室"
+    description: 駅から徒歩数分と好立地のレンタルスペース・貸し会議室が満載です。少人数で1時間から借りられます。セミナー会場や教室、ワークショップ、勉強会など様々な用途で使えます。"
+    heading:     駅周辺のレンタルスペース・貸し会議室
+    guide:       駅から徒歩圏内のレンタルスペース・貸し会議室の一覧です。
+
+  seo_station_index:
+    title:       駅名からレンタルスペース・貸し会議室を検索
+    keywords:    "駅,検索,レンタルスペース,貸し会議室,貸会議室"
+    description: レンタルスペース・貸し会議室を東京近郊の駅から探せます。少人数で1時間からご利用できるレンタルスペースが満載です！""
+    heading:    "駅からレンタルスペース・貸し会議室を探す"
+    guide:      "東京近郊の駅名からレンタルスペース・貸し会議室を探せます。ご希望の駅名を選択して下さい。"
+
+  seo_line_index:
+    title: 沿線からレンタルスペース・貸し会議室を検索
+    keywords: "沿線,検索,レンタルスペース,貸し会議室,貸会議室"
+    description: レンタルスペース・貸し会議室を東京近郊の路線から探せます。少人数で1時間からご利用できるレンタルスペースが満載です！""
+    heading: "沿線からレンタルスペース・貸し会議室を探す"
+    guide: "沿線からレンタルスペース・貸し会議室を探せます。ご希望の路線を選択してください。"
+
+  seo_line_show:
+    title: 沿線のレンタルスペース・貸し会議室
+    keywords: レンタルスペース・貸し会議室
+    description: レンタルスペース・貸し会議室を東京近郊の路線から探せます。少人数で1時間からご利用できるレンタルスペースが満載です！
+    heading: 沿線のレンタルスペース・貸し会議室
+    guide: 沿線からレンタルスペース・貸し会議室を探せます。ご希望の駅を選択してください。
+
+  seo_usage_index:
+    title: 用途からレンタルスペース・貸し会議室を検索
+    keywords: "用途,検索,レンタルスペース,貸し会議室,貸会議室"
+    description: 
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+staging:
+  <<: *default
+
+production:
+  <<: *default

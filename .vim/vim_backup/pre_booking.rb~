@@ -1,0 +1,307 @@
+# == Schema Information
+#
+# Table name: pre_bookings
+#
+#  id                 :integer          not null, primary key
+#  start_at           :datetime         not null
+#  minutes            :integer          not null
+#  party              :integer          not null
+#  name               :string(255)      not null
+#  company_name       :string(255)
+#  phone              :string(255)      not null
+#  email              :string(255)      not null
+#  usage              :string(255)
+#  message            :text
+#  created_at         :datetime
+#  updated_at         :datetime
+#  listing_id         :integer          not null
+#  user_id            :integer          not null
+#  agreement          :boolean
+#  status             :integer          default(0), not null
+#  price              :integer          not null
+#  cleaning_minutes   :integer          default(0), not null
+#  deleted_at         :datetime
+#  extend_minutes     :integer          default(0), not null
+#  is_review_notified :boolean          default(FALSE), not null
+#  respond_at         :datetime
+#
+# Indexes
+#
+#  listing_id_and_start_at_and_status  (listing_id,start_at,status)
+#  user_id_and_deleted_at              (user_id,deleted_at)
+#
+
+class PreBooking < ActiveRecord::Base
+  include HourToMinutes
+  self.primary_key = :id
+  include RangePartition #TODO monthlyで切る
+  include CsvGeneratable
+
+  acts_as_paranoid
+  paginates_per 15
+
+  STATUSES = {
+    pending: 0,
+    approved: 1,
+    declined: 2,
+    user_canceled: 3,
+    provider_canceled: 4,
+  }.freeze
+
+  belongs_to :user
+  belongs_to :listing
+  has_one :order
+  has_one :payment
+  has_one :pre_booking_review
+  has_one :review, through: :pre_booking_review
+
+  scope :sort_order, ->(sort_by, order_by){
+    return if sort_by.blank?
+    order_by = (order_by == 'desc' ? :asc : :desc)
+    order(arel_table[sort_by].send(order_by))
+  }
+  scope :start_at_is, ->(time){
+    where start_at: time
+  }
+  scope :start_at_gteq, ->(time){
+    where arel_table[:start_at].gteq(time)
+  }
+  scope :status_is, ->(status){
+    where status: status
+  }
+  scope :active, ->{
+    status_is(STATUSES.values_at(:pending,:approved))
+  }
+
+  STATUSES.each do |k, v|
+    scope k, ->{
+      status_is(v)
+    }
+  end
+
+  scope :within_day, ->(day){
+    where arel_table[:start_at].gteq(day).and(arel_table[:start_at].lteq(day + 1.day))
+    # where arel_table[:start_at].gteq(day)
+  }
+  scope :pruning, ->(time=1.month.ago){
+    start_at_gteq(time)
+  }
+
+  validates :start_at, timeliness: {
+    on_or_after: ->{ Time.current }, before: ->{ 4.month.from_now }
+  }, on: :create
+  validates :party, numericality: { only_integer: true, greater_than: 0 }
+  validates :minutes, presence: true, numericality: { only_integer: true,
+    greater_than_or_equal_to: 60 }
+  validates :price, numericality: { only_integer: true,  greater_than: 0 }
+
+  validates :phone, presence: true
+  validates :usage, presence: true
+  validates :status, inclusion: { in: STATUSES.values }
+
+  with_options if: :listing_has_agreement? do |pre_booking|
+    pre_booking.validates :agreement, acceptance: { accept: true }
+  end
+
+  validate :min_booking_minutes, on: :create
+
+  after_create :set_phone_into_user
+
+  class << self
+    def statuses
+      STATUSES
+    end
+
+    def extend_time(listing, pre_booking_id, minutes)
+      PreBooking.transaction do
+        pre_booking = listing.pre_bookings.lock.find pre_booking_id
+        return if minutes < 15 || minutes <= pre_booking.extend_minutes
+        pre_booking.extend_time(minutes)
+        pre_booking
+      end
+    end
+
+    def double_booking?(listing_id, start_at, lock=false)
+      where(listing_id: listing_id).active.where(start_at: start_at).
+        lock(lock).exists?
+    end
+
+  end
+
+  STATUSES.each do |key, v|
+    define_method("#{key}?") do
+      self.status == v
+    end
+  end
+
+  def without_tax_price
+    ( price * ( 1 - (Settings.tax_rate / 100.0) ) ).ceil
+  end
+
+  def tax
+    ( price * (Settings.tax_rate) ).ceil
+  end
+
+  def id_to_num
+    sprintf("%05d", id)
+  end
+
+  def active?
+    STATUSES.values_at(:pending,:approved).include?(self.status)
+  end
+
+  def status_str
+    STATUSES.invert[status].to_s
+  end
+
+  def reviewable?
+    return true if Rails.env.development?
+    approved? && review.blank? && (start_at < Time.now)
+  end
+
+  def cancelable?
+    approved? && (start_at > Time.now)
+  end
+
+  def listing_has_agreement?
+    listing.has_agreement?
+  end
+
+  def approve
+    transaction do
+      self.status = STATUSES[:approved]
+      self.respond_at = Time.current
+      save!
+      payment.try(:approve, self)
+    end
+  end
+
+  def decline
+    transaction do
+      self.status = STATUSES[:declined]
+      self.respond_at = Time.current
+      save!
+      free_room_schedule(listing)
+      payment.try(:decline, self)
+    end
+  end
+
+  def cancel(status)
+    transaction do
+      unless STATUSES.values_at(:user_canceled,:provider_canceled).include?(status)
+        raise self
+      end
+      self.status = status
+      save!
+      free_room_schedule(listing)
+    end
+  end
+
+  def occupying_room_schedule(listing)
+    listing.room_schedules.pruning(start_at).start_at_is(start_at).occupied
+  end
+
+  def end_at
+    start_at + minutes.minutes + extend_minutes.minutes
+  end
+
+  def extend_time(minutes)
+    transaction do
+      room_schedule = occupying_room_schedule(listing).first!
+      orig_end_at = end_at + cleaning_minutes.minutes
+      room_schedule.extend_booking(orig_end_at + minutes.minutes)
+      self.update_attribute(:extend_minutes, minutes)
+    end
+  end
+
+  def deadline?
+    created_at >= deadline_time
+  end
+
+  def response_sec
+    return 1.days if respond_at.blank?
+    [7.days, respond_at - created_at].min
+  end
+
+  def do_transaction(listing, user)
+    room_calendar = fill_booking(user, listing)
+    room_calendar.lock!
+    occupy_room_schedule(listing)
+    save!
+    convert_booking_request(listing)
+    user.save_phone(phone)
+    listing.booking_status.incr_booking_count
+  end
+
+  private
+
+  def deadline_time
+    @deadline_time ||= 20.hours.ago
+  end
+
+  def free_room_schedule(listing)
+    room_schedule = occupying_room_schedule(listing).first!
+    room_schedule.to_available
+  end
+
+  def available_room_schedule(listing)
+    listing.room_schedules.pruning.
+      contains(start_at).available.first
+  end
+
+  def find_room_calendar(listing)
+    room_calendar = listing.room_calendars.for_price(start_at.to_date).first
+    if !room_calendar
+      error_occupied
+    end
+    room_calendar
+  end
+
+  def error_occupied
+    errors.add :start_at, "は空室がありません"
+    raise ActiveRecord::RecordInvalid, self
+  end
+
+  def set_phone_into_user
+    return if user.blank?
+    user.update_attributes(phone: phone) if user.phone.blank?
+  end
+
+  def min_booking_minutes
+    min_booking_minutes = listing.min_booking_minutes
+    if min_booking_minutes > minutes
+      errors.add :minutes, "は最小利用時間:#{min_booking_minutes}分以上にしてください"
+    end
+  end
+
+  def fill_booking(user, listing)
+    error_occupied if PreBooking.double_booking?(listing.id, start_at, lock=true)
+    room_calendar = find_room_calendar(listing)
+    error_occupied if room_calendar.blank?
+    self.price = room_calendar.range_price(start_at, end_at)
+    self.name = user.name
+    self.email = user.email
+    self.user = user
+    self.listing = listing
+    self.cleaning_minutes = listing.listing_setup.cleaning_minutes
+    room_calendar
+  end
+
+  def occupy_room_schedule(listing)
+    unless valid?
+      raise ActiveRecord::RecordInvalid, self
+    end
+    room_schedule = available_room_schedule(listing)
+    unless room_schedule
+      error_occupied
+      return
+    end
+    room_schedule.create_booking(start_at, (end_at + cleaning_minutes.minutes))
+  end
+
+  def convert_booking_request(listing)
+    booking_request = listing.booking_requests.convertable(user_id, start_at).first
+    return if booking_request.blank?
+    booking_request.convert
+  end
+end

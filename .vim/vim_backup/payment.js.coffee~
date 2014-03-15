@@ -1,0 +1,34 @@
+jQuery ->
+  WebPay.setPublishableKey($('meta[name="webpay-key"]').attr('content'))
+  payment.setupForm()
+
+payment =
+  setupForm: ->
+    $('#new_card').submit ->
+      $('input[type=submit]').attr('disabled', true)
+      payment.processCard()
+      return false
+  
+  processCard: ->
+    card =
+      name: $('#card_name').val()
+      number: $('#card_number').val()
+      cvc: $('#card_code').val()
+      exp_month: $('#card_month').val()
+      exp_year: $('#card_year').val()
+    WebPay.createToken(card, payment.handleWebPayResponse)
+  
+  handleWebPayResponse: (status, response) ->
+    if response.error
+      $('#webpay_error').html(
+        "<div class=\"alert alert-error\">" + response.error.message + "</div>"
+      )
+      $('input[type=submit]').attr('disabled', false)
+    else
+      $('#card_webpay_card_token').val(response.id)
+      $('#card_name').removeAttr("name")
+      $('#card_number').removeAttr("name")
+      $('#card_code').removeAttr("name")
+      $('#card_month').removeAttr("name")
+      $('#card_year').removeAttr("name")
+      $('#new_card')[0].submit()

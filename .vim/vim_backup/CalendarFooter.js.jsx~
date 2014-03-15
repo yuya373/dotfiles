@@ -1,0 +1,33 @@
+/** @jsx React.DOM*/
+
+define(["react", "components/mixins/DatetimeHelper"], function(React, DatetimeHelper) {
+  var DaysHeader;
+  return CalendarFooter = React.createClass({
+    getInitialState: function() {
+      return {
+        "days": this.props.days
+      };
+    },
+    renderDayLabel: function (day, index) {
+      var content = (day) ? DatetimeHelper.dateIntToLabel(day.date) : "",
+      wday    = (day) ? DatetimeHelper.wdayToShortLabel(day.wday) : "",
+      css     = "cell-day th-day-label";
+      if(day.is_holiday) { css += " holiday-label"; }
+      return <th key={index} className={css}>{content} ({wday})</th>;
+    },
+    render: function() {
+      return (
+        <div>
+          <table className="schedule-agenda-table">
+            <thead className="agenda-thead">
+              <tr key="thead1">
+                <th className="cell-margin th-day-label"></th>
+                {this.state.days.map(this.renderDayLabel)}
+              </tr>
+            </thead>
+          </table>
+        </div>
+      );
+    }
+  });
+});

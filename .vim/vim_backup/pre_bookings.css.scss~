@@ -1,0 +1,54 @@
+table.prebooking-info-table {
+  th {
+    background: #f6f6f6;
+    width: 150px;
+  }
+  .mail-template{
+    overflow: scroll;
+    height: 200px;
+  }
+}
+.controls.time{
+   margin-top: 10px;
+}
+.looking-for-space{
+  // margin: 10px;
+   margin-top: 10px;
+}
+
+.pre-booking-summary {
+  margin-top: 10px;
+   label {
+      font-size: 13px;
+      line-height: 10px;
+   }
+}
+
+p.cancel-policy {
+   @include border-radius(3px);
+   border: 1px solid #ccc;
+   background: #f6f6f6;
+   overflow: scroll;
+   padding: 10px;
+}
+
+.bill{
+  margin-bottom: 40px;
+  width: 100%;
+}
+
+.bill-header-misc{
+  float: right;
+}
+.bill{
+  .price{
+    width: 120px;
+  }
+  .price, .total, .tax{
+    text-align: right;
+    .price{
+      width: 120px;
+    }
+  }
+}
+

@@ -1,0 +1,5 @@
+source "https://api.berkshelf.com/"
+
+cookbook 'nginx'
+cookbook 'zsh'
+cookbook 'oh-my-zsh'

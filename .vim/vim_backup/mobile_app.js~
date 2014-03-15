@@ -1,0 +1,28 @@
+// Mobile App
+
+require(['config/config'], function() {
+  require(
+  [
+    'require',
+    'jquery',
+    'vendor/legacy',
+    'vendor/underscore',
+    'vendor/turbolinks',
+    'lib/utility',
+    'vendor/lightbone',
+    'vendor/bootstrap_all',
+    'vendor/flipsnap',
+    'vendor/pickadate',
+    'vendor/pickadate.date',
+    'vendor/select2',
+    'vendor/select2_locale_ja',
+    'vendor/bootstrap-timepicker',
+    'vendor/arg',
+    'vendor/modernizr'
+  ],
+  function(require) {
+    require(['core/castro', 'config/mobile_package', 'handlers/mobile_handler'], function(castro, pkg, handler) {
+      castro.initialize(pkg, handler);
+    });
+  });
+});

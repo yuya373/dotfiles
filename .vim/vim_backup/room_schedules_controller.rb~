@@ -1,0 +1,88 @@
+class Provider::RoomSchedulesController < ProviderApplicationController
+  include ProviderScheduler
+  include ProvidersListing
+  include TimeParamParser
+  before_action :set_listing
+  after_action :delete_alien_booking, only: :destroy
+
+  rescue_from ActiveRecord::RecordInvalid do |e|
+    render_scheduler_error(e)
+  end
+
+  def create
+    param = room_schedule_params
+    day = params_to_date(param)
+    RoomCalendar.transaction do
+      @room_calendar = RoomCalendar.find_or_create_a_day(@listing, day, lock=true)
+      @room_schedule = @room_calendar.add_range(param[:start_at], param[:end_at],
+                                                param[:status].to_i)
+    end
+    render json: to_response_room_schedule(@room_calendar, @room_schedule,
+                                           param[:start_at], param[:end_at],
+                                           ["スケジュールを追加しました。"])
+  end
+
+  def fill
+    day = Date.parse params[:date]
+    status = RoomSchedule.statuses[:available]
+    RoomCalendar.transaction do
+      @room_calendar = RoomCalendar.find_or_create_a_day(@listing, day, lock=true)
+      @room_calendar.fill_day(status)
+      @room_schedules = RoomCalendar.room_schedules(@listing,
+                                                    @room_calendar,
+                                                    @room_calendar)
+    end
+    @bookings = @listing.pre_bookings.
+      start_at_gteq(@room_calendar.open_at_dt)
+  end
+
+  def update
+    from = room_schedule_params_original
+    to = room_schedule_params
+    day = params_to_date(to)
+    RoomCalendar.transaction do
+      @room_calendar = RoomCalendar.find_or_create_a_day(@listing, day, lock=true)
+      @room_schedule = @room_calendar.update_range(from[:start_at], from[:end_at],
+                                                   to[:start_at], to[:end_at])
+    end
+    render json: {
+      result: "success",
+      messages: ["スケジュールを更新しました。"],
+      date: to_scheduler_date(@room_calendar.day),
+      startsAt: to[:start_at],
+      endsAt: to[:end_at],
+      original: params[:original],
+    }
+  end
+
+  def destroy
+    param = room_schedule_params
+    day = params_to_date(param)
+    RoomCalendar.transaction do
+      @room_calendar = @listing.room_calendars.day_is(day).lock.first!
+      @room_schedule = @room_calendar.delete_range(param[:start_at], param[:end_at])
+    end
+    render json: to_response_room_schedule(@room_calendar, @room_schedule,
+                                           param[:start_at], param[:end_at],
+                                           ["スケジュールを削除しました。"])
+  end
+
+  private
+
+  def room_schedule_params_original
+    from_scheduler_room_schedule(params['original'])
+  end
+
+  def room_schedule_params
+    from_scheduler_room_schedule(params)
+  end
+
+  def delete_alien_booking
+    param = room_schedule_params
+    start_at = params_date_time_to_dt(param[:day], param[:start_at])
+    alien_booking = AlienBooking.where(start_at: start_at).first
+    if alien_booking.present?
+      alien_booking.destroy
+    end
+  end
+end

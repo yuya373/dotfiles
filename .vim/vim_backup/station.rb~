@@ -1,0 +1,39 @@
+# == Schema Information
+#
+# Table name: stations
+#
+#  id             :integer          not null, primary key
+#  station_g_cd   :integer          not null
+#  station_name   :string(255)      not null
+#  station_name_k :string(255)
+#  station_name_r :string(255)
+#  line_id        :integer          not null
+#  pref_cd        :integer          not null
+#  post           :string(255)      not null
+#  add            :string(255)      not null
+#  lon            :float            not null
+#  lat            :float            not null
+#  open_ymd       :string(255)
+#  close_ymd      :string(255)
+#  e_status       :integer          not null
+#  e_sort         :integer          not null
+#  created_at     :datetime
+#  updated_at     :datetime
+#
+# Indexes
+#
+#  line_id       (line_id)
+#  station_g_cd  (station_g_cd)
+#
+
+class Station < ActiveRecord::Base
+  belongs_to :line
+  has_many :listing_stations
+  has_many :listings, through: :listing_stations, source: :listing
+  belongs_to :neighborhood_station, foreign_key: :station_g_cd, primary_key: :station_g_cd
+
+  scope :published_listing_exists, ->{
+    joins(:listings).merge(Listing.published).distinct
+  }
+
+end

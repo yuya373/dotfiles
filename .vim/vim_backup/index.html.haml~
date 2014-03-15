@@ -1,0 +1,91 @@
+- set_page_meta_tags("掲載者様トップ")
+
+- content_for(:ga) do
+  ga('set', 'dimension1', 'provider_user');
+
+.container.last-container.top-container
+  = render "partials/flashes"
+  %table.table.table-bordered.table-striped.header_menu.offset2
+    %tr
+      %th ログイン情報
+      %th 今月の仮予約
+      %th 今月の売上
+      %th
+    %tr
+      %td
+        %p= link_to "#{current_provider_user.name}様", provider_provider_user_path
+      %td= "#{@pre_bookings_this_month.count}件"
+      %td= number_to_currency(@sale)
+      %td= link_to "過去の売上", provider_monthly_sales_path
+  .dashboard_content
+    %h4
+      未対応の仮予約
+      = "#{@pending_pre_bookings.count}件"
+    - if @pending_pre_bookings.present?
+      %table.table.table-bordered.table-striped
+        %thead
+          %tr
+            %th 予約No
+            %th.space スペース名
+            %th希望日時
+            %th.narrow 希望時間
+            %th.narrow 人数
+            %th 予約者
+            %th{style: 'width: 110px;'} 申込日
+            %th 決済方法
+            %th 決済ステータス
+            %th.action
+        %tbody
+          = render partial: 'pre_booking', collection: @pending_pre_bookings
+
+  - if current_provider.booking_requests.present?
+    .dashboard_content
+      %h4
+        空室のお問い合わせ
+      %p.tx-gray-light
+        利用者様から空室状況の更新リクエストが届いています。
+      %table.table.table-bordered.table-striped
+        %thead
+          %tr
+            %th 問合No
+            %th.space スペース名
+            %th お問い合わせのあった空室日時
+            %th.action
+        %tbody
+          = render partial: 'booking_request', collection: current_provider.booking_requests
+
+  .dashboard_content
+    %h4
+      今日の予約
+    - if @todays_pre_bookings.present?
+      %table.table.table-bordered.table-striped
+        %thead
+          %tr
+            %th 予約No
+            %th.space スペース名
+            %th 希望日時
+            %th.narrow 希望時間
+            %th.narrow 人数
+            %th 予約者
+            %th 料金
+            %th.action
+        %tbody
+          = render partial: 'not_pending_pre_booking', collection: @todays_pre_bookings, as: :pre_booking
+  .dashboard_content
+    %h4
+      非承認の仮予約
+      %small 今日以前のものは除く
+    - if @declined_pre_bookings.present?
+      %table.table.table-bordered.table-striped
+        %thead
+          %tr
+            %th 予約No
+            %th.space スペース名
+            %th 希望日時
+            %th.narrow 希望時間
+            %th.narrow 人数
+            %th 予約者
+            %th 料金
+            %th.action
+        %tbody
+          = render partial: 'not_pending_pre_booking', collection: @declined_pre_bookings, as: :pre_booking

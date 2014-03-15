@@ -1,0 +1,27 @@
+class Provider::ReviewsController < ProviderApplicationController
+
+  def index
+    @reviews =
+      if params[:listing_id]
+        set_listing.reviews
+      else
+        Review.joins(:listing).merge(current_provider.listings)
+      end
+  end
+
+  def request
+    pre_booking = PreBooking.find params[:pre_booking_id]
+    valid_provider?(pre_booking)
+
+  end
+
+  private
+
+  def set_listing
+    @listing = current_provider.listings.find params[:listing_id]
+  end
+
+  def valid_provider?(pre_booking)
+    current_provider.listings.find pre_booking.listing_id
+  end
+end

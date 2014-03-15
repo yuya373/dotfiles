@@ -1,0 +1,6 @@
+  %h5 路線から探す
+  %ul.unstyled
+    - Line.available.each do |line|
+      %li
+        %i.icon-caret-right.tx-gray-light
+        = link_to(line.line_name, line_listings_path(line,keeped_query))

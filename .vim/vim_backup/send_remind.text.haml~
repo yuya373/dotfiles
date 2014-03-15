@@ -1,0 +1,8 @@
+= "#{@pre_booking.name} 様"
+\
+この度は、貸しスペース・会議室検索予約サイトSpacee（スペイシー）をご利用頂きありがとうございます。
+明日のご予約内容とスペース情報を確認のため送信させて頂きます。
+\
+= render "provider_pre_booking_mailer/space_info", listing: @listing, provider: @provider
+\
+= render "provider_pre_booking_mailer/pre_booking_info", pre_booking: @pre_booking

@@ -1,0 +1,111 @@
+/** @jsx React.DOM */
+
+define([
+    "react",
+    "components/mixins/SlotMixin",
+    "components/mixins/DatetimeHelper",
+    "components/common/ErrorMessage",
+    "components/mixins/listingAvailability/AvailabilityCheckModalMixin"
+    "components/mixins/"
+  ], function(React, SlotMixin, DatetimeHelper, ErrorMessage, AvailabilityCheckModalMixin) {
+
+  var AvailabilityCheckModal = React.createClass({
+    mixins: [SlotMixin, AvailabilityCheckModalMixin],
+    debug: false,
+    getInitialState: function() {
+      return {
+        "errors":[],
+        "timePolyfill": (this.debug === true || !Modernizr.inputtypes.time),
+        "loading"   : false,
+        "totalPrice": null,
+        "query"     : null,
+        "available" : null
+      };
+    },
+    render: function() {
+      if(!_.isObject(this.props.selectedSlotData)) { return <div></div>; }
+      var data     = this.props.selectedSlotData,
+          timeType = (this.state.timePolyfill === true) ? "text" : "time";
+
+      return (
+        <div className="modal ls-modal scheduler-check-av-modal">
+          {this.renderModalHeader()}
+          <div className="form-horizontal form-horizontal-striped ls-form">
+            <div className="control-group">
+              <label className="control-label">日付</label>
+              <div className="controls">
+                <div className="no-input-block">
+                  <strong>
+                    {DatetimeHelper.dateIntToLabel(data.day.date)}
+                  </strong>
+                </div>
+              </div>
+            </div>
+            <div className="control-group">
+              <label className="control-label">時刻</label>
+              <div className="controls">
+                <input ref="time" type={timeType} placeholder="利用時刻" className=" for-picker input-block-level" />
+              </div>
+            </div>
+            <div className="control-group">
+              <label className="control-label">利用時間</label>
+              <div className="controls">
+                <div className="input-append">
+                  <input ref="hours" type="number" min="1" className="input-short" />
+                  <span className="add-on">時間</span>
+                </div>
+                <div className="ls-price-label">
+                   {this.props.minBookingTimeStr + "からご利用頂けます。"}
+                </div>
+              </div>
+            </div>
+            <div className="control-group">
+              <label className="control-label">人数</label>
+              <div className="controls">
+                <div className="input-append">
+                  <input ref="party" type="number" min="1" className="input-short" />
+                  <span className="add-on">人</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ErrorMessage messages={this.state.errors} />
+          {this.renderFooter()}
+        </div>
+      );
+    },
+    componentDidUpdate: function(prevProps, prevState, rootNode) {
+      // console.log("componentDidUpdate", prevProps, prevState, rootNode);
+      if(this.refs && this.refs.time) {
+        if(this.state.timePolyfill === true) { this.installTimePolyfill(); }
+        else { $(this.refs.time.getDOMNode()).val(this.props.selectedSlotData.startsAt); }
+      }
+    },
+    getButtonClass: function() {
+      return "btn";
+    },
+    installTimePolyfill: function() {
+      // console.log("installTimePolyfill");
+      this.timePicker   = $(this.refs.time.getDOMNode()).timepicker({
+        minuteStep   : 15,
+        showSeconds  : false,
+        showMeridian : true,
+        showWidgetOnAddonClick: false,
+        defaultTime: DatetimeHelper.convertTimeLabelToMeridian(this.props.selectedSlotData.startsAt)
+      });
+    },
+    getInputTime: function() {
+      var val  = $(this.refs.time.getDOMNode()).val(),
+          time = DatetimeHelper.convertTimeLabelFromMeridian(val);
+      return time;
+    },
+    willDismiss: function() {
+      if(this.timePicker) {
+        this.timePicker = null;
+      }
+    }
+  });
+
+  return AvailabilityCheckModal;
+
+});

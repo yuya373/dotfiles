@@ -1,0 +1,23 @@
+.container.top-container.last-container
+  -# = debug @conversations
+  .span6
+    - @conversations.each do |co|
+      .page-header
+        %h2
+          = co.subject
+          %small
+            = co.originator.name
+            様より
+      - receipts = co.receipts_for current_provider_user
+      - receipts.each do |receipt|
+        -# %p= debug receipt
+        %p.pull-right.small
+          %span.muted 送信者:
+          =receipt.message.sender.name
+        %p= receipt.message.body
+
+      .reply-form
+      = form_tag reply_provider_messages_path, method: :patch, class: "form" do
+        = hidden_field_tag :conversation_id, co.id
+        = text_area_tag :body
+        = submit_tag '返信', class: "btn"

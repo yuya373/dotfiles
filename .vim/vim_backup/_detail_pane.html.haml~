@@ -1,0 +1,46 @@
+.listing-detail-pane.clearfix
+  .pane-main
+    .pane-content
+      .pane-desc
+        = nl_to_br(listing.long_description)
+
+    .pane-content
+      %table.table.table-bordered.table-listing-spec
+        %tr
+          %th 収容人数
+          %td 〜#{listing.capacity}人
+        %tr
+          %th 広さ
+          %td #{listing.square}m&#178;
+        %tr
+          %th 利用用途
+          %td
+            %ul.list-half.clearfix.no-indent
+              - listing.usages.each do |usage|
+                %li
+                  = link_to usage_listings_path(usage), class: "tx-gray dot-light" do
+                    %i.tx-green.icon-ok-sign
+                    = usage.name
+        %tr
+          %th 都道府県
+          -# %td= link_to listing.listing_location.prefecture,
+          -# prefecture_cities_path(listing.listing_location.pref_cd),
+          -# class: "tx-gray dot-light"
+
+        %tr
+          %th 市区町村
+          %td= listing.link_to_city
+
+        %tr
+          %th 最寄り駅
+          %td
+            = link_to "#{listing.listing_station.station.station_name}駅",
+              station_listings_path(listing.listing_station.station_id),
+              class: "tx-gray dot-light"
+            \(
+            = link_to "#{listing.station.line.line_name}",
+              line_path(listing.station.line.id),
+              class: "tx-gray dot-light"
+            \)
+
+        = render 'listings/detail_pane_bottom', listing: listing

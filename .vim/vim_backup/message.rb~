@@ -1,0 +1,80 @@
+# == Schema Information
+#
+# Table name: messages
+#
+#  id              :integer          not null, primary key
+#  conversation_id :integer          not null
+#  sender_id       :integer
+#  sender_type     :string(255)
+#  attachment      :string(255)
+#  body            :text             not null
+#  created_at      :datetime
+#  updated_at      :datetime
+#  subject         :string(255)      not null
+#
+
+class Message < ActiveRecord::Base
+  belongs_to :conversation, autosave: true
+  has_one :receipt
+  belongs_to :sender, polymorphic: true
+
+  validates :body, presence: true
+
+  scope :sender_is, ->(sender){
+    where(sender: sender).order(created_at: :desc)
+  }
+  scope :last, ->{
+    order(created_at: :desc).first
+  }
+  scope :messages_for, ->(usr){
+   joins(:receipt).merge(Receipt.receiver_is(usr)).order(created_at: :desc)
+  }
+  scope :conversation_is, ->(conversation){
+    where(conversation_id: conversation.id)
+  }
+  scope :created_at_lt, ->(day){
+    where arel_table[:created_at].lt(day)
+  }
+  scope :created_at_gt, ->(day){
+    where arel_table[:created_at].gt(day)
+  }
+
+
+
+  def deliver(receiver, notify)
+    build_receipt(receiver: receiver)
+    save!
+    MessagesNotifyMailer.send_email(self, receiver) if notify
+    self
+  end
+
+  def receiver
+    receipt.receiver
+  end
+
+  def is_unread?
+    !receipt.is_read
+  end
+
+  def next
+    next_msg = Message.conversation_is(conversation).order(created_at: :desc).created_at_lt(created_at).first
+
+    # return first_message if next_msg == nil
+    # next_msg
+  end
+
+  def previous
+    p_msg = Message.conversation_is(conversation).order(:created_at).created_at_gt(created_at).first
+
+    # return last_message if p_msg == nil
+    # p_msg
+  end
+
+  def first_message
+    Message.conversation_is(conversation).order(created_at: :desc).first
+  end
+
+  def last_message
+    Message.conversation_is(conversation).order(created_at: :desc).last
+  end
+end

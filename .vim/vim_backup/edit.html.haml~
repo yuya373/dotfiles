@@ -1,0 +1,9 @@
+.container.top-container.last-container
+  .row
+    .span8.offset2.result-window
+      = render "user/users/tabs"
+      .row.page-title-h4
+        .span5
+          %h4 請求先情報を編集する
+      = form_for @user_profile, url: user_user_profiles_path, method: :patch, html: {class: "form-horizontal"} do |f|
+        = render 'form', f: f, user_profile: @pre_booking_bill

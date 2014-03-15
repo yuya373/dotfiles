@@ -1,0 +1,9 @@
+class UserApplicationController < ApplicationController
+  before_action :authenticate_user!
+  layout "user/application"
+  before_action :notice_message
+
+  def notice_message
+    flash[:info] = " 未読メッセージが#{current_user.unread_count}通あります。確認して下さい。" if current_user.unread_count > 0
+  end
+end

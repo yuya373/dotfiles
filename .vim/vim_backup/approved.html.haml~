@@ -1,0 +1,19 @@
+%table.twelve.column
+  %tr
+    %td
+      %p= "#{@pre_booking.name} 様"
+      %p いつもSpacee（スペイシー）をご利用頂きありがとうございます。
+      %p 以下のご予約が確定しましたので、お知らせいたします。 ご不明な点がございましたらスペース運営者までお問い合わせください。
+  %tr
+    %td
+      = render 'space_info', listing: @listing, provider: @provider, listing_location: @listing.listing_location
+  %tr
+    %td
+      - if @mail_template.present? && @mail_template.content.present?
+        = render "information_from_provider", mail_template: @mail_template
+  %tr
+    %td
+      = render 'pre_booking_info', pre_booking: @pre_booking, listing: @listing
+%table.row
+  %tr
+    = render 'mail_footer'

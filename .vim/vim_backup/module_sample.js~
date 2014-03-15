@@ -1,0 +1,9 @@
+var prop = {};
+
+exports.setProp = function ( name, value ) {
+  prop[name] = value;
+};
+
+exports.print = function () {
+  console-log
+}

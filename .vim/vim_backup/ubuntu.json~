@@ -1,0 +1,5 @@
+{"run_list":[
+  "init", 
+  "rbenv", 
+  "ruby-build"
+  ]}

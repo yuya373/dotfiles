@@ -1,0 +1,25 @@
+- return '' unless listing.is_display?
+
+
+- if keeped_query[:date]
+  - cache listing_path(listing) + '/recommend' + keeped_query[:date] do
+    .group-header.group-header-default.group-header-brand
+      %h6
+        %i.icon.icon-ok-sign
+        空室のあるレンタルスペース
+    %ul.list-cells
+      - related_search(keeped_query, listing).take(3).each do |listing|
+        %li= render 'partials/listing_cell', listing: listing
+    - if related_search(keeped_query, listing).present?
+      = link_to "空室のあるレンタルスペースをすべて見る", related_listing_path(@listing), class: "btn-primary btn-stress btn-block btn btn-warning btn-semi-large"
+- else
+  - cache listing_path(listing) + '/recommend' do
+    .group-header.group-header-default.group-header-brand
+      %h6
+        %i.icon.icon-map-marker
+        お近くのレンタルスペース
+    %ul.list-cells
+      - related_search(keeped_query, listing).take(3).each do |listing|
+        %li= render 'partials/listing_cell', listing: listing
+    - if related_search(keeped_query, listing).present?
+      = link_to "近くのレンタルスペースをすべて見る", related_listing_path(@listing, keeped_query), class: "btn-primary btn-stress btn-block btn btn-warning btn-semi-large"

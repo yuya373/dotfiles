@@ -1,0 +1,72 @@
+require 'spec_helper'
+
+describe PreBookingMailer do
+  let(:user){ create :user }
+  let(:listing){ create :d_listing, provider: create(:provider) }
+  let(:pre_booking){ create :pre_booking, listing: listing, user: user }
+  let(:info){ APP_CONFIG["mail"]["info"] }
+  let!(:location){ create :listing_location, listing: listing }
+
+  describe "#to_user" do
+    subject{ PreBookingMailer.to_user(pre_booking.id) }
+    it do
+      should deliver_to(user.email)
+    end
+    it do
+      should deliver_from(info)
+      should reply_to(listing.email)
+    end
+    it do
+      should have_body_text("確認メール")
+      should have_body_text( pre_booking.created_at.strftime("%Y年%m月%d日 %H:%M") )
+      should_not have_body_text(location.full_address)
+      should have_body_text(location.address)
+    end
+    it "件名に予約番号を表示" do
+      should have_subject( /#{sprintf("%05d", pre_booking.id)}/ )
+    end
+  end
+
+  describe "#to_provider" do
+    subject{ PreBookingMailer.to_provider(pre_booking.id) }
+    it do
+      should deliver_to(listing.email)
+    end
+    it do
+      should have_body_text("新しい仮予約が")
+      should_not have_body_text(location.full_address)
+    end
+    it "件名に予約番号を表示" do
+      should have_subject( /#{sprintf("%05d", pre_booking.id)}/ )
+    end
+  end
+
+  describe "#review_notification" do
+    subject{ PreBookingMailer.review_notification(pre_booking.id) }
+    it do
+      should deliver_to(user.email)
+    end
+    it do
+      should have_body_text(listing.title)
+      should have_body_text(pre_booking.name)
+    end
+  end
+
+  describe "#send_remind" do
+    subject{ PreBookingMailer.send_remind(pre_booking) }
+    let!(:mail_template){ create :mail_template, listing: listing }
+    it do
+      should deliver_to(user.email)
+      should reply_to(listing.email)
+    end
+    it do
+      should have_body_text(pre_booking.name)
+      should have_body_text(mail_template.content)
+      should have_body_text( pre_booking.created_at.strftime("%Y年%m月%d日 %H:%M") )
+      should have_body_text(location.full_address)
+    end
+    it "件名に予約番号を表示" do
+      should have_subject( /#{sprintf("%05d", pre_booking.id)}/ )
+    end
+  end
+end

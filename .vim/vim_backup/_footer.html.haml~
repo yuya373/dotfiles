@@ -1,0 +1,44 @@
+.container
+  .footer-inner
+    .row
+      .span3
+        %h4 スペースを借りる
+        %ul.unstyled
+          - neighborhood_all.each do |n|
+            %li
+              = link_to locations_path("tokyo", n.key) do
+                = n.name
+          %li
+            = link_to "/collections/onecoin" do
+              ワンコイン会議室
+      .span3
+        %h4 スペースを貸す
+        %ul.unstyled
+          %li= link_to "スペースを掲載", new_provider_user_registration_path
+          %li= link_to "掲載者様ログイン", new_provider_user_session_path
+
+      .span3
+        %h4 About us
+        %ul.unstyled
+          %li= link_to "Spaceeについて", "/about"
+          %li= link_to "ブログ", "http://blog.spacee.jp/", target: "_blank"
+          %li= link_to "運営会社", "/company"
+          %li= link_to "プライバシーポリシー", "/privacy"
+          %li= mail_to APP_CONFIG["mail"]["info"], "お問い合わせ", target: "_blank"
+          %li= link_to "特定商取引法に基づく表示", "/trade"
+
+      .span3.about-section
+        .about-image-shell
+          = image_tag "logos/logo-header-pc.png"
+        .about-summary
+          = APP_CONFIG['footer_summary']
+        .about-social.clearfix
+          .col
+            %iframe{allowtransparency: "true", frameborder: "0", scrolling: "no", src: "//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fspacee.jp&width=210px&layout=button_count&action=like&show_faces=false&share=false&height=21&appId=594549643941274", style: "border:none; overflow:hidden; display:inline-block; width:150px; height:21px;"}
+          .col
+            = link_to "Tweet", "https://twitter.com/share", "data-count" => "horizontal", "counturl" => "https://www.spacee.jp", "data-lang" => "en", "class" => "twitter-share-button"
+
+    .footer-copy.al-c
+      %span.tx-copy &copy; 2013 Spacee, Inc.
+
+  %script{"src"=>"//platform.twitter.com/widgets.js"}

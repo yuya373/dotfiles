@@ -1,0 +1,12 @@
+= "#{@pre_booking.name} 様"
+\
+\
+いつもSpacee（スペイシー）をご利用頂きありがとうございます。
+- if @is_provider_canceled
+  まことに申し訳ありませんが、運営者の都合により
+今回のご予約はキャンセルされました。
+またのご利用をお待ちしております。
+
+= render 'provider_pre_booking_mailer/pre_booking_info', pre_booking: @pre_booking
+= render 'provider_pre_booking_mailer/space_info', listing: @listing, provider: @provider, listing_location: @listing.listing_location
+= render 'provider_pre_booking_mailer/mail_footer'

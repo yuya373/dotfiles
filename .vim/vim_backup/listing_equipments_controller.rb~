@@ -1,0 +1,6 @@
+class Admin::EquipmentsController < AdminApplicationController
+  def show
+    @eq = Equipment.all
+  end
+  
+end

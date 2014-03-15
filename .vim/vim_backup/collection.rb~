@@ -1,0 +1,53 @@
+# == Schema Information
+#
+# Table name: collections
+#
+#  id               :integer          not null, primary key
+#  key              :string(255)      not null
+#  name             :string(255)      not null
+#  start_at         :datetime         not null
+#  end_at           :datetime         not null
+#  created_at       :datetime
+#  updated_at       :datetime
+#  description      :string(255)
+#  meta_keyword     :string(255)
+#  meta_description :string(255)
+#  meta_title       :string(255)
+#
+
+class Collection < ActiveRecord::Base
+  has_many :listing_collections
+  has_many :listings, through: :listing_collections
+
+  scope :within, ->(time=Time.current){
+    where arel_table[:start_at].lteq(time).and(arel_table[:end_at].gt(time))
+  }
+
+  def self.featured
+    all
+  end
+
+  #TOOD dbかsti
+  @collections = Collection.within
+  def query
+    case id
+    when 2
+      {date: Date.tomorrow.to_s}
+    when 3
+      {party: 20.to_s}
+    when 8
+      {neighborhood: Neighborhood.yamanote.pluck(:key)}
+    else
+      {}
+    end
+  end
+
+  def order
+    case id
+    when 3
+      [:capacity,:asc]
+    else
+      [:price,:asc]
+    end
+  end
+end

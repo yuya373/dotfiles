@@ -1,0 +1,11 @@
+.booking-info{id: "booking-info"}
+  .booking-info-group
+    .booking-info-heading
+      .mod
+        %h4.mod-label.left-wide.tx-gray-light
+          %i.icon-chevron-down
+          = link_to "予約内容る", "#collapseOne", class: "booking-info-toggle", "data-toggle" => "collapse", "data-parent" => "#booking-info"
+    .booking-info-body.collapse.in{id: "collapseOne"}
+      .mod.mod-default.mod-round.mod-wide.mod-tall.skip-margin
+        .inner-mod
+          = render 'partials/conversation/pre_booking_info', listing: listing, pre_booking: pre_booking

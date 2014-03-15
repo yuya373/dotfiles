@@ -1,0 +1,57 @@
+# == Schema Information
+#
+# Table name: pre_bookings
+#
+#  id                 :integer          not null, primary key
+#  start_at           :datetime         not null
+#  minutes            :integer          not null
+#  party              :integer          not null
+#  name               :string(255)      not null
+#  company_name       :string(255)
+#  phone              :string(255)      not null
+#  email              :string(255)      not null
+#  usage              :string(255)
+#  message            :text
+#  created_at         :datetime
+#  updated_at         :datetime
+#  listing_id         :integer          not null
+#  user_id            :integer          not null
+#  agreement          :boolean
+#  status             :integer          default(0), not null
+#  price              :integer          not null
+#  cleaning_minutes   :integer          default(0), not null
+#  deleted_at         :datetime
+#  extend_minutes     :integer          default(0), not null
+#  is_review_notified :boolean          default(FALSE), not null
+#  respond_at         :datetime
+#
+# Indexes
+#
+#  listing_id_and_start_at_and_status  (listing_id,start_at,status)
+#  user_id_and_deleted_at              (user_id,deleted_at)
+#
+
+# Read about factories at https://github.com/thoughtbot/factory_girl
+
+FactoryGirl.define do
+  factory :pre_booking do
+    sequence(:id){|n| n }
+    start_at { 1.day.from_now }
+    minutes 60
+    party 1
+    name "MyString"
+    company_name "MyString"
+    email "dev@spacee.jp"
+    phone "03-999-999"
+    usage "MyString"
+    message "MyText"
+    price 1000
+    listing
+    # before :create do |m|
+      # if m.user.present?
+        # m.email = m.user.email
+        # m.phone = m.user.phone
+      # end
+    # end
+  end
+end

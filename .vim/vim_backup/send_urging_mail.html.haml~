@@ -1,0 +1,15 @@
+%table.twelve.column
+  %tr
+    %td
+      %p= "#{@provider.name}様"
+      %p 以下の仮予約が未対応です。 仮予約のステータスを変更して下さい。
+      %p= provider_pre_booking_url(@pre_booking)
+  %tr
+    %td
+      = render 'space_info', listing: @listing, provider: @provider, listing_location: @listing.listing_location
+  %tr
+    %td
+      = render 'pre_booking_info', pre_booking: @pre_booking, listing: @listing
+%table.row
+  %tr
+    = render 'mail_footer'

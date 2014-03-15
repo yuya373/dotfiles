@@ -1,0 +1,22 @@
+- set_page_meta_tags("お問い合わせ（スペース掲載者向け）")
+.container.top-container.last-container
+  .hiw-child-hero
+    .hiw-child-hero-inner
+      %h1
+        お問い合わせ
+        %span 〜貸したい人向け〜
+      %p
+        スペース掲載についてはもちろん、
+        %br
+        利用方法などについてもお気軽にお問い合わせ下さい！
+
+  .row
+    .span9.al-c
+      %h3
+        %i.tx-green.icon-ok-sign
+        お問い合わせ頂きありがとうございます。
+        -#%span (お問い合わせ番号:#{params[:id]})
+      %p.tx-gray.tx1-2.mt1
+        担当者からご連絡差し上げますので、少々お待ちくださいませ。
+    .span3
+      = render "provider_sidebar"

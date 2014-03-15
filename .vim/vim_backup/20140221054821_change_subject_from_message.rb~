@@ -1,0 +1,4 @@
+class ChangeSubjectFromMessage < ActiveRecord::Migration
+  def change
+  end
+end

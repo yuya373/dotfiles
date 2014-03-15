@@ -1,0 +1,13 @@
+listing_ids = Listing.pluck(:id)
+
+listing_available = []
+listing_ids.each do |listing_id|
+  RoomSchedule.available.listing_is(listing_id).each do |available|
+    available_time = ( available.end_at - available.start_at ) / 360
+    listing_available << [listing_id, available_time]
+  end
+end
+
+
+
+

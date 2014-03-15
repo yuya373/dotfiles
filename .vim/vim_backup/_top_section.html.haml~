@@ -1,0 +1,14 @@
+- if @listing.is_display
+  = render "listings/share_group"
+
+.listing-title-group
+    = render "partials/back_button"
+  %h1= @listing.title
+  .listing-title-footer
+    %span.listing-footer-item= @listing.category.name
+    %span.divider &bull;
+    %span.listing-footer-item.tx-yellow-green= access_in_words(@listing.listing_station)
+    / %span.listing-address
+
+.listing-nav-group
+  = render "listings/page_tab", listing: @listing

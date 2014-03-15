@@ -1,0 +1,11 @@
+require 'spec_helper'
+
+describe Equipments do
+  describe "#new" do
+
+  end
+
+  describe "#show" do
+    expect(assigns(:eqs)).to eq()
+  end
+end

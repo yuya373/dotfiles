@@ -1,0 +1,18 @@
+class CreateAlienBookings < ActiveRecord::Migration
+  def change
+    create_table :alien_bookings do |t|
+      t.references :listing, null: false
+      t.datetime :start_at, null: false
+      t.integer :minutes, limit: 2, null: false
+      t.integer :party, limit: 2
+      t.integer :price, limit: 3
+      t.string :name, limit: 50
+      t.string :phone, limit: 15
+      t.string :email
+      t.string :memo
+      t.timestamps
+    end
+    add_index :alien_bookings, :listing_id
+    add_index :alien_bookings, [:listing_id, :start_at], unique: true
+  end
+end

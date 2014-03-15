@@ -1,0 +1,10 @@
+var f = new Boolean(false);
+
+console.log(f.toString());
+
+var ff = Boolean(false);
+
+console.log( ff );
+
+console.log( undefined in this );
+console-log

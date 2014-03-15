@@ -1,0 +1,81 @@
+
+$_label_width: 50px;
+$_left: $_label_width + 10px;
+
+span.station-selector {
+  display: block;
+
+  label {
+    float: left;
+    width: $_label_width;
+  }
+
+  select {
+    margin-left: $_left;
+  }
+}
+
+table.business-hour-table {
+  th.wday {
+    width: 50px;
+  }
+
+  td.is-open-checkbox {
+    width: 70px;
+  }
+}
+
+img.listing-form-thumb {
+  width: 50px;
+  height: 50px;
+}
+
+img.listing-form-photo {
+  width: 500px;
+}
+.controls-location{
+  margin-left: d
+}
+.controls-location{
+  style: inline;
+  margin-left: 180px;
+  margin-bottom: 20px;
+  .zip_code{
+    margin-bottom: 10px;
+    input{
+      margin-left: 5px;
+      margin-right: 5px;
+      &#listing_listing_location_attributes_zip_code{
+        width: 100px;
+      }
+    }
+  }
+  .pre_city{
+    margin-bottom: 10px;
+    input{
+      margin-left: 5px;
+      margin-right: 5px;
+      &#listing_listing_location_attributes_prefecture{
+        width: 90px;
+      }
+      &#listing_listing_location_attributes_city{
+        width: 160px;
+      }
+    }
+  }
+  .lot_build{
+    input{
+      margin-left: 5px;
+      margin-right: 5px;
+      &#listing_listing_location_attributes_lot_number{
+        width: 140px;
+      }
+      &#listing_listing_location_attributes_building{
+        width: 140px;
+      }
+    }
+  }
+  .alert{
+    margin-top: 5px;
+  }
+}

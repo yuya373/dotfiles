@@ -1,0 +1,18 @@
+!!!
+%html
+  %head
+    = stylesheet_link_tag "pc_app", media: "all", "data-turbolinks-track" => true
+    = render "partials/provider_js"
+    = render "partials/favicon"
+    = csrf_meta_tags
+    = display_meta_tags
+    = yield :addon_scripts
+  %body{class: body_css_class}
+    .header= render "layouts/provider/header"
+    = yield
+    .footer= render "partials/footer"
+
+    = render "partials/analytics"
+    = render "partials/mixpanel_provider"
+
+  != render_castro

@@ -1,0 +1,20 @@
+# == Schema Information
+#
+# Table name: pre_booking_bills
+#
+#  id         :integer          not null, primary key
+#  user_id    :integer          not null
+#  address    :string(255)
+#  company    :string(255)
+#  name       :string(255)
+#  created_at :datetime
+#  updated_at :datetime
+#
+# Indexes
+#
+#  user_id  (user_id) UNIQUE
+#
+
+class PreBookingBill < ActiveRecord::Base
+  belongs_to :user
+end

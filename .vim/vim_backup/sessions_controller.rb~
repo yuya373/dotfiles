@@ -1,0 +1,13 @@
+class ProviderUsers::SessionsController < Devise::SessionsController
+  include SetUa
+  layout "provider/before_sign_in"
+  after_action :set_provider_ua, only: [:create]
+
+  def after_sign_in_path_for(resource)
+    provider_root_path
+  end
+
+  def after_sign_out_path_for(resource)
+    new_provider_user_session_path
+  end
+end

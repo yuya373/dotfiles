@@ -1,0 +1,90 @@
+- set_page_meta_tags("ヘルプ：スペース")
+- path_to_image = 'help/space/'
+
+.page-header
+  %h1
+    スペースについて
+    %small 登録、編集、削除
+.guide-group
+  %h4 スペースの登録
+  %p
+    スペースの登録はスペース一覧からいつでも行えます。
+    「スペースを登録」をクリックすると登録フォームが表示されるので必要事項を記入し、「掲載を申請」をクリックしてください。
+    後ほどSpaceeが承認することで登録されたスペースが公開されます。
+  = toggle_button("#add")
+  .collapse{id: 'add'}
+    %ul.help-thumbs
+      %li.help-thumb
+        = image("#{path_to_image}to_provider_top.png")
+        = caption("画面右上のメニューから#{link_to "スペース一覧", provider_listings_path}へ")
+      %li.help-thumb
+        = image("#{path_to_image}initial_listings.png")
+        = caption("スペースを登録ボタンをクリックすると自分のスペースを登録できるフォームへ移動できます。")
+        %p
+          =link_to "フォーム記入例", image_path("#{path_to_image}form_ex.jpg")
+        .alert.alert-error 登録には物件の写真が最低１枚必須です。
+      %li.help-thumb
+        = image("#{path_to_image}notice_added_space.png")
+        = caption("スペース登録後このように表示されれば成功です。")
+      %li.help-thumb
+        %h5 清掃時間について
+        = image("#{path_to_image}cleaning_minutes.png")
+        = caption(  "連続した２件の予約に対してスペースを整頓する時間が必要な場合入力してください。 清掃時間を設定すると仮予約が入った時予約終了後の時間に自動的に設定された時間が追加されます。" )
+
+.guide-group
+  %h4 スペースの編集、削除
+  %p
+    スペース一覧から「編集」ボタンをクリックするとフォームが表示されるので編集事項を記入し、「保存」をクリックしてください。スペースを削除したい場合は「編集」ボタンをクリックしフォーム下部の「このスペースを削除する」をクリックしてください。
+  = toggle_button('#edit')
+  .collapse{id: 'edit'}
+    %ul.help-thumbs
+      %li.help-thumb
+        = image("#{path_to_image}listing_pending.png")
+        = caption("メニューから#{link_to "スペース一覧", provider_listings_path}へ行き、編集ボタンをクリックするとフォームへ移動できます。")
+      %li.help-thumb
+        = image("#{path_to_image}save.png")
+        = caption("フォーム下部の保存ボタンをクリックすると保存されます。")
+
+.guide-group
+  %h4 スペースの公開
+  %p スペースの公開は編集フォームで「公開する」のチェックボックスをクリックしてください。その後Spacee運営者が承認することで公開されます。
+  = toggle_button('#publish')
+  .collapse{id: 'publish'}
+    %ul.help-thumbs
+      %li.help-thumb
+        = image("#{path_to_image}publish_check_box.png")
+        = caption("編集フォームのチェックボックスです。")
+      %li.help-thumb
+        = image("#{path_to_image}waiting_publish.png")
+        = caption("Spaceeから承認されると公開されます。")
+
+
+.guide-group{id: 'preview', name: 'preview'}
+  %h4 プレビュー画面を見るには
+  %p
+    プレビュー画面はスペースが公開されていない時に閲覧できます。
+    スペース一覧からプレビューを閲覧したいスペースをクリックすると「プレビュー」ボタンが表示されるのでクリックしてください。
+  = toggle_button('#preview_more')
+  .collapse{id: 'preview_more'}
+    %ul.help-thumbs
+      %li.help-thumb
+        = image("#{path_to_image}listing_pending.png")
+        = caption("#{link_to "スペース一覧", provider_listings_path}から閲覧したいスペースの名前をクリックしてください。")
+    %ul.help-thumbs
+      %li.help-thumb
+        = image("#{path_to_image}listing.png")
+        = caption("プレビューボタンをクリックすると公開前の状態が閲覧できます。")
+    %ul.help-thumbs
+      %li.help-thumb
+        = image("#{path_to_image}preview_header.png")
+        = caption("「この内容で公開する」をクリックするとプレビューに表示した内容で公開されます。")
+.guide-group
+  %h4 口コミ機能について
+  %p
+    ユーザーは使用したスペースに対して口コミを書くことができます。
+    口コミを見るには画面上部のスペース一覧をクリックし「口コミ」をクリックしてください。
+  %p
+    %small ※口コミを閲覧できるのはスペース掲載者のみです。
+
+
+

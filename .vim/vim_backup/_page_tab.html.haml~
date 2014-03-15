@@ -1,0 +1,28 @@
+
+- detail_li_class  = (controller.action_name == "show") ? "active" : ""
+- cal_li_class     = (controller.action_name == "calendar") ? "active" : ""
+- price_li_class   = (controller.action_name == "index") ? "active" : ""
+- reviews_li_class = (controller.action_name == "reviews") ? "active" : ""
+
+- if listing.is_display?
+  = render 'partials/back_button'
+%ul.nav.nav-tabs
+  %li{:class=>detail_li_class}
+    - if listing.is_display
+      = link_to "詳細", listing_path(listing, keeped_query)
+    - else
+      = link_to "詳細", provider_listing_preview_path(listing)
+  - if listing.setup_done? && listing.published?
+    %li{:class=>cal_li_class}
+      = link_to "空室カレンダー", calendar_listing_path(listing, keeped_query)
+  - elsif
+    %li{:class => cal_li_class}
+      = link_to "空室カレンダー"
+  %li{:class=>price_li_class}
+    - if listing.is_display
+      = link_to "料金プラン", listing_price_plans_path(listing, keeped_query)
+    - else
+      = link_to "料金プラン", price_plans_provider_listing_preview_path(listing)
+  - if listing.is_display? && listing.pickup_reviews.present?
+    %li{:class=>reviews_li_class}
+      = link_to "口コミ・感想", reviews_listing_path(listing, keeped_query)

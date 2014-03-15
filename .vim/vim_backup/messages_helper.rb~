@@ -1,0 +1,34 @@
+module MessagesHelper
+  def next_message(message, usr)
+    if message.next
+      link_to resolve_path(message.next, usr) do
+        "次のメッセージ  <i class='icon-chevron-right' ></i>".html_safe
+      end
+    else
+      link_to resolve_path(message.first_message, usr) do
+        "最初のメッセージ  <i class='icon-fast-forward'></i>".html_safe
+      end
+    end
+  end
+
+  def previous_message(message)
+    if message.previous
+      link_to resolve_path(message.previous, usr) do
+        "<i class='icon-chevron-left'></i>  前のメッセージ".html_safe
+      end
+    else
+      # link_to "最後のメッセージ", provider_message_path(message.last_message)
+      link_to resolve_path(message.last_message, usr) do
+        "<i class='icon-fast-backward'></i>  最後のメッセージ".html_safe
+      end
+    end
+  end
+
+  def resolve_path(message, usr)
+    if usr.is_a?(ProviderUser)
+      provider_message_path(message)
+    else
+      user_message_path(message)
+    end
+  end
+end

@@ -1,0 +1,688 @@
+# encoding: UTF-8
+# This file is auto-generated from the current state of the database. Instead
+# of editing this file, please use the migrations feature of Active Record to
+# incrementally modify your database, and then regenerate this schema definition.
+#
+# Note that this schema.rb definition is the authoritative source for your
+# database schema. If you need to create the application database on another
+# system, you should be using db:schema:load, not running all the migrations
+# from scratch. The latter is a flawed and unsustainable approach (the more migrations
+# you'll amass, the slower it'll run and the greater likelihood for issues).
+#
+# It's strongly recommended that you check this file into your version control system.
+
+ActiveRecord::Schema.define(version: 20140311095325) do
+
+  create_table "access_logs", force: true do |t|
+    t.integer  "user_id"
+    t.string   "ip"
+    t.datetime "time"
+    t.text     "path"
+    t.integer  "status",        limit: 1, default: 0
+    t.integer  "search_result", limit: 2
+  end
+
+  add_index "access_logs", ["ip"], name: "ip", using: :btree
+  add_index "access_logs", ["time"], name: "time", using: :btree
+
+  create_table "admin_users", force: true do |t|
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "admin_users", ["email"], name: "email", unique: true, using: :btree
+  add_index "admin_users", ["reset_password_token"], name: "reset_password_token", unique: true, using: :btree
+
+  create_table "alien_bookings", force: true do |t|
+    t.integer  "listing_id",            null: false
+    t.datetime "start_at",              null: false
+    t.integer  "minutes",    limit: 2,  null: false
+    t.integer  "party",      limit: 2
+    t.integer  "price",      limit: 3
+    t.string   "name",       limit: 50
+    t.string   "phone",      limit: 15
+    t.string   "email"
+    t.string   "memo"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "alien_bookings", ["listing_id", "start_at"], name: "listing_id_and_start_at", unique: true, using: :btree
+
+  create_table "booking_requests", force: true do |t|
+    t.integer  "listing_id",                       null: false
+    t.integer  "user_id",                          null: false
+    t.integer  "party",      limit: 2,             null: false
+    t.integer  "minutes",    limit: 2,             null: false
+    t.datetime "start_at",                         null: false
+    t.integer  "status",     limit: 1, default: 0, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "booking_requests", ["listing_id"], name: "listing_id", using: :btree
+  add_index "booking_requests", ["user_id"], name: "user_id", using: :btree
+
+  create_table "booking_statuses", force: true do |t|
+    t.integer  "listing_id",                             null: false
+    t.integer  "booking_count",    limit: 3, default: 0, null: false
+    t.integer  "approved_count",   limit: 3, default: 0, null: false
+    t.integer  "decline_count",    limit: 3, default: 0, null: false
+    t.integer  "cancel_count",     limit: 3, default: 0, null: false
+    t.integer  "response_minutes", limit: 2, default: 0, null: false
+    t.datetime "updated_at"
+  end
+
+  add_index "booking_statuses", ["listing_id"], name: "listing_id", unique: true, using: :btree
+
+  create_table "calendar_configurations", force: true do |t|
+    t.integer  "listing_id",              null: false
+    t.integer  "price_plan_id",           null: false
+    t.integer  "wday",          limit: 1, null: false
+    t.boolean  "is_holiday",              null: false
+    t.boolean  "is_open",                 null: false
+    t.time     "open_at",                 null: false
+    t.time     "close_at",                null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "calendar_configurations", ["listing_id", "wday"], name: "listing_id_and_wday", unique: true, using: :btree
+  add_index "calendar_configurations", ["price_plan_id"], name: "calendar_configurations_price_plan_id_fk", using: :btree
+
+  create_table "cards", force: true do |t|
+    t.integer  "user_id",            null: false
+    t.string   "webpay_customer_id", null: false
+    t.string   "object",             null: false
+    t.boolean  "livemode",           null: false
+    t.string   "created",            null: false
+    t.string   "email",              null: false
+    t.string   "description",        null: false
+    t.integer  "exp_year",           null: false
+    t.integer  "exp_month",          null: false
+    t.string   "fingerprint",        null: false
+    t.string   "name",               null: false
+    t.string   "country",            null: false
+    t.string   "card_type",          null: false
+    t.string   "cvc_check",          null: false
+    t.string   "last4",              null: false
+    t.text     "response"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "cards", ["user_id"], name: "user_id", using: :btree
+
+  create_table "categories", force: true do |t|
+    t.string   "name",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "cities", force: true do |t|
+    t.integer  "pref_cd",    limit: 1,  null: false
+    t.string   "name",       limit: 20, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "cities", ["pref_cd"], name: "pref_cd", using: :btree
+
+  create_table "collections", force: true do |t|
+    t.string   "key",              null: false
+    t.string   "name",             null: false
+    t.datetime "start_at",         null: false
+    t.datetime "end_at",           null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "description"
+    t.string   "meta_keyword"
+    t.string   "meta_description"
+    t.string   "meta_title"
+  end
+
+  create_table "discount_plan_lines", force: true do |t|
+    t.integer  "discount_plan_id",           null: false
+    t.integer  "minutes",          limit: 2, null: false
+    t.integer  "price",            limit: 3, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "discount_plan_lines", ["discount_plan_id"], name: "discount_plan_id", using: :btree
+
+  create_table "discount_plans", force: true do |t|
+    t.integer  "listing_id",             null: false
+    t.string   "name",                   null: false
+    t.integer  "discount_per", limit: 1, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "discount_plans", ["listing_id"], name: "listing_id", using: :btree
+
+  create_table "equipment", force: true do |t|
+    t.string   "name",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "lines", force: true do |t|
+    t.integer  "company_cd",   null: false
+    t.string   "line_name",    null: false
+    t.string   "line_name_k",  null: false
+    t.string   "line_name_h",  null: false
+    t.string   "line_color_c"
+    t.string   "line_color_t"
+    t.string   "line_type"
+    t.float    "lon",          null: false
+    t.float    "lat",          null: false
+    t.integer  "zoom",         null: false
+    t.integer  "e_status",     null: false
+    t.integer  "e_sort",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "listing_agreements", force: true do |t|
+    t.integer  "listing_id", null: false
+    t.text     "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "listing_agreements", ["listing_id"], name: "listing_id", unique: true, using: :btree
+
+  create_table "listing_cancellation_policies", force: true do |t|
+    t.integer  "listing_id", null: false
+    t.text     "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "listing_cancellation_policies", ["listing_id"], name: "listing_id", unique: true, using: :btree
+
+  create_table "listing_cities", force: true do |t|
+    t.integer "listing_id", null: false
+    t.integer "city_id",    null: false
+  end
+
+  add_index "listing_cities", ["city_id", "listing_id"], name: "city_id_and_listing_id", unique: true, using: :btree
+
+  create_table "listing_collections", force: true do |t|
+    t.integer  "listing_id",    null: false
+    t.integer  "collection_id", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "listing_collections", ["collection_id", "listing_id"], name: "collection_id_and_listing_id", unique: true, using: :btree
+
+  create_table "listing_descriptions", force: true do |t|
+    t.integer "listing_id", null: false
+    t.text    "content"
+  end
+
+  add_index "listing_descriptions", ["listing_id"], name: "listing_id", unique: true, using: :btree
+
+  create_table "listing_equipments", force: true do |t|
+    t.integer  "listing_id",   null: false
+    t.integer  "equipment_id", null: false
+    t.string   "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "listing_locations", force: true do |t|
+    t.integer  "listing_id",                 null: false
+    t.string   "zip_code_before", limit: 10
+    t.string   "zip_code_after",  limit: 10
+    t.float    "longitude"
+    t.float    "latitude"
+    t.integer  "zoom",            limit: 1
+    t.string   "prefecture",                 null: false
+    t.string   "city",                       null: false
+    t.string   "lot_number",                 null: false
+    t.string   "building"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "listing_locations", ["listing_id"], name: "listing_id", unique: true, using: :btree
+
+  create_table "listing_setups", force: true do |t|
+    t.integer  "listing_id",                                   null: false
+    t.boolean  "is_done",                      default: false, null: false
+    t.integer  "cleaning_minutes",   limit: 1, default: 0,     null: false
+    t.boolean  "is_sales_guarantee",           default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "listing_setups", ["listing_id"], name: "listing_id", unique: true, using: :btree
+
+  create_table "listing_stations", force: true do |t|
+    t.integer  "listing_id",     null: false
+    t.integer  "station_id",     null: false
+    t.integer  "access_minutes", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "listing_stations", ["listing_id", "access_minutes"], name: "listing_id_and_access_minutes", using: :btree
+  add_index "listing_stations", ["station_id", "listing_id"], name: "station_id_and_listing_id", unique: true, using: :btree
+
+  create_table "listing_stocks", id: false, force: true do |t|
+    t.integer  "id",                                                null: false
+    t.integer  "listing_id",                                        null: false
+    t.datetime "start_at",                                          null: false
+    t.datetime "end_at",                                            null: false
+    t.integer  "minutes",                     limit: 2, default: 0, null: false
+    t.integer  "prime_time_minutes",          limit: 2, default: 0, null: false
+    t.integer  "holiday_minutes",             limit: 2, default: 0, null: false
+    t.integer  "occupied_minutes",            limit: 2, default: 0, null: false
+    t.integer  "prime_time_occupied_minutes", limit: 2, default: 0, null: false
+    t.integer  "holiday_occupied_minutes",    limit: 2, default: 0, null: false
+  end
+
+  add_index "listing_stocks", ["listing_id"], name: "listing_id", using: :btree
+
+  create_table "listing_usages", force: true do |t|
+    t.integer  "listing_id",  null: false
+    t.integer  "usage_id",    null: false
+    t.string   "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "listing_usages", ["listing_id", "usage_id"], name: "listing_id_and_usage_id", unique: true, using: :btree
+
+  create_table "listings", force: true do |t|
+    t.integer  "provider_id",                                           null: false
+    t.integer  "category_id",                                           null: false
+    t.boolean  "is_display",                            default: false, null: false
+    t.boolean  "is_approved",                           default: false, null: false
+    t.string   "title",                                                 null: false
+    t.string   "thumb"
+    t.integer  "capacity",                                              null: false
+    t.integer  "square",                                                null: false
+    t.string   "desc",                                                  null: false
+    t.integer  "price",                       limit: 3, default: 0,     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "email",                                                 null: false
+    t.string   "tel",                                                   null: false
+    t.integer  "acceptable_from_now_minutes", limit: 2, default: 0,     null: false
+    t.integer  "min_booking_minutes",         limit: 2,                 null: false
+    t.integer  "score",                       limit: 1, default: 0,     null: false
+  end
+
+  add_index "listings", ["provider_id", "title"], name: "provider_id_and_title", unique: true, using: :btree
+
+  create_table "mail_templates", force: true do |t|
+    t.integer  "listing_id", null: false
+    t.text     "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "mail_templates", ["listing_id"], name: "listing_id", using: :btree
+
+  create_table "neighborhood_stations", force: true do |t|
+    t.integer "neighborhood_id", null: false
+    t.integer "station_g_cd",    null: false
+  end
+
+  add_index "neighborhood_stations", ["neighborhood_id", "station_g_cd"], name: "neighborhood_id_and_station_g_cd", unique: true, using: :btree
+
+  create_table "neighborhoods", force: true do |t|
+    t.string   "name",       null: false
+    t.string   "key",        null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "neighborhoods", ["key"], name: "key", unique: true, using: :btree
+
+  create_table "notes", force: true do |t|
+    t.integer  "listing_id"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "notes", ["listing_id"], name: "listing_id", unique: true, using: :btree
+
+  create_table "orders", force: true do |t|
+    t.integer  "user_id",                  null: false
+    t.integer  "pre_booking_id",           null: false
+    t.integer  "card_id",                  null: false
+    t.integer  "amount",         limit: 3, null: false
+    t.string   "checkout_id",              null: false
+    t.text     "response"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "orders", ["card_id"], name: "card_id", using: :btree
+  add_index "orders", ["pre_booking_id"], name: "pre_booking_id", using: :btree
+  add_index "orders", ["user_id"], name: "user_id", using: :btree
+
+  create_table "payment_configurations", force: true do |t|
+    t.integer  "listing_id",                      null: false
+    t.boolean  "is_card",         default: false, null: false
+    t.boolean  "is_bank",         default: false, null: false
+    t.integer  "bank_limit_days", default: 0,     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "payment_configurations", ["listing_id"], name: "listing_id", unique: true, using: :btree
+
+  create_table "payments", force: true do |t|
+    t.integer  "pre_booking_id",            null: false
+    t.integer  "payment_status", limit: 1,  null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "type",           limit: 30, null: false
+  end
+
+  add_index "payments", ["pre_booking_id"], name: "pre_booking_id", using: :btree
+
+  create_table "photos", force: true do |t|
+    t.integer  "listing_id", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "image"
+  end
+
+  add_index "photos", ["listing_id"], name: "listing_id", using: :btree
+
+  create_table "pre_booking_reviews", force: true do |t|
+    t.integer  "pre_booking_id", null: false
+    t.integer  "review_id",      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "pre_booking_reviews", ["pre_booking_id"], name: "pre_booking_id", unique: true, using: :btree
+  add_index "pre_booking_reviews", ["review_id"], name: "review_id", using: :btree
+
+  create_table "pre_bookings", id: false, force: true do |t|
+    t.integer  "id",                                           null: false
+    t.datetime "start_at",                                     null: false
+    t.integer  "minutes",            limit: 2,                 null: false
+    t.integer  "party",              limit: 1,                 null: false
+    t.string   "name",                                         null: false
+    t.string   "company_name"
+    t.string   "phone",                                        null: false
+    t.string   "email",                                        null: false
+    t.string   "usage"
+    t.text     "message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "listing_id",                                   null: false
+    t.integer  "user_id",                                      null: false
+    t.boolean  "agreement"
+    t.boolean  "is_review_notified",           default: false, null: false
+    t.integer  "status",             limit: 1, default: 0,     null: false
+    t.integer  "price",              limit: 3,                 null: false
+    t.integer  "cleaning_minutes",   limit: 1, default: 0,     null: false
+    t.datetime "deleted_at"
+    t.integer  "extend_minutes",               default: 0,     null: false
+    t.datetime "respond_at"
+  end
+
+  add_index "pre_bookings", ["listing_id", "start_at", "status"], name: "listing_id_and_start_at_and_status", using: :btree
+  add_index "pre_bookings", ["user_id", "deleted_at"], name: "user_id_and_deleted_at", using: :btree
+
+  create_table "pre_provider_contacts", force: true do |t|
+    t.string   "company"
+    t.string   "person"
+    t.string   "email",      null: false
+    t.string   "tel"
+    t.text     "content",    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "pre_settlements", force: true do |t|
+    t.integer  "listing_id",  null: false
+    t.string   "description", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "pre_settlements", ["listing_id"], name: "listing_id", using: :btree
+
+  create_table "price_plan_timetables", force: true do |t|
+    t.integer  "price_plan_id", null: false
+    t.integer  "price",         null: false
+    t.time     "start_at",      null: false
+    t.time     "end_at",        null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "price_plan_timetables", ["price_plan_id", "start_at"], name: "price_plan_id_and_start_at", unique: true, using: :btree
+
+  create_table "price_plans", force: true do |t|
+    t.integer  "listing_id",       null: false
+    t.integer  "discount_plan_id"
+    t.string   "name",             null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "price_plans", ["discount_plan_id"], name: "price_plans_discount_plan_id_fk", using: :btree
+  add_index "price_plans", ["listing_id"], name: "listing_id", using: :btree
+
+  create_table "provider_users", force: true do |t|
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "provider_id"
+    t.string   "name"
+    t.string   "position"
+    t.string   "department"
+    t.boolean  "agreement"
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string   "unconfirmed_email"
+    t.string   "user_agent"
+  end
+
+  add_index "provider_users", ["confirmation_token"], name: "confirmation_token", unique: true, using: :btree
+  add_index "provider_users", ["email"], name: "email", unique: true, using: :btree
+  add_index "provider_users", ["reset_password_token"], name: "reset_password_token", unique: true, using: :btree
+
+  create_table "providers", force: true do |t|
+    t.string   "name",         null: false
+    t.string   "address",      null: false
+    t.string   "tel",          null: false
+    t.string   "homepage"
+    t.string   "bank_account"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "reviews", force: true do |t|
+    t.integer  "user_id",    null: false
+    t.integer  "listing_id", null: false
+    t.integer  "point",      null: false
+    t.text     "comment",    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "reviews", ["listing_id"], name: "listing_id", using: :btree
+  add_index "reviews", ["user_id", "listing_id"], name: "user_id_and_listing_id", unique: true, using: :btree
+
+  create_table "room_calendars", id: false, force: true do |t|
+    t.integer  "id",                                  null: false
+    t.integer  "listing_id",                          null: false
+    t.date     "day",                                 null: false
+    t.integer  "price_plan_id",                       null: false
+    t.integer  "price",         limit: 3, default: 0, null: false
+    t.boolean  "is_open",                             null: false
+    t.time     "open_at",                             null: false
+    t.time     "close_at",                            null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "room_calendars", ["listing_id", "day"], name: "listing_id_and_day", unique: true, using: :btree
+
+  create_table "room_schedule_logs", id: false, force: true do |t|
+    t.integer  "listing_id",           null: false
+    t.datetime "updated_at",           null: false
+    t.datetime "start_at",             null: false
+    t.datetime "end_at",               null: false
+    t.integer  "status",     limit: 1, null: false
+  end
+
+  create_table "room_schedules", id: false, force: true do |t|
+    t.integer  "listing_id",           null: false
+    t.datetime "start_at",             null: false
+    t.datetime "end_at",               null: false
+    t.integer  "status",     limit: 1, null: false
+  end
+
+  create_table "stations", force: true do |t|
+    t.integer  "station_g_cd",   null: false
+    t.string   "station_name",   null: false
+    t.string   "station_name_k"
+    t.string   "station_name_r"
+    t.integer  "line_id",        null: false
+    t.integer  "pref_cd",        null: false
+    t.string   "post",           null: false
+    t.string   "add",            null: false
+    t.float    "lon",            null: false
+    t.float    "lat",            null: false
+    t.string   "open_ymd"
+    t.string   "close_ymd"
+    t.integer  "e_status",       null: false
+    t.integer  "e_sort",         null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "stations", ["line_id"], name: "line_id", using: :btree
+  add_index "stations", ["station_g_cd"], name: "station_g_cd", using: :btree
+
+  create_table "transactions", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "card_id"
+    t.integer  "order_id"
+    t.boolean  "captured"
+    t.string   "checkout_id"
+    t.string   "object"
+    t.string   "currency"
+    t.string   "description"
+    t.string   "amount"
+    t.string   "amount_refunded"
+    t.string   "customer"
+    t.string   "created"
+    t.boolean  "paid"
+    t.boolean  "refunded"
+    t.string   "failure_message"
+    t.integer  "exp_month"
+    t.integer  "exp_year"
+    t.string   "fingerprint"
+    t.string   "name"
+    t.string   "country"
+    t.string   "card_type"
+    t.string   "cvc_check"
+    t.string   "last4"
+    t.integer  "expire_time"
+    t.text     "response"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "transactions", ["card_id"], name: "card_id", using: :btree
+  add_index "transactions", ["order_id"], name: "order_id", using: :btree
+  add_index "transactions", ["user_id"], name: "user_id", using: :btree
+
+  create_table "usages", force: true do |t|
+    t.string   "name",             null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "desc"
+    t.string   "overview"
+    t.string   "meta_title"
+    t.string   "meta_keyword"
+    t.string   "meta_description"
+  end
+
+  create_table "user_profiles", force: true do |t|
+    t.integer  "user_id",    null: false
+    t.string   "address"
+    t.string   "company"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "user_profiles", ["user_id"], name: "user_id", unique: true, using: :btree
+
+  create_table "users", force: true do |t|
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string   "unconfirmed_email"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name"
+    t.boolean  "agreement"
+    t.string   "phone"
+    t.datetime "deleted_at"
+    t.string   "pc_user_agent"
+    t.string   "mobile_user_agent"
+  end
+
+  add_index "users", ["confirmation_token"], name: "confirmation_token", unique: true, using: :btree
+  add_index "users", ["email"], name: "email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "reset_password_token", unique: true, using: :btree
+
+  add_foreign_key "calendar_configurations", "price_plans", name: "calendar_configurations_price_plan_id_fk"
+
+  add_foreign_key "listing_cities", "cities", name: "listing_cities_city_id_fk"
+
+  add_foreign_key "listing_stations", "listings", name: "listing_stations_listing_id_fk"
+
+  add_foreign_key "neighborhood_stations", "neighborhoods", name: "neighborhood_stations_neighborhood_id_fk", dependent: :delete
+
+  add_foreign_key "price_plans", "discount_plans", name: "price_plans_discount_plan_id_fk", dependent: :nullify
+
+end

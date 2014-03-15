@@ -1,0 +1,62 @@
+
+require 'rubygems'
+require 'nokogiri'
+require 'open-uri'
+require 'csv'
+
+city = {
+  minato: "http://www.homes.co.jp/chintai/tempo/tokyo/minato-city/list/"
+  shinjyuku: "http://www.homes.co.jp/chintai/tempo/tokyo/shinjuku-city/list/",
+  shinagawa: "http://www.homes.co.jp/chintai/tempo/tokyo/shinagawa-city/list/",
+  ohta: "http://www.homes.co.jp/chintai/tempo/tokyo/meguro-city/list/",
+  shibuya: "http://www.homes.co.jp/chintai/tempo/tokyo/shibuya-city/list/",
+  toshima: "http://www.homes.co.jp/chintai/tempo/tokyo/toshima-city/list/"
+}
+
+city.each do |city, city_url|
+  url = city_url
+  charset = open(url).charset
+
+  doc = Nokogiri::HTML.parse(open(url).read, nil, charset)
+  space = doc.css("div.mod-margeBuilding.rTempo.ui-frame.ui-frame-cacao-bar")
+
+  space_detail_url = []
+
+  space.each do |space|
+    space_detail_url << space.css("h3 a").attribute('href').text
+  end
+
+  p space_detail_url
+
+  company_url = []
+  space_detail_url.each do |detail|
+    url = "http://www.homes.co.jp" + detail.to_s
+    doc = Nokogiri::HTML(open(url))
+    company_url << doc.css("div.mod-shopOutline div.container span.linkType2 a").attribute("href").text
+  end
+
+  p company_url
+
+  company_info = []
+
+  company_url.uniq.each do |company|
+    url = company
+    doc = Nokogiri::HTML(open(url))
+    begin
+      info = doc.css("div.mod-realtorOutline div.realtorDetailInfo")
+      name = info.css("p.realtorName ruby").text
+      com_url = info.css("p.forOfficialSiteLink a").attribute("href").text
+      company_info << [ name, com_url ]
+    rescue
+      next
+    end
+  end
+
+  p company_info
+
+  CSV.open("homes_#{city}.csv", "wb") do |csv|
+    company_info.each do |row|
+      csv << row
+    end
+  end
+end

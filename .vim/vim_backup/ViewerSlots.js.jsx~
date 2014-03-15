@@ -1,0 +1,152 @@
+/** @jsx React.DOM */
+
+define([
+    "react",
+    "components/mixins/SchedulerBlockMixin",
+    "components/mixins/SlotMixin",
+    "components/mixins/InteractiveSlotMixin",
+    "components/mixins/SchedulerHelper",
+    "components/mixins/DatetimeHelper",
+    "components/common/scheduleViewer/ViewerSlotsMixin"
+    ], function(React, SchedulerBlockMixin, SlotMixin, InteractiveSlotMixin, SchedulerHelper, DatetimeHelper, ViewerSlotsMixin) {
+  /*
+   * Viewer Slots for PC
+   */
+  var ViewerSlots = React.createClass({
+    mixins: [SchedulerBlockMixin, SlotMixin, InteractiveSlotMixin, SchedulerHelper, ViewerSlotsMixin],
+    renderContent: function() {
+      var url = this.props.listingAvailabilityUri
+      // console.log(this.props.listingAvailabilityUri);
+      // console.log(url);
+      if(_.isUndefined((this.props.hasSlots)) ){ return; }
+      if(this.props.hasSlots === true) { return; }
+      return (
+        <div className="no-slots">
+          <h4><i className="icon-minus-sign"></i> この週は空室がありません。</h4>
+          <div id="bookingRequest">
+            <a href={url} className="btn btn-primary btn-large">空室状況を問い合わせる</a>
+            <div className="mt1 tx-gray-light tx0-9">
+              入力した日時の空室状況をワンクリックでお問い合わせできます。
+            </div>
+          </div>
+        </div>
+      );
+    },
+    componentDidMount: function() {
+      this.$canvas = $(this.getDOMNode());
+      var evStart  = ($.hasTouchEvent() === true) ? "touchStart" : "mouseover",
+          evEnd    = ($.hasTouchEvent() === true) ? "touchEnd" : "click";
+      this.$canvas.on(evStart, ".block-available", this.startSlotFocus);
+      this.$canvas.on(evEnd, "." + this.focusBlockClassName, this.endSlotFocus);
+      this.prepareSlotMixin();
+      this.adjustScrollTop(this.props.defaultTime);
+      this.placeBlocks();
+    },
+    /*
+     * Slot Focus Handler
+     */
+    startSlotFocus: function(event) {
+      // console.log("startSlotFocus");
+      event.preventDefault();
+      var $currTarget = $(event.currentTarget);
+      if($currTarget.hasClass("block-available")) {
+        this.$currFocus = $currTarget;
+      }
+      else { return; }
+
+      // Cleanup
+      this.cleanupFocus();
+
+      var el  = this.makeFocusBlock(),
+          pos = this.$canvas.offset();
+      this.focusBlockProps = {
+        "index"  : Math.floor( (event.pageX - pos.left) / this.props.slotWidth),
+        "left"   : Math.floor( (event.pageX - pos.left) / this.props.slotWidth) * this.props.slotWidth,
+         "top"   : Math.floor( (event.pageY - pos.top) / this.props.slotHeight) * this.props.slotHeight,
+         "height": this.props.slotHeight
+      };
+
+      // Add block to $canvas
+      $(el).attr({
+        "style"  : this.blockStyle(this.focusBlockProps.index, 1, this.focusBlockProps.top)
+      }).appendTo(this.$canvas);
+
+      // Add tooltip to canvas
+      var tooltip = this.makeTooltip(this.pixelToTimeLabel(this.focusBlockProps.top), this.focusBlockProps);
+      this.$canvas.append(tooltip);
+
+      // Bind cancel event
+      this.$canvas.bind("mouseover", this.cancelSlotFocus);
+    },
+    cancelSlotFocus: function(event) {
+      // console.log("cancelSlotFocus");
+      if(! $(event.target).hasClass(this.rootClassName)) { return; }
+      this.cleanupFocus();
+      this.$currFocus = null;
+      this.$canvas.unbind("mouseover", this.cancelSlotFocus);
+    },
+    endSlotFocus: function(event) {
+      // console.log("endSlotFocus");
+      // if not block, skip
+      if(!$(event.target).hasClass(this.focusBlockClassName)) { return; }
+      // if $currFocus not set, skip
+      if(!this.$currFocus) { return; }
+      // Get date and time
+      var dayIndex  = this.$currFocus.attr("dayIndex"),
+          day       = this.props.days[dayIndex],
+          startsAt  = this.pixelToTimeLabel(this.focusBlockProps.top);
+      // Open prompt
+      this.props.onSlotSelect({
+        "day"     : day,
+        "startsAt": startsAt
+      });
+    },
+    cleanupFocus: function() {
+      this.$canvas.find("." + this.focusBlockClassName + ", .focus-tip").remove();
+    },
+    /*
+     * Make Elements
+     */
+    makeFocusBlock: function() {
+      // cache focus block element
+      if(!this.focusBlockEl) {
+        var el  = document.createElement("div");
+        $(el).attr({ "class"  : "slot-select-block " + this.focusBlockClassName });
+        this.focusBlockEl = el;
+      }
+      return this.focusBlockEl;
+    },
+    makeTooltip: function(time, props) {
+      // cache tooltip element
+      if(!this.tooltipEl) {
+        var el    = document.createElement("div"),
+            arrow = document.createElement("div"),
+            inner = document.createElement("div");
+        $(arrow).addClass("tooltip-arrow");
+        $(inner).addClass("tooltip-inner");
+        $(el).append(arrow)
+             .append(inner)
+             .addClass("focus-tip tooltip right fade in");
+        this.tooltipEl = el;
+      }
+      $(this.tooltipEl).find(".tooltip-inner").text(time);
+      $(this.tooltipEl).css("top", (props.top - props.height / 2) + "px").css("left", (props.left +this.props.slotWidth) + "px");
+      return this.tooltipEl;
+    },
+    makeRootStyle: function() {
+      var style = { "height": (this.props.slotHeight * this.props.slotNum * 24) + "px" };
+      if(this.props.style) { style = _.extend(style, this.props.style); };
+      if(this.props.hasSlots === false) {
+        style = _.extend(style, {
+          "height": "250px",
+          "width": "100%",
+          "left"  : 0,
+        });
+      }
+      return style;
+    }
+  });
+
+  return ViewerSlots;
+
+});

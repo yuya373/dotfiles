@@ -1,0 +1,14 @@
+class Provider::DashboardController < ProviderApplicationController
+  def index
+    @pending_pre_bookings = current_provider.pre_bookings.pending.includes(:listing)
+    @pre_bookings_this_month = current_provider.pre_bookings.includes(:listing).
+      where(start_at: Time.now.all_month).order(created_at: :desc)
+
+    bod = Time.now.beginning_of_day
+    @todays_pre_bookings = ( current_provider.pre_bookings.approved.
+      includes(:listing).within_day(bod).order(start_at: :asc).to_a  +  AlienBooking.provider_is(current_provider).within_day(bod).order(start_at: :asc).to_a )
+    @declined_pre_bookings = @pre_bookings_this_month.declined.includes(:listing).
+      start_at_gteq(bod).order(start_at: :asc)
+    @sale = @pre_bookings_this_month.approved.sum(:price)
+  end
+end

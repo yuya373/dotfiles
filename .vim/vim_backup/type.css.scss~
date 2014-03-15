@@ -1,0 +1,80 @@
+
+
+.small { font-size: 85%; }
+
+/*
+ * Color
+ *
+ */
+.tx-green { color: $green; }
+.tx-blue  { color: $blue; }
+.tx-gray  { color: $gray; }
+.tx-gray-light { color: $grayLight; }
+.tx-yellow-green { color: #A3B119; }
+.tx-ccc { color: #ccc; }
+.tx-lighter { color: $grayLighter; }
+.tx-red { color: $red; }
+.tx-pink{ color: $pink; }
+.tx-orange{ color: $orange; }
+
+
+
+/*
+ * Weight
+ */
+.strong { font-weight: bold; }
+.normal { font-weight: normal; }
+
+/*
+ * Section Title
+ */
+.section-title {
+
+}
+
+
+.section-title-light-blue {
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABEwAAAAlCAMAAABva4wJAAAAGXRF…RTtgbFzrA3k4aJaglR81ZopYnQieFoATpz+YUK/8XYACUbsDYxnVDAwAAAABJRU5ErkJggg==") center bottom;
+}
+
+.icon-1-5x {
+  font-size: 1.5em;
+}
+
+.tx0-8 { font-size: 11px; }
+.tx0-9 { font-size: 12px; }
+.tx-semi-small { font-size: $baseFontSize - 1px; }
+.tx1-2 { font-size: 16px; }
+.tx1-4 { font-size: 20px; }
+
+
+h1 { font-size: round($baseFontSize * 2.4); } // ~38px
+
+
+.tx-truncated {
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow: ellipsis;
+}
+
+.quoted-green {
+	border-left: 5px solid $green;
+	padding-left: 5px;
+}
+
+.tx-req {
+	color: $required;
+	font-size: 10px;
+}
+
+
+.stars-holder {
+	i {
+		color: $orange;
+	}
+}
+
+a.dot-light {
+	text-decoration: none;
+	border-bottom: 1px dotted #ccc;
+}

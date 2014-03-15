@@ -1,0 +1,22 @@
+class Receipt < ActiveRecord::BaseV
+  belongs_to :message, autosave: true
+  belongs_to :receiver, polymorphic: true
+
+  scope :receiver_is, ->(receiver){
+    where(receiver: receiver)
+  }
+  scope :unread, ->{
+    where(is_read: false)
+  }
+  scope :conversation_is, ->(conversation){
+    joins(:message).merge(Message.conversation_is(conversation))
+  }
+
+  def is_unread?
+    !is_read
+  end
+
+  def mark_as_read
+    update_attributes(is_read: true)
+  end
+end

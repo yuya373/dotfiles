@@ -1,0 +1,19 @@
+!!!
+%html
+  %head
+    = stylesheet_link_tag "pc_app", media: "all", "data-turbolinks-track" => true
+  %iframe{allowtransparency: "true", frameborder: "0", scrolling: "no", src: "//www.facebook.com/plugins/like.php?href=#{request.original_url}&width=210px&layout=button_count&action=like&show_faces=false&share=false&height=21&appId=594549643941274", style: "border:none; overflow:hidden; display:inline-block; width:150px; height:21px;"}
+    = render "partials/pc_js"
+    = render "partials/favicon"
+    = csrf_meta_tags
+    %meta{ name: "viewport", content: "width=device-width" }
+    = display_meta_tags
+    = yield :addon_scripts
+  %body.listing-page
+    .header= render "partials/header"
+    = yield
+    .footer= render "partials/footer"
+  - if Rails.env.production?
+    = render "partials/analytics"
+
+  != render_castro

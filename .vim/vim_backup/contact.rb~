@@ -1,0 +1,37 @@
+require 'csv'
+class Contact < ActiveRecord::Base
+  has_many :phones
+  accepts_nested_attributes_for :phones
+
+  validates :firstname, presence: true
+  validates :lastname, presence: true
+  validates :email, presence: true, uniqueness: true
+  validates :phones, length: { is: 3 }
+
+  def name
+    [firstname, lastname].join(' ')
+  end
+
+  def get_csv_content
+    [name, email]
+  end
+
+  # def hidden?
+    # hidden
+  # end
+  class << self
+    def by_letter(letter)
+      where("lastname LIKE ?", "#{letter}%").order(:lastname)
+    end
+
+    def to_csv
+      CSV.generate() do |csv|
+        # csv << %w( name email )
+        pps contacts
+        all.each do |contact|
+          csv << [contact.name, contact.email]
+        end
+      end
+    end
+  end
+end

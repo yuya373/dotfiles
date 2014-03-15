@@ -1,0 +1,22 @@
+# == Schema Information
+#
+# Table name: pre_booking_conversations
+#
+#  id              :integer          not null, primary key
+#  pre_booking_id  :integer          not null
+#  conversation_id :integer          not null
+#  created_at      :datetime
+#  updated_at      :datetime
+#
+
+require 'spec_helper'
+
+describe PreBookingConversation do
+  it do
+    should belong_to :conversation
+  end
+  it do
+    should belong_to :pre_booking
+
+  end
+end

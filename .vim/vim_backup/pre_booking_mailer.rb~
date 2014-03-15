@@ -1,0 +1,47 @@
+class PreBookingMailer < ActionMailer::Base
+  layout "mail"
+  default from: APP_CONFIG['mail']['info']
+  helper ApplicationHelper
+
+  def to_provider(pre_booking_id)
+    set_listing(pre_booking_id)
+    mail subject: "[Spacee]仮予約お申込のお知らせ 予約No:#{@pre_booking.id_to_num}",
+    to: @listing.email,
+    bcc: APP_CONFIG["mail"]["mail"]
+  end
+
+  def to_user(pre_booking_id)
+    set_listing(pre_booking_id)
+    mail subject: "[Spacee]予約お申込確認メール 予約No:#{@pre_booking.id_to_num}",
+    to: @user.email,
+    bcc: [APP_CONFIG["mail"]["mail"], @listing.email], reply_to: @listing.email
+  end
+
+  def review_notification(pre_booking)
+    set_listing(pre_booking)
+    mail subject: '[Spacee]ご利用されたスペースのご感想をお聞かせ下さい',
+    to: @user.email,
+    bcc: [APP_CONFIG['mail']['mail']]
+  end
+
+  def send_remind(pre_booking)
+mailer prmailer prmailer prmailer preeee    set_listing(pre_booking)
+    @mail_template = @listing.mail_template
+    mail subject: "[Spacee]明日の予約内容です 予約No:#{@pre_booking.id_to_num}", to: @user.email,
+      bcc: [APP_CONFIG['mail']['mail']], reply_to: @listing.email
+  end
+
+  private
+
+  def set_listing(pre_booking)
+    @pre_booking =
+      if pre_booking.is_a?(PreBooking)
+        pre_booking
+      else
+        PreBooking.includes(:listing).find pre_booking
+      end
+    @listing = @pre_booking.listing
+    @provider = @listing.provider
+    @user = @pre_booking.user
+  end
+end

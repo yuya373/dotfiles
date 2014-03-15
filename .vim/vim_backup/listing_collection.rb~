@@ -1,0 +1,20 @@
+# == Schema Information
+#
+# Table name: listing_collections
+#
+#  id            :integer          not null, primary key
+#  listing_id    :integer          not null
+#  collection_id :integer          not null
+#  created_at    :datetime
+#  updated_at    :datetime
+#
+# Indexes
+#
+#  collection_id_and_listing_id  (collection_id,listing_id) UNIQUE
+#
+
+class ListingCollection < ActiveRecord::Base
+  belongs_to :collection, touch: true
+  belongs_to :listing
+  validates_uniqueness_of :listing_id, scope: :collection_id, message: ""
+end

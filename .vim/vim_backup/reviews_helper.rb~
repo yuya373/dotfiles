@@ -1,0 +1,27 @@
+module Admin::ReviewsHelper
+  def review_stars(point)
+    return "" unless point
+    max  = 5
+    html = ""
+    left = max - point.ceil
+    point_digit = point - point.floor
+    html += make_star_filled() * point.floor
+    if point_digit > 0
+      html += make_star_half()
+    end
+    html += make_star_empty() * left
+    html.html_safe
+  end
+
+  def make_star_filled()
+    "<i class='icon-star'></i>"
+  end
+
+  def make_star_empty()
+    "<i class='icon-star-empty'></i>"
+  end
+
+  def make_star_half()
+    "<i class='icon-star-half-empty'></i>"
+  end
+end

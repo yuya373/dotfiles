@@ -1,0 +1,39 @@
+# == Schema Information
+#
+# Table name: listing_equipments
+#
+#  id           :integer          not null, primary key
+#  listing_id   :integer          not null
+#  equipment_id :integer          not null
+#  description  :string(255)
+#  created_at   :datetime
+#  updated_at   :datetime
+#
+
+class ListingEquipment < ActiveRecord::Base
+  belongs_to :listing, touch: true
+  belongs_to :equipment
+
+  scope :featured, ->{
+    where equipment_id: [1,7,9]
+  }
+  scope :usage_id_is, ->(equipment_id){
+    where equipment_id: equipment_id
+  }
+
+  def equipment_name
+    return description if etcetera?
+    equipment.name
+  end
+
+  def etcetera_text
+    return if etcetera?
+    description
+  end
+
+  private
+
+  def etcetera?
+    equipment_id == 100
+  end
+end

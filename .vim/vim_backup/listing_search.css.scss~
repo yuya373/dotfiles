@@ -1,0 +1,78 @@
+.ls-action-group {
+  padding: 1em $mobileMarginX 1em $mobileMarginX;
+  text-align: center;
+  background: #efefef;
+
+  .btn {
+    display: inline-block;
+    min-width: 7.5em;
+  }
+
+  .btn:first-child {
+    margin-right: 0.5em;
+  }
+
+  .btn:last-child {
+    margin-left: 0.5em;
+  }
+}
+
+.ls-form, form.ls-form {
+  margin-bottom: 0 !important;
+
+  .input-append,
+  select,
+  input {
+    margin-bottom: 0 !important;
+    font-size: 13px;
+  }
+
+  label {
+    color: $grayLight;
+    font-weight: bold;
+  }
+
+  .control-group:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  .controls {
+    margin-right: $mobileMarginX;
+  }
+
+  .select-time{
+    width: 55px;
+    display: inline;
+  }
+
+  .select-hours {
+    width: 120px;
+  }
+
+  .select-neighborhood {
+    width: 120px;
+  }
+
+  .input-party {
+    width: 50px;
+  }
+
+  .input-short {
+    width: 50px;
+  }
+
+  .add-on {
+    margin-left: -5px;
+  }
+}
+
+.picker__holder-listing-search {
+  // left: -200px !important;
+  right: 0 !important;
+}
+
+.picker-listing-search {
+  right: 0 !important;
+  // background: black;
+  // height: 100px;
+}

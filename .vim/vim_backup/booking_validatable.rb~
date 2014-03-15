@@ -1,0 +1,28 @@
+module BookingValidatable
+  private
+
+  def avaliable_schedule_and_price(listing, date)
+    room_calendar = listing.price_room_calendar(date).first
+    start_at, end_at = params_to_range(room_calendar)
+    return if start_at < 30.minutes.from_now
+    if start_at t
+      room_schedules = available_room_schedules(listing, start_at, end_at)
+      price = room_calendar.range_price(start_at, end_at).to_i if room_calendar
+    end
+    [room_schedules, price]
+  end
+
+  def params_to_range(room_calendar)
+    return unless room_calendar
+    start_at = room_calendar.str_to_dt(params[:time])
+    end_at = start_at + params[:hours].to_i.hours
+    return if start_at >= end_at
+    [start_at, end_at]
+  end
+
+  def available_room_schedules(listing, start_at, end_at)
+    listing.room_schedules.available.
+      contains_range(start_at, end_at +
+                     listing.listing_setup.cleaning_minutes.minutes)
+  end
+end

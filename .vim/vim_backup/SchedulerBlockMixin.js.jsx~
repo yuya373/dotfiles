@@ -1,0 +1,269 @@
+/** @jsx React.DOM */
+
+define([
+    "react",
+    "components/mixins/DatetimeHelper"
+    ], function(React, DatetimeHelper) {
+  return {
+    /*
+     * Block Style Helper
+     */
+    blockStyle: function(index, slotNum, top)  {
+      var style  = "",
+          left   = this.props.slotWidth * index,
+          height = this.props.slotHeight * slotNum,  //1px = border
+          properties = {
+            "width"   : this.props.slotWidth + "px",
+            "height"  : height + "px",
+            "top"     : top    + "px",
+            "left"    : left   + "px"
+          };
+      for ( var key in properties ) {
+        style += key + ":" + properties[key] + ";";
+      }
+      return style;
+    },
+    /*
+     * Base
+     */
+    makeBlockContent: function(heading, contents, className, isMutable) {
+      className || (className = "block-inner");
+      var el  = document.createElement("div"),
+          $el = $(el),
+          h5  = document.createElement("h5"),
+          content;
+      $(h5).addClass("block-heading").append(heading);
+      $el.attr({"class":className});
+      $el.append(h5);
+
+      if (_.isArray(contents)){
+        // console.log("array");
+        for (var i = 0; i < contents.length; i++){
+          content = contents[i]
+          this.makeContent($el, content)
+        }
+      } else {
+        // console.log("not array");
+        content = contents
+        this.makeContent($el, content)
+      };
+      if(isMutable === true) {
+        var iTag = document.createElement("i");
+        $(iTag).attr({"class":"icon-remove block-remove"});
+        $el.append(iTag);
+      }
+
+      return el;
+    },
+    makeContent: function (el, content) {
+      var body = document.createElement("div");
+      $(body).addClass("block-content").append(content);
+      return el.append(body);
+    },
+    makeBlock: function(params, className, content) {
+      var el  = document.createElement("div"),
+          top = params.topNum * this.props.slotHeight,
+          attributes = {
+            "class"    : "slot-block " + className,
+            "style"    : this.blockStyle(params.dayIndex, params.slotNum, top),
+            "dayIndex" : params.dayIndex,
+            "startsAt" : params.startsAt
+          };
+      $(el).attr(attributes);
+      $(el).append(content);
+      return el;
+    },
+    makeCleaningBlock: function(params) {
+      return this.makeBlock(params, this.getStateClass("cleaning"), this.makeBlockContent("清掃"));
+    },
+    makeUnavailableBlock: function(params) {
+      // console.log(params, this);
+      return this.makeBlock(params, this.getStateClass("unavailable") + " block-mutable", this.makeUnavailableBlockContent(params));
+    },
+    /*
+     * Immutable Available Block
+     */
+    makeImmutableAvailableBlock: function(params) {
+      return this.makeBlock(params, this.getStateClass("available") + " block-rect", this.immutableAvailableBlockContent(params));
+    },
+    immutableAvailableBlockContent: function(params) {
+      var price       = params.slot.price || "?";
+      return this.makeBlockContent(price + "円/時間", null, null, false);
+    },
+    /*
+     * Immutable Available Block for Mobile
+     */
+    makeMobileAvailableBlock: function(params) {
+      /*
+       * Make slot for each timezone
+       */
+       var keys    = DatetimeHelper.timeTableKeysInRange(params.startsAt, params.endsAt),
+           blocks  = [],
+           baseNum = params.topNum,
+           price   = (params.slot.price || "?") + "円/時間";
+      for(var i=0;i<keys.length;i++) {
+        var block,
+            text = (i==0) ? price : "",
+            data = _.extend(params, {
+              "startsAt": keys[i],
+              "slotNum" : 1,
+              "topNum"  : baseNum + i
+            });
+
+        block = this.makeBlock(data, this.getStateClass("available") + " block-rect", this.makeBlockContent(text, null, null, false));
+        blocks.push(block);
+      }
+      return blocks;
+      // return this.makeBlock(params, this.getStateClass("available") + " block-rect", this.mobileAvailableBlockContent(params));
+    },
+    // mobileAvailableBlockContent: function(params) {
+    //   var price       = params.slot.price || "?";
+    //   return this.makeBlockContent(price + "円/時間", null, null, false);
+    // },
+    /*
+     * Available Block
+     */
+    makeAvailableBlock: function(params) {
+      return this.makeBlock(params, this.getStateClass("available") + " block-mutable", this.makeBlockContent("空室", null, null, true));
+    },
+    // availableBlockContent: function(params) {
+    //   var startsAt    = params.startsAt,
+    //       startsAtInt = DatetimeHelper.timeLabelToFourChars(startsAt),
+    //       priceEl     = document.createElement("span"),
+    //       day = this.props.days[params.dayIndex],
+    //       pricePlanId = day.priceId,
+    //       priceTable  = this.state.priceTables[pricePlanId],
+    //       price = priceTable[startsAtInt] || "???";
+    //   $(priceEl).addClass("price").text(price + "円/時間");
+    //   return this.makeBlockContent("空室", priceEl, null, true);
+    // },
+    /*
+     * Occupied Block
+     */
+    makeOccupiedBlock: function(params) {
+      return this.makeBlock(params, this.getStateClass("occupied"), this.occupiedBlockContent(params));
+    },
+    makeUnavailableBlockContent: function (params) {
+      // console.log("aaa",params, this);
+      var start_at = params.startsAt,
+          end_at = params.endsAt,
+          date = this.props.days[params.dayIndex].date,
+          listing_id = this.props.listingId,
+          query = "start_at=" + encodeURIComponent(start_at) + "&end_at=" + encodeURIComponent(end_at) + "&date=" + encodeURIComponent(date),
+          new_url = "/provider/listings/" + encodeURIComponent(listing_id) + "/alien_bookings/new?" + query,
+          show_url = "/provider/listings/" + encodeURIComponent(listing_id) + "/alien_bookings",
+          new_link= document.createElement("a");
+          show_link = document.createElement("a");
+
+
+      // console.log("aaa", url);
+
+      $(new_link).attr("href", new_url).text("自社予約を作成");
+
+      $(show_link).attr("href",show_url).text("自社予約一覧")
+
+      return this.makeBlockContent("満室", [new_link, show_link], null, true);
+    },
+    occupiedBlockContent: function(params) {
+      var content = params.content || {},
+          booking = content.booking || {},
+          link = document.createElement("a");
+          $(link).attr("href", booking.uri).text((booking.name || "??") + "様");
+
+      return this.makeBlockContent("予約", link);
+    },
+    /*
+     * Add Block
+     */
+    addClosedBlock: function(dayIndex, slotNum, top) {
+      if(slotNum == 0) { return; }
+      var el = document.createElement("div"),
+          attributes = {
+            "class"    : "slot-block slot-closing",
+            "style"    : this.blockStyle(dayIndex, slotNum, top),
+            "dayIndex" : dayIndex
+          };
+      $(el).attr(attributes);
+      $("div.scheduler-event-canvas").append(el);
+    },
+    addStateBlock: function(slot, dayIndex) {
+      var block,
+          slot     = slot,
+          startsAt = slot.startsAt,
+          endsAt   = slot.endsAt,
+          topNum   = this.slotNumFromTimeLabel(startsAt),
+          slotNum  = this.slotNumFromTimeLabel(endsAt) - topNum,
+          content  = slot.content,
+          params   = {
+            "topNum"   : topNum,
+            "slotNum"  : slotNum,
+            "dayIndex" : dayIndex,
+            "startsAt" : startsAt,
+            "endsAt"   : endsAt,
+            "content"  : content,
+            "slot"     : slot
+          };
+
+      if(slot.state == "occupied") {
+        block = [];
+        block.push(this.makeOccupiedBlock(params));
+        if(content && content.cleaning_minutes > 0) {
+          block.push(this.makeCleaningBlock({
+            "topNum"  : topNum + slotNum,
+            "startsAt": endsAt,
+            "dayIndex": dayIndex,
+            "slotNum" : this.slotNumFromMinutes(content.cleaning_minutes)
+          }));
+        }
+
+      }
+      else if(slot.state == "available") {
+        if(this.props && this.props.isMobile === true) {
+          block = this.makeMobileAvailableBlock(params);
+        }
+        else if(this.props && this.props.readonly === true) {
+          block = this.makeImmutableAvailableBlock(params);
+        }
+        else {
+          block = this.makeAvailableBlock(params);
+        }
+      }
+      else if(slot.state == "unavailable") {
+        block = this.makeUnavailableBlock(params);
+      }
+      // else if(slot.state == "cleaning") {
+      //   block = this.makeCleaningBlock(params);
+      // }
+      else {
+        console.error("invalid state:", slot.state);
+      }
+
+      $(".scheduler-event-canvas").append(block);
+    },
+    renderClosedBlock: function(day, dayIndex, forceRemove) {
+      if(forceRemove === true) {
+        this.$canvas.find(".slot-closing[dayIndex="+dayIndex+"]").remove();
+      }
+      if(!day.isOpen) {
+        this.addClosedBlock(dayIndex, this.offDaySlotNum() );  // No business day
+        return;
+      }
+      // Add Closed Blocks for business day
+      this.addClosedBlock(dayIndex, this.closedSlotNumBeforeOpen(day), 0);
+      this.addClosedBlock(dayIndex, this.closedSlotNumAfterClose(day), this.getBlockTop(day.closesAt));
+    },
+    placeBlocksForDay: function(day, dayIndex) {
+      var shouldRenderClosedBlock = !(this.props && this.props.skipClosedBlockRendering === true);
+      if (shouldRenderClosedBlock) {
+        this.renderClosedBlock(day, dayIndex);
+      }
+      if(!day.isOpen){ return; }
+      if(!_.isArray(day.slots) || day.slots.length == 0) { return; }
+      var t = this;
+      day.slots.map(function(slot) { t.addStateBlock(slot, dayIndex); });
+    },
+    placeBlocks: function() {
+      this.props.days.map(this.placeBlocksForDay);
+    }
+  };
+});

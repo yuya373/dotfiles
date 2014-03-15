@@ -1,0 +1,48 @@
+- set_page_meta_tags("ヘルプ：アカウント情報")
+- path_to_image = "help/account/"
+
+.page-header
+  %h1
+    アカウント情報について
+.guide-group
+  %h4 アカウント情報の編集
+  %p
+    アカウント情報の編集は画面上部の「アカウント情報」をクリックし、次に
+    = link_to "アカウント情報", provider_provider_user_path
+    をクリックしてください。「編集」ボタンをクリックすることでフォームが表示されるので変更したい項目を埋めて「変更」ボタンをクリックしてください。
+  = toggle_button("#account_info")
+  .collapse{id: 'account_info'}
+    %ul.help-thumbs
+      %li.help-thumb
+        = image("#{path_to_image}account_info.png")
+        = caption("「編集」ボタンをクリック")
+      %li.help-thumb
+        %h5 フォーム記入例
+        = image("#{path_to_image}form_account_info.png")
+        = caption("「変更」をクリックすると保存されます。")
+      %li.help-thumb
+        = image("#{path_to_image}change_mail.png")
+        = caption("メールアドレスを変更した場合は変更後のアドレスに確認メールが送信されます。メールに記載してあるリンクをクリックしてメールアドレスの認証をしてください。")
+.guide-group
+  %h4 掲載者情報の編集
+  %p
+    掲載者情報の画面上部の「アカウント情報」をクリックし、次に
+    = link_to "掲載者情報", provider_provider_path
+    をクリックし、「編集」ボタンをクリックするとフォームが表示されるので編集項目を埋めて「変更」ボタンをクリックしてください。
+  = toggle_button('#provider_info')
+  .collapse{id: 'provider_info'}
+    %ul.help-thumbs
+      %li.help-thumb
+        = image("#{path_to_image}provider_info.png")
+        = caption("#{link_to "掲載者情報", provider_provider_path}をクリックし「編集」ボタンをクリックするとフォームが表示されます。")
+      %li.help-thumb
+        %h5 フォーム記入例
+        = image("#{path_to_image}form_provider_info.png")
+        = caption("「送信」をクリックすると保存されます。")
+.guide-group
+  / = toggle_button('#password')
+  %h4 パスワードの変更
+  %p
+    パスワードの変更は画面上部の「アカウント情報」をクリックし、次に
+    = link_to "パスワード変更", password_provider_provider_user_path
+    をクリックしてするとフォームが表示されるのですべての項目を埋めて「変更」をクリックしてください。
