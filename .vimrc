@@ -499,7 +499,7 @@ nnoremap <silent> [unite]c :<C-u>UniteWithBufferDir  file file/new -input=app/co
 nnoremap <silent> [unite]m :<C-u>UniteWithBufferDir  file file/new -input=app/models/ -buffer-name=models<CR>
 nnoremap <silent> [unite]v :<C-u>UniteWithBufferDir  file file/new -input=app/views/ -buffer-name=views<CR>
 nnoremap <silent> [unite]s :<C-u>UniteWithBufferDir  file file/new -input=spec/ -buffer-name=spec<CR>
-nnoremap <silent> [unite]j :<C-u>UniteWithBufferDir  file file/new -input=app/assets/javascript/ -buffer-name=js<CR>
+nnoremap <silent> [unite]j :<C-u>UniteWithBufferDir  file file/new -input=app/assets/javascripts/ -buffer-name=js<CR>
 " grep検索
 nnoremap <silent> ,g  :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
 " カーソル位置の単語をgrep検索
