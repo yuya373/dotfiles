@@ -51,7 +51,7 @@ ZSH_THEME="ys"
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
-export PATH="/usr/local/bin:~/.rbenv/bin:~/.cabal/bin:$PATH"
+# export PATH="/usr/local/bin:~/.rbenv/bin:~/.cabal/bin:$PATH"
 
 eval "$(rbenv init -)"
 
@@ -68,5 +68,3 @@ alias railsr='bundle exec spring rails runner'
 alias raker='bundle exec spring rake routes'
 alias migrate='bundle exec spring rake db:migrate'
 export LANG=ja_JP.UTF-8
-# export LESSCHARSET=utf-8
-# [[ -z "$TMUX" && ! -z "$PS1" ]] && tmux
