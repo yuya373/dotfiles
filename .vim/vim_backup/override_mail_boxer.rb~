@@ -1,9 +1,0 @@
-Conversation.class_eval do
-  # belongs_to :pre_booking
-  # has_one :pre_booking_conversation
-  belongs_to :pre_booking_conversation, foreign_key: :conversation_id
-end
-
-# class Conversation < ActiveRecord::Base
-  # belongs_to :pre_booking
-# end

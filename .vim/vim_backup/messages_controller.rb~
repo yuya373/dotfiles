@@ -1,3 +1,0 @@
-class Provider::MessagesController < ProviderApplicationController
-  include Messageable
-end

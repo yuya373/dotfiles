@@ -1,5 +1,0 @@
-class AddUserAgentToProviderUser < ActiveRecord::Migration
-  def change
-    add_column :provider_users, :user_agent, :string
-  end
-end

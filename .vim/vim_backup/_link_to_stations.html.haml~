@@ -1,9 +1,0 @@
-.collection-links
-  .link-to-content
-    %h5 駅から探す
-    %ul.unstyled
-      - Station.published_listing_exists.pluck(:id, :station_name)
-      - Station.available.each do |line|
-        %li
-          %i.icon-caret-right.tx-gray-light
-            = link_to(line.line_name, line_listings_path(line,keeped_query))

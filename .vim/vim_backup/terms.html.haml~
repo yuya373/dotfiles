@@ -1,8 +1,0 @@
-.container.top-container.last-container
-  .span9.offset1
-      .listing-detail-mod
-        .mod-header.mod-header-lighter
-          =link_to_function "閉じる", "window.close()", class: "pull-right"
-          %h2 利用規約
-        .mod-body
-          = nl_to_br( @terms.content )

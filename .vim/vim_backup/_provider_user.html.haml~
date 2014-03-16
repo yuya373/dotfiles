@@ -1,7 +1,0 @@
-%tr
-  -# %td= link_to provider_user.provider.try( :name ).presence || 'プロバイダ未登録', admin_provider_path(provider_user)
-  - if provider_user.provider.present?
-    %td= link_to provider_user.provider.name, admin_provider_path(provider_user.provider)
-  %td= provider_user.email
-  %td= datetime_str(provider_user.created_at)
-  %td= datetime_str(provider_user.last_sign_in_at)

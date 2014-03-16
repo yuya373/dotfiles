@@ -1,4 +1,0 @@
-FactoryGirl.define do
-  factory :pre_booking_conversation do
-  end
-end

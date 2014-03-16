@@ -1,3 +1,0 @@
-%ul.nav.nav-tabs
-%li{class: "#{active?('index')}"}= link_to '受信箱', user_conversations_path
-%li{class: "#{active?('sent')}"}= link_to '送信済み', sent_user_conversations_path

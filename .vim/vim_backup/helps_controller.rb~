@@ -1,4 +1,0 @@
-class Provider::HelpsController < ProviderApplicationController
-  skip_before_action :authenticate_provider_user!, redirect_if_no_provider
-  layout "provider/help_application"
-end

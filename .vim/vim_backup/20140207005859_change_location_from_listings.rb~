@@ -1,5 +1,0 @@
-class ChangeLocationFromListings < ActiveRecord::Migration
-  def change
-    change_column :listings, :location, :string, null: true
-  end
-end

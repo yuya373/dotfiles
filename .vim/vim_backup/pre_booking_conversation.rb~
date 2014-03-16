@@ -1,3 +1,0 @@
-class PreBookingConversation < ActiveRecord::Base
-  belongs_to :pre_booking
-end

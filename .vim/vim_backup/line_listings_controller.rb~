@@ -1,6 +1,0 @@
-class LineListingsController < ApplicationController
-  def index
-    @line = Line.available.find params[:line_id]
-    @listings = Listing.joins(:stations).merge(Station.where(line_id: params[:line_id]).published_listing_exists)
-  end
-end

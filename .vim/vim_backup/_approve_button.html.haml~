@@ -1,3 +1,0 @@
-= form_tag approve_provider_pre_booking_path(pre_booking), method: :patch,
-  style: "display:inline" do
-  = submit_tag '予約を確定', class: "btn btn-small btn-primary", disable_with: "送信中..."

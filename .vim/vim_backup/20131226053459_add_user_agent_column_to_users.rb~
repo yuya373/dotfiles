@@ -1,4 +1,0 @@
-class AddUserAgentColumnToUsers < ActiveRecord::Migration
-  def change
-  end
-end

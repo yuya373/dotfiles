@@ -1,8 +1,0 @@
-class TopController < ApplicationController
-  def index
-  end
-
-  def show
-    <`2:TARGET`>
-  end
-end

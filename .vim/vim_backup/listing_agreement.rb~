@@ -1,3 +1,0 @@
-class ListingAgreement < ActiveRecord::Base
-  belongs_to :listings
-end

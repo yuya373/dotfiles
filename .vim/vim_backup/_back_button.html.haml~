@@ -1,3 +1,0 @@
--# = link_to '戻る', search_listings_path(keeped_query), class: 'btn pull-right'
-= link_to_function '戻る', "window.back", class""
-

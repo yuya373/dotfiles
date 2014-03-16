@@ -1,4 +1,0 @@
-%tr
-  %td= collection.id
-  %td= collection.name
-  %td= collection.listings.map{|listing| listing.title.truncate()}

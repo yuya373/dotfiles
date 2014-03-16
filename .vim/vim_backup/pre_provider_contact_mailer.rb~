@@ -1,9 +1,0 @@
-class PreProviderContactMailer < ActionMailer::Base
-  default from: APP_CONFIG['mail']['info']
-
-  def contact(pre_provider_contact_id)
-    @pre_provider_contact = PreProviderContact.find pre_provider_contact_id
-    mail to: APP_CONFIG['mail']['mail'],
-    subject: "掲載問い合わせ:#{@pre_provider_contact.id}"
-  end
-end

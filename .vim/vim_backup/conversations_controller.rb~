@@ -1,5 +1,0 @@
-class Provider::ConversationsController < ProviderApplicationController
-  # layout 'provider/single_pane_application'
-  include Conversationable
-
-end

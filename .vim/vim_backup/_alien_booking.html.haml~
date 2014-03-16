@@ -1,5 +1,0 @@
-%tr
-  %td #{datetime_str(alien_booking.start_at)}
-  %td= alien_booking.name.blank? ? "未入力" : alien_booking.name
-  %td
-    = link_to "詳細", provider_alien_booking_path(alien_booking)

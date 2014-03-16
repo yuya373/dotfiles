@@ -1,6 +1,0 @@
-
-/ = link_to , station_path(station)
-= debug station.station.id
-%a{href:"#{station_path(station.station.id)}"}<>
-  #{station.station.station_name}駅
-から徒歩#{station.access_minutes}分

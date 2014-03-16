@@ -1,5 +1,0 @@
-class AddBelongsToToConversation < ActiveRecord::Migration
-  def change
-    add_belongs_to :conversations, :pre_booking, null: false
-  end
-end

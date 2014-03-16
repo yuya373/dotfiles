@@ -1,3 +1,0 @@
-class ListingCancellationPolicy < ActiveRecord::Base
-  belongs_to :listings
-end

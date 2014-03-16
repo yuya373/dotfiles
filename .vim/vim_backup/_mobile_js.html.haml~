@@ -1,5 +1,0 @@
-
-- if Rails.env == "development"
-  %script{"data-main" => "/assets/mobile_app", src: "/assets/require.js"}
-- else
-  = javascript_include_tag "mobile_app_built", "data-turbolinks-track" => true

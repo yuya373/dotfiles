@@ -1,6 +1,0 @@
-class ChangeSubjectFromMessage < ActiveRecord::Migration
-  def change
-    change_column :messages, :subject, :string
-
-  end
-end

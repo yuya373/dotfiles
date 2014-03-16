@@ -1,3 +1,0 @@
-- unless @listing.latitude.blank? || @listing.longitude.blank?
-  %div
-    %iframe{ width: "100%", height: "350", frameborder: "0", marginheight: "0", marginwidth: "0", scrolling: "no", src: "https://maps.google.com/maps?q=#{@listing.latitude},#{@listing.listing_location.longitude}&zoom=#{@listing.zoom}&markers=size:mid&output=embed"}

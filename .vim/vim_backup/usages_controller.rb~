@@ -1,5 +1,0 @@
-class UsagesController < ApplicationController
-  def index
-    @usages = Usage.featured
-  end
-end

@@ -1,6 +1,0 @@
-%h5 特集ページから探す
-%ul.unstyled
-  - Collection.featured.each do |col|
-    %li
-      %i.icon-caret-right.tx-gray-light
-      = link_to col.name.gsub(/東京の|一覧/,'').truncate(14), collections_path(col.key)
