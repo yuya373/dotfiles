@@ -51,9 +51,9 @@ ZSH_THEME="ys"
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
-# export PATH="/usr/local/bin:~/.rbenv/bin:~/.cabal/bin:$PATH"
+# export PATH="$HOME:/usr/local/bin:~/.rbenv/bin:~/.cabal/bin:$PATH"
 
-eval "$(rbenv init -)"
+# eval "$(rbenv init -)"
 
 
 
