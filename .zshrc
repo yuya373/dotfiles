@@ -53,7 +53,8 @@ source $ZSH/oh-my-zsh.sh
 # Customize to your needs...
 # export PATH="$HOME:/usr/local/bin:~/.rbenv/bin:~/.cabal/bin:$PATH"
 
-# eval "$(rbenv init -)"
+export PATH="$HOME:~/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
 
 
 
