@@ -90,19 +90,30 @@ NeoBundle 'dag/vim2hs'
 NeoBundle 'eagletmt/ghcmod-vim'
 NeoBundle 'kana/vim-filetype-haskell'
 
+"""""""markdown""""""""
+NeoBundle 'rcmdnk/vim-markdown'
+NeoBundle 'glidenote/memolist.vim'
+NeoBundle 'kannokanno/previm'
+NeoBundle 'tyru/open-browser.vim'
+
 """""""colorscheme""""""""
 NeoBundle 'ujihisa/unite-colorscheme'
-NeoBundle "wjakob/vim-tomorrow-night"
+NeoBundle 'chriskempson/base16-vim'
+" NeoBundle 'chriskempson/tomorrow-theme', {'script_type' : 'colors'}
 NeoBundle 'chriskempson/tomorrow-theme'
+NeoBundle 'darktango.vim'
+NeoBundle 'twilight'
+NeoBundle 'jnurmine/Zenburn'
+NeoBundle '29decibel/codeschool-vim-theme'
+NeoBundle "wjakob/vim-tomorrow-night"
 NeoBundle 'fugalh/desert.vim'
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'jpo/vim-railscasts-theme'
-NeoBundle '29decibel/codeschool-vim-theme'
 NeoBundle 'nanotech/jellybeans.vim'
 NeoBundle 'w0ng/vim-hybrid'
-NeoBundle 'vim-scripts/twilight'
+" NeoBundle 'vim-scripts/twilight'
 NeoBundle 'jonathanfilip/vim-lucius'
-NeoBundle 'vim-scripts/Wombat'
+NeoBundle 'Wombat'
 NeoBundle 'tomasr/molokai'
 NeoBundle 'vim-scripts/rdark'
 
@@ -146,8 +157,13 @@ scriptencoding utf-8
 
 set background=dark
 " colorscheme railscasts
-colorscheme tomorrow-night
+colorscheme Tomorrow-Night
+" colorscheme base16-tomorrow
+" colorscheme base16-eighties
+" colorscheme base16-default
 " colorscheme hybrid
+" set background=light
+" colorscheme solarized
 
 """""""インサートモードでカーソルの形を変える""""""""""
 "これがないとスマートインプットが機能しない?
@@ -225,7 +241,6 @@ map <silent> [Tag]p :tabprevious<CR>
 " ----------------------
 "ESCのタイムアウトを早くする
 set timeout timeoutlen=1000 ttimeoutlen=75
-
 set encoding=UTF-8
 set fileencoding=UTF-8
 set termencoding=UTF-8
@@ -244,6 +259,12 @@ set showcmd
 set backspace=indent,eol,start
 nnoremap p p=`]`]
 inoremap <silent> <C-j> <ESC>
+" augroup Md
+  " " md as markdown, instead of modula2
+  " autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
+  " " Disable highlight italic in Markdown
+  " autocmd FileType markdown hi! def link markdownItalic LineNr
+" augroup END
 augroup auto_comment_off
   autocmd!
   autocmd BufEnter * setlocal formatoptions-=ro
@@ -487,12 +508,12 @@ nnoremap <silent> [unite]u :<C-u>Unite file_mru<CR>
 " 全部乗せ
 " nnoremap <silent> [unite]a :<C-u>Unite -buffer-name=files buffer file_mru bookmark file<CR>
 " ctrlp風
-let g:unite_source_file_rec_max_cache_files = 10000
-let g:unite_source_file_rec_min_cache_files = 100
+" let g:unite_source_file_rec_max_cache_files = 10000
+" let g:unite_source_file_rec_min_cache_files = 100
 " nnoremap <C-p> :Unite -start-insert -winheight=10 -direction=botright file_rec/async<cr>
 " call unite#custom#source('file_rec/async', 'ignore_pattern', '\(^\.git\|png\|gif\|jpeg\|jpg\)$')
 
-nnoremap <C-p> :Unite -start-insert file_rec/async<cr>
+nnoremap <C-p> :Unite -start-insert file_rec/async<CR>
 " ファイル一覧
 nnoremap <silent> [unite]f  :<C-u>UniteWithBufferDir  file file/new -buffer-name=files<CR>
 nnoremap <silent> [unite]c :<C-u>UniteWithBufferDir  file file/new -input=app/controllers/ -buffer-name=controllers<CR>
@@ -1045,3 +1066,21 @@ endfunction
       " \ }
 """""""""""vim-json""""""""""""
 let g:vim_json_syntax_conceal = 0
+
+""""""""""memolist"""""""""""""""
+let g:memolist_path = "~/Dropbox/memo"
+map <Leader>mn  :MemoNew<CR>
+map <Leader>ml  :MemoList<CR>
+map <Leader>mg  :MemoGrep<CR>
+""""""""""vim-markdown"""""""""""
+let g:vim_markdown_folding_disabled=1
+" use unite (default 0)
+let g:memolist_unite = 1
+" use arbitrary unite source (default is 'file')
+let g:memolist_unite_source = "file_rec"
+" use arbitrary unite option (default is empty)
+let g:memolist_unite_option = "-auto-preview -start-insert"
+""""""""""open-browser"""""""""""
+let g:netrw_nogx = 1 " disable netrw's gx mapping.
+nmap gx <Plug>(openbrowser-smart-search)
+vmap gx <Plug>(openbrowser-smart-search)
