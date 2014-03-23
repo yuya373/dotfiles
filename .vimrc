@@ -365,10 +365,10 @@ set t_vb=
 
 " backup
 " --------------------
-set backup
-set backupdir=~/.vim/vim_backup
-set swapfile
-set directory=~/.vim/vim_swap
+" set backup
+" set backupdir=~/.vim/vim_backup
+" set swapfile
+" set directory=~/.vim/vim_swap
 
 " key map
 " --------------------
