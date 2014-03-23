@@ -155,15 +155,15 @@ scriptencoding utf-8
 " augroup END
 
 
-set background=dark
+" set background=dark
 " colorscheme railscasts
-colorscheme Tomorrow-Night
+" colorscheme Tomorrow-Night
 " colorscheme base16-tomorrow
 " colorscheme base16-eighties
 " colorscheme base16-default
 " colorscheme hybrid
-" set background=light
-" colorscheme solarized
+set background=light
+colorscheme solarized
 
 """""""インサートモードでカーソルの形を変える""""""""""
 "これがないとスマートインプットが機能しない?
