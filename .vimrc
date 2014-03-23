@@ -372,7 +372,7 @@ set directory=~/.vim/vim_swap
 
 " key map
 " --------------------
-map <C-n> :NERDTreeToggle<CR>
+" map <C-n> :NERDTreeToggle<CR>
 nnoremap Q <Nop>
 inoremap <C-c> <Esc>
 vnoremap <silent> <C-p> "0p<CR>"
@@ -438,11 +438,11 @@ autocmd User Rails/config/routes.rb      NeoSnippetSource ~/.vim/snippet/ruby.ra
 let g:vimfiler_safe_mode_by_default = 0
 let g:vimfiler_as_default_explorer = 1
 " Like Textmate icons.
-let g:vimfiler_tree_leaf_icon = ' '
-let g:vimfiler_tree_opened_icon = '▾'
-let g:vimfiler_tree_closed_icon = '▸'
-let g:vimfiler_file_icon = '-'
-let g:vimfiler_marked_file_icon = '*'
+" let g:vimfiler_tree_leaf_icon = ' '
+" let g:vimfiler_tree_opened_icon = '▾'
+" let g:vimfiler_tree_closed_icon = '▸'
+" let g:vimfiler_file_icon = '-'
+" let g:vimfiler_marked_file_icon = '*'
 nmap <C-n>  :VimFiler -split -horizontal -project -toggle -quit<CR>
 
 """ unite.vim
@@ -451,7 +451,7 @@ let g:unite_enable_start_insert = 1
 let g:unite_enable_short_source_names = 1
 " let g:unite_winheight = 10
 " let g:unite_split_rule = 'botright'
-let g:unite_prompt = '▸▸ '
+" let g:unite_prompt = '▸▸ '
 "  " unite grep に ag(The Silver Searcher) を使う
 if executable('ag')
   let g:unite_source_grep_command = 'ag'
