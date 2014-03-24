@@ -761,7 +761,7 @@ nnoremap <Leader>t :Thumbnail<CR>
 
 """"""""""""lightline"""""""""""""""""""""""
 let g:lightline = {
-      \ 'colorscheme': 'default',
+      \ 'colorscheme': 'solarized',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ], ['ctrlpmark'] ],
       \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
