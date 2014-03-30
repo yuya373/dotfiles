@@ -259,12 +259,6 @@ set showcmd
 set backspace=indent,eol,start
 nnoremap p p=`]`]
 inoremap <silent> <C-j> <ESC>
-" augroup Md
-  " " md as markdown, instead of modula2
-  " autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
-  " " Disable highlight italic in Markdown
-  " autocmd FileType markdown hi! def link markdownItalic LineNr
-" augroup END
 augroup auto_comment_off
   autocmd!
   autocmd BufEnter * setlocal formatoptions-=ro
@@ -277,9 +271,9 @@ augroup auto_coffe
   autocmd BufRead,BufNewFile,BufReadPre *.coffee nnoremap <Leader>cf :CoffeeWatch watch vert<CR>
 augroup END
 
-" set cursorline
+set cursorline
 set nocursorcolumn
-set nocursorline
+" set nocursorline
 syntax sync minlines=256
 
 map <C-j> <Esc>
@@ -347,12 +341,12 @@ set hlsearch
 " Esc Esc でハイライトOFF
 nnoremap <Esc><Esc> :<C-u>set nohlsearch<Return>
 " Localize search options.
-autocmd WinLeave *
-      \     let b:vimrc_pattern = @/
-      \   | let b:vimrc_hlsearch = &hlsearch
-autocmd WinEnter *
-      \     let @/ = get(b:, 'vimrc_pattern', @/)
-      \   | let &l:hlsearch = get(b:, 'vimrc_hlsearch', &l:hlsearch)
+" autocmd WinLeave *
+      " \     let b:vimrc_pattern = @/
+      " \   | let b:vimrc_hlsearch = &hlsearch
+" autocmd WinEnter *
+      " \     let @/ = get(b:, 'vimrc_pattern', @/)
+      " \   | let &l:hlsearch = get(b:, 'vimrc_hlsearch', &l:hlsearch)
 " 「/」「?」「*」「#」が押されたらハイライトをON にしてから「/」「?」「*」「#」
 nnoremap / :<C-u>set hlsearch<Return>/
 nnoremap ? :<C-u>set hlsearch<Return>?
@@ -413,28 +407,28 @@ let g:rails_syntax = 1
 let g:rails_url='http://localhost:3000'
 let g:rails_ctags_arguments='--languages=-javascript'
 let g:rails_ctags_arguments = ''
-function! SetUpRailsSetting()
-  nnoremap <buffer><Space>r :R<CR>
-  nnoremap <buffer><Space>a :A<CR>
-  nnoremap <buffer><Space>m :Rmodel<Space>
-  nnoremap <buffer><Space>c :Rcontroller<Space>
-  nnoremap <buffer><Space>v :Rview<Space>
-  nnoremap <buffer><Space>p :Rpreview<CR>
-endfunction
-aug MyAutoCmd
-  au User Rails call SetUpRailsSetting()
-aug END
-aug RailsDictSetting
-  au!
-aug END
-autocmd User Rails.view*                 NeoSnippetSource ~/.vim/snippet/ruby.rails.view.snip
-autocmd User Rails.controller*           NeoSnippetSource ~/.vim/snippet/ruby.rails.controller.snip
-autocmd User Rails/db/migrate/*          NeoSnippetSource ~/.vim/snippet/ruby.rails.migrate.snip
-autocmd User Rails/config/routes.rb      NeoSnippetSource ~/.vim/snippet/ruby.rails.route.snip
-"}}}
+" function! SetUpRailsSetting()
+  " nnoremap <buffer><Space>r :R<CR>
+  " nnoremap <buffer><Space>a :A<CR>
+  " nnoremap <buffer><Space>m :Rmodel<Space>
+  " nnoremap <buffer><Space>c :Rcontroller<Space>
+  " nnoremap <buffer><Space>v :Rview<Space>
+  " nnoremap <buffer><Space>p :Rpreview<CR>
+" endfunction
+" aug MyAutoCmd
+  " au User Rails call SetUpRailsSetting()
+" aug END
+" aug RailsDictSetting
+  " au!
+" aug END
+" autocmd User Rails.view*                 NeoSnippetSource ~/.vim/snippet/ruby.rails.view.snip
+" autocmd User Rails.controller*           NeoSnippetSource ~/.vim/snippet/ruby.rails.controller.snip
+" autocmd User Rails/db/migrate/*          NeoSnippetSource ~/.vim/snippet/ruby.rails.migrate.snip
+" autocmd User Rails/config/routes.rb      NeoSnippetSource ~/.vim/snippet/ruby.rails.route.snip
 
 
 """""""""""""""vimfiler""""""""""""
+
 let g:vimfiler_safe_mode_by_default = 0
 let g:vimfiler_as_default_explorer = 1
 " Like Textmate icons.
@@ -443,7 +437,7 @@ let g:vimfiler_as_default_explorer = 1
 " let g:vimfiler_tree_closed_icon = '▸'
 " let g:vimfiler_file_icon = '-'
 " let g:vimfiler_marked_file_icon = '*'
-nmap <C-n>  :VimFiler -split -horizontal -project -toggle -quit<CR>
+nmap <C-n>  :VimFilerCurrentDir -split -horizontal -toggle -quit<CR>
 
 """ unite.vim
 " 起動時にインサートモードで開始
@@ -458,7 +452,7 @@ if executable('ag')
   let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
   let g:unite_source_grep_recursive_opt = ''
 endif
-"              " 大文字小文字を区別しない
+" 大文字小文字を区別しない
 let g:unite_enable_ignore_case = 1
 let g:unite_enable_smart_case = 1
 " ファイルを開く場合のデフォルトアクションを choosewin にする
@@ -468,25 +462,6 @@ call unite#custom#default_action('buffer' , 'choosewin/open')
 " The prefix key.
 nnoremap    [unite]   <Nop>
 nmap    ,u [unite]
-
-let g:unite_source_menu_menus = {}
-let g:unite_source_menu_menus.shortcuts= {
-      \     'description' : 'shortcutsmenu',
-      \ }
-let g:unite_source_menu_menus.shortcuts.candidates = {
-      \   'vimrc'     : 'vs ~/.vimrc',
-      \   'ghci'      : 'VimShellInteractive ghci',
-      \ }
-function g:unite_source_menu_menus.shortcuts.map(key, value)
-  return {
-        \       'word' : a:key, 'kind' : 'command',
-        \       'action__command' : a:value,
-        \     }
-endfunction
-
-
-nnoremap  [unite]s  :<C-u>Unite menu:shortcuts<CR>
-
 
 " アウトライン
 nnoremap <silent> [unite]o  :<C-u>Unite outline<CR>
@@ -533,17 +508,20 @@ function! s:unite_my_settings()
   " 単語単位からパス単位で削除するように変更
   imap <buffer> <C-w> <Plug>(unite_delete_backward_path)
   " ESCキーを2回押すと終了する
-  nmap <silent><buffer> <ESC><ESC> q
-  imap <silent><buffer> <ESC><ESC> <ESC>q
-  nnoremap <silent> <buffer> <expr> <C-s> unite#do_action('split')
-  inoremap <silent> <buffer> <expr> <C-s> unite#do_action('split')
-  nnoremap <silent> <buffer> <expr> <C-v> unite#do_action('vsplit')
-  inoremap <silent> <buffer> <expr> <C-v> unite#do_action('vsplit')
+  nmap <ESC><ESC> q
+  imap <ESC><ESC> <ESC>q
+  nnoremap <expr> <C-s> unite#do_action('split')
+  inoremap <expr> <C-s> unite#do_action('split')
+  nnoremap <expr> <C-v> unite#do_action('vsplit')
+  inoremap <expr> <C-v> unite#do_action('vsplit')
   " dwm.vim で開く
   " nnoremap <silent> <buffer> <expr> <c-o> unite#do_action('dwm_new')
   " inoremap <silent> <buffer> <expr> <c-o> unite#do_action('dwm_new')
 endfunction
-autocmd FileType unite call s:unite_my_settings()
+augroup Unite
+  autocmd!
+  autocmd FileType unite call s:unite_my_settings()
+augroup END
 
 
 
@@ -569,13 +547,19 @@ endif
 let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
 
 
+""""""""""syntastic"""""""""""""""
+
 ""USE RUBOCOP
 let g:syntastic_mode_map = { 'mode': 'active',
       \ 'active_filetypes': ['ruby'] }
 let g:syntastic_ruby_checkers = ['rubocop']
 let g:syntastic_quiet_messages = {'level': 'warnings'}
 
-" vim-eazymotion {{{
+"""""""""""vim-easymotion""""""""""""
+
+let g:EasyMotion_do_mapping = 0
+let g:EasyMotion_enter_jump_first = 1
+
 " デフォルトだと<Leader><Leader>となってるprefixキーを変更
 let g:EasyMotion_leader_key = '\'
 
@@ -588,9 +572,12 @@ let g:EasyMotion_do_shade = 1
 " 拡張版機能"{{{
 
 " もっともよく使うであろう'<Leadr><Leader>s'motion をsに割り当て
-nmap s <Plug>(easymotion-s)
-vmap s <Plug>(easymotion-s)
-omap z <Plug>(easymotion-s) " surround.vimとかぶるのでz
+nmap s <Plug>(easymotion-s2)
+xmap s <Plug>(easymotion-s2)
+" surround.vimと被らないように
+omap z <Plug>(easymotion-s2)
+
+map f <Plug>(easymotion-bd-fl)
 
 " keep cursor column
 let g:EasyMotion_startofline = 0
@@ -598,12 +585,10 @@ let g:EasyMotion_startofline = 0
 " smartcase
 let g:EasyMotion_smartcase = 1
 
-""VimFiler
-"let g:vimfiler_as_default_explorer = 1
-"let g:vimfiler_safe_mode_by_default = 0
 
 """""""NeoComplete""""""""""
 """""""""""""""""""""""""""""
+
 "Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
@@ -649,7 +634,7 @@ inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
 "inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 "inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y>  neocomplete#close_popup()
+inoremap <expr><C-o>  neocomplete#close_popup()
 inoremap <expr><C-e>  neocomplete#cancel_popup()
 " Close popup by <Space>.
 "inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
@@ -1003,6 +988,13 @@ let g:quickrun_config['coffee'] = {
      \'command' : 'coffee',
      \'exec' : ['%c -cbp %s']
      \}
+"""""""""""""""""""fugitive""""""""""""""""
+nnoremap <Leader>gg :Gst<CR>
+nnoremap <Leader>gp :Git push origin
+nnoremap <Leader>gc :Git co
+nnoremap <Leader>gl :Glog<CR>
+
+
 """""""""""""""""""gitv""""""""""""""""""""
 function! s:gitv_get_current_hash()
   return matchstr(getline('.'), '\[\zs.\{7\}\ze\]$')
@@ -1026,44 +1018,7 @@ function! s:my_gitv_settings()
   " s:my_gitv_settings 内
   nnoremap <silent><buffer> t :<C-u>windo call <SID>toggle_git_folding()<CR>1<C-w>w
 endfunction
-""""""""""""""ctrlp"""""""""""""""
 
-" let g:ctrlp_prompt_mappings = {
-      " \ 'PrtBS()':              ['<bs>', '<c-]>'],
-      " \ 'PrtDelete()':          ['<del>'],
-      " \ 'PrtDeleteWord()':      ['<c-w>'],
-      " \ 'PrtClear()':           ['<c-u>'],
-      " \ 'PrtSelectMove("j")':   ['<c-n>', '<down>'],
-      " \ 'PrtSelectMove("k")':   ['<c-p>', '<up>'],
-      " \ 'PrtSelectMove("t")':   ['<Home>', '<kHome>'],
-      " \ 'PrtSelectMove("b")':   ['<End>', '<kEnd>'],
-      " \ 'PrtSelectMove("u")':   ['<PageUp>', '<kPageUp>'],
-      " \ 'PrtSelectMove("d")':   ['<PageDown>', '<kPageDown>'],
-      " \ 'PrtHistory(-1)':       ['<c-j>'],
-      " \ 'PrtHistory(1)':        ['<c-k>'],
-      " \ 'AcceptSelection("e")': ['<cr>', '<2-LeftMouse>'],
-      " \ 'AcceptSelection("h")': ['<c-x>', '<c-cr>', '<c-s>'],
-      " \ 'AcceptSelection("t")': ['<c-t>'],
-      " \ 'AcceptSelection("v")': ['<c-v>', '<RightMouse>'],
-      " \ 'ToggleFocus()':        ['<s-tab>'],
-      " \ 'ToggleRegex()':        ['<c-r>'],
-      " \ 'ToggleByFname()':      ['<c-d>'],
-      " \ 'ToggleType(1)':        ['<c-f>', '<c-up>'],
-      " \ 'ToggleType(-1)':       ['<c-b>', '<c-down>'],
-      " \ 'PrtExpandDir()':       ['<tab>'],
-      " \ 'PrtInsert("c")':       ['<MiddleMouse>', '<insert>'],
-      " \ 'PrtInsert()':          ['<c-\>'],
-      " \ 'PrtCurStart()':        ['<c-a>'],
-      " \ 'PrtCurEnd()':          ['<c-e>'],
-      " \ 'PrtCurLeft()':         ['<c-h>', '<left>', '<c-^>'],
-      " \ 'PrtCurRight()':        ['<c-l>', '<right>'],
-      " \ 'PrtClearCache()':      ['<F5>'],
-      " \ 'PrtDeleteEnt()':       ['<F7>'],
-      " \ 'CreateNewFile()':      ['<c-y>'],
-      " \ 'MarkToOpen()':         ['<c-z>'],
-      " \ 'OpenMulti()':          ['<c-o>'],
-      " \ 'PrtExit()':            ['<esc>', '<c-c>', '<c-g>'],
-      " \ }
 """""""""""vim-json""""""""""""
 let g:vim_json_syntax_conceal = 0
 

@@ -51,21 +51,8 @@ ZSH_THEME="ys"
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
-# export PATH="$HOME:/usr/local/bin:~/.rbenv/bin:~/.cabal/bin:$PATH"
-
-export PATH="$HOME:~/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
+source ~/.zsh_dep
 
 
 
-# alias less="less -R"
-alias g="git"
-alias be="bundle exec"
-alias spacee="ssh spacee@ec2-54-249-19-113.ap-northeast-1.compute.amazonaws.com"
-alias ygem="yard server --gems"
-alias railss='bundle exec spring rails s'
-alias railsc='bundle exec spring rails c'
-alias railsr='bundle exec spring rails runner'
-alias raker='bundle exec spring rake routes'
-alias migrate='bundle exec spring rake db:migrate'
 export LANG=ja_JP.UTF-8
