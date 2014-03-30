@@ -55,10 +55,9 @@ NeoBundle 'vim-scripts/vim-auto-save'
 NeoBundle 'rking/ag.vim'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'Yggdroot/indentLine'
-" NeoBundle 'yuya373/indentLine'
-NeoBundle 'itchyny/thumbnail.vim'
-NeoBundle "mbbill/undotree"
-NeoBundle "airblade/vim-rooter"
+" NeoBundle 'itchyny/thumbnail.vim'
+" NeoBundle "mbbill/undotree"
+" NeoBundle "airblade/vim-rooter"
 " NeoBundle 'spolu/dwm.vim'
 " NeoBundle 'nabezokodaikon/dwm.vim'
 " NeoBundle 'kannokanno/unite-dwm'
@@ -98,24 +97,10 @@ NeoBundle 'tyru/open-browser.vim'
 
 """""""colorscheme""""""""
 NeoBundle 'ujihisa/unite-colorscheme'
-NeoBundle 'chriskempson/base16-vim'
-" NeoBundle 'chriskempson/tomorrow-theme', {'script_type' : 'colors'}
-NeoBundle 'chriskempson/tomorrow-theme'
-NeoBundle 'darktango.vim'
-NeoBundle 'twilight'
-NeoBundle 'jnurmine/Zenburn'
-NeoBundle '29decibel/codeschool-vim-theme'
 NeoBundle "wjakob/vim-tomorrow-night"
-NeoBundle 'fugalh/desert.vim'
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'jpo/vim-railscasts-theme'
 NeoBundle 'nanotech/jellybeans.vim'
-NeoBundle 'w0ng/vim-hybrid'
-" NeoBundle 'vim-scripts/twilight'
-NeoBundle 'jonathanfilip/vim-lucius'
-NeoBundle 'Wombat'
-NeoBundle 'tomasr/molokai'
-NeoBundle 'vim-scripts/rdark'
 
 
 NeoBundleLazy 'alpaca-tc/neorspec.vim', {
@@ -158,10 +143,6 @@ scriptencoding utf-8
 " set background=dark
 " colorscheme railscasts
 " colorscheme Tomorrow-Night
-" colorscheme base16-tomorrow
-" colorscheme base16-eighties
-" colorscheme base16-default
-" colorscheme hybrid
 set background=light
 colorscheme solarized
 
