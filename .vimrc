@@ -40,7 +40,6 @@ NeoBundle 'Shougo/vimshell'
 NeoBundle 'Shougo/neocomplete'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'scrooloose/syntastic'
-" NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'surround.vim'
@@ -113,6 +112,30 @@ NeoBundleLazy 'alpaca-tc/neorspec.vim', {
 NeoBundleLazy 'tpope/vim-dispatch', { 'autoload' : {
       \ 'commands' : ['Dispatch', 'FocusDispatch', 'Start']
       \}}
+NeoBundleLazy 'supermomonga/jazzradio.vim', { 'depends' : [ 'Shougo/unite.vim' ] }
+if neobundle#tap('jazzradio.vim')
+  call neobundle#config({
+        \   'autoload' : {
+        \     'unite_sources' : [
+        \       'jazzradio'
+        \     ],
+        \     'commands' : [
+        \       'JazzradioUpdateChannels',
+        \       'JazzradioStop',
+        \       {
+        \         'name' : 'JazzradioPlay',
+        \         'complete' : 'customlist,jazzradio#channel_id_complete'
+        \       }
+        \     ],
+        \     'function_prefix' : 'jazzradio'
+        \   }
+        \ })
+endif
+
+nnoremap <Leader>jz :JazzradioUpdateChannels<CR>
+nnoremap <Leader>jZ :JazzradioStop<CR>
+nnoremap <Leader>uz :Unite jazzradio<CR>
+
 
 
 " Brief help
@@ -127,30 +150,40 @@ filetype plugin indent on
 NeoBundleCheck
 
 
+" augroup init (from tyru's vimrc)
+augroup vimrc
+  autocmd!
+augroup END
+
+command!
+      \ -bang -nargs=*
+      \ MyAutoCmd
+      \ autocmd<bang> vimrc <args>
+
+
+
 " display
 " ----------------------
 set t_Co=256
 scriptencoding utf-8
 
 
-" augroup highlightIdegraphicSpace
-  " autocmd!
-  " autocmd Colorscheme * highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
-  " autocmd VimEnter,WinEnter * match IdeographicSpace /　/
-" augroup END
+MyAutoCmd Colorscheme * highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
+MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
 
 
-" set background=dark
-" colorscheme railscasts
-" colorscheme Tomorrow-Night
 set background=light
 colorscheme solarized
 
 """""""インサートモードでカーソルの形を変える""""""""""
-"これがないとスマートインプットが機能しない?
-
-let &t_SI = "\e]50;CursorShape=1\x7"
-let &t_EI = "\e]50;CursorShape=0\x7"
+" Changing cursor shape per mode
+if exists('$TMUX')
+  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+else
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
 
 set number " show line number
 " set relativenumber
@@ -169,31 +202,31 @@ set wrapmargin=2
 " ----------------------
 
 " Anywhere SID.
-function! s:SID_PREFIX()
-  return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
-endfunction
+" function! s:SID_PREFIX()
+  " return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
+" endfunction
 
 " Set tabline.
-function! s:my_tabline()  "{{{
-  let s = ''
-  for i in range(1, tabpagenr('$'))
-    let bufnrs = tabpagebuflist(i)
-    let bufnr = bufnrs[tabpagewinnr(i) - 1]  " first window, first appears
-    let no = i  " display 0-origin tabpagenr.
-    let mod = getbufvar(bufnr, '&modified') ? '!' : ' '
-    let title = fnamemodify(bufname(bufnr), ':t')
-    let title = '[' . title . ']'
-    let s .= '%'.i.'T'
-    let s .= '%#' . (i == tabpagenr() ? 'TabLineSel' : 'TabLine') . '#'
-    let s .= no . ':' . title
-    let s .= mod
-    let s .= '%#TabLineFill# '
-  endfor
-  let s .= '%#TabLineFill#%T%=%#TabLine#'
-  return s
-endfunction "}}}
-let &tabline = '%!'. s:SID_PREFIX() . 'my_tabline()'
-set showtabline=2 " 常にタブラインを表示
+" function! s:my_tabline()  "{{{
+  " let s = ''
+  " for i in range(1, tabpagenr('$'))
+    " let bufnrs = tabpagebuflist(i)
+    " let bufnr = bufnrs[tabpagewinnr(i) - 1]  " first window, first appears
+    " let no = i  " display 0-origin tabpagenr.
+    " let mod = getbufvar(bufnr, '&modified') ? '!' : ' '
+    " let title = fnamemodify(bufname(bufnr), ':t')
+    " let title = '[' . title . ']'
+    " let s .= '%'.i.'T'
+    " let s .= '%#' . (i == tabpagenr() ? 'TabLineSel' : 'TabLine') . '#'
+    " let s .= no . ':' . title
+    " let s .= mod
+    " let s .= '%#TabLineFill# '
+  " endfor
+  " let s .= '%#TabLineFill#%T%=%#TabLine#'
+  " return s
+" endfunction "}}}
+" let &tabline = '%!'. s:SID_PREFIX() . 'my_tabline()'
+" set showtabline=2 " 常にタブラインを表示
 
 " The prefix key.
 nnoremap    [Tag]   <Nop>
@@ -238,24 +271,23 @@ set autoread
 set hidden
 set showcmd
 set backspace=indent,eol,start
+set ambiwidth=double
+
 nnoremap p p=`]`]
 inoremap <silent> <C-j> <ESC>
-augroup auto_comment_off
-  autocmd!
-  autocmd BufEnter * setlocal formatoptions-=ro
-augroup END
+
+  MyAutoCmd BufEnter * setlocal formatoptions-=ro
+
 nnoremap <CR> o<Esc>
-augroup auto_coffe
-  autocmd!
   " vimにcoffeeファイルタイプを認識させる
-  autocmd BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
-  autocmd BufRead,BufNewFile,BufReadPre *.coffee nnoremap <Leader>cf :CoffeeWatch watch vert<CR>
-augroup END
+  MyAutoCmd BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
+  MyAutoCmd BufRead,BufNewFile,BufReadPre *.coffee nnoremap <Leader>cf :CoffeeWatch watch vert<CR>
 
 set cursorline
 set nocursorcolumn
 " set nocursorline
 syntax sync minlines=256
+
 
 map <C-j> <Esc>
 
@@ -268,7 +300,8 @@ map <C-j> <Esc>
 
 
 " OSのクリップボードを使う
-set clipboard+=unnamed
+set clipboard=unnamed,autoselect
+" set clipboard=autoselect
 
 """""""""""""""folding""""
 " set foldmethod=indent
@@ -278,9 +311,11 @@ set clipboard+=unnamed
 
 
 " 保存時に行末の空白を除去する
-autocmd BufWritePre * :%s/\s\+$//ge
+MyAutoCmd BufWritePre *[^(markdown)] :%s/\s\+$//ge
 " 保存時にtabをスペースに変換する
-autocmd BufWritePre * :%s/\t/  /ge
+MyAutoCmd BufWritePre * :%s/\t/  /ge
+" .vimrc 保存時に自動で再読み込み
+" MyAutoCmd BufWritePost ~/.vimrc   :so ~/.vimrc
 
 
 " move
@@ -321,11 +356,12 @@ set smartcase
 set hlsearch
 " Esc Esc でハイライトOFF
 nnoremap <Esc><Esc> :<C-u>set nohlsearch<Return>
+
 " Localize search options.
-" autocmd WinLeave *
+" MyAutoCmd WinLeave *
       " \     let b:vimrc_pattern = @/
       " \   | let b:vimrc_hlsearch = &hlsearch
-" autocmd WinEnter *
+" MyAutoCmd WinEnter *
       " \     let @/ = get(b:, 'vimrc_pattern', @/)
       " \   | let &l:hlsearch = get(b:, 'vimrc_hlsearch', &l:hlsearch)
 " 「/」「?」「*」「#」が押されたらハイライトをON にしてから「/」「?」「*」「#」
@@ -335,6 +371,7 @@ nnoremap * :<C-u>set hlsearch<Return>*
 nnoremap # :<C-u>set hlsearch<Return>#
 
 " no bell
+"
 set visualbell
 set t_vb=
 
@@ -349,20 +386,12 @@ set t_vb=
 " --------------------
 " map <C-n> :NERDTreeToggle<CR>
 nnoremap Q <Nop>
-inoremap <C-c> <Esc>
-vnoremap <silent> <C-p> "0p<CR>"
+" inoremap <C-c> <Esc>
+" vnoremap <silent> <C-p> "0p<CR>"
 
 " auto command
 " --------------------
-" augroup BufferAu
-  " autocmd!
-  " change current directory
-  " autocmd BufNewFile,BufRead,BufEnter * if isdirectory(expand("%:p:h")) && bufname("%") !~ "NERD_tree" | cd %:p:h | endif
-" augroup END
-"autocmd vimenter * NERDTree
-" autocmd vimenter * if !argc() | NERDTree | endif
-" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | e
-autocmd QuickFixCmdPost *grep* cwindow
+MyAutoCmd QuickFixCmdPost *grep* cwindow
 
 " Plugin setting
 " --------------------
@@ -477,6 +506,7 @@ nnoremap <silent> [unite]m :<C-u>UniteWithBufferDir  file file/new -input=app/mo
 nnoremap <silent> [unite]v :<C-u>UniteWithBufferDir  file file/new -input=app/views/ -buffer-name=views<CR>
 nnoremap <silent> [unite]s :<C-u>UniteWithBufferDir  file file/new -input=spec/ -buffer-name=spec<CR>
 nnoremap <silent> [unite]j :<C-u>UniteWithBufferDir  file file/new -input=app/assets/javascripts/ -buffer-name=js<CR>
+nnoremap <silent> [unite]a :<C-u>UniteWithBufferDir  file file/new -input=app/ -buffer-name=app<CR>
 " grep検索
 nnoremap <silent> ,g  :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
 " カーソル位置の単語をgrep検索
@@ -485,24 +515,22 @@ nnoremap <silent> ,cg :<C-u>Unite grep:. -buffer-name=search-buffer<CR><C-R><C-W
 nnoremap <silent> [unite]r  :<C-u>UniteResume search-buffer<CR>
 
 
+  MyAutoCmd FileType unite call s:unite_my_settings()
+
 function! s:unite_my_settings()
   " 単語単位からパス単位で削除するように変更
   imap <buffer> <C-w> <Plug>(unite_delete_backward_path)
   " ESCキーを2回押すと終了する
-  nmap <ESC><ESC> q
-  imap <ESC><ESC> <ESC>q
-  nnoremap <expr> <C-s> unite#do_action('split')
-  inoremap <expr> <C-s> unite#do_action('split')
-  nnoremap <expr> <C-v> unite#do_action('vsplit')
-  inoremap <expr> <C-v> unite#do_action('vsplit')
+  nmap <buffer> <ESC><ESC> q
+  imap <buffer> <ESC><ESC> <ESC>q
+  nnoremap <buffer> <expr> <C-s> unite#do_action('split')
+  inoremap <buffer> <expr> <C-s> unite#do_action('split')
+  nnoremap <buffer> <expr> <C-v> unite#do_action('vsplit')
+  inoremap <buffer> <expr> <C-v> unite#do_action('vsplit')
   " dwm.vim で開く
   " nnoremap <silent> <buffer> <expr> <c-o> unite#do_action('dwm_new')
   " inoremap <silent> <buffer> <expr> <c-o> unite#do_action('dwm_new')
 endfunction
-augroup Unite
-  autocmd!
-  autocmd FileType unite call s:unite_my_settings()
-augroup END
 
 
 
@@ -531,10 +559,10 @@ let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
 """"""""""syntastic"""""""""""""""
 
 ""USE RUBOCOP
-let g:syntastic_mode_map = { 'mode': 'active',
+let g:syntastic_mode_map = { 'mode': 'passive',
       \ 'active_filetypes': ['ruby'] }
 let g:syntastic_ruby_checkers = ['rubocop']
-let g:syntastic_quiet_messages = {'level': 'warnings'}
+" let g:syntastic_quiet_messages = {'level': 'warnings'}
 
 """""""""""vim-easymotion""""""""""""
 
@@ -605,7 +633,6 @@ inoremap <expr><C-g>     neocomplete#undo_completion()
 " " For no inserting <CR> key.
 " return pumvisible() ? neocomplete#close_popup() : "\<CR>"
 " endfunction
-call smartinput#map_to_trigger('i', '<Plug>(smartinput_CR)', '<Enter>', '<Enter>')
 imap <expr> <CR> pumvisible() ?
       \ neocomplete#close_popup() : "\<Plug>(smartinput_CR)"
 
@@ -613,21 +640,22 @@ imap <expr> <CR> pumvisible() ?
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
-"inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-"inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><C-o>  neocomplete#close_popup()
+imap <expr><C-h> neocomplete#smart_close_popup()."\<Plug>(smartinput_C-h)"
+imap <expr><BS> neocomplete#smart_close_popup()."\<Plug>(smartinput_BS)"
+" inoremap <expr><C-o>  neocomplete#close_popup()
 inoremap <expr><C-e>  neocomplete#cancel_popup()
 " Close popup by <Space>.
 "inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
 
 
 
+
 " Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+MyAutoCmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+MyAutoCmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+MyAutoCmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+MyAutoCmd FileType python setlocal omnifunc=pythoncomplete#Complete
+MyAutoCmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
 " Enable heavy omni completion.
 " if !exists('g:neocomplete#sources#omni#input_patterns')
@@ -714,7 +742,15 @@ call smartinput#define_rule({
 
 call smartinput_endwise#define_default_rules()
 
-
+call smartinput#map_to_trigger('i', '<Plug>(smartinput_BS)',
+      \                        '<BS>',
+      \                        '<BS>')
+call smartinput#map_to_trigger('i', '<Plug>(smartinput_C-h)',
+      \                        '<BS>',
+      \                        '<C-h>')
+call smartinput#map_to_trigger('i', '<Plug>(smartinput_CR)',
+      \                        '<Enter>',
+      \                        '<Enter>')
 
 """""""""""NERD COMMENTER""""""""""""
 let NERDSpaceDelims = 1
@@ -842,10 +878,8 @@ function! TagbarStatusFunc(current, sort, fname, ...) abort
   return lightline#statusline(0)
 endfunction
 
-augroup AutoSyntastic
-  autocmd!
-  autocmd BufWritePost *.c,*.cpp call s:syntastic()
-augroup END
+  MyAutoCmd BufWritePost *.c,*.cpp call s:syntastic()
+
 function! s:syntastic()
   SyntasticCheck
   call lightline#update()
@@ -856,21 +890,20 @@ let g:vimfiler_force_overwrite_statusline = 0
 let g:vimshell_force_overwrite_statusline = 0
 
 """""""""""""""""neorspec""""""""""""""""""""""
-" let g:neorspec_command = "!rspec --color --format documentation {spec}"
-let g:neorspec_command = "Dispatch bundle exec spring rspec --color --format documentation {spec}"
+" let g:neorspec_command = "!bundle exec spring rspec --color --format documentation {spec}"
+" let g:neorspec_command = "Dispatch bundle exec spring rspec --color --format documentation {spec}"
+let g:neorspec_command = "Dispatch bundle exec spring rspec {spec}"
 " let g:neorspec_command = "Start rspec --color --format documentation {spec}"
 function! s:load_rspec_settings()
-  nnoremap ,rc  :RSpecCurrent<CR>
-  nnoremap ,rn  :RSpecNearest<CR>
-  nnoremap ,rl  :RSpecRetry<CR>
-  nnoremap ,ra  :RSpecAll<CR>
-  nnoremap ,r   :RSpec<Space>
+  nnoremap <buffer> ,rc  :RSpecCurrent<CR>
+  nnoremap <buffer> ,rn  :RSpecNearest<CR>
+  nnoremap <buffer> ,rl  :RSpecRetry<CR>
+  nnoremap <buffer> ,ra  :RSpecAll<CR>
+  nnoremap <buffer> ,r   :RSpec<Space>
 endfunction
 
-augroup RSpecSetting
-  autocmd!
-  autocmd BufWinEnter *.rb call s:load_rspec_settings()
-augroup END
+  MyAutoCmd BufWinEnter *.rb call s:load_rspec_settings()
+
 
 
 " RSpec対応
@@ -981,14 +1014,14 @@ function! s:gitv_get_current_hash()
   return matchstr(getline('.'), '\[\zs.\{7\}\ze\]$')
 endfunction
 
-autocmd FileType git setlocal nofoldenable foldlevel=0
+MyAutoCmd FileType git setlocal nofoldenable foldlevel=0
 function! s:toggle_git_folding()
   if &filetype ==# 'git'
     setlocal foldenable!
   endif
 endfunction
 
-autocmd FileType gitv call s:my_gitv_settings()
+MyAutoCmd FileType gitv call s:my_gitv_settings()
 function! s:my_gitv_settings()
   setlocal iskeyword+=/,-,.
   nnoremap <silent><buffer> C :<C-u>Git checkout <C-r><C-w><CR>
@@ -1000,6 +1033,10 @@ function! s:my_gitv_settings()
   nnoremap <silent><buffer> t :<C-u>windo call <SID>toggle_git_folding()<CR>1<C-w>w
 endfunction
 
+nnoremap <Leader>gvv :Gitv<CR>
+nnoremap <Leader>gva :Gitv --all<CR>
+nnoremap <Leader>gvf :Gitv!<CR>
+
 """""""""""vim-json""""""""""""
 let g:vim_json_syntax_conceal = 0
 
@@ -1008,14 +1045,12 @@ let g:memolist_path = "~/Dropbox/memo"
 map <Leader>mn  :MemoNew<CR>
 map <Leader>ml  :MemoList<CR>
 map <Leader>mg  :MemoGrep<CR>
+let g:memolist_unite = 1
+let g:memolist_unite_source = "file_rec"
+let g:memolist_unite_option = "-start-insert"
+let g:memolist_memo_date = "%Y-%m-%d-%a %H:%M"
 """"""""""vim-markdown"""""""""""
 let g:vim_markdown_folding_disabled=1
-" use unite (default 0)
-let g:memolist_unite = 1
-" use arbitrary unite source (default is 'file')
-let g:memolist_unite_source = "file_rec"
-" use arbitrary unite option (default is empty)
-let g:memolist_unite_option = "-auto-preview -start-insert"
 """"""""""open-browser"""""""""""
 let g:netrw_nogx = 1 " disable netrw's gx mapping.
 nmap gx <Plug>(openbrowser-smart-search)
