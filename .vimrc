@@ -4,7 +4,8 @@
 " ------------------------------------------------------------------------------
 "
 
-
+command! E :tabedit ~/.vimrc
+command! R :so ~/.vimrc
 
 if has('vim_starting')
   set nocompatible               " Be iMproved
@@ -54,17 +55,26 @@ NeoBundle 'vim-scripts/vim-auto-save'
 NeoBundle 'rking/ag.vim'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'Yggdroot/indentLine'
-" NeoBundle 'itchyny/thumbnail.vim'
+NeoBundle 'itchyny/thumbnail.vim'
 " NeoBundle "mbbill/undotree"
-" NeoBundle "airblade/vim-rooter"
 " NeoBundle 'spolu/dwm.vim'
 " NeoBundle 'nabezokodaikon/dwm.vim'
 " NeoBundle 'kannokanno/unite-dwm'
 NeoBundle 'szw/vim-tags'
 NeoBundle 't9md/vim-choosewin'
 NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'AmaiSaeta/closesomewindow.vim'
 NeoBundle 'gregsexton/gitv'
+NeoBundle 'tpope/vim-repeat'
+NeoBundle 'LeafCage/foldCC'
+NeoBundle 'LeafCage/yankround.vim'
+NeoBundle 'osyo-manga/vim-over'
+NeoBundle 'AnsiEsc.vim'
+NeoBundle 'tacroe/unite-mark'
+NeoBundle 'moznion/hateblo.vim', {
+      \ 'depends': ['mattn/webapi-vim', 'Shougo/unite.vim']
+      \ }
+NeoBundle 'airblade/vim-rooter'
+NeoBundle 'taku25/subway'
 
 """""""Unite""""""""""""
 NeoBundle 'osyo-manga/unite-choosewin-actions'
@@ -100,15 +110,17 @@ NeoBundle "wjakob/vim-tomorrow-night"
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'jpo/vim-railscasts-theme'
 NeoBundle 'nanotech/jellybeans.vim'
+NeoBundle 'jnurmine/Zenburn'
+NeoBundle 'vim-scripts/twilight'
 
 
 NeoBundleLazy 'alpaca-tc/neorspec.vim', {
-    \ 'depends' : 'tpope/vim-rails',
-    \ 'autoload' : {
-    \   'commands' : [
-    \       'RSpecAll', 'RSpecNearest', 'RSpecRetry',
-    \       'RSpecCurrent', 'RSpec'
-    \ ]}}
+      \ 'depends' : 'tpope/vim-rails',
+      \ 'autoload' : {
+      \   'commands' : [
+      \       'RSpecAll', 'RSpecNearest', 'RSpecRetry',
+      \       'RSpecCurrent', 'RSpec'
+      \ ]}}
 NeoBundleLazy 'tpope/vim-dispatch', { 'autoload' : {
       \ 'commands' : ['Dispatch', 'FocusDispatch', 'Start']
       \}}
@@ -132,9 +144,6 @@ if neobundle#tap('jazzradio.vim')
         \ })
 endif
 
-nnoremap <Leader>jz :JazzradioUpdateChannels<CR>
-nnoremap <Leader>jZ :JazzradioStop<CR>
-nnoremap <Leader>uz :Unite jazzradio<CR>
 
 
 
@@ -203,30 +212,30 @@ set wrapmargin=2
 
 " Anywhere SID.
 " function! s:SID_PREFIX()
-  " return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
+" return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
 " endfunction
 
 " Set tabline.
 " function! s:my_tabline()  "{{{
-  " let s = ''
-  " for i in range(1, tabpagenr('$'))
-    " let bufnrs = tabpagebuflist(i)
-    " let bufnr = bufnrs[tabpagewinnr(i) - 1]  " first window, first appears
-    " let no = i  " display 0-origin tabpagenr.
-    " let mod = getbufvar(bufnr, '&modified') ? '!' : ' '
-    " let title = fnamemodify(bufname(bufnr), ':t')
-    " let title = '[' . title . ']'
-    " let s .= '%'.i.'T'
-    " let s .= '%#' . (i == tabpagenr() ? 'TabLineSel' : 'TabLine') . '#'
-    " let s .= no . ':' . title
-    " let s .= mod
-    " let s .= '%#TabLineFill# '
-  " endfor
-  " let s .= '%#TabLineFill#%T%=%#TabLine#'
-  " return s
+" let s = ''
+" for i in range(1, tabpagenr('$'))
+" let bufnrs = tabpagebuflist(i)
+" let bufnr = bufnrs[tabpagewinnr(i) - 1]  " first window, first appears
+" let no = i  " display 0-origin tabpagenr.
+" let mod = getbufvar(bufnr, '&modified') ? '!' : ' '
+" let title = fnamemodify(bufname(bufnr), ':t')
+" let title = '[' . title . ']'
+" let s .= '%'.i.'T'
+" let s .= '%#' . (i == tabpagenr() ? 'TabLineSel' : 'TabLine') . '#'
+" let s .= no . ':' . title
+" let s .= mod
+" let s .= '%#TabLineFill# '
+" endfor
+" let s .= '%#TabLineFill#%T%=%#TabLine#'
+" return s
 " endfunction "}}}
 " let &tabline = '%!'. s:SID_PREFIX() . 'my_tabline()'
-" set showtabline=2 " 常にタブラインを表示
+set showtabline=2 " 常にタブラインを表示
 
 " The prefix key.
 nnoremap    [Tag]   <Nop>
@@ -276,38 +285,141 @@ set ambiwidth=double
 nnoremap p p=`]`]
 inoremap <silent> <C-j> <ESC>
 
-  MyAutoCmd BufEnter * setlocal formatoptions-=ro
+MyAutoCmd BufEnter * setlocal formatoptions-=ro
 
-nnoremap <CR> o<Esc>
-  " vimにcoffeeファイルタイプを認識させる
-  MyAutoCmd BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
-  MyAutoCmd BufRead,BufNewFile,BufReadPre *.coffee nnoremap <Leader>cf :CoffeeWatch watch vert<CR>
+
+" vimにcoffeeファイルタイプを認識させる
+MyAutoCmd BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
+MyAutoCmd BufRead,BufNewFile,BufReadPre *.coffee nnoremap <Leader>cf :CoffeeWatch watch vert<CR>
 
 set cursorline
 set nocursorcolumn
 " set nocursorline
-syntax sync minlines=256
+syntax sync minlines=100 maxlines=500
 
 
+nnoremap <CR> o<ESC>
 map <C-j> <Esc>
+
 
 " set formatoptions=qrn1
 " if v:version >= 730
-  " set colorcolumn=85 "色づけ
+" set colorcolumn=85 "色づけ
 " endif
 
 " nnoremap <Leader>a :Ag<SPACE>
 
 
 " OSのクリップボードを使う
-set clipboard=unnamed,autoselect
+set clipboard+=unnamed
 " set clipboard=autoselect
 
+""""""""""gf(Goto File)拡張"""""""""""
+
+" 縦分割版gf
+nnoremap gv :vertical wincmd f<CR>
+" 横分割
+nnoremap gs <C-w>f
+" 新規タブ
+nnoremap gt <C-w>gf
+
+"""""""""""""""mark""""
+
+" mark auto reg
+" http://saihoooooooo.hatenablog.com/entry/2013/04/30/001908
+if !exists('g:markrement_char')
+  let g:markrement_char = [
+        \     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+        \     'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
+        \ ]
+endif
+nnoremap <silent>m :<C-u>call <SID>AutoMarkrement()<CR>
+
+function! s:AutoMarkrement()
+  if !exists('b:markrement_pos')
+    let b:markrement_pos = 0
+  else
+    let b:markrement_pos = (b:markrement_pos + 1) % len(g:markrement_char)
+  endif
+  execute 'mark' g:markrement_char[b:markrement_pos]
+  echo 'marked' g:markrement_char[b:markrement_pos]
+endfunction
+
 """""""""""""""folding""""
-" set foldmethod=indent
-" set foldlevel=2
-" set foldcolumn=3
-" nnoremap <Leader>f :set foldmethod=indent<CR>
+
+set foldmethod=indent
+set foldnestmax=4
+set foldlevel=2
+set foldtext=foldCC#foldtext()
+let g:foldCCtext_tail = 'v:foldend-v:foldstart+1'
+" let g:foldCCtext_enable_autofdc_adjuster = 1
+set foldcolumn=3
+
+MyAutoCmd Filetype ruby,coffeescript setlocal foldlevel=1
+MyAutoCmd Filetype ruby,coffeescript setlocal foldnestmax=2
+MyAutoCmd FileType haml setlocal foldmethod=manual
+
+nnoremap <expr>l  foldclosed('.') != -1 ? ':call <SID>smart_foldopener()<CR>' : 'l'
+" nnoremap <expr>h foldlevel('.') != 0 ? ':call <SID>smart_foldcloser()<CR>' : 'h'
+
+function! s:smart_foldopener() "{{{
+  let before = foldlevel('.')
+
+  " if before > 2
+  " norm! zO
+  " return
+  " endif
+
+  norm! zo
+
+  if foldlevel('.') != foldclosedend('.')
+    norm! j
+  endif
+
+  let after = foldlevel('.')
+  if before > after
+    norm! k
+  endif
+endfunction "}}}
+
+nnoremap <C-_> :<C-u>call <SID>smart_foldcloser()<CR>
+nnoremap z<C-_>    zMzvzc
+nnoremap  z[     :<C-u>call <SID>put_foldmarker(0)<CR>
+nnoremap  z]     :<C-u>call <SID>put_foldmarker(1)<CR>
+nnoremap <silent>z0    :<C-u>set foldlevel=<C-r>=foldlevel('.')<CR>
+
+function! s:smart_foldcloser() "{{{
+  if foldlevel('.') == 0
+    " norm! zM
+    return
+  endif
+
+  let foldc_lnum = foldclosed('.')
+  norm! zc
+  if foldc_lnum == -1
+    return
+  endif
+
+  if foldclosed('.') != foldc_lnum
+    return
+  endif
+  " norm! zM
+endfunction
+"}}}
+
+function! s:put_foldmarker(foldclose_p) "{{{
+  let crrstr = getline('.')
+  let padding = crrstr=='' ? '' : crrstr=~'\s$' ? '' : ' '
+  let [cms_start, cms_end] = ['', '']
+  let outside_a_comment_p = synIDattr(synID(line('.'), col('$')-1, 1), 'name') !~? 'comment'
+  if outside_a_comment_p
+    let cms_start = matchstr(&cms,'\V\s\*\zs\.\+\ze%s')
+    let cms_end = matchstr(&cms,'\V%s\zs\.\+')
+  endif
+  let fmr = split(&fmr, ',')[a:foldclose_p]. (v:count ? v:count : '')
+  exe 'norm! A'. padding. cms_start. fmr. cms_end
+endfunction
+"}}}
 
 
 " 保存時に行末の空白を除去する
@@ -337,7 +449,7 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
-nnoremap <C-c> :close<CR>
+nnoremap <C-c> <C-w>c
 " nnoremap <C-o> <C-w>o
 
 " imap <C-j> <Down>
@@ -359,11 +471,11 @@ nnoremap <Esc><Esc> :<C-u>set nohlsearch<Return>
 
 " Localize search options.
 " MyAutoCmd WinLeave *
-      " \     let b:vimrc_pattern = @/
-      " \   | let b:vimrc_hlsearch = &hlsearch
+" \     let b:vimrc_pattern = @/
+" \   | let b:vimrc_hlsearch = &hlsearch
 " MyAutoCmd WinEnter *
-      " \     let @/ = get(b:, 'vimrc_pattern', @/)
-      " \   | let &l:hlsearch = get(b:, 'vimrc_hlsearch', &l:hlsearch)
+" \     let @/ = get(b:, 'vimrc_pattern', @/)
+" \   | let &l:hlsearch = get(b:, 'vimrc_hlsearch', &l:hlsearch)
 " 「/」「?」「*」「#」が押されたらハイライトをON にしてから「/」「?」「*」「#」
 nnoremap / :<C-u>set hlsearch<Return>/
 nnoremap ? :<C-u>set hlsearch<Return>?
@@ -381,13 +493,13 @@ set t_vb=
 " set backupdir=~/.vim/vim_backup
 " set swapfile
 " set directory=~/.vim/vim_swap
+" viminfo
+" http://vimwiki.net/?%27viminfo%27
+set viminfo='50,<1000,s100,:0,n~/.vim/viminfo
 
 " key map
 " --------------------
-" map <C-n> :NERDTreeToggle<CR>
 nnoremap Q <Nop>
-" inoremap <C-c> <Esc>
-" vnoremap <silent> <C-p> "0p<CR>"
 
 " auto command
 " --------------------
@@ -415,21 +527,19 @@ let g:rails_statusline = 1
 let g:rails_subversion=0
 let g:rails_syntax = 1
 let g:rails_url='http://localhost:3000'
-let g:rails_ctags_arguments='--languages=-javascript'
-let g:rails_ctags_arguments = ''
 " function! SetUpRailsSetting()
-  " nnoremap <buffer><Space>r :R<CR>
-  " nnoremap <buffer><Space>a :A<CR>
-  " nnoremap <buffer><Space>m :Rmodel<Space>
-  " nnoremap <buffer><Space>c :Rcontroller<Space>
-  " nnoremap <buffer><Space>v :Rview<Space>
-  " nnoremap <buffer><Space>p :Rpreview<CR>
+" nnoremap <buffer><Space>r :R<CR>
+" nnoremap <buffer><Space>a :A<CR>
+" nnoremap <buffer><Space>m :Rmodel<Space>
+" nnoremap <buffer><Space>c :Rcontroller<Space>
+" nnoremap <buffer><Space>v :Rview<Space>
+" nnoremap <buffer><Space>p :Rpreview<CR>
 " endfunction
 " aug MyAutoCmd
-  " au User Rails call SetUpRailsSetting()
+" au User Rails call SetUpRailsSetting()
 " aug END
 " aug RailsDictSetting
-  " au!
+" au!
 " aug END
 " autocmd User Rails.view*                 NeoSnippetSource ~/.vim/snippet/ruby.rails.view.snip
 " autocmd User Rails.controller*           NeoSnippetSource ~/.vim/snippet/ruby.rails.controller.snip
@@ -447,7 +557,7 @@ let g:vimfiler_as_default_explorer = 1
 " let g:vimfiler_tree_closed_icon = '▸'
 " let g:vimfiler_file_icon = '-'
 " let g:vimfiler_marked_file_icon = '*'
-nmap <C-n>  :VimFilerCurrentDir -split -horizontal -toggle -quit<CR>
+nmap <C-n>  :VimFilerBufferDir -split -horizontal -toggle -quit<CR>
 
 """ unite.vim
 " 起動時にインサートモードで開始
@@ -468,6 +578,7 @@ let g:unite_enable_smart_case = 1
 " ファイルを開く場合のデフォルトアクションを choosewin にする
 call unite#custom#default_action('file' , 'choosewin/open')
 call unite#custom#default_action('buffer' , 'choosewin/open')
+call unite#custom#default_action('grep' , 'choosewin/open')
 
 " The prefix key.
 nnoremap    [unite]   <Nop>
@@ -478,14 +589,12 @@ nnoremap <silent> [unite]o  :<C-u>Unite outline<CR>
 nnoremap [unite]o :Unite -vertical -winwidth=40 outline<Return>
 " マッピング
 " nnoremap <silent> [unite]ma :<C-u>Unite mapping<CR>
-" メッセージ
-" nnoremap <silent> [unite]me :<C-u>Unite output:message<CR>
 " バッファ一覧
 nnoremap <silent> [unite]b :<C-u>Unite buffer<CR>
 " レジスタ一覧
 nnoremap <silent> [unite]p :<C-u>Unite -buffer-name=register register<CR>
 " ヤンク履歴
-nnoremap <silent> [unite]y :<C-u>Unite history/yank<CR>
+nnoremap <silent> [unite]y :<C-u>Unite yankround<CR>
 " 最近使用したファイル一覧
 nnoremap <silent> [unite]u :<C-u>Unite file_mru<CR>
 " 常用セット
@@ -498,35 +607,41 @@ nnoremap <silent> [unite]u :<C-u>Unite file_mru<CR>
 " nnoremap <C-p> :Unite -start-insert -winheight=10 -direction=botright file_rec/async<cr>
 " call unite#custom#source('file_rec/async', 'ignore_pattern', '\(^\.git\|png\|gif\|jpeg\|jpg\)$')
 
-nnoremap <C-p> :Unite -start-insert file_rec/async<CR>
+nnoremap <silent> <C-p> :<C-u>Unite -start-insert file_rec/async:!<CR>
 " ファイル一覧
-nnoremap <silent> [unite]f  :<C-u>UniteWithBufferDir  file file/new -buffer-name=files<CR>
-nnoremap <silent> [unite]c :<C-u>UniteWithBufferDir  file file/new -input=app/controllers/ -buffer-name=controllers<CR>
-nnoremap <silent> [unite]m :<C-u>UniteWithBufferDir  file file/new -input=app/models/ -buffer-name=models<CR>
-nnoremap <silent> [unite]v :<C-u>UniteWithBufferDir  file file/new -input=app/views/ -buffer-name=views<CR>
-nnoremap <silent> [unite]s :<C-u>UniteWithBufferDir  file file/new -input=spec/ -buffer-name=spec<CR>
-nnoremap <silent> [unite]j :<C-u>UniteWithBufferDir  file file/new -input=app/assets/javascripts/ -buffer-name=js<CR>
-nnoremap <silent> [unite]a :<C-u>UniteWithBufferDir  file file/new -input=app/ -buffer-name=app<CR>
+nnoremap <silent> [unite]f :<C-u>UniteWithBufferDir  file file/new directory/new -buffer-name=files<CR>
+nnoremap <silent> [unite]c :<C-u>Unite               file file/new directory/new -input=app/controllers/ -buffer-name=controllers<CR>
+nnoremap <silent> [unite]m :<C-u>Unite               file file/new directory/new -input=app/models/ -buffer-name=models<CR>
+nnoremap <silent> [unite]d :<C-u>Unite               file file/new directory/new -input=app/decorators/ -buffer-name=decorators<CR>
+nnoremap <silent> [unite]v :<C-u>Unite               file file/new directory/new -input=app/views/ -buffer-name=views<CR>
+nnoremap <silent> [unite]j :<C-u>Unite               file file/new directory/new -input=app/assets/javascripts/ -buffer-name=js<CR>
+nnoremap <silent> [unite]a :<C-u>Unite               file file/new directory/new -input=app/ -buffer-name=app<CR>
+nnoremap <silent> [unite]r :<C-u>Unite               file file/new directory/new -buffer-name=root<CR>
+nnoremap <silent> [unite]s :<C-u>Unite               file file/new directory/new -input=spec/ -buffer-name=spec<CR>
 " grep検索
 nnoremap <silent> ,g  :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
 " カーソル位置の単語をgrep検索
 nnoremap <silent> ,cg :<C-u>Unite grep:. -buffer-name=search-buffer<CR><C-R><C-W><CR>
 " grep検索結果の再呼出
-nnoremap <silent> [unite]r  :<C-u>UniteResume search-buffer<CR>
+nnoremap <silent> ,r  :<C-u>UniteResume search-buffer<CR>
+
+"mark一覧
+nnoremap <silent> ,m :<C-u>Unite mark<CR>
 
 
-  MyAutoCmd FileType unite call s:unite_my_settings()
+MyAutoCmd FileType unite call s:unite_my_settings()
 
 function! s:unite_my_settings()
   " 単語単位からパス単位で削除するように変更
   imap <buffer> <C-w> <Plug>(unite_delete_backward_path)
   " ESCキーを2回押すと終了する
-  nmap <buffer> <ESC><ESC> q
-  imap <buffer> <ESC><ESC> <ESC>q
-  nnoremap <buffer> <expr> <C-s> unite#do_action('split')
-  inoremap <buffer> <expr> <C-s> unite#do_action('split')
-  nnoremap <buffer> <expr> <C-v> unite#do_action('vsplit')
-  inoremap <buffer> <expr> <C-v> unite#do_action('vsplit')
+  nmap <buffer> <ESC><ESC> <Plug>(unite_exit)
+  imap <buffer> <ESC><ESC> <Plug>(unite_exit)
+  let unite = unite#get_current_unite()
+  nmap <buffer> <expr> <C-s> unite#do_action('choosewin/split')
+  imap <buffer> <expr> <C-s> unite#do_action('choosewin/split')
+  nnoremap <buffer> <expr> <C-v> unite#do_action('choosewin/vsplit')
+  inoremap <buffer> <expr> <C-v> unite#do_action('choosewin/vsplit')
   " dwm.vim で開く
   " nnoremap <silent> <buffer> <expr> <c-o> unite#do_action('dwm_new')
   " inoremap <silent> <buffer> <expr> <c-o> unite#do_action('dwm_new')
@@ -562,6 +677,7 @@ let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
 let g:syntastic_mode_map = { 'mode': 'passive',
       \ 'active_filetypes': ['ruby'] }
 let g:syntastic_ruby_checkers = ['rubocop']
+let g:syntastic_ruby_rubocop_args = '--rails'
 " let g:syntastic_quiet_messages = {'level': 'warnings'}
 
 """""""""""vim-easymotion""""""""""""
@@ -672,9 +788,6 @@ MyAutoCmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 " https://github.com/c9s/perlomni.vim
 " let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 let g:neocomplete#force_overwrite_completefunc = 1
-
-"""""""vim-auto-save""""""""
-let g:auto_save = 1
 
 """""""""indentLine""""""""""
 """""""""""""""""""""""""""""
@@ -878,7 +991,7 @@ function! TagbarStatusFunc(current, sort, fname, ...) abort
   return lightline#statusline(0)
 endfunction
 
-  MyAutoCmd BufWritePost *.c,*.cpp call s:syntastic()
+MyAutoCmd BufWritePost *.c,*.cpp call s:syntastic()
 
 function! s:syntastic()
   SyntasticCheck
@@ -902,7 +1015,7 @@ function! s:load_rspec_settings()
   nnoremap <buffer> ,r   :RSpec<Space>
 endfunction
 
-  MyAutoCmd BufWinEnter *.rb call s:load_rspec_settings()
+MyAutoCmd BufWinEnter *_spec.rb call s:load_rspec_settings()
 
 
 
@@ -946,7 +1059,8 @@ let g:vim_tags_project_tags_command = "/usr/local/bin/ctags -R {OPTIONS} {DIRECT
 let g:vim_tags_gems_tags_command = "/usr/local/bin/ctags -R {OPTIONS} `bundle show --paths` 2>/dev/null"
 " tagsジャンプの時に複数ある時は一覧表示
 nnoremap <C-]> g<C-]>
-
+""""""""""Tag Jump拡張"""""""""""
+" nmap <C-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 """""""""""previm""""""""""""
 " let g:previm_open_cmd = 'open -a Safari'
 
@@ -969,12 +1083,21 @@ nnoremap <C-]> g<C-]>
 " \ 'PrtHistory(1)':        ['<c-k>'],
 " \ }
 """"""""""vim-choosewin"""""""""""""""
-nmap  `  <Plug>(choosewin)
+nmap  -  <Plug>(choosewin)
 " if you want to use overlay feature
 let g:choosewin_overlay_enable          = 1
 
 " overlay font broke on mutibyte buffer?
 let g:choosewin_overlay_clear_multibyte = 1
+
+let g:choosewin_color_overlay = {
+      \ 'gui': ['DodgerBlue3', 'DodgerBlue3' ],
+      \ 'cterm': [ 25, 25 ]
+      \ }
+let g:choosewin_color_overlay_current = {
+      \ 'gui': ['firebrick1', 'firebrick1' ],
+      \ 'cterm': [ 124, 124 ]
+      \ }
 
 """"""""""osyo-manga/unite-choosewin-actions"""""""""""
 " 選択しないウィンドウの場合は 1 を返す
@@ -989,7 +1112,6 @@ function! s:choosewin_is_ignore_window(action, winnr)
 endfunction
 
 """""""""""""""""Vimshell""""""""""""""""""""""""
-" nnoremap <Leader>s :VimShellInteractive zsh<CR>
 nnoremap <Leader>s :shell<CR>
 let g:vimshell_prompt_expr = 'getcwd()." > "'
 let g:vimshell_prompt_pattern = '^\f\+ > '
@@ -999,9 +1121,9 @@ let g:quickrun_config = {}
 let g:quickrun_config._ = {'runner' : 'vimproc', 'outputter/buffer/split': 'vsplit'}
 " QuickRunのcoffee
 let g:quickrun_config['coffee'] = {
-     \'command' : 'coffee',
-     \'exec' : ['%c -cbp %s']
-     \}
+      \'command' : 'coffee',
+      \'exec' : ['%c -cbp %s']
+      \}
 """""""""""""""""""fugitive""""""""""""""""
 nnoremap <Leader>gg :Gst<CR>
 nnoremap <Leader>gp :Git push origin
@@ -1030,7 +1152,7 @@ function! s:my_gitv_settings()
   nnoremap <buffer> <Space>h :<C-u>Git cherry-pick <C-r>=GitvGetCurrentHash()<CR><CR>
   nnoremap <buffer> <Space>rh :<C-u>Git reset --hard <C-r>=GitvGetCurrentHash()<CR>
   " s:my_gitv_settings 内
-  nnoremap <silent><buffer> t :<C-u>windo call <SID>toggle_git_folding()<CR>1<C-w>w
+  nnoremap <silent><buffer> l :<C-u>windo call <SID>toggle_git_folding()<CR>1<C-w>w
 endfunction
 
 nnoremap <Leader>gvv :Gitv<CR>
@@ -1042,9 +1164,9 @@ let g:vim_json_syntax_conceal = 0
 
 """"""""""memolist"""""""""""""""
 let g:memolist_path = "~/Dropbox/memo"
-map <Leader>mn  :MemoNew<CR>
-map <Leader>ml  :MemoList<CR>
-map <Leader>mg  :MemoGrep<CR>
+nnoremap <Leader>mn  :MemoNew<CR>
+nnoremap <Leader>ml  :MemoList<CR>
+nnoremap <Leader>mg  :MemoGrep<CR>
 let g:memolist_unite = 1
 let g:memolist_unite_source = "file_rec"
 let g:memolist_unite_option = "-start-insert"
@@ -1055,3 +1177,22 @@ let g:vim_markdown_folding_disabled=1
 let g:netrw_nogx = 1 " disable netrw's gx mapping.
 nmap gx <Plug>(openbrowser-smart-search)
 vmap gx <Plug>(openbrowser-smart-search)
+
+"""""""""""jazzradio.vim""""""""""""
+nnoremap <Leader>jz :JazzradioUpdateChannels<CR>
+nnoremap <Leader>jZ :JazzradioStop<CR>
+nnoremap <Leader>uz :Unite jazzradio<CR>
+"""""""""""over-vim""""""""""""
+cnoreabb <silent><expr>s getcmdtype()==':' && getcmdline()=~'^s' ? 'OverCommandLine<CR><C-u>%s/<C-r>=get([], getchar(0), '')<CR>' : 's'
+"""""""""""vim-auto-save""""""""""""
+let g:auto_save = 1
+
+"""""""""""visualmark.vim"""""""""""
+" nmap mm <Plug>Vm_toggle_sign
+" nmap mn <Plug>Vm_goto_next_sign
+" nmap mp <Plug>Vm_goto_prev_sign
+
+""""""""""subway"""""""""""""""
+nnoremap mm :SBToggleStation<CR>
+nnoremap mp :SBMovePreviousStation<CR>
+nnoremap mn :SBMoveNextStation<CR>
