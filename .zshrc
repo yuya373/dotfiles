@@ -53,8 +53,6 @@ source $ZSH/oh-my-zsh.sh
 # Customize to your needs...
 source ~/.zsh_dep
 
-autoload -U compinit
-compinit
 export LANG=ja_JP.UTF-8
 
 
