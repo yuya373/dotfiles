@@ -63,7 +63,8 @@ NeoBundle 'itchyny/thumbnail.vim'
 NeoBundle 'szw/vim-tags'
 NeoBundle 't9md/vim-choosewin'
 NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'gregsexton/gitv'
+" NeoBundle 'gregsexton/gitv'
+NeoBundle 'cohama/agit.vim'
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'LeafCage/foldCC'
 NeoBundle 'LeafCage/yankround.vim'
@@ -106,7 +107,6 @@ NeoBundle 'tyru/open-browser.vim'
 
 """""""colorscheme""""""""
 NeoBundle 'ujihisa/unite-colorscheme'
-NeoBundle "wjakob/vim-tomorrow-night"
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'jpo/vim-railscasts-theme'
 NeoBundle 'nanotech/jellybeans.vim'
@@ -181,7 +181,7 @@ MyAutoCmd Colorscheme * highlight IdeographicSpace term=underline ctermbg=DarkGr
 MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
 
 
-set background=light
+set background=dark
 colorscheme solarized
 
 """""""インサートモードでカーソルの形を変える""""""""""
@@ -607,7 +607,15 @@ nnoremap <silent> [unite]u :<C-u>Unite file_mru<CR>
 " nnoremap <C-p> :Unite -start-insert -winheight=10 -direction=botright file_rec/async<cr>
 " call unite#custom#source('file_rec/async', 'ignore_pattern', '\(^\.git\|png\|gif\|jpeg\|jpg\)$')
 
-nnoremap <silent> <C-p> :<C-u>Unite -start-insert file_rec/async:!<CR>
+nnoremap <silent> <C-p> :<C-u>Unite -start-insert buffer file_rec/async:!<CR>
+" nnoremap <C-p> :<C-u>execute
+      " \ 'Unite'
+      " \ '-start-insert'
+      " \ 'buffer file_mru'
+      " \ 'file:'.fnameescape(expand('%:p:h'))
+      " \ 'file_rec:!:'.fnameescape(expand('%:p:h'))
+      " \ <CR>
+
 " ファイル一覧
 nnoremap <silent> [unite]f :<C-u>UniteWithBufferDir  file file/new directory/new -buffer-name=files<CR>
 nnoremap <silent> [unite]c :<C-u>Unite               file file/new directory/new -input=app/controllers/ -buffer-name=controllers<CR>
@@ -635,11 +643,11 @@ function! s:unite_my_settings()
   " 単語単位からパス単位で削除するように変更
   imap <buffer> <C-w> <Plug>(unite_delete_backward_path)
   " ESCキーを2回押すと終了する
-  nmap <buffer> <ESC><ESC> <Plug>(unite_exit)
+  nmap <buffer> <ESC><ESC> <Plug>(unite_all_exit)
   imap <buffer> <ESC><ESC> <Plug>(unite_exit)
   let unite = unite#get_current_unite()
-  nmap <buffer> <expr> <C-s> unite#do_action('choosewin/split')
-  imap <buffer> <expr> <C-s> unite#do_action('choosewin/split')
+  nnoremap <buffer> <expr> <C-f> unite#do_action('choosewin/split')
+  inoremap <buffer> <expr> <C-f> unite#do_action('choosewin/split')
   nnoremap <buffer> <expr> <C-v> unite#do_action('choosewin/vsplit')
   inoremap <buffer> <expr> <C-v> unite#do_action('choosewin/vsplit')
   " dwm.vim で開く
@@ -1125,39 +1133,37 @@ let g:quickrun_config['coffee'] = {
       \'exec' : ['%c -cbp %s']
       \}
 """""""""""""""""""fugitive""""""""""""""""
-nnoremap <Leader>gg :Gst<CR>
-nnoremap <Leader>gp :Git push origin
-nnoremap <Leader>gc :Git co
-nnoremap <Leader>gl :Glog<CR>
+nnoremap <Leader>g :Gst<CR>
 
+""""""""""""""""""agit"""""""""""""""""""
+nnoremap <Leader>ag :Agit<CR>
+""""""""""""""""""gitv""""""""""""""""""""
+" function! s:gitv_get_current_hash()
+  " return matchstr(getline('.'), '\[\zs.\{7\}\ze\]$')
+" endfunction
 
-"""""""""""""""""""gitv""""""""""""""""""""
-function! s:gitv_get_current_hash()
-  return matchstr(getline('.'), '\[\zs.\{7\}\ze\]$')
-endfunction
+" MyAutoCmd FileType git setlocal nofoldenable foldlevel=0
+" function! s:toggle_git_folding()
+  " if &filetype ==# 'git'
+    " setlocal foldenable!
+  " endif
+" endfunction
 
-MyAutoCmd FileType git setlocal nofoldenable foldlevel=0
-function! s:toggle_git_folding()
-  if &filetype ==# 'git'
-    setlocal foldenable!
-  endif
-endfunction
-
-MyAutoCmd FileType gitv call s:my_gitv_settings()
-function! s:my_gitv_settings()
-  setlocal iskeyword+=/,-,.
-  nnoremap <silent><buffer> C :<C-u>Git checkout <C-r><C-w><CR>
-  nnoremap <buffer> <Space>rb :<C-u>Git rebase <C-r>=GitvGetCurrentHash()<CR><Space>
-  nnoremap <buffer> <Space>R :<C-u>Git revert <C-r>=GitvGetCurrentHash()<CR><CR>
-  nnoremap <buffer> <Space>h :<C-u>Git cherry-pick <C-r>=GitvGetCurrentHash()<CR><CR>
-  nnoremap <buffer> <Space>rh :<C-u>Git reset --hard <C-r>=GitvGetCurrentHash()<CR>
+" MyAutoCmd FileType gitv call s:my_gitv_settings()
+" function! s:my_gitv_settings()
+  " setlocal iskeyword+=/,-,.
+  " nnoremap <silent><buffer> C :<C-u>Git checkout <C-r><C-w><CR>
+  " nnoremap <buffer> <Space>rb :<C-u>Git rebase <C-r>=GitvGetCurrentHash()<CR><Space>
+  " nnoremap <buffer> <Space>R :<C-u>Git revert <C-r>=GitvGetCurrentHash()<CR><CR>
+  " nnoremap <buffer> <Space>h :<C-u>Git cherry-pick <C-r>=GitvGetCurrentHash()<CR><CR>
+  " nnoremap <buffer> <Space>rh :<C-u>Git reset --hard <C-r>=GitvGetCurrentHash()<CR>
   " s:my_gitv_settings 内
-  nnoremap <silent><buffer> l :<C-u>windo call <SID>toggle_git_folding()<CR>1<C-w>w
-endfunction
+  " nnoremap <silent><buffer> l :<C-u>windo call <SID>toggle_git_folding()<CR>1<C-w>w
+" endfunction
 
-nnoremap <Leader>gvv :Gitv<CR>
-nnoremap <Leader>gva :Gitv --all<CR>
-nnoremap <Leader>gvf :Gitv!<CR>
+" nnoremap <Leader>gvv :Gitv<CR>
+" nnoremap <Leader>gva :Gitv --all<CR>
+" nnoremap <Leader>gvf :Gitv!<CR>
 
 """""""""""vim-json""""""""""""
 let g:vim_json_syntax_conceal = 0
