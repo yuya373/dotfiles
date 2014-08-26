@@ -2,7 +2,7 @@
  " ----------------------
  " colorscheme railscasts
  set background=dark
- colorscheme tomorrow-night
+ colorscheme solarized
  set showtabline=2
  " window size
  if has("win32")
