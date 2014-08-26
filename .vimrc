@@ -44,7 +44,6 @@ NeoBundle 'scrooloose/syntastic'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'surround.vim'
-" NeoBundle 'https://github.com/kien/ctrlp.vim.git'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'https://github.com/kana/vim-smartinput'
 NeoBundle "cohama/vim-smartinput-endwise"
@@ -56,14 +55,9 @@ NeoBundle 'rking/ag.vim'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'itchyny/thumbnail.vim'
-" NeoBundle "mbbill/undotree"
-" NeoBundle 'spolu/dwm.vim'
-" NeoBundle 'nabezokodaikon/dwm.vim'
-" NeoBundle 'kannokanno/unite-dwm'
 NeoBundle 'szw/vim-tags'
 NeoBundle 't9md/vim-choosewin'
 NeoBundle 'Shougo/neosnippet-snippets'
-" NeoBundle 'gregsexton/gitv'
 NeoBundle 'cohama/agit.vim'
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'LeafCage/foldCC'
@@ -607,7 +601,7 @@ nnoremap <silent> [unite]u :<C-u>Unite file_mru<CR>
 " nnoremap <C-p> :Unite -start-insert -winheight=10 -direction=botright file_rec/async<cr>
 " call unite#custom#source('file_rec/async', 'ignore_pattern', '\(^\.git\|png\|gif\|jpeg\|jpg\)$')
 
-nnoremap <silent> <C-p> :<C-u>Unite -start-insert buffer file_rec/async:!<CR>
+nnoremap <silent> <C-p> :<C-u>Unite -start-insert file_rec/async:!<CR>
 " nnoremap <C-p> :<C-u>execute
       " \ 'Unite'
       " \ '-start-insert'
@@ -1137,33 +1131,6 @@ nnoremap <Leader>g :Gst<CR>
 
 """"""""""""""""""agit"""""""""""""""""""
 nnoremap <Leader>ag :Agit<CR>
-""""""""""""""""""gitv""""""""""""""""""""
-" function! s:gitv_get_current_hash()
-  " return matchstr(getline('.'), '\[\zs.\{7\}\ze\]$')
-" endfunction
-
-" MyAutoCmd FileType git setlocal nofoldenable foldlevel=0
-" function! s:toggle_git_folding()
-  " if &filetype ==# 'git'
-    " setlocal foldenable!
-  " endif
-" endfunction
-
-" MyAutoCmd FileType gitv call s:my_gitv_settings()
-" function! s:my_gitv_settings()
-  " setlocal iskeyword+=/,-,.
-  " nnoremap <silent><buffer> C :<C-u>Git checkout <C-r><C-w><CR>
-  " nnoremap <buffer> <Space>rb :<C-u>Git rebase <C-r>=GitvGetCurrentHash()<CR><Space>
-  " nnoremap <buffer> <Space>R :<C-u>Git revert <C-r>=GitvGetCurrentHash()<CR><CR>
-  " nnoremap <buffer> <Space>h :<C-u>Git cherry-pick <C-r>=GitvGetCurrentHash()<CR><CR>
-  " nnoremap <buffer> <Space>rh :<C-u>Git reset --hard <C-r>=GitvGetCurrentHash()<CR>
-  " s:my_gitv_settings 内
-  " nnoremap <silent><buffer> l :<C-u>windo call <SID>toggle_git_folding()<CR>1<C-w>w
-" endfunction
-
-" nnoremap <Leader>gvv :Gitv<CR>
-" nnoremap <Leader>gva :Gitv --all<CR>
-" nnoremap <Leader>gvf :Gitv!<CR>
 
 """""""""""vim-json""""""""""""
 let g:vim_json_syntax_conceal = 0
