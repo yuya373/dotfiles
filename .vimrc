@@ -100,6 +100,8 @@ NeoBundle 'kannokanno/previm'
 NeoBundle 'tyru/open-browser.vim'
 
 """""""colorscheme""""""""
+NeoBundle 'w0ng/vim-hybrid'
+NeoBundle 'chriskempson/vim-tomorrow-theme'
 NeoBundle 'ujihisa/unite-colorscheme'
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'jpo/vim-railscasts-theme'
@@ -176,7 +178,11 @@ MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
 
 
 set background=dark
-colorscheme solarized
+if ($ft=='ruby')
+  colorscheme Tomorrow-Night
+else
+  colorscheme hybrid
+endif
 
 """""""インサートモードでカーソルの形を変える""""""""""
 " Changing cursor shape per mode
@@ -877,8 +883,10 @@ vmap ,, <Plug>NERDCommenterToggle
 nnoremap <Leader>t :Thumbnail<CR>
 
 """"""""""""lightline"""""""""""""""""""""""
+" colorscheme default, wombat, jellybeans, solarized, landscape
+
 let g:lightline = {
-      \ 'colorscheme': 'solarized',
+      \ 'colorscheme': 'default',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ], ['ctrlpmark'] ],
       \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
