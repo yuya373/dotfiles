@@ -104,10 +104,11 @@ NeoBundle 'w0ng/vim-hybrid'
 NeoBundle 'chriskempson/vim-tomorrow-theme'
 NeoBundle 'ujihisa/unite-colorscheme'
 NeoBundle 'altercation/vim-colors-solarized'
-NeoBundle 'jpo/vim-railscasts-theme'
+NeoBundle 'Railscasts-Theme-GUIand256color'
 NeoBundle 'nanotech/jellybeans.vim'
 NeoBundle 'jnurmine/Zenburn'
 NeoBundle 'vim-scripts/twilight'
+NeoBundle 'tomasr/molokai'
 
 
 NeoBundleLazy 'alpaca-tc/neorspec.vim', {
@@ -172,17 +173,11 @@ command!
 set t_Co=256
 scriptencoding utf-8
 
-
 MyAutoCmd Colorscheme * highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
 MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
 
-
 set background=dark
-if ($ft=='ruby')
-  colorscheme Tomorrow-Night
-else
-  colorscheme hybrid
-endif
+colorscheme solarized
 
 """""""インサートモードでカーソルの形を変える""""""""""
 " Changing cursor shape per mode
@@ -886,7 +881,7 @@ nnoremap <Leader>t :Thumbnail<CR>
 " colorscheme default, wombat, jellybeans, solarized, landscape
 
 let g:lightline = {
-      \ 'colorscheme': 'default',
+      \ 'colorscheme': 'solarized',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ], ['ctrlpmark'] ],
       \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
