@@ -1,0 +1,35 @@
+nmap <c-n> :xccmd jumpToNextCounterpart<CR>
+nmap <c-p> :xccmd openQuickly<CR>
+imap <c-j> <Esc>
+nmap <Leader>f :xccmd fixAllInScope<CR>
+nmap <c-b> :xccmd changeToVersionEditorBlameView<CR>
+nmap <c-]> :xhelp<CR>
+nmap <c-f> :xccmd moveKeyboardFocusToNextArea<CR>
+nmap tn :xccmd selectNextTab<CR>
+nmap tp :xccmd selectPreviousTab<CR>
+nmap tt :xccmd newTab<CR>
+nmap T :xccmd closeCurrentTab<CR>
+set wrap
+set ignorecase
+set smartcase
+set incsearch
+set hlsearch
+set number
+nmap <silent> j gj
+nmap <silent> gj j
+nmap <silent> k gk
+nmap <silent> gk k
+nmap <silent> $ g$
+nmap <silent> g$ $
+vmap <silent> j gj
+vmap <silent> gj j
+vmap <silent> k gk
+vmap <silent> gk k
+vmap <silent> $ g$
+vmap <silent> g$ $
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
+nmap <C-h> <C-w>h
+nmap <C-l> <C-w>l
+nmap <C-c> <C-w>c
+nmap <C-a> <C-w>n
