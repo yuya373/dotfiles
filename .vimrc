@@ -70,13 +70,14 @@ NeoBundle 'moznion/hateblo.vim', {
       \ }
 NeoBundle 'airblade/vim-rooter'
 NeoBundle 'taku25/subway'
+NeoBundle 'scrooloose/nerdtree'
 
 """""""Unite""""""""""""
 NeoBundle 'osyo-manga/unite-choosewin-actions'
 NeoBundle 'h1mesuke/unite-outline'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/neomru.vim'
-NeoBundle 'Shougo/vimfiler'
+" NeoBundle 'Shougo/vimfiler'
 
 """""""ruby && rails""""
 NeoBundle 'Keithbsmiley/rspec.vim'
@@ -287,9 +288,9 @@ MyAutoCmd BufEnter * setlocal formatoptions-=ro
 MyAutoCmd BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
 MyAutoCmd BufRead,BufNewFile,BufReadPre *.coffee nnoremap <Leader>cf :CoffeeWatch watch vert<CR>
 
-set cursorline
+" set cursorline
 set nocursorcolumn
-" set nocursorline
+set nocursorline
 syntax sync minlines=100 maxlines=500
 
 
@@ -1172,3 +1173,6 @@ let g:auto_save = 1
 nnoremap mm :SBToggleStation<CR>
 nnoremap mp :SBMovePreviousStation<CR>
 nnoremap mn :SBMoveNextStation<CR>
+
+""""""""""NERDTree"""""""""""
+nnoremap <C-n> :NERDTreeToggle<CR>
