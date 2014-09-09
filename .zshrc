@@ -53,9 +53,6 @@ source $ZSH/oh-my-zsh.sh
 # Customize to your needs...
 source ~/.zsh_dep
 
-export LANG=ja_JP.UTF-8
-
-
 ## tmux自動起動
 # http://d.hatena.ne.jp/tyru/20100828/run_tmux_or_screen_at_shell_startup
 is_screen_running() {
@@ -82,7 +79,6 @@ done
 echo "$cmd"
 }
 
-
 if ! is_screen_or_tmux_running && shell_has_started_interactively; then
   for cmd in tmux tscreen screen; do
     if whence $cmd >/dev/null 2>/dev/null; then
@@ -95,7 +91,3 @@ fi
 function gim() {
 vim `git ls-files | peco`
 }
-
-
-
-export HOMEBREW_CASK_OPTS="--appdir=/Applications"
