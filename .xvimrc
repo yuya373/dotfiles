@@ -1,7 +1,10 @@
 nmap <c-n> :xccmd jumpToNextCounterpart<CR>
 nmap <c-p> :xccmd openQuickly<CR>
 imap <c-j> <Esc>
+nmap <c-i> :xccmd complete<CR>
 nmap <Leader>f :xccmd fixAllInScope<CR>
+nmap <Leader>s :xccmd showAllIssues<CR>
+nmap <CR> o<ESC>
 nmap <c-b> :xccmd changeToVersionEditorBlameView<CR>
 nmap <c-]> :xhelp<CR>
 nmap <c-f> :xccmd moveKeyboardFocusToNextArea<CR>
