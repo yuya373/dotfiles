@@ -91,3 +91,8 @@ if ! is_screen_or_tmux_running && shell_has_started_interactively; then
     fi
   done
 fi
+
+function gim() {
+vim `git ls-files | peco`
+}
+
