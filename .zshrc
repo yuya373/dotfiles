@@ -96,3 +96,6 @@ function gim() {
 vim `git ls-files | peco`
 }
 
+
+
+export HOMEBREW_CASK_OPTS="--appdir=/Applications"
