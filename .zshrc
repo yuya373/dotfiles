@@ -52,6 +52,7 @@ source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
 source ~/.zsh_dep
+alias reload='source ~/.zshrc'
 
 ## tmux自動起動
 # http://d.hatena.ne.jp/tyru/20100828/run_tmux_or_screen_at_shell_startup
