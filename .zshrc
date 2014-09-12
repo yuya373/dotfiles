@@ -53,7 +53,6 @@ source $ZSH/oh-my-zsh.sh
 # Customize to your needs...
 source ~/.zsh_dep
 
-export LANG=ja_JP.UTF-8
 
 
 ## tmux自動起動
@@ -96,3 +95,18 @@ function gim() {
 vim `git ls-files | peco`
 }
 
+function cdgem() {
+  local gem_name=$(bundle list | sed -e 's/^ *\* *//g' | peco | cut -d \  -f 1)
+  if [ -n "$gem_name" ]; then
+    local gem_dir=$(bundle show ${gem_name})
+    echo "cd to ${gem_dir}"
+    cd ${gem_dir}
+  fi
+}
+
+function pcd {
+local dir="$( find . -maxdepth 1 -type d | sed -e 's;\./;;' | peco )"
+if [ ! -z "$dir" ] ; then
+  cd "$dir"
+fi
+}
