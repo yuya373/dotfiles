@@ -71,6 +71,8 @@ NeoBundle 'moznion/hateblo.vim', {
 NeoBundle 'airblade/vim-rooter'
 NeoBundle 'taku25/subway'
 NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'tpope/vim-bundler'
+NeoBundle 'othree/html5.vim'
 
 """""""Unite""""""""""""
 NeoBundle 'osyo-manga/unite-choosewin-actions'
@@ -1010,8 +1012,8 @@ let g:vimshell_force_overwrite_statusline = 0
 
 """""""""""""""""neorspec""""""""""""""""""""""
 " let g:neorspec_command = "!bundle exec spring rspec --color --format documentation {spec}"
-" let g:neorspec_command = "Dispatch bundle exec spring rspec --color --format documentation {spec}"
-let g:neorspec_command = "Dispatch bundle exec spring rspec {spec}"
+let g:neorspec_command = "Dispatch bundle exec spring rspec --color --format documentation {spec}"
+" let g:neorspec_command = "Dispatch bundle exec spring rspec {spec}"
 " let g:neorspec_command = "Start rspec --color --format documentation {spec}"
 function! s:load_rspec_settings()
   nnoremap <buffer> ,rc  :RSpecCurrent<CR>
@@ -1063,6 +1065,8 @@ MyAutoCmd BufWinEnter *_spec.rb call s:load_rspec_settings()
 """""""""""""""vim-tags""""""""""""""""""""
 let g:vim_tags_project_tags_command = "/usr/local/bin/ctags -R {OPTIONS} {DIRECTORY} 2>/dev/null"
 let g:vim_tags_gems_tags_command = "/usr/local/bin/ctags -R {OPTIONS} `bundle show --paths` 2>/dev/null"
+
+let g:vim_tags_auto_generate = 1
 " tagsジャンプの時に複数ある時は一覧表示
 nnoremap <C-]> g<C-]>
 """"""""""Tag Jump拡張"""""""""""
