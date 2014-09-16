@@ -52,8 +52,12 @@ source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
 source ~/.zsh_dep
+<<<<<<< HEAD
 
 
+=======
+alias reload='source ~/.zshrc'
+>>>>>>> 4e94d94eeca3673c712ba90a78212635b52421d3
 
 ## tmux自動起動
 # http://d.hatena.ne.jp/tyru/20100828/run_tmux_or_screen_at_shell_startup
@@ -80,7 +84,6 @@ do
 done
 echo "$cmd"
 }
-
 
 if ! is_screen_or_tmux_running && shell_has_started_interactively; then
   for cmd in tmux tscreen screen; do
@@ -114,4 +117,3 @@ if [ ! -z "$dir" ] ; then
   cd "$dir"
 fi
 }
-
