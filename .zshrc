@@ -104,9 +104,14 @@ function cdgem() {
   fi
 }
 
-function pcd {
+function pcd() {
+local base="$1"
+if [ ! -z "$1" ] ; then
+  cd
+fi
 local dir="$( find . -maxdepth 1 -type d | sed -e 's;\./;;' | peco )"
 if [ ! -z "$dir" ] ; then
   cd "$dir"
 fi
 }
+
