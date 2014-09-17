@@ -71,6 +71,7 @@ NeoBundle 'moznion/hateblo.vim', {
 NeoBundle 'airblade/vim-rooter'
 NeoBundle 'taku25/subway'
 NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'junegunn/vim-easy-align'
 
 """""""Unite""""""""""""
 NeoBundle 'osyo-manga/unite-choosewin-actions'
@@ -507,8 +508,6 @@ MyAutoCmd QuickFixCmdPost *grep* cwindow
 " NEED Commenter
 let NERDShutUp = 1 "no alart undfined filetype
 
-" NERDTree
-
 "------------------------------------
 " vim-rails
 "------------------------------------
@@ -553,7 +552,7 @@ let g:vimfiler_as_default_explorer = 1
 " let g:vimfiler_tree_closed_icon = '▸'
 " let g:vimfiler_file_icon = '-'
 " let g:vimfiler_marked_file_icon = '*'
-nmap <C-n>  :VimFilerBufferDir -split -horizontal -toggle -quit<CR>
+" nmap <C-n>  :VimFilerBufferDir -split -horizontal -toggle -quit<CR>
 
 """ unite.vim
 " 起動時にインサートモードで開始
@@ -795,11 +794,12 @@ let g:neocomplete#force_overwrite_completefunc = 1
 
 """""""""indentLine""""""""""
 """""""""""""""""""""""""""""
-" let g:indentLine_color_term = 239
-" let g:indentLine_color_gui = '#A4E57E'
-" " let g:indentLine_char = '┊'
-" let g:indentLine_char = '▸'
-" let g:indentLine_showFirstIndentLevel = 2
+let g:indentLine_faster=1
+let g:indentLine_color_term = 239
+let g:indentLine_color_gui = '#A4E57E'
+let g:indentLine_char = '┊'
+let g:indentLine_char = '▸'
+let g:indentLine_showFirstIndentLevel = 2
 nnoremap <Leader>ig :IndentLinesToggle<CR>
 
 """"""""""vim-smartinput"""""""""""""""
@@ -1022,9 +1022,6 @@ function! s:load_rspec_settings()
 endfunction
 
 MyAutoCmd BufWinEnter *_spec.rb call s:load_rspec_settings()
-
-
-
 " RSpec対応
 " let g:quickrun_config = {}
 " let g:quickrun_config._ = {'runner' : 'vimproc'}
@@ -1051,12 +1048,13 @@ MyAutoCmd BufWinEnter *_spec.rb call s:load_rspec_settings()
 " let g:undotree_HighlightSyntax = "UnderLined"
 "
 " Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
-" if executable('ag')
-" " Use Ag over Grep
-" set grepprg=ag\ --nogroup\ --nocolor
-" " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+
+if executable('ag')
+" Use Ag over Grep
+set grepprg=ag\ --nogroup\ --nocolor
+" Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
 " let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-" endif
+endif
 
 
 
@@ -1067,9 +1065,9 @@ let g:vim_tags_gems_tags_command = "/usr/local/bin/ctags -R {OPTIONS} `bundle sh
 nnoremap <C-]> g<C-]>
 """"""""""Tag Jump拡張"""""""""""
 " nmap <C-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+
 """""""""""previm""""""""""""
 " let g:previm_open_cmd = 'open -a Safari'
-
 
 """""""""""vim-startify""""""""
 " startifyのヘッダー部分に表示する文字列を設定する(dateコマンドを実行して日付を設定している)
@@ -1081,6 +1079,7 @@ nnoremap <C-]> g<C-]>
 " let g:startify_bookmarks = [
 " \ '~/.vimrc'
 " \ ]
+
 """""""""""ctrlp""""""""""""""""
 " let g:ctrlp_prompt_mappings = {
 " \ 'PrtSelectMove("j")':   ['<c-n>', '<down>'],
@@ -1088,6 +1087,7 @@ nnoremap <C-]> g<C-]>
 " \ 'PrtHistory(-1)':       ['<c-j>'],
 " \ 'PrtHistory(1)':        ['<c-k>'],
 " \ }
+
 """"""""""vim-choosewin"""""""""""""""
 nmap  -  <Plug>(choosewin)
 " if you want to use overlay feature
@@ -1121,6 +1121,7 @@ endfunction
 nnoremap <Leader>s :shell<CR>
 let g:vimshell_prompt_expr = 'getcwd()." > "'
 let g:vimshell_prompt_pattern = '^\f\+ > '
+
 """"""""""""""""""quickrun"""""""""""""""""""
 set splitright
 let g:quickrun_config = {}
@@ -1148,8 +1149,10 @@ let g:memolist_unite = 1
 let g:memolist_unite_source = "file_rec"
 let g:memolist_unite_option = "-start-insert"
 let g:memolist_memo_date = "%Y-%m-%d-%a %H:%M"
+
 """"""""""vim-markdown"""""""""""
 let g:vim_markdown_folding_disabled=1
+
 """"""""""open-browser"""""""""""
 let g:netrw_nogx = 1 " disable netrw's gx mapping.
 nmap gx <Plug>(openbrowser-smart-search)
@@ -1164,11 +1167,6 @@ cnoreabb <silent><expr>s getcmdtype()==':' && getcmdline()=~'^s' ? 'OverCommandL
 """""""""""vim-auto-save""""""""""""
 let g:auto_save = 1
 
-"""""""""""visualmark.vim"""""""""""
-" nmap mm <Plug>Vm_toggle_sign
-" nmap mn <Plug>Vm_goto_next_sign
-" nmap mp <Plug>Vm_goto_prev_sign
-
 """"""""""subway"""""""""""""""
 nnoremap mm :SBToggleStation<CR>
 nnoremap mp :SBMovePreviousStation<CR>
@@ -1176,3 +1174,10 @@ nnoremap mn :SBMoveNextStation<CR>
 
 """"""""""NERDTree"""""""""""
 nnoremap <C-n> :NERDTreeToggle<CR>
+
+""""""""""vim-easy-align"""""""
+" Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
+vmap <CR> <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. <Leader>aip)
+nmap <Leader>a <Plug>(EasyAlign)
