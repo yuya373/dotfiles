@@ -1,23 +1,24 @@
-nmap <c-n> :xccmd jumpToNextCounterpart<CR>
-nmap <c-p> :xccmd openQuickly<CR>
-imap <c-j> <Esc>
-nmap <c-i> :xccmd complete<CR>
-nmap <Leader>f :xccmd fixAllInScope<CR>
-nmap <Leader>s :xccmd showAllIssues<CR>
-nmap <CR> o<ESC>
+nmap <C-n> :nc<CR>
+nmap <C-p> :xccmd openQuickly<CR>
+imap <C-j> <ESC>
+nmap <C-j> <ESC>
 nmap <c-b> :xccmd changeToVersionEditorBlameView<CR>
 nmap <Leader>h :xhelp<CR>
+nmap <ESC><ESC> :set nohlsearch<CR>
 nmap <c-f> :xccmd moveKeyboardFocusToNextArea<CR>
 nmap tn :xccmd selectNextTab<CR>
 nmap tp :xccmd selectPreviousTab<CR>
 nmap tt :xccmd newTab<CR>
 nmap T :xccmd closeCurrentTab<CR>
 set wrap
+set wrapscan
 set ignorecase
 set smartcase
 set incsearch
 set hlsearch
 set number
+set clipboard=unnamed
+set guioptions=r
 nmap <silent> j gj
 nmap <silent> gj j
 nmap <silent> k gk
