@@ -613,16 +613,22 @@ nnoremap <silent> <C-p> :<C-u>Unite -start-insert file_rec/async:!<CR>
       " \ 'file_rec:!:'.fnameescape(expand('%:p:h'))
       " \ <CR>
 
+function! s:cd_root_and_unite(...)
+  let args = join(a:000, ' ')
+  execute 'Rooter'
+  execute 'Unite'.' '.args
+endfunction
+command! -nargs=* RootAndUnite call s:cd_root_and_unite(<f-args>)
 " ファイル一覧
-nnoremap <silent> [unite]f :<C-u>UniteWithBufferDir  file file/new directory/new -buffer-name=files<CR>
-nnoremap <silent> [unite]c :<C-u>Unite               file file/new directory/new -input=app/controllers/ -buffer-name=controllers<CR>
-nnoremap <silent> [unite]m :<C-u>Unite               file file/new directory/new -input=app/models/ -buffer-name=models<CR>
-nnoremap <silent> [unite]d :<C-u>Unite               file file/new directory/new -input=app/decorators/ -buffer-name=decorators<CR>
-nnoremap <silent> [unite]v :<C-u>Unite               file file/new directory/new -input=app/views/ -buffer-name=views<CR>
-nnoremap <silent> [unite]j :<C-u>Unite               file file/new directory/new -input=app/assets/javascripts/ -buffer-name=js<CR>
-nnoremap <silent> [unite]a :<C-u>Unite               file file/new directory/new -input=app/ -buffer-name=app<CR>
-nnoremap <silent> [unite]r :<C-u>Unite               file file/new directory/new -buffer-name=root<CR>
-nnoremap <silent> [unite]s :<C-u>Unite               file file/new directory/new -input=spec/ -buffer-name=spec<CR>
+nnoremap <silent> [unite]f :RootAndUnite file file/new directory/new -buffer-name=files<CR>
+nnoremap <silent> [unite]c :RootAndUnite file file/new directory/new -input=app/controllers/ -buffer-name=controllers<CR>
+nnoremap <silent> [unite]m :RootAndUnite file file/new directory/new -input=app/models/ -buffer-name=models<CR>
+nnoremap <silent> [unite]d :RootAndUnite file file/new directory/new -input=app/decorators/ -buffer-name=decorators<CR>
+nnoremap <silent> [unite]v :RootAndUnite file file/new directory/new -input=app/views/ -buffer-name=views<CR>
+nnoremap <silent> [unite]j :RootAndUnite file file/new directory/new -input=app/assets/javascripts/ -buffer-name=js<CR>
+nnoremap <silent> [unite]a :RootAndUnite file file/new directory/new -input=app/ -buffer-name=app<CR>
+nnoremap <silent> [unite]r :RootAndUnite file file/new directory/new -buffer-name=root<CR>
+nnoremap <silent> [unite]s :RootAndUnite file file/new directory/new -input=spec/ -buffer-name=spec<CR>
 " grep検索
 nnoremap <silent> ,g  :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
 " カーソル位置の単語をgrep検索
@@ -799,8 +805,8 @@ let g:neocomplete#force_overwrite_completefunc = 1
 let g:indentLine_faster=1
 let g:indentLine_color_term = 239
 let g:indentLine_color_gui = '#A4E57E'
-let g:indentLine_char = '┊'
-let g:indentLine_char = '▸'
+" let g:indentLine_char = '┊'
+" let g:indentLine_char = '▸'
 let g:indentLine_showFirstIndentLevel = 2
 nnoremap <Leader>ig :IndentLinesToggle<CR>
 
@@ -1012,7 +1018,7 @@ let g:vimshell_force_overwrite_statusline = 0
 
 """""""""""""""""neorspec""""""""""""""""""""""
 " let g:neorspec_command = "!bundle exec spring rspec --color --format documentation {spec}"
-let g:neorspec_command = "Dispatch bundle exec spring rspec --color --format documentation {spec}"
+let g:neorspec_command = "Dispatch bundle exec rspec --color --format documentation {spec}"
 " let g:neorspec_command = "Dispatch bundle exec spring rspec {spec}"
 " let g:neorspec_command = "Start rspec --color --format documentation {spec}"
 function! s:load_rspec_settings()
