@@ -708,10 +708,10 @@ let g:EasyMotion_do_shade = 1
 " 拡張版機能"{{{
 
 " もっともよく使うであろう'<Leadr><Leader>s'motion をsに割り当て
-nmap s <Plug>(easymotion-s2)
-xmap s <Plug>(easymotion-s2)
+nmap s <Plug>(easymotion-s)
+xmap s <Plug>(easymotion-s)
 " surround.vimと被らないように
-omap z <Plug>(easymotion-s2)
+omap z <Plug>(easymotion-s)
 
 map f <Plug>(easymotion-bd-fl)
 
