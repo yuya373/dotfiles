@@ -125,7 +125,9 @@ NeoBundleLazy 'alpaca-tc/neorspec.vim', {
 NeoBundleLazy 'tpope/vim-dispatch', { 'autoload' : {
       \ 'commands' : ['Dispatch', 'FocusDispatch', 'Start']
       \}}
+
 NeoBundleLazy 'supermomonga/jazzradio.vim', { 'depends' : [ 'Shougo/unite.vim' ] }
+
 if neobundle#tap('jazzradio.vim')
   call neobundle#config({
         \   'autoload' : {
@@ -1018,9 +1020,8 @@ let g:vimshell_force_overwrite_statusline = 0
 
 """""""""""""""""neorspec""""""""""""""""""""""
 " let g:neorspec_command = "!bundle exec spring rspec --color --format documentation {spec}"
-let g:neorspec_command = "Dispatch bundle exec rspec --color --format documentation {spec}"
-" let g:neorspec_command = "Dispatch bundle exec spring rspec {spec}"
-" let g:neorspec_command = "Start rspec --color --format documentation {spec}"
+" let g:neorspec_command = "Dispatch bundle exec rspec --color --format documentation {spec}"
+let g:neorspec_command = "Dispatch bundle exec spring rspec --color {spec}"
 function! s:load_rspec_settings()
   nnoremap <buffer> ,rc  :RSpecCurrent<CR>
   nnoremap <buffer> ,rn  :RSpecNearest<CR>
