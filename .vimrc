@@ -4,8 +4,8 @@
 " ------------------------------------------------------------------------------
 "
 
-command! E :tabedit ~/.vimrc
-command! R :so ~/.vimrc
+command! Edit :tabedit ~/.vimrc
+command! Reload :so ~/.vimrc
 
 if has('vim_starting')
   set nocompatible               " Be iMproved
