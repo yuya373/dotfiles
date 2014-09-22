@@ -627,7 +627,7 @@ nnoremap <silent> [unite]d :RootAndUnite file file/new directory/new -input=app/
 nnoremap <silent> [unite]v :RootAndUnite file file/new directory/new -input=app/views/ -buffer-name=views<CR>
 nnoremap <silent> [unite]j :RootAndUnite file file/new directory/new -input=app/assets/javascripts/ -buffer-name=js<CR>
 nnoremap <silent> [unite]a :RootAndUnite file file/new directory/new -input=app/ -buffer-name=app<CR>
-nnoremap <silent> [unite]r :RootAndUnite file file/new directory/new -buffer-name=root<CR>
+nnoremap <silent> [unite]r :UniteWithProjectDir file file/new directory/new -buffer-name=root<CR>
 nnoremap <silent> [unite]s :RootAndUnite file file/new directory/new -input=spec/ -buffer-name=spec<CR>
 " grep検索
 nnoremap <silent> ,g  :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
