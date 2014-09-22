@@ -1142,7 +1142,8 @@ let g:quickrun_config['coffee'] = {
       \'exec' : ['%c -cbp %s']
       \}
 """""""""""""""""""fugitive""""""""""""""""
-nnoremap <Leader>g :Gst<CR>
+nnoremap <Leader>gg :Gst<CR>
+nnoremap <Leader>gp :Gpush<CR>
 
 """"""""""""""""""agit"""""""""""""""""""
 nnoremap <Leader>ag :Agit<CR>
