@@ -1148,6 +1148,23 @@ nnoremap <Leader>gp :Gpush<CR>
 """"""""""""""""""agit"""""""""""""""""""
 nnoremap <Leader>ag :Agit<CR>
 
+" DEFAULT KEY-MAPPINGS        *agit-default-key-mappings*
+
+" J          <Plug>(agit-scrolldown-stat)
+" K          <Plug>(agit-scrollup-stat)
+" <C-j>      <Plug>(agit-scrolldown-diff)
+" <C-k>      <Plug>(agit-scrollup-diff)
+" u          <PLug>(agit-reload)
+" yh         <Plug>(agit-yank-hash)
+" q          <Plug>(agit-exit)
+" C          <Plug>(agit-git-checkout)
+" cb         <Plug>(agit-git-checkout-b)
+" D          <Plug>(agit-git-branch-d)
+" rs         <Plug>(agit-git-reset-soft)
+" rm         <Plug>(agit-git-reset)
+" rh         <Plug>(agit-git-reset-hard)
+" rb         <Plug>(agit-git-rebase)
+" ri         <Plug>(agit-git-rebase-i)
 """""""""""vim-json""""""""""""
 let g:vim_json_syntax_conceal = 0
 
