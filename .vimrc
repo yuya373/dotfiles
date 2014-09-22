@@ -155,6 +155,7 @@ endif
 
 syntax enable
 filetype plugin indent on
+set synmaxcol=200
 
 " Installation check.
 NeoBundleCheck
@@ -291,10 +292,9 @@ MyAutoCmd BufEnter * setlocal formatoptions-=ro
 MyAutoCmd BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
 MyAutoCmd BufRead,BufNewFile,BufReadPre *.coffee nnoremap <Leader>cf :CoffeeWatch watch vert<CR>
 
-" set cursorline
+set cursorline
 set nocursorcolumn
-set nocursorline
-syntax sync minlines=100 maxlines=500
+" set nocursorline
 
 
 nnoremap <CR> o<ESC>
