@@ -268,7 +268,7 @@ set encoding=UTF-8
 set fileencoding=UTF-8
 set termencoding=UTF-8
 set noswapfile
-" set autoindent
+set autoindent
 set smartindent
 set expandtab
 set smarttab
@@ -296,10 +296,10 @@ set cursorline
 set nocursorcolumn
 " set nocursorline
 
+hi MatchParen ctermbg=1
 
 nnoremap <CR> o<ESC>
 map <C-j> <Esc>
-
 
 " set formatoptions=qrn1
 " if v:version >= 730
