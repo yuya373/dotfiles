@@ -291,9 +291,9 @@ MyAutoCmd BufEnter * setlocal formatoptions-=ro
 MyAutoCmd BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
 MyAutoCmd BufRead,BufNewFile,BufReadPre *.coffee nnoremap <Leader>cf :CoffeeWatch watch vert<CR>
 
-" set cursorline
+set cursorline
 set nocursorcolumn
-set nocursorline
+" set nocursorline
 syntax sync minlines=100 maxlines=500
 
 
@@ -620,7 +620,7 @@ function! s:cd_root_and_unite(...)
 endfunction
 command! -nargs=* RootAndUnite call s:cd_root_and_unite(<f-args>)
 " ファイル一覧
-nnoremap <silent> [unite]f :RootAndUnite file file/new directory/new -buffer-name=files<CR>
+nnoremap <silent> [unite]f :UniteWithBufferDir file file/new directory/new -buffer-name=files<CR>
 nnoremap <silent> [unite]c :RootAndUnite file file/new directory/new -input=app/controllers/ -buffer-name=controllers<CR>
 nnoremap <silent> [unite]m :RootAndUnite file file/new directory/new -input=app/models/ -buffer-name=models<CR>
 nnoremap <silent> [unite]d :RootAndUnite file file/new directory/new -input=app/decorators/ -buffer-name=decorators<CR>
@@ -1018,8 +1018,8 @@ let g:vimshell_force_overwrite_statusline = 0
 
 """""""""""""""""neorspec""""""""""""""""""""""
 " let g:neorspec_command = "!bundle exec spring rspec --color --format documentation {spec}"
-let g:neorspec_command = "Dispatch bundle exec rspec --color --format documentation {spec}"
-" let g:neorspec_command = "Dispatch bundle exec spring rspec {spec}"
+" let g:neorspec_command = "Dispatch bundle exec rspec --color --format documentation {spec}"
+let g:neorspec_command = "Dispatch bundle exec spring rspec {spec}"
 " let g:neorspec_command = "Start rspec --color --format documentation {spec}"
 function! s:load_rspec_settings()
   nnoremap <buffer> ,rc  :RSpecCurrent<CR>
