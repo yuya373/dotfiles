@@ -278,6 +278,7 @@ set tabstop=2 shiftwidth=2
 set softtabstop=0
 set showmatch " show mactch brace
 set wildmenu
+set wildmode=list,full
 set autoread
 set hidden
 set showcmd
