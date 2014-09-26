@@ -4,8 +4,8 @@
 " ------------------------------------------------------------------------------
 "
 
-command! E :tabedit ~/.vimrc
-command! R :so ~/.vimrc
+command! Edit :tabedit ~/.vimrc
+command! Reload :so ~/.vimrc
 
 if has('vim_starting')
   set nocompatible               " Be iMproved
@@ -125,7 +125,9 @@ NeoBundleLazy 'alpaca-tc/neorspec.vim', {
 NeoBundleLazy 'tpope/vim-dispatch', { 'autoload' : {
       \ 'commands' : ['Dispatch', 'FocusDispatch', 'Start']
       \}}
+
 NeoBundleLazy 'supermomonga/jazzradio.vim', { 'depends' : [ 'Shougo/unite.vim' ] }
+
 if neobundle#tap('jazzradio.vim')
   call neobundle#config({
         \   'autoload' : {
@@ -155,6 +157,7 @@ endif
 
 syntax enable
 filetype plugin indent on
+set synmaxcol=200
 
 " Installation check.
 NeoBundleCheck
@@ -267,7 +270,7 @@ set encoding=UTF-8
 set fileencoding=UTF-8
 set termencoding=UTF-8
 set noswapfile
-" set autoindent
+set autoindent
 set smartindent
 set expandtab
 set smarttab
@@ -275,6 +278,7 @@ set tabstop=2 shiftwidth=2
 set softtabstop=0
 set showmatch " show mactch brace
 set wildmenu
+set wildmode=list,full
 set autoread
 set hidden
 set showcmd
@@ -294,12 +298,11 @@ MyAutoCmd BufRead,BufNewFile,BufReadPre *.coffee nnoremap <Leader>cf :CoffeeWatc
 set cursorline
 set nocursorcolumn
 " set nocursorline
-syntax sync minlines=100 maxlines=500
 
+hi MatchParen ctermbg=1
 
 nnoremap <CR> o<ESC>
 map <C-j> <Esc>
-
 
 " set formatoptions=qrn1
 " if v:version >= 730
@@ -708,10 +711,10 @@ let g:EasyMotion_do_shade = 1
 " 拡張版機能"{{{
 
 " もっともよく使うであろう'<Leadr><Leader>s'motion をsに割り当て
-nmap s <Plug>(easymotion-s2)
-xmap s <Plug>(easymotion-s2)
+nmap s <Plug>(easymotion-s)
+xmap s <Plug>(easymotion-s)
 " surround.vimと被らないように
-omap z <Plug>(easymotion-s2)
+omap z <Plug>(easymotion-s)
 
 map f <Plug>(easymotion-bd-fl)
 
@@ -739,6 +742,7 @@ let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 " Define dictionary.
 let g:neocomplete#sources#dictionary#dictionaries = {
       \ 'default' : '',
+      \ 'ruby'    : $HOME.'/.vim/dict/ruby.dict',
       \ 'vimshell' : $HOME.'/.vimshell_hist',
       \ 'scheme' : $HOME.'/.gosh_completions'
       \ }
@@ -1142,11 +1146,29 @@ let g:quickrun_config['coffee'] = {
       \'exec' : ['%c -cbp %s']
       \}
 """""""""""""""""""fugitive""""""""""""""""
-nnoremap <Leader>g :Gst<CR>
+nnoremap <Leader>gg :Gst<CR>
+nnoremap <Leader>gp :Gpush<CR>
 
 """"""""""""""""""agit"""""""""""""""""""
 nnoremap <Leader>ag :Agit<CR>
 
+" DEFAULT KEY-MAPPINGS        *agit-default-key-mappings*
+
+" J          <Plug>(agit-scrolldown-stat)
+" K          <Plug>(agit-scrollup-stat)
+" <C-j>      <Plug>(agit-scrolldown-diff)
+" <C-k>      <Plug>(agit-scrollup-diff)
+" u          <PLug>(agit-reload)
+" yh         <Plug>(agit-yank-hash)
+" q          <Plug>(agit-exit)
+" C          <Plug>(agit-git-checkout)
+" cb         <Plug>(agit-git-checkout-b)
+" D          <Plug>(agit-git-branch-d)
+" rs         <Plug>(agit-git-reset-soft)
+" rm         <Plug>(agit-git-reset)
+" rh         <Plug>(agit-git-reset-hard)
+" rb         <Plug>(agit-git-rebase)
+" ri         <Plug>(agit-git-rebase-i)
 """""""""""vim-json""""""""""""
 let g:vim_json_syntax_conceal = 0
 
