@@ -6,6 +6,7 @@ nmap <c-b> :xccmd changeToVersionEditorBlameView<CR>
 nmap <Leader>h :xhelp<CR>
 nmap <ESC><ESC> :set nohlsearch<CR>
 nmap <c-f> :xccmd moveKeyboardFocusToNextArea<CR>
+nmap <CR> o<ESC>
 nmap tn :xccmd selectNextTab<CR>
 nmap tp :xccmd selectPreviousTab<CR>
 nmap tt :xccmd newTab<CR>
