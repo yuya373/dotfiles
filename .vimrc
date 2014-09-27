@@ -74,6 +74,8 @@ NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'tpope/vim-bundler'
 NeoBundle 'othree/html5.vim'
 NeoBundle 'junegunn/vim-easy-align'
+NeoBundle 'Shougo/context_filetype.vim'
+NeoBundle 'osyo-manga/vim-precious'
 
 """""""Unite""""""""""""
 NeoBundle 'osyo-manga/unite-choosewin-actions'
@@ -1212,3 +1214,36 @@ vmap <CR> <Plug>(EasyAlign)
 
 " Start interactive EasyAlign for a motion/text object (e.g. <Leader>aip)
 nmap <Leader>a <Plug>(EasyAlign)
+
+""""""""""context_filetype.vim"""""""""""
+let g:context_filetype#filetypes = {
+      \    'html': [
+      \        {
+      \            'start': '<script>',
+      \            'end':   '</script>', 'filetype': 'javascript',},
+      \        {
+      \            'start': '<script\%( [^>]*\)charset="[^\"]*"\%( [^>]*\)\?>',
+      \            'end':   '</script>', 'filetype': 'javascript',},
+      \        {
+      \            'start': '<script\%( [^>]*\)\? type="text/javascript"\%( [^>]*\)\?>',
+      \            'end':   '</script>', 'filetype': 'javascript',},
+      \        {
+      \            'start': '<script\%( [^>]*\)\? type="text/coffeescript"\%( [^>]*\)\?>',
+      \            'end':   '</script>', 'filetype': 'coffee',},
+      \        {
+      \            'start': '<style\%( [^>]*\)\? type="text/css"\%( [^>]*\)\?>',
+      \            'end':   '</style>', 'filetype': 'css',},],}
+
+let g:context_filetype#search_offset = 100
+
+""""""""""vim-precious"""""""""""""""
+
+let g:precious_enable_switch_CursorMoved = {
+      \    '*' : 0,}
+let g:precious_enable_switch_CursorMoved_i = {
+      \    '*' : 0,}
+autocmd MyAutoCmd InsertEnter * :PreciousSwitch
+autocmd MyAutoCmd InsertLeave * :PreciousReset
+autocmd MyAutoCmd User PreciousFileType IndentLinesReset
+
+
