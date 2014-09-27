@@ -1242,9 +1242,9 @@ let g:precious_enable_switch_CursorMoved = {
       \    '*' : 0,}
 let g:precious_enable_switch_CursorMoved_i = {
       \    '*' : 0,}
-autocmd MyAutoCmd InsertEnter * :PreciousSwitch
-autocmd MyAutoCmd InsertLeave * :PreciousReset
-autocmd MyAutoCmd User PreciousFileType IndentLinesReset
+MyAutoCmd InsertEnter * :PreciousSwitch
+MyAutoCmd InsertLeave * :PreciousReset
+MyAutoCmd User PreciousFileType IndentLinesReset
 
 
 """"""""""html5"""""""""""
