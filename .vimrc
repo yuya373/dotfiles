@@ -44,7 +44,9 @@ NeoBundle 'scrooloose/syntastic'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'surround.vim'
-NeoBundle 'thinca/vim-quickrun'
+NeoBundle 'thinca/vim-quickrun', {
+      \ 'depends' : 'mattn/quickrunex-vim',
+      \ }
 NeoBundle 'https://github.com/kana/vim-smartinput'
 NeoBundle "cohama/vim-smartinput-endwise"
 NeoBundle 'https://github.com/vim-jp/vimdoc-ja'
@@ -79,7 +81,7 @@ NeoBundle 'osyo-manga/vim-precious'
 
 """""""Unite""""""""""""
 NeoBundle 'osyo-manga/unite-choosewin-actions'
-NeoBundle 'h1mesuke/unite-outline'
+NeoBundle 'Shougo/unite-outline'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/neomru.vim'
 " NeoBundle 'Shougo/vimfiler'
@@ -88,6 +90,13 @@ NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'Keithbsmiley/rspec.vim'
 NeoBundle 'tpope/vim-haml'
 NeoBundle 'tpope/vim-rails'
+NeoBundleLazy 'alpaca-tc/neorspec.vim', {
+      \ 'depends' : 'tpope/vim-rails',
+      \ 'autoload' : {
+      \   'commands' : [
+      \       'RSpecAll', 'RSpecNearest', 'RSpecRetry',
+      \       'RSpecCurrent', 'RSpec'
+      \ ]}}
 
 """""""js && coffee""""
 NeoBundle 'kchmck/vim-coffee-script'
@@ -116,17 +125,39 @@ NeoBundle 'jnurmine/Zenburn'
 NeoBundle 'vim-scripts/twilight'
 NeoBundle 'tomasr/molokai'
 
+"""""""""""c++""""""""""
+NeoBundleLazy 'vim-jp/cpp-vim', {
+      \ 'autoload' : {'filetypes' : 'cpp'}
+      \ }
 
-NeoBundleLazy 'alpaca-tc/neorspec.vim', {
-      \ 'depends' : 'tpope/vim-rails',
-      \ 'autoload' : {
-      \   'commands' : [
-      \       'RSpecAll', 'RSpecNearest', 'RSpecRetry',
-      \       'RSpecCurrent', 'RSpec'
-      \ ]}}
+NeoBundleLazy 'osyo-manga/vim-marching', {
+      \ 'depends' : ['Shougo/vimproc.vim', 'osyo-manga/vim-reunions'],
+      \ 'autoload' : {'filetypes' : ['c', 'cpp']}
+      \ }
+
+NeoBundle 'rhysd/wandbox-vim'
+
+NeoBundleLazy 'osyo-manga/unite-boost-online-doc', {
+      \ 'depends' : [
+      \      'Shougo/unite.vim',
+      \      'tyru/open-browser.vim',
+      \      'mattn/webapi-vim',
+      \   ],
+      \ 'autoload' : {'filetypes' : 'cpp'}
+      \ }
+
+NeoBundleLazy 'kana/vim-altr'
+
+NeoBundleLazy 'rhysd/vim-clang-format', {
+      \ 'autoload' : {'filetypes' : ['c', 'cpp', 'objc']}
+      \ }
+
+"""""""""""other""""""""""""""""
+
 NeoBundleLazy 'tpope/vim-dispatch', { 'autoload' : {
       \ 'commands' : ['Dispatch', 'FocusDispatch', 'Start']
       \}}
+
 
 NeoBundleLazy 'supermomonga/jazzradio.vim', { 'depends' : [ 'Shougo/unite.vim' ] }
 
@@ -272,7 +303,7 @@ set encoding=UTF-8
 set fileencoding=UTF-8
 set termencoding=UTF-8
 set noswapfile
-set autoindent
+" set autoindent
 set smartindent
 set expandtab
 set smarttab
@@ -1146,6 +1177,12 @@ let g:quickrun_config['coffee'] = {
       \'command' : 'coffee',
       \'exec' : ['%c -cbp %s']
       \}
+
+let g:quickrun_config['cpp'] = {
+      \ 'command' : 'clang++',
+      \ 'cmdopt' : '-std=c++1y -Wall -Wextra',
+      \ 'hook/quickrunex/enable' : 1,
+      \ }
 """""""""""""""""""fugitive""""""""""""""""
 nnoremap <Leader>gg :Gst<CR>
 nnoremap <Leader>gp :Gpush<CR>
@@ -1252,3 +1289,51 @@ let g:html5_event_handler_attributes_complete = 1
 let g:html5_rdfa_attributes_complete = 1
 let g:html5_microdata_attributes_complete = 1
 let g:html5_aria_attributes_complete = 1
+
+
+""""""""""""vim-cpp"""""""""""
+MyAutoCmd FileType cpp setlocal path=.,/usr/include,/usr/local/include,/usr/lib/c++/v1
+
+"""""""""""unite-boost-online-doc""""
+MyAutoCmd FileType cpp nnoremap <Space>ub :<C-u>UniteWithCursorWord boost-online-doc
+
+""""""""""vim-marching"""""""""""
+" clang コマンドの設定
+let g:marching_clang_command = "/usr/bin/clang"
+
+" オプションを追加する場合
+let g:marching_clang_command_option="-std=c++11"
+
+" インクルードディレクトリのパスを設定
+let g:marching_include_paths = [
+      \   "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1",
+      \   "/usr/local/include",
+      \   "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/6.0/include",
+      \   "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include",
+      \   "/usr/include",
+      \   "/System/Library/Frameworks",
+      \   "/Library/Frameworks",
+      \]
+
+" neocomplete.vim と併用して使用する場合は以下の設定を行う
+let g:marching_enable_neocomplete = 1
+
+if !exists('g:neocomplete#force_omni_input_patterns')
+  let g:neocomplete#force_omni_input_patterns = {}
+endif
+
+let g:neocomplete#force_omni_input_patterns.cpp =
+      \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+
+""""""""""vim-altr"""""""""""
+nnoremap <Leader>a <Plug>(altr-forward)
+
+""""""""""vim-clang-format"""""""""""
+let g:clang_format#command = '/usr/local/bin/clang-format'
+let g:clang_format#style_options = {
+      \ 'AccessModifierOffset' : -4,
+      \ 'AllowShortIfStatementsOnASingleLine' : 'true',
+      \ 'AlwaysBreakTemplateDeclarations' : 'true',
+      \ 'Standard' : 'C++11',
+      \ 'BreakBeforeBraces' : 'Stroustrup',
+      \ }
