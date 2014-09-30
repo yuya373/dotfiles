@@ -3,7 +3,12 @@ nmap <C-p> :xccmd openQuickly<CR>
 imap <C-j> <ESC>
 nmap <C-j> <ESC>
 nmap <c-b> :xccmd changeToVersionEditorBlameView<CR>
+nmap L :xccmd goForwardInHistoryByCommand<CR>
+nmap H :xccmd goBackInHistoryByCommand<CR>
+nmap \ <Leader>
 nmap <Leader>h :xhelp<CR>
+nmap <Leader>a :xccmd changeToGeniusEditor<CR>
+nmap <Leader>c :xccmd removeAssistantEditor<CR>
 nmap <ESC><ESC> :set nohlsearch<CR>
 nmap <c-f> :xccmd moveKeyboardFocusToNextArea<CR>
 nmap <CR> o<ESC>
