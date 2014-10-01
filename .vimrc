@@ -688,8 +688,10 @@ let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
 """"""""""syntastic"""""""""""""""
 
 ""USE RUBOCOP
-let g:syntastic_mode_map = { 'mode': 'passive',
-      \ 'active_filetypes': ['ruby'] }
+" always run SyntasticCheck when file save
+let g:syntastic_mode_map = { 'mode': 'active' }
+" let g:syntastic_mode_map = { 'mode': 'passive',
+      " \ 'active_filetypes': ['ruby'] }
 let g:syntastic_ruby_checkers = ['rubocop']
 let g:syntastic_ruby_rubocop_args = '--rails'
 " let g:syntastic_quiet_messages = {'level': 'warnings'}
