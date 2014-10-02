@@ -721,8 +721,10 @@ let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
 """"""""""syntastic"""""""""""""""
 
 ""USE RUBOCOP
-let g:syntastic_mode_map = { 'mode': 'passive',
-      \ 'active_filetypes': ['ruby'] }
+" always run SyntasticCheck when file save
+let g:syntastic_mode_map = { 'mode': 'active' }
+" let g:syntastic_mode_map = { 'mode': 'passive',
+      " \ 'active_filetypes': ['ruby'] }
 let g:syntastic_ruby_checkers = ['rubocop']
 let g:syntastic_ruby_rubocop_args = '--rails'
 " let g:syntastic_quiet_messages = {'level': 'warnings'}
@@ -1061,7 +1063,8 @@ let g:vimshell_force_overwrite_statusline = 0
 """""""""""""""""neorspec""""""""""""""""""""""
 " let g:neorspec_command = "!bundle exec spring rspec --color --format documentation {spec}"
 " let g:neorspec_command = "Dispatch bundle exec rspec --color --format documentation {spec}"
-let g:neorspec_command = "Dispatch bundle exec spring rspec --color {spec}"
+let g:neorspec_command = "Dispatch bundle exec spring rspec {spec}"
+" let g:neorspec_command = "Start rspec --color --format documentation {spec}"
 function! s:load_rspec_settings()
   nnoremap <buffer> ,rc  :RSpecCurrent<CR>
   nnoremap <buffer> ,rn  :RSpecNearest<CR>
