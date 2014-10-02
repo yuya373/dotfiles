@@ -727,6 +727,11 @@ let g:syntastic_ruby_checkers = ['rubocop']
 let g:syntastic_ruby_rubocop_args = '--rails'
 " let g:syntastic_quiet_messages = {'level': 'warnings'}
 
+if executable("clang++")
+  let g:syntastic_cpp_compiler = 'clang++'
+  let g:syntastic_cpp_compiler_options = '--std=c++11 --stdlib=libc++'
+endi
+
 """""""""""vim-easymotion""""""""""""
 
 let g:EasyMotion_do_mapping = 0
@@ -1106,6 +1111,7 @@ endif
 let g:vim_tags_project_tags_command = "/usr/local/bin/ctags -R {OPTIONS} {DIRECTORY} 2>/dev/null"
 let g:vim_tags_gems_tags_command = "/usr/local/bin/ctags -R {OPTIONS} `bundle show --paths` 2>/dev/null"
 
+let g:vim_tags_use_vim_dispatch = 1
 let g:vim_tags_auto_generate = 1
 " tagsジャンプの時に複数ある時は一覧表示
 nnoremap <C-]> g<C-]>
