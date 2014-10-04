@@ -1260,7 +1260,7 @@ nnoremap <C-n> :NERDTreeToggle<CR>
 vmap <CR> <Plug>(EasyAlign)
 
 " Start interactive EasyAlign for a motion/text object (e.g. <Leader>aip)
-nmap <Leader>a <Plug>(EasyAlign)
+" nmap <Leader>a <Plug>(EasyAlign)
 
 """"""""""context_filetype.vim"""""""""""
 let g:context_filetype#filetypes = {
@@ -1336,7 +1336,8 @@ let g:neocomplete#force_omni_input_patterns.cpp =
       \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
 
 """"""""""vim-altr"""""""""""
-nnoremap <Leader>a <Plug>(altr-forward)
+nmap <C-f> <Plug>(altr-forward)
+command! A  call altr#forward()
 
 """"""""""vim-clang-format"""""""""""
 let g:clang_format#command = '/usr/local/bin/clang-format'
