@@ -312,7 +312,7 @@ MyAutoCmd FileType cpp setlocal tabstop=4 shiftwidth=4
 set softtabstop=0
 set showmatch " show mactch brace
 set wildmenu
-set wildmode=list,full
+set wildmode=longest,list:full
 set autoread
 set hidden
 set showcmd
