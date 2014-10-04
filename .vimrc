@@ -190,7 +190,7 @@ endif
 
 syntax enable
 filetype plugin indent on
-set synmaxcol=200
+set synmaxcol=100
 
 " Installation check.
 NeoBundleCheck
