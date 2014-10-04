@@ -308,6 +308,7 @@ set smartindent
 set expandtab
 set smarttab
 set tabstop=2 shiftwidth=2
+MyAutoCmd FileType cpp setlocal tabstop=4 shiftwidth=4
 set softtabstop=0
 set showmatch " show mactch brace
 set wildmenu
