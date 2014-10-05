@@ -1181,7 +1181,12 @@ let g:vimshell_prompt_pattern = '^\f\+ > '
 """"""""""""""""""quickrun"""""""""""""""""""
 set splitright
 let g:quickrun_config = {}
-let g:quickrun_config._ = {'runner' : 'vimproc', 'outputter/buffer/split': 'vsplit'}
+let g:quickrun_config._ = {
+      \'runner' : 'vimproc',
+      \'outputter/buffer/split': 'vsplit',
+      \'outputter/buffer/filetype': 'quickrun',
+      \'outputter/buffer/name': '[quickrun output]'
+      \}
 " QuickRunのcoffee
 let g:quickrun_config['coffee'] = {
       \'command' : 'coffee',
