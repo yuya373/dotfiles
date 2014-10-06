@@ -152,6 +152,8 @@ NeoBundleLazy 'rhysd/vim-clang-format', {
       \ 'autoload' : {'filetypes' : ['c', 'cpp', 'objc']}
       \ }
 
+NeoBundle 'octol/vim-cpp-enhanced-highlight'
+
 """""""""""other""""""""""""""""
 
 NeoBundleLazy 'tpope/vim-dispatch', { 'autoload' : {
@@ -308,6 +310,7 @@ set smartindent
 set expandtab
 set smarttab
 set tabstop=2 shiftwidth=2
+MyAutoCmd Filetype cpp setlocal tabstop=4 shiftwidth=4
 set softtabstop=0
 set showmatch " show mactch brace
 set wildmenu
@@ -1109,7 +1112,7 @@ endif
 let g:vim_tags_project_tags_command = "/usr/local/bin/ctags -R {OPTIONS} {DIRECTORY} 2>/dev/null"
 let g:vim_tags_gems_tags_command = "/usr/local/bin/ctags -R {OPTIONS} `bundle show --paths` 2>/dev/null"
 
-let g:vim_tags_auto_generate = 1
+let g:vim_tags_auto_generate = 0
 " tagsジャンプの時に複数ある時は一覧表示
 nnoremap <C-]> g<C-]>
 """"""""""Tag Jump拡張"""""""""""
@@ -1329,7 +1332,8 @@ let g:neocomplete#force_omni_input_patterns.cpp =
       \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
 
 """"""""""vim-altr"""""""""""
-nnoremap <Leader>a <Plug>(altr-forward)
+nnoremap <Leader>n <Plug>(altr-forward)
+
 
 """"""""""vim-clang-format"""""""""""
 let g:clang_format#command = '/usr/local/bin/clang-format'
@@ -1340,3 +1344,8 @@ let g:clang_format#style_options = {
       \ 'Standard' : 'C++11',
       \ 'BreakBeforeBraces' : 'Stroustrup',
       \ }
+
+"""""""vim-cpp-enhanced-highlight""""""""""""
+let g:cpp_class_scope_highlight = 1
+let g:cpp_experimental_template_highlight = 1
+
