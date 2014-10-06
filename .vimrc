@@ -152,6 +152,8 @@ NeoBundleLazy 'rhysd/vim-clang-format', {
       \ 'autoload' : {'filetypes' : ['c', 'cpp', 'objc']}
       \ }
 
+NeoBundle 'octol/vim-cpp-enhanced-highlight'
+
 """""""""""other""""""""""""""""
 
 NeoBundleLazy 'tpope/vim-dispatch', { 'autoload' : {
@@ -308,7 +310,7 @@ set smartindent
 set expandtab
 set smarttab
 set tabstop=2 shiftwidth=2
-MyAutoCmd FileType cpp setlocal tabstop=4 shiftwidth=4
+MyAutoCmd Filetype cpp setlocal tabstop=4 shiftwidth=4
 set softtabstop=0
 set showmatch " show mactch brace
 set wildmenu
@@ -1353,3 +1355,8 @@ let g:clang_format#style_options = {
       \ 'Standard' : 'C++11',
       \ 'BreakBeforeBraces' : 'Stroustrup',
       \ }
+
+"""""""vim-cpp-enhanced-highlight""""""""""""
+let g:cpp_class_scope_highlight = 1
+let g:cpp_experimental_template_highlight = 1
+
