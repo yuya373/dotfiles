@@ -53,6 +53,8 @@ source $ZSH/oh-my-zsh.sh
 # Customize to your needs...
 source ~/.zsh_dep
 
+setopt nonomatch
+
 alias reload='source ~/.zshrc'
 
 ## tmux自動起動

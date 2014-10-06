@@ -192,7 +192,7 @@ endif
 
 syntax enable
 filetype plugin indent on
-set synmaxcol=200
+set synmaxcol=100
 
 " Installation check.
 NeoBundleCheck
@@ -314,7 +314,7 @@ MyAutoCmd Filetype cpp setlocal tabstop=4 shiftwidth=4
 set softtabstop=0
 set showmatch " show mactch brace
 set wildmenu
-set wildmode=list,full
+set wildmode=longest,list:full
 set autoread
 set hidden
 set showcmd
@@ -732,6 +732,11 @@ let g:syntastic_ruby_checkers = ['rubocop']
 let g:syntastic_ruby_rubocop_args = '--rails'
 " let g:syntastic_quiet_messages = {'level': 'warnings'}
 
+if executable("clang++")
+  let g:syntastic_cpp_compiler = 'clang++'
+  let g:syntastic_cpp_compiler_options = '--std=c++11 --stdlib=libc++'
+endi
+
 """""""""""vim-easymotion""""""""""""
 
 let g:EasyMotion_do_mapping = 0
@@ -1112,7 +1117,8 @@ endif
 let g:vim_tags_project_tags_command = "/usr/local/bin/ctags -R {OPTIONS} {DIRECTORY} 2>/dev/null"
 let g:vim_tags_gems_tags_command = "/usr/local/bin/ctags -R {OPTIONS} `bundle show --paths` 2>/dev/null"
 
-let g:vim_tags_auto_generate = 0
+let g:vim_tags_use_vim_dispatch = 1
+let g:vim_tags_auto_generate = 1
 " tagsジャンプの時に複数ある時は一覧表示
 nnoremap <C-]> g<C-]>
 """"""""""Tag Jump拡張"""""""""""
@@ -1256,7 +1262,7 @@ nnoremap <C-n> :NERDTreeToggle<CR>
 vmap <CR> <Plug>(EasyAlign)
 
 " Start interactive EasyAlign for a motion/text object (e.g. <Leader>aip)
-nmap <Leader>a <Plug>(EasyAlign)
+" nmap <Leader>a <Plug>(EasyAlign)
 
 """"""""""context_filetype.vim"""""""""""
 let g:context_filetype#filetypes = {
@@ -1332,8 +1338,8 @@ let g:neocomplete#force_omni_input_patterns.cpp =
       \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
 
 """"""""""vim-altr"""""""""""
-nnoremap <Leader>n <Plug>(altr-forward)
-
+nmap <C-f> <Plug>(altr-forward)
+command! A  call altr#forward()
 
 """"""""""vim-clang-format"""""""""""
 let g:clang_format#command = '/usr/local/bin/clang-format'
