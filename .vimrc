@@ -63,6 +63,7 @@ NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'cohama/agit.vim'
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'LeafCage/foldCC'
+
 NeoBundle 'LeafCage/yankround.vim'
 NeoBundle 'osyo-manga/vim-over'
 NeoBundle 'AnsiEsc.vim'
@@ -331,7 +332,9 @@ MyAutoCmd BufEnter * setlocal formatoptions-=ro
 MyAutoCmd BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
 MyAutoCmd BufRead,BufNewFile,BufReadPre *.coffee nnoremap <Leader>cf :CoffeeWatch watch vert<CR>
 
-set cursorline
+MyAutoCmd BufRead,BufNewFile,BufReadPre,BufEnter *.schema set filetype=ruby
+
+set nocursorline
 set nocursorcolumn
 " set nocursorline
 
@@ -729,8 +732,19 @@ let g:syntastic_mode_map = { 'mode': 'active' }
 " let g:syntastic_mode_map = { 'mode': 'passive',
       " \ 'active_filetypes': ['ruby'] }
 let g:syntastic_ruby_checkers = ['rubocop']
-let g:syntastic_ruby_rubocop_args = '--rails'
+" let g:syntastic_ruby_rubocop_args = '--rails'
 " let g:syntastic_quiet_messages = {'level': 'warnings'}
+
+" MyAutoCmd FileType ruby call s:find_rubocop_setting()
+
+" function! s:find_rubocop_setting()
+  " execute 'Rooter'
+  " let b:root_path = pwd Error!!!
+  " let b:hound_setting = findfile('.houng.yml', '.')
+  " if b:hound_setting
+    " let g:syntastic_ruby_rubocop_args = "-c ".b:root_path."/".b:hound_setting
+  " endif
+" endfunction
 
 if executable("clang++")
   let g:syntastic_cpp_compiler = 'clang++'
@@ -850,8 +864,8 @@ let g:neocomplete#force_overwrite_completefunc = 1
 """""""""indentLine""""""""""
 """""""""""""""""""""""""""""
 let g:indentLine_faster=1
-let g:indentLine_color_term = 239
-let g:indentLine_color_gui = '#A4E57E'
+" let g:indentLine_color_term = 239
+" let g:indentLine_color_gui = '#A4E57E'
 " let g:indentLine_char = '┊'
 " let g:indentLine_char = '▸'
 let g:indentLine_showFirstIndentLevel = 2
@@ -1354,4 +1368,5 @@ let g:clang_format#style_options = {
 """""""vim-cpp-enhanced-highlight""""""""""""
 let g:cpp_class_scope_highlight = 1
 let g:cpp_experimental_template_highlight = 1
+
 
