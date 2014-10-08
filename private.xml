@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<root>
+  <item>
+    <name>Swap Space and Tab</name>
+    <identifier>private.swap_space_and_tab</identifier>
+    <autogen>__KeyToKey__ KeyCode::SPACE, KeyCode::TAB</autogen>
+    <autogen>__KeyToKey__ KeyCode::TAB, KeyCode::SPACE</autogen>
+  </item>
+
+  <item>
+    <name>Change Right Command Key to Escape</name>
+    <identifier>private.right_command_to_escape</identifier>
+    <autogen>__KeyToKey__ KeyCode::COMMAND_R, KeyCode::ESCAPE</autogen>
+  </item>
+
+  <item>
+    <name>HENKAN to COMMAND_R</name>
+    <identifier>private.henkan_to_commandr</identifier>
+    <autogen>__KeyOverlaidModifier__ KeyCode::JIS_KANA, KeyCode::COMMAND_R, KeyCode::JIS_KANA</autogen>
+  </item>
+
+  <item>
+    <name>MUHENKAN to COMMAND_L</name>
+    <identifier>private.muhenkan_to_command_l</identifier>
+    <autogen>__KeyOverlaidModifier__ KeyCode::JIS_EISUU, KeyCode::COMMAND_L, KeyCode::JIS_EISUU</autogen>
+  </item>
+
+  <item>
+    <name>BackSlash to Return</name>
+    <identifier>private.backslash_to_return</identifier>
+    <autogen>__KeyToKey__ KeyCode::BACKSLASH, KeyCode::RETURN</autogen>
+  </item>
+
+  <item>
+    <name>Return to BackSlash</name>
+    <identifier>private.return_to_backslash</identifier>
+    <autogen>__KeyToKey__ KeyCode::RETURN, KeyCode::BACKSLASH</autogen>
+  </item>
+
+  <item>
+    <name>PC APPLICATION to Fn</name>
+    <identifier>private.pc_application_to_fn</identifier>
+    <autogen>__KeyToKey__ KeyCode::PC_APPLICATION, KeyCode::FN</autogen>
+  </item>
+
+  <item>
+    <name>BackSpace to BackSlash</name>
+    <identifier>private.backspace_to_backslash</identifier>
+    <autogen>__KeyToKey__ KeyCode::DELETE, KeyCode::BACKSLASH</autogen>
+  </item>
+
+  <item>
+    <name>BackQuote to BackSpace</name>
+    <identifier>private.backquote_to_backspace</identifier>
+    <autogen>__KeyToKey__ KeyCode::BACKQUOTE, KeyCode::DELETE</autogen>
+  </item>
+</root>
