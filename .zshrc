@@ -57,6 +57,17 @@ setopt nonomatch
 
 alias reload='source ~/.zshrc'
 
+# cdr, add-zsh-hook を有効にする
+autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
+add-zsh-hook chpwd chpwd_recent_dirs
+
+# cdr の設定
+zstyle ':completion:*' recent-dirs-insert both
+zstyle ':chpwd:*' recent-dirs-max 500
+zstyle ':chpwd:*' recent-dirs-default true
+zstyle ':chpwd:*' recent-dirs-file "$HOME/.cache/shell/chpwd-recent-dirs"
+zstyle ':chpwd:*' recent-dirs-pushd true
+
 ## tmux自動起動
 # http://d.hatena.ne.jp/tyru/20100828/run_tmux_or_screen_at_shell_startup
 is_screen_running() {
@@ -115,3 +126,39 @@ if [ ! -z "$dir" ] ; then
   cd "$dir"
 fi
 }
+
+function peco-select-history() {
+local tac
+if which tac > /dev/null; then
+  tac="tac"
+else
+  tac="tail -r"
+fi
+BUFFER=$(\history -n 1 | \
+  eval $tac | \
+  peco --query "$LBUFFER")
+CURSOR=$#BUFFER
+zle clear-screen
+}
+zle -N peco-select-history
+bindkey '^r' peco-select-history
+
+
+function peco-cdr () {
+local selected_dir=$(cdr -l | awk '{ print $2 }' | peco)
+if [ -n "$selected_dir" ]; then
+  BUFFER="cd ${selected_dir}"
+  zle accept-line
+fi
+zle clear-screen
+}
+zle -N peco-cdr
+bindkey '^@' peco-cdr
+
+
+function peco-find-file () {
+  ls | peco | xargs vim -nw
+  zle clear-screen
+}
+zle -N peco-find-file
+bindkey '^v' peco-find-file
