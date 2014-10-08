@@ -1,4 +1,3 @@
-
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
 
@@ -52,6 +51,7 @@ source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
 source ~/.zsh_dep
+source ~/dotfiles/.tmux-powerlinerc.default
 
 setopt nonomatch
 
@@ -162,3 +162,6 @@ function peco-find-file () {
 }
 zle -N peco-find-file
 bindkey '^v' peco-find-file
+
+
+PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
