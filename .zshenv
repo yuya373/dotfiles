@@ -6,3 +6,4 @@ fi
 
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 export LANG=ja_JP.UTF-8
+source ~/dotfiles/.tmux-powerlinerc.default
