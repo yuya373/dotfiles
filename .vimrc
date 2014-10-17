@@ -12,7 +12,7 @@ if has('vim_starting')
   set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
 
-call neobundle#rc()
+call neobundle#begin(expand('~/.vim/bundle'))
 
 
 " Let NeoBundle manage NeoBundle
@@ -184,6 +184,7 @@ if neobundle#tap('jazzradio.vim')
 endif
 
 
+call neobundle#end()
 
 
 " Brief help
@@ -332,7 +333,7 @@ MyAutoCmd BufEnter * setlocal formatoptions-=ro
 MyAutoCmd BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
 MyAutoCmd BufRead,BufNewFile,BufReadPre *.coffee nnoremap <Leader>cf :CoffeeWatch watch vert<CR>
 
-MyAutoCmd BufRead,BufNewFile,BufReadPre,BufEnter *.schema set filetype=ruby
+MyAutoCmd BufRead,BufNewFile,BufEnter *.schema set filetype=ruby
 
 set nocursorline
 set nocursorcolumn
