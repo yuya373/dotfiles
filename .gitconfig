@@ -1,0 +1,17 @@
+[core]
+  editor = vim
+  pager = less
+  quotepath = true
+[include]
+  path = ~/.gitconfig_local
+[alias]
+  co = checkout
+  br = branch
+  cm = commit
+  st = status
+  delete-merged-branches = !git branch --merged | grep -v \\* | xargs -I % git branch -d %
+  mt = mergetool
+[push]
+  default = simple
+[mergetool]
+  keepBackup = false
