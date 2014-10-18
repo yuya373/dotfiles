@@ -52,6 +52,7 @@ source $ZSH/oh-my-zsh.sh
 # Customize to your needs...
 source ~/.zsh_dep
 source ~/dotfiles/.zshfunc
+source ~/dotfiles/git-flow-completion.zsh
 
 setopt nonomatch
 
