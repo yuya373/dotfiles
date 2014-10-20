@@ -79,6 +79,7 @@ NeoBundle 'othree/html5.vim'
 NeoBundle 'junegunn/vim-easy-align'
 NeoBundle 'Shougo/context_filetype.vim'
 NeoBundle 'osyo-manga/vim-precious'
+NeoBundle 'cohama/vim-hier'
 
 """""""Unite""""""""""""
 NeoBundle 'osyo-manga/unite-choosewin-actions'
@@ -342,6 +343,7 @@ set nocursorcolumn
 hi MatchParen ctermbg=1
 
 nnoremap <CR> o<ESC>
+MyAutoCmd FileType qf nnoremap <CR> <CR>
 map <C-j> <Esc>
 
 " set formatoptions=qrn1
@@ -864,7 +866,7 @@ let g:neocomplete#force_overwrite_completefunc = 1
 
 """""""""indentLine""""""""""
 """""""""""""""""""""""""""""
-let g:indentLine_faster=1
+" let g:indentLine_faster=1
 " let g:indentLine_color_term = 239
 " let g:indentLine_color_gui = '#A4E57E'
 " let g:indentLine_char = '┊'
@@ -1200,9 +1202,7 @@ set splitright
 let g:quickrun_config = {}
 let g:quickrun_config._ = {
       \'runner' : 'vimproc',
-      \'outputter/buffer/split': 'vsplit',
-      \'outputter/buffer/filetype': 'quickrun',
-      \'outputter/buffer/name': '[quickrun output]'
+      \'outputter' : 'quickfix'
       \}
 " QuickRunのcoffee
 let g:quickrun_config['coffee'] = {
@@ -1375,4 +1375,5 @@ let g:clang_format#style_options = {
 let g:cpp_class_scope_highlight = 1
 let g:cpp_experimental_template_highlight = 1
 
-
+"""""""vim-hier""""""""
+let g:hier_enabled = 1
