@@ -1,7 +1,7 @@
 [core]
   editor = vim
   pager = less
-  quotepath = true
+  quotepath = false
 [include]
   path = ~/.gitconfig_local
 [alias]
