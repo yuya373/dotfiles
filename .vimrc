@@ -734,27 +734,7 @@ let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
 ""USE RUBOCOP
 " always run SyntasticCheck when file save
 let g:syntastic_mode_map = { 'mode': 'active' }
-" let g:syntastic_mode_map = { 'mode': 'passive',
-      " \ 'active_filetypes': ['ruby'] }
 let g:syntastic_ruby_checkers = ['rubocop']
-" let g:syntastic_ruby_rubocop_args = '--rails'
-" let g:syntastic_quiet_messages = {'level': 'warnings'}
-
-" MyAutoCmd FileType ruby call s:find_rubocop_setting()
-
-" function! s:find_rubocop_setting()
-  " execute 'Rooter'
-  " let b:root_path = pwd Error!!!
-  " let b:hound_setting = findfile('.houng.yml', '.')
-  " if b:hound_setting
-    " let g:syntastic_ruby_rubocop_args = "-c ".b:root_path."/".b:hound_setting
-  " endif
-" endfunction
-
-if executable("clang++")
-  let g:syntastic_cpp_compiler = 'clang++'
-  let g:syntastic_cpp_compiler_options = '--std=c++11 --stdlib=libc++'
-endi
 
 """""""""""vim-easymotion""""""""""""
 
@@ -1096,19 +1076,6 @@ function! s:load_rspec_settings()
 endfunction
 
 MyAutoCmd BufWinEnter *_spec.rb call s:load_rspec_settings()
-" RSpec対応
-" let g:quickrun_config = {}
-" let g:quickrun_config._ = {'runner' : 'vimproc'}
-" let g:quickrun_config['ruby.rspec'] = {
-" \ 'command': 'rspec',
-" \ 'cmdopt': '--color --format documentation',
-" \ 'exec': 'bundle exec %c %o %s'
-" \}
-" augroup RSpec
-" autocmd!
-" autocmd BufWinEnter,BufNewFile *_spec.rb set filetype=ruby.rspec
-" augroup END
-
 """"""""""""""""""undotree""""""""""""""""""""""
 " nnoremap <Leader>u :UndotreeToggle<CR>
 " let g:undotree_SetFocusWhenToggle = 1
@@ -1212,11 +1179,6 @@ let g:quickrun_config['coffee'] = {
       \'exec' : ['%c -cbp %s']
       \}
 
-let g:quickrun_config['cpp'] = {
-      \ 'command' : 'clang++',
-      \ 'cmdopt' : '-std=c++1y -Wall -Wextra',
-      \ 'hook/quickrunex/enable' : 1,
-      \ }
 """""""""""""""""""fugitive""""""""""""""""
 nnoremap <Leader>gg :Gst<CR>
 nnoremap <Leader>gp :Gpush<CR>
@@ -1392,3 +1354,16 @@ map *  <Plug>(incsearch-nohl-*)
 map #  <Plug>(incsearch-nohl-#)
 map g* <Plug>(incsearch-nohl-g*)
 map g# <Plug>(incsearch-nohl-g#)
+
+""USE CLANG++""
+if executable("clang++")
+  let g:syntastic_cpp_check_header = 1
+  let g:quickrun_config['cpp'] = {
+        \ 'command' : 'clang++',
+        \ 'cmdopt' : '-std=c++1y -Wall -Wextra',
+        \ 'hook/quickrunex/enable' : 1,
+        \ }
+  let g:syntastic_cpp_compiler = 'clang++'
+  let g:syntastic_cpp_compiler_options = '--std=c++11 --stdlib=libc++'
+endif
+
