@@ -304,6 +304,8 @@ map <silent> [Tag]p :tabprevious<CR>
 
 " edit
 " ----------------------
+" 括弧を入力した時にカーソルが移動しないように設定
+set matchtime=0
 "ESCのタイムアウトを早くする
 set timeout timeoutlen=1000 ttimeoutlen=75
 set encoding=UTF-8
@@ -1170,8 +1172,14 @@ let g:vimshell_prompt_pattern = '^\f\+ > '
 set splitright
 let g:quickrun_config = {}
 let g:quickrun_config._ = {
-      \'runner' : 'vimproc',
-      \'outputter' : 'quickfix'
+      \"runner" : "vimproc",
+      \"runner/vimproc/sleep" : 10,
+      \"runner/vimproc/updatetime" : 500,
+      \"outputter" : "error",
+      \"outputter/error/success" : "buffer",
+      \"outputter/error/error" : "quickfix",
+      \"outputter/quickfix/open_cmd" : "copen",
+      \"outputter/buffer/split" : ":botright 8sp"
       \}
 " QuickRunのcoffee
 let g:quickrun_config['coffee'] = {
