@@ -317,7 +317,6 @@ set smartindent
 set expandtab
 set smarttab
 set tabstop=2 shiftwidth=2
-MyAutoCmd Filetype cpp setlocal tabstop=4 shiftwidth=4
 set softtabstop=0
 set showmatch " show mactch brace
 set wildmenu
@@ -1295,11 +1294,15 @@ let g:html5_microdata_attributes_complete = 1
 let g:html5_aria_attributes_complete = 1
 
 
+function! s:cpp()
+  setlocal tabstop=4 shiftwidth=4
 """"""""""""vim-cpp"""""""""""
-MyAutoCmd FileType cpp setlocal path=.,/usr/include,/usr/local/include,/usr/lib/c++/v1
-
+  setlocal path=.,/usr/include,/usr/local/include,/usr/lib/c++/v1
 """""""""""unite-boost-online-doc""""
-MyAutoCmd FileType cpp nnoremap <Space>ub :<C-u>UniteWithCursorWord boost-online-doc
+  nnoremap <Space>ub :<C-u>UniteWithCursorWord boost-online-doc
+endfunction
+
+MyAutoCmd FileType cpp call s:cpp()
 
 """"""""""vim-marching"""""""""""
 " clang コマンドの設定
