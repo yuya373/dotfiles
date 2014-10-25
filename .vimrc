@@ -1303,6 +1303,7 @@ function! s:cpp()
 endfunction
 
 MyAutoCmd FileType cpp call s:cpp()
+MyAutoCmd BufWritePre *.cpp,*.h silent execute "ClangFormat"
 
 """"""""""vim-marching"""""""""""
 " clang コマンドの設定
