@@ -525,10 +525,10 @@ set smartcase
 " \     let @/ = get(b:, 'vimrc_pattern', @/)
 " \   | let &l:hlsearch = get(b:, 'vimrc_hlsearch', &l:hlsearch)
 " 「/」「?」「*」「#」が押されたらハイライトをON にしてから「/」「?」「*」「#」
-nnoremap / :<C-u>set hlsearch<Return>/
-nnoremap ? :<C-u>set hlsearch<Return>?
-nnoremap * :<C-u>set hlsearch<Return>*
-nnoremap # :<C-u>set hlsearch<Return>#
+" nnoremap / :<C-u>set hlsearch<Return>/
+" nnoremap ? :<C-u>set hlsearch<Return>?
+" nnoremap * :<C-u>set hlsearch<Return>*
+" nnoremap # :<C-u>set hlsearch<Return>#
 
 " no bell
 "
