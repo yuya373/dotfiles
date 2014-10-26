@@ -346,7 +346,7 @@ set nocursorcolumn
 hi MatchParen ctermbg=1
 
 nnoremap <CR> o<ESC>
-MyAutoCmd FileType qf nnoremap <CR> <CR>
+MyAutoCmd FileType qf nnoremap <buffer> <CR> <CR>
 map <C-j> <Esc>
 
 " set formatoptions=qrn1
