@@ -118,5 +118,5 @@ fi
 PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
 precmd () {
   LANG=en_US.UTF-8 vcs_info
-  [[ -n {$vcs_info_msg_0_} ]] && tmux rename-window $vcs_info_msg_0_
+  [[ -n "$vcs_info_msg_0_" ]] && tmux rename-window $vcs_info_msg_0_
 }
