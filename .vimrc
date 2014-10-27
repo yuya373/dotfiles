@@ -305,7 +305,7 @@ map <silent> [Tag]p :tabprevious<CR>
 " edit
 " ----------------------
 "http://qiita.com/Kta-M/items/9a386c01db150dc90fc2
-set iskeyword +=@-@,!,:,?
+set iskeyword +=@-@,!,?
 
 " 括弧を入力した時にカーソルが移動しないように設定
 set matchtime=0
