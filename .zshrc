@@ -58,6 +58,11 @@ setopt nonomatch
 
 alias reload='source ~/.zshrc'
 
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' enable git svn
+zstyle ':vcs_info:*' max-exports 3
+zstyle ':vcs_info:*' formats '%r'
+
 # cdr, add-zsh-hook を有効にする
 autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
 add-zsh-hook chpwd chpwd_recent_dirs
@@ -105,3 +110,7 @@ if ! is_screen_or_tmux_running && shell_has_started_interactively; then
 fi
 
 PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
+precmd () {
+  LANG=en_US.UTF-8 vcs_info
+  [[ -n {$vcs_info_msg_0_} ]] && tmux rename-window $vcs_info_msg_0_
+}
