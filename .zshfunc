@@ -36,7 +36,6 @@ CURSOR=$#BUFFER
 zle clear-screen
 }
 zle -N peco-select-history
-bindkey '^r' peco-select-history
 
 
 function peco-cdr () {
@@ -48,7 +47,6 @@ fi
 zle clear-screen
 }
 zle -N peco-cdr
-bindkey '^@' peco-cdr
 
 
 function peco-find-file () {

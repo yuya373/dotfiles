@@ -54,6 +54,12 @@ source ~/.zsh_dep
 source ~/dotfiles/.zshfunc
 source ~/dotfiles/git-flow-completion.zsh
 
+# from .zshfunc
+bindkey '^m' do_enter
+bindkey '^r' peco-select-history
+bindkey '^@' peco-cdr
+bindkey '^v' peco-find-file
+
 setopt nonomatch
 
 alias reload='source ~/.zshrc'
