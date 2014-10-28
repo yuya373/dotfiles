@@ -20,7 +20,7 @@ function prompt_steeef_precmd {
     branch_format="${_prompt_steeef_colors[7]}(%f${_prompt_steeef_colors[1]}%b%f%u%c${_prompt_steeef_colors[7]})%f"
   fi
 
-  zstyle ':vcs_info:*:prompt:*' formats "${branch_format}"
+  zstyle ':vcs_info:*:prompt:*' formats "${branch_format}" "%r/%b"
 
   vcs_info 'prompt'
 
