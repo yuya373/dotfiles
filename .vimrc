@@ -158,6 +158,13 @@ NeoBundleLazy 'rhysd/vim-clang-format', {
 
 NeoBundle 'octol/vim-cpp-enhanced-highlight'
 
+""""""""""English"""""""""""""""
+NeoBundle 'ujihisa/neco-look'
+
+let g:neocomplete_text_mode_filetypes = {
+      \ 'text' : 1,
+      \ 'txt' : 1
+      \}
 """""""""""other""""""""""""""""
 
 NeoBundleLazy 'tpope/vim-dispatch', { 'autoload' : {
@@ -305,7 +312,7 @@ map <silent> [Tag]p :tabprevious<CR>
 " edit
 " ----------------------
 "http://qiita.com/Kta-M/items/9a386c01db150dc90fc2
-set iskeyword +=@-@,!,?
+set iskeyword +=@-@,!,?,-
 
 " 括弧を入力した時にカーソルが移動しないように設定
 set matchtime=0
@@ -1308,6 +1315,13 @@ endfunction
 MyAutoCmd FileType cpp call s:cpp()
 MyAutoCmd BufWritePre *.cpp,*.h silent execute "ClangFormat"
 
+function! s:c()
+  setlocal path=.,/usr/include
+  setlocal tabstop=4 shiftwidth=4
+endfunction
+
+MyAutoCmd FileType c call s:c()
+
 """"""""""vim-marching"""""""""""
 " clang コマンドの設定
 let g:marching_clang_command = "/usr/bin/clang"
@@ -1317,13 +1331,7 @@ let g:marching_clang_command_option="-std=c++11"
 
 " インクルードディレクトリのパスを設定
 let g:marching_include_paths = [
-      \   "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1",
-      \   "/usr/local/include",
-      \   "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/6.0/include",
-      \   "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include",
-      \   "/usr/include",
-      \   "/System/Library/Frameworks",
-      \   "/Library/Frameworks",
+      \   "/usr/include/c++"
       \]
 
 " neocomplete.vim と併用して使用する場合は以下の設定を行う
