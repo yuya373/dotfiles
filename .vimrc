@@ -761,12 +761,12 @@ let g:EasyMotion_do_shade = 1
 " 拡張版機能"{{{
 
 " もっともよく使うであろう'<Leadr><Leader>s'motion をsに割り当て
-nmap s <Plug>(easymotion-s)
-xmap s <Plug>(easymotion-s)
+nmap <silent> s <Plug>(easymotion-s2)
+xmap <silent> s <Plug>(easymotion-s2)
 " surround.vimと被らないように
-omap z <Plug>(easymotion-s)
+omap <silent> z <Plug>(easymotion-s2)
 
-map f <Plug>(easymotion-bd-fl)
+map <silent> f <Plug>(easymotion-bd-fl)
 
 " keep cursor column
 let g:EasyMotion_startofline = 0
@@ -898,33 +898,33 @@ else
   imap <expr> <CR> pumvisible() ?
         \ neocomplcache#smart_close_popup() : "\<Plug>(smartinput_CR)"
 
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<Plug>(smartinput_C-h)"
-inoremap <expr><BS> neocomplcache#smart_close_popup()."\<Plug>(smartinput_BS)"
-inoremap <expr><C-y>  neocomplcache#close_popup()
-inoremap <expr><C-e>  neocomplcache#cancel_popup()
+  " <TAB>: completion.
+  inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
+  " <C-h>, <BS>: close popup and delete backword char.
+  imap <expr><C-h> neocomplcache#smart_close_popup()."\<Plug>(smartinput_C-h)"
+  imap <expr><BS> neocomplcache#smart_close_popup()."\<Plug>(smartinput_BS)"
+  inoremap <expr><C-y>  neocomplcache#close_popup()
+  inoremap <expr><C-e>  neocomplcache#cancel_popup()
 
-" Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+  " Enable omni completion.
+  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
-" Enable heavy omni completion.
-if !exists('g:neocomplcache_force_omni_patterns')
-  let g:neocomplcache_force_omni_patterns = {}
-endif
-let g:neocomplcache_force_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-let g:neocomplcache_force_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-let g:neocomplcache_force_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+  " Enable heavy omni completion.
+  if !exists('g:neocomplcache_force_omni_patterns')
+    let g:neocomplcache_force_omni_patterns = {}
+  endif
+  let g:neocomplcache_force_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+  let g:neocomplcache_force_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+  let g:neocomplcache_force_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 
-" For perlomni.vim setting.
-" https://github.com/c9s/perlomni.vim
-let g:neocomplcache_force_omni_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+  " For perlomni.vim setting.
+  " https://github.com/c9s/perlomni.vim
+  let g:neocomplcache_force_omni_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
 endif
 """""""""indentLine""""""""""
