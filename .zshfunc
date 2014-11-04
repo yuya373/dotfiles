@@ -130,7 +130,7 @@ function tmux_window_name()
     tmux rename-window ${PWD:t}
   fi
 }
-add-zsh-hook chpwd tmux_window_name
+add-zsh-hook precmd tmux_window_name
 
 function my_reset_prompt()
 {
