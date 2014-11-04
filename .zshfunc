@@ -121,7 +121,7 @@ return 0
 }
 zle -N do_enter
 
-tmux_window_name()
+function tmux_window_name()
 {
   [[ -n "$vcs_info_msg_1_" ]] && tmux rename-window $vcs_info_msg_1_
   if [ -n "$vcs_info_msg_1_" ]; then
@@ -130,6 +130,7 @@ tmux_window_name()
     tmux rename-window ${PWD:t}
   fi
 }
+add-zsh-hook chpwd tmux_window_name
 
 function my_reset_prompt()
 {
