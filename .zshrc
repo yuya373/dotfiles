@@ -3,6 +3,8 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+
 # Customize to your needs...
 source ~/.zsh_dep
 source ~/dotfiles/.zshfunc
@@ -13,6 +15,7 @@ bindkey '^m' do_enter
 bindkey '^r' peco-select-history
 bindkey '^@' peco-cdr
 bindkey '^v' peco-find-file
+bindkey '^o' dev_pcd
 
 setopt nonomatch
 
