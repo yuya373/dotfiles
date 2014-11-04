@@ -116,7 +116,7 @@ if [ "$(git rev-parse --is-inside-work-tree 2> /dev/null)" = 'true' ]; then
 fi
 echo
 echo -e "\e[0;33m--- end ---\e[0m"
-zle reset-prompt
+my_reset_prompt
 return 0
 }
 zle -N do_enter
