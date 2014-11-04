@@ -341,10 +341,10 @@ MyAutoCmd BufEnter * setlocal formatoptions-=ro
 
 
 " vimにcoffeeファイルタイプを認識させる
-MyAutoCmd BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
-MyAutoCmd BufRead,BufNewFile,BufReadPre *.coffee nnoremap <Leader>cf :CoffeeWatch watch vert<CR>
+MyAutoCmd BufRead *.coffee setlocal filetype=coffee
+MyAutoCmd BufRead *.coffee nnoremap <buffer> <Leader>cf :CoffeeWatch watch vert<CR>
 
-MyAutoCmd BufRead,BufNewFile,BufEnter *.schema set filetype=ruby
+MyAutoCmd BufRead *.schema setlocal filetype=ruby
 
 set nocursorline
 set nocursorcolumn
@@ -1380,10 +1380,10 @@ function! s:cpp()
   setlocal path=.,/usr/include,/usr/local/include,/usr/lib/c++/v1
 """""""""""unite-boost-online-doc""""
   nnoremap <Space>ub :<C-u>UniteWithCursorWord boost-online-doc
+  nnoremap <silent> <Leader>cf :ClangFormat<CR>
 endfunction
 
 MyAutoCmd FileType cpp call s:cpp()
-MyAutoCmd BufWritePre *.cpp,*.h silent execute "ClangFormat"
 
 function! s:c()
   setlocal path=.,/usr/include
