@@ -83,6 +83,7 @@ NeoBundle 'osyo-manga/vim-precious'
 NeoBundle 'cohama/vim-hier'
 NeoBundle 'haya14busa/incsearch.vim'
 NeoBundle 'mattn/emoji-vim'
+NeoBundle 'diffchar.vim'
 
 """""""Unite""""""""""""
 NeoBundle 'osyo-manga/unite-choosewin-actions'
@@ -1460,3 +1461,9 @@ if executable("clang++")
   let g:syntastic_cpp_compiler_options = '--std=c++11 --stdlib=libc++'
 endif
 
+
+""""""""""diffchar.vim"""""""""""
+
+if &diff
+  MyAutoCmd VimEnter * execute "%SDChar"
+endif
