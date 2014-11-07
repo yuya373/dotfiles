@@ -1182,8 +1182,9 @@ endif
 
 
 """""""""""""""vim-tags""""""""""""""""""""
-let g:vim_tags_project_tags_command = "/usr/local/bin/ctags -R {OPTIONS} {DIRECTORY} 2>/dev/null"
-let g:vim_tags_gems_tags_command = "/usr/local/bin/ctags -R {OPTIONS} `bundle show --paths` 2>/dev/null"
+let g:vim_tags_ctags_binary = "/user/local/bin/ctags"
+let g:vim_tags_project_tags_command = "{CTAGS} -R {OPTIONS} {DIRECTORY} 2>/dev/null"
+let g:vim_tags_gems_tags_command = "{CTAGS} -R {OPTIONS} `bundle show --paths` 2>/dev/null"
 
 let g:vim_tags_use_vim_dispatch = 1
 let g:vim_tags_auto_generate = 1
