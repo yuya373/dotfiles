@@ -37,7 +37,6 @@ NeoBundle 'Shougo/vimproc', {
 
 NeoBundle 'Shougo/neobundle.vim'
 NeoBundle 'VimClojure'
-NeoBundle 'Shougo/vimshell'
 NeoBundle 'Shougo/neocomplete'
 NeoBundle 'Shougo/neocomplcache.vim'
 NeoBundle 'Shougo/neosnippet'
@@ -64,11 +63,9 @@ NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'cohama/agit.vim'
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'LeafCage/foldCC'
-
 NeoBundle 'LeafCage/yankround.vim'
 NeoBundle 'osyo-manga/vim-over'
 NeoBundle 'AnsiEsc.vim'
-NeoBundle 'tacroe/unite-mark'
 NeoBundle 'moznion/hateblo.vim', {
       \ 'depends': ['mattn/webapi-vim', 'Shougo/unite.vim']
       \ }
@@ -81,15 +78,183 @@ NeoBundle 'junegunn/vim-easy-align'
 NeoBundle 'Shougo/context_filetype.vim'
 NeoBundle 'osyo-manga/vim-precious'
 NeoBundle 'cohama/vim-hier'
-NeoBundle 'haya14busa/incsearch.vim'
 NeoBundle 'mattn/emoji-vim'
-NeoBundle 'diffchar.vim'
+NeoBundle "osyo-manga/shabadou.vim"
+NeoBundle "osyo-manga/vim-watchdogs"
+NeoBundle "dannyob/quickfixstatus"
+NeoBundle "KazuakiM/vim-qfstatusline"
+NeoBundle "supermomonga/thingspast.vim"
+
+NeoBundleLazy 'Shougo/vimshell.vim', { 'depends' : [ 'Shougo/vimproc.vim' ] }
+NeoBundleLazy 'supermomonga/vimshell-pure.vim', { 'depends' : [ 'Shougo/vimshell.vim' ] }
+
+if neobundle#tap('vimshell.vim')
+  call neobundle#config({
+        \   'autoload' : {
+        \     'commands' : [ 'VimShell', 'VimShellPop' ]
+        \   }
+        \ })
+
+  nnoremap <Leader>s :shell<CR>
+  call neobundle#untap()
+endif
+
+if neobundle#tap('vimshell-pure.vim')
+  call neobundle#config({
+        \   'autoload' : {
+        \     'on_source' : [ 'vimshell.vim' ]
+        \   }
+        \ })
+  call neobundle#untap()
+endif
+
+NeoBundle 'LeafCage/nebula.vim'
+
+if neobundle#tap('nebula.vim')
+  nnoremap <silent>,bl    :<C-u>NebulaPutLazy<CR>
+  nnoremap <silent>,bc    :<C-u>NebulaPutConfig<CR>
+  nnoremap <silent>,by    :<C-u>NebulaYankOptions<CR>
+  nnoremap <silent>,bp    :<C-u>NebulaPutFromClipboard<CR>
+  nnoremap <silent>,bt    :<C-u>NebulaYankTap<CR>
+  call neobundle#untap()
+endif
 
 """""""Unite""""""""""""
-NeoBundle 'osyo-manga/unite-choosewin-actions'
-NeoBundle 'Shougo/unite-outline'
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/neomru.vim'
+NeoBundleLazy 'tacroe/unite-mark', { 'depends' : 'Shougo/unite.vim' }
+if neobundle#tap('unite-mark')
+  call neobundle#config({
+        \ 'autoload' : {
+          \ 'on_source' : ['unite.vim']
+          \ }
+        \ })
+  call neobundle#untap()
+endif
+
+NeoBundleLazy 'osyo-manga/unite-choosewin-actions', { 'depends' : 'Shougo/unite.vim'  }
+if neobundle#tap('unite-choosewin-actions')
+  call neobundle#config({
+        \ 'autoload' : {
+        \ 'on_source' : ['unite.vim']
+        \ }
+        \ })
+  call neobundle#untap()
+endif
+NeoBundleLazy 'Shougo/unite-outline', { 'depends' : 'Shougo/unite.vim' }
+if neobundle#tap('unite-outline')
+  call neobundle#config({
+        \ 'autoload' : {
+          \ 'on_source' : ['unite.vim']
+          \ }
+        \ })
+  call neobundle#untap()
+endif
+
+NeoBundleLazy 'Shougo/unite.vim', { 'depends' : 'Shougo/vimproc.vim' }
+if neobundle#tap('unite.vim')
+  call neobundle#config({
+        \ 'autoload' : {
+          \ 'commands' : { 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source' }
+          \ }
+        \})
+
+  function! neobundle#hooks.on_source(bundle)
+    """ unite.vim
+    " 起動時にインサートモードで開始
+    let g:unite_enable_start_insert = 1
+    let g:unite_enable_short_source_names = 1
+    " let g:unite_winheight = 10
+    " let g:unite_split_rule = 'botright'
+    " let g:unite_prompt = '▸▸ '
+    "  " unite grep に ag(The Silver Searcher) を使う
+    if executable('ag')
+      let g:unite_source_grep_command = 'ag'
+      let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
+      let g:unite_source_grep_recursive_opt = ''
+    endif
+    " 大文字小文字を区別しない
+    let g:unite_enable_ignore_case = 1
+    let g:unite_enable_smart_case = 1
+    " ファイルを開く場合のデフォルトアクションを choosewin にする
+    call unite#custom#default_action('file' , 'choosewin/open')
+    call unite#custom#default_action('buffer' , 'choosewin/open')
+    call unite#custom#default_action('grep' , 'choosewin/open')
+    MyAutoCmd FileType unite call s:unite_my_settings()
+  endfunction
+
+  function! s:unite_my_settings()
+    " 単語単位からパス単位で削除するように変更
+    imap <buffer> <C-w> <Plug>(unite_delete_backward_path)
+    " ESCキーを2回押すと終了する
+    nmap <buffer> <ESC><ESC> <Plug>(unite_all_exit)
+    imap <buffer> <ESC><ESC> <Plug>(unite_exit)
+    let unite = unite#get_current_unite()
+    nnoremap <buffer> <expr> <C-f> unite#do_action('choosewin/split')
+    inoremap <buffer> <expr> <C-f> unite#do_action('choosewin/split')
+    nnoremap <buffer> <expr> <C-v> unite#do_action('choosewin/vsplit')
+    inoremap <buffer> <expr> <C-v> unite#do_action('choosewin/vsplit')
+    " dwm.vim で開く
+    " nnoremap <silent> <buffer> <expr> <c-o> unite#do_action('dwm_new')
+    " inoremap <silent> <buffer> <expr> <c-o> unite#do_action('dwm_new')
+  endfunction
+
+  " The prefix key.
+  nnoremap    [unite]   <Nop>
+  nmap    ,u [unite]
+
+  " アウトライン
+  nnoremap <silent> [unite]o  :<C-u>Unite outline<CR>
+  nnoremap [unite]o :Unite -vertical -winwidth=40 outline<Return>
+  " マッピング
+  " nnoremap <silent> [unite]ma :<C-u>Unite mapping<CR>
+  " バッファ一覧
+  nnoremap <silent> [unite]b :<C-u>Unite buffer<CR>
+  " レジスタ一覧
+  nnoremap <silent> [unite]p :<C-u>Unite -buffer-name=register register<CR>
+  " ヤンク履歴
+  nnoremap <silent> [unite]y :<C-u>Unite yankround<CR>
+  " 最近使用したファイル一覧
+  nnoremap <silent> [unite]u :<C-u>Unite file_mru<CR>
+
+  nnoremap <silent> <C-p> :<C-u>Unite -start-insert file_rec/async:!<CR>
+
+  function! s:cd_root_and_unite(...)
+    let args = join(a:000, ' ')
+    execute 'Rooter'
+    execute 'Unite'.' '.args
+  endfunction
+  command! -nargs=* RootAndUnite call s:cd_root_and_unite(<f-args>)
+  " ファイル一覧
+  nnoremap <silent> [unite]f :UniteWithBufferDir file file/new directory/new -buffer-name=files<CR>
+  nnoremap <silent> [unite]c :RootAndUnite file file/new directory/new -input=app/controllers/ -buffer-name=controllers<CR>
+  nnoremap <silent> [unite]m :RootAndUnite file file/new directory/new -input=app/models/ -buffer-name=models<CR>
+  nnoremap <silent> [unite]d :RootAndUnite file file/new directory/new -input=app/decorators/ -buffer-name=decorators<CR>
+  nnoremap <silent> [unite]v :RootAndUnite file file/new directory/new -input=app/views/ -buffer-name=views<CR>
+  nnoremap <silent> [unite]j :RootAndUnite file file/new directory/new -input=app/assets/javascripts/ -buffer-name=js<CR>
+  nnoremap <silent> [unite]a :RootAndUnite file file/new directory/new -input=app/ -buffer-name=app<CR>
+  nnoremap <silent> [unite]r :UniteWithProjectDir file file/new directory/new -buffer-name=root<CR>
+  nnoremap <silent> [unite]s :RootAndUnite file file/new directory/new -input=spec/ -buffer-name=spec<CR>
+  " grep検索
+  nnoremap <silent> ,g  :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
+  " カーソル位置の単語をgrep検索
+  nnoremap <silent> ,cg :<C-u>Unite grep:. -buffer-name=search-buffer<CR><C-R><C-W><CR>
+  " grep検索結果の再呼出
+  nnoremap <silent> ,r  :<C-u>UniteResume search-buffer<CR>
+
+  "mark一覧
+  nnoremap <silent> ,m :<C-u>Unite mark<CR>
+
+  call neobundle#untap()
+endif
+
+NeoBundleLazy 'Shougo/neomru.vim', { 'depends' : 'unite.vim' }
+if neobundle#tap('neomru.vim')
+  call neobundle#config({
+        \ 'autoload' : {
+        \   'on_source' : ['unite.vim']
+        \   }
+        \ })
+  call neobundle#untap()
+endif
 " NeoBundle 'Shougo/vimfiler'
 
 """""""ruby && rails""""
@@ -152,13 +317,7 @@ NeoBundleLazy 'osyo-manga/unite-boost-online-doc', {
       \ 'autoload' : {'filetypes' : 'cpp'}
       \ }
 
-NeoBundleLazy 'kana/vim-altr'
 
-NeoBundleLazy 'rhysd/vim-clang-format', {
-      \ 'autoload' : {'filetypes' : ['c', 'cpp', 'objc']}
-      \ }
-
-NeoBundle 'octol/vim-cpp-enhanced-highlight'
 
 """"""""""English"""""""""""""""
 NeoBundle 'ujihisa/neco-look'
@@ -505,14 +664,13 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
 nnoremap <C-c> <C-w>c
-" nnoremap <C-o> <C-w>o
 
-" imap <C-j> <Down>
-" imap <C-K> <Up>
-" imap <C-h> <Left>
-" imap <C-l> <Right>
-" imap <C-i> <Esc>I
-" imap <C-a> <Esc>A
+" _ : Quick horizontal splits
+nnoremap _  :sp<CR>
+
+" | : Quick vertical splits
+nnoremap <bar>  :vsp<CR>
+
 set scrolloff=5
 " search
 " ----------------------
@@ -611,108 +769,6 @@ let g:vimfiler_as_default_explorer = 1
 " let g:vimfiler_file_icon = '-'
 " let g:vimfiler_marked_file_icon = '*'
 " nmap <C-n>  :VimFilerBufferDir -split -horizontal -toggle -quit<CR>
-
-""" unite.vim
-" 起動時にインサートモードで開始
-let g:unite_enable_start_insert = 1
-let g:unite_enable_short_source_names = 1
-" let g:unite_winheight = 10
-" let g:unite_split_rule = 'botright'
-" let g:unite_prompt = '▸▸ '
-"  " unite grep に ag(The Silver Searcher) を使う
-if executable('ag')
-  let g:unite_source_grep_command = 'ag'
-  let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
-  let g:unite_source_grep_recursive_opt = ''
-endif
-" 大文字小文字を区別しない
-let g:unite_enable_ignore_case = 1
-let g:unite_enable_smart_case = 1
-" ファイルを開く場合のデフォルトアクションを choosewin にする
-call unite#custom#default_action('file' , 'choosewin/open')
-call unite#custom#default_action('buffer' , 'choosewin/open')
-call unite#custom#default_action('grep' , 'choosewin/open')
-
-" The prefix key.
-nnoremap    [unite]   <Nop>
-nmap    ,u [unite]
-
-" アウトライン
-nnoremap <silent> [unite]o  :<C-u>Unite outline<CR>
-nnoremap [unite]o :Unite -vertical -winwidth=40 outline<Return>
-" マッピング
-" nnoremap <silent> [unite]ma :<C-u>Unite mapping<CR>
-" バッファ一覧
-nnoremap <silent> [unite]b :<C-u>Unite buffer<CR>
-" レジスタ一覧
-nnoremap <silent> [unite]p :<C-u>Unite -buffer-name=register register<CR>
-" ヤンク履歴
-nnoremap <silent> [unite]y :<C-u>Unite yankround<CR>
-" 最近使用したファイル一覧
-nnoremap <silent> [unite]u :<C-u>Unite file_mru<CR>
-" 常用セット
-" nnoremap <silent> [unite]u :<C-u>Unite buffer file_mru<CR>
-" 全部乗せ
-" nnoremap <silent> [unite]a :<C-u>Unite -buffer-name=files buffer file_mru bookmark file<CR>
-" ctrlp風
-" let g:unite_source_file_rec_max_cache_files = 10000
-" let g:unite_source_file_rec_min_cache_files = 100
-" nnoremap <C-p> :Unite -start-insert -winheight=10 -direction=botright file_rec/async<cr>
-" call unite#custom#source('file_rec/async', 'ignore_pattern', '\(^\.git\|png\|gif\|jpeg\|jpg\)$')
-
-nnoremap <silent> <C-p> :<C-u>Unite -start-insert file_rec/async:!<CR>
-" nnoremap <C-p> :<C-u>execute
-      " \ 'Unite'
-      " \ '-start-insert'
-      " \ 'buffer file_mru'
-      " \ 'file:'.fnameescape(expand('%:p:h'))
-      " \ 'file_rec:!:'.fnameescape(expand('%:p:h'))
-      " \ <CR>
-
-function! s:cd_root_and_unite(...)
-  let args = join(a:000, ' ')
-  execute 'Rooter'
-  execute 'Unite'.' '.args
-endfunction
-command! -nargs=* RootAndUnite call s:cd_root_and_unite(<f-args>)
-" ファイル一覧
-nnoremap <silent> [unite]f :UniteWithBufferDir file file/new directory/new -buffer-name=files<CR>
-nnoremap <silent> [unite]c :RootAndUnite file file/new directory/new -input=app/controllers/ -buffer-name=controllers<CR>
-nnoremap <silent> [unite]m :RootAndUnite file file/new directory/new -input=app/models/ -buffer-name=models<CR>
-nnoremap <silent> [unite]d :RootAndUnite file file/new directory/new -input=app/decorators/ -buffer-name=decorators<CR>
-nnoremap <silent> [unite]v :RootAndUnite file file/new directory/new -input=app/views/ -buffer-name=views<CR>
-nnoremap <silent> [unite]j :RootAndUnite file file/new directory/new -input=app/assets/javascripts/ -buffer-name=js<CR>
-nnoremap <silent> [unite]a :RootAndUnite file file/new directory/new -input=app/ -buffer-name=app<CR>
-nnoremap <silent> [unite]r :UniteWithProjectDir file file/new directory/new -buffer-name=root<CR>
-nnoremap <silent> [unite]s :RootAndUnite file file/new directory/new -input=spec/ -buffer-name=spec<CR>
-" grep検索
-nnoremap <silent> ,g  :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
-" カーソル位置の単語をgrep検索
-nnoremap <silent> ,cg :<C-u>Unite grep:. -buffer-name=search-buffer<CR><C-R><C-W><CR>
-" grep検索結果の再呼出
-nnoremap <silent> ,r  :<C-u>UniteResume search-buffer<CR>
-
-"mark一覧
-nnoremap <silent> ,m :<C-u>Unite mark<CR>
-
-
-MyAutoCmd FileType unite call s:unite_my_settings()
-
-function! s:unite_my_settings()
-  " 単語単位からパス単位で削除するように変更
-  imap <buffer> <C-w> <Plug>(unite_delete_backward_path)
-  " ESCキーを2回押すと終了する
-  nmap <buffer> <ESC><ESC> <Plug>(unite_all_exit)
-  imap <buffer> <ESC><ESC> <Plug>(unite_exit)
-  let unite = unite#get_current_unite()
-  nnoremap <buffer> <expr> <C-f> unite#do_action('choosewin/split')
-  inoremap <buffer> <expr> <C-f> unite#do_action('choosewin/split')
-  nnoremap <buffer> <expr> <C-v> unite#do_action('choosewin/vsplit')
-  inoremap <buffer> <expr> <C-v> unite#do_action('choosewin/vsplit')
-  " dwm.vim で開く
-  " nnoremap <silent> <buffer> <expr> <c-o> unite#do_action('dwm_new')
-  " inoremap <silent> <buffer> <expr> <c-o> unite#do_action('dwm_new')
-endfunction
 
 
 
@@ -1478,54 +1534,84 @@ let g:neocomplete#force_omni_input_patterns.cpp =
       \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
 
 """"""""""vim-altr"""""""""""
-nmap <C-f> <Plug>(altr-forward)
-command! A  call altr#forward()
+
+NeoBundleLazy 'kana/vim-altr'
+if neobundle#tap('vim-altr')
+  call neobundle#config({
+        \ 'autoload' : {
+        \ 'filetypes' : ['cpp', 'c', 'objc'],
+        \ 'mappings' : "<Plug>(altr-",
+        \ 'commands' : 'A',
+        \ }
+        \ })
+
+  nmap <C-f> <Plug>(altr-forward)
+  command! A  call altr#forward()
+
+  call neobundle#untap()
+endif
 
 """"""""""vim-clang-format"""""""""""
-let g:clang_format#command = '/usr/local/bin/clang-format'
-let g:clang_format#style_options = {
-      \ 'AccessModifierOffset' : -4,
-      \ 'AllowShortIfStatementsOnASingleLine' : 'true',
-      \ 'AlwaysBreakTemplateDeclarations' : 'true',
-      \ 'Standard' : 'C++11',
-      \ 'BreakBeforeBraces' : 'Stroustrup',
-      \ }
+
+NeoBundleLazy 'rhysd/vim-clang-format'
+if neobundle#tap('vim-clang-format')
+  call neobundle#config({
+        \ 'autoload' : { 'filetypes' : ['c', 'cpp', 'objc'] }
+        \ })
+  let g:clang_format#command = '/usr/local/bin/clang-format'
+  let g:clang_format#style_options = {
+        \ 'AccessModifierOffset' : -4,
+        \ 'AllowShortIfStatementsOnASingleLine' : 'true',
+        \ 'AlwaysBreakTemplateDeclarations' : 'true',
+        \ 'Standard' : 'C++11',
+        \ 'BreakBeforeBraces' : 'Stroustrup',
+        \ }
+  call neobundle#untap()
+endif
 
 """""""vim-cpp-enhanced-highlight""""""""""""
-let g:cpp_class_scope_highlight = 1
-let g:cpp_experimental_template_highlight = 1
 
-"""""""vim-hier""""""""
-let g:hier_enabled = 1
+NeoBundleLazy 'octol/vim-cpp-enhanced-highlight'
+if neobundle#tap('vim-cpp-enhanced-highlight')
+  call neobundle#config({
+        \   'autoload' : {
+        \     'filetypes' : 'cpp'
+        \   }
+        \ })
+  let g:cpp_class_scope_highlight = 1
+  let g:cpp_experimental_template_highlight = 1
+
+  call neobundle#untap()
+endif
 
 """""""incsearch.vim""""""""
-map /  <Plug>(incsearch-forward)
-map ?  <Plug>(incsearch-backward)
-map g/ <Plug>(incsearch-stay)
-set hlsearch
-let g:incsearch#auto_nohlsearch = 1
-map n  <Plug>(incsearch-nohl-n)
-map N  <Plug>(incsearch-nohl-N)
-map *  <Plug>(incsearch-nohl-*)
-map #  <Plug>(incsearch-nohl-#)
-map g* <Plug>(incsearch-nohl-g*)
-map g# <Plug>(incsearch-nohl-g#)
 
-""USE CLANG++""
-if executable("clang++")
-  let g:syntastic_cpp_check_header = 1
-  let g:quickrun_config['cpp'] = {
-        \ 'command' : 'clang++',
-        \ 'cmdopt' : '-std=c++1y -Wall -Wextra',
-        \ 'hook/quickrunex/enable' : 1,
-        \ }
-  let g:syntastic_cpp_compiler = 'clang++'
-  let g:syntastic_cpp_compiler_options = '--std=c++11 --stdlib=libc++'
+NeoBundle 'haya14busa/incsearch.vim'
+if neobundle#tap('incsearch.vim')
+  map /  <Plug>(incsearch-forward)
+  map ?  <Plug>(incsearch-backward)
+  map g/ <Plug>(incsearch-stay)
+  set hlsearch
+  let g:incsearch#auto_nohlsearch = 1
+  map n  <Plug>(incsearch-nohl-n)
+  map N  <Plug>(incsearch-nohl-N)
+  map *  <Plug>(incsearch-nohl-*)
+  map #  <Plug>(incsearch-nohl-#)
+  map g* <Plug>(incsearch-nohl-g*)
+  map g# <Plug>(incsearch-nohl-g#)
+
+  call neobundle#untap()
 endif
+
 
 
 """"""""""diffchar.vim"""""""""""
 
-if &diff
-  MyAutoCmd VimEnter * execute "%SDChar"
+NeoBundle 'diffchar.vim'
+if neobundle#tap('diffchar.vim')
+  if &diff
+    MyAutoCmd VimEnter * execute "%SDChar"
+  endif
+
+  call neobundle#untap()
 endif
