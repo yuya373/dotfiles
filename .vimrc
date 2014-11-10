@@ -742,8 +742,8 @@ let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
 
 ""USE RUBOCOP
 " always run SyntasticCheck when file save
-let g:syntastic_mode_map = { 'mode': 'active' }
-let g:syntastic_ruby_checkers = ['rubocop']
+let g:syntastic_mode_map = { 'mode': 'passive' }
+" let g:syntastic_ruby_checkers = ['rubocop']
 
 """""""""""vim-easymotion""""""""""""
 
@@ -1021,7 +1021,7 @@ let g:lightline = {
       \ 'colorscheme': 'solarized',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ], ['ctrlpmark'] ],
-      \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
+      \   'right': [ [ 'syntaxcheck', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
       \ },
       \ 'component_function': {
       \   'fugitive': 'MyFugitive',
@@ -1033,10 +1033,10 @@ let g:lightline = {
       \   'ctrlpmark': 'CtrlPMark',
       \ },
       \ 'component_expand': {
-      \   'syntastic': 'SyntasticStatuslineFlag',
+      \   'syntaxcheck': 'qfstatusline#Update',
       \ },
       \ 'component_type': {
-      \   'syntastic': 'error',
+      \   'syntaxcheck': 'error',
       \ },
       \ 'subseparator': { 'left': '|', 'right': '|' }
       \ }
@@ -1133,31 +1133,17 @@ function! TagbarStatusFunc(current, sort, fname, ...) abort
   return lightline#statusline(0)
 endfunction
 
-MyAutoCmd BufWritePost *.c,*.cpp call s:syntastic()
+" MyAutoCmd BufWritePost *.c,*.cpp call s:syntastic()
 
-function! s:syntastic()
-  SyntasticCheck
-  call lightline#update()
-endfunction
+" function! s:syntastic()
+  " SyntasticCheck
+  " call lightline#update()
+" endfunction
 
 let g:unite_force_overwrite_statusline = 0
 let g:vimfiler_force_overwrite_statusline = 0
 let g:vimshell_force_overwrite_statusline = 0
 
-"""""""""""""""""neorspec""""""""""""""""""""""
-" let g:neorspec_command = "!bundle exec spring rspec --color --format documentation {spec}"
-" let g:neorspec_command = "Dispatch bundle exec rspec --color --format documentation {spec}"
-let g:neorspec_command = "Dispatch bundle exec spring rspec {spec}"
-" let g:neorspec_command = "Start rspec --color --format documentation {spec}"
-function! s:load_rspec_settings()
-  nnoremap <buffer> ,rc  :RSpecCurrent<CR>
-  nnoremap <buffer> ,rn  :RSpecNearest<CR>
-  nnoremap <buffer> ,rl  :RSpecRetry<CR>
-  nnoremap <buffer> ,ra  :RSpecAll<CR>
-  nnoremap <buffer> ,r   :RSpec<Space>
-endfunction
-
-MyAutoCmd BufWinEnter *_spec.rb call s:load_rspec_settings()
 """"""""""""""""""undotree""""""""""""""""""""""
 " nnoremap <Leader>u :UndotreeToggle<CR>
 " let g:undotree_SetFocusWhenToggle = 1
@@ -1244,29 +1230,104 @@ function! s:choosewin_is_ignore_window(action, winnr)
   endif
 endfunction
 
-"""""""""""""""""Vimshell""""""""""""""""""""""""
-nnoremap <Leader>s :shell<CR>
-let g:vimshell_prompt_expr = 'getcwd()." > "'
-let g:vimshell_prompt_pattern = '^\f\+ > '
-
 """"""""""""""""""quickrun"""""""""""""""""""
 set splitright
 let g:quickrun_config = {}
 let g:quickrun_config._ = {
-      \"runner" : "vimproc",
-      \"runner/vimproc/sleep" : 10,
-      \"runner/vimproc/updatetime" : 500,
-      \"outputter" : "error",
-      \"outputter/error/success" : "buffer",
-      \"outputter/error/error" : "quickfix",
-      \"outputter/quickfix/open_cmd" : "copen",
-      \"outputter/buffer/split" : ":botright 8sp"
+      \ "runner" : "vimproc",
+      \ "runner/vimproc/sleep" : 10,
+      \ "runner/vimproc/updatetime" : 500,
+      \ "outputter" : "error",
+      \ "outputter/error/success" : "buffer",
+      \ "outputter/error/error" : "quickfix",
+      \ "outputter/quickfix/open_cmd" : "copen",
+      \ "outputter/buffer/split" : ":botright 8sp",
+      \ "outputter/buffer/close_on_empty" : 1
       \}
-" QuickRunのcoffee
+
 let g:quickrun_config['coffee'] = {
       \'command' : 'coffee',
       \'exec' : ['%c -cbp %s']
       \}
+
+
+""USE CLANG++""
+if executable("clang++")
+  let g:quickrun_config['cpp'] = {
+        \ 'command' : 'clang++',
+        \ 'cmdopt' : '-std=c++11 --stdlib=libc++ -Wall -Wextra',
+        \ 'exec' : '%c %o -o %s:t:r %s:p'
+        \ }
+
+        " \ 'hook/quickrunex/enable' : 1,
+  " let g:syntastic_cpp_check_header = 1
+  " let g:syntastic_cpp_compiler = 'clang++'
+  " let g:syntastic_cpp_compiler_options = '--std=c++11 --stdlib=libc++'
+endif
+
+let g:Qfstatusline#UpdateCmd = function('lightline#update')
+
+MyAutoCmd BufWinEnter,BufNewFile *_spec.rb setfiletype ruby.rspec
+
+let g:quickrun_config["ruby.rspec"] = {
+      \ 'command' : 'rspec',
+      \ 'cmdopt' : '--color --profile --format documentation',
+      \ 'exec' : 'bundle exec %c %o %s:p',
+      \}
+
+function! QuickRunCurrentLine()
+  let line = line(".")
+  exe ":QuickRun -exec 'bundle exec %c %s%o' -cmdopt ':" . line . " -cfd'"
+endfunction
+
+function! QuickRunRSpec()
+  exe ":QuickRun -exec 'bundle exec %c %o'"
+endfunction
+
+function! s:load_rspec_settings()
+nnoremap <buffer> ,ra  :call QuickRunRSpec()<CR>
+nnoremap <buffer> ,rn  :call QuickRunCurrentLine()<CR>
+endfunction
+
+
+"""""""""""""""vim-watchdogs""""""""
+let g:watchdogs_check_BufWritePost_enable = 1
+
+let g:quickrun_config["watchdogs_checker/_"] = {
+      \ "hook/qfstatusline_update/enable_exit" : 1,
+      \ "hook/qfstatusline_update/priority_exit" : 3,
+      \ }
+
+let g:quickrun_config['ruby.rspec/watchdogs_checker'] = {
+      \ 'type' : 'watchdogs_checker/rspec'
+      \}
+
+MyAutoCmd BufWinEnter *_spec.rb call s:load_rspec_settings()
+
+let g:quickrun_config['watchdogs_checker/rspec'] = {
+      \ 'command' : 'rspec',
+      \ 'cmdopt' : '--color --profile --format documentation',
+      \ 'exec' : 'bundle exec %c %o %s:p'
+      \}
+
+let g:quickrun_config['ruby/watchdogs_checker'] = {
+      \ 'type' : 'rubocop'
+      \}
+
+let g:quickrun_config['cpp/watchdogs_checker'] = {
+      \ 'type' : 'watchdogs_checker/clang++'
+      \}
+
+let g:quickrun_config['watchdogs_checker/clang++'] = {
+      \ 'command' : 'clang++',
+      \ 'cmdopt' : '--std=c++11 --stdlib=libc++ -Wall -Wextra',
+      \ 'exec' : '%c %o -fsyntax-only %s:p',
+      \}
+
+call watchdogs#setup(g:quickrun_config)
+
+"""""""vim-hier""""""""
+let g:hier_enabled = 1
 
 """""""""""""""""""fugitive""""""""""""""""
 nnoremap <Leader>gg :Gst<CR>
