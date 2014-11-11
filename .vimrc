@@ -73,17 +73,18 @@ NeoBundle 'othree/html5.vim'
 NeoBundle 'junegunn/vim-easy-align'
 NeoBundle 'Shougo/context_filetype.vim'
 NeoBundle 'osyo-manga/vim-precious'
-NeoBundle 'cohama/vim-hier'
 NeoBundle 'mattn/emoji-vim'
+
 NeoBundle "osyo-manga/shabadou.vim"
 NeoBundle "osyo-manga/vim-watchdogs"
+NeoBundle 'cohama/vim-hier'
 NeoBundle "dannyob/quickfixstatus"
 NeoBundle "KazuakiM/vim-qfstatusline"
+
 NeoBundle "supermomonga/thingspast.vim"
 
-NeoBundleLazy 'Shougo/vimshell.vim', { 'depends' : [ 'Shougo/vimproc.vim' ] }
-NeoBundleLazy 'supermomonga/vimshell-pure.vim', { 'depends' : [ 'Shougo/vimshell.vim' ] }
 
+NeoBundleLazy 'Shougo/vimshell.vim', { 'depends' : [ 'Shougo/vimproc.vim' ] }
 if neobundle#tap('vimshell.vim')
   call neobundle#config({
         \   'autoload' : {
@@ -95,6 +96,7 @@ if neobundle#tap('vimshell.vim')
   call neobundle#untap()
 endif
 
+NeoBundleLazy 'supermomonga/vimshell-pure.vim', { 'depends' : [ 'Shougo/vimshell.vim' ] }
 if neobundle#tap('vimshell-pure.vim')
   call neobundle#config({
         \   'autoload' : {
@@ -105,7 +107,6 @@ if neobundle#tap('vimshell-pure.vim')
 endif
 
 NeoBundle 'LeafCage/nebula.vim'
-
 if neobundle#tap('nebula.vim')
   nnoremap <silent>,bl    :<C-u>NebulaPutLazy<CR>
   nnoremap <silent>,bc    :<C-u>NebulaPutConfig<CR>
@@ -891,12 +892,9 @@ if has("lua") > 0
     if !exists('g:neocomplete#sources#omni#input_patterns')
       let g:neocomplete#sources#omni#input_patterns = {}
     endif
-    let g:neocomplete#sources#omni#input_patterns.php = '[^.
-          \t]->\h\w*\|\h\w*::'
-    let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:]
-    *\t]\%(\.\|->\)'
-    let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:]
-    *\t]\%(\.\|->\)\|\h\w*::'
+    let g:neocomplete#sources#omni#input_patterns.php = '[^.  \t]->\h\w*\|\h\w*::'
+    let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+    let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 
     let g:neocomplete#force_overwrite_completefunc = 1
     call neobundle#untap()
