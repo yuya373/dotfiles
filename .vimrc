@@ -92,7 +92,7 @@ if neobundle#tap('vimshell.vim')
         \   }
         \ })
 
-  nnoremap <Leader>s :VimShellPop<CR>
+  nnoremap <Leader>s :VimShell<CR>
   call neobundle#untap()
 endif
 
@@ -1010,7 +1010,7 @@ if neobundle#tap('lexima.vim')
         \   'leave' : 2
         \   })
 
-  
+
   """"""""{  }""""""""""
   call lexima#add_rule({
         \   'at'    : '{\%#}',
@@ -1306,13 +1306,15 @@ endif
 
 let g:Qfstatusline#UpdateCmd = function('lightline#update')
 
-MyAutoCmd BufWinEnter,BufNewFile *_spec.rb setfiletype ruby.rspec
+MyAutoCmd BufRead,BufEnter,BufWinEnter,BufNewFile *_spec.rb setfiletype ruby.rspec
 
 let g:quickrun_config["ruby.rspec"] = {
+      \ 'outputter' : 'buffer',
+      \ "outputter/buffer/split" : ":botright 8sp",
       \ 'command' : 'rspec',
       \ 'cmdopt' : '--color --profile --format documentation',
       \ 'exec' : 'bundle exec %c %o %s:p',
-      \}
+      \ }
 
 function! QuickRunCurrentLine()
   let line = line(".")
@@ -1324,10 +1326,11 @@ function! QuickRunRSpec()
 endfunction
 
 function! s:load_rspec_settings()
-nnoremap <buffer> ,ra  :call QuickRunRSpec()<CR>
+nnoremap <buffer> ,ra  :call QuickRunAllSpec()<CR>
 nnoremap <buffer> ,rn  :call QuickRunCurrentLine()<CR>
 endfunction
 
+MyAutoCmd BufEnter,BufRead,BufWinEnter *_spec.rb call s:load_rspec_settings()
 
 """""""""""""""vim-watchdogs""""""""
 let g:watchdogs_check_BufWritePost_enable = 1
@@ -1341,9 +1344,9 @@ let g:quickrun_config['ruby.rspec/watchdogs_checker'] = {
       \ 'type' : 'watchdogs_checker/rspec'
       \}
 
-MyAutoCmd BufWinEnter *_spec.rb call s:load_rspec_settings()
 
 let g:quickrun_config['watchdogs_checker/rspec'] = {
+      \ "outputter/quickfix/open_cmd" : "bot copen",
       \ 'command' : 'rspec',
       \ 'cmdopt' : '--color --profile --format documentation',
       \ 'exec' : 'bundle exec %c %o %s:p'
