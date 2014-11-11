@@ -4,6 +4,7 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+export PYENV_ROOT=/usr/local/opt/pyenv
 
 # Customize to your needs...
 source ~/.zsh_dep
