@@ -1007,6 +1007,13 @@ call smartinput#define_rule({
       \   'char'  : '<BS>',
       \   'input' : '<Del><BS>',
       \   })
+
+call smartinput#define_rule({
+      \   'at'    : '\%# )',
+      \   'char'  : ')',
+      \   'input' : '<Right><Right>',
+      \   })
+
 call smartinput#define_rule({
       \   'at'    : '{\%#}',
       \   'char'  : '<Space>',
@@ -1017,6 +1024,12 @@ call smartinput#define_rule({
       \   'at'    : '{ \%# }',
       \   'char'  : '<BS>',
       \   'input' : '<Del><BS>',
+      \   })
+
+call smartinput#define_rule({
+      \   'at'    : '\%# }',
+      \   'char'  : '}',
+      \   'input' : '<Right><Right>',
       \   })
 
 " call smartinput#define_rule({
