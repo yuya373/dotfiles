@@ -47,8 +47,6 @@ NeoBundle 'surround.vim'
 NeoBundle 'thinca/vim-quickrun', {
       \ 'depends' : 'mattn/quickrunex-vim',
       \ }
-NeoBundle 'https://github.com/kana/vim-smartinput'
-NeoBundle "cohama/vim-smartinput-endwise"
 NeoBundle 'https://github.com/vim-jp/vimdoc-ja'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'Lokaltog/vim-easymotion'
@@ -872,20 +870,18 @@ if has("lua") > 0
 
   " Recommended key-mappings.
   " <CR>: close popup and save indent.
-  " imap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-  " function! s:my_cr_function()
-  "  For no inserting <CR> key.
-" return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-  " endfunction
-  imap <expr> <CR> pumvisible() ?
-        \ neocomplete#close_popup() : "\<Plug>(smartinput_CR)"
+  imap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+  function! s:my_cr_function()
+    " For no inserting <CR> key.
+    return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+  endfunction
 
   " <TAB>: completion.
   inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
   inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
   " <C-h>, <BS>: close popup and delete backword char.
-  imap <expr><C-h> neocomplete#smart_close_popup()."\<Plug>(smartinput_C-h)"
-  imap <expr><BS> neocomplete#smart_close_popup()."\<Plug>(smartinput_BS)"
+  imap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+  imap <expr><BS> neocomplete#smart_close_popup()."\<BS>"
   " inoremap <expr><C-o>  neocomplete#close_popup()
   inoremap <expr><C-e>  neocomplete#cancel_popup()
   " Close popup by <Space>.
@@ -952,15 +948,21 @@ else
   inoremap <expr><C-g>     neocomplcache#undo_completion()
   inoremap <expr><C-l>     neocomplcache#complete_common_string()
 
-  imap <expr> <CR> pumvisible() ?
-        \ neocomplcache#smart_close_popup() : "\<Plug>(smartinput_CR)"
+  " Recommended key-mappings.
+  " <CR>: close popup and save indent.
+  inoremap <silent> <CR> <C-r>=<SID>cache_my_cr_function()<CR>
+  function! s:cache_my_cr_function()
+    return neocomplcache#smart_close_popup() . "\<CR>"
+    " For no inserting <CR> key.
+    "return pumvisible() ? neocomplcache#close_popup() : "\<CR>"
+  endfunction
 
   " <TAB>: completion.
   inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
   inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<S-TAB>"
   " <C-h>, <BS>: close popup and delete backword char.
-  imap <expr><C-h> neocomplcache#smart_close_popup()."\<Plug>(smartinput_C-h)"
-  imap <expr><BS> neocomplcache#smart_close_popup()."\<Plug>(smartinput_BS)"
+  imap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
+  imap <expr><BS> neocomplcache#smart_close_popup()."\<BS>"
   inoremap <expr><C-y>  neocomplcache#close_popup()
   inoremap <expr><C-e>  neocomplcache#cancel_popup()
 
@@ -994,85 +996,68 @@ endif
 let g:indentLine_showFirstIndentLevel = 2
 nnoremap <Leader>ig :IndentLinesToggle<CR>
 
-""""""""""vim-smartinput"""""""""""""""
-call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
-call smartinput#define_rule({
-      \   'at'    : '(\%#)',
-      \   'char'  : '<Space>',
-      \   'input' : '<Space><Space><Left>',
-      \   })
+""""""""""lexima.vim"""""""""""""""
 
-call smartinput#define_rule({
-      \   'at'    : '( \%# )',
-      \   'char'  : '<BS>',
-      \   'input' : '<Del><BS>',
-      \   })
+NeoBundle 'cohama/lexima.vim'
 
-call smartinput#define_rule({
-      \   'at'    : '\%# )',
-      \   'char'  : ')',
-      \   'input' : '<Right><Right>',
-      \   })
+if neobundle#tap('lexima.vim')
+  let g:lexima_no_default_rules = 1
+  call lexima#set_default_rules()
 
-call smartinput#define_rule({
-      \   'at'    : '{\%#}',
-      \   'char'  : '<Space>',
-      \   'input' : '<Space><Space><Left>',
-      \   })
+  """"""(  )""""""""""
+  call lexima#add_rule({
+        \   'at'    : '(\%#)',
+        \   'char'  : '<Space>',
+        \   'input' : '<Space>',
+        \   'input_after' : '<Space>'
+        \   })
 
-call smartinput#define_rule({
-      \   'at'    : '{ \%# }',
-      \   'char'  : '<BS>',
-      \   'input' : '<Del><BS>',
-      \   })
+  call lexima#add_rule({
+        \   'at'    : '( \%# )',
+        \   'char'  : '<BS>',
+        \   'input' : '<BS>',
+        \   'delete' : 1
+        \   })
 
-call smartinput#define_rule({
-      \   'at'    : '\%# }',
-      \   'char'  : '}',
-      \   'input' : '<Right><Right>',
-      \   })
+  call lexima#add_rule({
+        \   'at'    : '\%# )',
+        \   'char'  : ')',
+        \   'leave' : 2
+        \   })
 
-" call smartinput#define_rule({
-" \   'at'    : '[\%#]',
-" \   'char'  : '<Space>',
-" \   'input' : '<Space><Space><Left>',
-" \   })
+  
+  """"""""{  }""""""""""
+  call lexima#add_rule({
+        \   'at'    : '{\%#}',
+        \   'char'  : '<Space>',
+        \   'input' : '<Space>',
+        \   'input_after' : '<Space>'
+        \   })
 
-" call smartinput#define_rule({
-" \   'at'    : '[ \%# ]',
-" \   'char'  : '<BS>',
-" \   'input' : '<Del><BS>',
-" \   })
+  call lexima#add_rule({
+        \   'at'    : '{ \%# }',
+        \   'char'  : '<BS>',
+        \   'input' : '<BS>',
+        \   'delete' : 1
+        \   })
 
-call smartinput#map_to_trigger('i', '#', '#', '#')
-call smartinput#define_rule({
-      \   'at'       : '"\%#"',
-      \   'char'     : '#',
-      \   'input'    : '#{}<Left>',
-      \   'filetype' : ['ruby'],
-      \})
+  call lexima#add_rule({
+        \   'at'    : '\%# }',
+        \   'char'  : '}',
+        \   'leave' : 2
+        \   })
 
-" call smartinput#map_to_trigger('i', '<Bar>', '<Bar>', '<Bar>')
-" call smartinput#define_rule({
-" \   'at' : '\({\|\<do\>\)\s*\%#',
-" \   'char' : '<Bar>',
-" \   'input' : '<Bar><Bar><Left>',
-" \   'filetype' : ['ruby'],
-" \ })
+  call lexima#add_rule({
+        \   'at'       : '"\%#"',
+        \   'char'     : '#',
+        \   'input'    : '#{}',
+        \   'insert_after' : '}',
+        \   'filetype' : ['ruby'],
+        \ })
 
+  call neobundle#untap()
+endif
 
-
-call smartinput_endwise#define_default_rules()
-
-call smartinput#map_to_trigger('i', '<Plug>(smartinput_BS)',
-      \                        '<BS>',
-      \                        '<BS>')
-call smartinput#map_to_trigger('i', '<Plug>(smartinput_C-h)',
-      \                        '<BS>',
-      \                        '<C-h>')
-call smartinput#map_to_trigger('i', '<Plug>(smartinput_CR)',
-      \                        '<Enter>',
-      \                        '<Enter>')
 
 """""""""""NERD COMMENTER""""""""""""
 let NERDSpaceDelims = 1
