@@ -95,7 +95,7 @@ if neobundle#tap('vimshell.vim')
         \   }
         \ })
 
-  nnoremap <Leader>s :shell<CR>
+  nnoremap <Leader>s :VimShellPop<CR>
   call neobundle#untap()
 endif
 
