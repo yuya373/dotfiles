@@ -1482,7 +1482,7 @@ let g:html5_aria_attributes_complete = 1
 function! s:cpp()
   setlocal tabstop=4 shiftwidth=4
 """"""""""""vim-cpp"""""""""""
-  setlocal path=.,/usr/include,/usr/local/include,/usr/lib/c++/v1
+  setlocal path=.,/usr/include/c++/
 """""""""""unite-boost-online-doc""""
   nnoremap <Space>ub :<C-u>UniteWithCursorWord boost-online-doc
   nnoremap <silent> <Leader>cf :ClangFormat<CR>
@@ -1505,9 +1505,10 @@ let g:marching_clang_command = "/usr/bin/clang"
 let g:marching_clang_command_option="-std=c++11"
 
 " インクルードディレクトリのパスを設定
-let g:marching_include_paths = [
-      \   "/usr/include/c++/**"
-      \]
+let g:marching_include_paths = filter(
+      \ split(glob('/usr/include/c++/*/'), '\n'),
+      \ 'isdirectory(v:val)'
+      \ ) + ['/Library/Developer/CommandLineTools/usr/include/c++/v1/']
 
 " neocomplete.vim と併用して使用する場合は以下の設定を行う
 let g:marching_enable_neocomplete = 1
