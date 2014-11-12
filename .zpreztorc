@@ -86,7 +86,7 @@ zstyle ':prezto:load' pmodule \
 # Setting it to 'random' loads a random theme.
 # Auto set to 'off' on dumb terminals.
 
-zstyle ':prezto:module:prompt' theme 'steeef'
+zstyle ':prezto:module:prompt' theme 'pure'
 
 
 #
