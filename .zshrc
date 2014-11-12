@@ -10,6 +10,7 @@ export PYENV_ROOT=/usr/local/opt/pyenv
 source ~/.zsh_dep
 source ~/dotfiles/.zshfunc
 source ~/dotfiles/git-flow-completion.zsh
+source ~/dotfiles/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # from .zshfunc
 bindkey '^m' do_enter
