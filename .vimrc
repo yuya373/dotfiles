@@ -1506,7 +1506,7 @@ let g:marching_clang_command_option="-std=c++11"
 
 " インクルードディレクトリのパスを設定
 let g:marching_include_paths = [
-      \   "/usr/include/c++"
+      \   "/usr/include/c++/**"
       \]
 
 " neocomplete.vim と併用して使用する場合は以下の設定を行う
@@ -1519,6 +1519,29 @@ endif
 let g:neocomplete#force_omni_input_patterns.cpp =
       \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
 
+" too heavy to use
+" MyAutoCmd FileType cpp call s:cocos2d()
+
+function! s:cocos2d()
+execute 'Rooter'
+let l:dirs =split(glob('**', '\n'))
+for dir in dirs
+  if isdirectory(dir) && !s:IsIgnoreDirectory(dir)
+    call add(g:marching_include_paths, dir)
+  endif
+endfor
+endfunction
+
+function! s:IsIgnoreDirectory(dir)
+let dir = a:dir
+let l:ignore_dirs = ['^\.git', '\.xcodeproj', '^build', '^proj\.', '^\.', 'Resources']
+for ignore_dir in ignore_dirs
+  if dir =~ ignore_dir
+    return 1
+  endif
+endfor
+return 0
+endfunction
 """"""""""vim-altr"""""""""""
 
 NeoBundleLazy 'kana/vim-altr'
@@ -1601,3 +1624,5 @@ if neobundle#tap('diffchar.vim')
 
   call neobundle#untap()
 endif
+
+
