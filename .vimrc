@@ -1356,16 +1356,6 @@ let g:quickrun_config['ruby/watchdogs_checker'] = {
       \ 'type' : 'rubocop'
       \}
 
-let g:quickrun_config['cpp/watchdogs_checker'] = {
-      \ 'type' : 'watchdogs_checker/clang++'
-      \}
-
-let g:quickrun_config['watchdogs_checker/clang++'] = {
-      \ 'command' : 'clang++',
-      \ 'cmdopt' : '--std=c++11 --stdlib=libc++ -Wall -Wextra',
-      \ 'exec' : '%c %o -fsyntax-only %s:p',
-      \}
-
 call watchdogs#setup(g:quickrun_config)
 
 """""""vim-hier""""""""
@@ -1486,16 +1476,46 @@ function! s:cpp()
 """""""""""unite-boost-online-doc""""
   nnoremap <Space>ub :<C-u>UniteWithCursorWord boost-online-doc
   nnoremap <silent> <Leader>cf :ClangFormat<CR>
-  call s:cocos2d()
+  let l:is_cocos_dir = s:cocos2d()
+  call s:cpp_watchdogs(l:is_cocos_dir)
+endfunction
+
+function! s:cpp_watchdogs(is_cocos_dir)
+  let g:quickrun_config['cpp/watchdogs_checker'] = {
+        \ 'type' : 'watchdogs_checker/clang++'
+        \}
+
+  let g:quickrun_config['watchdogs_checker/clang++'] = {
+        \ 'command' : 'clang++',
+        \ 'cmdopt' : '--std=c++11 --stdlib=libc++ -Wall -Wextra -I ',
+        \ 'exec' : '%c %o -fsyntax-only %s:p',
+        \ }
+  if a:is_cocos_dir ? 0 : 1
+    "have to include cocos2d/cocos/platform/ios and so on
+    let l:path_list = map(filter(filter(split(&path, ','),  'isdirectory(v:val)'), 'v:val !~ "\\."'), '"-I " . v:val')
+    let l:opt = '--std=c++11 --stdlib=libc++ -Wall -Wextra'
+    echo l:path_list
+    let g:quickrun_config['watchdogs_checker/clang++'] = {
+          \ 'command' : 'clang++',
+          \ 'cmdopt' : l:opt . ' ' . join(l:path_list),
+          \ 'exec' : '%c %o -fsyntax-only %s:p',
+          \ }
+  endif
 endfunction
 
 function! s:cocos2d()
   execute 'Rooter'
-  let l:classes_dir = split(globpath(getcwd(), '**/Classes/'), '\n')
-  call extend(g:marching_include_paths, l:classes_dir)
-  for dir in l:classes_dir
-    exec 'setlocal path+=' . dir
-  endfor
+  let b:cocos_dir = globpath(getcwd(), 'cocos2d/cocos/')
+  if b:cocos_dir ? 0 : 1
+    let l:classes_dir = split(globpath(getcwd(), '**/Classes/'), '\n')
+    call extend(g:marching_include_paths, l:classes_dir)
+    call add(g:marching_include_paths, b:cocos_dir)
+    exec 'setlocal path+=' . b:cocos_dir
+    for dir in l:classes_dir
+      exec 'setlocal path+=' . dir
+    endfor
+  endif
+  return b:cocos_dir
 
 " let l:cocos2d_header_path = globpath(getcwd(), '**/cocos2d.h', '\n')
 " echo l:cocos2d_header_path
