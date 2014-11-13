@@ -1478,14 +1478,42 @@ let g:html5_rdfa_attributes_complete = 1
 let g:html5_microdata_attributes_complete = 1
 let g:html5_aria_attributes_complete = 1
 
-
 function! s:cpp()
   setlocal tabstop=4 shiftwidth=4
 """"""""""""vim-cpp"""""""""""
-  setlocal path=.,/usr/include/c++/
+  " setlocal path=.,/usr/include/c++/
+  setlocal path+=/Library/Developer/CommandLineTools/usr/include/c++/v1/
 """""""""""unite-boost-online-doc""""
   nnoremap <Space>ub :<C-u>UniteWithCursorWord boost-online-doc
   nnoremap <silent> <Leader>cf :ClangFormat<CR>
+  call s:cocos2d()
+endfunction
+
+function! s:cocos2d()
+  execute 'Rooter'
+  let l:classes_dir = split(globpath(getcwd(), '**/Classes/'), '\n')
+  call extend(g:marching_include_paths, l:classes_dir)
+  for dir in l:classes_dir
+    exec 'setlocal path+=' . dir
+  endfor
+
+" let l:cocos2d_header_path = globpath(getcwd(), '**/cocos2d.h', '\n')
+" echo l:cocos2d_header_path
+" if l:cocos2d_header_path =~ '/cocos2d.h'
+  " let l:cocos_dir = substitute(l:cocos2d_header_path, 'cocos2d.h', '', '')
+  " echo l:cocos_dir
+  " let l:dirs = []
+  " call add(l:dirs, l:cocos_dir)
+  " call add(l:dirs, globpath(l:cocos_dir.'..', 'extensions', '\n'))
+  " call add(l:dirs, globpath(l:cocos_dir.'..', 'external', '\n'))
+  " call add(l:dirs, globpath(l:cocos_dir.'..', 'plugin', '\n'))
+  " call add(l:dirs, globpath(l:cocos_dir.'..', 'tools', '\n'))
+  " echo l:dirs
+  " call extend(g:marching_include_paths, l:dirs)
+  " for dir in l:dirs
+    " exec 'setlocal path+=' . dir
+  " endfor
+" endif
 endfunction
 
 MyAutoCmd FileType cpp call s:cpp()
@@ -1505,10 +1533,12 @@ let g:marching_clang_command = "/usr/bin/clang"
 let g:marching_clang_command_option="-std=c++11"
 
 " インクルードディレクトリのパスを設定
-let g:marching_include_paths = filter(
-      \ split(glob('/usr/include/c++/*/'), '\n'),
-      \ 'isdirectory(v:val)'
-      \ ) + ['/Library/Developer/CommandLineTools/usr/include/c++/v1/']
+let g:marching_include_paths = ['/Library/Developer/CommandLineTools/usr/include/c++/v1/']
+
+" filter(
+      " \ split(glob('/usr/include/c++/*/'), '\n'),
+      " \ 'isdirectory(v:val)'
+      " \ ) + ['/Library/Developer/CommandLineTools/usr/include/c++/v1/']
 
 " neocomplete.vim と併用して使用する場合は以下の設定を行う
 let g:marching_enable_neocomplete = 1
@@ -1520,29 +1550,6 @@ endif
 let g:neocomplete#force_omni_input_patterns.cpp =
       \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
 
-" too heavy to use
-" MyAutoCmd FileType cpp call s:cocos2d()
-
-function! s:cocos2d()
-execute 'Rooter'
-let l:dirs =split(glob('**', '\n'))
-for dir in dirs
-  if isdirectory(dir) && !s:IsIgnoreDirectory(dir)
-    call add(g:marching_include_paths, dir)
-  endif
-endfor
-endfunction
-
-function! s:IsIgnoreDirectory(dir)
-let dir = a:dir
-let l:ignore_dirs = ['^\.git', '\.xcodeproj', '^build', '^proj\.', '^\.', 'Resources']
-for ignore_dir in ignore_dirs
-  if dir =~ ignore_dir
-    return 1
-  endif
-endfor
-return 0
-endfunction
 """"""""""vim-altr"""""""""""
 
 NeoBundleLazy 'kana/vim-altr'
