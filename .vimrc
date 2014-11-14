@@ -1578,12 +1578,24 @@ if neobundle#tap('vim-altr')
         \ 'autoload' : {
         \ 'filetypes' : ['cpp', 'c', 'objc'],
         \ 'mappings' : "<Plug>(altr-",
-        \ 'commands' : 'A',
+        \ 'commands' : ['A', 'AS', 'AV']
         \ }
         \ })
 
   nmap <C-f> <Plug>(altr-forward)
   command! A  call altr#forward()
+  command! AS  call s:sp_altr()
+  command! AV  call s:vsp_altr()
+
+  function! s:vsp_altr()
+    exec 'vs'
+    call altr#forward()
+  endfunction
+
+  function! s:sp_altr()
+    exec 'sp'
+    call altr#forward()
+  endfunction
 
   call neobundle#untap()
 endif
