@@ -1492,9 +1492,8 @@ function! s:cpp_watchdogs(is_cocos_dir)
         \ }
   if a:is_cocos_dir ? 0 : 1
     "have to include cocos2d/cocos/platform/ios and so on
-    let l:path_list = map(filter(filter(split(&path, ','),  'isdirectory(v:val)'), 'v:val !~ "\\."'), '"-I " . v:val')
+    let l:path_list = map(filter(filter(split(&path, ','),  'isdirectory(v:val)'), 'v:val !~ "^\\.$"'), '"-I " . v:val')
     let l:opt = '--std=c++11 --stdlib=libc++ -Wall -Wextra'
-    echo l:path_list
     let g:quickrun_config['watchdogs_checker/clang++'] = {
           \ 'command' : 'clang++',
           \ 'cmdopt' : l:opt . ' ' . join(l:path_list),
@@ -1503,17 +1502,38 @@ function! s:cpp_watchdogs(is_cocos_dir)
   endif
 endfunction
 
+function! s:add_marching_include_paths(dirs)
+  call extend(g:marching_include_paths, a:dirs)
+endfunction
+
+function! s:set_local_path(dirs)
+  for dir in a:dirs
+    exec 'setlocal path+=' . dir
+  endfor
+endfunction
+
 function! s:cocos2d()
   execute 'Rooter'
   let b:cocos_dir = globpath(getcwd(), 'cocos2d/cocos/')
   if b:cocos_dir ? 0 : 1
-    let l:classes_dir = split(globpath(getcwd(), '**/Classes/'), '\n')
-    call extend(g:marching_include_paths, l:classes_dir)
-    call add(g:marching_include_paths, b:cocos_dir)
+    call s:add_marching_include_paths(add([], b:cocos_dir))
     exec 'setlocal path+=' . b:cocos_dir
-    for dir in l:classes_dir
-      exec 'setlocal path+=' . dir
-    endfor
+
+    let l:classes_dir = split(globpath(getcwd(), 'Classes/'), '\n')
+    call s:add_marching_include_paths(l:classes_dir)
+    call s:set_local_path(l:classes_dir)
+
+    " let l:platform_dir = split(globpath(getcwd(), 'cocos2d/cocos/platform/ios/'), '\n')
+    " call s:add_marching_include_paths(l:platform_dir)
+    " call s:set_local_path(l:platform_dir)
+
+    " let l:platform_dir = split(globpath(getcwd(), 'cocos2d/cocos/platform/ios/Simulation/'), '\n')
+    " call s:add_marching_include_paths(l:platform_dir)
+    " call s:set_local_path(l:platform_dir)
+
+    " let l:platform_dir = split(globpath(getcwd(), 'proj.ios_mac/ios/'), '\n')
+    " call s:add_marching_include_paths(l:platform_dir)
+    " call s:set_local_path(l:platform_dir)
   endif
   return b:cocos_dir
 
