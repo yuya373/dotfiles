@@ -92,7 +92,7 @@ if neobundle#tap('vimshell.vim')
         \   }
         \ })
 
-  nnoremap <Leader>s :VimShell<CR>
+  nnoremap <Leader>s :VimShell -toggle -split=tabedit<CR>
   call neobundle#untap()
 endif
 
