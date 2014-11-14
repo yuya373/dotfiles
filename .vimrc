@@ -359,7 +359,7 @@ NeoBundle 'jnurmine/Zenburn'
 NeoBundle 'vim-scripts/twilight'
 NeoBundle 'tomasr/molokai'
 
-"""""""""""c++""""""""""
+"""""""""""cpp""""""""""
 NeoBundleLazy 'vim-jp/cpp-vim', {
       \ 'autoload' : {'filetypes' : 'cpp'}
       \ }
@@ -1440,6 +1440,11 @@ function! s:cocos2d()
     let l:classes_dir = split(globpath(getcwd(), '**/Classes/'), '\n')
     call s:add_marching_include_paths(l:classes_dir)
     call s:set_local_path(l:classes_dir)
+
+    let l:palmx_dir = split(globpath(getcwd(), 'PalmXLib/'), '\n')
+    echo l:palmx_dir
+    call s:add_marching_include_paths(l:palmx_dir)
+    call s:set_local_path(l:palmx_dir)
 
     " let l:platform_dir = split(globpath(getcwd(), 'cocos2d/cocos/platform/ios/'), '\n')
     " call s:add_marching_include_paths(l:platform_dir)
