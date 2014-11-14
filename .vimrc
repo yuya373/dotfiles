@@ -277,7 +277,40 @@ NeoBundle 'eagletmt/ghcmod-vim'
 NeoBundle 'kana/vim-filetype-haskell'
 
 """""""markdown""""""""
-NeoBundle 'rcmdnk/vim-markdown'
+NeoBundleLazy 'rcmdnk/vim-markdown'
+if neobundle#tap('vim-markdown')
+  call neobundle#config({
+        \ 'autoload' : {
+        \ 'filetypes' : ['markdown']
+        \ }
+        \})
+
+  let g:vim_markdown_folding_disabled=1
+  let g:vim_markdown_math=1
+  let g:vim_markdown_frontmatter=1
+
+  call neobundle#untap()
+endif
+
+NeoBundleLazy 'godlygeek/tabular'
+if neobundle#tap('tabular')
+  call neobundle#config({
+        \ 'autoload' : {
+        \ 'on_source' : ['vim-markdown']
+        \ }
+        \ })
+  call neobundle#untap()
+endif
+
+NeoBundle 'joker1007/vim-markdown-quote-syntax'
+if neobundle#tap('vim-markdown-quote-syntax')
+  call neobundle#config({
+        \ 'autoload' : {
+        \ 'on_source' : ['vim-markdown']
+        \ }
+        \ })
+  call neobundle#untap()
+endif
 NeoBundle 'glidenote/memolist.vim'
 NeoBundle 'kannokanno/previm'
 NeoBundle 'tyru/open-browser.vim'
@@ -375,6 +408,7 @@ command!
       \ autocmd<bang> vimrc <args>
 
 
+MyAutoCmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
 
 " display
 " ----------------------
@@ -476,8 +510,9 @@ set encoding=UTF-8
 set fileencoding=UTF-8
 set termencoding=UTF-8
 set noswapfile
-" set autoindent
+set autoindent
 set smartindent
+MyAutoCmd FileType markdown setlocal noautoindent nosmartindent
 set expandtab
 set smarttab
 set tabstop=2 shiftwidth=2
@@ -1218,9 +1253,6 @@ nnoremap <C-]> g<C-]>
 """"""""""Tag Jump拡張"""""""""""
 " nmap <C-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 
-"""""""""""previm""""""""""""
-" let g:previm_open_cmd = 'open -a Safari'
-
 """""""""""vim-startify""""""""
 " startifyのヘッダー部分に表示する文字列を設定する(dateコマンドを実行して日付を設定している)
 " let g:startify_custom_header =
@@ -1398,8 +1430,6 @@ let g:memolist_unite_source = "file_rec"
 let g:memolist_unite_option = "-start-insert"
 let g:memolist_memo_date = "%Y-%m-%d-%a %H:%M"
 
-""""""""""vim-markdown"""""""""""
-let g:vim_markdown_folding_disabled=1
 
 """"""""""open-browser"""""""""""
 let g:netrw_nogx = 1 " disable netrw's gx mapping.
