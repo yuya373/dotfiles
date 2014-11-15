@@ -436,6 +436,7 @@ if neobundle#tap('vim-clang-format')
         \ }
   call neobundle#untap()
 endif
+NeoBundleLazy 'osyo-manga/vim-snowdrop'
 
 """"""""""English"""""""""""""""
 NeoBundle 'ujihisa/neco-look'
@@ -1385,6 +1386,27 @@ let g:html5_aria_attributes_complete = 1
 " $CPP_STDLIB よりも下の階層のファイルが開かれて
 " filetype が設定されていない場合に filetype=cpp を設定する
 MyAutoCmd BufReadPost $CPP_STDLIB/* if empty(&filetype) | set filetype=cpp | endif
+
+if neobundle#tap('vim-snowdrop')
+  call neobundle#config({
+        \ 'autoload' : {
+        \ 'filetypes' : ['cpp']
+        \ }
+        \ })
+  " set libclang directory path
+  let g:snowdrop#libclang_directory = $LIB_CLANG_DIR
+
+  " set include directory path.
+  let g:snowdrop#include_paths = {
+        \   "cpp" : []
+        \}
+
+  " set clang command options.
+  let g:snowdrop#command_options = {
+        \   "cpp" : "-std=c++1y",
+        \}
+  call neobundle#untap()
+endif
 function! s:cpp()
 
   setlocal tabstop=4 shiftwidth=4
@@ -1422,6 +1444,10 @@ endfunction
 
 function! s:add_marching_include_paths(dirs)
   call extend(g:marching_include_paths, a:dirs)
+endfunction
+
+function! s:add_snow_drop_include_paths(dirs)
+  call extend(g:snowdrop#include_paths["cpp"], a:dirs)
 endfunction
 
 function! s:set_local_path(dirs)
