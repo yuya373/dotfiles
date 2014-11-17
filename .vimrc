@@ -276,41 +276,6 @@ NeoBundle 'dag/vim2hs'
 NeoBundle 'eagletmt/ghcmod-vim'
 NeoBundle 'kana/vim-filetype-haskell'
 
-"""""""markdown""""""""
-NeoBundleLazy 'rcmdnk/vim-markdown'
-if neobundle#tap('vim-markdown')
-  call neobundle#config({
-        \ 'autoload' : {
-        \ 'filetypes' : ['markdown']
-        \ }
-        \})
-
-  let g:vim_markdown_folding_disabled=1
-  let g:vim_markdown_math=1
-  let g:vim_markdown_frontmatter=1
-
-  call neobundle#untap()
-endif
-
-NeoBundleLazy 'godlygeek/tabular'
-if neobundle#tap('tabular')
-  call neobundle#config({
-        \ 'autoload' : {
-        \ 'on_source' : ['vim-markdown']
-        \ }
-        \ })
-  call neobundle#untap()
-endif
-
-NeoBundle 'joker1007/vim-markdown-quote-syntax'
-if neobundle#tap('vim-markdown-quote-syntax')
-  call neobundle#config({
-        \ 'autoload' : {
-        \ 'on_source' : ['vim-markdown']
-        \ }
-        \ })
-  call neobundle#untap()
-endif
 NeoBundle 'glidenote/memolist.vim'
 NeoBundle 'kannokanno/previm'
 NeoBundle 'tyru/open-browser.vim'
@@ -347,7 +312,42 @@ NeoBundleLazy 'osyo-manga/unite-boost-online-doc', {
       \ 'autoload' : {'filetypes' : 'cpp'}
       \ }
 
+"""""""""markdown"""""""""
+NeoBundleLazy 'rcmdnk/vim-markdown'
+if neobundle#tap('vim-markdown')
+  call neobundle#config({
+        \ 'autoload' : {
+        \ 'filetypes' : ['markdown']
+        \ }
+        \})
+  function! neobundle#hooks.on_source(bundle)
+  let g:vim_markdown_folding_disabled=1
+  let g:vim_markdown_math=1
+  let g:vim_markdown_frontmatter=1
+endfunction
 
+call neobundle#untap()
+endif
+
+NeoBundleLazy 'godlygeek/tabular'
+if neobundle#tap('tabular')
+  call neobundle#config({
+        \ 'autoload' : {
+        \ 'on_source' : ['vim-markdown']
+        \ }
+        \ })
+  call neobundle#untap()
+endif
+
+" NeoBundle 'joker1007/vim-markdown-quote-syntax'
+" if neobundle#tap('vim-markdown-quote-syntax')
+  " call neobundle#config({
+    " \ 'autoload' : {
+      " \ 'on_source' : ['vim-markdown']
+      " \ }
+    " \ })
+  " call neobundle#untap()
+" endif
 
 """"""""""English"""""""""""""""
 NeoBundle 'ujihisa/neco-look'
@@ -409,6 +409,8 @@ command!
 
 
 MyAutoCmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
+MyAutoCmd FileType markdown setlocal noautoindent nosmartindent
+
 
 " display
 " ----------------------
@@ -512,7 +514,6 @@ set termencoding=UTF-8
 set noswapfile
 set autoindent
 set smartindent
-MyAutoCmd FileType markdown setlocal noautoindent nosmartindent
 set expandtab
 set smarttab
 set tabstop=2 shiftwidth=2
