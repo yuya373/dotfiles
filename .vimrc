@@ -1225,12 +1225,42 @@ endif
 
 let g:Qfstatusline#UpdateCmd = function('lightline#update')
 
+"""""""""""""""vim-watchdogs""""""""
+let g:watchdogs_check_BufWritePost_enable = 1
+let g:quickrun_config["watchdogs_checker/_"] = {
+      \ 'outputter' : 'buffer',
+      \ "outputter/buffer/split" : ":bot 8sp",
+      \ 'outputter/buffer/close_on_empty' : 1,
+      \ 'runner/vimproc/updatetime' : 40,
+      \ "hook/qfstatusline_update/enable_exit" : 1,
+      \ "hook/qfstatusline_update/priority_exit" : 3,
+      \ }
+
+let g:quickrun_config['ruby.rspec/watchdogs_checker'] = {
+      \ 'type' : 'watchdogs_checker/rspec'
+      \}
+
+function! s:rspec_cmd()
+  if executable(getcwd().'/bin/rspec')
+    return './bin/rspec'
+  else
+    return 'bundle exec rspec'
+  endif
+endfunction
+
+let g:quickrun_config['watchdogs_checker/rspec'] = {
+      \ 'command' : s:rspec_cmd(),
+      \ 'cmdopt' : '--color --profile --format documentation',
+      \ 'exec' : '%c %o %s:p'
+      \}
+
+
 MyAutoCmd BufRead,BufEnter,BufWinEnter,BufNewFile *_spec.rb setfiletype ruby.rspec
 
 let g:quickrun_config["ruby.rspec"] = {
       \ 'outputter' : 'buffer',
       \ "outputter/buffer/split" : ":botright 8sp",
-      \ 'command' : 'rspec',
+      \ 'command' : s:rspec_cmd(),
       \ 'cmdopt' : '--color --profile --format documentation',
       \ 'exec' : 'bundle exec %c %o %s:p',
       \ }
@@ -1244,32 +1274,17 @@ function! QuickRunRSpec()
   exe ":QuickRun -exec 'bundle exec %c %o'"
 endfunction
 
+function! QuickRunCurrentSpec()
+  exe ":QuickRun -exec '%c %o %s:p'"
+endfunction
+
 function! s:load_rspec_settings()
-nnoremap <buffer> ,ra  :call QuickRunAllSpec()<CR>
-nnoremap <buffer> ,rn  :call QuickRunCurrentLine()<CR>
+  nnoremap <buffer> ,ra  :call QuickRunAllSpec()<CR>
+  nnoremap <buffer> ,rn  :call QuickRunCurrentLine()<CR>
+  nnoremap <buffer> ,rn  :call QuickRunCurrentSpec()<CR>
 endfunction
 
 MyAutoCmd BufEnter,BufRead,BufWinEnter *_spec.rb call s:load_rspec_settings()
-
-"""""""""""""""vim-watchdogs""""""""
-let g:watchdogs_check_BufWritePost_enable = 1
-let g:quickrun_config["watchdogs_checker/_"] = {
-      \ 'runner/vimproc/updatetime' : 40,
-      \ "hook/qfstatusline_update/enable_exit" : 1,
-      \ "hook/qfstatusline_update/priority_exit" : 3,
-      \ }
-
-let g:quickrun_config['ruby.rspec/watchdogs_checker'] = {
-      \ 'type' : 'watchdogs_checker/rspec'
-      \}
-
-
-let g:quickrun_config['watchdogs_checker/rspec'] = {
-      \ "outputter/quickfix/open_cmd" : "bot copen",
-      \ 'command' : 'rspec',
-      \ 'cmdopt' : '--color --profile --format documentation',
-      \ 'exec' : 'bundle exec %c %o %s:p'
-      \}
 
 let g:quickrun_config['ruby/watchdogs_checker'] = {
       \ 'type' : 'rubocop'
