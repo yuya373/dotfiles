@@ -443,7 +443,7 @@ endif
 NeoBundle 'ujihisa/neco-look'
 
 """""""""""other""""""""""""""""
-
+NeoBundle 'thinca/vim-qfreplace'
 NeoBundleLazy 'tpope/vim-dispatch', { 'autoload' : {
       \ 'commands' : ['Dispatch', 'FocusDispatch', 'Start']
       \}}
