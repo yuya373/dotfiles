@@ -921,7 +921,7 @@ let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
 
 ""USE RUBOCOP
 " always run SyntasticCheck when file save
-let g:syntastic_mode_map = { 'mode': 'passive' }
+" let g:syntastic_mode_map = { 'mode': 'passive' }
 " let g:syntastic_ruby_checkers = ['rubocop']
 
 """""""""""vim-easymotion""""""""""""
