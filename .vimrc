@@ -1196,7 +1196,7 @@ let g:quickrun_config._ = {
       \ "runner/vimproc/sleep" : 10,
       \ "runner/vimproc/updatetime" : 500,
       \ "outputter" : "error",
-      \ "outputter/error/success" : "buffer",
+      \ "outputter/error/success" : "quickfix",
       \ "outputter/error/error" : "quickfix",
       \ "outputter/quickfix/open_cmd" : "copen",
       \ "outputter/buffer/split" : ":botright 8sp",
@@ -1253,8 +1253,8 @@ MyAutoCmd BufEnter,BufRead,BufWinEnter *_spec.rb call s:load_rspec_settings()
 
 """""""""""""""vim-watchdogs""""""""
 let g:watchdogs_check_BufWritePost_enable = 1
-
 let g:quickrun_config["watchdogs_checker/_"] = {
+      \ 'runner/vimproc/updatetime' : 40,
       \ "hook/qfstatusline_update/enable_exit" : 1,
       \ "hook/qfstatusline_update/priority_exit" : 3,
       \ }
@@ -1273,6 +1273,10 @@ let g:quickrun_config['watchdogs_checker/rspec'] = {
 
 let g:quickrun_config['ruby/watchdogs_checker'] = {
       \ 'type' : 'rubocop'
+      \}
+
+let g:quickrun_config['watchdogs_checker/rubocop'] = {
+      \ 'cmdopt' : '-c ~/.rubocop.yml'
       \}
 
 call watchdogs#setup(g:quickrun_config)
