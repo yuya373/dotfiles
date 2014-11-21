@@ -1301,8 +1301,9 @@ let g:quickrun_config["ruby.rspec"] = {
       \ }
 
 function! QuickRunCurrentLine()
-  let line = line(".")
-  exe ":QuickRun -exec '%c %s%o' -cmdopt ':" . line
+  let l:line = line(".")
+  let l:cmd = ":QuickRun -exec '%c %s%o' -cmdopt ':" . l:line . " -cfd'"
+  exe l:cmd
 endfunction
 
 function! QuickRunRSpec()
@@ -1316,7 +1317,7 @@ endfunction
 function! s:load_rspec_settings()
   nnoremap <buffer> ,ra  :call QuickRunAllSpec()<CR>
   nnoremap <buffer> ,rn  :call QuickRunCurrentLine()<CR>
-  nnoremap <buffer> ,rn  :call QuickRunCurrentSpec()<CR>
+  nnoremap <buffer> ,rc  :call QuickRunCurrentSpec()<CR>
 endfunction
 
 MyAutoCmd BufEnter,BufRead,BufWinEnter *_spec.rb call s:load_rspec_settings()
