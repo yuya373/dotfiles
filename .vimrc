@@ -53,7 +53,6 @@ NeoBundle 'rking/ag.vim'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'itchyny/thumbnail.vim'
-NeoBundle 'szw/vim-tags'
 NeoBundle 't9md/vim-choosewin'
 NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'cohama/agit.vim'
@@ -82,6 +81,39 @@ NeoBundle "dannyob/quickfixstatus"
 NeoBundle "KazuakiM/vim-qfstatusline"
 
 NeoBundle "supermomonga/thingspast.vim"
+
+NeoBundleLazy 'alpaca-tc/alpaca_tags', {
+      \ 'depends': ['Shougo/vimproc'],
+      \ 'autoload' : {
+      \   'commands' : [
+      \     { 'name' : 'AlpacaTagsBundle', 'complete': 'customlist,alpaca_tags#complete_source' },
+      \     { 'name' : 'AlpacaTagsUpdate', 'complete': 'customlist,alpaca_tags#complete_source' },
+      \     'AlpacaTagsSet', 'AlpacaTagsCleanCache', 'AlpacaTagsEnable', 'AlpacaTagsDisable', 'AlpacaTagsKillProcess', 'AlpacaTagsProcessStatus',
+      \ ],
+      \ }}
+if neobundle#tap('alpaca_tags')
+  function! neobundle#hooks.on_source(bundle)
+    let g:alpaca_tags#ctags_bin = '/usr/local/bin/ctags'
+    let g:alpaca_tags#config = {
+          \ '_' : '-R --sort=yes --languages=+Ruby --languages=-js,JavaScript',
+          \ 'js' : '--languages=+js',
+          \ '-js' : '--languages=-js,JavaScript',
+          \ 'vim' : '--languages=+Vim,vim',
+          \ 'php' : '--languages=+php',
+          \ '-vim' : '--languages=-Vim,vim',
+          \ '-style': '--languages=-css,scss,js,JavaScript,html',
+          \ 'scss' : '--languages=+scss --languages=-css',
+          \ 'css' : '--languages=+css',
+          \ 'java' : '--languages=+java $JAVA_HOME/src',
+          \ 'ruby': '--languages=+Ruby',
+          \ 'coffee': '--languages=+coffee',
+          \ '-coffee': '--languages=-coffee',
+          \ 'bundle': '--languages=+Ruby',
+          \ 'cpp' : '--languages=+cpp'
+          \ }
+  endfunction
+  call neobundle#untap()
+endif
 
 NeoBundle 'haya14busa/incsearch.vim'
 if neobundle#tap('incsearch.vim')
@@ -1128,14 +1160,18 @@ endif
 
 
 
-"""""""""""""""vim-tags""""""""""""""""""""
-let g:vim_tags_ctags_binary = "/user/local/bin/ctags"
-let g:vim_tags_project_tags_command = "{CTAGS} -R {OPTIONS} {DIRECTORY} 2>/dev/null"
-let g:vim_tags_gems_tags_command = "{CTAGS} -R {OPTIONS} `bundle show --paths` 2>/dev/null"
+"""""""""""""""alpaca_tags""""""""""""""""""""
+" let g:vim_tags_ctags_binary = "/user/local/bin/ctags"
+" let g:vim_tags_project_tags_command = "{CTAGS} -R {OPTIONS} {DIRECTORY} 2>/dev/null"
+" let g:vim_tags_gems_tags_command = "{CTAGS} -R {OPTIONS} `bundle show --paths` 2>/dev/null"
 
-let g:vim_tags_use_vim_dispatch = 1
-let g:vim_tags_auto_generate = 1
+" let g:vim_tags_use_vim_dispatch = 1
+" let g:vim_tags_auto_generate = 1
 " tagsジャンプの時に複数ある時は一覧表示
+
+MyAutoCmd BufWritePost Gemfile AlpacaTagsBundle
+MyAutoCmd BufEnter * AlpacaTagsSet
+MyAutoCmd BufWritePost * AlpacaTagsUpdate
 nnoremap <C-]> g<C-]>
 """"""""""Tag Jump拡張"""""""""""
 " nmap <C-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
@@ -1226,7 +1262,7 @@ endif
 let g:Qfstatusline#UpdateCmd = function('lightline#update')
 
 """""""""""""""vim-watchdogs""""""""
-let g:watchdogs_check_BufWritePost_enable = 1
+" let g:watchdogs_check_BufWritePost_enable = 1
 let g:quickrun_config["watchdogs_checker/_"] = {
       \ 'outputter' : 'buffer',
       \ "outputter/buffer/split" : ":bot 8sp",
@@ -1259,19 +1295,18 @@ MyAutoCmd BufRead,BufEnter,BufWinEnter,BufNewFile *_spec.rb setfiletype ruby.rsp
 
 let g:quickrun_config["ruby.rspec"] = {
       \ 'outputter' : 'buffer',
-      \ "outputter/buffer/split" : ":botright 8sp",
       \ 'command' : s:rspec_cmd(),
       \ 'cmdopt' : '--color --profile --format documentation',
-      \ 'exec' : 'bundle exec %c %o %s:p',
+      \ 'exec' : '%c %o %s:p',
       \ }
 
 function! QuickRunCurrentLine()
   let line = line(".")
-  exe ":QuickRun -exec 'bundle exec %c %s%o' -cmdopt ':" . line . " -cfd'"
+  exe ":QuickRun -exec '%c %s%o' -cmdopt ':" . line
 endfunction
 
 function! QuickRunRSpec()
-  exe ":QuickRun -exec 'bundle exec %c %o'"
+  exe ":QuickRun -exec '%c %o'"
 endfunction
 
 function! QuickRunCurrentSpec()
