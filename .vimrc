@@ -50,14 +50,10 @@ NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'vim-scripts/vim-auto-save'
 NeoBundle 'rking/ag.vim'
-NeoBundle 'honza/vim-snippets'
 NeoBundle 'Yggdroot/indentLine'
-NeoBundle 'itchyny/thumbnail.vim'
-NeoBundle 'szw/vim-tags'
 NeoBundle 't9md/vim-choosewin'
 NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'cohama/agit.vim'
-NeoBundle 'tpope/vim-repeat'
 NeoBundle 'LeafCage/foldCC'
 NeoBundle 'LeafCage/yankround.vim'
 NeoBundle 'osyo-manga/vim-over'
@@ -82,6 +78,39 @@ NeoBundle "dannyob/quickfixstatus"
 NeoBundle "KazuakiM/vim-qfstatusline"
 
 NeoBundle "supermomonga/thingspast.vim"
+
+NeoBundleLazy 'alpaca-tc/alpaca_tags', {
+      \ 'depends': ['Shougo/vimproc'],
+      \ 'autoload' : {
+      \   'commands' : [
+      \     { 'name' : 'AlpacaTagsBundle', 'complete': 'customlist,alpaca_tags#complete_source' },
+      \     { 'name' : 'AlpacaTagsUpdate', 'complete': 'customlist,alpaca_tags#complete_source' },
+      \     'AlpacaTagsSet', 'AlpacaTagsCleanCache', 'AlpacaTagsEnable', 'AlpacaTagsDisable', 'AlpacaTagsKillProcess', 'AlpacaTagsProcessStatus',
+      \ ],
+      \ }}
+if neobundle#tap('alpaca_tags')
+  function! neobundle#hooks.on_source(bundle)
+    let g:alpaca_tags#ctags_bin = '/usr/local/bin/ctags'
+    let g:alpaca_tags#config = {
+          \ '_' : '-R --sort=yes --languages=+Ruby --languages=-js,JavaScript',
+          \ 'js' : '--languages=+js',
+          \ '-js' : '--languages=-js,JavaScript',
+          \ 'vim' : '--languages=+Vim,vim',
+          \ 'php' : '--languages=+php',
+          \ '-vim' : '--languages=-Vim,vim',
+          \ '-style': '--languages=-css,scss,js,JavaScript,html',
+          \ 'scss' : '--languages=+scss --languages=-css',
+          \ 'css' : '--languages=+css',
+          \ 'java' : '--languages=+java $JAVA_HOME/src',
+          \ 'ruby': '--languages=+Ruby',
+          \ 'coffee': '--languages=+coffee',
+          \ '-coffee': '--languages=-coffee',
+          \ 'bundle': '--languages=+Ruby',
+          \ 'cpp' : '--languages=+cpp'
+          \ }
+  endfunction
+  call neobundle#untap()
+endif
 
 NeoBundle 'haya14busa/incsearch.vim'
 if neobundle#tap('incsearch.vim')
@@ -311,41 +340,6 @@ NeoBundle 'dag/vim2hs'
 NeoBundle 'eagletmt/ghcmod-vim'
 NeoBundle 'kana/vim-filetype-haskell'
 
-"""""""markdown""""""""
-NeoBundleLazy 'rcmdnk/vim-markdown'
-if neobundle#tap('vim-markdown')
-  call neobundle#config({
-        \ 'autoload' : {
-        \ 'filetypes' : ['markdown']
-        \ }
-        \})
-
-  let g:vim_markdown_folding_disabled=1
-  let g:vim_markdown_math=1
-  let g:vim_markdown_frontmatter=1
-
-  call neobundle#untap()
-endif
-
-NeoBundleLazy 'godlygeek/tabular'
-if neobundle#tap('tabular')
-  call neobundle#config({
-        \ 'autoload' : {
-        \ 'on_source' : ['vim-markdown']
-        \ }
-        \ })
-  call neobundle#untap()
-endif
-
-NeoBundle 'joker1007/vim-markdown-quote-syntax'
-if neobundle#tap('vim-markdown-quote-syntax')
-  call neobundle#config({
-        \ 'autoload' : {
-        \ 'on_source' : ['vim-markdown']
-        \ }
-        \ })
-  call neobundle#untap()
-endif
 NeoBundle 'glidenote/memolist.vim'
 NeoBundle 'kannokanno/previm'
 NeoBundle 'tyru/open-browser.vim'
@@ -440,11 +434,48 @@ if neobundle#tap('vim-clang-format')
 endif
 NeoBundleLazy 'osyo-manga/vim-snowdrop'
 
+"""""""""markdown"""""""""
+NeoBundleLazy 'rcmdnk/vim-markdown'
+if neobundle#tap('vim-markdown')
+  call neobundle#config({
+        \ 'autoload' : {
+        \ 'filetypes' : ['markdown']
+        \ }
+        \})
+  function! neobundle#hooks.on_source(bundle)
+  let g:vim_markdown_folding_disabled=1
+  let g:vim_markdown_math=1
+  let g:vim_markdown_frontmatter=1
+endfunction
+
+call neobundle#untap()
+endif
+
+NeoBundleLazy 'godlygeek/tabular'
+if neobundle#tap('tabular')
+  call neobundle#config({
+        \ 'autoload' : {
+        \ 'on_source' : ['vim-markdown']
+        \ }
+        \ })
+  call neobundle#untap()
+endif
+
+" NeoBundle 'joker1007/vim-markdown-quote-syntax'
+" if neobundle#tap('vim-markdown-quote-syntax')
+  " call neobundle#config({
+    " \ 'autoload' : {
+      " \ 'on_source' : ['vim-markdown']
+      " \ }
+    " \ })
+  " call neobundle#untap()
+" endif
+
 """"""""""English"""""""""""""""
 NeoBundle 'ujihisa/neco-look'
 
 """""""""""other""""""""""""""""
-
+NeoBundle 'thinca/vim-qfreplace'
 NeoBundleLazy 'tpope/vim-dispatch', { 'autoload' : {
       \ 'commands' : ['Dispatch', 'FocusDispatch', 'Start']
       \}}
@@ -500,6 +531,8 @@ command!
 
 
 MyAutoCmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
+MyAutoCmd FileType markdown setlocal noautoindent nosmartindent
+
 
 " display
 " ----------------------
@@ -603,7 +636,6 @@ set termencoding=UTF-8
 set noswapfile
 set autoindent
 set smartindent
-MyAutoCmd FileType markdown setlocal noautoindent nosmartindent
 set expandtab
 set smarttab
 set tabstop=2 shiftwidth=2
@@ -921,7 +953,7 @@ let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
 
 ""USE RUBOCOP
 " always run SyntasticCheck when file save
-let g:syntastic_mode_map = { 'mode': 'passive' }
+" let g:syntastic_mode_map = { 'mode': 'passive' }
 " let g:syntastic_ruby_checkers = ['rubocop']
 
 """""""""""vim-easymotion""""""""""""
@@ -1128,14 +1160,18 @@ endif
 
 
 
-"""""""""""""""vim-tags""""""""""""""""""""
-let g:vim_tags_ctags_binary = "/user/local/bin/ctags"
-let g:vim_tags_project_tags_command = "{CTAGS} -R {OPTIONS} {DIRECTORY} 2>/dev/null"
-let g:vim_tags_gems_tags_command = "{CTAGS} -R {OPTIONS} `bundle show --paths` 2>/dev/null"
+"""""""""""""""alpaca_tags""""""""""""""""""""
+" let g:vim_tags_ctags_binary = "/user/local/bin/ctags"
+" let g:vim_tags_project_tags_command = "{CTAGS} -R {OPTIONS} {DIRECTORY} 2>/dev/null"
+" let g:vim_tags_gems_tags_command = "{CTAGS} -R {OPTIONS} `bundle show --paths` 2>/dev/null"
 
-let g:vim_tags_use_vim_dispatch = 1
-let g:vim_tags_auto_generate = 1
+" let g:vim_tags_use_vim_dispatch = 1
+" let g:vim_tags_auto_generate = 1
 " tagsジャンプの時に複数ある時は一覧表示
+
+MyAutoCmd BufWritePost Gemfile AlpacaTagsBundle
+MyAutoCmd BufEnter * AlpacaTagsSet
+MyAutoCmd BufWritePost * AlpacaTagsUpdate
 nnoremap <C-]> g<C-]>
 """"""""""Tag Jump拡張"""""""""""
 " nmap <C-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
@@ -1196,7 +1232,7 @@ let g:quickrun_config._ = {
       \ "runner/vimproc/sleep" : 10,
       \ "runner/vimproc/updatetime" : 500,
       \ "outputter" : "error",
-      \ "outputter/error/success" : "buffer",
+      \ "outputter/error/success" : "quickfix",
       \ "outputter/error/error" : "quickfix",
       \ "outputter/quickfix/open_cmd" : "copen",
       \ "outputter/buffer/split" : ":botright 8sp",
@@ -1225,36 +1261,13 @@ endif
 
 let g:Qfstatusline#UpdateCmd = function('lightline#update')
 
-MyAutoCmd BufRead,BufEnter,BufWinEnter,BufNewFile *_spec.rb setfiletype ruby.rspec
-
-let g:quickrun_config["ruby.rspec"] = {
-      \ 'outputter' : 'buffer',
-      \ "outputter/buffer/split" : ":botright 8sp",
-      \ 'command' : 'rspec',
-      \ 'cmdopt' : '--color --profile --format documentation',
-      \ 'exec' : 'bundle exec %c %o %s:p',
-      \ }
-
-function! QuickRunCurrentLine()
-  let line = line(".")
-  exe ":QuickRun -exec 'bundle exec %c %s%o' -cmdopt ':" . line . " -cfd'"
-endfunction
-
-function! QuickRunRSpec()
-  exe ":QuickRun -exec 'bundle exec %c %o'"
-endfunction
-
-function! s:load_rspec_settings()
-nnoremap <buffer> ,ra  :call QuickRunAllSpec()<CR>
-nnoremap <buffer> ,rn  :call QuickRunCurrentLine()<CR>
-endfunction
-
-MyAutoCmd BufEnter,BufRead,BufWinEnter *_spec.rb call s:load_rspec_settings()
-
 """""""""""""""vim-watchdogs""""""""
-let g:watchdogs_check_BufWritePost_enable = 1
-
+" let g:watchdogs_check_BufWritePost_enable = 1
 let g:quickrun_config["watchdogs_checker/_"] = {
+      \ 'outputter' : 'buffer',
+      \ "outputter/buffer/split" : ":bot 8sp",
+      \ 'outputter/buffer/close_on_empty' : 1,
+      \ 'runner/vimproc/updatetime' : 40,
       \ "hook/qfstatusline_update/enable_exit" : 1,
       \ "hook/qfstatusline_update/priority_exit" : 3,
       \ }
@@ -1263,16 +1276,58 @@ let g:quickrun_config['ruby.rspec/watchdogs_checker'] = {
       \ 'type' : 'watchdogs_checker/rspec'
       \}
 
+function! s:rspec_cmd()
+  if executable(getcwd().'/bin/rspec')
+    return './bin/rspec'
+  else
+    return 'bundle exec rspec'
+  endif
+endfunction
 
 let g:quickrun_config['watchdogs_checker/rspec'] = {
-      \ "outputter/quickfix/open_cmd" : "bot copen",
-      \ 'command' : 'rspec',
+      \ 'command' : s:rspec_cmd(),
       \ 'cmdopt' : '--color --profile --format documentation',
-      \ 'exec' : 'bundle exec %c %o %s:p'
+      \ 'exec' : '%c %o %s:p'
       \}
+
+
+MyAutoCmd BufRead,BufEnter,BufWinEnter,BufNewFile *_spec.rb setfiletype ruby.rspec
+
+let g:quickrun_config["ruby.rspec"] = {
+      \ 'outputter' : 'buffer',
+      \ 'command' : s:rspec_cmd(),
+      \ 'cmdopt' : '--color --profile --format documentation',
+      \ 'exec' : '%c %o %s:p',
+      \ }
+
+function! QuickRunCurrentLine()
+  let l:line = line(".")
+  let l:cmd = ":QuickRun -exec '%c %s%o' -cmdopt ':" . l:line . " -cfd'"
+  exe l:cmd
+endfunction
+
+function! QuickRunRSpec()
+  exe ":QuickRun -exec '%c %o'"
+endfunction
+
+function! QuickRunCurrentSpec()
+  exe ":QuickRun -exec '%c %o %s:p'"
+endfunction
+
+function! s:load_rspec_settings()
+  nnoremap <buffer> ,ra  :call QuickRunAllSpec()<CR>
+  nnoremap <buffer> ,rn  :call QuickRunCurrentLine()<CR>
+  nnoremap <buffer> ,rc  :call QuickRunCurrentSpec()<CR>
+endfunction
+
+MyAutoCmd BufEnter,BufRead,BufWinEnter *_spec.rb call s:load_rspec_settings()
 
 let g:quickrun_config['ruby/watchdogs_checker'] = {
       \ 'type' : 'rubocop'
+      \}
+
+let g:quickrun_config['watchdogs_checker/rubocop'] = {
+      \ 'cmdopt' : '-c ~/.rubocop.yml'
       \}
 
 call watchdogs#setup(g:quickrun_config)
