@@ -29,3 +29,4 @@ export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 export LANG=ja_JP.UTF-8
 export EDITOR=vim
 
+export LIB_CLANG_DIR=/Library/Developer/CommandLineTools/usr/lib
