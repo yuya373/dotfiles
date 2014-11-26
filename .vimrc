@@ -114,19 +114,20 @@ endif
 
 NeoBundle 'haya14busa/incsearch.vim'
 if neobundle#tap('incsearch.vim')
+  function! neobundle#hooks.on_source(bundle)
+    let g:incsearch#auto_nohlsearch = 1
+  endfunction
+  set hlsearch
   map /  <Plug>(incsearch-forward)
   map ?  <Plug>(incsearch-backward)
   map g/ <Plug>(incsearch-stay)
-  set hlsearch
-  let g:incsearch#auto_nohlsearch = 1
   map n  <Plug>(incsearch-nohl-n)
   map N  <Plug>(incsearch-nohl-N)
   map *  <Plug>(incsearch-nohl-*)
   map #  <Plug>(incsearch-nohl-#)
   map g* <Plug>(incsearch-nohl-g*)
   map g# <Plug>(incsearch-nohl-g#)
-
-  call neobundle#untap()
+call neobundle#untap()
 endif
 
 NeoBundle 'diffchar.vim'
@@ -140,7 +141,6 @@ if neobundle#tap('vimshell.vim')
         \     'commands' : [ 'VimShell', 'VimShellPop' ]
         \   }
         \ })
-
   nnoremap <Leader>s :VimShell -toggle -split=tabedit<CR>
   call neobundle#untap()
 endif
@@ -170,6 +170,18 @@ if has("lua") > 0
 else
   NeoBundle 'Shougo/neocomplcache.vim'
 endif
+
+"""""""ruby && rails""""
+NeoBundle 'Keithbsmiley/rspec.vim'
+NeoBundle 'tpope/vim-haml'
+NeoBundle 'tpope/vim-rails'
+NeoBundleLazy 'alpaca-tc/neorspec.vim', {
+      \ 'depends' : 'tpope/vim-rails',
+      \ 'autoload' : {
+      \   'commands' : [
+      \       'RSpecAll', 'RSpecNearest', 'RSpecRetry',
+      \       'RSpecCurrent', 'RSpec'
+      \ ]}}
 
 """""""Unite""""""""""""
 NeoBundleLazy 'tacroe/unite-mark', { 'depends' : 'Shougo/unite.vim' }
@@ -210,23 +222,16 @@ if neobundle#tap('unite.vim')
         \})
 
   function! neobundle#hooks.on_source(bundle)
-    """ unite.vim
-    " 起動時にインサートモードで開始
     let g:unite_enable_start_insert = 1
     let g:unite_enable_short_source_names = 1
-    " let g:unite_winheight = 10
-    " let g:unite_split_rule = 'botright'
-    " let g:unite_prompt = '▸▸ '
     "  " unite grep に ag(The Silver Searcher) を使う
     if executable('ag')
       let g:unite_source_grep_command = 'ag'
       let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
       let g:unite_source_grep_recursive_opt = ''
     endif
-    " 大文字小文字を区別しない
     let g:unite_enable_ignore_case = 1
     let g:unite_enable_smart_case = 1
-    " ファイルを開く場合のデフォルトアクションを choosewin にする
     call unite#custom#default_action('file' , 'choosewin/open')
     call unite#custom#default_action('buffer' , 'choosewin/open')
     call unite#custom#default_action('grep' , 'choosewin/open')
@@ -252,20 +257,23 @@ if neobundle#tap('unite.vim')
   nnoremap    [unite]   <Nop>
   nmap    ,u [unite]
 
-  " アウトライン
   nnoremap <silent> [unite]o  :<C-u>Unite outline<CR>
-  nnoremap [unite]o :Unite -vertical -winwidth=40 outline<Return>
-  " マッピング
+  nnoremap [unite]o :Unite -vertical -winwidth=30 outline<Return>
   " nnoremap <silent> [unite]ma :<C-u>Unite mapping<CR>
-  " バッファ一覧
   nnoremap <silent> [unite]b :<C-u>Unite buffer<CR>
-  " レジスタ一覧
   nnoremap <silent> [unite]p :<C-u>Unite -buffer-name=register register<CR>
-  " ヤンク履歴
   nnoremap <silent> [unite]y :<C-u>Unite yankround<CR>
-  " 最近使用したファイル一覧
   nnoremap <silent> [unite]u :<C-u>Unite file_mru<CR>
-
+  nnoremap <silent> [unite]r :UniteWithProjectDir file file/new directory/new -buffer-name=root<CR>
+  nnoremap <silent> [unite]f :UniteWithBufferDir file file/new directory/new -buffer-name=files<CR>
+  " grep検索
+  nnoremap <silent> ,g  :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
+  " カーソル位置の単語をgrep検索
+  nnoremap <silent> ,cg :<C-u>Unite grep:. -buffer-name=search-buffer<CR><C-R><C-W><CR>
+  " grep検索結果の再呼出
+  nnoremap <silent> ,r  :<C-u>UniteResume search-buffer<CR>
+  "mark一覧
+  nnoremap <silent> ,m :<C-u>Unite mark<CR>
   nnoremap <silent> <C-p> :<C-u>Unite -start-insert file_rec/async:!<CR>
 
   function! s:cd_root_and_unite(...)
@@ -274,25 +282,32 @@ if neobundle#tap('unite.vim')
     execute 'Unite'.' '.args
   endfunction
   command! -nargs=* RootAndUnite call s:cd_root_and_unite(<f-args>)
-  " ファイル一覧
-  nnoremap <silent> [unite]f :UniteWithBufferDir file file/new directory/new -buffer-name=files<CR>
-  nnoremap <silent> [unite]c :RootAndUnite file file/new directory/new -input=app/controllers/ -buffer-name=controllers<CR>
-  nnoremap <silent> [unite]m :RootAndUnite file file/new directory/new -input=app/models/ -buffer-name=models<CR>
-  nnoremap <silent> [unite]d :RootAndUnite file file/new directory/new -input=app/decorators/ -buffer-name=decorators<CR>
-  nnoremap <silent> [unite]v :RootAndUnite file file/new directory/new -input=app/views/ -buffer-name=views<CR>
-  nnoremap <silent> [unite]j :RootAndUnite file file/new directory/new -input=app/assets/javascripts/ -buffer-name=js<CR>
-  nnoremap <silent> [unite]a :RootAndUnite file file/new directory/new -input=app/ -buffer-name=app<CR>
-  nnoremap <silent> [unite]r :UniteWithProjectDir file file/new directory/new -buffer-name=root<CR>
-  nnoremap <silent> [unite]s :RootAndUnite file file/new directory/new -input=spec/ -buffer-name=spec<CR>
-  " grep検索
-  nnoremap <silent> ,g  :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
-  " カーソル位置の単語をgrep検索
-  nnoremap <silent> ,cg :<C-u>Unite grep:. -buffer-name=search-buffer<CR><C-R><C-W><CR>
-  " grep検索結果の再呼出
-  nnoremap <silent> ,r  :<C-u>UniteResume search-buffer<CR>
 
-  "mark一覧
-  nnoremap <silent> ,m :<C-u>Unite mark<CR>
+  function! s:railsDetect(...) abort
+    if exists('b:rails_root')
+      return 1
+    endif
+    let fn = fnamemodify(a:0 ? a:1 : expand('%'), ':p')
+    if !isdirectory(fn)
+      let fn = fnamemodify(fn, ':h')
+    endif
+    let file = findfile('config/environment.rb', escape(fn, ', ').';')
+    if !empty(file)
+      let b:rails_root = fnamemodify(file, ':p:h:h')
+      return 1
+    endif
+  endfunction
+
+  let b:is_rails = s:railsDetect()
+  if b:is_rails
+    nnoremap <silent> [unite]c :RootAndUnite file file/new directory/new -input=app/controllers/ -buffer-name=controllers<CR>
+    nnoremap <silent> [unite]m :RootAndUnite file file/new directory/new -input=app/models/ -buffer-name=models<CR>
+    nnoremap <silent> [unite]d :RootAndUnite file file/new directory/new -input=app/decorators/ -buffer-name=decorators<CR>
+    nnoremap <silent> [unite]v :RootAndUnite file file/new directory/new -input=app/views/ -buffer-name=views<CR>
+    nnoremap <silent> [unite]j :RootAndUnite file file/new directory/new -input=app/assets/javascripts/ -buffer-name=js<CR>
+    nnoremap <silent> [unite]a :RootAndUnite file file/new directory/new -input=app/ -buffer-name=app<CR>
+    nnoremap <silent> [unite]s :RootAndUnite file file/new directory/new -input=spec/ -buffer-name=spec<CR>
+  endif
 
   call neobundle#untap()
 endif
@@ -307,18 +322,6 @@ if neobundle#tap('neomru.vim')
   call neobundle#untap()
 endif
 " NeoBundle 'Shougo/vimfiler'
-
-"""""""ruby && rails""""
-NeoBundle 'Keithbsmiley/rspec.vim'
-NeoBundle 'tpope/vim-haml'
-NeoBundle 'tpope/vim-rails'
-NeoBundleLazy 'alpaca-tc/neorspec.vim', {
-      \ 'depends' : 'tpope/vim-rails',
-      \ 'autoload' : {
-      \   'commands' : [
-      \       'RSpecAll', 'RSpecNearest', 'RSpecRetry',
-      \       'RSpecCurrent', 'RSpec'
-      \ ]}}
 
 """""""js && coffee""""
 NeoBundle 'kchmck/vim-coffee-script'
@@ -345,7 +348,7 @@ NeoBundle 'jnurmine/Zenburn'
 NeoBundle 'vim-scripts/twilight'
 NeoBundle 'tomasr/molokai'
 
-"""""""""""c++""""""""""
+"""""""""""cpp""""""""""
 NeoBundleLazy 'vim-jp/cpp-vim', {
       \ 'autoload' : {'filetypes' : 'cpp'}
       \ }
@@ -422,6 +425,7 @@ if neobundle#tap('vim-clang-format')
         \ }
   call neobundle#untap()
 endif
+NeoBundleLazy 'osyo-manga/vim-snowdrop'
 
 """""""""markdown"""""""""
 NeoBundleLazy 'rcmdnk/vim-markdown'
@@ -1432,6 +1436,27 @@ let g:html5_aria_attributes_complete = 1
 " $CPP_STDLIB よりも下の階層のファイルが開かれて
 " filetype が設定されていない場合に filetype=cpp を設定する
 MyAutoCmd BufReadPost $CPP_STDLIB/* if empty(&filetype) | set filetype=cpp | endif
+
+if neobundle#tap('vim-snowdrop')
+  call neobundle#config({
+        \ 'autoload' : {
+        \ 'filetypes' : ['cpp']
+        \ }
+        \ })
+  " set libclang directory path
+  let g:snowdrop#libclang_directory = $LIB_CLANG_DIR
+
+  " set include directory path.
+  let g:snowdrop#include_paths = {
+        \   "cpp" : []
+        \}
+
+  " set clang command options.
+  let g:snowdrop#command_options = {
+        \   "cpp" : "-std=c++1y",
+        \}
+  call neobundle#untap()
+endif
 function! s:cpp()
 
   setlocal tabstop=4 shiftwidth=4
@@ -1471,6 +1496,10 @@ function! s:add_marching_include_paths(dirs)
   call extend(g:marching_include_paths, a:dirs)
 endfunction
 
+function! s:add_snow_drop_include_paths(dirs)
+  call extend(g:snowdrop#include_paths["cpp"], a:dirs)
+endfunction
+
 function! s:set_local_path(dirs)
   for dir in a:dirs
     exec 'setlocal path+=' . dir
@@ -1482,11 +1511,18 @@ function! s:cocos2d()
   let b:cocos_dir = globpath(getcwd(), 'cocos2d/cocos/')
   if b:cocos_dir ? 0 : 1
     call s:add_marching_include_paths(add([], b:cocos_dir))
+    call s:add_snow_drop_include_paths(add([], b:cocos_dir))
     exec 'setlocal path+=' . b:cocos_dir
 
     let l:classes_dir = split(globpath(getcwd(), '**/Classes/'), '\n')
     call s:add_marching_include_paths(l:classes_dir)
     call s:set_local_path(l:classes_dir)
+    call s:add_snow_drop_include_paths(l:classes_dir)
+
+    let l:palmx_dir = split(globpath(getcwd(), 'PalmXLib/'), '\n')
+    call s:add_marching_include_paths(l:palmx_dir)
+    call s:set_local_path(l:palmx_dir)
+    call s:add_snow_drop_include_paths(l:palmx_dir)
 
     " let l:platform_dir = split(globpath(getcwd(), 'cocos2d/cocos/platform/ios/'), '\n')
     " call s:add_marching_include_paths(l:platform_dir)
