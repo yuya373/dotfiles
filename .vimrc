@@ -131,12 +131,6 @@ call neobundle#untap()
 endif
 
 NeoBundle 'diffchar.vim'
-if neobundle#tap('diffchar.vim')
-  if &diff
-    MyAutoCmd VimEnter * execute "%SDChar"
-  endif
-  call neobundle#untap()
-endif
 
 NeoBundle 'cohama/lexima.vim'
 
@@ -241,7 +235,6 @@ if neobundle#tap('unite.vim')
     call unite#custom#default_action('file' , 'choosewin/open')
     call unite#custom#default_action('buffer' , 'choosewin/open')
     call unite#custom#default_action('grep' , 'choosewin/open')
-    MyAutoCmd FileType unite call s:unite_my_settings()
   endfunction
 
   function! s:unite_my_settings()
@@ -529,9 +522,10 @@ command!
       \ MyAutoCmd
       \ autocmd<bang> vimrc <args>
 
+MyAutoCmd FileType unite call s:unite_my_settings()
 
-MyAutoCmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
-MyAutoCmd FileType markdown setlocal noautoindent nosmartindent
+" MyAutoCmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
+" MyAutoCmd FileType markdown setlocal noautoindent nosmartindent
 
 
 " display
@@ -664,7 +658,6 @@ MyAutoCmd BufRead *.schema setlocal filetype=ruby
 
 set nocursorline
 set nocursorcolumn
-" set nocursorline
 
 hi MatchParen ctermbg=1
 
@@ -793,7 +786,7 @@ endfunction
 
 
 " 保存時に行末の空白を除去する
-MyAutoCmd BufWritePre *[^(markdown)] :%s/\s\+$//ge
+MyAutoCmd BufWritePre * :%s/\s\+$//ge
 " 保存時にtabをスペースに変換する
 MyAutoCmd BufWritePre * :%s/\t/  /ge
 " .vimrc 保存時に自動で再読み込み
@@ -1797,5 +1790,13 @@ if neobundle#tap('neocomplcache.vim')
   call neobundle#untap()
 endif
 
+"""""""""diffchar.vim"""""""""""
 
+if neobundle#tap('diffchar.vim')
+  if &diff
+    MyAutoCmd VimEnter * execute "%SDChar"
+  endif
+
+  call neobundle#untap()
+endif
 
