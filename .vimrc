@@ -1255,7 +1255,10 @@ endif
 let g:Qfstatusline#UpdateCmd = function('lightline#update')
 
 """""""""""""""vim-watchdogs""""""""
-" let g:watchdogs_check_BufWritePost_enable = 1
+let g:watchdogs_check_BufWritePost_enable = 1
+let g:watchdogs_check_BufWritePost_enables = {
+      \ 'cpp' : 0,
+      \ }
 let g:quickrun_config["watchdogs_checker/_"] = {
       \ 'outputter' : 'buffer',
       \ "outputter/buffer/split" : ":bot 8sp",
