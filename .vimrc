@@ -141,7 +141,8 @@ if neobundle#tap('vimshell.vim')
         \     'commands' : [ 'VimShell', 'VimShellPop' ]
         \   }
         \ })
-  nnoremap <Leader>s :VimShell -toggle -split=tabedit<CR>
+  " nnoremap <Leader>s :VimShell -toggle -split=tabedit<CR>
+  nnoremap <Leader>s :shell<CR>
   call neobundle#untap()
 endif
 
@@ -644,7 +645,8 @@ set backspace=indent,eol,start
 set ambiwidth=double
 
 nnoremap p p=`]`]
-inoremap <silent> <C-j> <ESC>
+" inoremap <silent> <C-j> <ESC>
+inoremap <C-j> <C-r>=lexima#insmode#escape()<CR><Esc>
 
 MyAutoCmd BufEnter * setlocal formatoptions-=ro
 
@@ -1595,62 +1597,62 @@ let g:neocomplete#force_omni_input_patterns.cpp =
       \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
 
 """"""""""lexima.vim"""""""""""""""
-if neobundle#tap('lexima.vim')
-  let g:lexima_no_default_rules = 1
-  call lexima#set_default_rules()
+" if neobundle#tap('lexima.vim')
+  " let g:lexima_no_default_rules = 1
+  " call lexima#set_default_rules()
 
   """"""""(  )""""""""""
-  call lexima#add_rule({
-        \   'at'    : '(\%#)',
-        \   'char'  : '<Space>',
-        \   'input' : '<Space>',
-        \   'input_after' : '<Space>'
-        \   })
+  " call lexima#add_rule({
+        " \   'at': '(\%#)',
+        " \   'char': '<Space>',
+        " \   'input': '<Space>',
+        " \   'input_after': '<Space>',
+        " \   })
 
-  call lexima#add_rule({
-        \   'at'    : '( \%# )',
-        \   'char'  : '<BS>',
-        \   'input' : '<BS>',
-        \   'delete' : 1
-        \   })
+  " call lexima#add_rule({
+        " \   'at': '( \%# )',
+        " \   'char': '<BS>',
+        " \   'input': '<BS>',
+        " \   'delete': 1,
+        " \   })
 
-  call lexima#add_rule({
-        \   'at'    : '\%# )',
-        \   'char'  : ')',
-        \   'leave' : 2
-        \   })
+  " call lexima#add_rule({
+        " \   'at'    : '\%# )',
+        " \   'char'  : ')',
+        " \   'leave' : 2
+        " \   })
 
-  """"""""{  }""""""""""
-  call lexima#add_rule({
-        \   'at'    : '{\%#}',
-        \   'char'  : '<Space>',
-        \   'input' : '<Space>',
-        \   'input_after' : '<Space>'
-        \   })
+  " """"""""{  }""""""""""
+  " call lexima#add_rule({
+        " \   'at'    : '{\%#}',
+        " \   'char'  : '<Space>',
+        " \   'input' : '<Space>',
+        " \   'input_after' : '<Space>'
+        " \   })
 
-  call lexima#add_rule({
-        \   'at'    : '{ \%# }',
-        \   'char'  : '<BS>',
-        \   'input' : '<BS>',
-        \   'delete' : 1
-        \   })
+  " call lexima#add_rule({
+        " \   'at'    : '{ \%# }',
+        " \   'char'  : '<BS>',
+        " \   'input' : '<BS>',
+        " \   'delete' : 2
+        " \   })
 
-  call lexima#add_rule({
-        \   'at'    : '\%# }',
-        \   'char'  : '}',
-        \   'leave' : 2
-        \   })
+  " call lexima#add_rule({
+        " \   'at'    : '\%# }',
+        " \   'char'  : '}',
+        " \   'leave' : 2
+        " \   })
 
-  call lexima#add_rule({
-        \   'at'       : '"\%#"',
-        \   'char'     : '#',
-        \   'input'    : '#{}',
-        \   'insert_after' : '}',
-        \   'filetype' : ['ruby'],
-        \ })
+  " call lexima#add_rule({
+        " \   'at'       : '"\%#"',
+        " \   'char'     : '#',
+        " \   'input'    : '#{',
+        " \   'insert_after' : '}',
+        " \   'filetype' : ['ruby'],
+        " \ })
 
-  call neobundle#untap()
-endif
+  " call neobundle#untap()
+" endif
 
 
 """""""""NeoComplete || NeoComplcache"""""""
