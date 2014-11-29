@@ -11,6 +11,10 @@ source ~/.zsh_dep
 source ~/dotfiles/.zshfunc
 source ~/dotfiles/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+fpath=(~/dotfiles/.zprezto/modules/completion/external/src $fpath)
+autoload -U compinit
+compinit
+
 # from .zshfunc
 bindkey '^m' do_enter
 bindkey '^r' peco-select-history
