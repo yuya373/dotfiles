@@ -25,6 +25,7 @@ bindkey '^o' dev_pcd
 setopt nonomatch
 
 alias reload='source ~/.zshrc'
+alias gitf='git-flow'
 
 # cdr, add-zsh-hook を有効にする
 autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
