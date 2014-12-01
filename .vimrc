@@ -74,7 +74,7 @@ NeoBundle 'mattn/emoji-vim'
 NeoBundle "osyo-manga/shabadou.vim"
 NeoBundle "osyo-manga/vim-watchdogs"
 NeoBundle 'cohama/vim-hier'
-NeoBundle "dannyob/quickfixstatus"
+" NeoBundle "dannyob/quickfixstatus"
 NeoBundle "KazuakiM/vim-qfstatusline"
 
 NeoBundle "supermomonga/thingspast.vim"
