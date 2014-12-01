@@ -655,7 +655,7 @@ MyAutoCmd BufEnter * setlocal formatoptions-=ro
 MyAutoCmd BufRead *.coffee setlocal filetype=coffee
 MyAutoCmd BufRead *.coffee nnoremap <buffer> <Leader>cf :CoffeeWatch watch vert<CR>
 
-MyAutoCmd BufRead *.schema setlocal filetype=ruby
+MyAutoCmd BufEnter *.schema setlocal filetype=ruby
 
 set nocursorline
 set nocursorcolumn
@@ -1222,22 +1222,19 @@ endfunction
 """"""""""""""""""quickrun"""""""""""""""""""
 set splitright
 let g:quickrun_config = {}
+let b:quickrun_config = {}
 let g:quickrun_config._ = {
       \ "runner" : "vimproc",
       \ "runner/vimproc/sleep" : 10,
       \ "runner/vimproc/updatetime" : 500,
-      \ "outputter" : "error",
-      \ "outputter/error/success" : "quickfix",
-      \ "outputter/error/error" : "quickfix",
       \ "outputter/quickfix/open_cmd" : "copen",
       \ "outputter/buffer/split" : ":botright 8sp",
-      \ "outputter/buffer/close_on_empty" : 1
-      \}
+      \ }
 
 let g:quickrun_config['coffee'] = {
-      \'command' : 'coffee',
-      \'exec' : ['%c -cbp %s']
-      \}
+      \ 'command' : 'coffee',
+      \ 'exec' : ['%c -cbp %s']
+      \ }
 
 
 ""USE CLANG++""
@@ -1270,56 +1267,6 @@ let g:quickrun_config["watchdogs_checker/_"] = {
       \ "hook/qfstatusline_update/priority_exit" : 3,
       \ }
 
-let g:quickrun_config['ruby.rspec/watchdogs_checker'] = {
-      \ 'type' : 'watchdogs_checker/rspec'
-      \}
-
-function! s:rspec_cmd()
-  if executable(getcwd().'/bin/rspec')
-    return './bin/rspec'
-  else
-    return 'bundle exec rspec'
-  endif
-endfunction
-
-let g:quickrun_config['watchdogs_checker/rspec'] = {
-      \ 'command' : s:rspec_cmd(),
-      \ 'cmdopt' : '--color --profile --format documentation',
-      \ 'exec' : '%c %o %s:p'
-      \}
-
-
-MyAutoCmd BufRead,BufEnter,BufWinEnter,BufNewFile *_spec.rb setfiletype ruby.rspec
-
-let g:quickrun_config["ruby.rspec"] = {
-      \ 'outputter' : 'buffer',
-      \ 'command' : s:rspec_cmd(),
-      \ 'cmdopt' : '--color --profile --format documentation',
-      \ 'exec' : '%c %o %s:p',
-      \ }
-
-function! QuickRunCurrentLine()
-  let l:line = line(".")
-  let l:cmd = ":QuickRun -exec '%c %s%o' -cmdopt ':" . l:line . " -cfd'"
-  exe l:cmd
-endfunction
-
-function! QuickRunRSpec()
-  exe ":QuickRun -exec '%c %o'"
-endfunction
-
-function! QuickRunCurrentSpec()
-  exe ":QuickRun -exec '%c %o %s:p'"
-endfunction
-
-function! s:load_rspec_settings()
-  nnoremap <buffer> ,ra  :call QuickRunAllSpec()<CR>
-  nnoremap <buffer> ,rn  :call QuickRunCurrentLine()<CR>
-  nnoremap <buffer> ,rc  :call QuickRunCurrentSpec()<CR>
-endfunction
-
-MyAutoCmd BufEnter,BufRead,BufWinEnter *_spec.rb call s:load_rspec_settings()
-
 let g:quickrun_config['ruby/watchdogs_checker'] = {
       \ 'type' : 'rubocop'
       \}
@@ -1327,6 +1274,106 @@ let g:quickrun_config['ruby/watchdogs_checker'] = {
 let g:quickrun_config['watchdogs_checker/rubocop'] = {
       \ 'cmdopt' : '-c ~/.rubocop.yml'
       \}
+
+
+if neobundle#tap('vim-snowdrop')
+  call neobundle#config({
+        \ 'autoload' : {
+        \ 'filetypes' : ['cpp']
+        \ }
+        \ })
+  " set libclang directory path
+  let g:snowdrop#libclang_directory = $LIB_CLANG_DIR
+
+  " set include directory path.
+  let g:snowdrop#include_paths = {
+        \   "cpp" : []
+        \}
+
+  " set clang command options.
+  let g:snowdrop#command_options = {
+        \   "cpp" : "-std=c++1y",
+        \}
+  call neobundle#untap()
+endif
+
+function! s:cpp()
+  setlocal tabstop=4 shiftwidth=4
+  """"""""""""vim-cpp"""""""""""
+  " setlocal path=.,/usr/include/c++/
+  setlocal path+=/Library/Developer/CommandLineTools/usr/include/c++/v1/
+  """""""""""unite-boost-online-doc""""
+  nnoremap <Space>ub :<C-u>UniteWithCursorWord boost-online-doc
+  nnoremap <silent> <Leader>cf :ClangFormat<CR>
+  let l:is_cocos_dir = s:cocos2d()
+  call s:cpp_watchdogs(l:is_cocos_dir)
+endfunction
+
+function! s:cpp_watchdogs(is_cocos_dir)
+  let g:quickrun_config['cpp/watchdogs_checker'] = {
+        \ 'type' : 'watchdogs_checker/clang++'
+        \}
+
+  let g:quickrun_config['watchdogs_checker/clang++'] = {
+        \ 'command' : 'clang++',
+        \ 'cmdopt' : '--std=c++11 --stdlib=libc++ -Wall -Wextra -I ',
+        \ 'exec' : '%c %o -fsyntax-only %s:p',
+        \ }
+  if a:is_cocos_dir ? 0 : 1
+    "have to include cocos2d/cocos/platform/ios and so on
+    let l:path_list = map(filter(filter(split(&path, ','),  'isdirectory(v:val)'), 'v:val !~ "^\\.$"'), '"-I " . v:val')
+    let l:opt = '--std=c++11 --stdlib=libc++ -Wall -Wextra'
+    let g:quickrun_config['watchdogs_checker/clang++'] = {
+          \ 'command' : 'clang++',
+          \ 'cmdopt' : l:opt . ' ' . join(l:path_list),
+          \ 'exec' : '%c %o -fsyntax-only %s:p',
+          \ }
+  endif
+endfunction
+
+function! s:add_marching_include_paths(dirs)
+  call extend(g:marching_include_paths, a:dirs)
+endfunction
+
+function! s:add_snow_drop_include_paths(dirs)
+  call extend(g:snowdrop#include_paths["cpp"], a:dirs)
+endfunction
+
+function! s:set_local_path(dirs)
+  for dir in a:dirs
+    exec 'setlocal path+=' . dir
+  endfor
+endfunction
+
+function! s:cocos2d()
+  execute 'Rooter'
+  let b:cocos_dir = globpath(getcwd(), 'cocos2d/cocos/')
+  if b:cocos_dir ? 0 : 1
+    call s:add_marching_include_paths(add([], b:cocos_dir))
+    call s:add_snow_drop_include_paths(add([], b:cocos_dir))
+    exec 'setlocal path+=' . b:cocos_dir
+
+    let l:classes_dir = split(globpath(getcwd(), '**/Classes/'), '\n')
+    call s:add_marching_include_paths(l:classes_dir)
+    call s:set_local_path(l:classes_dir)
+    call s:add_snow_drop_include_paths(l:classes_dir)
+
+    let l:palmx_dir = split(globpath(getcwd(), 'PalmXLib/'), '\n')
+    call s:add_marching_include_paths(l:palmx_dir)
+    call s:set_local_path(l:palmx_dir)
+    call s:add_snow_drop_include_paths(l:palmx_dir)
+  endif
+  return b:cocos_dir
+endfunction
+
+MyAutoCmd FileType cpp call s:cpp()
+
+function! s:c()
+  setlocal path=.,/usr/include
+  setlocal tabstop=4 shiftwidth=4
+endfunction
+
+MyAutoCmd FileType c call s:c()
 
 call watchdogs#setup(g:quickrun_config)
 
@@ -1442,134 +1489,6 @@ let g:html5_aria_attributes_complete = 1
 " filetype が設定されていない場合に filetype=cpp を設定する
 MyAutoCmd BufReadPost $CPP_STDLIB/* if empty(&filetype) | set filetype=cpp | endif
 
-if neobundle#tap('vim-snowdrop')
-  call neobundle#config({
-        \ 'autoload' : {
-        \ 'filetypes' : ['cpp']
-        \ }
-        \ })
-  " set libclang directory path
-  let g:snowdrop#libclang_directory = $LIB_CLANG_DIR
-
-  " set include directory path.
-  let g:snowdrop#include_paths = {
-        \   "cpp" : []
-        \}
-
-  " set clang command options.
-  let g:snowdrop#command_options = {
-        \   "cpp" : "-std=c++1y",
-        \}
-  call neobundle#untap()
-endif
-function! s:cpp()
-
-  setlocal tabstop=4 shiftwidth=4
-""""""""""""vim-cpp"""""""""""
-  " setlocal path=.,/usr/include/c++/
-  setlocal path+=/Library/Developer/CommandLineTools/usr/include/c++/v1/
-"""""""""""unite-boost-online-doc""""
-  nnoremap <Space>ub :<C-u>UniteWithCursorWord boost-online-doc
-  nnoremap <silent> <Leader>cf :ClangFormat<CR>
-  let l:is_cocos_dir = s:cocos2d()
-  call s:cpp_watchdogs(l:is_cocos_dir)
-endfunction
-
-function! s:cpp_watchdogs(is_cocos_dir)
-  let g:quickrun_config['cpp/watchdogs_checker'] = {
-        \ 'type' : 'watchdogs_checker/clang++'
-        \}
-
-  let g:quickrun_config['watchdogs_checker/clang++'] = {
-        \ 'command' : 'clang++',
-        \ 'cmdopt' : '--std=c++11 --stdlib=libc++ -Wall -Wextra -I ',
-        \ 'exec' : '%c %o -fsyntax-only %s:p',
-        \ }
-  if a:is_cocos_dir ? 0 : 1
-    "have to include cocos2d/cocos/platform/ios and so on
-    let l:path_list = map(filter(filter(split(&path, ','),  'isdirectory(v:val)'), 'v:val !~ "^\\.$"'), '"-I " . v:val')
-    let l:opt = '--std=c++11 --stdlib=libc++ -Wall -Wextra'
-    let g:quickrun_config['watchdogs_checker/clang++'] = {
-          \ 'command' : 'clang++',
-          \ 'cmdopt' : l:opt . ' ' . join(l:path_list),
-          \ 'exec' : '%c %o -fsyntax-only %s:p',
-          \ }
-  endif
-endfunction
-
-function! s:add_marching_include_paths(dirs)
-  call extend(g:marching_include_paths, a:dirs)
-endfunction
-
-function! s:add_snow_drop_include_paths(dirs)
-  call extend(g:snowdrop#include_paths["cpp"], a:dirs)
-endfunction
-
-function! s:set_local_path(dirs)
-  for dir in a:dirs
-    exec 'setlocal path+=' . dir
-  endfor
-endfunction
-
-function! s:cocos2d()
-  execute 'Rooter'
-  let b:cocos_dir = globpath(getcwd(), 'cocos2d/cocos/')
-  if b:cocos_dir ? 0 : 1
-    call s:add_marching_include_paths(add([], b:cocos_dir))
-    call s:add_snow_drop_include_paths(add([], b:cocos_dir))
-    exec 'setlocal path+=' . b:cocos_dir
-
-    let l:classes_dir = split(globpath(getcwd(), '**/Classes/'), '\n')
-    call s:add_marching_include_paths(l:classes_dir)
-    call s:set_local_path(l:classes_dir)
-    call s:add_snow_drop_include_paths(l:classes_dir)
-
-    let l:palmx_dir = split(globpath(getcwd(), 'PalmXLib/'), '\n')
-    call s:add_marching_include_paths(l:palmx_dir)
-    call s:set_local_path(l:palmx_dir)
-    call s:add_snow_drop_include_paths(l:palmx_dir)
-
-    " let l:platform_dir = split(globpath(getcwd(), 'cocos2d/cocos/platform/ios/'), '\n')
-    " call s:add_marching_include_paths(l:platform_dir)
-    " call s:set_local_path(l:platform_dir)
-
-    " let l:platform_dir = split(globpath(getcwd(), 'cocos2d/cocos/platform/ios/Simulation/'), '\n')
-    " call s:add_marching_include_paths(l:platform_dir)
-    " call s:set_local_path(l:platform_dir)
-
-    " let l:platform_dir = split(globpath(getcwd(), 'proj.ios_mac/ios/'), '\n')
-    " call s:add_marching_include_paths(l:platform_dir)
-    " call s:set_local_path(l:platform_dir)
-  endif
-  return b:cocos_dir
-
-" let l:cocos2d_header_path = globpath(getcwd(), '**/cocos2d.h', '\n')
-" echo l:cocos2d_header_path
-" if l:cocos2d_header_path =~ '/cocos2d.h'
-  " let l:cocos_dir = substitute(l:cocos2d_header_path, 'cocos2d.h', '', '')
-  " echo l:cocos_dir
-  " let l:dirs = []
-  " call add(l:dirs, l:cocos_dir)
-  " call add(l:dirs, globpath(l:cocos_dir.'..', 'extensions', '\n'))
-  " call add(l:dirs, globpath(l:cocos_dir.'..', 'external', '\n'))
-  " call add(l:dirs, globpath(l:cocos_dir.'..', 'plugin', '\n'))
-  " call add(l:dirs, globpath(l:cocos_dir.'..', 'tools', '\n'))
-  " echo l:dirs
-  " call extend(g:marching_include_paths, l:dirs)
-  " for dir in l:dirs
-    " exec 'setlocal path+=' . dir
-  " endfor
-" endif
-endfunction
-
-MyAutoCmd FileType cpp call s:cpp()
-
-function! s:c()
-  setlocal path=.,/usr/include
-  setlocal tabstop=4 shiftwidth=4
-endfunction
-
-MyAutoCmd FileType c call s:c()
 
 """"""""""vim-marching"""""""""""
 " clang コマンドの設定
@@ -1803,4 +1722,26 @@ if neobundle#tap('diffchar.vim')
 
   call neobundle#untap()
 endif
+
+
+"""""""""""""""""neorspec""""""""""""""""""""""
+function! s:rspec_cmd()
+  if executable(getcwd().'/bin/rspec')
+    return 'bin/spring rspec'
+  else
+    return 'bundle exec rspec'
+  endif
+endfunction
+
+let g:neorspec_command = "Dispatch " . s:rspec_cmd() . " --color --format documentation {spec}"
+
+function! s:load_rspec_settings()
+  nnoremap <buffer> ,rc  :RSpecCurrent<CR>
+  nnoremap <buffer> ,rn  :RSpecNearest<CR>
+  nnoremap <buffer> ,rl  :RSpecRetry<CR>
+  nnoremap <buffer> ,ra  :RSpecAll<CR>
+  nnoremap <buffer> ,r   :RSpec<Space>
+endfunction
+
+MyAutoCmd BufWinEnter *_spec.rb call s:load_rspec_settings()
 
