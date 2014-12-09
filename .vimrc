@@ -646,7 +646,6 @@ set ambiwidth=double
 
 nnoremap p p=`]`]
 " inoremap <silent> <C-j> <ESC>
-inoremap <C-j> <C-r>=lexima#insmode#escape()<CR><Esc>
 
 MyAutoCmd BufEnter * setlocal formatoptions-=ro
 
@@ -1516,6 +1515,7 @@ let g:neocomplete#force_omni_input_patterns.cpp =
       \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
 
 """"""""""lexima.vim"""""""""""""""
+inoremap <C-j> <C-r>=lexima#insmode#escape()<CR><Esc>
 " if neobundle#tap('lexima.vim')
   " let g:lexima_no_default_rules = 1
   " call lexima#set_default_rules()
