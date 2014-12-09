@@ -1611,8 +1611,9 @@ if neobundle#tap('neocomplete')
   " <CR>: close popup and save indent.
   imap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
   function! s:my_cr_function()
-  " For no inserting <CR> key.
-  return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+    return neocomplete#close_popup() . "\<CR>"
+    " For no inserting <CR> key.
+    " return pumvisible() ? neocomplete#close_popup() : "\<CR>"
   endfunction
 
   " <TAB>: completion.
@@ -1681,9 +1682,9 @@ if neobundle#tap('neocomplcache.vim')
   " <CR>: close popup and save indent.
   inoremap <silent> <CR> <C-r>=<SID>cache_my_cr_function()<CR>
   function! s:cache_my_cr_function()
-  return neocomplcache#smart_close_popup() . "\<CR>"
-  " For no inserting <CR> key.
-  "return pumvisible() ? neocomplcache#close_popup() : "\<CR>"
+    return neocomplcache#smart_close_popup() . "\<CR>"
+    " For no inserting <CR> key.
+    "return pumvisible() ? neocomplcache#close_popup() : "\<CR>"
   endfunction
 
   " <TAB>: completion.
