@@ -76,6 +76,7 @@ NeoBundle "osyo-manga/vim-watchdogs"
 NeoBundle 'cohama/vim-hier'
 " NeoBundle "dannyob/quickfixstatus"
 NeoBundle "KazuakiM/vim-qfstatusline"
+NeoBundle 'KazuakiM/vim-qfsigns'
 
 NeoBundle "supermomonga/thingspast.vim"
 
