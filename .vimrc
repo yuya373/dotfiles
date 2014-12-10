@@ -1389,6 +1389,7 @@ nnoremap <Leader>gp :Gpush<CR>
 
 """"""""""""""""""agit"""""""""""""""""""
 nnoremap <Leader>ag :Agit<CR>
+nnoremap <Leader>af :AgitFile<CR>
 
 " DEFAULT KEY-MAPPINGS        *agit-default-key-mappings*
 
