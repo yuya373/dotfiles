@@ -1009,7 +1009,7 @@ let g:lightline = {
       \ 'colorscheme': 'solarized',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ], ['ctrlpmark'] ],
-      \   'right': [ [ 'syntaxcheck', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
+      \   'right': [ [ 'qfstatusline', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
       \ },
       \ 'component_function': {
       \   'fugitive': 'MyFugitive',
@@ -1028,6 +1028,8 @@ let g:lightline = {
       \ },
       \ 'subseparator': { 'left': '|', 'right': '|' }
       \ }
+
+let g:Qfstatusline#UpdateCmd = function('lightline#update')
 
 function! MyModified()
   return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
