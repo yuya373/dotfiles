@@ -1713,3 +1713,19 @@ function! s:load_rspec_settings()
 endfunction
 
 MyAutoCmd BufWinEnter *_spec.rb call s:load_rspec_settings()
+""""""""""""""go"""""""""""""
+" :Fmt などで gofmt の代わりに goimports を使う
+" let g:gofmt_command = 'goimports'
+
+" Go に付属の plugin と gocode を有効にする
+if $GOROOT != ''
+  set rtp+=${GOROOT}/misc/vim
+endif
+if $GOPATH != ''
+  set rtp+=${GOPATH}/src/github.com/nsf/gocode/vim
+endif
+
+" 保存時に :Fmt する
+au BufWritePre *.go Fmt
+au BufNewFile,BufRead *.go set sw=4 noexpandtab ts=4
+au FileType go compiler go
