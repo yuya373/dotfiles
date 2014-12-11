@@ -34,41 +34,146 @@ NeoBundle 'Shougo/vimproc', {
 " Note: You don't set neobundle setting in .gvimrc!
 
 " ...
-
+NeoBundle 'mattn/benchvimrc-vim'
 NeoBundle 'Shougo/neobundle.vim'
-NeoBundle 'VimClojure'
 NeoBundle 'Shougo/neosnippet'
-NeoBundle 'scrooloose/syntastic'
-NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'surround.vim'
 NeoBundle 'thinca/vim-quickrun', {
       \ 'depends' : 'mattn/quickrunex-vim',
+      \ 'autoload' : {
+      \ 'mappings' : '<Plug>',
+      \ 'commands' : ['Quickrun']
+      \ }
       \ }
 NeoBundle 'https://github.com/vim-jp/vimdoc-ja'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'Lokaltog/vim-easymotion'
+NeoBundleLazy 'tpope/vim-fugitive', {
+      \ 'autoload' : {
+      \ 'commands' : ['Git', 'Git!', 'Gstatus', 'Glog', 'Gblame']
+      \ }
+      \ }
+if neobundle#tap('vim-fugitive')
+  nnoremap <Leader>gg :Gstatus<CR>
+endif
+NeoBundleLazy 'Lokaltog/vim-easymotion', {
+      \ 'autoload' : {
+      \ 'mappings' : '<Plug>'
+      \ }
+      \ }
+if neobundle#tap('vim-easymotion')
+  function! neobundle#hooks.on_source(bundle)
+    let g:EasyMotion_do_mapping = 0
+    let g:EasyMotion_enter_jump_first = 1
+
+    " デフォルトだと<Leader><Leader>となってるprefixキーを変更
+    let g:EasyMotion_leader_key = '\'
+
+    " 候補選択: 候補が最初から2キー表示されるので大文字や打ちにくい文字は全面的に消す
+    " なお、最後の数文字が2キーの時の最初のキーになるので打ちやすいものを選ぶとよさそうです。
+    let g:EasyMotion_keys='hklyuiopnm,qwertzxcvbasdgjf;'
+    let g:EasyMotion_do_shade = 1
+    " keep cursor column
+    let g:EasyMotion_startofline = 0
+
+    " smartcase
+    let g:EasyMotion_smartcase = 1
+  endfunction
+
+  nmap <silent> s <Plug>(easymotion-s2)
+  xmap <silent> s <Plug>(easymotion-s2)
+  omap <silent> z <Plug>(easymotion-s2)
+  map <silent> f <Plug>(easymotion-bd-fl)
+endif
 NeoBundle 'vim-scripts/vim-auto-save'
 NeoBundle 'rking/ag.vim'
 NeoBundle 'Yggdroot/indentLine'
-NeoBundle 't9md/vim-choosewin'
-NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'cohama/agit.vim'
-NeoBundle 'LeafCage/foldCC'
-NeoBundle 'LeafCage/yankround.vim'
-NeoBundle 'osyo-manga/vim-over'
-NeoBundle 'AnsiEsc.vim'
-NeoBundle 'moznion/hateblo.vim', {
-      \ 'depends': ['mattn/webapi-vim', 'Shougo/unite.vim']
+NeoBundleLazy 't9md/vim-choosewin', {
+      \ 'autoload' : {
+      \ 'on_source' : 'unite.vim',
+      \ 'mappings' : '<Plug>'
       \ }
+      \ }
+if neobundle#tap('vim-choosewin')
+  function! neobundle#hooks.on_source(bundle)
+    " if you want to use overlay feature
+    let g:choosewin_overlay_enable          = 1
+
+    " overlay font broke on mutibyte buffer?
+    let g:choosewin_overlay_clear_multibyte = 1
+
+    let g:choosewin_color_overlay = {
+          \ 'gui': ['DodgerBlue3', 'DodgerBlue3' ],
+          \ 'cterm': [ 25, 25 ]
+          \ }
+    let g:choosewin_color_overlay_current = {
+          \ 'gui': ['firebrick1', 'firebrick1' ],
+          \ 'cterm': [ 124, 124 ]
+          \ }
+  endfunction
+  nmap  -  <Plug>(choosewin)
+  call neobundle#untap()
+endif
+
+NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundleLazy 'cohama/agit.vim', {
+      \ 'autoload' : {
+      \ 'commands' : ['Agit', 'AgitFile']
+      \ }
+      \ }
+if neobundle#tap('agit.vim')
+  " DEFAULT KEY-MAPPINGS        *agit-default-key-mappings*
+
+  " J          <Plug>(agit-scrolldown-stat)
+  " K          <Plug>(agit-scrollup-stat)
+  " <C-j>      <Plug>(agit-scrolldown-diff)
+  " <C-k>      <Plug>(agit-scrollup-diff)
+  " u          <PLug>(agit-reload)
+  " yh         <Plug>(agit-yank-hash)
+  " q          <Plug>(agit-exit)
+  " C          <Plug>(agit-git-checkout)
+  " cb         <Plug>(agit-git-checkout-b)
+  " D          <Plug>(agit-git-branch-d)
+  " rs         <Plug>(agit-git-reset-soft)
+  " rm         <Plug>(agit-git-reset)
+  " rh         <Plug>(agit-git-reset-hard)
+  " rb         <Plug>(agit-git-rebase)
+  " ri         <Plug>(agit-git-rebase-i)
+  nnoremap <Leader>ag :Agit<CR>
+  nnoremap <Leader>af :AgitFile<CR>
+  call neobundle#untap()
+endif
+
+NeoBundle 'LeafCage/foldCC'
+NeoBundleLazy 'LeafCage/yankround.vim', {
+      \ 'autoload' : {
+      \ 'on_source' : 'unite.vim'
+      \ }
+      \ }
+NeoBundle 'osyo-manga/vim-over'
+" too slow!!
+" NeoBundle 'moznion/hateblo.vim', {
+      " \ 'depends': ['mattn/webapi-vim', 'Shougo/unite.vim']
+      " \ }
 NeoBundle 'airblade/vim-rooter'
 NeoBundle 'taku25/subway'
-NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'tpope/vim-bundler'
 NeoBundle 'othree/html5.vim'
-NeoBundle 'junegunn/vim-easy-align'
+NeoBundleLazy 'junegunn/vim-easy-align', {
+      \ 'autoload' : {
+      \ 'mappings' : '<Plug>'
+      \ }
+      \ }
+if neobundle#tap('vim-easy-align')
+  " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
+  vmap <CR> <Plug>(EasyAlign)
+
+  " Start interactive EasyAlign for a motion/text object (e.g. <Leader>aip)
+  " nmap <Leader>a <Plug>(EasyAlign)
+endif
+
 NeoBundle 'Shougo/context_filetype.vim'
-NeoBundle 'osyo-manga/vim-precious'
+NeoBundleLazy 'osyo-manga/vim-precious', {
+      \ 'autoload' : { 'filetypes' : ['markdown', 'vim'] }
+      \ }
 NeoBundle 'mattn/emoji-vim'
 
 NeoBundle "osyo-manga/shabadou.vim"
@@ -76,8 +181,16 @@ NeoBundle "osyo-manga/vim-watchdogs"
 NeoBundle 'cohama/vim-hier'
 " NeoBundle "dannyob/quickfixstatus"
 NeoBundle "KazuakiM/vim-qfstatusline"
-
-NeoBundle "supermomonga/thingspast.vim"
+NeoBundleLazy "tyru/caw.vim", {
+      \ 'autoload' : {
+      \ 'mappings' : ['<Plug>']
+      \ }
+      \ }
+if neobundle#tap('caw.vim')
+  nmap ,, <Plug>(caw:i:toggle)
+  vmap ,, <Plug>(caw:i:toggle)
+  call neobundle#untap()
+endif
 
 NeoBundleLazy 'alpaca-tc/alpaca_tags', {
       \ 'depends': ['Shougo/vimproc'],
@@ -112,7 +225,11 @@ if neobundle#tap('alpaca_tags')
   call neobundle#untap()
 endif
 
-NeoBundle 'haya14busa/incsearch.vim'
+NeoBundleLazy 'haya14busa/incsearch.vim', {
+      \ 'autoload' : {
+      \ 'mappings' : '<Plug>'
+      \ }
+      \ }
 if neobundle#tap('incsearch.vim')
   function! neobundle#hooks.on_source(bundle)
     let g:incsearch#auto_nohlsearch = 1
@@ -127,12 +244,32 @@ if neobundle#tap('incsearch.vim')
   map #  <Plug>(incsearch-nohl-#)
   map g* <Plug>(incsearch-nohl-g*)
   map g# <Plug>(incsearch-nohl-g#)
-call neobundle#untap()
+  call neobundle#untap()
 endif
 
-NeoBundle 'diffchar.vim'
+NeoBundleLazy 'diffchar.vim', {
+      \ 'autoload' : {
+      \ 'commands' : 'SDChar'
+      \ }
+      \ }
+if neobundle#tap('diffchar.vim')
+  function! neobundle#hooks.on_source(bundle)
+    let g:DiffUnit = "Word3"
+    let g:DiffUpdate = 1
+  endfunction
+  if &diff
+    MyAutoCmd VimEnter * execute "%SDChar"
+  endif
+  call neobundle#untap()
+endif
 
 NeoBundle 'cohama/lexima.vim'
+
+NeoBundleLazy 'Shougo/vimfiler', {
+      \ 'autoload' : {
+      \ 'commands' : ['VimFilerBufferDir', 'VimFiler']
+      \ }
+      \ }
 
 NeoBundleLazy 'Shougo/vimshell.vim', { 'depends' : [ 'Shougo/vimproc.vim' ] }
 if neobundle#tap('vimshell.vim')
@@ -156,7 +293,14 @@ if neobundle#tap('vimshell-pure.vim')
   call neobundle#untap()
 endif
 
-NeoBundle 'LeafCage/nebula.vim'
+NeoBundleLazy 'LeafCage/nebula.vim', {
+      \ 'autoload' : {
+      \ 'commands' : [
+      \ 'NebulaPutLazy', 'NebulaYankTap', 'NebulaPutConfig',
+      \ 'NebulaYankOptions', 'NebulaPutFromClipboard'
+      \ ]
+      \ }
+      \ }
 if neobundle#tap('nebula.vim')
   nnoremap <silent>,bl    :<C-u>NebulaPutLazy<CR>
   nnoremap <silent>,bc    :<C-u>NebulaPutConfig<CR>
@@ -173,9 +317,10 @@ else
 endif
 
 """""""ruby && rails""""
-NeoBundle 'Keithbsmiley/rspec.vim'
-NeoBundle 'tpope/vim-haml'
 NeoBundle 'tpope/vim-rails'
+NeoBundleLazy 'tpope/vim-haml', {
+  \ 'autoload' : { 'filetypes' : 'haml' }
+  \ }
 NeoBundleLazy 'alpaca-tc/neorspec.vim', {
       \ 'depends' : 'tpope/vim-rails',
       \ 'autoload' : {
@@ -198,6 +343,7 @@ endif
 NeoBundleLazy 'osyo-manga/unite-choosewin-actions', { 'depends' : 'Shougo/unite.vim'  }
 if neobundle#tap('unite-choosewin-actions')
   call neobundle#config({
+        \ 'depends' : 't9md/vim-choosewin',
         \ 'autoload' : {
         \ 'on_source' : ['unite.vim']
         \ }
@@ -322,21 +468,39 @@ if neobundle#tap('neomru.vim')
         \ })
   call neobundle#untap()
 endif
-" NeoBundle 'Shougo/vimfiler'
 
 """""""js && coffee""""
-NeoBundle 'kchmck/vim-coffee-script'
-NeoBundle "vim-scripts/JavaScript-Indent"
+NeoBundleLazy 'kchmck/vim-coffee-script', {
+      \ 'autoload' : { 'filetypes' : 'coffee' }
+      \ }
+NeoBundleLazy "vim-scripts/JavaScript-Indent", {
+      \ 'autoload' : { 'filetypes' : ['coffee', 'javascript'] }
+      \ }
 NeoBundle "elzr/vim-json"
 
 """""""haskell""""""""
-NeoBundle 'dag/vim2hs'
-NeoBundle 'eagletmt/ghcmod-vim'
-NeoBundle 'kana/vim-filetype-haskell'
+NeoBundleLazy 'dag/vim2hs', {
+      \ 'autoload' : { 'filetypes' : 'haskell' }
+      \ }
+NeoBundleLazy 'eagletmt/ghcmod-vim', {
+      \ 'autoload' : { 'filetypes' : 'haskell' }
+      \ }
+NeoBundleLazy 'kana/vim-filetype-haskell', {
+      \ 'autoload' : { 'filetypes' : 'haskell' }
+      \ }
 
 NeoBundle 'glidenote/memolist.vim'
-NeoBundle 'kannokanno/previm'
-NeoBundle 'tyru/open-browser.vim'
+NeoBundleLazy 'kannokanno/previm', {
+      \ 'depends' : 'tyru/open-browser.vim',
+      \ 'autoload' : {
+      \ 'filetypes' : 'markdown'
+      \ }
+      \ }
+NeoBundleLazy 'tyru/open-browser.vim', {
+      \ 'autoload' : {
+      \ 'on_source' : ['previm']
+      \ }
+      \ }
 
 """""""colorscheme""""""""
 NeoBundle 'w0ng/vim-hybrid'
@@ -361,14 +525,15 @@ NeoBundleLazy 'osyo-manga/vim-marching', {
 
 NeoBundle 'rhysd/wandbox-vim'
 
-NeoBundleLazy 'osyo-manga/unite-boost-online-doc', {
-      \ 'depends' : [
-      \      'Shougo/unite.vim',
-      \      'tyru/open-browser.vim',
-      \      'mattn/webapi-vim',
-      \   ],
-      \ 'autoload' : {'filetypes' : 'cpp'}
-      \ }
+" too slow!!
+" NeoBundleLazy 'osyo-manga/unite-boost-online-doc', {
+      " \ 'depends' : [
+      " \      'Shougo/unite.vim',
+      " \      'tyru/open-browser.vim',
+      " \      'mattn/webapi-vim',
+      " \   ],
+      " \ 'autoload' : {'filetypes' : 'cpp'}
+      " \ }
 
 NeoBundleLazy 'kana/vim-altr'
 if neobundle#tap('vim-altr')
@@ -505,7 +670,7 @@ call neobundle#end()
 " :NeoBundleInstall(!)    - install(update) bundles
 " :NeoBundleClean(!)      - confirm(or auto-approve) removal of unused bundles
 
-syntax enable
+syntax on
 filetype plugin indent on
 set synmaxcol=100
 
@@ -665,22 +830,14 @@ nnoremap <CR> o<ESC>
 MyAutoCmd FileType qf nnoremap <buffer> <CR> <CR>
 map <C-j> <Esc>
 
-" set formatoptions=qrn1
-" if v:version >= 730
-" set colorcolumn=85 "色づけ
-" endif
-
-" nnoremap <Leader>a :Ag<SPACE>
-
 
 " OSのクリップボードを使う
 set clipboard+=unnamed
-" set clipboard=autoselect
 
 """"""""""gf(Goto File)拡張"""""""""""
 
 " 縦分割版gf
-nnoremap gv :vertical wincmd f<CR>
+" nnoremap gv :vertical wincmd f<CR>
 " 横分割
 nnoremap gs <C-w>f
 " 新規タブ
@@ -870,9 +1027,6 @@ MyAutoCmd QuickFixCmdPost *grep* cwindow
 " Plugin setting
 " --------------------
 
-" NEED Commenter
-let NERDShutUp = 1 "no alart undfined filetype
-
 "------------------------------------
 " vim-rails
 "------------------------------------
@@ -917,7 +1071,7 @@ let g:vimfiler_as_default_explorer = 1
 " let g:vimfiler_tree_closed_icon = '▸'
 " let g:vimfiler_file_icon = '-'
 " let g:vimfiler_marked_file_icon = '*'
-" nmap <C-n>  :VimFilerBufferDir -split -horizontal -toggle -quit<CR>
+nnoremap <C-n>  :VimFilerBufferDir -split -horizontal -toggle -quit<CR>
 
 
 
@@ -943,44 +1097,6 @@ endif
 let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
 
 
-""""""""""syntastic"""""""""""""""
-
-""USE RUBOCOP
-" always run SyntasticCheck when file save
-" let g:syntastic_mode_map = { 'mode': 'passive' }
-" let g:syntastic_ruby_checkers = ['rubocop']
-
-"""""""""""vim-easymotion""""""""""""
-
-let g:EasyMotion_do_mapping = 0
-let g:EasyMotion_enter_jump_first = 1
-
-" デフォルトだと<Leader><Leader>となってるprefixキーを変更
-let g:EasyMotion_leader_key = '\'
-
-" 候補選択: 候補が最初から2キー表示されるので大文字や打ちにくい文字は全面的に消す
-" なお、最後の数文字が2キーの時の最初のキーになるので打ちやすいものを選ぶとよさそうです。
-let g:EasyMotion_keys='hklyuiopnm,qwertzxcvbasdgjf;'
-let g:EasyMotion_do_shade = 1
-
-
-" 拡張版機能"{{{
-
-" もっともよく使うであろう'<Leadr><Leader>s'motion をsに割り当て
-nmap <silent> s <Plug>(easymotion-s2)
-xmap <silent> s <Plug>(easymotion-s2)
-" surround.vimと被らないように
-omap <silent> z <Plug>(easymotion-s2)
-
-map <silent> f <Plug>(easymotion-bd-fl)
-
-" keep cursor column
-let g:EasyMotion_startofline = 0
-
-" smartcase
-let g:EasyMotion_smartcase = 1
-
-
 """""""""indentLine""""""""""
 """""""""""""""""""""""""""""
 " let g:indentLine_faster=1
@@ -990,16 +1106,6 @@ let g:EasyMotion_smartcase = 1
 " let g:indentLine_char = '▸'
 let g:indentLine_showFirstIndentLevel = 2
 nnoremap <Leader>ig :IndentLinesToggle<CR>
-
-
-"""""""""""NERD COMMENTER""""""""""""
-let NERDSpaceDelims = 1
-nmap ,, <Plug>NERDCommenterToggle
-vmap ,, <Plug>NERDCommenterToggle
-
-""""""""""""""""thumbnail"""""""""""""""""""""""
-
-nnoremap <Leader>t :Thumbnail<CR>
 
 """"""""""""lightline"""""""""""""""""""""""
 " colorscheme default, wombat, jellybeans, solarized, landscape
@@ -1120,91 +1226,24 @@ function! TagbarStatusFunc(current, sort, fname, ...) abort
   return lightline#statusline(0)
 endfunction
 
-" MyAutoCmd BufWritePost *.c,*.cpp call s:syntastic()
-
-" function! s:syntastic()
-  " SyntasticCheck
-  " call lightline#update()
-" endfunction
-
 let g:unite_force_overwrite_statusline = 0
 let g:vimfiler_force_overwrite_statusline = 0
 let g:vimshell_force_overwrite_statusline = 0
 
-""""""""""""""""""undotree""""""""""""""""""""""
-" nnoremap <Leader>u :UndotreeToggle<CR>
-" let g:undotree_SetFocusWhenToggle = 1
-" let g:undotree_SplitLocation = 'topleft'
-" let g:undotree_SplitWidth = 35
-" let g:undotree_diffAutoOpen = 1
-" let g:undotree_diffpanelHeight = 25
-" let g:undotree_RelativeTimestamp = 1
-" let g:undotree_TreeNodeShape = '*'
-" let g:undotree_HighlightChangedText = 1
-" let g:undotree_HighlightSyntax = "UnderLined"
-"
-" Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
-
 if executable('ag')
-" Use Ag over Grep
-set grepprg=ag\ --nogroup\ --nocolor
-" Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-" let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  " Use Ag over Grep
+  set grepprg=ag\ --nogroup\ --nocolor
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  " let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
 
-
-
-"""""""""""""""alpaca_tags""""""""""""""""""""
-" let g:vim_tags_ctags_binary = "/user/local/bin/ctags"
-" let g:vim_tags_project_tags_command = "{CTAGS} -R {OPTIONS} {DIRECTORY} 2>/dev/null"
-" let g:vim_tags_gems_tags_command = "{CTAGS} -R {OPTIONS} `bundle show --paths` 2>/dev/null"
-
-" let g:vim_tags_use_vim_dispatch = 1
-" let g:vim_tags_auto_generate = 1
-" tagsジャンプの時に複数ある時は一覧表示
 
 MyAutoCmd BufWritePost Gemfile AlpacaTagsBundle
 MyAutoCmd BufEnter * AlpacaTagsSet
 MyAutoCmd BufWritePost * AlpacaTagsUpdate
-nnoremap <C-]> g<C-]>
 """"""""""Tag Jump拡張"""""""""""
+nnoremap <C-]> g<C-]>
 " nmap <C-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
-
-"""""""""""vim-startify""""""""
-" startifyのヘッダー部分に表示する文字列を設定する(dateコマンドを実行して日付を設定している)
-" let g:startify_custom_header =
-" \ map(split(system('date'), '\n'), '"   ". v:val') + ['','']
-" " デフォルトだと、最近使ったファイルの先頭は数字なので、使用するアルファベットを指定
-" let g:startify_custom_indices = ['f', 'g', 'h', 'r', 'i', 'o', 'b']
-" " よく使うファイルをブックマークとして登録しておく
-" let g:startify_bookmarks = [
-" \ '~/.vimrc'
-" \ ]
-
-"""""""""""ctrlp""""""""""""""""
-" let g:ctrlp_prompt_mappings = {
-" \ 'PrtSelectMove("j")':   ['<c-n>', '<down>'],
-" \ 'PrtSelectMove("k")':   ['<c-p>', '<up>'],
-" \ 'PrtHistory(-1)':       ['<c-j>'],
-" \ 'PrtHistory(1)':        ['<c-k>'],
-" \ }
-
-""""""""""vim-choosewin"""""""""""""""
-nmap  -  <Plug>(choosewin)
-" if you want to use overlay feature
-let g:choosewin_overlay_enable          = 1
-
-" overlay font broke on mutibyte buffer?
-let g:choosewin_overlay_clear_multibyte = 1
-
-let g:choosewin_color_overlay = {
-      \ 'gui': ['DodgerBlue3', 'DodgerBlue3' ],
-      \ 'cterm': [ 25, 25 ]
-      \ }
-let g:choosewin_color_overlay_current = {
-      \ 'gui': ['firebrick1', 'firebrick1' ],
-      \ 'cterm': [ 124, 124 ]
-      \ }
 
 """"""""""osyo-manga/unite-choosewin-actions"""""""""""
 " 選択しないウィンドウの場合は 1 を返す
@@ -1226,6 +1265,7 @@ let g:quickrun_config._ = {
       \ "runner" : "vimproc",
       \ "runner/vimproc/sleep" : 10,
       \ "runner/vimproc/updatetime" : 500,
+      \ 'outputter' : 'quickfix',
       \ "outputter/quickfix/open_cmd" : "copen",
       \ "outputter/buffer/split" : ":botright 8sp",
       \ }
@@ -1241,13 +1281,10 @@ if executable("clang++")
   let g:quickrun_config['cpp'] = {
         \ 'command' : 'clang++',
         \ 'cmdopt' : '-std=c++11 --stdlib=libc++ -Wall -Wextra',
-        \ 'exec' : '%c %o -o %s:t:r %s:p'
+        \ 'exec' : '%c %o -o %s:t:r %s:p',
+        \ 'hook/quickrunex/enable' : 1,
         \ }
 
-        " \ 'hook/quickrunex/enable' : 1,
-  " let g:syntastic_cpp_check_header = 1
-  " let g:syntastic_cpp_compiler = 'clang++'
-  " let g:syntastic_cpp_compiler_options = '--std=c++11 --stdlib=libc++'
 endif
 
 let g:Qfstatusline#UpdateCmd = function('lightline#update')
@@ -1258,9 +1295,9 @@ let g:watchdogs_check_BufWritePost_enables = {
       \ 'cpp' : 0,
       \ }
 let g:quickrun_config["watchdogs_checker/_"] = {
-      \ 'outputter' : 'buffer',
-      \ "outputter/buffer/split" : ":bot 8sp",
-      \ 'outputter/buffer/close_on_empty' : 1,
+      \ 'outputter' : 'quickfix',
+      \ "outputter/quickfix/open_cmd" : "copen",
+      \ 'outputter/quickfix/close_on_empty' : 1,
       \ 'runner/vimproc/updatetime' : 40,
       \ "hook/qfstatusline_update/enable_exit" : 1,
       \ "hook/qfstatusline_update/priority_exit" : 3,
@@ -1379,30 +1416,6 @@ call watchdogs#setup(g:quickrun_config)
 """""""vim-hier""""""""
 let g:hier_enabled = 1
 
-"""""""""""""""""""fugitive""""""""""""""""
-nnoremap <Leader>gg :Gst<CR>
-nnoremap <Leader>gp :Gpush<CR>
-
-""""""""""""""""""agit"""""""""""""""""""
-nnoremap <Leader>ag :Agit<CR>
-
-" DEFAULT KEY-MAPPINGS        *agit-default-key-mappings*
-
-" J          <Plug>(agit-scrolldown-stat)
-" K          <Plug>(agit-scrollup-stat)
-" <C-j>      <Plug>(agit-scrolldown-diff)
-" <C-k>      <Plug>(agit-scrollup-diff)
-" u          <PLug>(agit-reload)
-" yh         <Plug>(agit-yank-hash)
-" q          <Plug>(agit-exit)
-" C          <Plug>(agit-git-checkout)
-" cb         <Plug>(agit-git-checkout-b)
-" D          <Plug>(agit-git-branch-d)
-" rs         <Plug>(agit-git-reset-soft)
-" rm         <Plug>(agit-git-reset)
-" rh         <Plug>(agit-git-reset-hard)
-" rb         <Plug>(agit-git-rebase)
-" ri         <Plug>(agit-git-rebase-i)
 """""""""""vim-json""""""""""""
 let g:vim_json_syntax_conceal = 0
 
@@ -1435,16 +1448,6 @@ let g:auto_save = 1
 nnoremap mm :SBToggleStation<CR>
 nnoremap mp :SBMovePreviousStation<CR>
 nnoremap mn :SBMoveNextStation<CR>
-
-""""""""""NERDTree"""""""""""
-nnoremap <C-n> :NERDTreeToggle<CR>
-
-""""""""""vim-easy-align"""""""
-" Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
-vmap <CR> <Plug>(EasyAlign)
-
-" Start interactive EasyAlign for a motion/text object (e.g. <Leader>aip)
-" nmap <Leader>a <Plug>(EasyAlign)
 
 """"""""""context_filetype.vim"""""""""""
 let g:context_filetype#filetypes = {
@@ -1714,17 +1717,6 @@ if neobundle#tap('neocomplcache.vim')
   call neobundle#untap()
 endif
 
-"""""""""diffchar.vim"""""""""""
-
-if neobundle#tap('diffchar.vim')
-  if &diff
-    MyAutoCmd VimEnter * execute "%SDChar"
-  endif
-
-  call neobundle#untap()
-endif
-
-
 """""""""""""""""neorspec""""""""""""""""""""""
 function! s:rspec_cmd()
   if executable(getcwd().'/bin/rspec')
@@ -1745,4 +1737,3 @@ function! s:load_rspec_settings()
 endfunction
 
 MyAutoCmd BufWinEnter *_spec.rb call s:load_rspec_settings()
-
