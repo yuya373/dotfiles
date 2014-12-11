@@ -1273,9 +1273,9 @@ let g:watchdogs_check_BufWritePost_enables = {
       \ }
 let g:quickrun_config["watchdogs_checker/_"] = {
       \ 'outputter' : 'quickfix',
-      \ "outputter/quickfix/open_cmd" : "copen",
+      \ "outputter/quickfix/open_cmd" : "",
       \ 'outputter/quickfix/close_on_empty' : 1,
-      \ 'runner/vimproc/updatetime' : 40,
+      \ "hook/copen/enable_exist_data" : 1,
       \ "hook/qfstatusline_update/enable_exit" : 1,
       \ "hook/qfstatusline_update/priority_exit" : 3,
       \ }
