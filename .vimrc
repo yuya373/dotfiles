@@ -279,7 +279,8 @@ if neobundle#tap('vimshell.vim')
         \     'commands' : [ 'VimShell', 'VimShellPop' ]
         \   }
         \ })
-  " nnoremap <Leader>s :VimShell -toggle -split=tabedit<CR>
+  nnoremap <Leader>vst :VimShellTab<CR>
+  nnoremap <Leader>vsp :VimShellPop<CR>
   nnoremap <Leader>s :shell<CR>
   call neobundle#untap()
 endif
