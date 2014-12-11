@@ -13,10 +13,7 @@ if [ -e ${HOME}/.cabel/bin ]; then
   export PATH=${HOME}/.cabal/bin:${PATH}
 fi
 
-if [ -e ${HOME}/go ]; then
-  export GOPATH=${HOME}/go
-  export PATH=${GOPATH}/bin:${PATH}
-fi
+export PATH=$PATH:/usr/local/opt/go/libexec/bin
 
 if [ -d ${HOME}/.rbenv ] ; then
   PATH=${HOME}/.rbenv/bin:${PATH}
