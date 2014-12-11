@@ -714,6 +714,9 @@ MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
 set background=dark
 colorscheme solarized
 
+" http://kannokanno.hatenablog.com/entry/2013/05/08/110557
+set completeopt=menuone
+
 """""""インサートモードでカーソルの形を変える""""""""""
 " Changing cursor shape per mode
 if exists('$TMUX')
