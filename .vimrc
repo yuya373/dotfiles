@@ -632,6 +632,13 @@ endif
   " call neobundle#untap()
 " endif
 
+""""""""""go"""""""""""
+NeoBundleLazy 'fatih/vim-go', {
+      \ "autoload": {
+      \ "filetypes": ['go']
+      \ }
+      \ }
+
 """"""""""English"""""""""""""""
 NeoBundle 'ujihisa/neco-look'
 
