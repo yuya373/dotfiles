@@ -47,11 +47,12 @@ NeoBundle 'thinca/vim-quickrun', {
       \ }
       \ }
 NeoBundle 'https://github.com/vim-jp/vimdoc-ja'
-NeoBundleLazy 'tpope/vim-fugitive', {
-      \ 'autoload' : {
-      \ 'commands' : ['Git', 'Git!', 'Gstatus', 'Glog', 'Gblame']
-      \ }
-      \ }
+NeoBundle 'tpope/vim-fugitive'
+" NeoBundleLazy 'tpope/vim-fugitive', {
+"       \ 'autoload' : {
+"       \ 'commands' : ['Git', 'Git!', 'Gstatus', 'Glog', 'Gblame']
+"       \ }
+"       \ }
 if neobundle#tap('vim-fugitive')
   nnoremap <Leader>gg :Gstatus<CR>
 endif
