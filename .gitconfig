@@ -11,9 +11,10 @@
   st = status
   delete-merged-branches = !git branch --merged | grep -v \\* | xargs -I % git branch -d %
   mt = mergetool
+  ap = add -p
 [push]
   default = simple
 [mergetool]
   keepBackup = false
 [merge]
-	tool = vimdiff
+  tool = vimdiff
