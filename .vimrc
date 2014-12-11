@@ -509,11 +509,6 @@ NeoBundle 'w0ng/vim-hybrid'
 NeoBundle 'chriskempson/vim-tomorrow-theme'
 NeoBundle 'ujihisa/unite-colorscheme'
 NeoBundle 'altercation/vim-colors-solarized'
-NeoBundle 'Railscasts-Theme-GUIand256color'
-NeoBundle 'nanotech/jellybeans.vim'
-NeoBundle 'jnurmine/Zenburn'
-NeoBundle 'vim-scripts/twilight'
-NeoBundle 'tomasr/molokai'
 
 """""""""""cpp""""""""""
 NeoBundleLazy 'vim-jp/cpp-vim', {
@@ -553,15 +548,13 @@ if neobundle#tap('vim-altr')
   command! AV  call s:vsp_altr()
 
   function! s:vsp_altr()
-  exec 'vs'
-  call altr#forward()
-endfunction
-
-function! s:sp_altr()
-exec 'sp'
-call altr#forward()
+    exec 'vs'
+    call altr#forward()
   endfunction
-
+  function! s:sp_altr()
+    exec 'sp'
+    call altr#forward()
+  endfunction
   call neobundle#untap()
 endif
 
@@ -604,12 +597,12 @@ if neobundle#tap('vim-markdown')
         \ }
         \})
   function! neobundle#hooks.on_source(bundle)
-  let g:vim_markdown_folding_disabled=1
-  let g:vim_markdown_math=1
-  let g:vim_markdown_frontmatter=1
-endfunction
+    let g:vim_markdown_folding_disabled=1
+    let g:vim_markdown_math=1
+    let g:vim_markdown_frontmatter=1
+  endfunction
 
-call neobundle#untap()
+  call neobundle#untap()
 endif
 
 NeoBundleLazy 'godlygeek/tabular'
