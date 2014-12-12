@@ -173,8 +173,22 @@ endif
 
 NeoBundle 'Shougo/context_filetype.vim'
 NeoBundleLazy 'osyo-manga/vim-precious', {
-      \ 'autoload' : { 'filetypes' : ['markdown', 'vim'] }
+      \ 'autoload' : {
+      \ 'filetypes' : ['markdown', 'vim'],
+      \ 'commands' : ['PreciousReset', 'PreciousSwitch', 'PreciousFileType']
       \ }
+      \ }
+if neobundle#tap('vim-precious')
+  function! neobundle#hooks.on_source(bundle)
+    let g:precious_enable_switch_CursorMoved = {
+          \    '*' : 0,}
+    let g:precious_enable_switch_CursorMoved_i = {
+          \    '*' : 0,}
+  endfunction
+  call neobundle#untap()
+endif
+""""""""""vim-precious"""""""""""""""
+
 NeoBundle 'mattn/emoji-vim'
 
 NeoBundle "osyo-manga/shabadou.vim"
@@ -182,6 +196,8 @@ NeoBundle "osyo-manga/vim-watchdogs"
 NeoBundle 'cohama/vim-hier'
 " NeoBundle "dannyob/quickfixstatus"
 NeoBundle "KazuakiM/vim-qfstatusline"
+NeoBundle 'KazuakiM/vim-qfsigns'
+
 NeoBundleLazy "tyru/caw.vim", {
       \ 'autoload' : {
       \ 'mappings' : ['<Plug>']
@@ -366,7 +382,12 @@ NeoBundleLazy 'Shougo/unite.vim', { 'depends' : 'Shougo/vimproc.vim' }
 if neobundle#tap('unite.vim')
   call neobundle#config({
         \ 'autoload' : {
-          \ 'commands' : { 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source' }
+          \ 'commands' : [
+          \ {
+          \ 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source'
+          \ },
+          \ 'UniteWithBufferDir', 'UniteResume',
+          \ ]
           \ }
         \})
 
@@ -798,7 +819,6 @@ hi MatchParen ctermbg=1
 
 nnoremap <CR> o<ESC>
 MyAutoCmd FileType qf nnoremap <buffer> <CR> <CR>
-map <C-j> <Esc>
 
 
 " OSのクリップボードを使う
@@ -1084,7 +1104,7 @@ let g:lightline = {
       \ 'colorscheme': 'solarized',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ], ['ctrlpmark'] ],
-      \   'right': [ [ 'syntaxcheck', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
+      \   'right': [ [ 'qfstatusline', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
       \ },
       \ 'component_function': {
       \   'fugitive': 'MyFugitive',
@@ -1103,6 +1123,8 @@ let g:lightline = {
       \ },
       \ 'subseparator': { 'left': '|', 'right': '|' }
       \ }
+
+let g:Qfstatusline#UpdateCmd = function('lightline#update')
 
 function! MyModified()
   return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
@@ -1237,7 +1259,6 @@ let g:quickrun_config._ = {
       \ "runner/vimproc/updatetime" : 500,
       \ 'outputter' : 'quickfix',
       \ "outputter/quickfix/open_cmd" : "copen",
-      \ "outputter/buffer/split" : ":botright 8sp",
       \ }
 
 let g:quickrun_config['coffee'] = {
@@ -1257,15 +1278,17 @@ if executable("clang++")
 
 endif
 
-let g:Qfstatusline#UpdateCmd = function('lightline#update')
 
 """""""""""""""vim-watchdogs""""""""
+let g:qfsigns#AutoJump = 1
+
 let g:watchdogs_check_BufWritePost_enable = 1
 let g:watchdogs_check_BufWritePost_enables = {
       \ 'cpp' : 0,
       \ }
 let g:quickrun_config["watchdogs_checker/_"] = {
       \ 'outputter' : 'quickfix',
+      \ 'runner/vimproc/updatetime' : 40,
       \ "outputter/quickfix/open_cmd" : "",
       \ 'outputter/quickfix/close_on_empty' : 1,
       \ "hook/copen/enable_exist_data" : 1,
@@ -1277,9 +1300,9 @@ let g:quickrun_config['ruby/watchdogs_checker'] = {
       \ 'type' : 'rubocop'
       \}
 
-let g:quickrun_config['watchdogs_checker/rubocop'] = {
-      \ 'cmdopt' : '-c ~/.rubocop.yml'
-      \}
+" let g:quickrun_config['watchdogs_checker/rubocop'] = {
+      " \ 'cmdopt' : '-c ~/.rubocop.yml'
+      " \}
 
 
 if neobundle#tap('vim-snowdrop')
@@ -1440,12 +1463,6 @@ let g:context_filetype#filetypes = {
 
 let g:context_filetype#search_offset = 100
 
-""""""""""vim-precious"""""""""""""""
-
-let g:precious_enable_switch_CursorMoved = {
-      \    '*' : 0,}
-let g:precious_enable_switch_CursorMoved_i = {
-      \    '*' : 0,}
 MyAutoCmd InsertEnter * :PreciousSwitch
 MyAutoCmd InsertLeave * :PreciousReset
 MyAutoCmd User PreciousFileType IndentLinesReset
