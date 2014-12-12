@@ -14,8 +14,9 @@ if [ -e ${HOME}/.cabel/bin ]; then
 fi
 
 if [ -e ${HOME}/go ]; then
-  export GOPATH=${HOME}/go
-  export PATH=${GOPATH}/bin:${PATH}
+  export GOPATH=$HOME/go
+  export GOROOT=/usr/local/opt/go/libexec
+  export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 fi
 
 if [ -d ${HOME}/.rbenv ] ; then
