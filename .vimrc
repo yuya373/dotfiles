@@ -807,7 +807,6 @@ hi MatchParen ctermbg=1
 
 nnoremap <CR> o<ESC>
 MyAutoCmd FileType qf nnoremap <buffer> <CR> <CR>
-map <C-j> <Esc>
 
 
 " OSのクリップボードを使う
@@ -1248,7 +1247,6 @@ let g:quickrun_config._ = {
       \ "runner/vimproc/updatetime" : 500,
       \ 'outputter' : 'quickfix',
       \ "outputter/quickfix/open_cmd" : "copen",
-      \ "outputter/buffer/split" : ":botright 8sp",
       \ }
 
 let g:quickrun_config['coffee'] = {
@@ -1268,15 +1266,17 @@ if executable("clang++")
 
 endif
 
-let g:Qfstatusline#UpdateCmd = function('lightline#update')
 
 """""""""""""""vim-watchdogs""""""""
+let g:qfsigns#AutoJump = 1
+
 let g:watchdogs_check_BufWritePost_enable = 1
 let g:watchdogs_check_BufWritePost_enables = {
       \ 'cpp' : 0,
       \ }
 let g:quickrun_config["watchdogs_checker/_"] = {
       \ 'outputter' : 'quickfix',
+      \ 'runner/vimproc/updatetime' : 40,
       \ "outputter/quickfix/open_cmd" : "",
       \ 'outputter/quickfix/close_on_empty' : 1,
       \ "hook/copen/enable_exist_data" : 1,
@@ -1288,9 +1288,9 @@ let g:quickrun_config['ruby/watchdogs_checker'] = {
       \ 'type' : 'rubocop'
       \}
 
-let g:quickrun_config['watchdogs_checker/rubocop'] = {
-      \ 'cmdopt' : '-c ~/.rubocop.yml'
-      \}
+" let g:quickrun_config['watchdogs_checker/rubocop'] = {
+      " \ 'cmdopt' : '-c ~/.rubocop.yml'
+      " \}
 
 
 if neobundle#tap('vim-snowdrop')
