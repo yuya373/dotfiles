@@ -173,8 +173,22 @@ endif
 
 NeoBundle 'Shougo/context_filetype.vim'
 NeoBundleLazy 'osyo-manga/vim-precious', {
-      \ 'autoload' : { 'filetypes' : ['markdown', 'vim'] }
+      \ 'autoload' : {
+      \ 'filetypes' : ['markdown', 'vim'],
+      \ 'commands' : ['PreciousReset', 'PreciousSwitch', 'PreciousFileType']
       \ }
+      \ }
+if neobundle#tap('vim-precious')
+  function! neobundle#hooks.on_source(bundle)
+    let g:precious_enable_switch_CursorMoved = {
+          \    '*' : 0,}
+    let g:precious_enable_switch_CursorMoved_i = {
+          \    '*' : 0,}
+  endfunction
+  call neobundle#untap()
+endif
+""""""""""vim-precious"""""""""""""""
+
 NeoBundle 'mattn/emoji-vim'
 
 NeoBundle "osyo-manga/shabadou.vim"
@@ -368,7 +382,12 @@ NeoBundleLazy 'Shougo/unite.vim', { 'depends' : 'Shougo/vimproc.vim' }
 if neobundle#tap('unite.vim')
   call neobundle#config({
         \ 'autoload' : {
-          \ 'commands' : { 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source' }
+          \ 'commands' : [
+          \ {
+          \ 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source'
+          \ },
+          \ 'UniteWithBufferDir', 'UniteResume',
+          \ ]
           \ }
         \})
 
@@ -1451,12 +1470,6 @@ let g:context_filetype#filetypes = {
 
 let g:context_filetype#search_offset = 100
 
-""""""""""vim-precious"""""""""""""""
-
-let g:precious_enable_switch_CursorMoved = {
-      \    '*' : 0,}
-let g:precious_enable_switch_CursorMoved_i = {
-      \    '*' : 0,}
 MyAutoCmd InsertEnter * :PreciousSwitch
 MyAutoCmd InsertLeave * :PreciousReset
 MyAutoCmd User PreciousFileType IndentLinesReset
