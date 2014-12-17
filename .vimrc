@@ -1385,9 +1385,9 @@ function! s:cocos2d()
   execute 'Rooter'
   let b:cocos_dir = globpath(getcwd(), 'cocos2d/cocos/')
   if b:cocos_dir ? 0 : 1
-    call s:add_marching_include_paths(add([], b:cocos_dir))
-    call s:add_snow_drop_include_paths(add([], b:cocos_dir))
-    exec 'setlocal path+=' . b:cocos_dir
+    " call s:add_marching_include_paths(add([], b:cocos_dir))
+    " call s:add_snow_drop_include_paths(add([], b:cocos_dir))
+    " exec 'setlocal path+=' . b:cocos_dir
 
     let l:classes_dir = split(globpath(getcwd(), '**/Classes/'), '\n')
     call s:add_marching_include_paths(l:classes_dir)
