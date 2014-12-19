@@ -702,7 +702,6 @@ call neobundle#end()
 
 syntax on
 filetype plugin indent on
-set synmaxcol=100
 
 " Installation check.
 NeoBundleCheck
