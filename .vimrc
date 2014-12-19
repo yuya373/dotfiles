@@ -292,7 +292,7 @@ NeoBundleLazy 'Shougo/vimshell.vim', { 'depends' : [ 'Shougo/vimproc.vim' ] }
 if neobundle#tap('vimshell.vim')
   call neobundle#config({
         \   'autoload' : {
-        \     'commands' : [ 'VimShell', 'VimShellPop' ]
+        \     'commands' : [ 'VimShell', 'VimShellPop', 'VimShellTab' ]
         \   }
         \ })
   nnoremap <Leader>vst :VimShellTab<CR>
