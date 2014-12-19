@@ -980,25 +980,6 @@ set helplang=ja,en
 set incsearch
 set ignorecase
 set smartcase
-" set hlsearch
-" Esc Esc でハイライトOFF
-" nnoremap <Esc><Esc> :<C-u>set nohlsearch<Return>
-
-" Localize search options.
-" MyAutoCmd WinLeave *
-" \     let b:vimrc_pattern = @/
-" \   | let b:vimrc_hlsearch = &hlsearch
-" MyAutoCmd WinEnter *
-" \     let @/ = get(b:, 'vimrc_pattern', @/)
-" \   | let &l:hlsearch = get(b:, 'vimrc_hlsearch', &l:hlsearch)
-" 「/」「?」「*」「#」が押されたらハイライトをON にしてから「/」「?」「*」「#」
-" nnoremap / :<C-u>set hlsearch<Return>/
-" nnoremap ? :<C-u>set hlsearch<Return>?
-" nnoremap * :<C-u>set hlsearch<Return>*
-" nnoremap # :<C-u>set hlsearch<Return>#
-
-" no bell
-"
 set visualbell
 set t_vb=
 
