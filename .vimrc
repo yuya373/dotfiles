@@ -160,7 +160,7 @@ NeoBundle 'taku25/subway'
 NeoBundle 'othree/html5.vim'
 NeoBundleLazy 'junegunn/vim-easy-align', {
       \ 'autoload' : {
-      \ 'mappings' : '<Plug>'
+      \ 'mappings' : '<Plug>(EasyAlign)'
       \ }
       \ }
 if neobundle#tap('vim-easy-align')
