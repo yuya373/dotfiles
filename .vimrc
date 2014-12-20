@@ -160,7 +160,7 @@ NeoBundle 'taku25/subway'
 NeoBundle 'othree/html5.vim'
 NeoBundleLazy 'junegunn/vim-easy-align', {
       \ 'autoload' : {
-      \ 'mappings' : '<Plug>'
+      \ 'mappings' : '<Plug>(EasyAlign)'
       \ }
       \ }
 if neobundle#tap('vim-easy-align')
@@ -292,7 +292,7 @@ NeoBundleLazy 'Shougo/vimshell.vim', { 'depends' : [ 'Shougo/vimproc.vim' ] }
 if neobundle#tap('vimshell.vim')
   call neobundle#config({
         \   'autoload' : {
-        \     'commands' : [ 'VimShell', 'VimShellPop' ]
+        \     'commands' : [ 'VimShell', 'VimShellPop', 'VimShellTab' ]
         \   }
         \ })
   nnoremap <Leader>vst :VimShellTab<CR>
@@ -695,7 +695,6 @@ call neobundle#end()
 
 syntax on
 filetype plugin indent on
-set synmaxcol=100
 
 " Installation check.
 NeoBundleCheck
@@ -974,25 +973,6 @@ set helplang=ja,en
 set incsearch
 set ignorecase
 set smartcase
-" set hlsearch
-" Esc Esc でハイライトOFF
-" nnoremap <Esc><Esc> :<C-u>set nohlsearch<Return>
-
-" Localize search options.
-" MyAutoCmd WinLeave *
-" \     let b:vimrc_pattern = @/
-" \   | let b:vimrc_hlsearch = &hlsearch
-" MyAutoCmd WinEnter *
-" \     let @/ = get(b:, 'vimrc_pattern', @/)
-" \   | let &l:hlsearch = get(b:, 'vimrc_hlsearch', &l:hlsearch)
-" 「/」「?」「*」「#」が押されたらハイライトをON にしてから「/」「?」「*」「#」
-" nnoremap / :<C-u>set hlsearch<Return>/
-" nnoremap ? :<C-u>set hlsearch<Return>?
-" nnoremap * :<C-u>set hlsearch<Return>*
-" nnoremap # :<C-u>set hlsearch<Return>#
-
-" no bell
-"
 set visualbell
 set t_vb=
 
@@ -1378,9 +1358,9 @@ function! s:cocos2d()
   execute 'Rooter'
   let b:cocos_dir = globpath(getcwd(), 'cocos2d/cocos/')
   if b:cocos_dir ? 0 : 1
-    call s:add_marching_include_paths(add([], b:cocos_dir))
-    call s:add_snow_drop_include_paths(add([], b:cocos_dir))
-    exec 'setlocal path+=' . b:cocos_dir
+    " call s:add_marching_include_paths(add([], b:cocos_dir))
+    " call s:add_snow_drop_include_paths(add([], b:cocos_dir))
+    " exec 'setlocal path+=' . b:cocos_dir
 
     let l:classes_dir = split(globpath(getcwd(), '**/Classes/'), '\n')
     call s:add_marching_include_paths(l:classes_dir)
