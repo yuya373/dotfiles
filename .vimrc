@@ -335,9 +335,7 @@ else
 endif
 
 """""""ruby && rails""""
-NeoBundleLazy 'tpope/vim-rails', {
-      \ 'autoload' : { 'filetype' : 'ruby' }
-      \ }
+NeoBundle 'tpope/vim-rails'
 NeoBundleLazy 'tpope/vim-haml', {
   \ 'autoload' : { 'filetypes' : 'haml' }
   \ }
