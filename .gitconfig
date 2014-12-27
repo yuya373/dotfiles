@@ -16,6 +16,8 @@
   rbc = rebase --continue
   rba = rebase --abort
   rs = reset --soft
+  p = push
+  pf = push -f
 [push]
   default = simple
 [mergetool]
