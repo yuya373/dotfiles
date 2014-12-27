@@ -780,9 +780,10 @@ set iskeyword +=@-@,!,?,-
 set matchtime=0
 "ESCのタイムアウトを早くする
 set timeout timeoutlen=1000 ttimeoutlen=75
-set encoding=UTF-8
-set fileencoding=UTF-8
-set termencoding=UTF-8
+set encoding=utf-8
+set fileencodings=iso-2022-jp,cp932,sjis,euc-jp,utf-8
+set fileencoding=utf-8
+set termencoding=utf-8
 set noswapfile
 set autoindent
 set smartindent
