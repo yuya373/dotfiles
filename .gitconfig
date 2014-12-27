@@ -12,6 +12,10 @@
   delete-merged-branches = !git branch --merged | grep -v \\* | xargs -I % git branch -d %
   mt = mergetool
   ap = add -p
+  rb = rebase
+  rbc = rebase --continue
+  rba = rebase --abort
+  rs = reset --soft
 [push]
   default = simple
 [mergetool]
