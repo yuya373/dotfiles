@@ -156,7 +156,6 @@ NeoBundle 'osyo-manga/vim-over'
       " \ 'depends': ['mattn/webapi-vim', 'Shougo/unite.vim']
       " \ }
 NeoBundle 'airblade/vim-rooter'
-NeoBundle 'taku25/subway'
 NeoBundle 'othree/html5.vim'
 NeoBundleLazy 'junegunn/vim-easy-align', {
       \ 'autoload' : {
@@ -1417,11 +1416,6 @@ nnoremap <Leader>uz :Unite jazzradio<CR>
 cnoreabb <silent><expr>s getcmdtype()==':' && getcmdline()=~'^s' ? 'OverCommandLine<CR><C-u>%s/<C-r>=get([], getchar(0), '')<CR>' : 's'
 """""""""""vim-auto-save""""""""""""
 let g:auto_save = 1
-
-""""""""""subway"""""""""""""""
-nnoremap mm :SBToggleStation<CR>
-nnoremap mp :SBMovePreviousStation<CR>
-nnoremap mn :SBMoveNextStation<CR>
 
 """"""""""context_filetype.vim"""""""""""
 let g:context_filetype#filetypes = {
