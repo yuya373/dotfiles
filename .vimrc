@@ -683,6 +683,12 @@ if neobundle#tap('jazzradio.vim')
         \ })
 endif
 
+NeoBundleLazy 'severin-lemaignan/vim-minimap', {
+      \ 'autoload' : {
+      \ 'commands' : ['Minimap', 'MinimapClose']
+      \ }
+      \ }
+
 
 call neobundle#end()
 
