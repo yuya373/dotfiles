@@ -427,7 +427,7 @@ if neobundle#tap('unite.vim')
   nmap    ,u [unite]
 
   nnoremap <silent> [unite]o  :<C-u>Unite outline<CR>
-  nnoremap [unite]o :Unite -vertical -winwidth=30 outline<Return>
+  " nnoremap [unite]o :Unite -vertical -winwidth=30 outline<Return>
   " nnoremap <silent> [unite]ma :<C-u>Unite mapping<CR>
   nnoremap <silent> [unite]b :<C-u>Unite buffer<CR>
   nnoremap <silent> [unite]p :<C-u>Unite -buffer-name=register register<CR>
