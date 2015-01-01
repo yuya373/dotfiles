@@ -1,7 +1,7 @@
  " display settings for gvim
  " ----------------------
  " colorscheme railscasts
- set background=dark
+ set background=light
  colorscheme solarized
  set showtabline=2
  " window size
@@ -21,7 +21,7 @@
  set guioptions-=l " no left scrollbar
  set guioptions-=L " no left scrollbar
  set guioptions+=c
- set guifont=Ricty\ Regular:h15
+ set guifont=Ricty\ Regular:h20
  set transparency=0
 nnoremap <Leader>tT :set transparency=0<CR>
 nnoremap <Leader>tt :set transparency=20<CR>
