@@ -806,7 +806,9 @@ set backspace=indent,eol,start
 set ambiwidth=double
 
 nnoremap p p=`]`]
-" inoremap <silent> <C-j> <ESC>
+
+nnoremap + <C-a>
+nnoremap - <C-x>
 
 MyAutoCmd BufEnter * setlocal formatoptions-=ro
 
