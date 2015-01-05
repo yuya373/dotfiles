@@ -26,7 +26,8 @@ if [ -d ${HOME}/.rbenv ] ; then
 fi
 
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+
 export LANG=ja_JP.UTF-8
 export EDITOR=vim
+
 export LIB_CLANG_DIR=/Library/Developer/CommandLineTools/usr/lib
-export MANPAGER="col -b -x|vim -R -c 'set ft=man nolist nomod noma' -"
