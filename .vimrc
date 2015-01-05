@@ -327,11 +327,7 @@ if neobundle#tap('nebula.vim')
   call neobundle#untap()
 endif
 
-if has("lua") > 0
-  NeoBundle 'Shougo/neocomplete'
-else
-  NeoBundle 'Shougo/neocomplcache.vim'
-endif
+NeoBundle has('lua') ? 'Shougo/neocomplete' : 'Shougo/neocomplcache.vim'
 
 """""""ruby && rails""""
 NeoBundle 'tpope/vim-rails'
