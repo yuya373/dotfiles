@@ -378,17 +378,13 @@ if neobundle#tap('unite.vim')
   call neobundle#config({
         \ 'autoload' : {
           \ 'commands' : [
-          \ {
-          \ 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source'
-          \ },
-          \ 'UniteWithBufferDir', 'UniteResume',
+          \ 'UniteWithBufferDir', 'UniteResume', 'Unite', 'UniteResume'
           \ ]
           \ }
         \})
 
   function! neobundle#hooks.on_source(bundle)
     let g:unite_enable_start_insert = 1
-    let g:unite_enable_short_source_names = 1
     "  " unite grep に ag(The Silver Searcher) を使う
     if executable('ag')
       let g:unite_source_grep_command = 'ag'
@@ -400,14 +396,18 @@ if neobundle#tap('unite.vim')
     call unite#custom#default_action('file' , 'choosewin/open')
     call unite#custom#default_action('buffer' , 'choosewin/open')
     call unite#custom#default_action('grep' , 'choosewin/open')
+    call unite#custom#source('file_rec/async', 'ignore_pattern', '\(png\|gif\|jpeg\|jpg\|csv\)$')
+    let g:unite_source_rec_max_cache_files = 50000
+    call unite#filters#matcher_default#use(['matcher_fuzzy'])
   endfunction
+
 
   function! s:unite_my_settings()
     " 単語単位からパス単位で削除するように変更
     imap <buffer> <C-w> <Plug>(unite_delete_backward_path)
-    " ESCキーを2回押すと終了する
-    nmap <buffer> <ESC><ESC> <Plug>(unite_all_exit)
-    imap <buffer> <ESC><ESC> <Plug>(unite_exit)
+    " " ESCキーを2回押すと終了する
+    " nmap <buffer> <ESC><ESC> <Plug>(unite_exit)
+    " imap <buffer> <ESC><ESC> <Plug>(unite_exit)
     let unite = unite#get_current_unite()
     nnoremap <buffer> <expr> <C-f> unite#do_action('choosewin/split')
     inoremap <buffer> <expr> <C-f> unite#do_action('choosewin/split')
