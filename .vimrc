@@ -993,6 +993,8 @@ set t_vb=
 " viminfo
 " http://vimwiki.net/?%27viminfo%27
 set viminfo='50,<1000,s100,:0,n~/.vim/viminfo
+set undofile
+set undodir=~/.vim/vim_undo
 
 " key map
 " --------------------
