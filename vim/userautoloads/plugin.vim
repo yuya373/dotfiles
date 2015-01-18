@@ -102,7 +102,7 @@ endif
 
 if neobundle#tap('alpaca_tags')
   function! neobundle#hooks.on_source(bundle)
-    let g:alpaca_tags#ctags_bin = '/usr/local/bin/ctags'
+    let g:alpaca_tags#ctags_bin = exepath('ctags')
     let g:alpaca_tags#config = {
           \ '_' : '-R --sort=yes --languages=+Ruby --languages=-js,JavaScript',
           \ 'js' : '--languages=+js',
