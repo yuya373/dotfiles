@@ -194,7 +194,6 @@ if neobundle#tap('unite.vim')
   endfunction
 
 
-
   " The prefix key.
   nnoremap    [unite]   <Nop>
   nmap    ,u [unite]
@@ -526,7 +525,6 @@ if neobundle#tap('unite-choosewin-actions')
 endif
 
 if neobundle#tap('vim-quickrun')
-  function! neobundle#hooks.on_source(bundle)
     let g:quickrun_config = {}
     let g:quickrun_config._ = {
           \ "runner" : "vimproc",
@@ -541,7 +539,6 @@ if neobundle#tap('vim-quickrun')
           \ 'exec' : ['%c -cbp %s']
           \ }
 
-
     ""USE CLANG++""
     if executable("clang++")
       let g:quickrun_config['cpp'] = {
@@ -551,6 +548,16 @@ if neobundle#tap('vim-quickrun')
             \ 'hook/quickrunex/enable' : 1,
             \ }
     endif
+
+
+  call neobundle#untap()
+endif
+
+if neobundle#tap('vim-watchdogs')
+    let g:watchdogs_check_BufWritePost_enable = 1
+    let g:watchdogs_check_BufWritePost_enables = {
+          \ 'cpp' : 0,
+          \ }
 
     let g:quickrun_config["watchdogs_checker/_"] = {
           \ 'outputter' : 'quickfix',
@@ -571,17 +578,17 @@ if neobundle#tap('vim-quickrun')
     " \}
 
     function! s:cpp_watchdogs(is_cocos_dir)
-      let g:quickrun_config['cpp/watchdogs_checker'] = {
-            \ 'type' : 'watchdogs_checker/clang++'
-            \}
+    let g:quickrun_config['cpp/watchdogs_checker'] = {
+          \ 'type' : 'watchdogs_checker/clang++'
+          \}
 
-      let g:quickrun_config['watchdogs_checker/clang++'] = {
-            \ 'command' : 'clang++',
-            \ 'cmdopt' : '--std=c++11 --stdlib=libc++ -Wall -Wextra -I ',
-            \ 'exec' : '%c %o -fsyntax-only %s:p',
-            \ }
+    let g:quickrun_config['watchdogs_checker/clang++'] = {
+          \ 'command' : 'clang++',
+          \ 'cmdopt' : '--std=c++11 --stdlib=libc++ -Wall -Wextra -I ',
+          \ 'exec' : '%c %o -fsyntax-only %s:p',
+          \ }
 
-      if a:is_cocos_dir ? 0 : 1
+    if a:is_cocos_dir ? 0 : 1
         "have to include cocos2d/cocos/platform/ios and so on
         let l:path_list = map(filter(filter(split(&path, ','),  'isdirectory(v:val)'), 'v:val !~ "^\\.$"'), '"-I " . v:val')
         let l:opt = '--std=c++11 --stdlib=libc++ -Wall -Wextra'
@@ -593,20 +600,8 @@ if neobundle#tap('vim-quickrun')
       endif
     endfunction
 
-  endfunction
+    call watchdogs#setup(g:quickrun_config)
 
-  call neobundle#untap()
-endif
-
-if neobundle#tap('watchdogs')
-  function! neobundle#hooks.on_source(bundle)
-    let g:watchdogs_check_BufWritePost_enable = 1
-    let g:watchdogs_check_BufWritePost_enables = {
-          \ 'cpp' : 0,
-          \ }
-  endfunction
-
-  call watchdogs#setup(g:quickrun_config)
 
   call neobundle#untap()
 endif

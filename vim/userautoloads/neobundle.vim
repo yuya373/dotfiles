@@ -25,10 +25,6 @@ NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'surround.vim'
 NeoBundle 'thinca/vim-quickrun', {
       \ 'depends' : 'mattn/quickrunex-vim',
-      \ 'autoload' : {
-      \ 'mappings' : '<Plug>',
-      \ 'commands' : ['Quickrun']
-      \ }
       \ }
 NeoBundle 'https://github.com/vim-jp/vimdoc-ja'
 NeoBundle 'tpope/vim-fugitive'
@@ -88,8 +84,14 @@ NeoBundleLazy 'osyo-manga/vim-precious', {
 
 NeoBundle 'mattn/emoji-vim'
 
-NeoBundle "osyo-manga/shabadou.vim"
-NeoBundle "osyo-manga/vim-watchdogs"
+NeoBundle "osyo-manga/shabadou.vim", {
+  \ 'autoload' : {
+  \ 'on_source' : ['vim-watchdogs']
+  \ }
+  \ }
+NeoBundle "osyo-manga/vim-watchdogs", {
+      \ 'depends' : ['thinca/vim-quickrun', 'osyo-manga/shabadou.vim']
+      \ }
 NeoBundle 'cohama/vim-hier'
 " NeoBundle "dannyob/quickfixstatus"
 NeoBundle "KazuakiM/vim-qfstatusline"
