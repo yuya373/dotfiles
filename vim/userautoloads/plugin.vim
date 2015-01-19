@@ -691,9 +691,7 @@ if neobundle#tap('vim-over')
 endif
 
 if neobundle#tap('vim-auto-save')
-  function! neobundle#hooks.on_source(bundle)
-    let g:auto_save = 1
-  endfunction
+  let g:auto_save = 1
 
   call neobundle#untap()
 endif
