@@ -348,6 +348,8 @@ NeoBundleLazy 'severin-lemaignan/vim-minimap', {
       \ }
       \ }
 
+NeoBundle 'itchyny/vim-autoft'
+
 NeoBundleCheck
 
 call neobundle#end()

@@ -965,3 +965,11 @@ if neobundle#tap('neorspec.vim')
 
   call neobundle#untap()
 endif
+
+if neobundle#tap('vim-autoft')
+  let g:autoft_config = [
+        \ { 'filetype' : 'ruby', 'pattern' : 'create_table' }
+        \ ]
+
+  call neobundle#untap()
+endif
