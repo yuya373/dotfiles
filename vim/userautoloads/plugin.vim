@@ -720,12 +720,6 @@ if neobundle#tap('vim-marching')
     " neocomplete.vim と併用して使用する場合は以下の設定を行う
     let g:marching_enable_neocomplete = 1
 
-    if !exists('g:neocomplete#force_omni_input_patterns')
-      let g:neocomplete#force_omni_input_patterns = {}
-    endif
-
-    let g:neocomplete#force_omni_input_patterns.cpp =
-          \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
   endfunction
 
   call neobundle#untap()
