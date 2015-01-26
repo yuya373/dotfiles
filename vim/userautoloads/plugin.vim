@@ -785,7 +785,7 @@ if neobundle#tap('lexima.vim')
 endif
 
 if neobundle#tap('neocomplete')
-  function! neobundle#hooks.on_source(bundle)
+  " function! neobundle#hooks.on_source(bundle)
     let g:neocomplete_text_mode_filetypes = {
           \ 'text' : 1,
           \ 'txt' : 1
@@ -811,6 +811,14 @@ if neobundle#tap('neocomplete')
     if !exists('g:neocomplete#keyword_patterns')
       let g:neocomplete#keyword_patterns = {}
     endif
+
+    if !exists('g:neocomplete#force_omni_input_patterns')
+      let g:neocomplete#force_omni_input_patterns = {}
+    endif
+
+    let g:neocomplete#force_omni_input_patterns.cpp =
+          \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+
     let g:neocomplete#keyword_patterns['default'] = '\h\w*'
     " Enable heavy omni completion.
     if !exists('g:neocomplete#sources#omni#input_patterns')
@@ -822,7 +830,7 @@ if neobundle#tap('neocomplete')
     let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 
     let g:neocomplete#force_overwrite_completefunc = 1
-  endfunction
+  " endfunction
 
   inoremap <expr><C-g>     neocomplete#undo_completion()
   imap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>

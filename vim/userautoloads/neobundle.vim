@@ -246,12 +246,16 @@ NeoBundle 'altercation/vim-colors-solarized'
 
 """""""""""cpp""""""""""
 NeoBundleLazy 'vim-jp/cpp-vim', {
-      \ 'autoload' : {'filetypes' : 'cpp'}
+      \ 'autoload' : {
+      \ 'filetypes' : 'cpp'
+      \ }
       \ }
 
 NeoBundleLazy 'osyo-manga/vim-marching', {
       \ 'depends' : ['Shougo/vimproc.vim', 'osyo-manga/vim-reunions'],
-      \ 'autoload' : {'filetypes' : ['c', 'cpp']}
+      \ 'autoload' : {
+      \ 'filetypes' : ['c', 'cpp']
+      \ }
       \ }
 
 NeoBundle 'rhysd/wandbox-vim'
