@@ -707,7 +707,10 @@ if neobundle#tap('vim-marching')
     let g:marching_clang_command_option="-std=c++11"
 
     " インクルードディレクトリのパスを設定
-    let g:marching_include_paths = ['/Library/Developer/CommandLineTools/usr/include/c++/v1/']
+    let g:marching_include_paths = [
+          \ '/Library/Developer/CommandLineTools/usr/include/c++/v1/',
+          \ '/usr/include'
+          \ ]
 
     " filter(
     " \ split(glob('/usr/include/c++/*/'), '\n'),
