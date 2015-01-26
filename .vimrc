@@ -388,6 +388,29 @@ function! s:cocos2d()
   return b:cocos_dir
 endfunction
 
+function! s:cpp_watchdogs(is_cocos_dir)
+    let g:quickrun_config['cpp/watchdogs_checker'] = {
+          \ 'type' : 'watchdogs_checker/clang++'
+          \}
+
+    let g:quickrun_config['watchdogs_checker/clang++'] = {
+          \ 'command' : 'clang++',
+          \ 'cmdopt' : '--std=c++11 --stdlib=libc++ -Wall -Wextra -I ',
+          \ 'exec' : '%c %o -fsyntax-only %s:p',
+          \ }
+
+    if a:is_cocos_dir ? 0 : 1
+      "have to include cocos2d/cocos/platform/ios and so on
+      let l:path_list = map(filter(filter(split(&path, ','),  'isdirectory(v:val)'), 'v:val !~ "^\\.$"'), '"-I " . v:val')
+      let l:opt = '--std=c++11 --stdlib=libc++ -Wall -Wextra'
+      let g:quickrun_config['watchdogs_checker/clang++'] = {
+            \ 'command' : 'clang++',
+            \ 'cmdopt' : l:opt . ' ' . join(l:path_list),
+            \ 'exec' : '%c %o -fsyntax-only %s:p',
+            \ }
+    endif
+endfunction
+
 MyAutoCmd FileType cpp call s:cpp()
 
 function! s:c()
