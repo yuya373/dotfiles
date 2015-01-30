@@ -173,7 +173,6 @@ if neobundle#tap('nebula.vim')
   call neobundle#untap()
 endif
 
-
 if neobundle#tap('unite.vim')
   function! neobundle#hooks.on_source(bundle)
     let g:unite_enable_start_insert = 1
@@ -252,6 +251,7 @@ if neobundle#tap('unite.vim')
     nnoremap <silent> [unite]j :RootAndUnite file file/new directory/new -input=app/assets/javascripts/ -buffer-name=js<CR>
     nnoremap <silent> [unite]a :RootAndUnite file file/new directory/new -input=app/ -buffer-name=app<CR>
     nnoremap <silent> [unite]s :RootAndUnite file file/new directory/new -input=spec/ -buffer-name=spec<CR>
+    nnoremap <silent> [unite]l :RootAndUnite file file/new directory/new -input=lib/ -buffer-name=lib<CR>
   endif
 
   call neobundle#untap()
