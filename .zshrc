@@ -7,6 +7,11 @@ if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 export PYENV_ROOT=/usr/local/opt/pyenv
 
 # Customize to your needs...
+#keybind
+bindkey -v
+bindkey -v '^Y' push-line
+bindkey -a 'H' run-help
+
 source ~/.zsh_dep
 source ~/dotfiles/.zshfunc
 
