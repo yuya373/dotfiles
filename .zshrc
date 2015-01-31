@@ -12,6 +12,11 @@ if [ -e ${HOME}/.zsh_aliases ]; then
 fi
 source ~/dotfiles/.zshfunc
 
+#keybind
+bindkey -v
+bindkey -v '^Y' push-line
+bindkey -a 'H' run-help
+
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets cursor line)
 source ~/dotfiles/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
