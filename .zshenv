@@ -5,9 +5,9 @@ if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprofile"
 fi
 
-source ~/dotfiles/.tmux-powerlinerc.default
-
-export PATH=/usr/local/bin:${PATH}
+if [ -e ${HOME}/.my_zshenv ]; then
+  source ${HOME}/.my_zshenv
+fi
 
 if [ -e ${HOME}/.cabel/bin ]; then
   export PATH=${HOME}/.cabal/bin:${PATH}
@@ -25,9 +25,6 @@ if [ -d ${HOME}/.rbenv ] ; then
   eval "$(rbenv init -)"
 fi
 
-export HOMEBREW_CASK_OPTS="--appdir=/Applications"
-
 export LANG=ja_JP.UTF-8
 export EDITOR=vim
 
-export LIB_CLANG_DIR=/Library/Developer/CommandLineTools/usr/lib
