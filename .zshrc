@@ -7,7 +7,9 @@ if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 export PYENV_ROOT=/usr/local/opt/pyenv
 
 # Customize to your needs...
-source ~/.zsh_dep
+if [ -e ${HOME}/.zsh_aliases ]; then
+  source ~/.zsh_aliases
+fi
 source ~/dotfiles/.zshfunc
 
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets cursor line)
