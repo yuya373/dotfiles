@@ -17,6 +17,10 @@ bindkey -v
 bindkey -v '^Y' push-line
 bindkey -a 'H' run-help
 
+#opp.zsh
+source ~/dotfiles/opp.zsh/opp.zsh
+source ~/dotfiles/opp.zsh/opp/*.zsh
+
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets cursor line)
 source ~/dotfiles/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
