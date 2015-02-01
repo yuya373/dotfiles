@@ -15,6 +15,10 @@ source ~/dotfiles/.zshfunc
 #keybind
 bindkey -v
 bindkey -v '^Y' push-line
+bindkey -v '^J' vi-cmd-mode
+
+autoload -Uz run-help
+autoload -Uz run-help-git
 bindkey -a 'H' run-help
 
 #opp.zsh
