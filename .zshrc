@@ -42,6 +42,7 @@ bindkey '^o' dev_pcd
 
 setopt nonomatch
 
+alias du-cwd='du -mc -d 1 | sort -g'
 alias reload='source ~/.zshrc'
 alias gitf='git-flow'
 
