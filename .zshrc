@@ -28,6 +28,7 @@ source ~/dotfiles/opp.zsh/opp/*.zsh
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets cursor line)
 source ~/dotfiles/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+fpath=(/usr/local/share/zsh-completions $fpath)
 fpath=(~/dotfiles/.zprezto/modules/completion/external/src $fpath)
 fpath=(/usr/local/share/zsh/site-functions $fpath)
 autoload -U compinit
