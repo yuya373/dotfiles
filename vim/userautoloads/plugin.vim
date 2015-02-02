@@ -250,8 +250,12 @@ if neobundle#tap('unite.vim')
     nnoremap <silent> [unite]v :RootAndUnite file file/new directory/new -input=app/views/ -buffer-name=views<CR>
     nnoremap <silent> [unite]j :RootAndUnite file file/new directory/new -input=app/assets/javascripts/ -buffer-name=js<CR>
     nnoremap <silent> [unite]a :RootAndUnite file file/new directory/new -input=app/ -buffer-name=app<CR>
-    nnoremap <silent> [unite]s :RootAndUnite file file/new directory/new -input=spec/ -buffer-name=spec<CR>
     nnoremap <silent> [unite]l :RootAndUnite file file/new directory/new -input=lib/ -buffer-name=lib<CR>
+    nnoremap <silent> [unite]sm :RootAndUnite file file/new directory/new -input=spec/models/ -buffer-name=spec/models<CR>
+    nnoremap <silent> [unite]sl :RootAndUnite file file/new directory/new -input=spec/lib/ -buffer-name=spec/lib<CR>
+    nnoremap <silent> [unite]sr :RootAndUnite file file/new directory/new -input=spec/requests/ -buffer-name=spec/requests<CR>
+    nnoremap <silent> [unite]sf :RootAndUnite file file/new directory/new -input=spec/factories/ -buffer-name=spec/factories<CR>
+    nnoremap <silent> [unite]s :RootAndUnite file file/new directory/new -input=spec/ -buffer-name=spec<CR>
   endif
 
   call neobundle#untap()
