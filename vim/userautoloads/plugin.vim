@@ -703,12 +703,12 @@ if neobundle#tap('context_filetype.vim')
 endif
 
 if neobundle#tap('vim-marching')
-  function! neobundle#hooks.on_source(bundle)
+  " function! neobundle#hooks.on_source(bundle)
     " clang コマンドの設定
     let g:marching_clang_command = "/usr/bin/clang"
 
     " オプションを追加する場合
-    let g:marching_clang_command_option="-std=c++11"
+    let g:marching_clang_command_option="-std=c++1y"
 
     " インクルードディレクトリのパスを設定
     let g:marching_include_paths = [
@@ -724,7 +724,7 @@ if neobundle#tap('vim-marching')
     " neocomplete.vim と併用して使用する場合は以下の設定を行う
     let g:marching_enable_neocomplete = 1
 
-  endfunction
+  " endfunction
 
   call neobundle#untap()
 endif
