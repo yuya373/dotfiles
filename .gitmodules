@@ -4,3 +4,6 @@
 [submodule "opp.zsh"]
 	path = opp.zsh
 	url = git@github.com:hchbaw/opp.zsh.git
+[submodule ".zprezto"]
+	path = .zprezto
+	url = git@github.com:yuya373/prezto.git
