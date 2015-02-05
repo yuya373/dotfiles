@@ -7,3 +7,6 @@
 [submodule ".zprezto"]
 	path = .zprezto
 	url = git@github.com:yuya373/prezto.git
+[submodule "zsh-notify"]
+	path = zsh-notify
+	url = https://github.com/marzocchi/zsh-notify
