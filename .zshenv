@@ -25,6 +25,8 @@ if [ -d ${HOME}/.rbenv ] ; then
   eval "$(rbenv init -)"
 fi
 
+export SYS_NOTIFIER=`which terminal-notifier`
+
 export LANG=ja_JP.UTF-8
 export EDITOR=vim
 

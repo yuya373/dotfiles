@@ -12,6 +12,9 @@ if [ -e ${HOME}/.zsh_aliases ]; then
 fi
 source ~/dotfiles/.zshfunc
 
+# terminal-notifier
+source ~/dotfiles/zsh-notify/notify.plugin.zsh
+
 #keybind
 bindkey -v
 bindkey -v '^Y' push-line
