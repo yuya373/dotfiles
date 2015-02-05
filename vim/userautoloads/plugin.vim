@@ -630,13 +630,13 @@ if neobundle#tap('vim-json')
 endif
 
 if neobundle#tap('memolist.vim')
-  function! neobundle#hooks.on_source(bundle)
+  " function! neobundle#hooks.on_source(bundle)
     let g:memolist_path = "~/Dropbox/memo"
     let g:memolist_unite = 1
     let g:memolist_unite_source = "file_rec"
     let g:memolist_unite_option = "-start-insert"
     let g:memolist_memo_date = "%Y-%m-%d-%a %H:%M"
-  endfunction
+  " endfunction
 
   nnoremap <Leader>mn  :MemoNew<CR>
   nnoremap <Leader>ml  :MemoList<CR>
