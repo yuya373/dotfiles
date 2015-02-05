@@ -19,7 +19,18 @@ bindkey -v '^J' vi-cmd-mode
 
 autoload -Uz run-help
 autoload -Uz run-help-git
+
 bindkey -a 'H' run-help
+bindkey -a '^r' peco-select-history
+bindkey -a '^@' peco-cdr
+bindkey -a '^o' dev_pcd
+
+# from .zshfunc
+bindkey '^m' do_enter
+bindkey '^r' peco-select-history
+bindkey '^@' peco-cdr
+bindkey '^v' peco-find-file
+bindkey '^o' dev_pcd
 
 #opp.zsh
 source ~/dotfiles/opp.zsh/opp.zsh
@@ -34,12 +45,6 @@ fpath=(/usr/local/share/zsh/site-functions $fpath)
 autoload -U compinit
 compinit
 
-# from .zshfunc
-bindkey '^m' do_enter
-bindkey '^r' peco-select-history
-bindkey '^@' peco-cdr
-bindkey '^v' peco-find-file
-bindkey '^o' dev_pcd
 
 setopt nonomatch
 
