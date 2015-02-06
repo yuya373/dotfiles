@@ -10,3 +10,6 @@
 [submodule "zsh-notify"]
 	path = zsh-notify
 	url = https://github.com/marzocchi/zsh-notify
+[submodule "cdd"]
+	path = cdd
+	url = https://github.com/m4i/cdd
