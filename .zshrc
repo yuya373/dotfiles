@@ -48,7 +48,6 @@ fpath=(/usr/local/share/zsh/site-functions $fpath)
 autoload -U compinit
 compinit
 
-
 setopt nonomatch
 
 alias du-cwd='du -mc -d 1 | sort -g'
@@ -100,5 +99,14 @@ if ! is_screen_or_tmux_running && shell_has_started_interactively; then
     fi
   done
 fi
+
+## For cdd
+# http://blog.m4i.jp/entry/2012/01/26/064329
+#
+source ~/dotfiles/cdd/cdd
+
+chpwd() {
+  _cdd_chpwd
+}
 
 PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
