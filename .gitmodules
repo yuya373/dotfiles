@@ -13,3 +13,6 @@
 [submodule "cdd"]
 	path = cdd
 	url = https://github.com/m4i/cdd
+[submodule "git-it-on.zsh"]
+	path = git-it-on.zsh
+	url = https://github.com/peterhurford/git-it-on.zsh
