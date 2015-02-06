@@ -25,7 +25,9 @@ if [ -d ${HOME}/.rbenv ] ; then
   eval "$(rbenv init -)"
 fi
 
+export EDITOR='vim'
 export SYS_NOTIFIER=`which terminal-notifier`
 export HOMEBREW_CASK_OPTS='--appdir=/Applications'
 export LANG=ja_JP.UTF-8
-
+export PAGER='less'
+export LESS='-F -g -i -M -R -S -w -X -z-4'
