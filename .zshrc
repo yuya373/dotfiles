@@ -15,6 +15,17 @@ source ~/dotfiles/.zshfunc
 # terminal-notifier
 source ~/dotfiles/zsh-notify/notify.plugin.zsh
 
+# git-it-on
+source ~/dotfiles/git-it-on.zsh/git-it-on.plugin.zsh
+
+#Gitit Aliases
+alias compare="gitit compare"
+alias commits="gitit commits"
+alias branch="gitit branch"
+alias gistory="gitit history"
+alias prs="gitit pulls"
+alias myprs="gitit pulls author:yuya373" #put your name here
+
 #keybind
 bindkey -v
 bindkey -v '^Y' push-line
