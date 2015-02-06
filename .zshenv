@@ -26,6 +26,6 @@ if [ -d ${HOME}/.rbenv ] ; then
 fi
 
 export SYS_NOTIFIER=`which terminal-notifier`
-
+export HOMEBREW_CASK_OPTS='--appdir=/Applications'
 export LANG=ja_JP.UTF-8
 
