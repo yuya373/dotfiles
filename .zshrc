@@ -61,6 +61,7 @@ compinit
 
 setopt nonomatch
 
+alias brew='brew-file-brew'
 alias du-cwd='du -mc -d 1 | sort -g'
 alias reload='source ~/.zshrc'
 alias gitf='git-flow'

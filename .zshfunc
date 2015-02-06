@@ -144,3 +144,19 @@ function my_reset_prompt()
   zle reset-prompt
 }
 
+function brew-file-brew()
+{
+  brew-file-install()
+  {
+    brew-file brew install $*
+  }
+  case "$1" in
+    install | i)
+      echo "Brew-file update Brewfile"
+      shift
+      brew-file-install $*
+      ;;
+    *)
+      brew $*
+  esac
+}
