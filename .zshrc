@@ -13,7 +13,11 @@ fi
 source ~/dotfiles/.zshfunc
 
 # terminal-notifier
-source ~/dotfiles/zsh-notify/notify.plugin.zsh
+case "${OSTYPE}" in
+  darwin*)
+    source ~/dotfiles/zsh-notify/notify.plugin.zsh
+    ;;
+esac
 
 # git-it-on
 source ~/dotfiles/git-it-on.zsh/git-it-on.plugin.zsh
