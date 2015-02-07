@@ -130,7 +130,10 @@ function tmux_window_name()
     tmux rename-window ${PWD:t}
   fi
 }
-add-zsh-hook precmd tmux_window_name
+if [ -n "$TMUX" ]; then
+  echo "tmux is running"
+  add-zsh-hook precmd tmux_window_name
+fi
 
 function my_reset_prompt()
 {
