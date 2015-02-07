@@ -7,6 +7,12 @@ if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 export PYENV_ROOT=/usr/local/opt/pyenv
 
 # Customize to your needs...
+
+# cdr, add-zsh-hook を有効にする
+autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
+autoload -Uz run-help
+autoload -Uz run-help-git
+
 if [ -e ${HOME}/.zsh_aliases ]; then
   source ~/.zsh_aliases
 fi
@@ -35,8 +41,6 @@ bindkey -v
 bindkey -v '^Y' push-line
 bindkey -v '^J' vi-cmd-mode
 
-autoload -Uz run-help
-autoload -Uz run-help-git
 
 bindkey -a 'H' run-help
 bindkey -a '^r' peco-select-history
@@ -70,8 +74,6 @@ alias du-cwd='du -mc -d 1 | sort -g'
 alias reload='source ~/.zshrc'
 alias gitf='git-flow'
 
-# cdr, add-zsh-hook を有効にする
-autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
 add-zsh-hook chpwd chpwd_recent_dirs
 
 # cdr の設定
