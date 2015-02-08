@@ -131,7 +131,6 @@ function tmux_window_name()
   fi
 }
 if [ -n "$TMUX" ]; then
-  echo "tmux is running"
   add-zsh-hook precmd tmux_window_name
 fi
 
