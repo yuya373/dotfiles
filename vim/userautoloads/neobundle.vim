@@ -356,6 +356,12 @@ NeoBundleLazy 'severin-lemaignan/vim-minimap', {
 
 NeoBundle 'itchyny/vim-autoft'
 
+NeoBundleLazy 'ryanss/vim-hackernews', {
+      \ 'autoload' : {
+      \ 'commands' : ['HackerNews']
+      \ }
+      \ }
+
 NeoBundleCheck
 
 call neobundle#end()
