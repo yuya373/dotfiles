@@ -375,6 +375,14 @@ NeoBundleLazy 'rhysd/unite-codic.vim', {
       \ }
       \ }
 
+NeoBundleLazy 'junegunn/vim-github-dashboard', {
+      \ 'autoload' : {
+      \ 'commands' : ['GHA', 'GHD']
+      \ }
+      \ }
+
+NeoBundle 'supermomonga/thingspast.vim'
+
 NeoBundleCheck
 
 call neobundle#end()
