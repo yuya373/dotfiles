@@ -362,6 +362,19 @@ NeoBundleLazy 'ryanss/vim-hackernews', {
       \ }
       \ }
 
+NeoBundleLazy 'koron/codic-vim', {
+      \ 'autoload' : {
+      \ 'commands' : ['Codic']
+      \ }
+      \ }
+
+NeoBundleLazy 'rhysd/unite-codic.vim', {
+      \ 'depends' : ['Shougo/unite.vim', 'koron/codic-vim'],
+      \ 'autoload' :{
+      \ 'on_source' : ['unite.vim']
+      \ }
+      \ }
+
 NeoBundleCheck
 
 call neobundle#end()
