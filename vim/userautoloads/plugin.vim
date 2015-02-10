@@ -160,7 +160,7 @@ endif
 if neobundle#tap('vimshell.vim')
   nnoremap <Leader>vst :VimShellTab<CR>
   nnoremap <Leader>vsp :VimShellPop<CR>
-  nnoremap <Leader>s :shell<CR>
+  nnoremap <Leader>s :VimShellTab<CR>
   let g:vimshell_editor_command = exepath('mvim')
   call neobundle#untap()
 endif
