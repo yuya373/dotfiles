@@ -477,22 +477,22 @@ MyAutoCmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 MyAutoCmd FileType python setlocal omnifunc=pythoncomplete#Complete
 MyAutoCmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
-MyAutoCmd FileType vimshell call vimshell#hook#add('postexec', 'thingspast_vimshell', 'ThingsPastVimShell')
+" MyAutoCmd FileType vimshell call vimshell#hook#add('postexec', 'thingspast_vimshell', 'ThingsPastVimShell')
 
-function! s:my_on_add_hook(thing)
-  echo 'New notification: ' . a:thing['message']
-endfunction
-
-let g:thingspast_hooks = {"on_add" : {}}
-let g:thingspast_hooks.on_add['cmdline'] = function('s:my_on_add_hook')
-
-function! s:vimshell_buffer_move()
-  exec 'VimShellTab'
-endfunction
-
-function! ThingsPastVimShell(args, context)
-  " let l:args = a:args
-  " let l:context = a:context
-  " call vimshell#execute('ls')
-  call thingspast#add('VimShell', 'PostExec', a:args, a:context, function('s:vimshell_buffer_move'), [])
-endfunction
+" function! s:my_on_add_hook(thing)
+"   echo 'New notification: ' . a:thing['message']
+" endfunction
+"
+" let g:thingspast_hooks = {"on_add" : {}}
+" let g:thingspast_hooks.on_add['cmdline'] = function('s:my_on_add_hook')
+"
+" function! s:vimshell_buffer_move()
+"   exec 'VimShellTab'
+" endfunction
+"
+" function! ThingsPastVimShell(args, context)
+"   " let l:args = a:args
+"   " let l:context = a:context
+"   " call vimshell#execute('ls')
+"   call thingspast#add('VimShell', 'PostExec', a:args, a:context, function('s:vimshell_buffer_move'), [])
+" endfunction
