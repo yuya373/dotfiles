@@ -159,9 +159,8 @@ endif
 
 if neobundle#tap('vimshell.vim')
   nnoremap <Leader>vst :VimShellTab<CR>
-  nnoremap <Leader>vsp :VimShellPop<CR>
-  nnoremap <Leader>s :shell<CR>
-  let g:vimshell_editor_command = exepath('mvim')
+  nnoremap <Leader>vsp :VimShellPop -toggle<CR>
+  nnoremap <Leader>s :VimShell -toggle<CR>
   call neobundle#untap()
 endif
 
