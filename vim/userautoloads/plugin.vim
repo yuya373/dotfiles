@@ -959,4 +959,11 @@ if neobundle#tap('vim-github-dashboard')
         \ }
   command! Palmxapi execute('GHA aktsk/palmx-api')
   command! Yuya373 execute('GHD yuya373')
+  call neobundle#untap()
+endif
+
+if neobundle#tap('github-issues')
+  g:gissues_async_omni = 1
+  g:github_same_window = 1
+  call neobundle#untap()
 endif
