@@ -5,6 +5,10 @@ if has('vim_starting')
   runtime! /userautoloads/*.vim
 endif
 
+if getftime($HOME.'/.secret.vim') > 0
+  execute 'source ~/.secret.vim'
+endif
+
 command! Edit :tabedit ~/.vimrc
 command! Reload :so ~/.vimrc
 
