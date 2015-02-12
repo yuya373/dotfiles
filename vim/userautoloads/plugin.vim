@@ -952,3 +952,11 @@ if neobundle#tap('vim-autoft')
 
   call neobundle#untap()
 endif
+
+if neobundle#tap('vim-github-dashboard')
+  let g:github_dashboard = {
+        \ 'username' : 'yuya373'
+        \ }
+  command! Palmxapi execute('GHA aktsk/palmx-api')
+  command! Yuya373 execute('GHD yuya373')
+endif
