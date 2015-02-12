@@ -383,6 +383,12 @@ NeoBundleLazy 'junegunn/vim-github-dashboard', {
 
 NeoBundle 'supermomonga/thingspast.vim'
 
+NeoBundleLazy 'jaxbot/github-issues.vim', {
+      \ 'autoload' : {
+      \ 'on_source' : ['vim-fugitive']
+      \ }
+      \ }
+
 NeoBundleCheck
 
 call neobundle#end()
