@@ -385,6 +385,14 @@ NeoBundle 'supermomonga/thingspast.vim'
 
 NeoBundle 'yuya373/github-issues.vim', 'fix_for_unicode_encodeerror'
 
+NeoBundleLazy 'yuratomo/w3m.vim', {
+      \ 'autoload' : {
+      \ 'commands' : [
+      \ 'W3m', 'W3mTab', 'W3mSplit', 'W3mVSplit'
+      \ ]
+      \ }
+      \ }
+
 NeoBundleCheck
 
 call neobundle#end()

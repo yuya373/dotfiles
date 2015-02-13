@@ -967,3 +967,25 @@ if neobundle#tap('github-issues')
   g:github_same_window = 1
   call neobundle#untap()
 endif
+
+if neobundle#tap('w3m.vim')
+  nnoremap <Leader>ww :<C-u>W3m
+  nnoremap <Leader>wt :<C-u>W3mTab
+  nnoremap <Leader>ws :<C-u>W3mSplit
+  nnoremap <Leader>wv :<C-u>W3mVSplit
+
+  " let g:w3m#homepage = "http://www.google.co.jp/"
+
+  " function! s:w3m_buffer_map() abort
+  "   nnoremap r :W3mReload
+  "   nnoremap e :W3mShowExternalBrowser
+  "   nnoremap <Leader>h :W3mHistory
+  " endfunction
+  "
+  " augroup PluginW3m
+  "   autocmd!
+  "   autocmd filetype w3m call s:w3m_buffer_map()
+  " augroup END
+
+  call neobundle#untap()
+endif
