@@ -151,7 +151,10 @@ if neobundle#tap('diffchar.vim')
   endfunction
 
   if &diff
-    MyAutoCmd VimEnter * execute "%SDChar"
+    augroup PluginDiffchar
+      autocmd!
+      autocmd VimEnter * execute "%SDChar"
+    augroup END
   endif
 
   call neobundle#untap()
