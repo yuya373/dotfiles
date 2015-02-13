@@ -151,7 +151,10 @@ if neobundle#tap('diffchar.vim')
   endfunction
 
   if &diff
-    MyAutoCmd VimEnter * execute "%SDChar"
+    augroup PluginDiffchar
+      autocmd!
+      autocmd VimEnter * execute "%SDChar"
+    augroup END
   endif
 
   call neobundle#untap()
@@ -159,9 +162,8 @@ endif
 
 if neobundle#tap('vimshell.vim')
   nnoremap <Leader>vst :VimShellTab<CR>
-  nnoremap <Leader>vsp :VimShellPop<CR>
-  nnoremap <Leader>s :VimShellTab<CR>
-  let g:vimshell_editor_command = exepath('mvim')
+  nnoremap <Leader>vsp :VimShellPop -toggle<CR>
+  nnoremap <Leader>s :VimShell -toggle<CR>
   call neobundle#untap()
 endif
 
@@ -191,6 +193,7 @@ if neobundle#tap('unite.vim')
     call unite#custom#source('file_rec/async', 'ignore_pattern', '\(png\|gif\|jpeg\|jpg\|csv\)$')
     let g:unite_source_rec_max_cache_files = 50000
     call unite#filters#matcher_default#use(['matcher_fuzzy'])
+    call unite#filters#sorter_default#use(['sorter_selecta'])
   endfunction
 
 
@@ -949,6 +952,43 @@ if neobundle#tap('vim-autoft')
   let g:autoft_config = [
         \ { 'filetype' : 'ruby', 'pattern' : 'create_table' }
         \ ]
+
+  call neobundle#untap()
+endif
+
+if neobundle#tap('vim-github-dashboard')
+  let g:github_dashboard = {
+        \ 'username' : 'yuya373'
+        \ }
+  command! Palmxapi execute('GHA aktsk/palmx-api')
+  command! Yuya373 execute('GHD yuya373')
+  call neobundle#untap()
+endif
+
+if neobundle#tap('github-issues')
+  g:gissues_async_omni = 1
+  g:github_same_window = 1
+  call neobundle#untap()
+endif
+
+if neobundle#tap('w3m.vim')
+  nnoremap <Leader>ww :<C-u>W3m
+  nnoremap <Leader>wt :<C-u>W3mTab
+  nnoremap <Leader>ws :<C-u>W3mSplit
+  nnoremap <Leader>wv :<C-u>W3mVSplit
+
+  " let g:w3m#homepage = "http://www.google.co.jp/"
+
+  " function! s:w3m_buffer_map() abort
+  "   nnoremap r :W3mReload
+  "   nnoremap e :W3mShowExternalBrowser
+  "   nnoremap <Leader>h :W3mHistory
+  " endfunction
+  "
+  " augroup PluginW3m
+  "   autocmd!
+  "   autocmd filetype w3m call s:w3m_buffer_map()
+  " augroup END
 
   call neobundle#untap()
 endif
