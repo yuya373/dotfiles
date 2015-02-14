@@ -28,7 +28,7 @@ esac
 # git-it-on
 source ~/dotfiles/git-it-on.zsh/git-it-on.plugin.zsh
 
-alias emacs="/usr/local/Cellar/emacs/HEAD/Emacs.app/Contents/MacOS/Emacs -nw"
+alias emacs="/usr/local/Cellar/emacs/24.4/Emacs.app/Contents/MacOS/Emacs -nw"
 
 #Gitit Aliases
 alias compare="gitit compare"
