@@ -410,14 +410,13 @@ if neobundle#tap('lightline')
           \   'ctrlpmark': 'CtrlPMark',
           \ },
           \ 'component_expand': {
-          \   'syntaxcheck': 'qfstatusline#Update',
+          \   'qfstatusline': 'qfstatusline#Update',
           \ },
           \ 'component_type': {
-          \   'syntaxcheck': 'error',
+          \   'qfstatusline': 'error',
           \ },
           \ 'subseparator': { 'left': '|', 'right': '|' }
           \ }
-    let g:Qfstatusline#UpdateCmd = function('lightline#update')
     let g:ctrlp_status_func = {
           \ 'main': 'CtrlPStatusFunc_1',
           \ 'prog': 'CtrlPStatusFunc_2',
@@ -990,5 +989,10 @@ if neobundle#tap('w3m.vim')
   "   autocmd filetype w3m call s:w3m_buffer_map()
   " augroup END
 
+  call neobundle#untap()
+endif
+
+if neobundle#tap('vim-qfstatusline')
+  let g:Qfstatusline#UpdateCmd = function('lightline#update')
   call neobundle#untap()
 endif
