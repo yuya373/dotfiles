@@ -534,8 +534,11 @@ if neobundle#tap('vim-quickrun')
           \ "runner" : "vimproc",
           \ "runner/vimproc/sleep" : 10,
           \ "runner/vimproc/updatetime" : 500,
-          \ 'outputter' : 'quickfix',
-          \ "outputter/quickfix/open_cmd" : "copen",
+          \ 'outputter/error/error' : 'quickfix',
+          \ 'outputter/error/success' : 'buffer',
+          \ 'outputter/buffer/close_on_empty' : 1,
+          \ 'outputter/quickfix/open_cmd' : "copen",
+          \ 'outputter/quickfix/close_on_empty' : 1,
           \ }
 
     let g:quickrun_config['coffee'] = {
@@ -566,8 +569,8 @@ if neobundle#tap('vim-watchdogs')
     let g:quickrun_config["watchdogs_checker/_"] = {
           \ 'outputter' : 'quickfix',
           \ 'runner/vimproc/updatetime' : 40,
-          \ "outputter/quickfix/open_cmd" : "",
-          \ 'outputter/quickfix/close_on_empty' : 1,
+          \ "hook/echo/enable" : 1,
+          \ "hook/echo/output_success": "> No Errors Found.",
           \ "hook/copen/enable_exist_data" : 1,
           \ "hook/qfstatusline_update/enable_exit" : 1,
           \ "hook/qfstatusline_update/priority_exit" : 4,
