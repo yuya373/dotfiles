@@ -392,40 +392,38 @@ if neobundle#tap('indentLine')
   call neobundle#untap()
 endif
 
-if neobundle#tap('lightline')
-  function! neobundle#hooks.on_source(bundle)
-    let g:lightline = {
-          \ 'colorscheme': 'solarized',
-          \ 'active': {
-          \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ], ['ctrlpmark'] ],
-          \   'right': [ [ 'qfstatusline', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
-          \ },
-          \ 'component_function': {
-          \   'fugitive': 'MyFugitive',
-          \   'filename': 'MyFilename',
-          \   'fileformat': 'MyFileformat',
-          \   'filetype': 'MyFiletype',
-          \   'fileencoding': 'MyFileencoding',
-          \   'mode': 'MyMode',
-          \   'ctrlpmark': 'CtrlPMark',
-          \ },
-          \ 'component_expand': {
-          \   'qfstatusline': 'qfstatusline#Update',
-          \ },
-          \ 'component_type': {
-          \   'qfstatusline': 'error',
-          \ },
-          \ 'subseparator': { 'left': '|', 'right': '|' }
-          \ }
-    let g:ctrlp_status_func = {
-          \ 'main': 'CtrlPStatusFunc_1',
-          \ 'prog': 'CtrlPStatusFunc_2',
-          \ }
-    let g:tagbar_status_func = 'TagbarStatusFunc'
-    let g:unite_force_overwrite_statusline = 0
-    let g:vimfiler_force_overwrite_statusline = 0
-    let g:vimshell_force_overwrite_statusline = 0
-  endfunction
+if neobundle#tap('lightline.vim')
+  let g:lightline = {
+        \ 'colorscheme': 'solarized',
+        \ 'active': {
+        \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ], ['ctrlpmark'] ],
+        \   'right': [ [ 'qfstatusline', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
+        \ },
+        \ 'component_function': {
+        \   'fugitive': 'MyFugitive',
+        \   'filename': 'MyFilename',
+        \   'fileformat': 'MyFileformat',
+        \   'filetype': 'MyFiletype',
+        \   'fileencoding': 'MyFileencoding',
+        \   'mode': 'MyMode',
+        \   'ctrlpmark': 'CtrlPMark',
+        \ },
+        \ 'component_expand': {
+        \   'qfstatusline': 'qfstatusline#Update',
+        \ },
+        \ 'component_type': {
+        \   'qfstatusline': 'error',
+        \ },
+        \ 'subseparator': { 'left': '|', 'right': '|' }
+        \ }
+  let g:ctrlp_status_func = {
+        \ 'main': 'CtrlPStatusFunc_1',
+        \ 'prog': 'CtrlPStatusFunc_2',
+        \ }
+  let g:tagbar_status_func = 'TagbarStatusFunc'
+  let g:unite_force_overwrite_statusline = 0
+  let g:vimfiler_force_overwrite_statusline = 0
+  let g:vimshell_force_overwrite_statusline = 0
 
   function! MyModified()
     return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
@@ -507,7 +505,6 @@ if neobundle#tap('lightline')
     return lightline#statusline(0)
   endfunction
 
-
   function! TagbarStatusFunc(current, sort, fname, ...) abort
     let g:lightline.fname = a:fname
     return lightline#statusline(0)
@@ -573,7 +570,7 @@ if neobundle#tap('vim-watchdogs')
           \ 'outputter/quickfix/close_on_empty' : 1,
           \ "hook/copen/enable_exist_data" : 1,
           \ "hook/qfstatusline_update/enable_exit" : 1,
-          \ "hook/qfstatusline_update/priority_exit" : 3,
+          \ "hook/qfstatusline_update/priority_exit" : 4,
           \ }
 
     let g:quickrun_config['ruby/watchdogs_checker'] = {
