@@ -93,7 +93,7 @@ NeoBundle "osyo-manga/vim-watchdogs", {
       \ 'depends' : ['thinca/vim-quickrun', 'osyo-manga/shabadou.vim']
       \ }
 NeoBundle 'cohama/vim-hier'
-" NeoBundle "dannyob/quickfixstatus"
+NeoBundle "dannyob/quickfixstatus"
 NeoBundle "KazuakiM/vim-qfstatusline"
 NeoBundle 'KazuakiM/vim-qfsigns'
 
