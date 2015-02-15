@@ -47,6 +47,8 @@ MyAutoCmd FileType unite call s:unite_my_settings()
 " MyAutoCmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
 " MyAutoCmd FileType markdown setlocal noautoindent nosmartindent
 
+"matchit読み込み
+source $VIMRUNTIME/macros/matchit.vim
 
 " display
 " ----------------------
