@@ -534,9 +534,7 @@ if neobundle#tap('vim-quickrun')
           \ "runner" : "vimproc",
           \ "runner/vimproc/sleep" : 10,
           \ "runner/vimproc/updatetime" : 500,
-          \ 'outputter/error/error' : 'quickfix',
-          \ 'outputter/error/success' : 'buffer',
-          \ 'outputter/buffer/close_on_empty' : 1,
+          \ 'outputter' : 'quickfix',
           \ 'outputter/quickfix/open_cmd' : "copen",
           \ 'outputter/quickfix/close_on_empty' : 1,
           \ }
@@ -574,6 +572,7 @@ if neobundle#tap('vim-watchdogs')
           \ "hook/copen/enable_exist_data" : 1,
           \ "hook/qfstatusline_update/enable_exit" : 1,
           \ "hook/qfstatusline_update/priority_exit" : 4,
+          \ 'outputter/quickfix/open_cmd' : "copen",
           \ }
 
     let g:quickrun_config['ruby/watchdogs_checker'] = {
