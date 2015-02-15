@@ -569,19 +569,35 @@ if neobundle#tap('vim-watchdogs')
           \ 'runner/vimproc/updatetime' : 40,
           \ "hook/echo/enable" : 1,
           \ "hook/echo/output_success": "> No Errors Found.",
-          \ "hook/copen/enable_exist_data" : 1,
           \ "hook/qfstatusline_update/enable_exit" : 1,
           \ "hook/qfstatusline_update/priority_exit" : 4,
+          \ 'hook/hier_update/enable_exit' : 1,
+          \ 'hook/hier_update/priority_exit' : 4,
+          \ 'hook/quickfix_status_enable/enable_exit' : 1,
           \ 'outputter/quickfix/open_cmd' : "copen",
           \ }
 
+    " quickrun終わったら自動で呼びたい
+    " HierUpdate
+    " QuickfixStatusEnable
+    " QfstatuslineUpdate
+
     let g:quickrun_config['ruby/watchdogs_checker'] = {
-          \ 'type' : 'rubocop'
+          \ 'type' : 'rubocop',
+          \ 'outputter' : 'quickfix',
+          \ 'hook/close_quickfix/enable_exit': 1,
+          \ 'runner/vimproc/updatetime' : 40,
+          \ "hook/echo/enable" : 1,
+          \ "hook/echo/output_success": "> No Errors Found.",
+          \ "hook/qfstatusline_update/enable_exit" : 1,
+          \ "hook/qfstatusline_update/priority_exit" : 4,
+          \ 'hook/hier_update/enable_exit' : 1,
+          \ 'hook/hier_update/priority_exit' : 4,
+          \ 'hook/quickfix_status_enable/enable_exit' : 1,
           \}
 
-    " let g:quickrun_config['watchdogs_checker/rubocop'] = {
-    " \ 'cmdopt' : '-c ~/.rubocop.yml'
-    " \}
+    let g:quickrun_config['watchdogs_checker/rubocop'] = {
+          \ }
 
     call watchdogs#setup(g:quickrun_config)
 
