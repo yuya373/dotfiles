@@ -434,7 +434,8 @@ if neobundle#tap('lightline.vim')
   endfunction
 
   function! MyFilename()
-    let fname = expand('%:t')
+    let dname = expand('%:h') "vim/userautoloads
+    let fname =  dname.'/'.expand('%:t') "plugin.vim
     return fname == 'ControlP' ? g:lightline.ctrlp_item :
           \ fname == '__Tagbar__' ? g:lightline.fname :
           \ fname =~ '__Gundo\|NERD_tree' ? '' :
