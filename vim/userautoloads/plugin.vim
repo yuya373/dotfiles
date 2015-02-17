@@ -538,6 +538,8 @@ if neobundle#tap('vim-quickrun')
           \ 'outputter' : 'quickfix',
           \ 'outputter/quickfix/open_cmd' : "copen",
           \ 'outputter/quickfix/close_on_empty' : 1,
+          \ 'hook/inu/enable' : 1,
+          \ 'hook/inu/echo' : 1,
           \ }
 
     let g:quickrun_config['coffee'] = {
