@@ -383,7 +383,7 @@ NeoBundleLazy 'junegunn/vim-github-dashboard', {
 
 NeoBundle 'supermomonga/thingspast.vim'
 
-NeoBundle 'yuya373/github-issues.vim', 'fix_for_unicode_encodeerror'
+" NeoBundle 'yuya373/github-issues.vim', 'fix_for_unicode_encodeerror'
 
 NeoBundleLazy 'yuratomo/w3m.vim', {
       \ 'autoload' : {
