@@ -555,6 +555,40 @@ if neobundle#tap('vim-quickrun')
             \ }
     endif
 
+    " augroup QuickRunRspec
+    "   autocmd!
+    "   autocmd BufWinEnter *_spec.rb call s:quickrun_rspec()
+    " augroup END
+    "
+    " function! s:quickrun_rspec()
+    "   echom 's:quickrun_rspec()'
+    "   if executable(getcwd().'/bin/spring')
+    "     echomsg 'spring!'
+    "     let b:quickrun_config = { 'type' : 'rspec/spring' }
+    "   else
+    "     let b:quickrun_config = { 'type' : 'rspec/bundler' }
+    " endif
+    "
+    " nnoremap <buffer> ,rc :QuickRun<CR>
+    " nnoremap <buffer> ,rn call s:quickrun_rspec_nearest()
+    " endfunction
+    "
+    " function! s:quickrun_rspec_nearest()
+    "   echom 's:quickrun_rspec_nearest()'
+    "   let src = expand('%').":".line('.')
+    "   exe 'QuickRun -src '.src
+    " endfunction
+    "
+    " let g:quickrun_config['rspec/spring'] = {
+    "       \ 'command' : 'rspec',
+    "       \ 'cmdopt' : '--format documentation -c -p 10',
+    "       \ 'exec' : './bin/spring rspec %o %s',
+    "       \ }
+    " let g:quickrun_config['rspec/bundler'] = {
+    "       \ 'command' : 'rspec',
+    "       \ 'cmdopt' : '--format documentation -c -p 10',
+    "       \ 'exec' : 'bundle exec rspec %o %s',
+    "       \ }
 
   call neobundle#untap()
 endif
