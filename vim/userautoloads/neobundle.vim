@@ -162,13 +162,13 @@ NeoBundle 'tpope/vim-rails'
 NeoBundleLazy 'tpope/vim-haml', {
       \ 'autoload' : { 'filetypes' : 'haml' }
       \ }
-NeoBundleLazy 'alpaca-tc/neorspec.vim', {
-      \ 'depends' : 'tpope/vim-rails',
-      \ 'autoload' : {
-      \   'commands' : [
-      \       'RSpecAll', 'RSpecNearest', 'RSpecRetry',
-      \       'RSpecCurrent', 'RSpec'
-      \ ]}}
+" NeoBundleLazy 'alpaca-tc/neorspec.vim', {
+"       \ 'depends' : 'tpope/vim-rails',
+"       \ 'autoload' : {
+"       \   'commands' : [
+"       \       'RSpecAll', 'RSpecNearest', 'RSpecRetry',
+"       \       'RSpecCurrent', 'RSpec'
+"       \ ]}}
 
 """""""Unite""""""""""""
 NeoBundleLazy 'tacroe/unite-mark', {

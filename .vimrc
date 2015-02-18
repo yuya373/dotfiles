@@ -445,15 +445,15 @@ let g:html5_aria_attributes_complete = 1
 MyAutoCmd BufReadPost $CPP_STDLIB/* if empty(&filetype) | set filetype=cpp | endif
 
 
-function! s:load_rspec_settings()
-  nnoremap <buffer> ,rc  :RSpecCurrent<CR>
-  nnoremap <buffer> ,rn  :RSpecNearest<CR>
-  nnoremap <buffer> ,rl  :RSpecRetry<CR>
-  nnoremap <buffer> ,ra  :RSpecAll<CR>
-  nnoremap <buffer> ,r   :RSpec<Space>
-endfunction
+" function! s:load_rspec_settings()
+"   nnoremap <buffer> ,rc  :RSpecCurrent<CR>
+"   nnoremap <buffer> ,rn  :RSpecNearest<CR>
+"   nnoremap <buffer> ,rl  :RSpecRetry<CR>
+"   nnoremap <buffer> ,ra  :RSpecAll<CR>
+"   nnoremap <buffer> ,r   :RSpec<Space>
+" endfunction
 
-MyAutoCmd BufWinEnter *_spec.rb call s:load_rspec_settings()
+" MyAutoCmd BufWinEnter *_spec.rb call s:load_rspec_settings()
 """"""""""""""go"""""""""""""
 " :Fmt などで gofmt の代わりに goimports を使う
 " let g:gofmt_command = 'goimports'
