@@ -192,10 +192,10 @@ if neobundle#tap('unite.vim')
     call unite#custom#default_action('grep' , 'choosewin/open')
     call unite#custom#source('file_rec/async', 'ignore_pattern', '\(png\|gif\|jpeg\|jpg\|csv\)$')
     let g:unite_source_rec_max_cache_files = 50000
+    let g:unite_source_file_rec_max_cache_files = 50000
     call unite#filters#matcher_default#use(['matcher_fuzzy'])
     call unite#filters#sorter_default#use(['sorter_selecta'])
   endfunction
-
 
   " The prefix key.
   nnoremap    [unite]   <Nop>
@@ -261,6 +261,26 @@ if neobundle#tap('unite.vim')
     nnoremap <silent> [unite]sf :RootAndUnite file file/new directory/new -input=spec/factories/ -buffer-name=spec/factories<CR>
     nnoremap <silent> [unite]s :RootAndUnite file file/new directory/new -input=spec/ -buffer-name=spec<CR>
   endif
+
+
+  function! s:unite_my_settings()
+    " 単語単位からパス単位で削除するように変更
+    nmap <buffer><ESC> <Plug>(unite_exit)
+    imap <buffer> <C-w> <Plug>(unite_delete_backward_path)
+    let unite = unite#get_current_unite()
+    nnoremap <buffer> <expr> <C-f> unite#do_action('choosewin/split')
+    inoremap <buffer> <expr> <C-f> unite#do_action('choosewin/split')
+    nnoremap <buffer> <expr> <C-v> unite#do_action('choosewin/vsplit')
+    inoremap <buffer> <expr> <C-v> unite#do_action('choosewin/vsplit')
+    " dwm.vim で開く
+    " nnoremap <silent> <buffer> <expr> <c-o> unite#do_action('dwm_new')
+    " inoremap <silent> <buffer> <expr> <c-o> unite#do_action('dwm_new')
+  endfunction
+
+  augroup UniteMapping
+    autocmd!
+    autocmd filetype unite call s:unite_my_settings()
+  augroup END
 
   call neobundle#untap()
 endif

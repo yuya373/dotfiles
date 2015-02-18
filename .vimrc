@@ -26,23 +26,6 @@ command!
       \ autocmd<bang> vimrc <args>
 
 
-function! s:unite_my_settings()
-  " 単語単位からパス単位で削除するように変更
-  imap <buffer> <C-w> <Plug>(unite_delete_backward_path)
-  " " ESCキーを2回押すと終了する
-  " nmap <buffer> <ESC><ESC> <Plug>(unite_exit)
-  " imap <buffer> <ESC><ESC> <Plug>(unite_exit)
-  let unite = unite#get_current_unite()
-  nnoremap <buffer> <expr> <C-f> unite#do_action('choosewin/split')
-  inoremap <buffer> <expr> <C-f> unite#do_action('choosewin/split')
-  nnoremap <buffer> <expr> <C-v> unite#do_action('choosewin/vsplit')
-  inoremap <buffer> <expr> <C-v> unite#do_action('choosewin/vsplit')
-  " dwm.vim で開く
-  " nnoremap <silent> <buffer> <expr> <c-o> unite#do_action('dwm_new')
-  " inoremap <silent> <buffer> <expr> <c-o> unite#do_action('dwm_new')
-endfunction
-
-MyAutoCmd FileType unite call s:unite_my_settings()
 
 " MyAutoCmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
 " MyAutoCmd FileType markdown setlocal noautoindent nosmartindent

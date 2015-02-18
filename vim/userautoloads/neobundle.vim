@@ -43,7 +43,7 @@ NeoBundle 'rking/ag.vim'
 NeoBundle 'Yggdroot/indentLine'
 NeoBundleLazy 't9md/vim-choosewin', {
       \ 'autoload' : {
-      \ 'on_source' : 'unite.vim',
+      \ 'on_source' : 'unite-choosewin-actions',
       \ 'mappings' : '<Plug>'
       \ }
       \ }
