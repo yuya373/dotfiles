@@ -538,6 +538,8 @@ if neobundle#tap('vim-quickrun')
           \ 'outputter' : 'quickfix',
           \ 'outputter/quickfix/open_cmd' : "copen",
           \ 'outputter/quickfix/close_on_empty' : 1,
+          \ 'hook/inu/enable' : 1,
+          \ 'hook/inu/echo' : 1,
           \ }
 
     let g:quickrun_config['coffee'] = {
@@ -620,7 +622,6 @@ if neobundle#tap('vim-watchdogs')
     let g:quickrun_config['ruby/watchdogs_checker'] = {
           \ 'type' : 'rubocop',
           \ 'outputter' : 'quickfix',
-          \ 'hook/close_quickfix/enable_exit': 1,
           \ 'runner/vimproc/updatetime' : 40,
           \ "hook/echo/enable" : 1,
           \ "hook/echo/output_success": "> No Errors Found.",
@@ -629,6 +630,7 @@ if neobundle#tap('vim-watchdogs')
           \ 'hook/hier_update/enable_exit' : 1,
           \ 'hook/hier_update/priority_exit' : 4,
           \ 'hook/quickfix_status_enable/enable_exit' : 1,
+          \ 'outputter/quickfix/open_cmd' : "",
           \}
 
     let g:quickrun_config['watchdogs_checker/rubocop'] = {
