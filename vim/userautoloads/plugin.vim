@@ -534,11 +534,12 @@ if neobundle#tap('vim-quickrun')
     let g:quickrun_config._ = {
           \ "runner" : "vimproc",
           \ "runner/vimproc/sleep" : 10,
-          \ "runner/vimproc/updatetime" : 500,
+          \ "runner/vimproc/updatetime" : 50,
           \ 'outputter' : 'quickfix',
           \ 'outputter/quickfix/open_cmd' : "copen",
           \ 'outputter/quickfix/close_on_empty' : 1,
           \ 'hook/inu/enable' : 1,
+          \ 'hook/inu/weight' : 10,
           \ 'hook/inu/echo' : 1,
           \ }
 
