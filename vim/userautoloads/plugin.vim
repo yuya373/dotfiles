@@ -594,7 +594,6 @@ if neobundle#tap('vim-quickrun')
 
     function! s:quickrun_rspec()
       if executable(getcwd().'/bin/spring')
-        echomsg 'spring!'
         let b:quickrun_config = { 'type' : 'rspec/spring' }
       else
         let b:quickrun_config = { 'type' : 'rspec/bundler' }
