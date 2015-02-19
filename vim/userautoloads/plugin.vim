@@ -48,7 +48,7 @@ if neobundle#tap('vim-choosewin')
           \ 'cterm': [ 124, 124 ]
           \ }
   endfunction
-  nmap  -  <Plug>(choosewin)
+  nmap  `  <Plug>(choosewin)
   call neobundle#untap()
 endif
 
