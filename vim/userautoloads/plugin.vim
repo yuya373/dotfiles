@@ -218,7 +218,16 @@ if neobundle#tap('unite.vim')
   nnoremap <silent> ,r  :<C-u>UniteResume search-buffer<CR>
   "mark一覧
   nnoremap <silent> ,m :<C-u>Unite mark<CR>
-  nnoremap <silent> <C-p> :<C-u>Unite -start-insert file_rec/async:!<CR>
+  " nnoremap <silent> <C-p> :<C-u>Unite -start-insert file_rec/async:!<CR>
+  nnoremap <silent> <C-p> :<C-u>call AsyncOrGir()<CR>
+
+  function! AsyncOrGir()
+    if isdirectory(getcwd().'.git')
+      exe 'Unite -start-insert file_rec/git'
+    else
+      exe 'Unite -start-insert file_rec/async:!'
+    endif
+  endfunction
 
   function! s:cd_root_and_unite(...)
     let args = join(a:000, ' ')
