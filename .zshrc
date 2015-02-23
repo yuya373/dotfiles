@@ -67,7 +67,7 @@ fpath=(/usr/local/share/zsh-completions $fpath)
 fpath=(~/dotfiles/.zprezto/modules/completion/external/src $fpath)
 fpath=(/usr/local/share/zsh/site-functions $fpath)
 autoload -U compinit
-compinit
+compinit -C
 
 setopt nonomatch
 
@@ -130,3 +130,7 @@ chpwd() {
 }
 
 # PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
+
+if (which zprof > /dev/null) ;then
+  zprof | less
+fi

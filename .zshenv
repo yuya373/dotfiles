@@ -1,3 +1,5 @@
+# zmodload zsh/zprof && zprof
+
 #for prezto
 # Ensure that a non-login, non-interactive shell has a defined environment.
 
