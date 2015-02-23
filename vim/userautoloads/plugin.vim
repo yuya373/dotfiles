@@ -1044,7 +1044,9 @@ if neobundle#tap('vim-github-dashboard')
 endif
 
 if neobundle#tap('github-issues')
-  g:gissues_async_omni = 1
+  " g:gissues_async_omni = 1
+  " g:gissues_lazy_load = 1
+  g:github_issues_no_omni = 1
   g:github_same_window = 1
   call neobundle#untap()
 endif
