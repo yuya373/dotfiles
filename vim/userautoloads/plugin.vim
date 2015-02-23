@@ -904,6 +904,8 @@ if neobundle#tap('neocomplete')
 
     let g:neocomplete#force_omni_input_patterns.cpp =
           \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+    let g:neocomplete#force_omni_input_patterns.ruby =
+          \ '[^. *\t]\.\w*\|\h\w*::'
 
     let g:neocomplete#keyword_patterns['default'] = '\h\w*'
     " Enable heavy omni completion.
@@ -916,6 +918,8 @@ if neobundle#tap('neocomplete')
     let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 
     let g:neocomplete#force_overwrite_completefunc = 1
+
+    let g:neocomplete#sources#rsense#home_directory = exepath('rsense')
   " endfunction
 
   inoremap <expr><C-g>     neocomplete#undo_completion()

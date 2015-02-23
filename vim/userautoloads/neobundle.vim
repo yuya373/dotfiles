@@ -397,6 +397,11 @@ NeoBundleLazy 'yuratomo/w3m.vim', {
       \ }
       \ }
 
+NeoBundleLazy 'supermomonga/neocomplete-rsense.vim', { 'autoload' : {
+      \ 'insert' : 1,
+      \ 'filetypes': 'ruby',
+      \ }}
+
 NeoBundleCheck
 
 call neobundle#end()
