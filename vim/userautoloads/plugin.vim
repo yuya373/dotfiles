@@ -72,6 +72,15 @@ if neobundle#tap('agit.vim')
   " ri         <Plug>(agit-git-rebase-i)
   nnoremap <Leader>ag :Agit<CR>
   nnoremap <Leader>af :AgitFile<CR>
+
+  function! s:agit_mapping() abort
+    nmap <buffer> cp <Plug>(agit-git-cherry-pick)
+  endfunction
+
+  augroup AgitMapping
+    autocmd!
+    autocmd FileType agit call s:agit_mapping()
+  augroup END
   call neobundle#untap()
 endif
 
