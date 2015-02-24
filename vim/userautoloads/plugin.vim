@@ -564,12 +564,13 @@ if neobundle#tap('vim-quickrun')
           \ "runner" : "vimproc",
           \ "runner/vimproc/sleep" : 10,
           \ "runner/vimproc/updatetime" : 50,
-          \ 'outputter' : 'quickfix',
+          \ 'outputter' : 'buffer',
           \ 'outputter/quickfix/open_cmd' : "copen",
           \ 'outputter/quickfix/close_on_empty' : 1,
           \ 'hook/inu/enable' : 1,
           \ 'hook/inu/weight' : 10,
           \ 'hook/inu/echo' : 1,
+          \ 'hook/back_tabpage/enable': 1,
           \ }
 
     let g:quickrun_config['coffee'] = {
@@ -611,11 +612,13 @@ if neobundle#tap('vim-quickrun')
     let g:quickrun_config['rspec/spring'] = {
           \ 'command' : 'rspec',
           \ 'cmdopt' : '--format documentation -c -p 10',
+          \ 'outputter' : 'quickfix',
           \ 'exec' : './bin/spring rspec %o %s%a',
           \ }
     let g:quickrun_config['rspec/bundler'] = {
           \ 'command' : 'rspec',
           \ 'cmdopt' : '--format documentation -c -p 10',
+          \ 'outputter' : 'quickfix',
           \ 'exec' : 'bundle exec rspec %o %s%a',
           \ }
 
