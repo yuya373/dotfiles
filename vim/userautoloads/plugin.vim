@@ -109,31 +109,6 @@ if neobundle#tap('caw.vim')
   call neobundle#untap()
 endif
 
-if neobundle#tap('alpaca_tags')
-  function! neobundle#hooks.on_source(bundle)
-    let g:alpaca_tags#ctags_bin = exepath('ctags')
-    let g:alpaca_tags#config = {
-          \ '_' : '-R --sort=yes --languages=+Ruby --languages=-js,JavaScript',
-          \ 'js' : '--languages=+js',
-          \ '-js' : '--languages=-js,JavaScript',
-          \ 'vim' : '--languages=+Vim,vim',
-          \ 'php' : '--languages=+php',
-          \ '-vim' : '--languages=-Vim,vim',
-          \ '-style': '--languages=-css,scss,js,JavaScript,html',
-          \ 'scss' : '--languages=+scss --languages=-css',
-          \ 'css' : '--languages=+css',
-          \ 'java' : '--languages=+java $JAVA_HOME/src',
-          \ 'ruby': '--languages=+Ruby',
-          \ 'coffee': '--languages=+coffee',
-          \ '-coffee': '--languages=-coffee',
-          \ 'bundle': '--languages=+Ruby',
-          \ 'cpp' : '--languages=+cpp'
-          \ }
-  endfunction
-  call neobundle#untap()
-endif
-
-
 if neobundle#tap('incsearch.vim')
   function! neobundle#hooks.on_source(bundle)
     let g:incsearch#auto_nohlsearch = 1
@@ -1088,5 +1063,14 @@ endif
 
 if neobundle#tap('vim-qfstatusline')
   let g:Qfstatusline#UpdateCmd = function('lightline#update')
+  call neobundle#untap()
+endif
+
+if neobundle#tap('vim-tags')
+  function! neobundle#hooks.on_source(bundle)
+    let g:vim_tags_auto_generate = 1
+    let g:vim_tags_ctags_binary = exepath('ctags')
+    let g:vim_tags_use_vim_dispatch = 1
+  endfunction
   call neobundle#untap()
 endif
