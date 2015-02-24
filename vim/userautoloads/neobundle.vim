@@ -103,16 +103,6 @@ NeoBundleLazy "tyru/caw.vim", {
       \ }
       \ }
 
-NeoBundleLazy 'alpaca-tc/alpaca_tags', {
-      \ 'depends': ['Shougo/vimproc'],
-      \ 'autoload' : {
-      \   'commands' : [
-      \     { 'name' : 'AlpacaTagsBundle', 'complete': 'customlist,alpaca_tags#complete_source' },
-      \     { 'name' : 'AlpacaTagsUpdate', 'complete': 'customlist,alpaca_tags#complete_source' },
-      \     'AlpacaTagsSet', 'AlpacaTagsCleanCache', 'AlpacaTagsEnable', 'AlpacaTagsDisable', 'AlpacaTagsKillProcess', 'AlpacaTagsProcessStatus',
-      \ ],
-      \ }}
-
 NeoBundleLazy 'haya14busa/incsearch.vim', {
       \ 'autoload' : {
       \ 'mappings' : '<Plug>'
@@ -383,12 +373,29 @@ NeoBundleLazy 'junegunn/vim-github-dashboard', {
 
 NeoBundle 'supermomonga/thingspast.vim'
 
-" NeoBundle 'yuya373/github-issues.vim', 'fix_for_unicode_encodeerror'
+NeoBundleLazy 'yuya373/github-issues.vim', 'fix_for_unicode_encodeerror', {
+      \ 'autoload' : {
+      \ 'commands' : ['Gmiles', 'Gissues']
+      \ }
+      \ }
 
 NeoBundleLazy 'yuratomo/w3m.vim', {
       \ 'autoload' : {
       \ 'commands' : [
       \ 'W3m', 'W3mTab', 'W3mSplit', 'W3mVSplit'
+      \ ]
+      \ }
+      \ }
+
+NeoBundleLazy 'supermomonga/neocomplete-rsense.vim', { 'autoload' : {
+      \ 'insert' : 1,
+      \ 'filetypes': 'ruby',
+      \ }}
+
+NeoBundleLazy 'szw/vim-tags', {
+      \ 'autoload' : {
+      \ 'commands' : [
+      \ 'TagsGenerate', 'TagsGenerate!'
       \ ]
       \ }
       \ }

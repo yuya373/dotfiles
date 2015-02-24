@@ -323,12 +323,11 @@ if executable('ag')
 endif
 
 
-MyAutoCmd BufWritePost Gemfile AlpacaTagsBundle
-MyAutoCmd BufEnter * AlpacaTagsSet
-MyAutoCmd BufWritePost * AlpacaTagsUpdate
-
 """"""""""Tag Jump拡張"""""""""""
 nnoremap <C-]> g<C-]>
+nnoremap <C-v><C-]> :vsp<CR>:exec('tjump '.expand('<cword>'))<CR>
+nnoremap <C-t><C-]> :tabnew<CR>:exec('tjump '.expand('<cword>'))<CR>
+nnoremap <C-w><C-]> :sp<CR>:exec('tjump '.expand('<cword>'))<CR>
 " nmap <C-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 
 set splitright

@@ -72,6 +72,15 @@ if neobundle#tap('agit.vim')
   " ri         <Plug>(agit-git-rebase-i)
   nnoremap <Leader>ag :Agit<CR>
   nnoremap <Leader>af :AgitFile<CR>
+
+  function! s:agit_mapping() abort
+    nmap <buffer> cp <Plug>(agit-git-cherry-pick)
+  endfunction
+
+  augroup AgitMapping
+    autocmd!
+    autocmd FileType agit call s:agit_mapping()
+  augroup END
   call neobundle#untap()
 endif
 
@@ -99,31 +108,6 @@ if neobundle#tap('caw.vim')
   vmap ,, <Plug>(caw:i:toggle)
   call neobundle#untap()
 endif
-
-if neobundle#tap('alpaca_tags')
-  function! neobundle#hooks.on_source(bundle)
-    let g:alpaca_tags#ctags_bin = exepath('ctags')
-    let g:alpaca_tags#config = {
-          \ '_' : '-R --sort=yes --languages=+Ruby --languages=-js,JavaScript',
-          \ 'js' : '--languages=+js',
-          \ '-js' : '--languages=-js,JavaScript',
-          \ 'vim' : '--languages=+Vim,vim',
-          \ 'php' : '--languages=+php',
-          \ '-vim' : '--languages=-Vim,vim',
-          \ '-style': '--languages=-css,scss,js,JavaScript,html',
-          \ 'scss' : '--languages=+scss --languages=-css',
-          \ 'css' : '--languages=+css',
-          \ 'java' : '--languages=+java $JAVA_HOME/src',
-          \ 'ruby': '--languages=+Ruby',
-          \ 'coffee': '--languages=+coffee',
-          \ '-coffee': '--languages=-coffee',
-          \ 'bundle': '--languages=+Ruby',
-          \ 'cpp' : '--languages=+cpp'
-          \ }
-  endfunction
-  call neobundle#untap()
-endif
-
 
 if neobundle#tap('incsearch.vim')
   function! neobundle#hooks.on_source(bundle)
@@ -907,6 +891,8 @@ if neobundle#tap('neocomplete')
 
     let g:neocomplete#force_omni_input_patterns.cpp =
           \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+    let g:neocomplete#force_omni_input_patterns.ruby =
+          \ '[^. *\t]\.\w*\|\h\w*::'
 
     let g:neocomplete#keyword_patterns['default'] = '\h\w*'
     " Enable heavy omni completion.
@@ -919,6 +905,8 @@ if neobundle#tap('neocomplete')
     let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 
     let g:neocomplete#force_overwrite_completefunc = 1
+
+    let g:neocomplete#sources#rsense#home_directory = exepath('rsense')
   " endfunction
 
   inoremap <expr><C-g>     neocomplete#undo_completion()
@@ -1047,7 +1035,9 @@ if neobundle#tap('vim-github-dashboard')
 endif
 
 if neobundle#tap('github-issues')
-  g:gissues_async_omni = 1
+  " g:gissues_async_omni = 1
+  " g:gissues_lazy_load = 1
+  g:github_issues_no_omni = 1
   g:github_same_window = 1
   call neobundle#untap()
 endif
@@ -1076,5 +1066,14 @@ endif
 
 if neobundle#tap('vim-qfstatusline')
   let g:Qfstatusline#UpdateCmd = function('lightline#update')
+  call neobundle#untap()
+endif
+
+if neobundle#tap('vim-tags')
+  function! neobundle#hooks.on_source(bundle)
+    let g:vim_tags_auto_generate = 1
+    let g:vim_tags_ctags_binary = exepath('ctags')
+    let g:vim_tags_use_vim_dispatch = 1
+  endfunction
   call neobundle#untap()
 endif

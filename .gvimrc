@@ -4,15 +4,6 @@
  colorscheme solarized
  set showtabline=2
  set cursorline
- " window size
- if has("win32")
-     au GUIEnter * simalt ~x
- else
-     set transparency=8
-     au GUIEnter * set lines=60
-     au GUIEnter * set columns=190
- endif
-
  " menus
  set guioptions-=T " no tool bar
  set guioptions-=m " no menu bar
