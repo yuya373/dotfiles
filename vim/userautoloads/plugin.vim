@@ -596,7 +596,8 @@ if neobundle#tap('vim-quickrun')
     let g:quickrun_config['rspec/spring'] = {
           \ 'command' : 'rspec',
           \ 'cmdopt' : '--format documentation -c -p 10',
-          \ 'outputter' : 'quickfix',
+          \ 'outputter' : 'buffer',
+          \ 'outputter/buffer/split' : 'bot 10sp',
           \ 'exec' : './bin/spring rspec %o %s%a',
           \ }
     let g:quickrun_config['rspec/bundler'] = {
