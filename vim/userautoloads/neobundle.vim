@@ -392,13 +392,7 @@ NeoBundleLazy 'supermomonga/neocomplete-rsense.vim', { 'autoload' : {
       \ 'filetypes': 'ruby',
       \ }}
 
-NeoBundleLazy 'szw/vim-tags', {
-      \ 'autoload' : {
-      \ 'commands' : [
-      \ 'TagsGenerate', 'TagsGenerate!'
-      \ ]
-      \ }
-      \ }
+NeoBundle 'szw/vim-tags'
 
 NeoBundleCheck
 

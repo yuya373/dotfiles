@@ -1071,10 +1071,8 @@ if neobundle#tap('vim-qfstatusline')
 endif
 
 if neobundle#tap('vim-tags')
-  function! neobundle#hooks.on_source(bundle)
-    let g:vim_tags_auto_generate = 1
-    let g:vim_tags_ctags_binary = exepath('ctags')
-    let g:vim_tags_use_vim_dispatch = 1
-  endfunction
+  let g:vim_tags_auto_generate = 1
+  let g:vim_tags_ctags_binary = exepath('ctags')
+  let g:vim_tags_use_vim_dispatch = 1
   call neobundle#untap()
 endif
