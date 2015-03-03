@@ -596,7 +596,8 @@ if neobundle#tap('vim-quickrun')
     let g:quickrun_config['rspec/spring'] = {
           \ 'command' : 'rspec',
           \ 'cmdopt' : '--format documentation -c -p 10',
-          \ 'outputter' : 'quickfix',
+          \ 'outputter' : 'buffer',
+          \ 'outputter/buffer/split' : 'bot 10sp',
           \ 'exec' : './bin/spring rspec %o %s%a',
           \ }
     let g:quickrun_config['rspec/bundler'] = {
@@ -1070,10 +1071,8 @@ if neobundle#tap('vim-qfstatusline')
 endif
 
 if neobundle#tap('vim-tags')
-  function! neobundle#hooks.on_source(bundle)
-    let g:vim_tags_auto_generate = 1
-    let g:vim_tags_ctags_binary = exepath('ctags')
-    let g:vim_tags_use_vim_dispatch = 1
-  endfunction
+  let g:vim_tags_auto_generate = 1
+  let g:vim_tags_ctags_binary = exepath('ctags')
+  let g:vim_tags_use_vim_dispatch = 1
   call neobundle#untap()
 endif
