@@ -112,7 +112,7 @@ echo "$cmd"
 }
 
 if ! is_screen_or_tmux_running && shell_has_started_interactively; then
-  for cmd in tmux tscreen screen; do
+  for cmd in tmux; do
     if whence $cmd >/dev/null 2>/dev/null; then
       $(resolve_alias "$cmd")
       break
