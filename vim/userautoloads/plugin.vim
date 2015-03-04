@@ -47,6 +47,7 @@ if neobundle#tap('vim-choosewin')
           \ 'gui': ['firebrick1', 'firebrick1' ],
           \ 'cterm': [ 124, 124 ]
           \ }
+    let g:choosewin_return_on_single_win = 0
   endfunction
   nmap  `  <Plug>(choosewin)
   call neobundle#untap()
