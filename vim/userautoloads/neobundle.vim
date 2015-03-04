@@ -38,7 +38,7 @@ NeoBundleLazy 'Lokaltog/vim-easymotion', {
       \ 'mappings' : '<Plug>'
       \ }
       \ }
-NeoBundle 'vim-scripts/vim-auto-save'
+NeoBundle 'yuya373/vim-auto-save', { 'rev' : 'disable_nested_autocmd' }
 NeoBundle 'rking/ag.vim'
 NeoBundle 'Yggdroot/indentLine'
 NeoBundleLazy 't9md/vim-choosewin', {
