@@ -7,10 +7,6 @@ if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprofile"
 fi
 
-if [ -e ${HOME}/.my_zshenv ]; then
-  source ${HOME}/.my_zshenv
-fi
-
 if [ -e ${HOME}/.cabel/bin ]; then
   export PATH=${HOME}/.cabal/bin:${PATH}
 fi
@@ -34,3 +30,7 @@ export LANG=ja_JP.UTF-8
 export PAGER='less'
 export LESS='-F -g -i -M -R -S -w -X -z-4'
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+
+if [ -e ${HOME}/.my_zshenv ]; then
+  source ${HOME}/.my_zshenv
+fi
