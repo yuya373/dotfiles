@@ -181,7 +181,7 @@ NeoBundleLazy 'tacroe/unite-mark', {
 NeoBundleLazy 'osyo-manga/unite-choosewin-actions', {
       \ 'depends' : ['Shougo/unite.vim', 't9md/vim-choosewin'],
       \ 'autoload' : {
-      \ 'on_source' : ['unite.vim']
+      \ 'on_source' : ['unite.vim', 'unite-tag']
       \ }
       \ }
 NeoBundleLazy 'Shougo/unite-outline', {
@@ -194,7 +194,7 @@ NeoBundleLazy 'Shougo/unite.vim', {
       \ 'depends' : 'Shougo/vimproc.vim',
       \ 'autoload' : {
       \ 'commands' : [
-      \ 'UniteWithBufferDir', 'UniteResume', 'Unite', 'UniteResume'
+      \ 'UniteWithBufferDir', 'UniteResume', 'Unite', 'UniteResume', 'UniteWithCursorWord', 'UniteWithProjectDir'
       \ ]
       \ }
       \ }
@@ -401,6 +401,12 @@ NeoBundleLazy 'supermomonga/neocomplete-rsense.vim', { 'autoload' : {
       \ 'insert' : 1,
       \ 'filetypes': 'ruby',
       \ }}
+
+NeoBundleLazy 'tsukkee/unite-tag', {
+      \ 'autoload' : {
+      \ 'on_source' : ['unite.vim'],
+      \ }
+      \ }
 
 NeoBundleCheck
 

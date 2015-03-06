@@ -200,6 +200,7 @@ if neobundle#tap('unite.vim')
     call unite#custom#default_action('file' , 'choosewin/open')
     call unite#custom#default_action('buffer' , 'choosewin/open')
     call unite#custom#default_action('grep' , 'choosewin/open')
+    call unite#custom#default_action('tag' , 'choosewin/open')
     call unite#custom#source('file_rec/async', 'ignore_pattern', '\(png\|gif\|jpeg\|jpg\|csv\)$')
     let g:unite_source_rec_max_cache_files = 50000
     let g:unite_source_file_rec_max_cache_files = 50000
@@ -1094,5 +1095,20 @@ endif
 
 if neobundle#tap('vim-qfstatusline')
   let g:Qfstatusline#UpdateCmd = function('lightline#update')
+  call neobundle#untap()
+endif
+
+if neobundle#tap('unite-tag')
+  augroup UniteTag
+    autocmd!
+    autocmd BufEnter *
+          \  if empty(&buftype)
+          \|     nnoremap <buffer> <C-]> :<C-u>UniteWithCursorWord -immediately tag<CR>
+          \|  endif
+    autocmd BufEnter *
+          \  if empty(&buftype)
+          \|     nnoremap <buffer> <C-t> :<C-u>Unite jump<CR>
+          \|  endif
+  augroup END
   call neobundle#untap()
 endif
