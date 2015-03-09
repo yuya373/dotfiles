@@ -134,6 +134,8 @@ MyAutoCmd BufEnter *.schema setlocal filetype=ruby
 set nocursorline
 set nocursorcolumn
 
+MyAutoCmd FileType gitcommit setlocal cursorline
+
 hi MatchParen ctermbg=1
 
 nnoremap <CR> o<ESC>
