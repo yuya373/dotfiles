@@ -1103,7 +1103,7 @@ if neobundle#tap('unite-tag')
     autocmd!
     autocmd BufEnter *
           \  if empty(&buftype)
-          \|     nnoremap <buffer> <C-]> :<C-u>UniteWithCursorWord -immediately tag<CR>
+          \|     nnoremap <buffer> <C-]> :<C-u>UniteWithCursorWord tag<CR>
           \|  endif
     autocmd BufEnter *
           \  if empty(&buftype)
