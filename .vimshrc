@@ -1,5 +1,5 @@
-alias rails="./bin/spring rails"
-alias rake="./bin/spring rake"
+alias rails="bundle exec rails"
+alias rake="bundle exec rake"
 alias b="bundle exec"
 alias bs="./bin/spring"
 alias anno="bundle exec annotate -p before -i"
