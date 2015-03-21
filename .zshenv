@@ -26,9 +26,9 @@ fi
 export EDITOR='vim'
 export SYS_NOTIFIER=`which terminal-notifier`
 export HOMEBREW_CASK_OPTS='--appdir=/Applications'
-export LANG=ja_JP.UTF-8
+export LANG=ja_JP.utf8
 export PAGER='less'
-export LESS='-F -g -i -M -R -S -w -X -z-4'
+export LESS='-g -n -i -M -R -S -w -X -z4'
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
 if [ -e ${HOME}/.my_zshenv ]; then
