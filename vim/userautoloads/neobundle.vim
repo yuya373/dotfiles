@@ -411,6 +411,12 @@ NeoBundleLazy 'tsukkee/unite-tag', {
 
 NeoBundle 'osyo-manga/unite-quickfix'
 
+NeoBundleLazy 'Shougo/vinarise.vim', {
+      \ 'autoload' : {
+      \ 'command' : ['Vinarise', 'VinariseDump']
+      \ }
+      \ }
+
 NeoBundleCheck
 
 call neobundle#end()
