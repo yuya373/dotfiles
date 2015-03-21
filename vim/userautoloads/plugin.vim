@@ -673,6 +673,16 @@ if neobundle#tap('vim-watchdogs')
     " QuickfixStatusEnable
     " QfstatuslineUpdate
 
+    let g:quickrun_config['cpp/watchdogs_checker'] = {
+          \ 'type' : 'watchdogs_checker/clang++',
+          \ 'cmdopt' : '-std=c++11 --stdlib=libc++ -Wall -Wextra'
+          \ }
+
+    let g:quickrun_config['c/watchdogs_checker'] = {
+          \ 'type' : 'watchdogs_checker/gcc',
+          \ 'cmdopt' : '-Wall'
+          \ }
+
     let g:quickrun_config['ruby/watchdogs_checker'] = {
           \ 'type' : 'rubocop',
           \ 'outputter' : 'quickfix',
@@ -685,7 +695,7 @@ if neobundle#tap('vim-watchdogs')
           \ 'hook/hier_update/priority_exit' : 4,
           \ 'hook/quickfix_status_enable/enable_exit' : 1,
           \ 'outputter/quickfix/open_cmd' : "",
-          \}
+          \ }
 
     let g:quickrun_config['watchdogs_checker/rubocop'] = {
           \ }
