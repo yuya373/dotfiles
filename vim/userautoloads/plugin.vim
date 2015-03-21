@@ -605,11 +605,11 @@ if neobundle#tap('vim-quickrun')
     augroup END
 
     function! s:quickrun_rspec()
-      if executable(getcwd().'/bin/spring')
-        let b:quickrun_config = { 'type' : 'rspec/spring' }
-      else
+      " if executable(getcwd().'/bin/spring')
+      "   let b:quickrun_config = { 'type' : 'rspec/spring' }
+      " else
         let b:quickrun_config = { 'type' : 'rspec/bundler' }
-    endif
+      " endif
 
     nnoremap <buffer> ,rc :<C-u>QuickRun<CR>
     nnoremap <buffer> ,rn :<C-u>call QuickRunRspecNearest()<CR>
@@ -630,7 +630,8 @@ if neobundle#tap('vim-quickrun')
     let g:quickrun_config['rspec/bundler'] = {
           \ 'command' : 'rspec',
           \ 'cmdopt' : '--format documentation -c -p 10',
-          \ 'outputter' : 'quickfix',
+          \ 'outputter' : 'buffer',
+          \ 'outputter/buffer/split' : 'bot 10sp',
           \ 'exec' : 'bundle exec rspec %o %s%a',
           \ }
 
