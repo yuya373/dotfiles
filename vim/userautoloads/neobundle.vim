@@ -1,5 +1,6 @@
 call neobundle#begin(expand('~/.vim/bundle'))
 
+
 " Let NeoBundle manage NeoBundle
 NeoBundleFetch 'Shougo/neobundle.vim'
 
@@ -407,6 +408,8 @@ NeoBundleLazy 'tsukkee/unite-tag', {
       \ 'on_source' : ['unite.vim'],
       \ }
       \ }
+
+NeoBundle 'osyo-manga/unite-quickfix'
 
 NeoBundleCheck
 

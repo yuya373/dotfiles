@@ -188,7 +188,7 @@ endif
 
 if neobundle#tap('unite.vim')
   function! neobundle#hooks.on_source(bundle)
-    let g:unite_enable_start_insert = 1
+    " let g:unite_enable_start_insert = 1
     "  " unite grep に ag(The Silver Searcher) を使う
     if executable('ag')
       let g:unite_source_grep_command = 'ag'
@@ -200,12 +200,18 @@ if neobundle#tap('unite.vim')
     call unite#custom#default_action('file' , 'choosewin/open')
     call unite#custom#default_action('buffer' , 'choosewin/open')
     call unite#custom#default_action('grep' , 'choosewin/open')
-    call unite#custom#default_action('tag' , 'choosewin/open')
+    call unite#custom#default_action('jump_list' , 'split')
     call unite#custom#source('file_rec/async', 'ignore_pattern', '\(png\|gif\|jpeg\|jpg\|csv\)$')
     let g:unite_source_rec_max_cache_files = 50000
     let g:unite_source_file_rec_max_cache_files = 50000
     call unite#filters#matcher_default#use(['matcher_fuzzy'])
     call unite#filters#sorter_default#use(['sorter_selecta'])
+    call unite#custom#profile('default', 'context', {
+          \   'start_insert' : 1
+          \ })
+    call unite#custom#profile('source/quickfix', 'context', {
+          \ 'start_insert' : 0,
+          \ })
   endfunction
 
   " The prefix key.
