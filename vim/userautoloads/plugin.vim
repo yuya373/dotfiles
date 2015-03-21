@@ -653,6 +653,7 @@ if neobundle#tap('vim-watchdogs')
     let g:quickrun_config["watchdogs_checker/_"] = {
           \ 'outputter' : 'quickfix',
           \ 'runner/vimproc/updatetime' : 40,
+          \ 'hook/copen/enable_exist_data' : 1,
           \ "hook/echo/enable" : 1,
           \ "hook/echo/output_success": "> No Errors Found.",
           \ "hook/qfstatusline_update/enable_exit" : 1,
@@ -660,9 +661,13 @@ if neobundle#tap('vim-watchdogs')
           \ 'hook/hier_update/enable_exit' : 1,
           \ 'hook/hier_update/priority_exit' : 4,
           \ 'hook/quickfix_status_enable/enable_exit' : 1,
-          \ 'outputter/quickfix/open_cmd' : "copen",
+          \ 'outputter/quickfix/open_cmd' : "",
           \ }
 
+          " \ 'hook/unite_quickfix/enable_exist_data' : 1,
+          " \ 'hook/unite_quickfix/no_focus' : 1,
+          " \ 'hook/unite_quickfix/buffer_name' : 'quickrun-hook-unite-quick-fix',
+          " \ 'hook/unite_quickfix/unite_options' : "-no-quit -winheight=10 -max-multi-lines=32 -no-start-insert -default-action=open",
     " quickrun終わったら自動で呼びたい
     " HierUpdate
     " QuickfixStatusEnable
