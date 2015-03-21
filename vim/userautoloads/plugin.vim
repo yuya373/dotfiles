@@ -815,7 +815,7 @@ endif
 if neobundle#tap('vim-marching')
   " function! neobundle#hooks.on_source(bundle)
     " clang コマンドの設定
-    let g:marching_clang_command = "/usr/bin/clang"
+    let g:marching_clang_command = exepath('clang')
 
     " オプションを追加する場合
     let g:marching_clang_command_option="-std=c++1y"
@@ -934,6 +934,8 @@ if neobundle#tap('neocomplete')
           \ '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
     let g:neocomplete#force_omni_input_patterns.ruby =
           \ '[^. *\t]\.\w*\|\h\w*::'
+    let g:neocomplete#force_omni_input_patterns.c =
+          \'[^.[:digit:] *\t]\%(\.\|->\)'
 
     let g:neocomplete#keyword_patterns['default'] = '\h\w*'
     " Enable heavy omni completion.
@@ -941,7 +943,6 @@ if neobundle#tap('neocomplete')
       let g:neocomplete#sources#omni#input_patterns = {}
     endif
 
-    let g:neocomplete#sources#omni#input_patterns.php = '[^.  \t]->\h\w*\|\h\w*::'
     let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
     let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 
