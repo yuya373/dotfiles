@@ -417,6 +417,8 @@ NeoBundleLazy 'Shougo/vinarise.vim', {
       \ }
       \ }
 
+NeoBundle 'thinca/vim-template'
+
 NeoBundleCheck
 
 call neobundle#end()
