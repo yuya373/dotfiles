@@ -18,6 +18,8 @@
   rs = reset --soft
   p = push
   pf = push -f
+  puu = push -u
+  pr = ~/dotfiles/pullreq.sh
 [push]
   default = simple
 [mergetool]
