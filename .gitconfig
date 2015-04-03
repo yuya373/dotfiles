@@ -19,8 +19,8 @@
   p = push
   pf = push -f
   puu = push -u
-  ppr = vim ./PULLREQ_MSG
-  pr = ~/dotfiles/pullreq.sh
+  ppr = !vim PULLREQ_MSG
+  pr = !~/dotfiles/pullreq.sh
 [push]
   default = simple
 [mergetool]
