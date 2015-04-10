@@ -27,3 +27,5 @@
   keepBackup = false
 [merge]
   tool = vimdiff
+[gc]
+	auto = 1
