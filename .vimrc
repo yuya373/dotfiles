@@ -57,6 +57,12 @@ else
   let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
 
+nmap <TAB> %
+vmap <TAB> %
+
+nnoremap : q:
+xnoremap : q:
+
 set number " show line number
 " set relativenumber
 set showmode " show mode
@@ -148,11 +154,10 @@ set clipboard+=unnamed
 """"""""""gf(Goto File)拡張"""""""""""
 
 " 縦分割版gf
-" nnoremap gv :vertical wincmd f<CR>
+nnoremap gv :<C-u>vsplit<CR>gf
 " 横分割
-nnoremap gs <C-w>f
+nnoremap gs :<C-u>split<CR>gf
 " 新規タブ
-nnoremap gt <C-w>gf
 
 """""""""""""""mark""""
 
