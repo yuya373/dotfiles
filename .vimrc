@@ -60,9 +60,6 @@ endif
 nmap <TAB> %
 vmap <TAB> %
 
-nnoremap : q:
-xnoremap : q:
-
 augroup CommandWindowEnter
   autocmd!
   autocmd CmdwinEnter * call s:init_cmdwin()
