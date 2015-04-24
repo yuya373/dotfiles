@@ -60,6 +60,21 @@ endif
 nmap <TAB> %
 vmap <TAB> %
 
+nnoremap : q:
+xnoremap : q:
+
+augroup CommandWindowEnter
+  autocmd!
+  autocmd CmdwinEnter * call s:init_cmdwin()
+augroup END
+
+function! s:init_cmdwin() abort
+  inoremap <buffer><expr><CR>  pumvisible() ? "\<C-y>" : "\<CR>"
+  " Completion.
+  inoremap <buffer><expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+  startinsert!
+endfunction
+
 set number " show line number
 " set relativenumber
 set showmode " show mode
