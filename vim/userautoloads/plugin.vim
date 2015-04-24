@@ -171,9 +171,8 @@ if neobundle#tap('diffchar.vim')
 endif
 
 if neobundle#tap('vimshell.vim')
-  nnoremap <Leader>vst :VimShellTab<CR>
-  nnoremap <Leader>vsp :VimShellPop -toggle<CR>
-  nnoremap <Leader>s :VimShell -toggle<CR>
+  nnoremap <Leader>sp :VimShellPop -toggle<CR>
+  nnoremap <Leader>s :VimShellTab<CR>
   call neobundle#untap()
 endif
 
