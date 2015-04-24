@@ -60,9 +60,6 @@ endif
 nmap <TAB> %
 vmap <TAB> %
 
-nnoremap : q:
-xnoremap : q:
-
 set number " show line number
 " set relativenumber
 set showmode " show mode
@@ -453,17 +450,19 @@ MyAutoCmd BufReadPost $CPP_STDLIB/* if empty(&filetype) | set filetype=cpp | end
 
 " Go に付属の plugin と gocode を有効にする
 if $GOROOT != ''
-  set rtp+=${GOROOT}/misc/vim
+  set runtimepath+=${GOROOT}/misc/vim
 endif
 if $GOPATH != ''
-  set rtp+=${GOPATH}/src/github.com/nsf/gocode/vim
+  set runtimepath+=${GOPATH}/src/github.com/nsf/gocode/vim
 endif
 
 " 保存時に :Fmt する
-au BufWritePre *.go Fmt
-au BufNewFile,BufRead *.go set sw=4 noexpandtab ts=4
-au FileType go compiler go
-
+augroup GoAutoCmd
+  autocmd!
+  autocmd BufWritePre *.go Fmt
+  autocmd BufNewFile,BufRead *.go set sw=4 noexpandtab ts=4
+  autocmd FileType go compiler go
+augroup END
 
 " Enable omni completion.
 MyAutoCmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
