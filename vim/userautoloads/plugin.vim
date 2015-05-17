@@ -1132,3 +1132,8 @@ if neobundle#tap('unite-tag')
   augroup END
   call neobundle#untap()
 endif
+
+if neobundle#tap('vimerl')
+  let erlang_folding = 1
+  call neobundle#untap()
+endif
