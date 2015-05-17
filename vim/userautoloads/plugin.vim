@@ -3,7 +3,6 @@ if neobundle#tap('vim-fugitive')
   call neobundle#untap()
 endif
 
-
 if neobundle#tap('vim-easymotion')
   function! neobundle#hooks.on_source(bundle)
     let g:EasyMotion_do_mapping = 0

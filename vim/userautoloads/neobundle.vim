@@ -420,17 +420,21 @@ NeoBundleLazy 'Shougo/vinarise.vim', {
 NeoBundle 'thinca/vim-template'
 
 """""""Erlang"""""""
-NeoBundleLazy 'vim-erlang/vim-erlang-runtime', {
-      \ 'autoload' : {'filetypes' : 'erlang'}
-      \ }
-NeoBundleLazy 'vim-erlang/vim-erlang-omnicomplete', {
-      \ 'autoload' : {'filetypes' : 'erlang'}
-      \ }
-NeoBundleLazy 'vim-erlang/vim-erlang-compiler', {
-      \ 'autoload' : {'filetypes' : 'erlang'}
-      \ }
-NeoBundleLazy 'vim-erlang/vim-dialyzer', {
-      \ 'autoload' : {'filetypes' : 'erlang'}
+" NeoBundleLazy 'vim-erlang/vim-erlang-runtime', {
+"       \ 'autoload' : {'filetypes' : 'erlang'}
+"       \ }
+" NeoBundleLazy 'vim-erlang/vim-erlang-omnicomplete', {
+"       \ 'autoload' : {'filetypes' : 'erlang'}
+"       \ }
+" NeoBundleLazy 'vim-erlang/vim-erlang-compiler', {
+"       \ 'autoload' : {'filetypes' : 'erlang'}
+"       \ }
+" NeoBundleLazy 'vim-erlang/vim-dialyzer', {
+"       \ 'autoload' : {'filetypes' : 'erlang'}
+"       \ }
+
+NeoBundleLazy 'jimenezrick/vimerl', {
+      \ 'autoload' : {'filetype' : 'erlang'}
       \ }
 
 NeoBundleCheck
