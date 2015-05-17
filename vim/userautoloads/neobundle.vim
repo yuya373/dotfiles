@@ -434,7 +434,7 @@ NeoBundle 'thinca/vim-template'
 "       \ }
 
 NeoBundleLazy 'jimenezrick/vimerl', {
-      \ 'autoload' : {'filetype' : 'erlang'}
+      \ 'autoload' : {'filetypes' : 'erlang'}
       \ }
 
 NeoBundleCheck
