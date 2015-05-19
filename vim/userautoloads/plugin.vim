@@ -53,6 +53,9 @@ if neobundle#tap('vim-choosewin')
 endif
 
 if neobundle#tap('agit.vim')
+  function! neobundle#hooks.on_source(bundle)
+    let g:agit_localchanges_always_on_top = 0
+  endfunction
   " DEFAULT KEY-MAPPINGS        *agit-default-key-mappings*
 
   " J          <Plug>(agit-scrolldown-stat)
@@ -132,7 +135,6 @@ if neobundle#tap('alpaca_tags')
   endfunction
   call neobundle#untap()
 endif
-
 
 if neobundle#tap('incsearch.vim')
   function! neobundle#hooks.on_source(bundle)
