@@ -1122,6 +1122,10 @@ if neobundle#tap('vim-qfstatusline')
 endif
 
 if neobundle#tap('unite-tag')
+  function! neobundle#hooks.on_source(bundle)
+    let g:unite_source_tag_max_fname_length = 999
+  endfunction
+
   augroup UniteTag
     autocmd!
     autocmd BufEnter *
