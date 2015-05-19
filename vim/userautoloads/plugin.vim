@@ -423,14 +423,15 @@ if neobundle#tap('neosnippet')
 endif
 
 if neobundle#tap('indentLine')
-  function! neobundle#hooks.on_source(bundle)
+  " function! neobundle#hooks.on_source(bundle)
     " let g:indentLine_faster=1
     " let g:indentLine_color_term = 239
     " let g:indentLine_color_gui = '#A4E57E'
     " let g:indentLine_char = '┊'
     " let g:indentLine_char = '▸'
     let g:indentLine_showFirstIndentLevel = 2
-  endfunction
+    let g:indentLine_enabled = 1
+  " endfunction
 
   nnoremap <Leader>ig :IndentLinesToggle<CR>
 
