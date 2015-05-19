@@ -946,6 +946,8 @@ if neobundle#tap('neocomplete')
           \ '[^. *\t]\.\w*\|\h\w*::'
     let g:neocomplete#force_omni_input_patterns.c =
           \'[^.[:digit:] *\t]\%(\.\|->\)'
+    let g:neocomplete#force_omni_input_patterns.erlang =
+          \ '[^. *\t]:\w*'
 
     let g:neocomplete#keyword_patterns['default'] = '\h\w*'
     " Enable heavy omni completion.
