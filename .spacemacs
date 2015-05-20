@@ -55,8 +55,8 @@ before layers configuration."
    ;; banner, `random' chooses a random text banner in `core/banners'
    ;; directory. A string value must be a path to a .PNG file.
    ;; If the value is nil then no banner is displayed.
-   ;; dotspacemacs-startup-banner 'random
-   dotspacemacs-startup-banner 'official
+   dotspacemacs-startup-banner 'random
+   ;; dotspacemacs-startup-banner 'official
    ;; t if you always want to see the changelog at startup
    dotspacemacs-always-show-changelog t
    ;; List of items to show in the startup buffer. If nil it is disabled.
@@ -112,7 +112,7 @@ before layers configuration."
    ;; If non nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup nil
+   dotspacemacs-maximized-at-startup t
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'.
