@@ -217,23 +217,22 @@ if neobundle#tap('unite.vim')
   nnoremap    [unite]   <Nop>
   nmap    ,u [unite]
 
+  nnoremap <silent> [unite]t  :<C-u>Unite tab<CR>
   nnoremap <silent> [unite]o  :<C-u>Unite outline<CR>
-  " nnoremap [unite]o :Unite -vertical -winwidth=30 outline<Return>
-  " nnoremap <silent> [unite]ma :<C-u>Unite mapping<CR>
-  nnoremap <silent> [unite]b :<C-u>Unite buffer<CR>
-  nnoremap <silent> [unite]p :<C-u>Unite -buffer-name=register register<CR>
-  nnoremap <silent> [unite]y :<C-u>Unite yankround<CR>
-  nnoremap <silent> [unite]u :<C-u>Unite file_mru<CR>
-  nnoremap <silent> [unite]r :UniteWithProjectDir file file/new directory/new -buffer-name=root<CR>
-  nnoremap <silent> [unite]f :UniteWithBufferDir file file/new directory/new -buffer-name=files<CR>
+  nnoremap <silent> [unite]ma :<C-u>Unite mark<CR>
+  nnoremap <silent> [unite]mp :<C-u>Unite mapping<CR>
+  nnoremap <silent> [unite]b  :<C-u>Unite buffer<CR>
+  nnoremap <silent> [unite]p  :<C-u>Unite -buffer-name=register register<CR>
+  nnoremap <silent> [unite]y  :<C-u>Unite yankround<CR>
+  nnoremap <silent> [unite]u  :<C-u>Unite file_mru<CR>
+  nnoremap <silent> [unite]r  :<C-u>UniteWithProjectDir file file/new directory/new -buffer-name=root<CR>
+  nnoremap <silent> [unite]f  :<C-u>UniteWithBufferDir file file/new directory/new -buffer-name=files<CR>
   " grep検索
   nnoremap <silent> ,g  :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
   " カーソル位置の単語をgrep検索
   nnoremap <silent> ,cg :<C-u>Unite grep:. -buffer-name=search-buffer<CR><C-R><C-W><CR>
   " grep検索結果の再呼出
   nnoremap <silent> ,r  :<C-u>UniteResume search-buffer<CR>
-  "mark一覧
-  nnoremap <silent> ,m :<C-u>Unite mark<CR>
   " nnoremap <silent> <C-p> :<C-u>Unite -start-insert file_rec/async:!<CR>
   nnoremap <silent> <C-p> :<C-u>call AsyncOrGir()<CR>
 
@@ -273,19 +272,19 @@ if neobundle#tap('unite.vim')
 
   let b:is_rails = s:railsDetect()
   if b:is_rails
-    nnoremap <silent> [unite]c :RootAndUnite file file/new directory/new -input=app/controllers/ -buffer-name=controllers<CR>
-    nnoremap <silent> [unite]m :RootAndUnite file file/new directory/new -input=app/models/ -buffer-name=models<CR>
-    nnoremap <silent> [unite]d :RootAndUnite file file/new directory/new -input=app/decorators/ -buffer-name=decorators<CR>
-    nnoremap <silent> [unite]v :RootAndUnite file file/new directory/new -input=app/views/ -buffer-name=views<CR>
-    nnoremap <silent> [unite]j :RootAndUnite file file/new directory/new -input=app/assets/javascripts/ -buffer-name=js<CR>
-    nnoremap <silent> [unite]a :RootAndUnite file file/new directory/new -input=app/ -buffer-name=app<CR>
-    nnoremap <silent> [unite]l :RootAndUnite file file/new directory/new -input=lib/ -buffer-name=lib<CR>
-    nnoremap <silent> [unite]sm :RootAndUnite file file/new directory/new -input=spec/models/ -buffer-name=spec/models<CR>
-    nnoremap <silent> [unite]sl :RootAndUnite file file/new directory/new -input=spec/lib/ -buffer-name=spec/lib<CR>
-    nnoremap <silent> [unite]sr :RootAndUnite file file/new directory/new -input=spec/requests/ -buffer-name=spec/requests<CR>
-    nnoremap <silent> [unite]sf :RootAndUnite file file/new directory/new -input=spec/factories/ -buffer-name=spec/factories<CR>
-    nnoremap <silent> [unite]ss :RootAndUnite file file/new directory/new -input=spec/services/ -buffer-name=spec/factories<CR>
-    nnoremap <silent> [unite]s :RootAndUnite file file/new directory/new -input=spec/ -buffer-name=spec<CR>
+    nnoremap <silent> [unite]rc  :RootAndUnite file file/new directory/new -input=app/controllers/ -buffer-name=controllers<CR>
+    nnoremap <silent> [unite]rm  :RootAndUnite file file/new directory/new -input=app/models/ -buffer-name=models<CR>
+    nnoremap <silent> [unite]rd  :RootAndUnite file file/new directory/new -input=app/decorators/ -buffer-name=decorators<CR>
+    nnoremap <silent> [unite]rv  :RootAndUnite file file/new directory/new -input=app/views/ -buffer-name=views<CR>
+    nnoremap <silent> [unite]rj  :RootAndUnite file file/new directory/new -input=app/assets/javascripts/ -buffer-name=js<CR>
+    nnoremap <silent> [unite]ra  :RootAndUnite file file/new directory/new -input=app/ -buffer-name=app<CR>
+    nnoremap <silent> [unite]rl  :RootAndUnite file file/new directory/new -input=lib/ -buffer-name=lib<CR>
+    nnoremap <silent> [unite]rsm :RootAndUnite file file/new directory/new -input=spec/models/ -buffer-name=spec/models<CR>
+    nnoremap <silent> [unite]rsl :RootAndUnite file file/new directory/new -input=spec/lib/ -buffer-name=spec/lib<CR>
+    nnoremap <silent> [unite]rsr :RootAndUnite file file/new directory/new -input=spec/requests/ -buffer-name=spec/requests<CR>
+    nnoremap <silent> [unite]rsf :RootAndUnite file file/new directory/new -input=spec/factories/ -buffer-name=spec/factories<CR>
+    nnoremap <silent> [unite]rss :RootAndUnite file file/new directory/new -input=spec/services/ -buffer-name=spec/factories<CR>
+    nnoremap <silent> [unite]rs  :RootAndUnite file file/new directory/new -input=spec/ -buffer-name=spec<CR>
   endif
 
 
