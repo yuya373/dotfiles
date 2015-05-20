@@ -233,6 +233,8 @@ if neobundle#tap('unite.vim')
   nnoremap <silent> ,cg :<C-u>Unite grep:. -buffer-name=search-buffer<CR><C-R><C-W><CR>
   " grep検索結果の再呼出
   nnoremap <silent> ,r  :<C-u>UniteResume search-buffer<CR>
+  "mark一覧
+  nnoremap <silent> ,m :<C-u>Unite mark<CR>
   " nnoremap <silent> <C-p> :<C-u>Unite -start-insert file_rec/async:!<CR>
   nnoremap <silent> <C-p> :<C-u>call AsyncOrGir()<CR>
 
@@ -784,7 +786,7 @@ if neobundle#tap('jazzradio.vim')
 endif
 
 if neobundle#tap('vim-over')
-  cnoreabb <silent><expr>s getcmdtype()==':' && getcmdline()=~'^s' ? 'OverCommandLine<CR><C-u>%s/<C-r>=get([], getchar(0), '')<CR>' : 's'
+  nnoremap <Leader>s :<C-u>OverCommandLine<CR>
 
   call neobundle#untap()
 endif
