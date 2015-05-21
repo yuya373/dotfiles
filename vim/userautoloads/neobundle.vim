@@ -437,6 +437,8 @@ NeoBundleLazy 'jimenezrick/vimerl', {
       \ 'autoload' : {'filetypes' : 'erlang'}
       \ }
 
+NeoBundle 'roman/golden-ratio'
+
 NeoBundleCheck
 
 call neobundle#end()

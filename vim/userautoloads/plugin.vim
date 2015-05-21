@@ -1148,3 +1148,8 @@ if neobundle#tap('vimerl')
   let erlang_folding = 1
   call neobundle#untap()
 endif
+
+if neobundle#tap('golden-ratio')
+  let g:golden_ratio_exclude_nonmodifiable = 1
+  call neobundle#untap()
+endif
