@@ -392,7 +392,7 @@ if neobundle#tap('vimfiler')
   " let g:vimfiler_marked_file_icon = '*'
   endfunction
 
-  nnoremap <C-n>  :VimFilerBufferDir -split -horizontal -toggle -quit<CR>
+  nnoremap <Space>n  :VimFilerBufferDir -split -horizontal -toggle -quit<CR>
   call neobundle#untap()
 endif
 
