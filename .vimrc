@@ -40,7 +40,7 @@ scriptencoding utf-8
 MyAutoCmd Colorscheme * highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
 MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
 
-set background=light
+set background=dark
 colorscheme solarized
 
 " http://kannokanno.hatenablog.com/entry/2013/05/08/110557
