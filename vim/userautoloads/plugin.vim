@@ -1161,3 +1161,10 @@ if neobundle#tap('vim-multiple-cursors')
   let g:multi_cursor_start_word_key='g<C-n>'
   call neobundle#untap()
 endif
+
+if neobundle#tap('dash.vim')
+  " function! neobundle#hooks.on_source(bundle)
+  " endfunction
+  nmap <Space>d <Plug>DashSearch
+  call neobundle#untap()
+endif

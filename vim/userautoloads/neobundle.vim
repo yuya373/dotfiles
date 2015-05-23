@@ -439,6 +439,13 @@ NeoBundle 'roman/golden-ratio'
 
 NeoBundle 'terryma/vim-multiple-cursors'
 
+NeoBundleLazy 'rizzatti/dash.vim', {
+      \ 'autoload' : {
+      \   'mappings' : '<Plug>',
+      \   'commands' : ['Dash', 'Dash!', 'DashKeywords']
+      \ }
+      \ }
+
 NeoBundleCheck
 
 call neobundle#end()
