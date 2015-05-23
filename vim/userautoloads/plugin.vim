@@ -1149,16 +1149,8 @@ if neobundle#tap('vimerl')
   call neobundle#untap()
 endif
 
-if neobundle#tap('vim-multiple-cursors')
-  let g:multi_cursor_use_default_mapping=0
-  " Default mapping
-  let g:multi_cursor_next_key='<C-n>'
-  let g:multi_cursor_prev_key='<C-p>'
-  let g:multi_cursor_skip_key='<C-x>'
-  let g:multi_cursor_quit_key='<Esc>'
-  " Map start key separately from next key
-  let g:multi_cursor_start_key='<C-n>'
-  let g:multi_cursor_start_word_key='g<C-n>'
+if neobundle#tap('golden-ratio')
+  let g:golden_ratio_exclude_nonmodifiable = 1
   call neobundle#untap()
 endif
 
