@@ -444,7 +444,7 @@ if neobundle#tap('lightline.vim')
   let g:lightline = {
         \ 'colorscheme': 'solarized',
         \ 'active': {
-        \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ], ['ctrlpmark'] ],
+        \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'readonly', 'filename', 'modified' ] ],
         \   'right': [ [ 'qfstatusline', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
         \ },
         \ 'component_function': {
@@ -454,7 +454,8 @@ if neobundle#tap('lightline.vim')
         \   'filetype': 'MyFiletype',
         \   'fileencoding': 'MyFileencoding',
         \   'mode': 'MyMode',
-        \   'ctrlpmark': 'CtrlPMark',
+        \   'modified': 'MyModified',
+        \   'readonly': 'MyReadonly',
         \ },
         \ 'component_expand': {
         \   'qfstatusline': 'qfstatusline#Update',
@@ -463,10 +464,6 @@ if neobundle#tap('lightline.vim')
         \   'qfstatusline': 'error',
         \ },
         \ 'subseparator': { 'left': '|', 'right': '|' }
-        \ }
-  let g:ctrlp_status_func = {
-        \ 'main': 'CtrlPStatusFunc_1',
-        \ 'prog': 'CtrlPStatusFunc_2',
         \ }
   let g:tagbar_status_func = 'TagbarStatusFunc'
   let g:unite_force_overwrite_statusline = 0
@@ -496,14 +493,10 @@ if neobundle#tap('lightline.vim')
   endfunction
 
   function! MyFugitive()
-    try
-      if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
-        let mark = ''  " edit here for cool mark
-        let _ = fugitive#head()
-        return strlen(_) ? mark._ : ''
-      endif
-    catch
-    endtry
+    if exists("*fugitive#head")
+      let _ = fugitive#head()
+      return strlen(_) ? '⭠ '._ : ''
+    endif
     return ''
   endfunction
 
@@ -530,28 +523,6 @@ if neobundle#tap('lightline.vim')
           \ &ft == 'vimfiler' ? 'VimFiler' :
           \ &ft == 'vimshell' ? 'VimShell' :
           \ winwidth(0) > 60 ? lightline#mode() : ''
-  endfunction
-
-  function! CtrlPMark()
-    if expand('%:t') =~ 'ControlP'
-      call lightline#link('iR'[g:lightline.ctrlp_regex])
-      return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
-            \ , g:lightline.ctrlp_next], 0)
-    else
-      return ''
-    endif
-  endfunction
-
-  function! CtrlPStatusFunc_1(focus, byfname, regex, prev, item, next, marked)
-    let g:lightline.ctrlp_regex = a:regex
-    let g:lightline.ctrlp_prev = a:prev
-    let g:lightline.ctrlp_item = a:item
-    let g:lightline.ctrlp_next = a:next
-    return lightline#statusline(0)
-  endfunction
-
-  function! CtrlPStatusFunc_2(str)
-    return lightline#statusline(0)
   endfunction
 
   function! TagbarStatusFunc(current, sort, fname, ...) abort
