@@ -1121,7 +1121,7 @@ if neobundle#tap('vimerl')
 endif
 
 if neobundle#tap('golden-ratio')
-  let g:golden_ratio_exclude_nonmodifiable = 1
+  let g:golden_ratio_wrap_ignored = 1
   call neobundle#untap()
 endif
 
