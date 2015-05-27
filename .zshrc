@@ -67,6 +67,9 @@ fpath=(/usr/local/share/zsh/site-functions $fpath)
 autoload -U compinit
 compinit -C
 
+# for mosh
+compdef mosh=ssh
+
 setopt nonomatch
 
 alias brew='brew-file-brew'
