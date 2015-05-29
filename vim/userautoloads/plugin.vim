@@ -200,7 +200,6 @@ if neobundle#tap('unite.vim')
     call unite#custom#default_action('file' , 'choosewin/open')
     call unite#custom#default_action('buffer' , 'choosewin/open')
     call unite#custom#default_action('grep' , 'choosewin/open')
-    call unite#custom#source('file_rec/async', 'ignore_pattern', '\(png\|gif\|jpeg\|jpg\|csv\)$')
     let g:unite_source_rec_max_cache_files = 50000
     let g:unite_source_file_rec_max_cache_files = 50000
     call unite#filters#matcher_default#use(['matcher_fuzzy'])
@@ -211,6 +210,33 @@ if neobundle#tap('unite.vim')
     call unite#custom#profile('source/quickfix', 'context', {
           \ 'start_insert' : 0,
           \ })
+
+    function! s:unite_gitignore_source()
+      let sources = []
+      if filereadable('./.gitignore')
+        for file in readfile('./.gitignore')
+          " コメント行と空行は追加しない
+          if file !~ "^#\\|^\s\*$"
+            call add(sources, file)
+          endif
+        endfor
+      endif
+      if isdirectory('./.git')
+        call add(sources, '.git')
+      endif
+      call add(sources, 'jpg')
+      call add(sources, 'png')
+      call add(sources, 'otf')
+      call add(sources, 'csv')
+      let pattern = escape(join(sources, '|'), './|')
+      " call unite#custom#source('file_rec', 'ignore_pattern', pattern)
+      call unite#custom#source('file_rec/git', 'ignore_pattern', pattern)
+      call unite#custom#source('file_rec/async', 'ignore_pattern', pattern)
+      " call unite#custom#source('grep', 'ignore_pattern', pattern)
+    endfunction
+
+  call s:unite_gitignore_source()
+
   endfunction
 
   " The prefix key.
@@ -239,9 +265,12 @@ if neobundle#tap('unite.vim')
   nnoremap <silent> <C-p> :<C-u>call AsyncOrGir()<CR>
 
   function! AsyncOrGir()
-    if isdirectory(getcwd().'.git')
+    echom 'AsyncOrGir()'
+    if isdirectory('./.git')
+      echom 'Git'
       exe 'Unite -start-insert file_rec/git'
     else
+      echom 'Not a Git'
       exe 'Unite -start-insert file_rec/async:!'
     endif
   endfunction
