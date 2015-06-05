@@ -212,23 +212,8 @@ if neobundle#tap('unite.vim')
           \ })
 
     function! s:unite_gitignore_source()
-      let sources = []
-      if filereadable('./.gitignore')
-        for file in readfile('./.gitignore')
-          " コメント行と空行は追加しない
-          if file !~ "^#\\|^\s\*$"
-            call add(sources, file)
-          endif
-        endfor
-      endif
-      if isdirectory('./.git')
-        call add(sources, '.git')
-      endif
-      call add(sources, 'jpg')
-      call add(sources, 'png')
-      call add(sources, 'otf')
-      call add(sources, 'csv')
-      let pattern = escape(join(sources, '|'), './|')
+      let pattern = s:gitignore_source()
+      echom pattern
       " call unite#custom#source('file_rec', 'ignore_pattern', pattern)
       call unite#custom#source('file_rec/git', 'ignore_pattern', pattern)
       call unite#custom#source('file_rec/async', 'ignore_pattern', pattern)
@@ -262,7 +247,7 @@ if neobundle#tap('unite.vim')
   "mark一覧
   nnoremap <silent> ,m :<C-u>Unite mark<CR>
   " nnoremap <silent> <C-p> :<C-u>Unite -start-insert file_rec/async:!<CR>
-  nnoremap <silent> <C-p> :<C-u>call AsyncOrGir()<CR>
+  " nnoremap <silent> <C-p> :<C-u>call AsyncOrGir()<CR>
 
   function! AsyncOrGir()
     echom 'AsyncOrGir()'
@@ -1160,3 +1145,40 @@ if neobundle#tap('dash.vim')
   nmap <Space>d <Plug>DashSearch
   call neobundle#untap()
 endif
+
+function! s:gitignore_source()
+  let sources = []
+  if filereadable('./.gitignore')
+    for file in readfile('./.gitignore')
+      " コメント行と空行は追加しない
+      if file !~ "^#\\|^\s\*$"
+        call add(sources, file)
+      endif
+    endfor
+  endif
+  if isdirectory('./.git')
+    call add(sources, '.git')
+  endif
+  call add(sources, 'jpg')
+  call add(sources, 'png')
+  call add(sources, 'otf')
+  call add(sources, 'csv')
+  return escape(join(sources, '|'), './|')
+endfunction
+
+if neobundle#tap('ctrlp.vim')
+  function! s:set_ignore_pattern()
+    let pattern = s:gitignore_source()
+    let g:ctrlp_custom_ignore = pattern
+  endfunction
+
+  call s:set_ignore_pattern()
+  let g:ctrlp_show_hidden = 1
+
+  let g:ctrlp_prompt_mappings = {
+        \ 'PrtCurEnd()':          ['<c-z>'],
+        \ 'MarkToOpen()':         ['<c-e>'],
+        \ }
+  call neobundle#untap()
+endif
+
