@@ -213,7 +213,6 @@ if neobundle#tap('unite.vim')
 
     function! s:unite_gitignore_source()
       let pattern = s:gitignore_source()
-      echom pattern
       " call unite#custom#source('file_rec', 'ignore_pattern', pattern)
       call unite#custom#source('file_rec/git', 'ignore_pattern', pattern)
       call unite#custom#source('file_rec/async', 'ignore_pattern', pattern)
