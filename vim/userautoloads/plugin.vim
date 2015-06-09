@@ -1178,6 +1178,11 @@ if neobundle#tap('ctrlp.vim')
         \ 'PrtCurEnd()':          ['<c-z>'],
         \ 'MarkToOpen()':         ['<c-e>'],
         \ }
+
+  if executable('ag')
+    let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup -g ""'
+  endif
+
   call neobundle#untap()
 endif
 
