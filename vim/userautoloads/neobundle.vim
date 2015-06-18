@@ -446,7 +446,7 @@ NeoBundleLazy 'rizzatti/dash.vim', {
       \ }
       \ }
 
-NeoBundle 'kien/ctrlp.vim'
+" NeoBundle 'kien/ctrlp.vim'
 
 NeoBundleCheck
 
