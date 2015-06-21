@@ -162,9 +162,9 @@ set clipboard+=unnamed
 """"""""""gf(Goto File)拡張"""""""""""
 
 " 縦分割版gf
-nnoremap gv :<C-u>vsplit<CR>gf
-" 横分割
-nnoremap gs :<C-u>split<CR>gf
+" nnoremap gv :<C-u>vsplit<CR>gf
+" " 横分割
+" nnoremap gs :<C-u>split<CR>gf
 " 新規タブ
 
 """""""""""""""mark""""
