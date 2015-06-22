@@ -19,11 +19,11 @@ fi
 source ~/dotfiles/.zshfunc
 
 # terminal-notifier
-case "${OSTYPE}" in
-  darwin*)
-    source ~/dotfiles/zsh-notify/notify.plugin.zsh
-    ;;
-esac
+# case "${OSTYPE}" in
+#   darwin*)
+#     source ~/dotfiles/zsh-notify/notify.plugin.zsh
+#     ;;
+# esac
 
 # git-it-on
 source ~/dotfiles/git-it-on.zsh/git-it-on.plugin.zsh
