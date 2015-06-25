@@ -30,7 +30,7 @@ command!
 
 "matchit読み込み
 source $VIMRUNTIME/macros/matchit.vim
-set matchpairs+={:},":"
+set matchpairs+={:}
 
 " display
 " ----------------------
