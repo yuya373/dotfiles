@@ -1141,8 +1141,6 @@ if neobundle#tap('golden-ratio')
 endif
 
 if neobundle#tap('dash.vim')
-  " function! neobundle#hooks.on_source(bundle)
-  " endfunction
   nmap <Space>d <Plug>DashSearch
   call neobundle#untap()
 endif
@@ -1167,24 +1165,8 @@ function! s:gitignore_source()
   return escape(join(sources, '|'), './|')
 endfunction
 
-if neobundle#tap('ctrlp.vim')
-  function! s:set_ignore_pattern()
-    let pattern = s:gitignore_source()
-    let g:ctrlp_custom_ignore = pattern
-  endfunction
-
-  call s:set_ignore_pattern()
-  let g:ctrlp_show_hidden = 1
-
-  let g:ctrlp_prompt_mappings = {
-        \ 'PrtCurEnd()':          ['<c-z>'],
-        \ 'MarkToOpen()':         ['<c-e>'],
-        \ }
-
-  if executable('ag')
-    let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup -g ""'
-  endif
-
+if neobundle#tap('vim-expand-region')
+  vmap v <Plug>(expand_region_expand)
+  vmap <C-v> <Plug>(expand_region_shrink)
   call neobundle#untap()
 endif
-

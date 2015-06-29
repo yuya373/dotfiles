@@ -446,7 +446,12 @@ NeoBundleLazy 'rizzatti/dash.vim', {
       \ }
       \ }
 
-" NeoBundle 'kien/ctrlp.vim'
+NeoBundleLazy 'terryma/vim-expand-region', {
+      \ 'autoload' :
+      \   {
+      \     'mappings' : ['vmap', '<Plug>(expand_']
+      \   }
+      \ }
 
 NeoBundleCheck
 
