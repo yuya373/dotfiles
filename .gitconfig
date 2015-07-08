@@ -15,6 +15,7 @@
   rb = rebase
   rbc = rebase --continue
   rba = rebase --abort
+	rbs = rebase --skip
   rs = reset --soft
   p = push
   pf = push -f
