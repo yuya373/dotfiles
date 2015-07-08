@@ -37,7 +37,7 @@
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'
    dotspacemacs-delete-orphan-packages t
-   dotspacemacs-additional-packages '(exec-path-from-shell-initialize)
+   dotspacemacs-additional-packages '(exec-path-from-shell)
    ))
 
 (defun dotspacemacs/init ()
@@ -147,10 +147,19 @@ before layers configuration."
    ruby-enable-ruby-on-rails-support t
    ruby-insert-encoding-magic-comment nil
    enh-ruby-add-encoding-comment-on-save nil
+   dotspacemacs-auto-save-file-location 'original
    )
   (global-linum-mode t)
   (keyboard-translate ?\C-h ?\C-?)
   (setq ad-redefinition-action 'accept)
+  (setq eshell-command-aliases-list
+        (append (list
+                 (list "rc" "bundle exec rails c")
+                 (list "rct" "bundle exec rails c test")
+                 (list "ridgepole-test" "bundle exec rake db:ridgepole:apply[test]")
+                 (list "ridgepole-dev" "bundle exec rake db:ridegepole:apply[development]"))))
+  (setq auto-save-timeout 1
+        auto-save-interval 1)
   )
 
 (defun dotspacemacs/config ()
@@ -159,6 +168,7 @@ before layers configuration."
 layers configuration."
   (setq powerline-default-separator 'contour)
   (golden-ratio-mode t)
+  (exec-path-from-shell-initialize)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
