@@ -36,7 +36,9 @@
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'
-   dotspacemacs-delete-orphan-packages t))
+   dotspacemacs-delete-orphan-packages t
+   dotspacemacs-additional-packages '(exec-path-from-shell-initialize)
+   ))
 
 (defun dotspacemacs/init ()
   "Initialization function.
@@ -65,8 +67,8 @@ before layers configuration."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(solarized-light
-                         solarized-dark
+   dotspacemacs-themes '(solarized-dark
+                         solarized-light
                          leuven
                          monokai
                          zenburn)
@@ -143,7 +145,12 @@ before layers configuration."
   (setq-default
    ruby-version-manager 'rbenv
    ruby-enable-ruby-on-rails-support t
+   ruby-insert-encoding-magic-comment nil
+   enh-ruby-add-encoding-comment-on-save nil
    )
+  (global-linum-mode t)
+  (keyboard-translate ?\C-h ?\C-?)
+  (setq ad-redefinition-action 'accept)
   )
 
 (defun dotspacemacs/config ()
@@ -151,6 +158,7 @@ before layers configuration."
  This function is called at the very end of Spacemacs initialization after
 layers configuration."
   (setq powerline-default-separator 'contour)
+  (golden-ratio-mode t)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
