@@ -186,7 +186,10 @@ layers configuration."
             (list "ridgepole-test" "bundle exec rake db:ridgepole:apply[test]")
             (list "ridgepole-dev" "bundle exec rake db:ridegepole:apply[development]"))
     eshell-command-aliases-list))
-)
+  (setq inferior-lisp-program
+        (executable-find "clisp"))
+  )
+
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
