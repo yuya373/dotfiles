@@ -20,16 +20,26 @@
                       auto-completion-use-tab-instead-of-enter t
                       auto-completion-enable-company-yasnippet t)
      better-defaults
-     (git :variables
-          git-gutter-use-fringe t)
+     git
+     github
+     version-control
      markdown
-     org
      ruby
      syntax-checking
      evil-commentary
      (evil-snipe :variables
                  evil-snipe-enable-alternate-f-and-t-behaviors t)
-     erlang-elixir
+     erlang
+     elixir
+     emacs-lisp
+     emoji
+     eyebrowse
+     (ibuffer :variables ibuffer-group-buffers-by 'projects)
+     (shell :variables shell-default-shell 'eshell)
+     slime
+     spotify
+     sql
+     vim-empty-lines
      )
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
@@ -51,13 +61,13 @@ before layers configuration."
    ;; is `emacs' then the `holy-mode' is enabled at startup.
    dotspacemacs-editing-style 'vim
    ;; If non nil output loading progess in `*Messages*' buffer.
-   dotspacemacs-verbose-loading nil
+   dotspacemacs-verbose-loading t
    ;; Specify the startup banner. Default value is `official', it displays
    ;; the official spacemacs logo. An integer value is the index of text
    ;; banner, `random' chooses a random text banner in `core/banners'
    ;; directory. A string value must be a path to a .PNG file.
    ;; If the value is nil then no banner is displayed.
-   dotspacemacs-startup-banner 'random
+   dotspacemacs-startup-banner nil
    ;; dotspacemacs-startup-banner 'official
    ;; t if you always want to see the changelog at startup
    dotspacemacs-always-show-changelog t
@@ -67,11 +77,15 @@ before layers configuration."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(solarized-dark
+   dotspacemacs-themes '(
+                         solarized-dark
+                         misterioso
+                         tango-dark
+                         monokai
+                         zenburn
                          solarized-light
                          leuven
-                         monokai
-                         zenburn)
+                         )
    ;; If non nil the cursor color matches the state color.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
@@ -122,7 +136,7 @@ before layers configuration."
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's inactive or deselected.
    ;; Transparency can be toggled through `toggle-transparency'.
-   dotspacemacs-inactive-transparency 90
+   dotspacemacs-inactive-transparency 60
    ;; If non nil unicode symbols are displayed in the mode line.
    dotspacemacs-mode-line-unicode-symbols t
    ;; If non nil smooth scrolling (native-scrolling) is enabled. Smooth
@@ -130,7 +144,7 @@ before layers configuration."
    ;; point when it reaches the top or bottom of the screen.
    dotspacemacs-smooth-scrolling t
    ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
-   dotspacemacs-smartparens-strict-mode nil
+   dotspacemacs-smartparens-strict-mode t
    ;; If non nil advises quit functions to keep server open when quitting.
    dotspacemacs-persistent-server nil
    ;; List of search tool executable names. Spacemacs uses the first installed
@@ -152,12 +166,6 @@ before layers configuration."
   (global-linum-mode t)
   (keyboard-translate ?\C-h ?\C-?)
   (setq ad-redefinition-action 'accept)
-  (setq eshell-command-aliases-list
-        (append (list
-                 (list "rc" "bundle exec rails c")
-                 (list "rct" "bundle exec rails c test")
-                 (list "ridgepole-test" "bundle exec rake db:ridgepole:apply[test]")
-                 (list "ridgepole-dev" "bundle exec rake db:ridegepole:apply[development]"))))
   (setq auto-save-timeout 1
         auto-save-interval 1)
   )
@@ -168,7 +176,16 @@ before layers configuration."
 layers configuration."
   (setq powerline-default-separator 'contour)
   (golden-ratio-mode t)
+  (setq golden-ratio-auto-scale t)
   (exec-path-from-shell-initialize)
+  (setq magit-repository-directories '("~/dev/"))
+  (setq eshell-command-aliases-list
+   (append (list
+            (list "rc" "bundle exec rails c")
+            (list "rct" "bundle exec rails c test")
+            (list "ridgepole-test" "bundle exec rake db:ridgepole:apply[test]")
+            (list "ridgepole-dev" "bundle exec rake db:ridegepole:apply[development]"))
+    eshell-command-aliases-list))
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
