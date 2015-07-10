@@ -13,6 +13,11 @@ autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
 autoload -Uz run-help
 autoload -Uz run-help-git
 
+#for brew-file
+if [ -f $(brew --prefix)/etc/brew-wrap ];then
+  source $(brew --prefix)/etc/brew-wrap
+fi
+
 if [ -e ${HOME}/.zsh_aliases ]; then
   source ~/.zsh_aliases
 fi
@@ -71,7 +76,6 @@ compinit -C
 compdef mosh=ssh
 
 setopt nonomatch
-alias bi='brew file brew install'
 alias du-cwd='du -mc -d 1 | sort -g'
 alias reload='source ~/.zshrc'
 alias gitf='git-flow'
