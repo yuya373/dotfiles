@@ -67,4 +67,16 @@
     <identifier>private.backquote_to_backspace</identifier>
     <autogen>__KeyToKey__ KeyCode::BACKQUOTE, KeyCode::DELETE</autogen>
   </item>
+
+  <item>
+    <name>Vim in Preview</name>
+    <identifier>private.app_preview_vimium_in_preview</identifier>
+    <only>PREVIEW</only>
+    <autogen>__KeyToKey__ KeyCode::J, ModifierFlag::NONE, KeyCode::CURSOR_DOWN</autogen>
+    <autogen>__KeyToKey__ KeyCode::K, ModifierFlag::NONE, KeyCode::CURSOR_UP</autogen>
+    <autogen>__KeyToKey__ KeyCode::H, ModifierFlag::NONE, KeyCode::CURSOR_LEFT</autogen>
+    <autogen>__KeyToKey__ KeyCode::L, ModifierFlag::NONE, KeyCode::CURSOR_RIGHT</autogen>
+    <autogen>__KeyToKey__ KeyCode::D, ModifierFlag::NONE, KeyCode::PAGEUP</autogen>
+    <autogen>__KeyToKey__ KeyCode::U, ModifierFlag::NONE, KeyCode::PAGEDOWN</autogen>
+  </item>
 </root>
