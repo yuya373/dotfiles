@@ -1,0 +1,18 @@
+set noautofocus
+let locale = "jp"
+let mapleader = ","
+let searchalias g = "google" 
+map M centerMatchH
+map H centerMatchT
+map L centerMatchB
+map <Leader>f createTabbedHint
+map <Leader>h createHoverHint
+map <Leader>H createUnHoverHint
+map tn nextTab
+map tp previousTab
+map tf firstTab
+map tl lastTab
+map <C-w> deleteWord
+map <C-h> deleteChar
+map <C-b> backwardWord
+map <C-f> forwardWord
