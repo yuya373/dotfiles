@@ -71,7 +71,7 @@ compinit -C
 compdef mosh=ssh
 
 setopt nonomatch
-alias bi='brew file install'
+alias bi='brew file brew install'
 alias du-cwd='du -mc -d 1 | sort -g'
 alias reload='source ~/.zshrc'
 alias gitf='git-flow'
