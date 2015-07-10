@@ -180,6 +180,7 @@ before layers configuration."
   (auto-insert-mode)
   (setq auto-insert-directory "~/dotfiles/")
   (define-auto-insert "PULLREQ_MSG" "vim/template/PULLREQ_MSG")
+  (setq default-directory "~/dev/")
   )
 
 (defun dotspacemacs/config ()
