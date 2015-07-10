@@ -71,7 +71,7 @@ before layers configuration."
    ;; banner, `random' chooses a random text banner in `core/banners'
    ;; directory. A string value must be a path to a .PNG file.
    ;; If the value is nil then no banner is displayed.
-   dotspacemacs-startup-banner nil
+   dotspacemacs-startup-banner 'official
    ;; dotspacemacs-startup-banner 'official
    ;; t if you always want to see the changelog at startup
    dotspacemacs-always-show-changelog t
@@ -176,6 +176,7 @@ before layers configuration."
                 tab-always-indent t
                 indent-tabs-mode nil)
   (add-to-list 'auto-mode-alist '("\\.schema$" . enh-ruby-mode))
+  (add-to-list 'auto-mode-alist '("PULLREQ_MSG" . markdown-mode))
   (auto-insert-mode)
   (setq auto-insert-directory "~/dotfiles/")
   (define-auto-insert "PULLREQ_MSG" "vim/template/PULLREQ_MSG")
