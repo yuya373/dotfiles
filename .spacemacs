@@ -17,7 +17,11 @@
      ;; Uncomment a layer name and press C-c C-c to install it
      ;; --------------------------------------------------------
      (auto-completion :variables
-                      auto-completion-use-tab-instead-of-enter t
+                      auto-completion-return-key-behavior 'complete
+                      auto-completion-tab-key-behavior 'cycle
+                      auto-completion-enable-help-tooltip t
+                      auto-completion-enable-sort-by-usage t
+                      auto-completion-enable-snippets-in-popup t
                       auto-completion-enable-company-yasnippet t)
      better-defaults
      git
@@ -168,6 +172,13 @@ before layers configuration."
   (setq ad-redefinition-action 'accept)
   (setq auto-save-timeout 1
         auto-save-interval 1)
+  (setq-default tab-width 2
+                tab-always-indent t
+                indent-tabs-mode nil)
+  (add-to-list 'auto-mode-alist '("\\.schema$" . enh-ruby-mode))
+  (auto-insert-mode)
+  (setq auto-insert-directory "~/dotfiles/")
+  (define-auto-insert "PULLREQ_MSG" "vim/template/PULLREQ_MSG")
   )
 
 (defun dotspacemacs/config ()
@@ -181,6 +192,10 @@ layers configuration."
   (setq magit-repository-directories '("~/dev/"))
   (setq eshell-command-aliases-list
    (append (list
+            (list "emacs" "find-file $1")
+            (list "ppr" "find-file PULLREQ_MSG")
+            (list "pr" "~/dotfiles/pullreq.sh")
+            (list "b" "bundle exec $1")
             (list "rc" "bundle exec rails c")
             (list "rct" "bundle exec rails c test")
             (list "ridgepole-test" "bundle exec rake db:ridgepole:apply[test]")
