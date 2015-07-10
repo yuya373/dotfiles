@@ -8,11 +8,12 @@ map L centerMatchB
 map <Leader>f createTabbedHint
 map <Leader>h createHoverHint
 map <Leader>H createUnHoverHint
+map tt :tabnew<Space>
 map tn nextTab
 map tp previousTab
 map tf firstTab
 map tl lastTab
-map <C-w> deleteWord
-map <C-h> deleteChar
-map <C-b> backwardWord
-map <C-f> forwardWord
+imap <C-w> deleteWord
+imap <C-h> deleteChar
+imap <C-b> backwardWord
+imap <C-f> forwardWord
