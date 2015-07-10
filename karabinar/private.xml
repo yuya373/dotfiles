@@ -6,7 +6,19 @@
     <autogen>__KeyToKey__ KeyCode::SPACE, KeyCode::TAB</autogen>
     <autogen>__KeyToKey__ KeyCode::TAB, KeyCode::SPACE</autogen>
   </item>
-
+  <item>
+    <name>LeaveInsMode with EISUU(Terminal)</name>
+    <identifier>private.app_terminal_esc_with_eisuu</identifier>
+    <autogen>
+      --KeyToKey-- KeyCode::ESCAPE, KeyCode::ESCAPE, KeyCode::JIS_EISUU
+    </autogen>
+    <autogen>
+      --KeyToKey-- KeyCode::BRACKET_LEFT, VK_CONTROL, KeyCode::ESCAPE, KeyCode::JIS_EISUU
+    </autogen>
+    <autogen>
+      --KeyToKey-- KeyCode::J, VK_CONTROL, KeyCode::J, VK_CONTROL, KeyCode::JIS_EISUU
+    </autogen>
+  </item>
   <item>
     <name>Change Right Command Key to Escape</name>
     <identifier>private.right_command_to_escape</identifier>
@@ -35,6 +47,7 @@
     <name>Return to BackSlash</name>
     <identifier>private.return_to_backslash</identifier>
     <autogen>__KeyToKey__ KeyCode::RETURN, KeyCode::BACKSLASH</autogen>
+    <autogen>--KeyToKey-- VK_SHIFT , KeyCode::RETURN, VK_SHIFT, KeyCode::BACKSLASH</autogen>
   </item>
 
   <item>
