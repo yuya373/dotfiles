@@ -76,7 +76,7 @@
     <autogen>__KeyToKey__ KeyCode::K, ModifierFlag::NONE, KeyCode::CURSOR_UP</autogen>
     <autogen>__KeyToKey__ KeyCode::H, ModifierFlag::NONE, KeyCode::CURSOR_LEFT</autogen>
     <autogen>__KeyToKey__ KeyCode::L, ModifierFlag::NONE, KeyCode::CURSOR_RIGHT</autogen>
-    <autogen>__KeyToKey__ KeyCode::D, ModifierFlag::NONE, KeyCode::PAGEUP</autogen>
-    <autogen>__KeyToKey__ KeyCode::U, ModifierFlag::NONE, KeyCode::PAGEDOWN</autogen>
+    <autogen>__KeyToKey__ KeyCode::D, ModifierFlag::NONE, KeyCode::PAGEDOWN</autogen>
+    <autogen>__KeyToKey__ KeyCode::U, ModifierFlag::NONE, KeyCode::PAGEUP</autogen>
   </item>
 </root>
