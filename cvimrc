@@ -3,8 +3,8 @@ let locale = "jp"
 let mapleader = ","
 let searchalias g = "google" 
 map M centerMatchH
-map H centerMatchT
-map L centerMatchB
+map T centerMatchT
+map B centerMatchB
 map <Leader>f createTabbedHint
 map <Leader>h createHoverHint
 map <Leader>H createUnHoverHint
