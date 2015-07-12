@@ -21,8 +21,7 @@
                       auto-completion-tab-key-behavior 'cycle
                       auto-completion-enable-help-tooltip t
                       auto-completion-enable-sort-by-usage t
-                      auto-completion-enable-snippets-in-popup t
-                      auto-completion-enable-company-yasnippet t)
+                      auto-completion-enable-snippets-in-popup t)
      better-defaults
      git
      github
@@ -38,20 +37,21 @@
      emacs-lisp
      emoji
      eyebrowse
-     (ibuffer :variables ibuffer-group-buffers-by 'projects)
      (shell :variables shell-default-shell 'eshell)
      slime
-     spotify
+     lisp
      sql
      vim-empty-lines
+     ;; w3m
+     helm-dash
      )
    ;; A list of packages and/or extensions that will not be install and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(company)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'
    dotspacemacs-delete-orphan-packages t
-   dotspacemacs-additional-packages '(exec-path-from-shell)
+   dotspacemacs-additional-packages '(exec-path-from-shell codic)
    ))
 
 (defun dotspacemacs/init ()
@@ -82,11 +82,11 @@ before layers configuration."
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
+                         zenburn
                          solarized-dark
                          misterioso
                          tango-dark
                          monokai
-                         zenburn
                          solarized-light
                          leuven
                          )
@@ -136,7 +136,7 @@ before layers configuration."
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'.
-   dotspacemacs-active-transparency 90
+   dotspacemacs-active-transparency 75
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's inactive or deselected.
    ;; Transparency can be toggled through `toggle-transparency'.
@@ -167,6 +167,7 @@ before layers configuration."
    enh-ruby-add-encoding-comment-on-save nil
    dotspacemacs-auto-save-file-location 'original
    )
+  (setq linum-format "%4d ")
   (global-linum-mode t)
   (keyboard-translate ?\C-h ?\C-?)
   (setq ad-redefinition-action 'accept)
@@ -178,8 +179,8 @@ before layers configuration."
   (add-to-list 'auto-mode-alist '("\\.schema$" . enh-ruby-mode))
   (add-to-list 'auto-mode-alist '("PULLREQ_MSG" . markdown-mode))
   (auto-insert-mode)
-  (setq auto-insert-directory "~/dotfiles/")
-  (define-auto-insert "PULLREQ_MSG" "vim/template/PULLREQ_MSG")
+  (setq auto-insert-directory "~/dotfiles/vim/template")
+  (define-auto-insert "PULLREQ_MSG" "PULLREQ_MSG")
   (setq default-directory "~/dev/")
   )
 
@@ -188,23 +189,50 @@ before layers configuration."
  This function is called at the very end of Spacemacs initialization after
 layers configuration."
   (setq powerline-default-separator 'contour)
+  ;; golden-ratio
   (golden-ratio-mode t)
+  (setq golden-ratio-exclude-modes (append
+                                    (list "eshell-mode" "slime-repl-mode")
+                                    golden-ratio-exclude-modes))
   (setq golden-ratio-auto-scale t)
+  ;; PATH from shell
   (exec-path-from-shell-initialize)
+  ;; magit
   (setq magit-repository-directories '("~/dev/"))
-  (setq eshell-command-aliases-list
-   (append (list
-            (list "emacs" "find-file $1")
-            (list "ppr" "find-file PULLREQ_MSG")
-            (list "pr" "~/dotfiles/pullreq.sh")
-            (list "b" "bundle exec $1")
-            (list "rc" "bundle exec rails c")
-            (list "rct" "bundle exec rails c test")
-            (list "ridgepole-test" "bundle exec rake db:ridgepole:apply[test]")
-            (list "ridgepole-dev" "bundle exec rake db:ridegepole:apply[development]"))
-    eshell-command-aliases-list))
+  ;; autocomplete
+  (global-auto-complete-mode)
+  ;; slime
   (setq inferior-lisp-program
         (executable-find "clisp"))
+  (slime-setup '(slime-repl slime-fancy slime-banner slime-fuzzy slime-highlight-edits))
+  ;; popwin
+  (push "*slime-apropos*" popwin:special-display-config)
+  (push "*slime-macroexpansion*" popwin:special-display-config)
+  (push "*slime-description*" popwin:special-display-config)
+  (push '("*slime-compilation*" :noselect t) popwin:special-display-config)
+  (push "*slime-xref*" popwin:special-display-config)
+  (push '(sldb-mode :stick t) popwin:special-display-config)
+  (push '(slime-repl-mode :noselect t :position bottom :height 0.3) popwin:special-display-config)
+  (push 'slime-connection-list-mode popwin:special-display-config)
+  (push '("*Codic Result*" :noselect t) popwin:special-display-config)
+  (push '("*Google Translate*" :noselect t) popwin:special-display-config)
+  (setq eshell-command-aliases-list
+        (append (list
+                 (list "emacs" "find-file $1")
+                 (list "ppr" "find-file PULLREQ_MSG")
+                 (list "pr" "~/dotfiles/pullreq.sh")
+                 (list "b" "bundle exec $1")
+                 (list "rc" "bundle exec rails c")
+                 (list "rct" "bundle exec rails c test")
+                 (list "ridgepole-test" "bundle exec rake db:ridgepole:apply[test]")
+                 (list "ridgepole-dev" "bundle exec rake db:ridegepole:apply[development]"))
+                ()))
+  (add-hook 'slime-repl-mode-hook (lambda () (linum-mode -1)))
+  ;; google transrate
+  (setq google-translate-default-source-language "En")
+  (setq google-translate-default-target-language "Ja")
+  ;; eww
+  (setq eww-search-prefix "http://www.google.co.jp/search?q=")
   )
 
 
