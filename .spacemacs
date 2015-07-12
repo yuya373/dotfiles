@@ -36,22 +36,23 @@
      elixir
      emacs-lisp
      emoji
-     eyebrowse
+     ;; eyebrowse
      (shell :variables shell-default-shell 'eshell)
      slime
      lisp
-     sql
-     vim-empty-lines
      ;; w3m
      helm-dash
+     codic
      )
    ;; A list of packages and/or extensions that will not be install and loaded.
-   dotspacemacs-excluded-packages '(company)
+   dotspacemacs-excluded-packages '(company company-quickhelp company-statistics
+                                            linum-relative ibuffer ibuffer-projectile
+                                            fancy-battery leuven-theme holy-mode paradox)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'
    dotspacemacs-delete-orphan-packages t
-   dotspacemacs-additional-packages '(exec-path-from-shell codic)
+   dotspacemacs-additional-packages '()
    ))
 
 (defun dotspacemacs/init ()
@@ -77,18 +78,14 @@ before layers configuration."
    dotspacemacs-always-show-changelog t
    ;; List of items to show in the startup buffer. If nil it is disabled.
    ;; Possible values are: `recents' `bookmarks' `projects'."
-   dotspacemacs-startup-lists '(recents projects)
+   dotspacemacs-startup-lists '()
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(
                          zenburn
                          solarized-dark
-                         misterioso
-                         tango-dark
-                         monokai
                          solarized-light
-                         leuven
                          )
    ;; If non nil the cursor color matches the state color.
    dotspacemacs-colorize-cursor-according-to-state t
@@ -146,9 +143,9 @@ before layers configuration."
    ;; If non nil smooth scrolling (native-scrolling) is enabled. Smooth
    ;; scrolling overrides the default behavior of Emacs which recenters the
    ;; point when it reaches the top or bottom of the screen.
-   dotspacemacs-smooth-scrolling t
+   dotspacemacs-smooth-scrolling nil
    ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
-   dotspacemacs-smartparens-strict-mode t
+   dotspacemacs-smartparens-strict-mode nil
    ;; If non nil advises quit functions to keep server open when quitting.
    dotspacemacs-persistent-server nil
    ;; List of search tool executable names. Spacemacs uses the first installed
@@ -195,8 +192,6 @@ layers configuration."
                                     (list "eshell-mode" "slime-repl-mode")
                                     golden-ratio-exclude-modes))
   (setq golden-ratio-auto-scale t)
-  ;; PATH from shell
-  (exec-path-from-shell-initialize)
   ;; magit
   (setq magit-repository-directories '("~/dev/"))
   ;; autocomplete
@@ -252,11 +247,13 @@ layers configuration."
  '(package-selected-packages
    (quote
     (yaml-mode smeargle ruby-tools ruby-test-mode ruby-end robe rbenv projectile-rails org-repo-todo org-pomodoro org-bullets markdown-toc magit-svn magit-gitflow magit-gh-pulls haml-mode gitignore-mode github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe gist flycheck-pos-tip feature-mode evil-snipe evil-org evil-commentary enh-ruby-mode elixir-mode edts company-quickhelp bundler alchemist ac-ispell company erlang eproject auto-complete flycheck git-gutter gh logito pcache magit git-rebase-mode git-commit-mode markdown-mode alert log4e gntp rake inflections f inf-ruby zenburn-theme window-numbering volatile-highlights vi-tilde-fringe use-package smooth-scrolling rfringe rainbow-delimiters powerline popup paradox page-break-lines neotree multi-term move-text monokai-theme linum-relative leuven-theme info+ indent-guide ido-vertical-mode hungry-delete hl-anything highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flyspell helm-descbinds helm-c-yasnippet helm-ag guide-key-tip google-translate golden-ratio fringe-helper flx-ido fill-column-indicator fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-terminal-cursor-changer evil-surround evil-search-highlight-persist evil-numbers evil-matchit evil-lisp-state evil-jumper evil-indent-textobject evil-iedit-state evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu elisp-slime-nav buffer-move base16-theme auto-highlight-symbol auto-dictionary aggressive-indent adaptive-wrap ace-window ace-link ace-jump-mode)))
- '(ring-bell-function (quote ignore)))
+ '(paradox-github-token t)
+ '(ring-bell-function (quote ignore) t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(default ((t (:foreground "#DCDCCC" :background "#3F3F3F"))))
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
  '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
