@@ -185,6 +185,7 @@ before layers configuration."
   "Configuration function.
  This function is called at the very end of Spacemacs initialization after
 layers configuration."
+  (setq gc-cons-threshold 134217728)
   (setq powerline-default-separator 'contour)
   ;; golden-ratio
   (golden-ratio-mode t)
@@ -211,6 +212,8 @@ layers configuration."
   (push 'slime-connection-list-mode popwin:special-display-config)
   (push '("*Codic Result*" :noselect t) popwin:special-display-config)
   (push '("*Google Translate*" :noselect t) popwin:special-display-config)
+  (push '(eshell-mode :position bottom :stick t) popwin:special-display-config)
+  (push '("*compilation*" :noselect t) popwin:special-display-config)
   (setq eshell-command-aliases-list
         (append (list
                  (list "emacs" "find-file $1")
@@ -220,7 +223,7 @@ layers configuration."
                  (list "rc" "bundle exec rails c")
                  (list "rct" "bundle exec rails c test")
                  (list "ridgepole-test" "bundle exec rake db:ridgepole:apply[test]")
-                 (list "ridgepole-dev" "bundle exec rake db:ridegepole:apply[development]"))
+                 (list "ridgepole-dev" "bundle exec rake db:ridgepole:apply[development]"))
                 ()))
   (add-hook 'slime-repl-mode-hook (lambda () (linum-mode -1)))
   ;; google transrate
