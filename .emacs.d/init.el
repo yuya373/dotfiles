@@ -18,6 +18,8 @@
 (initchart-record-execution-time-of load file)
 (initchart-record-execution-time-of require feature)
 
+;; config
+(setq gc-cons-threshold 134217728)
 (prefer-coding-system 'utf-8)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
@@ -25,6 +27,20 @@
 ;; (setq tooltip-use-echo-area t)
 (unless (eq window-system 'mac)
   (menu-bar-mode -1))
+(setq linum-format "%4d ")
+(global-linum-mode t)
+(setq ad-redefinition-action 'accept)
+(keyboard-translate ?\C-h ?\C-?)
+(setq auto-save-timeout 1
+      auto-save-interval 1)
+(setq-default tab-width 2
+              tab-always-indent t
+              indent-tabs-mode nil)
+(add-to-list 'auto-mode-alist '("\\.schema$" . enh-ruby-mode))
+(add-to-list 'auto-mode-alist '("PULLREQ_MSG" . markdown-mode))
+(auto-insert-mode)
+(setq auto-insert-directory "~/dotfiles/vim/template")
+(define-auto-insert "PULLREQ_MSG" "PULLREQ_MSG")
 
 (when load-file-name
   (setq user-emacs-directory (file-name-directory load-file-name)))
@@ -36,100 +52,139 @@
        "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
     (goto-char (point-max))
     (eval-print-last-sexp)))
+(setq el-get-generate-autoloads nil)
+(setq el-get-verbose t)
 
-(el-get-bundle diminish)
-(el-get-bundle bind-key)
+(el-get-bundle diminish :lazy t)
+(el-get-bundle bind-key :lazy t)
 (el-get-bundle use-package
-               :features (use-package diminish bind-key))
-(el-get-bundle evil-leader
-              (global-evil-leader-mode))
-(el-get-bundle evil
-                (evil-mode 1))
-(el-get-bundle evil-jumper
-                (evil-jumper-mode))
+  :features (use-package diminish bind-key)
+  (setq use-package-verbose t))
+;; evil
+(el-get-bundle evil :lazy t)
+(el-get-bundle evil-leader :lazy t)
+(use-package evil
+  :init
+  (setq evil-want-C-i-jump t)
+  (setq evil-want-C-u-scroll t)
+  :config
+  (use-package evil-leader
+    :config
+    (global-evil-leader-mode))
+  (evil-mode t))
+(el-get-bundle evil-jumper)
+(use-package evil-jumper
+  :config
+  (evil-jumper-mode))
 (el-get-bundle evil-lisp-state
-               :depends (smartparens)
-               :features (evil-lisp-state)
-              (add-to-list 'evil-lisp-state-major-modes 'lisp-mode ))
-(el-get-bundle evil-matchit
-               (global-evil-matchit-mode 1))
+  :depends (smartparens))
+(use-package evil-lisp-state
+  :init
+  (use-package smartparens)
+  :config
+  (add-to-list 'evil-lisp-state-major-modes 'lisp-mode))
+(el-get-bundle evil-matchit)
+(use-package evil-matchit
+  :config
+  (global-evil-matchit-mode t))
 (el-get-bundle evil-nerd-commenter
-               (define-key evil-normal-state-map (kbd ",,") 'evilnc-comment-or-uncomment-lines))
-(el-get-bundle evil-numbers
-               (define-key evil-normal-state-map (kbd "+") 'evil-numbers/inc-at-pt)
-               (define-key evil-normal-state-map (kbd "-") 'evil-numbers/dec-at-pt))
+  (define-key evil-normal-state-map (kbd ",,") 'evilnc-comment-or-uncomment-lines))
+(use-package evil-nerd-commenter
+  :commands (evilnc-comment-or-uncomment-lines)
+  :init
+  (define-key evil-normal-state-map (kbd ",,") 'evilnc-comment-or-uncomment-lines))
+(el-get-bundle evil-numbers)
+(use-package evil-numbers
+  :commands (evil-numbers/inc-at-pt
+             evil-numbers/dec-at-pt)
+  :init
+  (define-key evil-normal-state-map (kbd "+") 'evil-numbers/inc-at-pt)
+  (define-key evil-normal-state-map (kbd "-") 'evil-numbers/dec-at-pt))
 
 (el-get-bundle juanjux/evil-search-highlight-persist
-               :depends (highlight)
-               (global-evil-search-highlight-persist t))
-(el-get-bundle evil-surround
-               (global-evil-surround-mode 1))
+  :depends (highlight))
+(use-package evil-search-highlight-persit
+  :init
+  (use-package highlight)
+  :config
+  (global-evil-search-highlight-persist t))
+(el-get-bundle evil-surround)
+(use-package evil-surround
+  :config
+  (global-evil-surround-mode t))
 (el-get-bundle evil-terminal-cursor-changer)
-(el-get-bundle evil-visualstar
-               (global-evil-visualstar-mode))
-(el-get-bundle! guide-key
-               (guide-key-mode 1)
-               (setq guide-key/idle-delay 0.4)
-               (setq guide-key/recursive-key-sequence-flag t)
-               (setq guide-key/guide-key-sequence '("\\" ",")))
+(use-package evil-terminal-cursor-changer)
+(el-get-bundle evil-visualstar)
+(use-package evil-visualstar
+  :config
+  (global-evil-visualstar-mode))
+;; guide-key
+(el-get-bundle guide-key)
+(use-package guide-key
+  :init
+  (setq guide-key/idle-delay 0.4)
+  (setq guide-key/recursive-key-sequence-flag t)
+  (setq guide-key/guide-key-sequence '("\\" ","))
+  :config
+  (guide-key-mode 1))
 
 (el-get-bundle rainbow-delimiters)
-
 (use-package rainbow-delimiters
-             :init
-             ; (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-             (add-hook 'lisp-mode 'rainbow-delimiters-mode)
-             (add-hook 'emacs-lisp-mode 'rainbow-delimiters-mode))
+  :commands (rainbow-delimiters-mode)
+  :init
+  ;;(add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+  (add-hook 'lisp-mode-hook 'rainbow-delimiters-mode)
+  (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode))
 
 (el-get-bundle auto-complete)
 (use-package auto-complete
-             :init
-             (setq ac-auto-start 0
-                   ac-delay 0.2
-                   ac-quick-help-delay 1.
-                   ac-use-fuzzy t
-                   ac-fuzzy-enable t
-                   tab-always-indent 'complete
-                   ac-dwim t)
-             :config
-             (ac-set-trigger-key "TAB")
-             (use-package auto-complete-config
-                          :config
-                          (ac-config-default)))
+  :init
+  (setq ac-auto-start 0
+        ac-delay 0.2
+        ac-quick-help-delay 1.
+        ac-use-fuzzy t
+        ac-fuzzy-enable t
+        tab-always-indent 'complete
+        ac-dwim t)
+  :config
+  (ac-set-trigger-key "TAB")
+  (use-package auto-complete-config
+    :config
+    (ac-config-default)))
 
 (use-package eldoc
-             :init
-                (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-                (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode))
+  :init
+  (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+  (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode))
 
 (el-get-bundle magit)
 (el-get-bundle magit-gh-pulls)
 (use-package magit
-             :commands (magit-status)
-             :init
-             (evil-leader/set-key "gb" 'magit-blame)
-             (evil-leader/set-key "gs" 'magit-status)
-             :config
-             (use-package ert)
-             (use-package magit-gh-pulls
-                          :commands (turn-on-magit-gh-pulls)
-                          :init
-                          (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
-                          ))
+  :commands (magit-status)
+  :init
+  (evil-leader/set-key "gb" 'magit-blame)
+  (evil-leader/set-key "gs" 'magit-status)
+  :config
+  (use-package ert)
+  (use-package magit-gh-pulls
+    :commands (turn-on-magit-gh-pulls)
+    :init
+    (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
+    ))
 
-; (defconst spacemacs-version          "0.103.2" "Spacemacs version.")
-; (defconst spacemacs-emacs-min-version   "24.3" "Minimal version of Emacs.")
-;
-; (defun spacemacs/emacs-version-ok ()
-;   (version<= spacemacs-emacs-min-version emacs-version))
-;
-; (when (spacemacs/emacs-version-ok)
-;   (load-file (concat user-emacs-directory "core/core-load-paths.el"))
-;   (require 'core-spacemacs)
-;   (require 'core-configuration-layer)
-;   (spacemacs/init)
-;   (configuration-layer/sync)
-;   (spacemacs/setup-after-init-hook)
-;   (spacemacs/maybe-install-dotfile)
-;   (require 'server)
-;   (unless (server-running-p) (server-start)))
+                                        ; (defconst spacemacs-version          "0.103.2" "Spacemacs version.")
+                                        ; (defconst spacemacs-emacs-min-version   "24.3" "Minimal version of Emacs.")
+                                        ;
+                                        ; (defun spacemacs/emacs-version-ok ()
+                                        ;   (version<= spacemacs-emacs-min-version emacs-version))
+                                        ;
+                                        ; (when (spacemacs/emacs-version-ok)
+                                        ;   (load-file (concat user-emacs-directory "core/core-load-paths.el"))
+                                        ;   (require 'core-spacemacs)
+                                        ;   (require 'core-configuration-layer)
+                                        ;   (spacemacs/init)
+                                        ;   (configuration-layer/sync)
+                                        ;   (spacemacs/setup-after-init-hook)
+                                        ;   (spacemacs/maybe-install-dotfile)
+                                        ;   (require 'server)
+                                        ;   (unless (server-running-p) (server-start)))
