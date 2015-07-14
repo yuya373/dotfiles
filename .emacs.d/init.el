@@ -171,6 +171,20 @@
     :init
     (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
     ))
+(el-get-bundle projectile
+  :depends (grizzl))
+(use-package projectile
+  :commands (projectile-mode)
+  :init
+  (setq projectile-completion-system 'grizzl)
+  :config
+  (add-hook 'ruby-mode-hook 'projectile-mode)
+  (use-package grizzl))
+(el-get-bundle projectile-rails)
+(use-package projectile-rails
+  :commands (projectile-rails-on)
+  :init
+  (add-hook 'projectile-mode-hook 'projectile-rails-on))
 
                                         ; (defconst spacemacs-version          "0.103.2" "Spacemacs version.")
                                         ; (defconst spacemacs-emacs-min-version   "24.3" "Minimal version of Emacs.")
