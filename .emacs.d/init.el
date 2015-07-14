@@ -12,18 +12,20 @@
 ;; (tooltip-mode -1)
 ;; (setq tooltip-use-echo-area t)
 (unless (eq window-system 'mac)
-  (menu-bar-mode -1))
+    (menu-bar-mode -1))
+;; linum
 (setq linum-format "%4d ")
 (global-linum-mode t)
 (setq ad-redefinition-action 'accept)
 (keyboard-translate ?\C-h ?\C-?)
+;; auto-save
 (setq auto-save-timeout 1
       auto-save-interval 1)
+;; tab
 (setq-default tab-width 2
               tab-always-indent t
               indent-tabs-mode nil)
-(add-to-list 'auto-mode-alist '("\\.schema$" . enh-ruby-mode))
-(add-to-list 'auto-mode-alist '("PULLREQ_MSG" . markdown-mode))
+;; auto-insert
 (auto-insert-mode)
 (setq auto-insert-directory "~/dotfiles/vim/template")
 (define-auto-insert "PULLREQ_MSG" "PULLREQ_MSG")
@@ -64,7 +66,12 @@
   (use-package evil-leader
     :config
     (global-evil-leader-mode))
-  (evil-mode t))
+  (evil-mode t)
+  ;; window move
+  (define-key evil-normal-state-map (kbd "C-k") 'windmove-up)
+  (define-key evil-normal-state-map (kbd "C-j") 'windmove-down)
+  (define-key evil-normal-state-map (kbd "C-h") 'windmove-left)
+  (define-key evil-normal-state-map (kbd "C-l") 'windmove-right))
 (el-get-bundle evil-jumper)
 (use-package evil-jumper
   :config
@@ -218,7 +225,8 @@
 (el-get-bundle markdown-toc)
 (use-package markdown-mode
   :mode (("\\.markdown\\'" . markdown-mode)
-         ("\\.md\\'" . markdown-mode)))
+         ("\\.md\\'" . markdown-mode)
+         ("PULLREQ_MSG" . markdown-mode)))
 
 ;; ruby
 (el-get-bundle bundler)
@@ -239,7 +247,9 @@
   (add-hook 'enh-ruby-mode-hook 'robe-mode)
   (add-hook 'robe-mode 'ac-robe-setup))
 (use-package enh-ruby-mode
-  :mode ("\\.rb\\'" . enh-ruby-mode)
+  :mode (("\\.rb\\'" . enh-ruby-mode)
+         ("\\.schema\\'" . enh-ruby-mode)
+         ("Schema" . enh-ruby-mode))
   :interpreter ("ruby" . enh-ruby-mode))
 
 ;; html, erb
@@ -282,8 +292,8 @@
   ;; (setq 'helm-buffers-fuzzy-matching t)
   ;; (setq 'helm-recentf-fuzzy-match t)
   (setq helm-autoresize-mode t)
-  (define-key evil-normal-state-map (kbd "<SPC>hb") 'helm-buffer-list)
-  (define-kdy evil-normal-state-map (kbd "<SPC>hr") 'helm-recentf)
+  (define-key evil-normal-state-map (kbd "<SPC>hb") 'helm-buffers-list)
+  (define-key evil-normal-state-map (kbd "<SPC>hr") 'helm-recentf)
   (define-key evil-normal-state-map (kbd "<SPC>hp") 'helm-projectile)
   (define-key evil-normal-state-map (kbd "<SPC>hf") 'helm-for-files)
   (define-key evil-normal-state-map (kbd "<SPC>hg") 'helm-ag))
