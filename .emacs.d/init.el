@@ -1,25 +1,11 @@
-;;; init.el --- Spacemacs Initialization File
-;;
-;; Copyright (c) 2012-2014 Sylvain Benner
-;; Copyright (c) 2014-2015 Sylvain Benner & Contributors
-;;
-;; Author: Sylvain Benner <sylvain.benner@gmail.com>
-;; URL: https://github.com/syl20bnr/spacemacs
-;;
-;; This file is not part of GNU Emacs.
-;;
-;;; License: GPLv3
-
-;; Without this comment emacs25 adds (package-initialize) here
-;; (package-initialize)
-
 (add-to-list 'load-path "~/.emacs.d/private/initchart")
 (require 'initchart)
 (initchart-record-execution-time-of load file)
 (initchart-record-execution-time-of require feature)
 
 ;; config
-(setq gc-cons-threshold 134217728)
+(setq gc-cons-threshold 128 * 1024 * 1024 * 1024)
+(set-language-environment 'utf-8)
 (prefer-coding-system 'utf-8)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
@@ -42,6 +28,7 @@
 (setq auto-insert-directory "~/dotfiles/vim/template")
 (define-auto-insert "PULLREQ_MSG" "PULLREQ_MSG")
 
+;; self hosting el-get
 (when load-file-name
   (setq user-emacs-directory (file-name-directory load-file-name)))
 
@@ -52,17 +39,23 @@
        "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
     (goto-char (point-max))
     (eval-print-last-sexp)))
+
+;; use use-package for config description
 (setq el-get-generate-autoloads nil)
+(setq el-get-is-lazy t)
+;; for debug
 (setq el-get-verbose t)
 
-(el-get-bundle diminish :lazy t)
-(el-get-bundle bind-key :lazy t)
+(el-get-bundle diminish)
+(el-get-bundle bind-key)
 (el-get-bundle use-package
-  :features (use-package diminish bind-key)
   (setq use-package-verbose t))
+(require 'use-package)
+(require 'diminish)
+(require 'bind-key)
 ;; evil
-(el-get-bundle evil :lazy t)
-(el-get-bundle evil-leader :lazy t)
+(el-get-bundle evil)
+(el-get-bundle evil-leader)
 (use-package evil
   :init
   (setq evil-want-C-i-jump t)
@@ -76,23 +69,29 @@
 (use-package evil-jumper
   :config
   (evil-jumper-mode))
+(el-get-bundle smartparens)
+(use-package smartparens
+  :defer t
+  :init
+  (use-package smartparens-config)
+  :config
+  (smartparens-global-mode)
+  (show-smartparens-global-mode))
 (el-get-bundle evil-lisp-state
   :depends (smartparens))
 (use-package evil-lisp-state
-  :init
-  (use-package smartparens)
   :config
   (add-to-list 'evil-lisp-state-major-modes 'lisp-mode))
 (el-get-bundle evil-matchit)
 (use-package evil-matchit
   :config
   (global-evil-matchit-mode t))
-(el-get-bundle evil-nerd-commenter
-  (define-key evil-normal-state-map (kbd ",,") 'evilnc-comment-or-uncomment-lines))
+(el-get-bundle evil-nerd-commenter)
 (use-package evil-nerd-commenter
   :commands (evilnc-comment-or-uncomment-lines)
   :init
-  (define-key evil-normal-state-map (kbd ",,") 'evilnc-comment-or-uncomment-lines))
+  (define-key evil-normal-state-map (kbd ",,") 'evilnc-comment-or-uncomment-lines)
+  (define-key evil-visual-state-map (kbd ",,") 'evilnc-comment-or-uncomment-lines))
 (el-get-bundle evil-numbers)
 (use-package evil-numbers
   :commands (evil-numbers/inc-at-pt
@@ -101,13 +100,14 @@
   (define-key evil-normal-state-map (kbd "+") 'evil-numbers/inc-at-pt)
   (define-key evil-normal-state-map (kbd "-") 'evil-numbers/dec-at-pt))
 
-(el-get-bundle juanjux/evil-search-highlight-persist
+(el-get-bundle evil-search-highlight-persist
   :depends (highlight))
 (use-package evil-search-highlight-persit
+  :commands (global-evil-search-highlight-persist)
   :init
   (use-package highlight)
   :config
-  (global-evil-search-highlight-persist t))
+  (global-evil-search-highlight-persist))
 (el-get-bundle evil-surround)
 (use-package evil-surround
   :config
@@ -118,13 +118,14 @@
 (use-package evil-visualstar
   :config
   (global-evil-visualstar-mode))
+
 ;; guide-key
 (el-get-bundle guide-key)
 (use-package guide-key
   :init
   (setq guide-key/idle-delay 0.4)
   (setq guide-key/recursive-key-sequence-flag t)
-  (setq guide-key/guide-key-sequence '("\\" ","))
+  (setq guide-key/guide-key-sequence '("\\" "," "<SPC>"))
   :config
   (guide-key-mode 1))
 
@@ -159,6 +160,8 @@
 
 (el-get-bundle magit)
 (el-get-bundle magit-gh-pulls)
+
+;; git
 (use-package magit
   :commands (magit-status)
   :init
@@ -171,6 +174,15 @@
     :init
     (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
     ))
+(el-get-bundle gist)
+(use-package gist
+  :commands (gist-list gist-region gist-region-private
+                      gist-buffer gist-buffer-private))
+(el-get-bundle smeargle)
+(use-package smeargle
+  :commands (smeargle smeargle-commits smeargle-clear))
+
+;; projectile
 (el-get-bundle projectile
   :depends (grizzl))
 (use-package projectile
@@ -186,19 +198,92 @@
   :init
   (add-hook 'projectile-mode-hook 'projectile-rails-on))
 
-                                        ; (defconst spacemacs-version          "0.103.2" "Spacemacs version.")
-                                        ; (defconst spacemacs-emacs-min-version   "24.3" "Minimal version of Emacs.")
-                                        ;
-                                        ; (defun spacemacs/emacs-version-ok ()
-                                        ;   (version<= spacemacs-emacs-min-version emacs-version))
-                                        ;
-                                        ; (when (spacemacs/emacs-version-ok)
-                                        ;   (load-file (concat user-emacs-directory "core/core-load-paths.el"))
-                                        ;   (require 'core-spacemacs)
-                                        ;   (require 'core-configuration-layer)
-                                        ;   (spacemacs/init)
-                                        ;   (configuration-layer/sync)
-                                        ;   (spacemacs/setup-after-init-hook)
-                                        ;   (spacemacs/maybe-install-dotfile)
-                                        ;   (require 'server)
-                                        ;   (unless (server-running-p) (server-start)))
+;; syntax check
+(el-get-bundle flycheck)
+(el-get-bundle flycheck-pos-tip)
+(use-package flycheck
+  :commands (global-flycheck-mode)
+  :init
+  (add-hook 'after-init-hook 'global-flycheck-mode)
+  :config
+  (use-package flycheck-pos-tip
+    :commands (flycheck-pos-tip-error-messages)
+    :init
+    ;; (custom-set-variables
+    ;;  '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
+    ))
+
+;; markdown
+(el-get-bundle markdown-mode)
+(el-get-bundle markdown-toc)
+(use-package markdown-mode
+  :mode (("\\.markdown\\'" . markdown-mode)
+         ("\\.md\\'" . markdown-mode)))
+
+;; ruby
+(el-get-bundle bundler)
+(el-get-bundle rbenv)
+(el-get-bundle robe)
+(el-get-bundle enh-ruby-mode)
+(el-get-bundle ruby-test-mode)
+(use-package bundler
+  :commands (bundle-open bundle-exec bundle-check bundle-gemfile
+                         bundle-update bundle-console bundle-install))
+(use-package rbenv
+  :commands (global-rbenv-mode)
+  :init
+  (add-hook 'ruby-mode-hook 'global-rbenv-mode))
+(use-package robe
+  :commands (robe-mode)
+  :init
+  (add-hook 'enh-ruby-mode-hook 'robe-mode)
+  (add-hook 'robe-mode 'ac-robe-setup))
+(use-package enh-ruby-mode
+  :mode ("\\.rb\\'" . enh-ruby-mode)
+  :interpreter ("ruby" . enh-ruby-mode))
+
+;; html, erb
+(el-get-bundle web-mode)
+(use-package web-mode
+  :mode (("\\.erb\\'" . web-mode)
+         ("\\.html?\\'" . web-mode)))
+
+;; shell
+(use-package eshell
+  :commands (eshell)
+  :config
+  (setq eshell-ask-to-save-history (quote always))
+  (setq eshell-cmpl-cycle-completions nil)
+  (setq eshell-cmpl-ignore-case t)
+  (setq eshell-save-history-on-exit t))
+(el-get-bundle exec-path-from-shell)
+(use-package exec-path-from-shell
+  :config
+  (exec-path-from-shell-initialize))
+(el-get-bundle shell-pop)
+(use-package shell-pop
+  :commands (shell-pop)
+  :init
+  (define-key evil-normal-state-map (kbd "<SPC>s") 'shell-pop)
+  :config
+  (setq shell-pop-internal-mode "eshell")
+  (setq shell-pop-internal-mode-shell "eshell")
+  (setq shell-pop-internal-mode-func (lambda nil (eshell)))
+  (setq shell-pop-internal-mode-buffer "*eshell*"))
+
+;; helm
+(el-get-bundle async)
+(el-get-bundle helm)
+(use-package helm-config
+  :config
+  (helm-mode t)
+  (setq helm-mode-fuzzy-match t)
+  (setq helm-completion-in-region-fuzzy-match t)
+  ;; (setq 'helm-buffers-fuzzy-matching t)
+  ;; (setq 'helm-recentf-fuzzy-match t)
+  (setq helm-autoresize-mode t)
+  (define-key evil-normal-state-map (kbd "<SPC>hb") 'helm-buffer-list)
+  (define-kdy evil-normal-state-map (kbd "<SPC>hr") 'helm-recentf)
+  (define-key evil-normal-state-map (kbd "<SPC>hp") 'helm-projectile)
+  (define-key evil-normal-state-map (kbd "<SPC>hf") 'helm-for-files)
+  (define-key evil-normal-state-map (kbd "<SPC>hg") 'helm-ag))
