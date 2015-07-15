@@ -2,14 +2,10 @@
 ;;; Commentary:
 ;;; Code:
 
-(add-to-list 'load-path "~/.emacs.d/private/initchart")
-(require 'initchart)
-(initchart-record-execution-time-of load file)
-(initchart-record-execution-time-of require feature)
 
 ;; config
 (add-to-list 'default-frame-alist '(font . "Ricty for Powerline-17"))
-(setq gc-cons-threshold (* 128  1024 1024))
+(setq gc-cons-threshold (* 128 1024 1024))
 (set-language-environment 'utf-8)
 (prefer-coding-system 'utf-8)
 (tool-bar-mode -1)
@@ -19,7 +15,7 @@
 ;; (tooltip-mode -1)
 ;; (setq tooltip-use-echo-area t)
 (unless (eq window-system 'mac)
-    (menu-bar-mode -1))
+  (menu-bar-mode -1))
 
 ;; linum
 (setq linum-format "%4d ")
@@ -28,7 +24,6 @@
 
 ;; tab
 (setq-default tab-width 2
-              tab-always-indent t
               indent-tabs-mode nil)
 ;; auto-insert
 (auto-insert-mode)
@@ -48,7 +43,7 @@
     (eval-print-last-sexp)))
 
 ;; use use-package for config description
-(setq el-get-generate-autoloads nil)
+(setq el-get-use-autoloads nil)
 (setq el-get-is-lazy t)
 ;; for debug
 (setq el-get-verbose t)
@@ -61,6 +56,23 @@
 (require 'diminish)
 (require 'bind-key)
 
+;; initchart
+(el-get-bundle yuttie/initchart)
+(use-package initchart
+  :commands (initchart-record-execution-time-of))
+;; (initchart-record-execution-time-of load file)
+;; (initchart-record-execution-time-of require feature)
+
+;; eww
+(use-package eww
+             :commands (eww)
+             :init
+             (setq eww-search-prefix "http://www.google.co.jp/search?q="))
+
+;; esup
+(el-get-bundle esup)
+(use-package esup
+  :commands (esup))
 ;; auto-save
 (el-get-bundle auto-save-buffers-enhanced)
 (use-package auto-save-buffers-enhanced
@@ -75,13 +87,39 @@
 ;; theme
 (el-get-bundle color-theme-solarized)
 ;; (add-to-list 'custom-theme-load-path (concat user-emacs-directory "el-get/solarized/"))
-  (add-to-list 'custom-theme-load-path default-directory)
+(add-to-list 'custom-theme-load-path default-directory)
 (set-frame-parameter nil 'background-mode 'dark)
 (set-terminal-parameter nil 'background-mode 'dark)
 (load-theme 'solarized t)
+
+;; smartparens
+(el-get-bundle smartparens)
+(use-package smartparens
+  :defer t
+  :init
+  (use-package smartparens-config
+    :defer t)
+  :config
+  (smartparens-global-mode)
+  (show-smartparens-global-mode))
+
 ;; evil
 (el-get-bundle evil)
 (el-get-bundle evil-leader)
+(el-get-bundle anzu)
+(el-get-bundle evil-anzu)
+(el-get-bundle evil-args)
+(el-get-bundle evil-jumper)
+(el-get-bundle evil-lisp-state)
+(el-get-bundle evil-matchit)
+(el-get-bundle evil-nerd-commenter)
+(el-get-bundle evil-numbers)
+(el-get-bundle highlight)
+(el-get-bundle evil-search-highlight-persist)
+(el-get-bundle evil-surround)
+(el-get-bundle evil-terminal-cursor-changer)
+(el-get-bundle evil-visualstar)
+
 (use-package evil
   :init
   (setq evil-search-module 'evil-search)
@@ -89,10 +127,41 @@
   (setq evil-want-C-i-jump t)
   (setq evil-want-C-u-scroll t)
   :config
-  (use-package evil-leader
-    :config
-    (global-evil-leader-mode))
+  (use-package evil-leader :config (global-evil-leader-mode))
+  ;; init evil-mode
   (evil-mode t)
+  (use-package evil-lisp-state
+    :init
+    (defun evil-lisp-state-lisp-mode-hook ()
+      (require 'evil-lisp-state)
+      (add-to-list 'evil-lisp-state-major-modes 'lisp-mode))
+    (add-hook 'lisp-mode-hook 'evil-lisp-state-lisp-mode-hook)
+
+    (defun evil-lisp-state-emacs-lisp-mode-hook ()
+      (require 'evil-lisp-state))
+    (add-hook 'emacs-lisp-mode-hook 'evil-lisp-state-emacs-lisp-mode-hook))
+  (use-package evil-visualstar :config (global-evil-visualstar-mode))
+  (use-package evil-terminal-cursor-changer)
+  (use-package evil-surround :config (global-evil-surround-mode t))
+  (use-package evil-search-highlight-persist :config (global-evil-search-highlight-persist))
+  (use-package evil-numbers
+    :commands (evil-numbers/inc-at-pt evil-numbers/dec-at-pt)
+    :init
+    (define-key evil-normal-state-map (kbd "+") 'evil-numbers/inc-at-pt)
+    (define-key evil-normal-state-map (kbd "-") 'evil-numbers/dec-at-pt))
+  (use-package evil-nerd-commenter
+    :commands (evilnc-comment-or-uncomment-lines)
+    :init
+    (define-key evil-normal-state-map (kbd ",,") 'evilnc-comment-or-uncomment-lines)
+    (define-key evil-visual-state-map (kbd ",,") 'evilnc-comment-or-uncomment-lines))
+  (use-package evil-matchit :config (global-evil-matchit-mode t))
+  (use-package evil-anzu)
+  (use-package evil-jumper :config (evil-jumper-mode))
+  (use-package evil-args
+    :commands (evil-inner-arg evil-outer-arg)
+    :init
+    (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
+    (define-key evil-outer-text-objects-map "a" 'evil-outer-arg))
   (define-key evil-insert-state-map (kbd "C-h") 'delete-backward-char)
   (define-key evil-ex-search-keymap (kbd "C-h") 'delete-backward-char)
   (define-key evil-ex-completion-map (kbd "C-h") 'delete-backward-char)
@@ -101,6 +170,7 @@
   (define-key evil-normal-state-map (kbd "C-j") 'windmove-down)
   (define-key evil-normal-state-map (kbd "C-h") 'windmove-left)
   (define-key evil-normal-state-map (kbd "C-l") 'windmove-right)
+  (define-key evil-normal-state-map (kbd "C-c") 'evil-window-delete)
   (defun evil-swap-key (map key1 key2)
     ;; MAP中のKEY1とKEY2を入れ替え
     "Swap KEY1 and KEY2 in MAP."
@@ -110,58 +180,6 @@
       (define-key map key2 def1)))
   (evil-swap-key evil-motion-state-map "j" "gj")
   (evil-swap-key evil-motion-state-map "k" "gk"))
-(el-get-bundle evil-jumper)
-(use-package evil-jumper
-  :config
-  (evil-jumper-mode))
-(el-get-bundle smartparens)
-(use-package smartparens
-  :defer t
-  :init
-  (use-package smartparens-config)
-  :config
-  (smartparens-global-mode)
-  (show-smartparens-global-mode))
-(el-get-bundle evil-lisp-state)
-(use-package evil-lisp-state
-  :config
-  (add-to-list 'evil-lisp-state-major-modes 'lisp-mode))
-(el-get-bundle evil-matchit)
-(use-package evil-matchit
-  :config
-  (global-evil-matchit-mode t))
-(el-get-bundle evil-nerd-commenter)
-(use-package evil-nerd-commenter
-  :commands (evilnc-comment-or-uncomment-lines)
-  :init
-  (define-key evil-normal-state-map (kbd ",,") 'evilnc-comment-or-uncomment-lines)
-  (define-key evil-visual-state-map (kbd ",,") 'evilnc-comment-or-uncomment-lines))
-(el-get-bundle evil-numbers)
-(use-package evil-numbers
-  :commands (evil-numbers/inc-at-pt
-             evil-numbers/dec-at-pt)
-  :init
-  (define-key evil-normal-state-map (kbd "+") 'evil-numbers/inc-at-pt)
-  (define-key evil-normal-state-map (kbd "-") 'evil-numbers/dec-at-pt))
-
-(el-get-bundle highlight)
-(el-get-bundle evil-search-highlight-persist)
-(use-package evil-search-highlight-persit
-  :commands (global-evil-search-highlight-persist)
-  :init
-  (use-package highlight)
-  :config
-  (global-evil-search-highlight-persist))
-(el-get-bundle evil-surround)
-(use-package evil-surround
-  :config
-  (global-evil-surround-mode t))
-(el-get-bundle evil-terminal-cursor-changer)
-(use-package evil-terminal-cursor-changer)
-(el-get-bundle evil-visualstar)
-(use-package evil-visualstar
-  :config
-  (global-evil-visualstar-mode))
 
 ;; guide-key
 (el-get-bundle guide-key)
@@ -184,23 +202,21 @@
 (el-get-bundle auto-complete)
 (use-package auto-complete
   :init
-  (setq ac-auto-start 3
+  (setq ac-auto-start 2
         ac-delay 0.2
         ac-quick-help-delay 1.
         ac-use-fuzzy t
         ac-fuzzy-enable t
-        tab-always-indent 'complete
-        ac-dwim t)
+        ac-show-menu-immediately-on-auto-complete t)
+  (setq-default ac-sources '(ac-source-filename ac-source-words-in-same-mode-buffers))
+  (add-hook 'emacs-lisp-mode-hook (lambda () (add-to-list 'ac-sources 'ac-source-symbols)))
+  (add-hook 'enh-ruby-mode-hook (lambda () (add-to-list 'ac-sources 'ac-source-abbrev)))
   :config
+  (use-package auto-complete-config :config (ac-config-default))
+  (global-auto-complete-mode t)
   (define-key ac-completing-map (kbd "C-n") 'ac-next)
   (define-key ac-completing-map (kbd "C-p") 'ac-previous)
-  (setq-default ac-sources '(ac-source-filename ac-source-words-in-same-mode-buffers))
-  (add-hook 'emacs-lisp-mode-hook (lambda () (add-to-list 'ac-sources 'ac-source-symbols )))
-  (ac-set-trigger-key "TAB")
-  (use-package auto-complete-config
-    :config
-    (ac-config-default)
-    (global-auto-complete-mode t)))
+  (ac-set-trigger-key "TAB"))
 
 (use-package eldoc
   :init
@@ -226,7 +242,7 @@
 (el-get-bundle gist)
 (use-package gist
   :commands (gist-list gist-region gist-region-private
-                      gist-buffer gist-buffer-private))
+                       gist-buffer gist-buffer-private))
 (el-get-bundle smeargle)
 (use-package smeargle
   :commands (smeargle smeargle-commits smeargle-clear))
@@ -281,9 +297,11 @@
          ("PULLREQ_MSG" . markdown-mode)))
 
 ;; ruby
+(setq ruby-insert-encoding-magic-comment nil)
 (el-get-bundle bundler)
 (el-get-bundle rbenv)
 (el-get-bundle robe)
+(el-get-bundle inf-ruby)
 (el-get-bundle enh-ruby-mode)
 (el-get-bundle ruby-test-mode)
 (use-package bundler
@@ -292,17 +310,28 @@
 (use-package rbenv
   :commands (global-rbenv-mode)
   :init
-  (add-hook 'ruby-mode-hook 'global-rbenv-mode))
+  (global-rbenv-mode)
+  (add-hook 'enh-ruby-mode-hook (lambda () (rbenv-use-corresponding))))
+(use-package inf-ruby
+  :commands (inf-ruby inf-ruby-minor-mode inf-ruby-console-auto)
+  :init
+  (add-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode))
 (use-package robe
-  :commands (robe-mode)
+  :commands (robe-mode robe-start ac-robe-setup)
   :init
   (add-hook 'enh-ruby-mode-hook 'robe-mode)
-  (add-hook 'robe-mode 'ac-robe-setup))
+  ;; (add-hook 'robe-mode-hook 'robe-start)
+  (add-hook 'robe-mode-hook 'ac-robe-setup)
+  )
 (use-package enh-ruby-mode
-  :mode (("\\.rb\\'" . enh-ruby-mode)
-         ("\\.schema\\'" . enh-ruby-mode)
+  :mode (("\\(Rake\\|Thor\\|Guard\\|Gem\\|Cap\\|Vagrant\\|Berks\\|Pod\\|Puppet\\)file\\'" . enh-ruby-mode)
+         ("\\.\\(rb\\|rabl\\|ru\\|builder\\|rake\\|thor\\|gemspec\\|jbuilder\\|schema\\)\\'" . enh-ruby-mode)
          ("Schema" . enh-ruby-mode))
-  :interpreter ("ruby" . enh-ruby-mode))
+  :interpreter ("ruby" . enh-ruby-mode)
+  :init
+  (add-hook 'enh-ruby-mode-hook 'auto-complete-mode)
+  :config
+  (setq enh-ruby-add-encoding-comment-on-save nil))
 (use-package ruby-test-mode
   :commands (ruby-test-mode)
   :init
@@ -345,9 +374,9 @@
 (el-get-bundle helm-ls-git)
 (el-get-bundle helm-ag)
 (use-package helm
-  ;; :commands (helm-M-x helm-buffers-list helm-recent helm-browse-project
-  ;;                     helm-for-files helm-do-ag-project-root
-  ;;                     helm-do-ag-buffers)
+  :commands (helm-M-x helm-buffers-list helm-recent helm-browse-project
+                      helm-for-files helm-do-ag-project-root
+                      helm-do-ag-buffers)
   :init
   (setq helm-mode-fuzzy-match t)
   (setq helm-completion-in-region-fuzzy-match t)
@@ -371,10 +400,37 @@
   (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
   (define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
   (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action))
+
 ;; yaml
 (el-get-bundle yaml-mode)
 (use-package yaml-mode
   :mode ("\\.yaml\\'" . yaml-mode))
+
+(el-get-bundle ace-jump-mode)
+(use-package ace-jump-mode
+  :commands (ace-jump-word-mode ace-jump-char-mode ace-jump-line-mode)
+  :init
+  (setq ace-jump-mode-scope 'window)
+  (define-key evil-normal-state-map (kbd "f") 'ace-jump-char-mode)
+  (define-key evil-normal-state-map (kbd "<SPC><SPC>") 'ace-jump-word-mode)
+  (define-key evil-normal-state-map (kbd "<SPC>l") 'ace-jump-line-mode))
+
+(el-get-bundle expand-region)
+(use-package expand-region
+  :commands (er/expand-region er/contract-region)
+  :init
+  (define-key evil-visual-state-map (kbd "v") 'er/expand-region)
+  (define-key evil-visual-state-map (kbd "C-v") 'er/contract-region))
+
+(el-get-bundle popwin)
+(use-package popwin
+  :config
+  (popwin-mode t)
+  (push '("*compilation*" :stick t :height 0.3 :tail t :noselect t) popwin:special-display-config))
+
+(el-get-bundle powerline)
+(use-package powerline
+  :config (powerline-vim-theme))
 
 
 
