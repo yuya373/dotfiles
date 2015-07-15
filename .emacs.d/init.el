@@ -285,13 +285,13 @@
 (el-get-bundle async)
 (el-get-bundle helm)
 (use-package helm-config
-  :config
-  (helm-mode t)
+  :commands (helm-M-x helm-buffers-list helm-recent helm-projectile
+                      helm-for-files helm-ag)
+  :init
   (setq helm-mode-fuzzy-match t)
   (setq helm-completion-in-region-fuzzy-match t)
-  ;; (setq 'helm-buffers-fuzzy-matching t)
-  ;; (setq 'helm-recentf-fuzzy-match t)
   (setq helm-autoresize-mode t)
+  (define-key evil-normal-state-map (kbd "<SPC>:")  'helm-M-x)
   (define-key evil-normal-state-map (kbd "<SPC>hb") 'helm-buffers-list)
   (define-key evil-normal-state-map (kbd "<SPC>hr") 'helm-recentf)
   (define-key evil-normal-state-map (kbd "<SPC>hp") 'helm-projectile)
