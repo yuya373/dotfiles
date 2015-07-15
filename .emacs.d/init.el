@@ -1,26 +1,31 @@
+;;; init.el --- init.el
+;;; Commentary:
+;;; Code:
+
 (add-to-list 'load-path "~/.emacs.d/private/initchart")
 (require 'initchart)
 (initchart-record-execution-time-of load file)
 (initchart-record-execution-time-of require feature)
 
 ;; config
-(setq gc-cons-threshold 128 * 1024 * 1024 * 1024)
+(add-to-list 'default-frame-alist '(font . "Ricty for Powerline-17"))
+(setq gc-cons-threshold (* 128  1024 1024))
 (set-language-environment 'utf-8)
 (prefer-coding-system 'utf-8)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
+(setq require-final-newline t)
+(modify-syntax-entry ?_ "w" (standard-syntax-table))
 ;; (tooltip-mode -1)
 ;; (setq tooltip-use-echo-area t)
 (unless (eq window-system 'mac)
     (menu-bar-mode -1))
+
 ;; linum
 (setq linum-format "%4d ")
 (global-linum-mode t)
 (setq ad-redefinition-action 'accept)
-(keyboard-translate ?\C-h ?\C-?)
-;; auto-save
-(setq auto-save-timeout 1
-      auto-save-interval 1)
+
 ;; tab
 (setq-default tab-width 2
               tab-always-indent t
@@ -55,11 +60,32 @@
 (require 'use-package)
 (require 'diminish)
 (require 'bind-key)
+
+;; auto-save
+(el-get-bundle auto-save-buffers-enhanced)
+(use-package auto-save-buffers-enhanced
+  :init
+  (setq make-backup-files nil)
+  (setq auto-save-list-file-prefix nil)
+  (setq create-lockfiles nil)
+  (setq auto-save-buffers-enhanced-interval 0.5)
+  :config
+  (auto-save-buffers-enhanced t))
+
+;; theme
+(el-get-bundle color-theme-solarized)
+;; (add-to-list 'custom-theme-load-path (concat user-emacs-directory "el-get/solarized/"))
+  (add-to-list 'custom-theme-load-path default-directory)
+(set-frame-parameter nil 'background-mode 'dark)
+(set-terminal-parameter nil 'background-mode 'dark)
+(load-theme 'solarized t)
 ;; evil
 (el-get-bundle evil)
 (el-get-bundle evil-leader)
 (use-package evil
   :init
+  (setq evil-search-module 'evil-search)
+  (setq evil-esc-delay 0)
   (setq evil-want-C-i-jump t)
   (setq evil-want-C-u-scroll t)
   :config
@@ -67,11 +93,23 @@
     :config
     (global-evil-leader-mode))
   (evil-mode t)
+  (define-key evil-insert-state-map (kbd "C-h") 'delete-backward-char)
+  (define-key evil-ex-search-keymap (kbd "C-h") 'delete-backward-char)
+  (define-key evil-ex-completion-map (kbd "C-h") 'delete-backward-char)
   ;; window move
   (define-key evil-normal-state-map (kbd "C-k") 'windmove-up)
   (define-key evil-normal-state-map (kbd "C-j") 'windmove-down)
   (define-key evil-normal-state-map (kbd "C-h") 'windmove-left)
-  (define-key evil-normal-state-map (kbd "C-l") 'windmove-right))
+  (define-key evil-normal-state-map (kbd "C-l") 'windmove-right)
+  (defun evil-swap-key (map key1 key2)
+    ;; MAP中のKEY1とKEY2を入れ替え
+    "Swap KEY1 and KEY2 in MAP."
+    (let ((def1 (lookup-key map key1))
+          (def2 (lookup-key map key2)))
+      (define-key map key1 def2)
+      (define-key map key2 def1)))
+  (evil-swap-key evil-motion-state-map "j" "gj")
+  (evil-swap-key evil-motion-state-map "k" "gk"))
 (el-get-bundle evil-jumper)
 (use-package evil-jumper
   :config
@@ -84,8 +122,7 @@
   :config
   (smartparens-global-mode)
   (show-smartparens-global-mode))
-(el-get-bundle evil-lisp-state
-  :depends (smartparens))
+(el-get-bundle evil-lisp-state)
 (use-package evil-lisp-state
   :config
   (add-to-list 'evil-lisp-state-major-modes 'lisp-mode))
@@ -107,8 +144,8 @@
   (define-key evil-normal-state-map (kbd "+") 'evil-numbers/inc-at-pt)
   (define-key evil-normal-state-map (kbd "-") 'evil-numbers/dec-at-pt))
 
-(el-get-bundle evil-search-highlight-persist
-  :depends (highlight))
+(el-get-bundle highlight)
+(el-get-bundle evil-search-highlight-persist)
 (use-package evil-search-highlight-persit
   :commands (global-evil-search-highlight-persist)
   :init
@@ -147,7 +184,7 @@
 (el-get-bundle auto-complete)
 (use-package auto-complete
   :init
-  (setq ac-auto-start 0
+  (setq ac-auto-start 3
         ac-delay 0.2
         ac-quick-help-delay 1.
         ac-use-fuzzy t
@@ -155,10 +192,15 @@
         tab-always-indent 'complete
         ac-dwim t)
   :config
+  (define-key ac-completing-map (kbd "C-n") 'ac-next)
+  (define-key ac-completing-map (kbd "C-p") 'ac-previous)
+  (setq-default ac-sources '(ac-source-filename ac-source-words-in-same-mode-buffers))
+  (add-hook 'emacs-lisp-mode-hook (lambda () (add-to-list 'ac-sources 'ac-source-symbols )))
   (ac-set-trigger-key "TAB")
   (use-package auto-complete-config
     :config
-    (ac-config-default)))
+    (ac-config-default)
+    (global-auto-complete-mode t)))
 
 (use-package eldoc
   :init
@@ -190,20 +232,30 @@
   :commands (smeargle smeargle-commits smeargle-clear))
 
 ;; projectile
-(el-get-bundle projectile
-  :depends (grizzl))
+(el-get-bundle grizzl)
+(el-get-bundle projectile)
 (use-package projectile
   :commands (projectile-mode)
   :init
   (setq projectile-completion-system 'grizzl)
+  (add-hook 'enh-ruby-mode-hook 'projectile-mode)
   :config
-  (add-hook 'ruby-mode-hook 'projectile-mode)
   (use-package grizzl))
+
+;; rails
+(el-get-bundle evil-rails)
 (el-get-bundle projectile-rails)
 (use-package projectile-rails
   :commands (projectile-rails-on)
   :init
-  (add-hook 'projectile-mode-hook 'projectile-rails-on))
+  (define-key evil-normal-state-map (kbd ",rm") 'projectile-rails-find-model)
+  (define-key evil-normal-state-map (kbd ",rc") 'projectile-rails-find-controller)
+  (define-key evil-normal-state-map (kbd ",rv") 'projectile-rails-find-view)
+  (define-key evil-normal-state-map (kbd ",rs") 'projectile-rails-find-spec)
+  (define-key evil-normal-state-map (kbd ",rl") 'projectile-rails-find-lib)
+  (add-hook 'projectile-mode-hook 'projectile-rails-on)
+  :config
+  (use-package evil-rails))
 
 ;; syntax check
 (el-get-bundle flycheck)
@@ -251,6 +303,12 @@
          ("\\.schema\\'" . enh-ruby-mode)
          ("Schema" . enh-ruby-mode))
   :interpreter ("ruby" . enh-ruby-mode))
+(use-package ruby-test-mode
+  :commands (ruby-test-mode)
+  :init
+  (add-hook 'enh-ruby-mode-hook 'ruby-test-mode)
+  (evil-define-key 'normal ruby-test-mode-map (kbd ",tt") 'ruby-test-run-at-point)
+  (evil-define-key 'normal ruby-test-mode-map (kbd ",tb") 'ruby-test-run))
 
 ;; html, erb
 (el-get-bundle web-mode)
@@ -284,16 +342,53 @@
 ;; helm
 (el-get-bundle async)
 (el-get-bundle helm)
-(use-package helm-config
-  :commands (helm-M-x helm-buffers-list helm-recent helm-projectile
-                      helm-for-files helm-ag)
+(el-get-bundle helm-ls-git)
+(el-get-bundle helm-ag)
+(use-package helm
+  ;; :commands (helm-M-x helm-buffers-list helm-recent helm-browse-project
+  ;;                     helm-for-files helm-do-ag-project-root
+  ;;                     helm-do-ag-buffers)
   :init
   (setq helm-mode-fuzzy-match t)
   (setq helm-completion-in-region-fuzzy-match t)
   (setq helm-autoresize-mode t)
+  (setq helm-ag-fuzzy-match t)
+  (setq helm-ag-insert-at-point t)
+  (define-key evil-normal-state-map (kbd ",gp") 'helm-do-ag-project-root)
+  (define-key evil-normal-state-map (kbd ",gb") 'helm-do-ag-buffers)
   (define-key evil-normal-state-map (kbd "<SPC>:")  'helm-M-x)
   (define-key evil-normal-state-map (kbd "<SPC>hb") 'helm-buffers-list)
   (define-key evil-normal-state-map (kbd "<SPC>hr") 'helm-recentf)
-  (define-key evil-normal-state-map (kbd "<SPC>hp") 'helm-projectile)
-  (define-key evil-normal-state-map (kbd "<SPC>hf") 'helm-for-files)
-  (define-key evil-normal-state-map (kbd "<SPC>hg") 'helm-ag))
+  (define-key evil-normal-state-map (kbd "<SPC>hp") 'helm-browse-project)
+  (define-key evil-normal-state-map (kbd "<SPC>hf") 'helm-find-files)
+  :config
+  (helm-mode +1)
+  (use-package helm-ls-git)
+  (use-package helm-ag)
+  (define-key helm-map (kbd "C-h") 'delete-backward-char)
+  (define-key helm-read-file-map (kbd "C-h") 'delete-backward-char)
+  (define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
+  (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
+  (define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
+  (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action))
+;; yaml
+(el-get-bundle yaml-mode)
+(use-package yaml-mode
+  :mode ("\\.yaml\\'" . yaml-mode))
+
+
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
