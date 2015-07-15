@@ -172,6 +172,7 @@ if neobundle#tap('diffchar.vim')
 endif
 
 if neobundle#tap('vimshell.vim')
+  let g:vimshell_vimshrc_path = "~/dotfiles/.vimshrc"
   nnoremap <Space>ss :VimShellPop -toggle<CR>
   nnoremap <Space>st :VimShellTab<CR>
   call neobundle#untap()
