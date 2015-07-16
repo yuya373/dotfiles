@@ -17,6 +17,9 @@
 (unless (eq window-system 'mac)
   (menu-bar-mode -1))
 
+;; dired
+(setq dired-use-ls-dired t)
+
 ;; linum
 (setq linum-format "%4d ")
 (global-linum-mode t)
@@ -56,12 +59,25 @@
 (require 'diminish)
 (require 'bind-key)
 
+;; whitespace
+(use-package whitespace
+  :config
+  (setq whitespace-style '(face
+                           trailing
+                           tabs
+                           spaces
+                           empty
+                           space-mark
+                           tab-mark))
+  ;; (setq whitespace-action '(auto-cleanup))
+  (global-whitespace-mode))
+
 ;; initchart
 (el-get-bundle yuttie/initchart)
 (use-package initchart
   :commands (initchart-record-execution-time-of))
-;; (initchart-record-execution-time-of load file)
-;; (initchart-record-execution-time-of require feature)
+(initchart-record-execution-time-of load file)
+(initchart-record-execution-time-of require feature)
 
 ;; eww
 (use-package eww
@@ -73,6 +89,7 @@
 (el-get-bundle esup)
 (use-package esup
   :commands (esup))
+
 ;; auto-save
 (el-get-bundle auto-save-buffers-enhanced)
 (use-package auto-save-buffers-enhanced
@@ -86,7 +103,6 @@
 
 ;; theme
 (el-get-bundle color-theme-solarized)
-;; (add-to-list 'custom-theme-load-path (concat user-emacs-directory "el-get/solarized/"))
 (add-to-list 'custom-theme-load-path default-directory)
 (set-frame-parameter nil 'background-mode 'dark)
 (set-terminal-parameter nil 'background-mode 'dark)
@@ -122,6 +138,7 @@
 
 (use-package evil
   :init
+  (setq evil-fold-level 4)
   (setq evil-search-module 'evil-search)
   (setq evil-esc-delay 0)
   (setq evil-want-C-i-jump t)
@@ -171,6 +188,14 @@
   (define-key evil-normal-state-map (kbd "C-h") 'windmove-left)
   (define-key evil-normal-state-map (kbd "C-l") 'windmove-right)
   (define-key evil-normal-state-map (kbd "C-c") 'evil-window-delete)
+  (define-key evil-normal-state-map (kbd ",hf") 'describe-function)
+  (define-key evil-normal-state-map (kbd ",hv") 'describe-variable)
+  (define-key evil-normal-state-map (kbd ",hs") 'describe-syntax)
+  (define-key evil-normal-state-map (kbd ",hp") 'describe-package)
+  (evil-set-initial-state 'comint-mode 'normal)
+  (evil-define-key 'normal comint-mode-map (kbd "C-d") 'evil-scroll-down)
+  (evil-define-key 'normal comint-mode-map (kbd "C-c") 'evil-window-delete)
+  (custom-set-variables '(evil-shift-width 2))
   (defun evil-swap-key (map key1 key2)
     ;; MAP中のKEY1とKEY2を入れ替え
     "Swap KEY1 and KEY2 in MAP."
@@ -231,7 +256,7 @@
   :commands (magit-status)
   :init
   (evil-leader/set-key "gb" 'magit-blame)
-  (evil-leader/set-key "gs" 'magit-status)
+  (evil-leader/set-key "gg" 'magit-status)
   :config
   (use-package ert)
   (use-package magit-gh-pulls
@@ -269,6 +294,7 @@
   (define-key evil-normal-state-map (kbd ",rv") 'projectile-rails-find-view)
   (define-key evil-normal-state-map (kbd ",rs") 'projectile-rails-find-spec)
   (define-key evil-normal-state-map (kbd ",rl") 'projectile-rails-find-lib)
+  (define-key evil-normal-state-map (kbd "gf") 'projectile-rails-goto-file-at-point)
   (add-hook 'projectile-mode-hook 'projectile-rails-on)
   :config
   (use-package evil-rails))
@@ -304,6 +330,7 @@
 (el-get-bundle inf-ruby)
 (el-get-bundle enh-ruby-mode)
 (el-get-bundle ruby-test-mode)
+(el-get-bundle elpa:ruby-electric)
 (use-package bundler
   :commands (bundle-open bundle-exec bundle-check bundle-gemfile
                          bundle-update bundle-console bundle-install))
@@ -321,7 +348,7 @@
   :init
   (add-hook 'enh-ruby-mode-hook 'robe-mode)
   ;; (add-hook 'robe-mode-hook 'robe-start)
-  (add-hook 'robe-mode-hook 'ac-robe-setup)
+  ;; (add-hook 'robe-mode-hook 'ac-robe-setup)
   )
 (use-package enh-ruby-mode
   :mode (("\\(Rake\\|Thor\\|Guard\\|Gem\\|Cap\\|Vagrant\\|Berks\\|Pod\\|Puppet\\)file\\'" . enh-ruby-mode)
@@ -338,6 +365,10 @@
   (add-hook 'enh-ruby-mode-hook 'ruby-test-mode)
   (evil-define-key 'normal ruby-test-mode-map (kbd ",tt") 'ruby-test-run-at-point)
   (evil-define-key 'normal ruby-test-mode-map (kbd ",tb") 'ruby-test-run))
+
+(use-package ruby-electric
+  :init
+  (add-hook 'enh-ruby-mode-hook 'ruby-electric-mode))
 
 ;; html, erb
 (el-get-bundle web-mode)
@@ -378,6 +409,7 @@
                       helm-for-files helm-do-ag-project-root
                       helm-do-ag-buffers)
   :init
+  (setq helm-exit-idle-delay 0)
   (setq helm-mode-fuzzy-match t)
   (setq helm-completion-in-region-fuzzy-match t)
   (setq helm-autoresize-mode t)
@@ -390,8 +422,9 @@
   (define-key evil-normal-state-map (kbd "<SPC>hr") 'helm-recentf)
   (define-key evil-normal-state-map (kbd "<SPC>hp") 'helm-browse-project)
   (define-key evil-normal-state-map (kbd "<SPC>hf") 'helm-find-files)
-  :config
+  (define-key evil-normal-state-map (kbd "<SPC>hl") 'helm-resume)
   (helm-mode +1)
+  :config
   (use-package helm-ls-git)
   (use-package helm-ag)
   (define-key helm-map (kbd "C-h") 'delete-backward-char)
@@ -400,6 +433,13 @@
   (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
   (define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
   (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action))
+
+(el-get-bundle helm-dash)
+(use-package helm-dash
+  :commands (helm-dash-at-point helm-dash helm-dash-install-docset)
+  :init
+  (define-key evil-normal-state-map (kbd "<SPC>hdd") 'helm-dash)
+  (define-key evil-normal-state-map (kbd "<SPC>hda") 'helm-dash-at-point))
 
 ;; yaml
 (el-get-bundle yaml-mode)
@@ -433,7 +473,6 @@
   :config (powerline-vim-theme))
 
 
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -441,10 +480,12 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default))))
+    ("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default)))
+ '(evil-shift-width 2))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(enh-ruby-op-face ((t (:foreground "headerColor"))))
+ '(enh-ruby-string-delimiter-face ((t (:foreground "#d33682")))))
