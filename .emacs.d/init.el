@@ -67,8 +67,25 @@
                            tabs
                            spaces
                            empty
+                           newline
+                           newline-mark
                            space-mark
                            tab-mark))
+  (setq whitespace-display-mappings
+        '((space-mark ?\u3000 [?\　])
+          (newline-mark ?\n [?\¬ ?\n])
+          (tab-mark ?\t [?\▸ ?\▸])
+          ))
+  (setq whitespace-space-regexp "\\(\u3000+\\)")
+  (set-face-bold-p 'whitespace-space t)
+  (set-face-foreground 'whitespace-space "#d33682")
+  (set-face-background 'whitespace-space "#d33682")
+  (set-face-bold-p 'whitespace-trailing t)
+  (set-face-underline  'whitespace-trailing t)
+  (set-face-foreground 'whitespace-trailing "#d33682")
+  (set-face-background 'whitespace-trailing "#d33682")
+  (set-face-foreground 'whitespace-newline  "headerColor")
+  (set-face-background 'whitespace-newline 'nil)
   ;; (setq whitespace-action '(auto-cleanup))
   (global-whitespace-mode))
 
@@ -116,7 +133,7 @@
   (use-package smartparens-config
     :defer t)
   :config
-  (smartparens-global-mode)
+  ;; (smartparens-global-mode)
   (show-smartparens-global-mode))
 
 ;; evil
@@ -192,6 +209,8 @@
   (define-key evil-normal-state-map (kbd ",hv") 'describe-variable)
   (define-key evil-normal-state-map (kbd ",hs") 'describe-syntax)
   (define-key evil-normal-state-map (kbd ",hp") 'describe-package)
+  (define-key evil-normal-state-map (kbd ",hm") 'describe-mode)
+  (define-key evil-normal-state-map (kbd ",c") 'whitespace-cleanup)
   (evil-set-initial-state 'comint-mode 'normal)
   (evil-define-key 'normal comint-mode-map (kbd "C-d") 'evil-scroll-down)
   (evil-define-key 'normal comint-mode-map (kbd "C-c") 'evil-window-delete)
@@ -220,9 +239,9 @@
 (use-package rainbow-delimiters
   :commands (rainbow-delimiters-mode)
   :init
-  ;;(add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
-  (add-hook 'lisp-mode-hook 'rainbow-delimiters-mode)
-  (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode))
+  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+  ;; (add-hook 'lisp-mode-hook 'rainbow-delimiters-mode)
+  ;; (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode))
 
 (el-get-bundle auto-complete)
 (use-package auto-complete
@@ -330,7 +349,7 @@
 (el-get-bundle inf-ruby)
 (el-get-bundle enh-ruby-mode)
 (el-get-bundle ruby-test-mode)
-(el-get-bundle elpa:ruby-electric)
+(el-get-bundle ruby-end)
 (use-package bundler
   :commands (bundle-open bundle-exec bundle-check bundle-gemfile
                          bundle-update bundle-console bundle-install))
@@ -361,6 +380,11 @@
   :interpreter ("ruby" . enh-ruby-mode)
   :init
   (add-hook 'enh-ruby-mode-hook 'auto-complete-mode)
+  (add-hook 'enh-ruby-mode-hook '(lambda ()
+                                   (abbrev-mode)
+                                   (electric-pair-mode)
+                                   (electric-indent-mode)
+                                   (electric-layout-mode)))
   :config
   (setq enh-ruby-add-encoding-comment-on-save nil))
 (use-package ruby-test-mode
@@ -369,10 +393,10 @@
   (add-hook 'enh-ruby-mode-hook 'ruby-test-mode)
   (evil-define-key 'normal ruby-test-mode-map (kbd ",tt") 'ruby-test-run-at-point)
   (evil-define-key 'normal ruby-test-mode-map (kbd ",tb") 'ruby-test-run))
-
-(use-package ruby-electric
+(use-package ruby-end
+  :commands (ruby-end-mode)
   :init
-  (add-hook 'enh-ruby-mode-hook 'ruby-electric-mode))
+  (add-hook 'enh-ruby-mode-hook 'ruby-end-mode))
 
 ;; html, erb
 (el-get-bundle web-mode)
@@ -413,14 +437,14 @@
   ;;                     helm-for-files helm-do-ag-project-root
   ;;                     helm-do-ag-buffers)
   :init
-  ;; (setq helm-exit-idle-delay 0)
+  (setq helm-exit-idle-delay 0)
   (setq helm-mode-fuzzy-match t)
   (setq helm-completion-in-region-fuzzy-match t)
   (setq helm-autoresize-mode t)
   (setq helm-ag-fuzzy-match t)
   (setq helm-ag-insert-at-point t)
-  (define-key evil-normal-state-map (kbd ",gp") 'helm-do-ag-project-root)
-  (define-key evil-normal-state-map (kbd ",gb") 'helm-do-ag-buffers)
+  (define-key evil-normal-state-map (kbd "<SPC>hgp") 'helm-do-ag-project-root)
+  (define-key evil-normal-state-map (kbd "<SPC>hgb") 'helm-do-ag-buffers)
   (define-key evil-normal-state-map (kbd "<SPC>:")  'helm-M-x)
   (define-key evil-normal-state-map (kbd "<SPC>hb") 'helm-buffers-list)
   (define-key evil-normal-state-map (kbd "<SPC>hr") 'helm-recentf)
