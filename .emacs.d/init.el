@@ -228,8 +228,8 @@
 (use-package auto-complete
   :init
   (setq ac-auto-start 2
-        ac-delay 0.2
-        ac-quick-help-delay 1.
+        ac-delay 0
+        ac-quick-help-delay 0.5
         ac-use-fuzzy t
         ac-fuzzy-enable t
         ac-show-menu-immediately-on-auto-complete t)
