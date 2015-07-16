@@ -49,12 +49,12 @@
 (setq el-get-use-autoloads nil)
 (setq el-get-is-lazy t)
 ;; for debug
-(setq el-get-verbose t)
+;; (setq el-get-verbose t)
 
 (el-get-bundle diminish)
 (el-get-bundle bind-key)
-(el-get-bundle use-package
-  (setq use-package-verbose t))
+(el-get-bundle use-package)
+;; (setq use-package-verbose t)
 (require 'use-package)
 (require 'diminish)
 (require 'bind-key)
@@ -329,8 +329,8 @@
   (use-package flycheck-pos-tip
     :commands (flycheck-pos-tip-error-messages)
     :init
-    ;; (custom-set-variables
-    ;;  '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
+    (custom-set-variables
+     '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
     ))
 
 ;; markdown
