@@ -98,8 +98,8 @@
 (el-get-bundle yuttie/initchart)
 (use-package initchart
   :commands (initchart-record-execution-time-of))
-(initchart-record-execution-time-of load file)
-(initchart-record-execution-time-of require feature)
+;; (initchart-record-execution-time-of load file)
+;; (initchart-record-execution-time-of require feature)
 
 ;; eww
 (use-package eww
@@ -228,6 +228,12 @@
   (evil-define-key 'normal comint-mode-map (kbd "C-c") 'evil-window-delete)
   ;; buffer
   (evil-leader/set-key "bk" 'kill-some-buffers)
+  ;; elisp
+  (evil-leader/set-key-for-mode 'emacs-lisp-mode "ec" 'byte-compile-file)
+  (evil-leader/set-key-for-mode 'emacs-lisp-mode "er" 'eval-region)
+  (evil-leader/set-key-for-mode 'emacs-lisp-mode "es" 'eval-sexp)
+  (evil-leader/set-key-for-mode 'emacs-lisp-mode "eb" 'eval-current-buffer)
+  (evil-leader/set-key-for-mode 'emacs-lisp-mode "ef" 'eval-defun)
   ;; line move
   (defun evil-swap-key (map key1 key2)
     ;; MAP中のKEY1とKEY2を入れ替え
