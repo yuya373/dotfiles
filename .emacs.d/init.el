@@ -405,11 +405,11 @@
 (el-get-bundle helm-ls-git)
 (el-get-bundle helm-ag)
 (use-package helm
-  :commands (helm-M-x helm-buffers-list helm-recent helm-browse-project
-                      helm-for-files helm-do-ag-project-root
-                      helm-do-ag-buffers)
+  ;; :commands (helm-M-x helm-buffers-list helm-recent helm-browse-project
+  ;;                     helm-for-files helm-do-ag-project-root
+  ;;                     helm-do-ag-buffers)
   :init
-  (setq helm-exit-idle-delay 0)
+  ;; (setq helm-exit-idle-delay 0)
   (setq helm-mode-fuzzy-match t)
   (setq helm-completion-in-region-fuzzy-match t)
   (setq helm-autoresize-mode t)
@@ -423,8 +423,8 @@
   (define-key evil-normal-state-map (kbd "<SPC>hp") 'helm-browse-project)
   (define-key evil-normal-state-map (kbd "<SPC>hf") 'helm-find-files)
   (define-key evil-normal-state-map (kbd "<SPC>hl") 'helm-resume)
-  (helm-mode +1)
   :config
+  (helm-mode +1)
   (use-package helm-ls-git)
   (use-package helm-ag)
   (define-key helm-map (kbd "C-h") 'delete-backward-char)
