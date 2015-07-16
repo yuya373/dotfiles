@@ -343,12 +343,16 @@
   :commands (inf-ruby inf-ruby-minor-mode inf-ruby-console-auto)
   :init
   (add-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode))
+(use-package ac-robe
+  :commands (ac-robe-setup)
+  :init
+  (add-hook 'robe-mode-hook 'ac-robe-setup))
 (use-package robe
-  :commands (robe-mode robe-start ac-robe-setup)
+  :commands (robe-mode robe-start)
   :init
   (add-hook 'enh-ruby-mode-hook 'robe-mode)
-  ;; (add-hook 'robe-mode-hook 'robe-start)
-  ;; (add-hook 'robe-mode-hook 'ac-robe-setup)
+  (add-hook 'robe-mode-hook 'robe-start)
+  (add-hook 'robe-mode-hook 'ac-robe-setup)
   )
 (use-package enh-ruby-mode
   :mode (("\\(Rake\\|Thor\\|Guard\\|Gem\\|Cap\\|Vagrant\\|Berks\\|Pod\\|Puppet\\)file\\'" . enh-ruby-mode)
