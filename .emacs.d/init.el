@@ -17,6 +17,11 @@
 (unless (eq window-system 'mac)
   (menu-bar-mode -1))
 
+;; electric
+(add-hook 'prog-mode-hook 'electric-pair-mode)
+(add-hook 'prog-mode-hook 'electric-indent-mode)
+(add-hook 'prog-mode-hook 'electric-layout-mode)
+
 ;; dired
 (setq dired-use-ls-dired t)
 
@@ -160,8 +165,11 @@
   (setq evil-esc-delay 0)
   (setq evil-want-C-i-jump t)
   (setq evil-want-C-u-scroll t)
+  (custom-set-variables '(evil-shift-width 2))
   :config
-  (use-package evil-leader :config (global-evil-leader-mode))
+  (use-package evil-leader :config
+    (global-evil-leader-mode)
+    (evil-leader/set-leader "<SPC>"))
   ;; init evil-mode
   (evil-mode t)
   (use-package evil-lisp-state
@@ -177,7 +185,6 @@
   (use-package evil-visualstar :config (global-evil-visualstar-mode))
   (use-package evil-terminal-cursor-changer)
   (use-package evil-surround :config (global-evil-surround-mode t))
-  (use-package evil-search-highlight-persist :config (global-evil-search-highlight-persist))
   (use-package evil-numbers
     :commands (evil-numbers/inc-at-pt evil-numbers/dec-at-pt)
     :init
@@ -196,6 +203,7 @@
     :init
     (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
     (define-key evil-outer-text-objects-map "a" 'evil-outer-arg))
+  ;; C-h map
   (define-key evil-insert-state-map (kbd "C-h") 'delete-backward-char)
   (define-key evil-ex-search-keymap (kbd "C-h") 'delete-backward-char)
   (define-key evil-ex-completion-map (kbd "C-h") 'delete-backward-char)
@@ -205,16 +213,22 @@
   (define-key evil-normal-state-map (kbd "C-h") 'windmove-left)
   (define-key evil-normal-state-map (kbd "C-l") 'windmove-right)
   (define-key evil-normal-state-map (kbd "C-c") 'evil-window-delete)
+  ;; describe
   (define-key evil-normal-state-map (kbd ",hf") 'describe-function)
   (define-key evil-normal-state-map (kbd ",hv") 'describe-variable)
   (define-key evil-normal-state-map (kbd ",hs") 'describe-syntax)
   (define-key evil-normal-state-map (kbd ",hp") 'describe-package)
   (define-key evil-normal-state-map (kbd ",hm") 'describe-mode)
+  (define-key evil-normal-state-map (kbd ",hb") 'describe-bindings)
+  ;; whitespace
   (define-key evil-normal-state-map (kbd ",c") 'whitespace-cleanup)
+  ;; comint-mode
   (evil-set-initial-state 'comint-mode 'normal)
   (evil-define-key 'normal comint-mode-map (kbd "C-d") 'evil-scroll-down)
   (evil-define-key 'normal comint-mode-map (kbd "C-c") 'evil-window-delete)
-  (custom-set-variables '(evil-shift-width 2))
+  ;; buffer
+  (evil-leader/set-key "bk" 'kill-some-buffers)
+  ;; line move
   (defun evil-swap-key (map key1 key2)
     ;; MAP中のKEY1とKEY2を入れ替え
     "Swap KEY1 and KEY2 in MAP."
@@ -420,7 +434,7 @@
 (use-package shell-pop
   :commands (shell-pop)
   :init
-  (define-key evil-normal-state-map (kbd "<SPC>s") 'shell-pop)
+  (evil-leader/set-key "s" 'shell-pop)
   :config
   (setq shell-pop-internal-mode "eshell")
   (setq shell-pop-internal-mode-shell "eshell")
@@ -443,14 +457,14 @@
   (setq helm-autoresize-mode t)
   (setq helm-ag-fuzzy-match t)
   (setq helm-ag-insert-at-point t)
-  (define-key evil-normal-state-map (kbd "<SPC>hgp") 'helm-do-ag-project-root)
-  (define-key evil-normal-state-map (kbd "<SPC>hgb") 'helm-do-ag-buffers)
-  (define-key evil-normal-state-map (kbd "<SPC>:")  'helm-M-x)
-  (define-key evil-normal-state-map (kbd "<SPC>hb") 'helm-buffers-list)
-  (define-key evil-normal-state-map (kbd "<SPC>hr") 'helm-recentf)
-  (define-key evil-normal-state-map (kbd "<SPC>hp") 'helm-browse-project)
-  (define-key evil-normal-state-map (kbd "<SPC>hf") 'helm-find-files)
-  (define-key evil-normal-state-map (kbd "<SPC>hl") 'helm-resume)
+  (evil-leader/set-key "hgp" 'helm-do-ag-project-root)
+  (evil-leader/set-key "hgb" 'helm-do-ag-buffers)
+  (evil-leader/set-key ":"  'helm-M-x)
+  (evil-leader/set-key "hb" 'helm-buffers-list)
+  (evil-leader/set-key "hr" 'helm-recentf)
+  (evil-leader/set-key "hp" 'helm-browse-project)
+  (evil-leader/set-key "hf" 'helm-find-files)
+  (evil-leader/set-key "hl" 'helm-resume)
   :config
   (helm-mode +1)
   (use-package helm-ls-git)
@@ -466,8 +480,8 @@
 (use-package helm-dash
   :commands (helm-dash-at-point helm-dash helm-dash-install-docset)
   :init
-  (define-key evil-normal-state-map (kbd "<SPC>hdd") 'helm-dash)
-  (define-key evil-normal-state-map (kbd "<SPC>hda") 'helm-dash-at-point))
+  (evil-leader/set-key "hdd" 'helm-dash)
+  (evil-leader/set-key "hda" 'helm-dash-at-point))
 
 ;; yaml
 (el-get-bundle yaml-mode)
@@ -480,8 +494,8 @@
   :init
   (setq ace-jump-mode-scope 'window)
   (define-key evil-normal-state-map (kbd "f") 'ace-jump-char-mode)
-  (define-key evil-normal-state-map (kbd "<SPC><SPC>") 'ace-jump-word-mode)
-  (define-key evil-normal-state-map (kbd "<SPC>l") 'ace-jump-line-mode))
+  (evil-leader/set-key "<SPC>" 'ace-jump-word-mode)
+  (evil-leader/set-key "l" 'ace-jump-line-mode))
 
 (el-get-bundle expand-region)
 (use-package expand-region
