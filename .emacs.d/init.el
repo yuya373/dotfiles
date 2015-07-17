@@ -4,6 +4,7 @@
 
 
 ;; config
+(fset 'yes-or-no-p 'y-or-n-p)
 (add-to-list 'default-frame-alist '(font . "Ricty for Powerline-17"))
 (setq gc-cons-threshold (* 128 1024 1024))
 (set-language-environment 'utf-8)
