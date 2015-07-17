@@ -4,6 +4,7 @@
 
 
 ;; config
+(setq large-file-warning-threshold nil)
 (fset 'yes-or-no-p 'y-or-n-p)
 (add-to-list 'default-frame-alist '(font . "Ricty for Powerline-17"))
 (setq gc-cons-threshold (* 128 1024 1024))
@@ -269,7 +270,7 @@
 (use-package auto-complete
   :init
   (setq ac-auto-start 2
-        ac-delay 0
+        ac-delay 0.2
         ac-quick-help-delay 0.5
         ac-use-fuzzy t
         ac-fuzzy-enable t
@@ -424,7 +425,9 @@
 (el-get-bundle web-mode)
 (use-package web-mode
   :mode (("\\.erb\\'" . web-mode)
-         ("\\.html?\\'" . web-mode)))
+         ("\\.html?\\'" . web-mode))
+  :init
+  (setq web-mode-markup-indent-offset 2))
 
 ;; shell
 (use-package eshell
@@ -498,9 +501,13 @@
   (evil-leader/set-key "hl" 'helm-resume)
   :config
   (helm-mode +1)
-  (use-package helm-ls-git)
+  (use-package helm-ls-git
+    :init
+    (setq helm-ls-git-fuzzy-match t))
   (use-package helm-ag)
   (setq helm-exit-idle-delay 0)
+  (define-key helm-buffer-map (kbd "C-v") 'helm-switch-to-buffers-other-window)
+  (define-key helm-find-files-map (kbd "C-v") 'helm-ff-run-switch-other-window)
   (define-key helm-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-read-file-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
@@ -579,10 +586,11 @@ Nav              Mark              Other          Quit
     ("p" helm-previous-source)
     ("H" helm-help)
     ("v" helm-execute-persistent-action)
-    ("d" helm-delete-marked-files)
     ("y" helm-yank-selection)
     ("w" helm-toggle-resplit-and-swap-windows)
     ("a" helm-select-action)
+    ("d" helm-delete-marked-files)
+    ("r" helm-ff-run-rename-file)
     ("f" helm-follow-mode))
   (define-key helm-map (kbd "<escape>") 'helm-like-unite/body)
   (define-key helm-map (kbd "C-k") 'helm-like-unite/body)
