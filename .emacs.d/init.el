@@ -451,7 +451,7 @@
         (append (list
                  (list "emacs" "find-file $1")
                  (list "ppr" "find-file PULLREQ_MSG")
-                 (list "pr" "~/dotfiles/pullreq.sh")
+                 (list "pr" "hub --noop pull-request -b $1 -F PULLREQ_MSG")
                  (list "b" "bundle exec $1")
                  (list "rc" "bundle exec rails c")
                  (list "rct" "bundle exec rails c test")
