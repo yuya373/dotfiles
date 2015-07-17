@@ -13,6 +13,7 @@ map tn nextTab
 map tp previousTab
 map tf firstTab
 map tl lastTab
+map b :buffer<Space>
 imap <C-w> deleteWord
 imap <C-h> deleteChar
 imap <C-b> backwardWord
