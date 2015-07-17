@@ -208,6 +208,7 @@
   (define-key evil-insert-state-map (kbd "C-h") 'delete-backward-char)
   (define-key evil-ex-search-keymap (kbd "C-h") 'delete-backward-char)
   (define-key evil-ex-completion-map (kbd "C-h") 'delete-backward-char)
+  (define-key minibuffer-local-map (kbd "C-h") 'delete-backward-char)
   ;; window move
   (define-key evil-normal-state-map (kbd "C-k") 'windmove-up)
   (define-key evil-normal-state-map (kbd "C-j") 'windmove-down)
@@ -428,11 +429,35 @@
 ;; shell
 (use-package eshell
   :commands (eshell)
+  :init
+  (use-package pcomplete)
+  (add-to-list 'ac-modes 'eshell-mode)
+  (ac-define-source pcomplete
+    '((candidates . pcomplete-completions)))
+  (add-hook 'eshell-mode-hook '(lambda ()
+                                 (setq ac-sources
+                                       '(ac-source-pcomplete
+                                         ac-source-filename
+                                         ac-source-files-in-current-dir
+                                         ac-source-words-in-buffer
+                                         ac-source-dictionary))
+                                 (evil-define-key 'insert eshell-mode-map (kbd "C-p") 'helm-eshell-history)))
   :config
   (setq eshell-ask-to-save-history (quote always))
   (setq eshell-cmpl-cycle-completions nil)
   (setq eshell-cmpl-ignore-case t)
-  (setq eshell-save-history-on-exit t))
+  (setq eshell-save-history-on-exit t)
+  (setq eshell-command-aliases-list
+        (append (list
+                 (list "emacs" "find-file $1")
+                 (list "ppr" "find-file PULLREQ_MSG")
+                 (list "pr" "~/dotfiles/pullreq.sh")
+                 (list "b" "bundle exec $1")
+                 (list "rc" "bundle exec rails c")
+                 (list "rct" "bundle exec rails c test")
+                 (list "ridgepole-test" "bundle exec rake db:ridgepole:apply[test]")
+                 (list "ridgepole-dev" "bundle exec rake db:ridgepole:apply[development]"))
+                ())))
 (el-get-bundle exec-path-from-shell)
 (use-package exec-path-from-shell
   :config
@@ -458,7 +483,6 @@
   ;;                     helm-for-files helm-do-ag-project-root
   ;;                     helm-do-ag-buffers)
   :init
-  (setq helm-exit-idle-delay 0)
   (setq helm-mode-fuzzy-match t)
   (setq helm-completion-in-region-fuzzy-match t)
   (setq helm-autoresize-mode t)
@@ -476,6 +500,7 @@
   (helm-mode +1)
   (use-package helm-ls-git)
   (use-package helm-ag)
+  (setq helm-exit-idle-delay 0)
   (define-key helm-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-read-file-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
@@ -517,10 +542,51 @@
   (popwin-mode t)
   (push '("*compilation*" :stick t :height 0.3 :tail t :noselect t) popwin:special-display-config))
 
-(el-get-bundle powerline)
-(use-package powerline
-  :config (powerline-vim-theme))
+(el-get-bundle powerline-evil)
+(use-package powerline-evil
+  :config (powerline-evil-vim-theme))
 
+(el-get-bundle hydra)
+(use-package hydra
+  :config
+  (defhydra helm-like-unite (:hint nil
+                                   :color pink)
+    "
+Nav              Mark              Other          Quit
+----------------------------------------------------------------
+ _K_ ^ ^  _k_ ^ ^     _m_ark           _v_iew         _i_: cancel
+ ^↕^  _h_ ^✜^ _l_     _t_oggle mark    _H_elp         _o_: quit
+ _J_ ^ ^  _j_ ^ ^     _u_nmark all     _d_elete
+                                  _y_ank section
+                                  _w_ toggle window
+                                  _f_ollow: %(helm-attr 'follow)
+"
+    ("h" helm-beginning-of-buffer)
+    ("j" helm-next-line)
+    ("k" helm-previous-line)
+    ("l" helm-end-of-buffer)
+    ("g" helm-beginning-of-buffer)
+    ("G" helm-end-of-buffer)
+    ("K" helm-scroll-other-window-down)
+    ("J" helm-scroll-other-window)
+    ("m" helm-toggle-visible-mark)
+    ("t" helm-toggle-all-marks)
+    ("u" helm-unmark-all)
+    ("<escape>" keyboard-escape-quit "" :exit t)
+    ("o" keyboard-escape-quit :exit t)
+    ("i" nil)
+    ("n" helm-next-source)
+    ("p" helm-previous-source)
+    ("H" helm-help)
+    ("v" helm-execute-persistent-action)
+    ("d" helm-delete-marked-files)
+    ("y" helm-yank-selection)
+    ("w" helm-toggle-resplit-and-swap-windows)
+    ("a" helm-select-action)
+    ("f" helm-follow-mode))
+  (define-key helm-map (kbd "<escape>") 'helm-like-unite/body)
+  (define-key helm-map (kbd "C-k") 'helm-like-unite/body)
+  (define-key helm-map (kbd "C-o") 'helm-like-unite/body))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
