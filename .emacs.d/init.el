@@ -506,7 +506,7 @@
     (setq helm-ls-git-fuzzy-match t))
   (use-package helm-ag)
   (setq helm-exit-idle-delay 0)
-  (define-key helm-buffer-map (kbd "C-v") 'helm-switch-to-buffers-other-window)
+  (define-key helm-buffer-map (kbd "C-v") 'helm-buffer-switch-other-window)
   (define-key helm-find-files-map (kbd "C-v") 'helm-ff-run-switch-other-window)
   (define-key helm-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-read-file-map (kbd "C-h") 'delete-backward-char)
