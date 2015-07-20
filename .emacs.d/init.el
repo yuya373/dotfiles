@@ -4,6 +4,13 @@
 
 
 ;; config
+;; split buffer verticaly
+;; (defun split-vertically-not-horizontally ()
+;;   (interactive)
+;;   (if (= (length (window-list nil 'dont-include-minibuffer-even-if-active)) 1)
+;;       (split-window-vertically)))
+;; (add-hook 'temp-buffer-setup-hook 'split-vertically-not-horizontally)
+(setq split-width-threshold 0)
 (define-key minibuffer-local-completion-map (kbd "C-w") 'backward-kill-word)
 (global-set-key "\C-m" 'newline-and-indent)
 (setq large-file-warning-threshold nil)
@@ -336,13 +343,6 @@
   (define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
 
   (define-key helm-ag-map (kbd "C-w") 'helm-ff-run-switch-other-window))
-
-;; split buffer verticaly
-(defun split-vertically-not-horizontally ()
-  (interactive)
-  (if (= (length (window-list nil 'dont-include-minibuffer-even-if-active)) 1)
-      (split-window-vertically)))
-(add-hook 'temp-buffer-setup-hook 'split-vertically-not-horizontally)
 
 (el-get-bundle helm-dash)
 (use-package helm-dash
@@ -873,6 +873,13 @@
   :commands (helm-spotify)
   :init
   (evil-leader/set-key "hs" 'helm-spotify))
+
+(el-get-bundle golden-ratio)
+(use-package golden-ratio
+  :init
+  (setq golden-ratio-auto-scale t)
+  :config
+  (golden-ratio-mode 1))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
