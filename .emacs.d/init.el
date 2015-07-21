@@ -792,15 +792,20 @@
     (add-hook 'slime-repl-mode '(lambda () (set-up-slime-ac t)))))
 
 ;; theme
-(el-get-bundle color-theme-solarized)
+(el-get-bundle solarized-theme)
+(setq solarized-distinct-fringe-background t)
+(setq solarized-use-variable-pitch nil)
+(setq solarized-high-contrast-mode-line t)
+(add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/solarized-theme")
+(load-theme 'solarized-dark t)
+
+;; (el-get-bundle color-theme-solarized)
+;; (set-frame-parameter nil 'background-mode 'dark)
+;; (set-terminal-parameter nil 'background-mode 'dark)
+;; (load-theme 'solarized)
+
 (el-get-bundle powerline)
 (el-get-bundle powerline-evil)
-
-(add-to-list 'custom-theme-load-path default-directory)
-(set-frame-parameter nil 'background-mode 'dark)
-(set-terminal-parameter nil 'background-mode 'dark)
-(load-theme 'solarized t)
-
 (use-package powerline-evil
   :init
   (setq powerline-default-separator 'arrow)
