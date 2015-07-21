@@ -10,6 +10,7 @@
 ;;   (if (= (length (window-list nil 'dont-include-minibuffer-even-if-active)) 1)
 ;;       (split-window-vertically)))
 ;; (add-hook 'temp-buffer-setup-hook 'split-vertically-not-horizontally)
+(setenv "TERMINFO" "~/dotfiles/.terminfo")
 (setq split-width-threshold 0)
 (define-key minibuffer-local-completion-map (kbd "C-w") 'backward-kill-word)
 (global-set-key "\C-m" 'newline-and-indent)
@@ -328,21 +329,21 @@
   (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
 
   (define-key helm-buffer-map (kbd "C-d") 'helm-buffer-run-kill-buffers)
-  (define-key helm-buffer-map (kbd "C-w") 'helm-buffer-switch-other-window)
+  (define-key helm-buffer-map (kbd "C-o") 'helm-buffer-switch-other-window)
 
   (define-key helm-find-files-map (kbd "C-t") 'helm-ff-run-etags)
-  (define-key helm-find-files-map (kbd "C-w") 'helm-ff-run-switch-other-window)
+  (define-key helm-find-files-map (kbd "C-o") 'helm-ff-run-switch-other-window)
   (define-key helm-find-files-map (kbd "C-r") 'helm-ff-run-rename-file)
   (define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
 
   (define-key helm-read-file-map (kbd "C-t") 'helm-ff-run-etags)
-  (define-key helm-read-file-map (kbd "C-w") 'helm-ff-run-switch-other-window)
+  (define-key helm-read-file-map (kbd "C-o") 'helm-ff-run-switch-other-window)
   (define-key helm-read-file-map (kbd "C-r") 'helm-ff-run-rename-file)
   (define-key helm-read-file-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
 
-  (define-key helm-ag-map (kbd "C-w") 'helm-ff-run-switch-other-window))
+  (define-key helm-ag-map (kbd "C-o") 'helm-ag--run-other-window-action))
 
 (el-get-bundle helm-dash)
 (use-package helm-dash
