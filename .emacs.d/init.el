@@ -204,6 +204,7 @@
     :init
     (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
     (define-key evil-outer-text-objects-map "a" 'evil-outer-arg))
+  ;; mappings
   (defun open-below-esc ()
     (interactive)
     (evil-open-below 1)
@@ -406,88 +407,45 @@
     :commands (turn-on-magit-gh-pulls)
     :init
     (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
-  ;; (setq evil-emacs-state-modes (delq 'magit-status-mode evil-emacs-state-modes))
-  (evil-make-overriding-map magit-mode-map 'nomal)         ; magit-mode-map の優先度を上げる
-  (evil-make-overriding-map magit-untracked-section-map 'normal)
-  (evil-make-overriding-map magit-staged-section-map 'normal)
-  (evil-make-overriding-map magit-unstaged-section-map 'normal)
-  (evil-make-overriding-map magit-file-section-map 'normal)
-  (evil-make-overriding-map magit-status-mode-map 'normal)  ; 同上
 
-  (evil-set-initial-state 'magit-diff-mode 'normal)
-  (evil-set-initial-state 'git-rebase-mode 'normal)
   (evil-set-initial-state 'magit-mode 'normal)
-  (evil-set-initial-state 'magit-log-edit-mode 'insert)
-  (evil-set-initial-state 'git-commit-mode 'insert)
-  (evil-set-initial-state 'magit-commit-mode 'normal)
   (evil-set-initial-state 'magit-status-mode 'normal)
+  (evil-set-initial-state 'magit-diff-mode 'normal)
   (evil-set-initial-state 'magit-log-mode 'normal)
-  (evil-set-initial-state 'magit-revision-mode 'normal)
-  (evil-set-initial-state 'magit-wassup-mode 'normal)
+  (evil-set-initial-state 'magit-reflog-mode 'normal)
+  (evil-set-initial-state 'magit-process-mode 'normal)
 
-  ;; (evil-define-key 'normal magit-hunk-section-map
-  ;;   "j" 'magit-section-forward
-  ;;   "k" 'magit-section-backward
-  ;;   "K" 'magit-discard)
+  (define-key magit-mode-map "\s" nil) ;space I use space as my evil-leader key
+  (define-key magit-diff-mode-map "\s" nil) ;space
+  (define-key magit-diff-mode-map "j" nil)
 
-  ;; (evil-define-key 'normal magit-tag-section-map
-  ;;   "j" 'magit-section-forward
-  ;;   "k" 'magit-section-backward
-  ;;   "K" 'magit-tag-delete)
+  (define-key magit-status-mode-map "j" 'next-line) ;may be should evil-next-line
+  (define-key magit-mode-map "j" 'next-line)
+  (define-key magit-mode-map "k" 'previous-line)
+  (define-key magit-file-section-map "K" 'magit-discard)
+  (define-key magit-file-section-map "k" nil)
+  (define-key magit-hunk-section-map "K" 'magit-discard)
+  (define-key magit-hunk-section-map "k" nil)
+  (define-key magit-unstaged-section-map "k" nil)
+  (define-key magit-unstaged-section-map "K" 'magit-discard)
+  (define-key magit-staged-section-map "K" 'magit-discard)
+  (define-key magit-staged-section-map "k" nil)
+  (define-key magit-stash-section-map "K" 'magit-stash-drop)
+  (define-key magit-stash-section-map "k" nil)
+  (define-key magit-stashes-section-map "K" 'magit-stash-clear)
+  (define-key magit-stashes-section-map "k" nil)
 
-  ;; (evil-define-key 'normal magit-remote-section-map
-  ;;   "j" 'magit-section-forward
-  ;;   "k" 'magit-section-backward
-  ;;   "K" 'magit-remote-remove)
+  (define-key magit-untracked-section-map "K" 'magit-discard)
+  (define-key magit-untracked-section-map "k" nil)
 
-  ;; (evil-define-key 'normal magit-branch-section-map
-  ;;   "j" 'magit-section-forward
-  ;;   "k" 'magit-section-backward
-  ;;   "K" 'magit-branch-delete)
+  (define-key magit-branch-section-map "K" 'magit-branch-delete)
+  (define-key magit-branch-section-map "k" nil)
 
-  ;; (evil-define-key 'normal magit-staged-section-map
-  ;;   "j" 'magit-section-forward
-  ;;   "k" 'magit-section-backward
-  ;;   "J" 'magit-jump-to-diffstat-or-diff
-  ;;   "\C-u" 'evil-scroll-up
-  ;;   "\C-d" 'evil-scroll-down
-  ;;   "K" 'magit-discard)
+  (define-key magit-remote-section-map "K" 'magit-remote-remove)
+  (define-key magit-remote-section-map "k" nil)
 
-  ;; (evil-define-key 'normal magit-unstaged-section-map
-  ;;   "j" 'magit-section-forward
-  ;;   "k" 'magit-section-backward
-  ;;   "K" 'magit-discard)
-
-  ;; (evil-define-key 'normal magit-untracked-section-map
-  ;;   "j" 'magit-section-forward
-  ;;   "k" 'magit-section-backward
-  ;;   "K" 'magit-discard)
-
-  ;; (evil-define-key 'normal magit-file-section-map
-  ;;   "j" 'magit-section-forward
-  ;;   "k" 'magit-section-backward
-  ;;   "K" 'magit-discard
-  ;;   "\C-k" 'magit-file-untrack)
-  ;; (evil-define-key 'normal git-rebase-mode-map
-  ;;   "K" 'git-rebase-kill-line
-  ;;   "\C-j" 'git-rebase-move-line-down
-  ;;   "\C-k" 'git-rebase-move-line-up)
-
-  ;; (evil-define-key 'normal magit-mode-map
-  ;;   "\C-d" 'evil-scroll-page-down
-  ;;   "\C-u" 'evil-scroll-page-up
-  ;;   "/" 'evil-search-forward
-  ;;   ":" 'evil-ex
-  ;;   ";" 'magit-git-command
-  ;;   "G" 'evil-goto-line
-  ;;   "N" 'evil-search-previous
-  ;;   "n" 'evil-search-next
-  ;;   "j" 'magit-section-forward
-  ;;   "k" 'magit-section-backward
-  ;;   "l" 'magit-log-popup
-  ;;   "?" 'magit-dispatch-popup
-  ;;   "\C-RET" 'magit-dired-jump)
-  )
+  (define-key magit-tag-section-map "k" nil)
+  (define-key magit-tag-section-map "K" 'magit-tag-delete))
 
 (use-package gist
   :commands (gist-list gist-region gist-region-private
