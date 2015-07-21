@@ -328,6 +328,8 @@
   (define-key helm-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
 
+  (define-key helm-comp-read-map (kbd "C-o") 'helm-ff-run-switch-other-window)
+
   (define-key helm-buffer-map (kbd "C-d") 'helm-buffer-run-kill-buffers)
   (define-key helm-buffer-map (kbd "C-o") 'helm-buffer-switch-other-window)
 
