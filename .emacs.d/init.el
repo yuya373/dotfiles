@@ -4,6 +4,15 @@
 
 
 ;; config
+;; split buffer verticaly
+;; (defun split-vertically-not-horizontally ()
+;;   (interactive)
+;;   (if (= (length (window-list nil 'dont-include-minibuffer-even-if-active)) 1)
+;;       (split-window-vertically)))
+;; (add-hook 'temp-buffer-setup-hook 'split-vertically-not-horizontally)
+(setq split-width-threshold 0)
+(define-key minibuffer-local-completion-map (kbd "C-w") 'backward-kill-word)
+(global-set-key "\C-m" 'newline-and-indent)
 (setq large-file-warning-threshold nil)
 (fset 'yes-or-no-p 'y-or-n-p)
 (add-to-list 'default-frame-alist '(font . "Ricty for Powerline-17"))
@@ -13,9 +22,7 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (setq require-final-newline t)
-(modify-syntax-entry ?_ "w" (standard-syntax-table))
-;; (tooltip-mode -1)
-;; (setq tooltip-use-echo-area t)
+(modify-syntax-entry ?_ "w")
 (unless (eq window-system 'mac)
   (menu-bar-mode -1))
 
@@ -64,6 +71,7 @@
 ;; (setq use-package-verbose t)
 (require 'use-package)
 (require 'diminish)
+(diminish 'abbrev-mode)
 (require 'bind-key)
 
 ;; whitespace
@@ -81,8 +89,7 @@
   (setq whitespace-display-mappings
         '((space-mark ?\u3000 [?\　])
           (newline-mark ?\n [?\¬ ?\n])
-          (tab-mark ?\t [?\▸ ?\▸])
-          ))
+          (tab-mark ?\t [?\▸ ?\▸])))
   (setq whitespace-space-regexp "\\(\u3000+\\)")
   (set-face-bold-p 'whitespace-space t)
   (set-face-foreground 'whitespace-space "#d33682")
@@ -94,20 +101,15 @@
   (set-face-foreground 'whitespace-newline  "headerColor")
   (set-face-background 'whitespace-newline 'nil)
   ;; (setq whitespace-action '(auto-cleanup))
-  (global-whitespace-mode))
+  (global-whitespace-mode)
+  (diminish 'global-whitespace-mode))
 
 ;; initchart
 (el-get-bundle yuttie/initchart)
 (use-package initchart
   :commands (initchart-record-execution-time-of))
-;; (initchart-record-execution-time-of load file)
-;; (initchart-record-execution-time-of require feature)
-
-;; eww
-(use-package eww
-             :commands (eww)
-             :init
-             (setq eww-search-prefix "http://www.google.co.jp/search?q="))
+(initchart-record-execution-time-of load file)
+(initchart-record-execution-time-of require feature)
 
 ;; esup
 (el-get-bundle esup)
@@ -124,13 +126,6 @@
   (setq auto-save-buffers-enhanced-interval 0.5)
   :config
   (auto-save-buffers-enhanced t))
-
-;; theme
-(el-get-bundle color-theme-solarized)
-(add-to-list 'custom-theme-load-path default-directory)
-(set-frame-parameter nil 'background-mode 'dark)
-(set-terminal-parameter nil 'background-mode 'dark)
-(load-theme 'solarized t)
 
 ;; smartparens
 (el-get-bundle smartparens)
@@ -155,25 +150,28 @@
 (el-get-bundle evil-nerd-commenter)
 (el-get-bundle evil-numbers)
 (el-get-bundle highlight)
-(el-get-bundle evil-search-highlight-persist)
+;; (el-get-bundle evil-search-highlight-persist)
 (el-get-bundle evil-surround)
 (el-get-bundle evil-terminal-cursor-changer)
 (el-get-bundle evil-visualstar)
 
 (use-package evil
   :init
-  (setq evil-fold-level 4)
-  (setq evil-search-module 'evil-search)
-  (setq evil-esc-delay 0)
-  (setq evil-want-C-i-jump t)
-  (setq evil-want-C-u-scroll t)
-  (custom-set-variables '(evil-shift-width 2))
+  ;; DO NOT LOAD evil plugin before here
+  (setq evil-fold-level 4
+        evil-search-module 'evil-search
+        evil-esc-delay 0
+        evil-want-C-i-jump t
+        evil-want-C-u-scroll t
+        evil-shift-width 2
+        evil-cross-lines t)
   :config
   (use-package evil-leader :config
     (global-evil-leader-mode)
     (evil-leader/set-leader "<SPC>"))
   ;; init evil-mode
   (evil-mode t)
+  (diminish 'undo-tree-mode)
   (use-package evil-lisp-state
     :init
     (defun evil-lisp-state-lisp-mode-hook ()
@@ -205,6 +203,12 @@
     :init
     (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
     (define-key evil-outer-text-objects-map "a" 'evil-outer-arg))
+  (defun open-below-esc ()
+    (interactive)
+    (evil-open-below 1)
+    (evil-normal-state))
+  (define-key evil-normal-state-map (kbd "RET") 'open-below-esc)
+  (define-key evil-insert-state-map (kbd "C-j") 'evil-normal-state)
   ;; C-h map
   (define-key evil-insert-state-map (kbd "C-h") 'delete-backward-char)
   (define-key evil-ex-search-keymap (kbd "C-h") 'delete-backward-char)
@@ -229,8 +233,6 @@
   (evil-set-initial-state 'comint-mode 'normal)
   (evil-define-key 'normal comint-mode-map (kbd "C-d") 'evil-scroll-down)
   (evil-define-key 'normal comint-mode-map (kbd "C-c") 'evil-window-delete)
-  ;; buffer
-  (evil-leader/set-key "bk" 'kill-some-buffers)
   ;; elisp
   (evil-leader/set-key-for-mode 'emacs-lisp-mode "ec" 'byte-compile-file)
   (evil-leader/set-key-for-mode 'emacs-lisp-mode "er" 'eval-region)
@@ -248,34 +250,124 @@
   (evil-swap-key evil-motion-state-map "j" "gj")
   (evil-swap-key evil-motion-state-map "k" "gk"))
 
+(use-package eww
+  :commands (eww)
+  :init
+  (evil-define-key 'normal eww-history-mode-map "o" 'eww-history-browse)
+  (evil-define-key 'normal eww-history-mode-map "q" 'quit-window)
+  (evil-define-key 'normal eww-bookmark-mode-map "o" 'eww-bookmark-browse)
+  (evil-define-key 'normal eww-bookmark-mode-map "d" 'eww-bookmark-kill)
+  (evil-define-key 'normal eww-bookmark-mode-map "q" 'quit-window)
+  (evil-define-key 'normal eww-mode-map "r" 'eww-reload)
+  (evil-define-key 'normal eww-mode-map "H" 'eww-back-url)
+  (evil-define-key 'normal eww-mode-map "L" 'eww-forward-url)
+  (evil-define-key 'normal eww-mode-map "&" 'eww-browse-with-external-browser)
+  (evil-define-key 'normal eww-mode-map "B" 'eww-list-bookmarks)
+  (evil-define-key 'normal eww-mode-map "b" 'eww-add-bookmark)
+  (evil-define-key 'normal eww-mode-map "@" 'eww-list-histories)
+  (evil-define-key 'normal eww-mode-map "q" 'quit-window)
+  (add-hook 'eww-mode-hook '(lambda () (linum-mode -1)))
+  (setq eww-search-prefix "http://www.google.co.jp/search?q="))
+
 ;; guide-key
 (el-get-bundle guide-key)
 (use-package guide-key
+  :commands (guide-key-mode)
   :init
   (setq guide-key/idle-delay 0.4)
   (setq guide-key/recursive-key-sequence-flag t)
   (setq guide-key/guide-key-sequence '("\\" "," "<SPC>"))
+  (add-hook 'after-init-hook 'guide-key-mode)
   :config
-  (guide-key-mode 1))
+  (diminish 'guide-key-mode))
+
+;; helm
+(el-get-bundle async)
+(el-get-bundle helm)
+(el-get-bundle helm-ls-git)
+(el-get-bundle helm-ag)
+(use-package helm
+  ;; :commands (helm-M-x helm-buffers-list helm-recent helm-browse-project
+  ;;                     helm-for-files helm-do-ag-project-root
+  ;;                     helm-do-ag-buffers)
+  :init
+  :config
+  (use-package helm-config)
+  (helm-mode +1)
+  (diminish 'helm-mode)
+  (use-package helm-ag
+    :config
+    (setq helm-ag-insert-at-point t))
+  (use-package helm-ls-git
+    :init
+    (setq helm-ls-git-fuzzy-match t))
+  (setq helm-mode-fuzzy-match t
+        helm-buffers-fuzzy-matching t
+        helm-recentf-fuzzy-match t
+        helm-completion-in-region-fuzzy-match t
+        helm-autoresize-mode t
+        helm-ag-fuzzy-match t
+        helm-move-to-line-cycle-in-source t
+        helm-ff-search-library-in-sexp t
+        helm-ff-file-name-history-use-recentf t
+        helm-ag-insert-at-point t
+        helm-exit-idle-delay 0)
+  (evil-leader/set-key "agg" 'helm-do-ag)
+  (evil-leader/set-key "agb" 'helm-do-ag-buffers)
+  (evil-leader/set-key ":"  'helm-M-x)
+  (evil-leader/set-key "bl" 'helm-buffers-list)
+  (evil-leader/set-key "fc" 'helm-find-file-at)
+  (evil-leader/set-key "fr" 'helm-recentf)
+  (evil-leader/set-key "fp" 'helm-browse-project)
+  (evil-leader/set-key "ff" 'helm-find-files)
+  (evil-leader/set-key "hl" 'helm-resume)
+  (evil-leader/set-key "o" 'helm-semantic-or-imenu)
+  (evil-leader/set-key "p" 'helm-show-kill-ring)
+  (define-key evil-normal-state-map (kbd ",ha") 'helm-apropos)
+  (define-key helm-map (kbd "C-h") 'delete-backward-char)
+  (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
+
+  (define-key helm-buffer-map (kbd "C-d") 'helm-buffer-run-kill-buffers)
+  (define-key helm-buffer-map (kbd "C-w") 'helm-buffer-switch-other-window)
+
+  (define-key helm-find-files-map (kbd "C-t") 'helm-ff-run-etags)
+  (define-key helm-find-files-map (kbd "C-w") 'helm-ff-run-switch-other-window)
+  (define-key helm-find-files-map (kbd "C-r") 'helm-ff-run-rename-file)
+  (define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
+  (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
+
+  (define-key helm-read-file-map (kbd "C-t") 'helm-ff-run-etags)
+  (define-key helm-read-file-map (kbd "C-w") 'helm-ff-run-switch-other-window)
+  (define-key helm-read-file-map (kbd "C-r") 'helm-ff-run-rename-file)
+  (define-key helm-read-file-map (kbd "C-h") 'delete-backward-char)
+  (define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
+
+  (define-key helm-ag-map (kbd "C-w") 'helm-ff-run-switch-other-window))
+
+(el-get-bundle helm-dash)
+(use-package helm-dash
+  :commands (helm-dash-at-point helm-dash helm-dash-install-docset)
+  :init
+  (evil-leader/set-key "hdd" 'helm-dash)
+  (evil-leader/set-key "hda" 'helm-dash-at-point))
 
 (el-get-bundle rainbow-delimiters)
 (use-package rainbow-delimiters
   :commands (rainbow-delimiters-mode)
   :init
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
-  ;; (add-hook 'lisp-mode-hook 'rainbow-delimiters-mode)
-  ;; (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode))
 
 (el-get-bundle auto-complete)
 (use-package auto-complete
   :init
-  (setq ac-auto-start 2
+  (setq ac-auto-start 3
         ac-delay 0.2
-        ac-quick-help-delay 0.5
+        ac-quick-help-delay 1
         ac-use-fuzzy t
         ac-fuzzy-enable t
-        ac-show-menu-immediately-on-auto-complete t)
-  (setq-default ac-sources '(ac-source-filename ac-source-words-in-same-mode-buffers))
+        tab-always-indent 'complete
+        ac-dwim t)
+  (setq-default ac-sources '(ac-source-filename ac-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers))
   (add-hook 'emacs-lisp-mode-hook (lambda () (add-to-list 'ac-sources 'ac-source-symbols)))
   (add-hook 'enh-ruby-mode-hook (lambda () (add-to-list 'ac-sources 'ac-source-abbrev)))
   :config
@@ -283,17 +375,23 @@
   (global-auto-complete-mode t)
   (define-key ac-completing-map (kbd "C-n") 'ac-next)
   (define-key ac-completing-map (kbd "C-p") 'ac-previous)
-  (ac-set-trigger-key "TAB"))
+  (define-key ac-completing-map (kbd "<S-tab>") 'ac-previous)
+  (ac-set-trigger-key "TAB")
+  (diminish 'auto-complete-mode))
 
 (use-package eldoc
+  :commands (turn-on-eldoc-mode)
   :init
-  (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-  (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode))
-
-(el-get-bundle magit)
-(el-get-bundle magit-gh-pulls)
+  (add-hook 'prog-mode-hook 'turn-on-eldoc-mode)
+  :config
+  (diminish 'eldoc-mode))
 
 ;; git
+(el-get-bundle magit)
+(el-get-bundle magit-gh-pulls)
+(el-get-bundle gist)
+(el-get-bundle git-gutter)
+
 (use-package magit
   :commands (magit-status)
   :init
@@ -304,26 +402,133 @@
   (use-package magit-gh-pulls
     :commands (turn-on-magit-gh-pulls)
     :init
-    (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
-    ))
-(el-get-bundle gist)
+    (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
+  ;; (setq evil-emacs-state-modes (delq 'magit-status-mode evil-emacs-state-modes))
+  (evil-make-overriding-map magit-mode-map 'nomal)         ; magit-mode-map の優先度を上げる
+  (evil-make-overriding-map magit-untracked-section-map 'normal)
+  (evil-make-overriding-map magit-staged-section-map 'normal)
+  (evil-make-overriding-map magit-unstaged-section-map 'normal)
+  (evil-make-overriding-map magit-file-section-map 'normal)
+  (evil-make-overriding-map magit-status-mode-map 'normal)  ; 同上
+
+  (evil-set-initial-state 'magit-diff-mode 'normal)
+  (evil-set-initial-state 'git-rebase-mode 'normal)
+  (evil-set-initial-state 'magit-mode 'normal)
+  (evil-set-initial-state 'magit-log-edit-mode 'insert)
+  (evil-set-initial-state 'git-commit-mode 'insert)
+  (evil-set-initial-state 'magit-commit-mode 'normal)
+  (evil-set-initial-state 'magit-status-mode 'normal)
+  (evil-set-initial-state 'magit-log-mode 'normal)
+  (evil-set-initial-state 'magit-revision-mode 'normal)
+  (evil-set-initial-state 'magit-wassup-mode 'normal)
+
+  ;; (evil-define-key 'normal magit-hunk-section-map
+  ;;   "j" 'magit-section-forward
+  ;;   "k" 'magit-section-backward
+  ;;   "K" 'magit-discard)
+
+  ;; (evil-define-key 'normal magit-tag-section-map
+  ;;   "j" 'magit-section-forward
+  ;;   "k" 'magit-section-backward
+  ;;   "K" 'magit-tag-delete)
+
+  ;; (evil-define-key 'normal magit-remote-section-map
+  ;;   "j" 'magit-section-forward
+  ;;   "k" 'magit-section-backward
+  ;;   "K" 'magit-remote-remove)
+
+  ;; (evil-define-key 'normal magit-branch-section-map
+  ;;   "j" 'magit-section-forward
+  ;;   "k" 'magit-section-backward
+  ;;   "K" 'magit-branch-delete)
+
+  ;; (evil-define-key 'normal magit-staged-section-map
+  ;;   "j" 'magit-section-forward
+  ;;   "k" 'magit-section-backward
+  ;;   "J" 'magit-jump-to-diffstat-or-diff
+  ;;   "\C-u" 'evil-scroll-up
+  ;;   "\C-d" 'evil-scroll-down
+  ;;   "K" 'magit-discard)
+
+  ;; (evil-define-key 'normal magit-unstaged-section-map
+  ;;   "j" 'magit-section-forward
+  ;;   "k" 'magit-section-backward
+  ;;   "K" 'magit-discard)
+
+  ;; (evil-define-key 'normal magit-untracked-section-map
+  ;;   "j" 'magit-section-forward
+  ;;   "k" 'magit-section-backward
+  ;;   "K" 'magit-discard)
+
+  ;; (evil-define-key 'normal magit-file-section-map
+  ;;   "j" 'magit-section-forward
+  ;;   "k" 'magit-section-backward
+  ;;   "K" 'magit-discard
+  ;;   "\C-k" 'magit-file-untrack)
+  ;; (evil-define-key 'normal git-rebase-mode-map
+  ;;   "K" 'git-rebase-kill-line
+  ;;   "\C-j" 'git-rebase-move-line-down
+  ;;   "\C-k" 'git-rebase-move-line-up)
+
+  ;; (evil-define-key 'normal magit-mode-map
+  ;;   "\C-d" 'evil-scroll-page-down
+  ;;   "\C-u" 'evil-scroll-page-up
+  ;;   "/" 'evil-search-forward
+  ;;   ":" 'evil-ex
+  ;;   ";" 'magit-git-command
+  ;;   "G" 'evil-goto-line
+  ;;   "N" 'evil-search-previous
+  ;;   "n" 'evil-search-next
+  ;;   "j" 'magit-section-forward
+  ;;   "k" 'magit-section-backward
+  ;;   "l" 'magit-log-popup
+  ;;   "?" 'magit-dispatch-popup
+  ;;   "\C-RET" 'magit-dired-jump)
+  )
+
 (use-package gist
   :commands (gist-list gist-region gist-region-private
                        gist-buffer gist-buffer-private))
-(el-get-bundle smeargle)
-(use-package smeargle
-  :commands (smeargle smeargle-commits smeargle-clear))
+
+(use-package git-gutter
+  :commands (git-gutter-mode)
+  :init
+  (add-hook 'projectile-mode-hook 'git-gutter-mode)
+  (evil-leader/set-key "gP" 'git-gutter:popup-hunk)
+  (evil-leader/set-key "gn" 'git-gutter:next-hunk)
+  (evil-leader/set-key "gp" 'git-gutter:previous-hunk)
+  (evil-leader/set-key "gs" 'git-gutter:stage-hunk)
+  (evil-leader/set-key "gr" 'git-gutter:revert-hunk)
+  :config
+  (custom-set-variables
+   '(git-gutter:modified-sign "**")
+   '(git-gutter:added-sign "++")
+   '(git-gutter:deleted-sign "--"))
+  (set-face-foreground 'git-gutter:modified "#eee8d5")
+  (set-face-foreground 'git-gutter:added "#859900")
+  (set-face-foreground 'git-gutter:deleted "#dc322f")
+  (diminish 'git-gutter-mode)
+  (git-gutter:linum-setup))
 
 ;; projectile
-(el-get-bundle grizzl)
 (el-get-bundle projectile)
+(use-package helm-projectile
+  :commands (helm-projectile-on))
 (use-package projectile
-  :commands (projectile-mode)
+  :commands (projectile-global-mode)
   :init
-  (setq projectile-completion-system 'grizzl)
-  (add-hook 'enh-ruby-mode-hook 'projectile-mode)
-  :config
-  (use-package grizzl))
+  (setq projectile-enable-caching t
+        projectile-completion-system 'helm)
+  (add-hook 'after-init-hook 'projectile-global-mode)
+  (add-hook 'projectile-global-mode-hook 'helm-projectile-on)
+  (evil-leader/set-key "tG" 'projectile-regenerate-tags)
+  (evil-leader/set-key "bk" 'projectile-kill-buffers)
+  (evil-leader/set-key "agp" 'helm-projectile-ag)
+  (evil-leader/set-key "fd" 'helm-projectile-find-dir)
+  (evil-leader/set-key "fp" 'helm-projectile-find-file)
+  (evil-leader/set-key "fc" 'helm-projectile-find-file-dwim)
+  (evil-leader/set-key "bw" 'projectile-switch-to-buffer-other-window)
+  (evil-leader/set-key "bs" 'helm-projectile-switch-to-buffer))
 
 ;; rails
 (el-get-bundle evil-rails)
@@ -331,12 +536,25 @@
 (use-package projectile-rails
   :commands (projectile-rails-on)
   :init
-  (define-key evil-normal-state-map (kbd ",rm") 'projectile-rails-find-model)
-  (define-key evil-normal-state-map (kbd ",rc") 'projectile-rails-find-controller)
-  (define-key evil-normal-state-map (kbd ",rv") 'projectile-rails-find-view)
-  (define-key evil-normal-state-map (kbd ",rs") 'projectile-rails-find-spec)
-  (define-key evil-normal-state-map (kbd ",rl") 'projectile-rails-find-lib)
-  (define-key evil-normal-state-map (kbd "gf") 'projectile-rails-goto-file-at-point)
+  (evil-define-key 'normal projectile-rails-mode-map ",rfm" 'projectile-rails-find-model)
+  (evil-define-key 'normal projectile-rails-mode-map ",rfc" 'projectile-rails-find-controller)
+  (evil-define-key 'normal projectile-rails-mode-map ",rfv" 'projectile-rails-find-view)
+  (evil-define-key 'normal projectile-rails-mode-map ",rfs" 'projectile-rails-find-spec)
+  (evil-define-key 'normal projectile-rails-mode-map ",rfl" 'projectile-rails-find-lib)
+  (evil-define-key 'normal projectile-rails-mode-map ",rfi" 'projectile-rails-find-initializer)
+  (evil-define-key 'normal projectile-rails-mode-map ",rfe" 'projectile-rails-find-environment)
+  (evil-define-key 'normal projectile-rails-mode-map ",rcm" 'projectile-rails-find-current-model)
+  (evil-define-key 'normal projectile-rails-mode-map ",rcc" 'projectile-rails-find-current-controller)
+  (evil-define-key 'normal projectile-rails-mode-map ",rcv" 'projectile-rails-find-current-view)
+  (evil-define-key 'normal projectile-rails-mode-map ",rcs" 'projectile-rails-find-current-spec)
+  (evil-define-key 'normal projectile-rails-mode-map ",ric" 'projectile-rails-console)
+  (evil-define-key 'normal projectile-rails-mode-map ",ris" 'projectile-rails-server)
+  (evil-define-key 'normal projectile-rails-mode-map ",rir" 'projectile-rails-rake)
+  (evil-define-key 'normal projectile-rails-mode-map ",rig" 'projectile-rails-generate)
+  (evil-define-key 'normal projectile-rails-mode-map ",rer" 'projectile-rails-extract-region)
+  (evil-define-key 'normal projectile-rails-mode-map "gf" 'projectile-rails-goto-file-at-point)
+  (evil-define-key 'normal projectile-rails-mode-map "gm" 'projectile-rails-goto-gemfile)
+  (evil-define-key 'normal projectile-rails-mode-map "gr" 'projectile-rails-goto-routes)
   (add-hook 'projectile-mode-hook 'projectile-rails-on)
   :config
   (use-package evil-rails))
@@ -348,6 +566,9 @@
   :commands (global-flycheck-mode)
   :init
   (add-hook 'after-init-hook 'global-flycheck-mode)
+  (evil-leader/set-key "el" 'flycheck-list-errors)
+  (evil-leader/set-key "en" 'flycheck-next-error)
+  (evil-leader/set-key "ep" 'flycheck-previous-error)
   :config
   (use-package flycheck-pos-tip
     :commands (flycheck-pos-tip-error-messages)
@@ -377,9 +598,9 @@
   :commands (bundle-open bundle-exec bundle-check bundle-gemfile
                          bundle-update bundle-console bundle-install))
 (use-package rbenv
-  :commands (global-rbenv-mode)
+  :commands (global-rbenv-mode rbenv-use-corresponding)
   :init
-  (global-rbenv-mode)
+  (add-hook 'enh-ruby-mode-hook 'global-rbenv-mode)
   (add-hook 'enh-ruby-mode-hook (lambda () (rbenv-use-corresponding))))
 (use-package inf-ruby
   :commands (inf-ruby inf-ruby-minor-mode inf-ruby-console-auto)
@@ -395,7 +616,8 @@
   (add-hook 'enh-ruby-mode-hook 'robe-mode)
   (add-hook 'robe-mode-hook 'robe-start)
   (add-hook 'robe-mode-hook 'ac-robe-setup)
-  )
+  :config
+  (diminish 'robe-mode))
 (use-package enh-ruby-mode
   :mode (("\\(Rake\\|Thor\\|Guard\\|Gem\\|Cap\\|Vagrant\\|Berks\\|Pod\\|Puppet\\)file\\'" . enh-ruby-mode)
          ("\\.\\(rb\\|rabl\\|ru\\|builder\\|rake\\|thor\\|gemspec\\|jbuilder\\|schema\\)\\'" . enh-ruby-mode)
@@ -408,6 +630,9 @@
                                    (electric-pair-mode)
                                    (electric-indent-mode)
                                    (electric-layout-mode)))
+  (custom-set-faces
+   '(enh-ruby-op-face ((t (:foreground "headerColor"))))
+   '(enh-ruby-string-delimiter-face ((t (:foreground "#d33682")))))
   :config
   (setq enh-ruby-add-encoding-comment-on-save nil))
 (use-package ruby-test-mode
@@ -415,11 +640,15 @@
   :init
   (add-hook 'enh-ruby-mode-hook 'ruby-test-mode)
   (evil-define-key 'normal ruby-test-mode-map (kbd ",tt") 'ruby-test-run-at-point)
-  (evil-define-key 'normal ruby-test-mode-map (kbd ",tb") 'ruby-test-run))
+  (evil-define-key 'normal ruby-test-mode-map (kbd ",tb") 'ruby-test-run)
+  :config
+  (diminish 'ruby-test-mode))
 (use-package ruby-end
   :commands (ruby-end-mode)
   :init
-  (add-hook 'enh-ruby-mode-hook 'ruby-end-mode))
+  (add-hook 'enh-ruby-mode-hook 'ruby-end-mode)
+  :config
+  (diminish 'ruby-end-mode))
 
 ;; html, erb
 (el-get-bundle web-mode)
@@ -476,51 +705,13 @@
   (setq shell-pop-internal-mode-func (lambda nil (eshell)))
   (setq shell-pop-internal-mode-buffer "*eshell*"))
 
-;; helm
-(el-get-bundle async)
-(el-get-bundle helm)
-(el-get-bundle helm-ls-git)
-(el-get-bundle helm-ag)
-(use-package helm
-  ;; :commands (helm-M-x helm-buffers-list helm-recent helm-browse-project
-  ;;                     helm-for-files helm-do-ag-project-root
-  ;;                     helm-do-ag-buffers)
+;; imenu
+(use-package imenu
+  :defer t
   :init
-  (setq helm-mode-fuzzy-match t)
-  (setq helm-completion-in-region-fuzzy-match t)
-  (setq helm-autoresize-mode t)
-  (setq helm-ag-fuzzy-match t)
-  (setq helm-ag-insert-at-point t)
-  (evil-leader/set-key "hgp" 'helm-do-ag-project-root)
-  (evil-leader/set-key "hgb" 'helm-do-ag-buffers)
-  (evil-leader/set-key ":"  'helm-M-x)
-  (evil-leader/set-key "hb" 'helm-buffers-list)
-  (evil-leader/set-key "hr" 'helm-recentf)
-  (evil-leader/set-key "hp" 'helm-browse-project)
-  (evil-leader/set-key "hf" 'helm-find-files)
-  (evil-leader/set-key "hl" 'helm-resume)
-  :config
-  (helm-mode +1)
-  (use-package helm-ls-git
-    :init
-    (setq helm-ls-git-fuzzy-match t))
-  (use-package helm-ag)
-  (setq helm-exit-idle-delay 0)
-  (define-key helm-buffer-map (kbd "C-v") 'helm-buffer-switch-other-window)
-  (define-key helm-find-files-map (kbd "C-v") 'helm-ff-run-switch-other-window)
-  (define-key helm-map (kbd "C-h") 'delete-backward-char)
-  (define-key helm-read-file-map (kbd "C-h") 'delete-backward-char)
-  (define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
-  (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
-  (define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
-  (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action))
-
-(el-get-bundle helm-dash)
-(use-package helm-dash
-  :commands (helm-dash-at-point helm-dash helm-dash-install-docset)
-  :init
-  (evil-leader/set-key "hdd" 'helm-dash)
-  (evil-leader/set-key "hda" 'helm-dash-at-point))
+  (setq imenu-auto-rescan t)
+  (add-hook 'imenu-after-jump-hook '(lambda ()
+                                      (recenter 10))))
 
 ;; yaml
 (el-get-bundle yaml-mode)
@@ -547,11 +738,19 @@
 (use-package popwin
   :config
   (popwin-mode t)
-  (push '("*compilation*" :stick t :height 0.3 :tail t :noselect t) popwin:special-display-config))
-
-(el-get-bundle powerline-evil)
-(use-package powerline-evil
-  :config (powerline-evil-vim-theme))
+  (evil-leader/set-key "bp" 'popwin:pop-to-buffer)
+  (evil-leader/set-key "bf" 'popwin:find-file)
+  (push '("*Warnings*" :height 0.3 :noselect t) popwin:special-display-config)
+  (push '("*Flycheck errors*" :stick t :height 0.3 :noselect t) popwin:special-display-config)
+  (push '("*compilation*" :stick t :height 0.3 :tail t :noselect t) popwin:special-display-config)
+  (push "*slime-apropos*" popwin:special-display-config)
+  (push "*slime-macroexpansion*" popwin:special-display-config)
+  (push "*slime-description*" popwin:special-display-config)
+  (push '("*slime-compilation*" :noselect t) popwin:special-display-config)
+  (push "*slime-xref*" popwin:special-display-config)
+  (push '(sldb-mode :stick t) popwin:special-display-config)
+  (push '(slime-repl-mode :noselect t :position bottom :height 0.3) popwin:special-display-config)
+  (push 'slime-connection-list-mode popwin:special-display-config))
 
 (el-get-bundle hydra)
 (use-package hydra
@@ -559,14 +758,13 @@
   (defhydra helm-like-unite (:hint nil
                                    :color pink)
     "
-Nav              Mark              Other          Quit
-----------------------------------------------------------------
- _K_ ^ ^  _k_ ^ ^     _m_ark           _v_iew         _i_: cancel
- ^↕^  _h_ ^✜^ _l_     _t_oggle mark    _H_elp         _o_: quit
- _J_ ^ ^  _j_ ^ ^     _u_nmark all     _d_elete
-                                  _y_ank section
-                                  _w_ toggle window
-                                  _f_ollow: %(helm-attr 'follow)
+-----------------------------------------------------------------------
+[K] ScrollUp   | [k] move up   | [m] mark   | [v] view   | [i] cancel |
+[J] ScrollDown | [j] move down | [t] toggle | [H] help   | [o] quit   |
+| [h] left      |     mark   | [d] delete |            |
+| [l] right     | [u] unmark | [y] yank   | [w] toggle |
+|               |     all    | [f] follow |     window |
+-----------------------------------------------------------------------
 "
     ("h" helm-beginning-of-buffer)
     ("j" helm-next-line)
@@ -596,6 +794,93 @@ Nav              Mark              Other          Quit
   (define-key helm-map (kbd "C-k") 'helm-like-unite/body)
   (define-key helm-map (kbd "C-o") 'helm-like-unite/body))
 
+;; lisp
+(el-get-bundle slime)
+(el-get-bundle ac-slime)
+(use-package slime
+  :commands (slime-mode)
+  :init
+  (add-hook 'slime-repl-mode-hook '(lambda () (electric-pair-mode -1)))
+  (add-hook 'lisp-mode-hook 'slime-mode)
+  (setq slime-complete-symbol*-fancy t)
+  (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
+  (setq inferior-lisp-program (executable-find "clisp"))
+  (setq slime-contribs '(slime-repl slime-fancy slime-banner slime-fuzzy))
+  (evil-define-key 'normal slime-mode-map (kbd ",cc") 'slime-compile-file)
+  (evil-define-key 'normal slime-mode-map (kbd ",cC") 'slime-compile-and-load-file)
+  (evil-define-key 'normal slime-mode-map (kbd ",cf") 'slime-compile-defun)
+  (evil-define-key 'normal slime-mode-map (kbd ",cr") 'slime-compile-region)
+  (evil-define-key 'normal slime-mode-map (kbd ",eb") 'slime-eval-buffer)
+  (evil-define-key 'normal slime-mode-map (kbd ",ef") 'slime-eval-defun)
+  (evil-define-key 'normal slime-mode-map (kbd ",ee") 'slime-eval-last-sexp)
+  (evil-define-key 'normal slime-mode-map (kbd ",er") 'slime-eval-region)
+  (evil-define-key 'normal slime-mode-map (kbd ",gg") 'slime-inspect-definition)
+  (evil-define-key 'normal slime-mode-map (kbd ",ha") 'slime-apropos)
+  (evil-define-key 'normal slime-mode-map (kbd ",hh") 'slime-hyperspec-lookup)
+  (evil-define-key 'normal slime-mode-map (kbd ",hf") 'slime-describe-function)
+  (evil-define-key 'normal slime-mode-map (kbd ",si") 'slime)
+  (evil-define-key 'normal slime-mode-map (kbd ",sq") 'slime-quit-lisp)
+  (evil-define-key 'normal slime-mode-map (kbd ",sr") 'slime-restart-inferior-lisp)
+  (add-hook 'slime-repl-mode-hook (lambda () (linum-mode -1)))
+  :config
+  (slime-setup '(slime-repl slime-fancy slime-banner slime-fuzzy slime-indentation))
+  (use-package ac-slime
+    :commands (set-up-slime-ac)
+    :init
+    (add-hook 'slime-mode-hook '(lambda () (set-up-slime-ac t)))
+    (add-hook 'slime-repl-mode '(lambda () (set-up-slime-ac t)))))
+
+;; theme
+(el-get-bundle color-theme-solarized)
+(el-get-bundle powerline)
+(el-get-bundle powerline-evil)
+
+(add-to-list 'custom-theme-load-path default-directory)
+(set-frame-parameter nil 'background-mode 'dark)
+(set-terminal-parameter nil 'background-mode 'dark)
+(load-theme 'solarized t)
+
+(use-package powerline-evil
+  :init
+  (setq powerline-default-separator 'arrow)
+  (setq powerline-evil-tag-style 'verbose)
+  :config
+  (custom-set-faces
+   '(mode-line ((t (:background "#002b36" :foreground "#fdf6e3" :inverse-video t :box nil))))
+   '(mode-line-inactive ((t (:background "#eee8d5" :foreground "#586e75" :inverse-video t :box nil))))
+   '(powerline-active1 ((t (:background "#002b36" :foreground "#eee8d5"))))
+   '(powerline-active2 ((t (:background "#002b36" :foreground "#eee8d5"))))
+   '(powerline-evil-base-face ((t (:background "#fdf6e3" :foreground "#002b36" :width extra-expanded))))
+   '(powerline-evil-insert-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#657b83"))))
+   '(powerline-evil-normal-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#268bd2"))))
+   '(powerline-evil-operator-face ((t (:inherit powerline-evil-operator-face :background "#fdf6e3" :foreground "#b58900"))))
+   '(powerline-evil-visual-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#d33682"))))
+   '(powerline-inactive1 ((t (:inherit mode-line-inactive :background "#fdf6e3" :foreground "#586e75"))))
+   '(powerline-inactive2 ((t (:inherit mode-line-inactive :foreground "#586e75")))))
+  (powerline-evil-vim-color-theme))
+
+(el-get-bundle indent-guide)
+(use-package indent-guide
+  :commands (indent-guide-mode)
+  :init
+  (evil-leader/set-key "ig" 'indent-guide-mode)
+  (setq indent-guide-recursive t)
+  :config
+  (diminish 'indent-guide-mode))
+
+(el-get-bundle krisajenkins/helm-spotify)
+(use-package helm-spotify
+  :commands (helm-spotify)
+  :init
+  (evil-leader/set-key "hs" 'helm-spotify))
+
+(el-get-bundle golden-ratio)
+(use-package golden-ratio
+  :init
+  (setq golden-ratio-auto-scale t)
+  :config
+  (golden-ratio-mode 1))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -603,12 +888,27 @@ Nav              Mark              Other          Quit
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default)))
- '(evil-shift-width 2))
+    ("a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default)))
+ '(evil-shift-width 2)
+ '(flycheck-display-errors-function (function flycheck-pos-tip-error-messages))
+ '(git-gutter:added-sign "++")
+ '(git-gutter:deleted-sign "--")
+ '(git-gutter:modified-sign "##"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(enh-ruby-op-face ((t (:foreground "headerColor"))))
- '(enh-ruby-string-delimiter-face ((t (:foreground "#d33682")))))
+ '(enh-ruby-string-delimiter-face ((t (:foreground "#d33682"))))
+ '(mode-line ((t (:background "#002b36" :foreground "#fdf6e3" :inverse-video t :box nil))))
+ '(mode-line-inactive ((t (:background "#eee8d5" :foreground "#586e75" :inverse-video t :box nil))))
+ '(powerline-active1 ((t (:background "#002b36" :foreground "#eee8d5"))))
+ '(powerline-active2 ((t (:background "#002b36" :foreground "#eee8d5"))))
+ '(powerline-evil-base-face ((t (:background "#fdf6e3" :foreground "#002b36" :width extra-expanded))))
+ '(powerline-evil-insert-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#657b83"))))
+ '(powerline-evil-normal-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#268bd2"))))
+ '(powerline-evil-operator-face ((t (:inherit powerline-evil-operator-face :background "#fdf6e3" :foreground "#b58900"))))
+ '(powerline-evil-visual-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#d33682"))))
+ '(powerline-inactive1 ((t (:inherit mode-line-inactive :background "#fdf6e3" :foreground "#586e75"))))
+ '(powerline-inactive2 ((t (:inherit mode-line-inactive :foreground "#586e75")))))
