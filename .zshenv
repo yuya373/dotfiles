@@ -23,6 +23,11 @@ if [ -d ${HOME}/.rbenv ] ; then
   eval "$(rbenv init -)"
 fi
 
+if [ -d /usr/local/opt/coreutils/libexec/gnubin ] ; then
+  export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
+  export MANPATH=/usr/local/opt/coreutils/libexec/gnuman/:$MANPATH
+fi
+
 export EDITOR='vim'
 export SYS_NOTIFIER=`which terminal-notifier`
 export HOMEBREW_CASK_OPTS='--appdir=/Applications'
