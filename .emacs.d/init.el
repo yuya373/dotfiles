@@ -357,8 +357,15 @@
 (use-package helm-dash
   :commands (helm-dash-at-point helm-dash helm-dash-install-docset)
   :init
+  (setq helm-dash-docsets-path (expand-file-name "~/.docsets"))
+  (evil-leader/set-key "hdi" 'helm-dash-install-docset)
   (evil-leader/set-key "hdd" 'helm-dash)
-  (evil-leader/set-key "hda" 'helm-dash-at-point))
+  (evil-leader/set-key "hda" 'helm-dash-at-point)
+  (add-hook 'enh-ruby-mode-hook '(lambda () (setq-local helm-dash-docsets '("Ruby"))))
+  (add-hook 'projectile-rails-mode-hook '(lambda () (setq-local helm-dash-docsets '("Ruby on Rails"))))
+  (add-hook 'emacs-lisp-mode-hook '(lambda () (setq-local helm-dash-docsets '("Emacs Lisp"))))
+  (add-hook 'lisp-mode-hook '(lambda () (setq-local helm-dash-docsets '("Common Lisp"))))
+  )
 
 (el-get-bundle rainbow-delimiters)
 (use-package rainbow-delimiters
