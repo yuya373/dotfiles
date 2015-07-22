@@ -687,6 +687,8 @@
 (use-package ace-jump-mode
   :commands (ace-jump-word-mode ace-jump-char-mode ace-jump-line-mode)
   :init
+  (setq ace-jump-mode-move-keys
+        (loop for i from ?a to ?z collect i))
   (setq ace-jump-mode-scope 'window)
   (define-key evil-normal-state-map (kbd "f") 'ace-jump-char-mode)
   (evil-leader/set-key "<SPC>" 'ace-jump-word-mode)
