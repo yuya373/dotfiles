@@ -328,6 +328,9 @@
   (evil-leader/set-key "o" 'helm-semantic-or-imenu)
   (evil-leader/set-key "p" 'helm-show-kill-ring)
   (define-key evil-normal-state-map (kbd ",ha") 'helm-apropos)
+  (define-key helm-map (kbd "C-a") 'helm-select-action)
+  (define-key helm-map (kbd "C-k") 'helm-previous-source)
+  (define-key helm-map (kbd "C-j") 'helm-next-source)
   (define-key helm-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
 
@@ -478,7 +481,9 @@
 ;; projectile
 (el-get-bundle projectile)
 (use-package helm-projectile
-  :commands (helm-projectile-on))
+  :commands (helm-projectile-on)
+  :init
+  (evil-leader/set-key "hp" 'helm-projectile))
 (use-package projectile
   :commands (projectile-global-mode)
   :init
@@ -760,8 +765,7 @@
     ("r" helm-ff-run-rename-file)
     ("f" helm-follow-mode))
   (define-key helm-map (kbd "<escape>") 'helm-like-unite/body)
-  (define-key helm-map (kbd "C-k") 'helm-like-unite/body)
-  (define-key helm-map (kbd "C-o") 'helm-like-unite/body))
+  (define-key helm-map (kbd "C-k") 'helm-like-unite/body))
 
 ;; lisp
 (el-get-bundle slime)
