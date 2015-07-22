@@ -206,6 +206,7 @@
     :init
     (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
     (define-key evil-outer-text-objects-map "a" 'evil-outer-arg))
+  ;; mappings
   (defun open-below-esc ()
     (interactive)
     (evil-open-below 1)
@@ -330,22 +331,24 @@
   (define-key helm-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
 
+  (define-key helm-comp-read-map (kbd "C-o") 'helm-ff-run-switch-other-window)
+
   (define-key helm-buffer-map (kbd "C-d") 'helm-buffer-run-kill-buffers)
-  (define-key helm-buffer-map (kbd "C-w") 'helm-buffer-switch-other-window)
+  (define-key helm-buffer-map (kbd "C-o") 'helm-buffer-switch-other-window)
 
   (define-key helm-find-files-map (kbd "C-t") 'helm-ff-run-etags)
-  (define-key helm-find-files-map (kbd "C-w") 'helm-ff-run-switch-other-window)
+  (define-key helm-find-files-map (kbd "C-o") 'helm-ff-run-switch-other-window)
   (define-key helm-find-files-map (kbd "C-r") 'helm-ff-run-rename-file)
   (define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
 
   (define-key helm-read-file-map (kbd "C-t") 'helm-ff-run-etags)
-  (define-key helm-read-file-map (kbd "C-w") 'helm-ff-run-switch-other-window)
+  (define-key helm-read-file-map (kbd "C-o") 'helm-ff-run-switch-other-window)
   (define-key helm-read-file-map (kbd "C-r") 'helm-ff-run-rename-file)
   (define-key helm-read-file-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
 
-  (define-key helm-ag-map (kbd "C-w") 'helm-ff-run-switch-other-window))
+  (define-key helm-ag-map (kbd "C-o") 'helm-ag--run-other-window-action))
 
 (el-get-bundle helm-dash)
 (use-package helm-dash
@@ -407,7 +410,45 @@
     :init
     (setq magit-status-buffer-switch-function 'switch-to-buffer)
     (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
-  )
+
+  (evil-set-initial-state 'magit-mode 'normal)
+  (evil-set-initial-state 'magit-status-mode 'normal)
+  (evil-set-initial-state 'magit-diff-mode 'normal)
+  (evil-set-initial-state 'magit-log-mode 'normal)
+  (evil-set-initial-state 'magit-reflog-mode 'normal)
+  (evil-set-initial-state 'magit-process-mode 'normal)
+
+  (define-key magit-mode-map "\s" nil) ;space I use space as my evil-leader key
+  (define-key magit-diff-mode-map "\s" nil) ;space
+  (define-key magit-diff-mode-map "j" nil)
+
+  (define-key magit-status-mode-map "j" 'next-line) ;may be should evil-next-line
+  (define-key magit-mode-map "j" 'next-line)
+  (define-key magit-mode-map "k" 'previous-line)
+  (define-key magit-file-section-map "K" 'magit-discard)
+  (define-key magit-file-section-map "k" nil)
+  (define-key magit-hunk-section-map "K" 'magit-discard)
+  (define-key magit-hunk-section-map "k" nil)
+  (define-key magit-unstaged-section-map "k" nil)
+  (define-key magit-unstaged-section-map "K" 'magit-discard)
+  (define-key magit-staged-section-map "K" 'magit-discard)
+  (define-key magit-staged-section-map "k" nil)
+  (define-key magit-stash-section-map "K" 'magit-stash-drop)
+  (define-key magit-stash-section-map "k" nil)
+  (define-key magit-stashes-section-map "K" 'magit-stash-clear)
+  (define-key magit-stashes-section-map "k" nil)
+
+  (define-key magit-untracked-section-map "K" 'magit-discard)
+  (define-key magit-untracked-section-map "k" nil)
+
+  (define-key magit-branch-section-map "K" 'magit-branch-delete)
+  (define-key magit-branch-section-map "k" nil)
+
+  (define-key magit-remote-section-map "K" 'magit-remote-remove)
+  (define-key magit-remote-section-map "k" nil)
+
+  (define-key magit-tag-section-map "k" nil)
+  (define-key magit-tag-section-map "K" 'magit-tag-delete))
 
 (use-package gist
   :commands (gist-list gist-region gist-region-private
@@ -756,15 +797,20 @@
     (add-hook 'slime-repl-mode '(lambda () (set-up-slime-ac t)))))
 
 ;; theme
-(el-get-bundle color-theme-solarized)
+(el-get-bundle solarized-theme)
+(setq solarized-distinct-fringe-background t)
+(setq solarized-use-variable-pitch nil)
+(setq solarized-high-contrast-mode-line t)
+(add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/solarized-theme")
+(load-theme 'solarized-dark t)
+
+;; (el-get-bundle color-theme-solarized)
+;; (set-frame-parameter nil 'background-mode 'dark)
+;; (set-terminal-parameter nil 'background-mode 'dark)
+;; (load-theme 'solarized)
+
 (el-get-bundle powerline)
 (el-get-bundle powerline-evil)
-
-(add-to-list 'custom-theme-load-path default-directory)
-(set-frame-parameter nil 'background-mode 'dark)
-(set-terminal-parameter nil 'background-mode 'dark)
-(load-theme 'solarized t)
-
 (use-package powerline-evil
   :init
   (setq powerline-default-separator 'arrow)
