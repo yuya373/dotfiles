@@ -10,7 +10,7 @@
 ;;   (if (= (length (window-list nil 'dont-include-minibuffer-even-if-active)) 1)
 ;;       (split-window-vertically)))
 ;; (add-hook 'temp-buffer-setup-hook 'split-vertically-not-horizontally)
-(setq split-width-threshold 0)
+(setq split-width-threshold 100)
 (define-key minibuffer-local-completion-map (kbd "C-w") 'backward-kill-word)
 (global-set-key "\C-m" 'newline-and-indent)
 (setq large-file-warning-threshold nil)
@@ -23,6 +23,9 @@
 (scroll-bar-mode -1)
 (setq require-final-newline t)
 (modify-syntax-entry ?_ "w")
+(when (eq system-type 'darwin)
+  (require 'ls-lisp)
+  (setq ls-lisp-use-insert-directory-program nil))
 (unless (eq window-system 'mac)
   (menu-bar-mode -1))
 
@@ -402,88 +405,8 @@
   (use-package magit-gh-pulls
     :commands (turn-on-magit-gh-pulls)
     :init
+    (setq magit-status-buffer-switch-function 'switch-to-buffer)
     (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
-  ;; (setq evil-emacs-state-modes (delq 'magit-status-mode evil-emacs-state-modes))
-  (evil-make-overriding-map magit-mode-map 'nomal)         ; magit-mode-map の優先度を上げる
-  (evil-make-overriding-map magit-untracked-section-map 'normal)
-  (evil-make-overriding-map magit-staged-section-map 'normal)
-  (evil-make-overriding-map magit-unstaged-section-map 'normal)
-  (evil-make-overriding-map magit-file-section-map 'normal)
-  (evil-make-overriding-map magit-status-mode-map 'normal)  ; 同上
-
-  (evil-set-initial-state 'magit-diff-mode 'normal)
-  (evil-set-initial-state 'git-rebase-mode 'normal)
-  (evil-set-initial-state 'magit-mode 'normal)
-  (evil-set-initial-state 'magit-log-edit-mode 'insert)
-  (evil-set-initial-state 'git-commit-mode 'insert)
-  (evil-set-initial-state 'magit-commit-mode 'normal)
-  (evil-set-initial-state 'magit-status-mode 'normal)
-  (evil-set-initial-state 'magit-log-mode 'normal)
-  (evil-set-initial-state 'magit-revision-mode 'normal)
-  (evil-set-initial-state 'magit-wassup-mode 'normal)
-
-  ;; (evil-define-key 'normal magit-hunk-section-map
-  ;;   "j" 'magit-section-forward
-  ;;   "k" 'magit-section-backward
-  ;;   "K" 'magit-discard)
-
-  ;; (evil-define-key 'normal magit-tag-section-map
-  ;;   "j" 'magit-section-forward
-  ;;   "k" 'magit-section-backward
-  ;;   "K" 'magit-tag-delete)
-
-  ;; (evil-define-key 'normal magit-remote-section-map
-  ;;   "j" 'magit-section-forward
-  ;;   "k" 'magit-section-backward
-  ;;   "K" 'magit-remote-remove)
-
-  ;; (evil-define-key 'normal magit-branch-section-map
-  ;;   "j" 'magit-section-forward
-  ;;   "k" 'magit-section-backward
-  ;;   "K" 'magit-branch-delete)
-
-  ;; (evil-define-key 'normal magit-staged-section-map
-  ;;   "j" 'magit-section-forward
-  ;;   "k" 'magit-section-backward
-  ;;   "J" 'magit-jump-to-diffstat-or-diff
-  ;;   "\C-u" 'evil-scroll-up
-  ;;   "\C-d" 'evil-scroll-down
-  ;;   "K" 'magit-discard)
-
-  ;; (evil-define-key 'normal magit-unstaged-section-map
-  ;;   "j" 'magit-section-forward
-  ;;   "k" 'magit-section-backward
-  ;;   "K" 'magit-discard)
-
-  ;; (evil-define-key 'normal magit-untracked-section-map
-  ;;   "j" 'magit-section-forward
-  ;;   "k" 'magit-section-backward
-  ;;   "K" 'magit-discard)
-
-  ;; (evil-define-key 'normal magit-file-section-map
-  ;;   "j" 'magit-section-forward
-  ;;   "k" 'magit-section-backward
-  ;;   "K" 'magit-discard
-  ;;   "\C-k" 'magit-file-untrack)
-  ;; (evil-define-key 'normal git-rebase-mode-map
-  ;;   "K" 'git-rebase-kill-line
-  ;;   "\C-j" 'git-rebase-move-line-down
-  ;;   "\C-k" 'git-rebase-move-line-up)
-
-  ;; (evil-define-key 'normal magit-mode-map
-  ;;   "\C-d" 'evil-scroll-page-down
-  ;;   "\C-u" 'evil-scroll-page-up
-  ;;   "/" 'evil-search-forward
-  ;;   ":" 'evil-ex
-  ;;   ";" 'magit-git-command
-  ;;   "G" 'evil-goto-line
-  ;;   "N" 'evil-search-previous
-  ;;   "n" 'evil-search-next
-  ;;   "j" 'magit-section-forward
-  ;;   "k" 'magit-section-backward
-  ;;   "l" 'magit-log-popup
-  ;;   "?" 'magit-dispatch-popup
-  ;;   "\C-RET" 'magit-dired-jump)
   )
 
 (use-package gist
@@ -736,13 +659,15 @@
 
 (el-get-bundle popwin)
 (use-package popwin
+  :init
+  (setq popwin:popup-window-position 'bottom)
   :config
   (popwin-mode t)
   (evil-leader/set-key "bp" 'popwin:pop-to-buffer)
   (evil-leader/set-key "bf" 'popwin:find-file)
   (push '("*Warnings*" :height 0.3 :noselect t) popwin:special-display-config)
   (push '("*Flycheck errors*" :stick t :height 0.3 :noselect t) popwin:special-display-config)
-  (push '("*compilation*" :stick t :height 0.3 :tail t :noselect t) popwin:special-display-config)
+  (push '("*compilation*" :stick t :height 0.2 :tail t :noselect t) popwin:special-display-config)
   (push "*slime-apropos*" popwin:special-display-config)
   (push "*slime-macroexpansion*" popwin:special-display-config)
   (push "*slime-description*" popwin:special-display-config)
@@ -874,12 +799,22 @@
   :init
   (evil-leader/set-key "hs" 'helm-spotify))
 
-(el-get-bundle golden-ratio)
-(use-package golden-ratio
-  :init
-  (setq golden-ratio-auto-scale t)
-  :config
-  (golden-ratio-mode 1))
+;; (el-get-bundle golden-ratio)
+;; (use-package golden-ratio
+;;   :init
+;;   (setq golden-ratio-exclude-modes '(slime-repl-mode))
+;;   (setq golden-ratio-exclude-buffer-names '("*compilation*"
+;;                                             "*Flycheck errors*"
+;;                                             "slime-apropos*"
+;;                                             "*slime-description*"
+;;                                             "*slime-compilation*"
+;;                                             "*guide-key*"
+;;                                             "*Help*"
+;;                                             "*Warnings*"))
+;;   (setq golden-ratio-auto-scale t)
+;;   :config
+;;   (golden-ratio-mode 1)
+;;   (diminish 'golden-ratio-mode))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
