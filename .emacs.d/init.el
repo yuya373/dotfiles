@@ -463,6 +463,7 @@
   (evil-leader/set-key "gp" 'git-gutter:previous-hunk)
   (evil-leader/set-key "gs" 'git-gutter:stage-hunk)
   (evil-leader/set-key "gr" 'git-gutter:revert-hunk)
+  (setq git-gutter:update-interval 2)
   :config
   (custom-set-variables
    '(git-gutter:modified-sign "**")
@@ -797,11 +798,11 @@
     (add-hook 'slime-repl-mode '(lambda () (set-up-slime-ac t)))))
 
 ;; theme
-(el-get-bundle solarized-theme)
+(el-get-bundle bbatsov/solarized-emacs)
 (setq solarized-distinct-fringe-background t)
 (setq solarized-use-variable-pitch nil)
 (setq solarized-high-contrast-mode-line t)
-(add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/solarized-theme")
+(add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/solarized-emacs")
 (load-theme 'solarized-dark t)
 
 ;; (el-get-bundle color-theme-solarized)
