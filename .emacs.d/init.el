@@ -219,6 +219,19 @@
       (evil-leader/set-key "fu" 'fold-this-unfold-all))
     :config
     (global-evil-extra-operator-mode 1))
+  (use-package evil-integration
+    :init
+    (el-get-bundle ace-jump-mode)
+    (use-package ace-jump-mode
+      :config
+      (setq ace-jump-mode-scope 'visible)
+      (setq ace-jump-mode-move-keys
+            (loop for i from ?a to ?z collect i))
+      (define-key evil-operator-state-map (kbd "f") #'evil-ace-jump-char-mode)      ; similar to f
+      (define-key evil-operator-state-map (kbd "t") #'evil-ace-jump-char-to-mode) ; similar to t
+      (define-key evil-normal-state-map (kbd "f") 'ace-jump-char-mode)
+      (evil-leader/set-key "<SPC>" 'ace-jump-word-mode))
+    )
 
   ;; cleanup whitespace
   (defun evil-cleanup-whitespace ()
@@ -759,15 +772,17 @@
 (use-package yaml-mode
   :mode ("\\.yaml\\'" . yaml-mode))
 
-(el-get-bundle avy)
-(use-package avy
-  :commands (avy-goto-char-2 avy-goto-word-1 avy-goto-line)
-  :init
-  (setq avy-all-windows nil)
-  (setq avy-keys (number-sequence ?a ?z))
-  (define-key evil-normal-state-map (kbd "f") 'avy-goto-char-2)
-  (evil-leader/set-key "<SPC>" 'avy-goto-word-1)
-  (evil-leader/set-key "l" 'avy-goto-line))
+
+
+;; (el-get-bundle avy)
+;; (use-package avy
+;;   :commands (avy-goto-char-2 avy-goto-word-1 avy-goto-line)
+;;   :init
+;;   (setq avy-all-windows nil)
+;;   (setq avy-keys (number-sequence ?a ?z))
+;;   (define-key evil-normal-state-map (kbd "f") 'avy-goto-char-2)
+;;   (evil-leader/set-key "<SPC>" 'avy-goto-word-1)
+;;   (evil-leader/set-key "l" 'avy-goto-line))
 
 (el-get-bundle expand-region)
 (use-package expand-region
