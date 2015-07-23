@@ -103,11 +103,11 @@
   (diminish 'global-whitespace-mode))
 
 ;; initchart
-(el-get-bundle yuttie/initchart)
-(use-package initchart
-  :commands (initchart-record-execution-time-of))
-(initchart-record-execution-time-of load file)
-(initchart-record-execution-time-of require feature)
+;; (el-get-bundle yuttie/initchart)
+;; (use-package initchart
+;;   :commands (initchart-record-execution-time-of))
+;; (initchart-record-execution-time-of load file)
+;; (initchart-record-execution-time-of require feature)
 
 ;; esup
 (el-get-bundle esup)
@@ -624,6 +624,7 @@
         enh-ruby-hanging-paren-deep-indent-level 2)
   (setq enh-ruby-add-encoding-comment-on-save nil)
   (add-hook 'enh-ruby-mode-hook 'auto-complete-mode)
+  (add-hook 'enh-ruby-mode-hook '(lambda () (turn-off-smartparens-mode)))
   (add-hook 'enh-ruby-mode-hook 'electric-pair-mode)
   (add-hook 'enh-ruby-mode-hook 'electric-indent-mode)
   (add-hook 'enh-ruby-mode-hook 'electric-layout-mode)
@@ -657,6 +658,10 @@
   (evil-define-key 'normal ruby-test-mode-map (kbd ",tb") 'ruby-test-run)
   :config
   (diminish 'ruby-test-mode))
+(use-package ruby-end
+  :commands (ruby-end-mode)
+  :init
+  (add-hook 'enh-ruby-mode-hook 'ruby-end-mode))
 
 ;; html, erb
 (el-get-bundle web-mode)
@@ -726,16 +731,15 @@
 (use-package yaml-mode
   :mode ("\\.yaml\\'" . yaml-mode))
 
-(el-get-bundle ace-jump-mode)
-(use-package ace-jump-mode
-  :commands (ace-jump-word-mode ace-jump-char-mode ace-jump-line-mode)
+(el-get-bundle avy)
+(use-package avy
+  :commands (avy-goto-char-2 avy-goto-word-1 avy-goto-line)
   :init
-  (setq ace-jump-mode-move-keys
-        (loop for i from ?a to ?z collect i))
-  (setq ace-jump-mode-scope 'window)
-  (define-key evil-normal-state-map (kbd "f") 'ace-jump-char-mode)
-  (evil-leader/set-key "<SPC>" 'ace-jump-word-mode)
-  (evil-leader/set-key "l" 'ace-jump-line-mode))
+  (setq avy-all-windows nil)
+  (setq avy-keys (number-sequence ?a ?z))
+  (define-key evil-normal-state-map (kbd "f") 'avy-goto-char-2)
+  (evil-leader/set-key "<SPC>" 'avy-goto-word-1)
+  (evil-leader/set-key "l" 'avy-goto-line))
 
 (el-get-bundle expand-region)
 (use-package expand-region
