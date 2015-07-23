@@ -22,6 +22,7 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (setq require-final-newline t)
+(setq ad-redefinition-action 'accept)
 (modify-syntax-entry ?_ "w")
 (when (eq system-type 'darwin)
   (require 'ls-lisp)
@@ -29,18 +30,12 @@
 (unless (eq window-system 'mac)
   (menu-bar-mode -1))
 
-;; electric
-(add-hook 'prog-mode-hook 'electric-pair-mode)
-(add-hook 'prog-mode-hook 'electric-indent-mode)
-(add-hook 'prog-mode-hook 'electric-layout-mode)
-
 ;; dired
-(setq dired-use-ls-dired t)
+;; (setq dired-use-ls-dired t)
 
 ;; linum
 (setq linum-format "%4d ")
 (global-linum-mode t)
-(setq ad-redefinition-action 'accept)
 
 ;; tab
 (setq-default tab-width 2
@@ -133,12 +128,29 @@
 ;; smartparens
 (el-get-bundle smartparens)
 (use-package smartparens
-  :defer t
+  :commands (turn-on-smartparens-mode)
   :init
-  (use-package smartparens-config
-    :defer t)
+  (add-hook 'prog-mode-hook 'turn-on-smartparens-mode)
   :config
-  ;; (smartparens-global-mode)
+  (use-package smartparens-config)
+  ;; (defun my-smartparens-pair-newline-and-indent (id action context)
+  ;;   (save-excursion
+  ;;     (newline)
+  ;;     (newline)
+  ;;     (indent-according-to-mode)
+  ;;     (forward-line -1)
+  ;;     (indent-according-to-mode)))
+  ;; (sp-with-modes '(ruby-mode enh-ruby-mode)
+  ;;   (sp-local-pair "{" "}"
+  ;;                  :when '(("SPC" "RET" "<evil-ret>"))
+  ;;                  :actions '(insert)
+  ;;                  :pre-handlers '(sp-ruby-pre-handler)
+  ;;                  :post-handlers '(my-smartparens-pair-newline-and-indent)
+  ;;                  :suffix ""))
+  ;; (sp-pair "{" nil :post-handlers
+  ;;          '(:add (my-smartparens-pair-newline-and-indent "RET")))
+  ;; (sp-pair "[" nil :post-handlers
+  ;;          '(:add (my-smartparens-pair-newline-and-indent "RET")))
   (show-smartparens-global-mode))
 
 ;; evil
@@ -418,6 +430,12 @@
   (evil-set-initial-state 'magit-reflog-mode 'normal)
   (evil-set-initial-state 'magit-process-mode 'normal)
 
+  (define-key git-rebase-mode-map "k" 'previous-line)
+  (define-key git-rebase-mode-map "j" 'next-line)
+  (define-key git-rebase-mode-map "K" 'git-rebase-kill-line)
+  (define-key git-rebase-mode-map "n" 'git-rebase-move-line-down)
+  (define-key git-rebase-mode-map "p" 'git-rebase-move-line-up)
+
   (define-key magit-mode-map "\s" nil) ;space I use space as my evil-leader key
   (define-key magit-diff-mode-map "\s" nil) ;space
   (define-key magit-diff-mode-map "j" nil)
@@ -552,13 +570,13 @@
 
 ;; ruby
 (setq ruby-insert-encoding-magic-comment nil)
+(el-get-bundle ruby-end)
 (el-get-bundle bundler)
 (el-get-bundle rbenv)
 (el-get-bundle robe)
 (el-get-bundle inf-ruby)
 (el-get-bundle enh-ruby-mode)
 (el-get-bundle ruby-test-mode)
-(el-get-bundle ruby-end)
 (use-package bundler
   :commands (bundle-open bundle-exec bundle-check bundle-gemfile
                          bundle-update bundle-console bundle-install))
@@ -589,17 +607,35 @@
          ("Schema" . enh-ruby-mode))
   :interpreter ("ruby" . enh-ruby-mode)
   :init
+  (setq enh-ruby-deep-indent-paren t
+        enh-ruby-hanging-paren-deep-indent-level 2)
+  (setq enh-ruby-add-encoding-comment-on-save nil)
   (add-hook 'enh-ruby-mode-hook 'auto-complete-mode)
-  (add-hook 'enh-ruby-mode-hook '(lambda ()
-                                   (abbrev-mode)
-                                   (electric-pair-mode)
-                                   (electric-indent-mode)
-                                   (electric-layout-mode)))
+  (add-hook 'enh-ruby-mode-hook 'electric-pair-mode)
+  (add-hook 'enh-ruby-mode-hook 'electric-indent-mode)
+  (add-hook 'enh-ruby-mode-hook 'electric-layout-mode)
   (custom-set-faces
    '(enh-ruby-op-face ((t (:foreground "headerColor"))))
    '(enh-ruby-string-delimiter-face ((t (:foreground "#d33682")))))
   :config
-  (setq enh-ruby-add-encoding-comment-on-save nil))
+  (evil-define-key 'insert electric-pair-mode-map (kbd "C-h")
+    `(menu-item
+      "" electric-pair-delete-pair
+      :filter
+      ,(lambda (cmd)
+         (let* ((prev (char-before))
+                (next (char-after))
+                (syntax-info (and prev
+                                  (electric-pair-syntax-info prev)))
+                (syntax (car syntax-info))
+                (pair (cadr syntax-info)))
+           (and next pair
+                (memq syntax '(?\( ?\" ?\$))
+                (eq pair next)
+                (if (functionp electric-pair-delete-adjacent-pairs)
+                    (funcall electric-pair-delete-adjacent-pairs)
+                  electric-pair-delete-adjacent-pairs)
+                cmd))))))
 (use-package ruby-test-mode
   :commands (ruby-test-mode)
   :init
@@ -608,12 +644,6 @@
   (evil-define-key 'normal ruby-test-mode-map (kbd ",tb") 'ruby-test-run)
   :config
   (diminish 'ruby-test-mode))
-(use-package ruby-end
-  :commands (ruby-end-mode)
-  :init
-  (add-hook 'enh-ruby-mode-hook 'ruby-end-mode)
-  :config
-  (diminish 'ruby-end-mode))
 
 ;; html, erb
 (el-get-bundle web-mode)
@@ -769,7 +799,7 @@
 (use-package slime
   :commands (slime-mode)
   :init
-  (add-hook 'slime-repl-mode-hook '(lambda () (electric-pair-mode -1)))
+  (add-hook 'slime-repl-mode-hook '(lambda () (turn-off-smartparens-mode)))
   (add-hook 'lisp-mode-hook 'slime-mode)
   (setq slime-complete-symbol*-fancy t)
   (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
@@ -877,7 +907,7 @@
  '(flycheck-display-errors-function (function flycheck-pos-tip-error-messages))
  '(git-gutter:added-sign "++")
  '(git-gutter:deleted-sign "--")
- '(git-gutter:modified-sign "##"))
+ '(git-gutter:modified-sign "**"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -890,7 +920,7 @@
  '(powerline-active1 ((t (:background "#002b36" :foreground "#eee8d5"))))
  '(powerline-active2 ((t (:background "#002b36" :foreground "#eee8d5"))))
  '(powerline-evil-base-face ((t (:background "#fdf6e3" :foreground "#002b36" :width extra-expanded))))
- '(powerline-evil-insert-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#657b83"))))
+ '(powerline-evil-insert-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#859900"))))
  '(powerline-evil-normal-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#268bd2"))))
  '(powerline-evil-operator-face ((t (:inherit powerline-evil-operator-face :background "#fdf6e3" :foreground "#b58900"))))
  '(powerline-evil-visual-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#d33682"))))
