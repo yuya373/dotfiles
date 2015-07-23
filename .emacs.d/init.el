@@ -340,6 +340,9 @@
   (evil-leader/set-key "o" 'helm-semantic-or-imenu)
   (evil-leader/set-key "p" 'helm-show-kill-ring)
   (define-key evil-normal-state-map (kbd ",ha") 'helm-apropos)
+  (define-key helm-map (kbd "C-a") 'helm-select-action)
+  (define-key helm-map (kbd "C-k") 'helm-previous-source)
+  (define-key helm-map (kbd "C-j") 'helm-next-source)
   (define-key helm-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
 
@@ -366,8 +369,15 @@
 (use-package helm-dash
   :commands (helm-dash-at-point helm-dash helm-dash-install-docset)
   :init
+  (setq helm-dash-docsets-path (expand-file-name "~/.docsets"))
+  (evil-leader/set-key "hdi" 'helm-dash-install-docset)
   (evil-leader/set-key "hdd" 'helm-dash)
-  (evil-leader/set-key "hda" 'helm-dash-at-point))
+  (evil-leader/set-key "hda" 'helm-dash-at-point)
+  (add-hook 'enh-ruby-mode-hook '(lambda () (setq-local helm-dash-docsets '("Ruby"))))
+  (add-hook 'projectile-rails-mode-hook '(lambda () (setq-local helm-dash-docsets '("Ruby on Rails"))))
+  (add-hook 'emacs-lisp-mode-hook '(lambda () (setq-local helm-dash-docsets '("Emacs Lisp"))))
+  (add-hook 'lisp-mode-hook '(lambda () (setq-local helm-dash-docsets '("Common Lisp"))))
+  )
 
 (el-get-bundle rainbow-delimiters)
 (use-package rainbow-delimiters
@@ -496,7 +506,9 @@
 ;; projectile
 (el-get-bundle projectile)
 (use-package helm-projectile
-  :commands (helm-projectile-on))
+  :commands (helm-projectile-on)
+  :init
+  (evil-leader/set-key "hp" 'helm-projectile))
 (use-package projectile
   :commands (projectile-global-mode)
   :init
@@ -526,6 +538,7 @@
   (evil-define-key 'normal projectile-rails-mode-map ",rfl" 'projectile-rails-find-lib)
   (evil-define-key 'normal projectile-rails-mode-map ",rfi" 'projectile-rails-find-initializer)
   (evil-define-key 'normal projectile-rails-mode-map ",rfe" 'projectile-rails-find-environment)
+  (evil-define-key 'normal projectile-rails-mode-map ",rfd" 'projectile-rails-find-migration)
   (evil-define-key 'normal projectile-rails-mode-map ",rcm" 'projectile-rails-find-current-model)
   (evil-define-key 'normal projectile-rails-mode-map ",rcc" 'projectile-rails-find-current-controller)
   (evil-define-key 'normal projectile-rails-mode-map ",rcv" 'projectile-rails-find-current-view)
@@ -535,9 +548,9 @@
   (evil-define-key 'normal projectile-rails-mode-map ",rir" 'projectile-rails-rake)
   (evil-define-key 'normal projectile-rails-mode-map ",rig" 'projectile-rails-generate)
   (evil-define-key 'normal projectile-rails-mode-map ",rer" 'projectile-rails-extract-region)
-  (evil-define-key 'normal projectile-rails-mode-map "gf" 'projectile-rails-goto-file-at-point)
-  (evil-define-key 'normal projectile-rails-mode-map "gm" 'projectile-rails-goto-gemfile)
-  (evil-define-key 'normal projectile-rails-mode-map "gr" 'projectile-rails-goto-routes)
+  (evil-define-key 'normal projectile-rails-mode-map ",gf" 'projectile-rails-goto-file-at-point)
+  (evil-define-key 'normal projectile-rails-mode-map ",gm" 'projectile-rails-goto-gemfile)
+  (evil-define-key 'normal projectile-rails-mode-map ",gr" 'projectile-rails-goto-routes)
   (add-hook 'projectile-mode-hook 'projectile-rails-on)
   :config
   (use-package evil-rails))
@@ -790,8 +803,7 @@
     ("r" helm-ff-run-rename-file)
     ("f" helm-follow-mode))
   (define-key helm-map (kbd "<escape>") 'helm-like-unite/body)
-  (define-key helm-map (kbd "C-k") 'helm-like-unite/body)
-  (define-key helm-map (kbd "C-o") 'helm-like-unite/body))
+  (define-key helm-map (kbd "C-k") 'helm-like-unite/body))
 
 ;; lisp
 (el-get-bundle slime)
