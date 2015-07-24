@@ -24,7 +24,7 @@
 
 ;; linum
 (setq linum-format "%4d ")
-(global-linum-mode t)
+(add-hook 'prog-mode-hook 'linum-mode)
 
 ;; tab
 (setq-default tab-width 2
@@ -89,11 +89,11 @@
   (diminish 'global-whitespace-mode))
 
 ; initchart
-(el-get-bundle yuttie/initchart)
-(use-package initchart
-  :commands (initchart-record-execution-time-of))
-(initchart-record-execution-time-of load file)
-(initchart-record-execution-time-of require feature)
+;; (el-get-bundle yuttie/initchart)
+;; (use-package initchart
+;;   :commands (initchart-record-execution-time-of))
+;; (initchart-record-execution-time-of load file)
+;; (initchart-record-execution-time-of require feature)
 
 ;; esup
 (el-get-bundle esup)
@@ -465,16 +465,17 @@
   :init
   (evil-leader/set-key "gb" 'magit-blame)
   (evil-leader/set-key "gg" 'magit-status)
+  (add-hook 'magit-mode-hook '(lambda () (linum-mode -1)))
+  (setq magit-status-buffer-switch-function 'switch-to-buffer)
   :config
   (use-package ert)
-  (use-package magit-gh-pulls
-    :commands (turn-on-magit-gh-pulls)
-    :init
-    (setq magit-status-buffer-switch-function 'switch-to-buffer)
-    (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
+  ;; (use-package magit-gh-pulls
+  ;;   :commands (turn-on-magit-gh-pulls)
+  ;;   :init
+  ;;   (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
 
   (evil-set-initial-state 'magit-mode 'normal)
-  (evil-set-initial-state 'magit-status-mode 'normal)
+  (evil-set-initial-state 'magit-status-mode 'insert)
   (evil-set-initial-state 'magit-diff-mode 'normal)
   (evil-set-initial-state 'magit-log-mode 'normal)
   (evil-set-initial-state 'magit-reflog-mode 'normal)
@@ -738,7 +739,9 @@
                  (list "emacs" "find-file $1")
                  (list "ppr" "find-file PULLREQ_MSG")
                  (list "pr" "hub pull-request -b $1 -F PULLREQ_MSG")
-                 (list "b" "bundle exec $1")
+                 (list "b" "bundle exec $*")
+                 (list "rails" "bundle exec rails $*")
+                 (list "rake" "bundle exec rake $*")
                  (list "rc" "bundle exec rails c")
                  (list "rct" "bundle exec rails c test")
                  (list "ridgepole-test" "bundle exec rake db:ridgepole:apply[test]")
@@ -964,6 +967,11 @@
 ;;                'no-golden-ratio-guide-key)
 ;;   (golden-ratio-mode 1)
 ;;   (diminish 'golden-ratio-mode))
+
+
+(require 'server)
+(unless (server-running-p)
+  (server-start))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
