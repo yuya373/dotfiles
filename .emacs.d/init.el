@@ -4,12 +4,6 @@
 
 
 ;; config
-;; split buffer verticaly
-;; (defun split-vertically-not-horizontally ()
-;;   (interactive)
-;;   (if (= (length (window-list nil 'dont-include-minibuffer-even-if-active)) 1)
-;;       (split-window-vertically)))
-;; (add-hook 'temp-buffer-setup-hook 'split-vertically-not-horizontally)
 (setq split-width-threshold 100)
 (define-key minibuffer-local-completion-map (kbd "C-w") 'backward-kill-word)
 (global-set-key "\C-m" 'newline-and-indent)
@@ -21,17 +15,12 @@
 (prefer-coding-system 'utf-8)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
+(menu-bar-mode -1)
 (setq require-final-newline t)
 (setq ad-redefinition-action 'accept)
-(modify-syntax-entry ?_ "w")
 (when (eq system-type 'darwin)
   (require 'ls-lisp)
   (setq ls-lisp-use-insert-directory-program nil))
-(unless (eq window-system 'mac)
-  (menu-bar-mode -1))
-
-;; dired
-;; (setq dired-use-ls-dired t)
 
 ;; linum
 (setq linum-format "%4d ")
@@ -64,13 +53,11 @@
 ;; (setq el-get-verbose t)
 
 (el-get-bundle diminish)
-(el-get-bundle bind-key)
 (el-get-bundle use-package)
 ;; (setq use-package-verbose t)
 (require 'use-package)
 (require 'diminish)
 (diminish 'abbrev-mode)
-(require 'bind-key)
 
 ;; whitespace
 (use-package whitespace
@@ -98,16 +85,15 @@
   (set-face-background 'whitespace-trailing "#d33682")
   (set-face-foreground 'whitespace-newline  "headerColor")
   (set-face-background 'whitespace-newline 'nil)
-  ;; (setq whitespace-action '(auto-cleanup))
   (global-whitespace-mode)
   (diminish 'global-whitespace-mode))
 
-;; initchart
-;; (el-get-bundle yuttie/initchart)
-;; (use-package initchart
-;;   :commands (initchart-record-execution-time-of))
-;; (initchart-record-execution-time-of load file)
-;; (initchart-record-execution-time-of require feature)
+; initchart
+(el-get-bundle yuttie/initchart)
+(use-package initchart
+  :commands (initchart-record-execution-time-of))
+(initchart-record-execution-time-of load file)
+(initchart-record-execution-time-of require feature)
 
 ;; esup
 (el-get-bundle esup)
@@ -165,10 +151,11 @@
 (el-get-bundle evil-nerd-commenter)
 (el-get-bundle evil-numbers)
 (el-get-bundle highlight)
-;; (el-get-bundle evil-search-highlight-persist)
 (el-get-bundle evil-surround)
 (el-get-bundle evil-terminal-cursor-changer)
 (el-get-bundle evil-visualstar)
+(el-get-bundle fold-this)
+(el-get-bundle Dewdrops/evil-extra-operator)
 
 (use-package evil
   :init
@@ -210,7 +197,12 @@
     :init
     (define-key evil-normal-state-map (kbd ",,") 'evilnc-comment-or-uncomment-lines)
     (define-key evil-visual-state-map (kbd ",,") 'evilnc-comment-or-uncomment-lines))
-  (use-package evil-matchit :config (global-evil-matchit-mode t))
+  (use-package evil-matchit
+    :config
+    (defun evilmi-customize-keybinding ()
+      (evil-define-key 'normal evil-matchit-mode-map
+        "TAB" 'evilmi-jump-items))
+    (global-evil-matchit-mode t))
   (use-package evil-anzu)
   (use-package evil-jumper :config (evil-jumper-mode))
   (use-package evil-args
@@ -218,7 +210,38 @@
     :init
     (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
     (define-key evil-outer-text-objects-map "a" 'evil-outer-arg))
+  (use-package evil-extra-operator
+    :init
+    (use-package fold-this
+      :init
+      (evil-leader/set-key "ft" 'fold-this)
+      (evil-leader/set-key "fa" 'fold-this-all)
+      (evil-leader/set-key "fu" 'fold-this-unfold-all))
+    :config
+    (global-evil-extra-operator-mode 1))
+  (use-package evil-integration
+    :init
+    (el-get-bundle ace-jump-mode)
+    (use-package ace-jump-mode
+      :config
+      (setq ace-jump-mode-scope 'visible)
+      (setq ace-jump-mode-move-keys
+            (loop for i from ?a to ?z collect i))
+      (define-key evil-operator-state-map (kbd "f") #'evil-ace-jump-char-mode)      ; similar to f
+      (define-key evil-operator-state-map (kbd "t") #'evil-ace-jump-char-to-mode) ; similar to t
+      (define-key evil-normal-state-map (kbd "f") 'ace-jump-char-mode)
+      (evil-leader/set-key "<SPC>" 'ace-jump-word-mode))
+    )
+
+  ;; cleanup whitespace
+  (defun evil-cleanup-whitespace ()
+    (interactive)
+    (unless (evil-insert-state-p)
+      (whitespace-cleanup-region (point-min) (point-max)))
+    )
+  (add-hook 'before-save-hook 'evil-cleanup-whitespace)
   ;; mappings
+  (evil-leader/set-key "uv" 'undo-tree-visualize)
   (defun open-below-esc ()
     (interactive)
     (evil-open-below 1)
@@ -290,9 +313,10 @@
 (use-package guide-key
   :commands (guide-key-mode)
   :init
-  (setq guide-key/idle-delay 0.4)
-  (setq guide-key/recursive-key-sequence-flag t)
-  (setq guide-key/guide-key-sequence '("\\" "," "<SPC>"))
+  (setq guide-key/idle-delay 0.4
+        guide-key/guide-key-sequence '("\\" "," "<SPC>")
+        guide-key/recursive-key-sequence-flag t
+        guide-key/popup-window-position 'bottom)
   (add-hook 'after-init-hook 'guide-key-mode)
   :config
   (diminish 'guide-key-mode))
@@ -307,6 +331,21 @@
   ;;                     helm-for-files helm-do-ag-project-root
   ;;                     helm-do-ag-buffers)
   :init
+  (setq helm-M-x-fuzzy-match t
+        helm-apropos-fuzzy-match t
+        helm-file-cache-fuzzy-match t
+        helm-imenu-fuzzy-match t
+        helm-lisp-fuzzy-completion t
+        helm-locate-fuzzy-match t
+        helm-recentf-fuzzy-match t
+        helm-semantic-fuzzy-match t
+        helm-buffers-fuzzy-matching t)
+  (setq helm-prevent-escaping-from-minibuffer t
+        helm-bookmark-show-location t
+        helm-display-header-line nil
+        helm-split-window-in-side-p t
+        helm-always-two-windows t
+        helm-echo-input-in-header-line t)
   :config
   (use-package helm-config)
   (helm-mode +1)
@@ -340,6 +379,7 @@
   (evil-leader/set-key "o" 'helm-semantic-or-imenu)
   (evil-leader/set-key "p" 'helm-show-kill-ring)
   (define-key evil-normal-state-map (kbd ",ha") 'helm-apropos)
+
   (define-key helm-map (kbd "C-a") 'helm-select-action)
   (define-key helm-map (kbd "C-k") 'helm-previous-source)
   (define-key helm-map (kbd "C-j") 'helm-next-source)
@@ -620,6 +660,7 @@
          ("Schema" . enh-ruby-mode))
   :interpreter ("ruby" . enh-ruby-mode)
   :init
+  (modify-syntax-entry ?_ "w")
   (setq enh-ruby-deep-indent-paren nil
         enh-ruby-hanging-paren-deep-indent-level 2)
   (setq enh-ruby-add-encoding-comment-on-save nil)
@@ -731,15 +772,17 @@
 (use-package yaml-mode
   :mode ("\\.yaml\\'" . yaml-mode))
 
-(el-get-bundle avy)
-(use-package avy
-  :commands (avy-goto-char-2 avy-goto-word-1 avy-goto-line)
-  :init
-  (setq avy-all-windows nil)
-  (setq avy-keys (number-sequence ?a ?z))
-  (define-key evil-normal-state-map (kbd "f") 'avy-goto-char-2)
-  (evil-leader/set-key "<SPC>" 'avy-goto-word-1)
-  (evil-leader/set-key "l" 'avy-goto-line))
+
+
+;; (el-get-bundle avy)
+;; (use-package avy
+;;   :commands (avy-goto-char-2 avy-goto-word-1 avy-goto-line)
+;;   :init
+;;   (setq avy-all-windows nil)
+;;   (setq avy-keys (number-sequence ?a ?z))
+;;   (define-key evil-normal-state-map (kbd "f") 'avy-goto-char-2)
+;;   (evil-leader/set-key "<SPC>" 'avy-goto-word-1)
+;;   (evil-leader/set-key "l" 'avy-goto-line))
 
 (el-get-bundle expand-region)
 (use-package expand-region
@@ -896,18 +939,29 @@
 
 ;; (el-get-bundle golden-ratio)
 ;; (use-package golden-ratio
-;;   :init
-;;   (setq golden-ratio-exclude-modes '(slime-repl-mode))
+;;   :config
+;;   (setq golden-ratio-exclude-modes '("bs-mode"
+;;                                      "calc-mode"
+;;                                      "ediff-mode"
+;;                                      "dired-mode"
+;;                                      "slime-repl-mode"
+;;                                      ))
 ;;   (setq golden-ratio-exclude-buffer-names '("*compilation*"
 ;;                                             "*Flycheck errors*"
 ;;                                             "slime-apropos*"
 ;;                                             "*slime-description*"
 ;;                                             "*slime-compilation*"
-;;                                             "*guide-key*"
 ;;                                             "*Help*"
 ;;                                             "*Warnings*"))
 ;;   (setq golden-ratio-auto-scale t)
-;;   :config
+
+;;   (defun no-golden-ratio-for-buffers (bufname)
+;;     (and (get-buffer bufname) (get-buffer-window bufname 'visible)))
+;;   (defun no-golden-ratio-guide-key ()
+;;     (or (no-golden-ratio-for-buffers " *guide-key*")
+;;         (no-golden-ratio-for-buffers " *popwin-dummy*")))
+;;   (add-to-list 'golden-ratio-inhibit-functions
+;;                'no-golden-ratio-guide-key)
 ;;   (golden-ratio-mode 1)
 ;;   (diminish 'golden-ratio-mode))
 
