@@ -620,7 +620,7 @@
          ("Schema" . enh-ruby-mode))
   :interpreter ("ruby" . enh-ruby-mode)
   :init
-  (setq enh-ruby-deep-indent-paren t
+  (setq enh-ruby-deep-indent-paren nil
         enh-ruby-hanging-paren-deep-indent-level 2)
   (setq enh-ruby-add-encoding-comment-on-save nil)
   (add-hook 'enh-ruby-mode-hook 'auto-complete-mode)
