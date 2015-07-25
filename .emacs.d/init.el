@@ -409,6 +409,7 @@
 (use-package helm-dash
   :commands (helm-dash-at-point helm-dash helm-dash-install-docset)
   :init
+  (setq helm-dash-browser-func 'eww)
   (setq helm-dash-docsets-path (expand-file-name "~/.docsets"))
   (evil-leader/set-key "hdi" 'helm-dash-install-docset)
   (evil-leader/set-key "hdd" 'helm-dash)
@@ -448,9 +449,9 @@
   (diminish 'auto-complete-mode))
 
 (use-package eldoc
-  :commands (turn-on-eldoc-mode)
+  :commands (eldoc-mode)
   :init
-  (add-hook 'prog-mode-hook 'turn-on-eldoc-mode)
+  (add-hook 'prog-mode-hook 'eldoc-mode)
   :config
   (diminish 'eldoc-mode))
 
@@ -802,6 +803,7 @@
   (popwin-mode t)
   (evil-leader/set-key "bp" 'popwin:pop-to-buffer)
   (evil-leader/set-key "bf" 'popwin:find-file)
+  (push '("*Process List*" :noselect t) popwin:special-display-config)
   (push '("*Warnings*" :height 0.3 :noselect t) popwin:special-display-config)
   (push '("*Flycheck errors*" :stick t :height 0.3 :noselect t) popwin:special-display-config)
   (push '("*compilation*" :stick t :height 0.2 :tail t :noselect t) popwin:special-display-config)
@@ -810,6 +812,7 @@
   (push "*slime-description*" popwin:special-display-config)
   (push '("*slime-compilation*" :noselect t) popwin:special-display-config)
   (push "*slime-xref*" popwin:special-display-config)
+  (push '("*inferior-lisp*" :noselect t :tail t) popwin:special-display-config)
   (push '(sldb-mode :stick t) popwin:special-display-config)
   (push '(slime-repl-mode :noselect t :position bottom :height 0.3) popwin:special-display-config)
   (push 'slime-connection-list-mode popwin:special-display-config))
@@ -820,13 +823,13 @@
   (defhydra helm-like-unite (:hint nil
                                    :color pink)
     "
------------------------------------------------------------------------
-[K] ScrollUp   | [k] move up   | [m] mark   | [v] view   | [i] cancel |
-[J] ScrollDown | [j] move down | [t] toggle | [H] help   | [o] quit   |
-| [h] left      |     mark   | [d] delete |            |
-| [l] right     | [u] unmark | [y] yank   | [w] toggle |
-|               |     all    | [f] follow |     window |
------------------------------------------------------------------------
+------------------------------------------------------------------------
+| [K] ScrollUp   | [k] move up   | [m] mark   | [v] view   | [i] cancel |
+| [J] ScrollDown | [j] move down | [t] toggle | [H] help   | [o] quit   |
+| [h] left       |               | [d] delete |            |            |
+| [l] right      | [u] unmark    | [y] yank   | [w] toggle |            |
+|                |     all       | [f] follow |     window |            |
+------------------------------------------------------------------------
 "
     ("h" helm-beginning-of-buffer)
     ("j" helm-next-line)
@@ -998,7 +1001,7 @@
  '(powerline-active1 ((t (:background "#002b36" :foreground "#eee8d5"))))
  '(powerline-active2 ((t (:background "#002b36" :foreground "#eee8d5"))))
  '(powerline-evil-base-face ((t (:background "#fdf6e3" :foreground "#002b36" :width extra-expanded))))
- '(powerline-evil-insert-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#859900"))))
+ '(powerline-evil-insert-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#657b83"))))
  '(powerline-evil-normal-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#268bd2"))))
  '(powerline-evil-operator-face ((t (:inherit powerline-evil-operator-face :background "#fdf6e3" :foreground "#b58900"))))
  '(powerline-evil-visual-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#d33682"))))
