@@ -971,6 +971,15 @@
 ;;   (golden-ratio-mode 1)
 ;;   (diminish 'golden-ratio-mode))
 
+(el-get-bundle google-translate)
+(use-package google-translate
+  :commands (google-translate-at-point)
+  :init
+  (evil-leader/set-key "gta" 'google-translate-at-point)
+  (evil-leader/set-key "gtq" 'google-translate-query-translate)
+  :config
+  (setq google-translate-default-source-language "en"
+        google-translate-default-target-language "ja"))
 
 (require 'server)
 (unless (server-running-p)
