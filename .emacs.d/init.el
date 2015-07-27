@@ -354,7 +354,7 @@
   (diminish 'helm-mode)
   (use-package helm-ag
     :config
-    (setq helm-ag-insert-at-point t))
+    (setq helm-ag-insert-at-point 'symbol))
   (use-package helm-ls-git
     :init
     (setq helm-ls-git-fuzzy-match t))
@@ -481,7 +481,7 @@
 
   (evil-set-initial-state 'magit-mode 'normal)
   (evil-set-initial-state 'magit-status-mode 'insert)
-  (evil-set-initial-state 'magit-diff-mode 'normal)
+  (evil-set-initial-state 'magit-diff-mode 'insert)
   (evil-set-initial-state 'magit-log-mode 'normal)
   (evil-set-initial-state 'magit-reflog-mode 'normal)
   (evil-set-initial-state 'magit-process-mode 'normal)
@@ -876,15 +876,16 @@
   (evil-define-key 'normal slime-mode-map (kbd ",cc") 'slime-compile-file)
   (evil-define-key 'normal slime-mode-map (kbd ",cC") 'slime-compile-and-load-file)
   (evil-define-key 'normal slime-mode-map (kbd ",cf") 'slime-compile-defun)
-  (evil-define-key 'normal slime-mode-map (kbd ",cr") 'slime-compile-region)
+  (evil-define-key 'visual slime-mode-map (kbd ",cr") 'slime-compile-region)
   (evil-define-key 'normal slime-mode-map (kbd ",eb") 'slime-eval-buffer)
   (evil-define-key 'normal slime-mode-map (kbd ",ef") 'slime-eval-defun)
   (evil-define-key 'normal slime-mode-map (kbd ",ee") 'slime-eval-last-sexp)
   (evil-define-key 'normal slime-mode-map (kbd ",er") 'slime-eval-region)
   (evil-define-key 'normal slime-mode-map (kbd ",gg") 'slime-inspect-definition)
-  (evil-define-key 'normal slime-mode-map (kbd ",hsa") 'slime-apropos)
+  (evil-define-key 'normal slime-mode-map (kbd ",hA") 'slime-apropos)
   (evil-define-key 'normal slime-mode-map (kbd ",hh") 'slime-hyperspec-lookup)
-  (evil-define-key 'normal slime-mode-map (kbd ",hsf") 'slime-describe-function)
+  (evil-define-key 'normal slime-mode-map (kbd ",hF") 'slime-describe-function)
+  (evil-define-key 'normal slime-mode-map (kbd ",hi") 'slime-inspect-definition)
   (evil-define-key 'normal slime-mode-map (kbd ",si") 'slime)
   (evil-define-key 'normal slime-mode-map (kbd ",sq") 'slime-quit-lisp)
   (evil-define-key 'normal slime-mode-map (kbd ",sr") 'slime-restart-inferior-lisp)
