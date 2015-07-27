@@ -241,6 +241,8 @@
     )
   (add-hook 'before-save-hook 'evil-cleanup-whitespace)
   ;; mappings
+  (evil-leader/set-key "bn" 'switch-to-next-buffer)
+  (evil-leader/set-key "bp" 'switch-to-prev-buffer)
   (evil-leader/set-key "uv" 'undo-tree-visualize)
   (defun open-below-esc ()
     (interactive)
@@ -376,10 +378,12 @@
   (evil-leader/set-key "fp" 'helm-browse-project)
   (evil-leader/set-key "ff" 'helm-find-files)
   (evil-leader/set-key "hl" 'helm-resume)
+  (evil-leader/set-key "hm" 'helm-mini)
   (evil-leader/set-key "o" 'helm-semantic-or-imenu)
   (evil-leader/set-key "p" 'helm-show-kill-ring)
   (define-key evil-normal-state-map (kbd ",ha") 'helm-apropos)
 
+  (define-key helm-map (kbd "C-,") 'helm-toggle-visible-mark)
   (define-key helm-map (kbd "C-a") 'helm-select-action)
   (define-key helm-map (kbd "C-k") 'helm-previous-source)
   (define-key helm-map (kbd "C-j") 'helm-next-source)
@@ -564,8 +568,7 @@
   (evil-leader/set-key "fd" 'helm-projectile-find-dir)
   (evil-leader/set-key "fp" 'helm-projectile-find-file)
   (evil-leader/set-key "fc" 'helm-projectile-find-file-dwim)
-  (evil-leader/set-key "bw" 'projectile-switch-to-buffer-other-window)
-  (evil-leader/set-key "bs" 'helm-projectile-switch-to-buffer))
+  (evil-leader/set-key "bw" 'projectile-switch-to-buffer-other-window))
 
 ;; rails
 (el-get-bundle evil-rails)
