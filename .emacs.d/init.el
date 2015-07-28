@@ -350,14 +350,14 @@
         helm-echo-input-in-header-line t)
   :config
   (use-package helm-config)
-  (helm-mode +1)
-  (diminish 'helm-mode)
-  (use-package helm-ag
-    :config
-    (setq helm-ag-insert-at-point 'symbol))
   (use-package helm-ls-git
     :init
     (setq helm-ls-git-fuzzy-match t))
+  (use-package helm-ag
+    :config
+    (setq helm-ag-insert-at-point 'symbol))
+  (helm-mode +1)
+  (diminish 'helm-mode)
   (setq helm-mode-fuzzy-match t
         helm-buffers-fuzzy-matching t
         helm-recentf-fuzzy-match t
@@ -367,7 +367,6 @@
         helm-move-to-line-cycle-in-source t
         helm-ff-search-library-in-sexp t
         helm-ff-file-name-history-use-recentf t
-        helm-ag-insert-at-point t
         helm-exit-idle-delay 0)
   (evil-leader/set-key "agg" 'helm-do-ag)
   (evil-leader/set-key "agb" 'helm-do-ag-buffers)
@@ -955,14 +954,18 @@
 ;;                                      "calc-mode"
 ;;                                      "ediff-mode"
 ;;                                      "dired-mode"
+;;                                      "comint-mode"
 ;;                                      "slime-repl-mode"
 ;;                                      ))
-;;   (setq golden-ratio-exclude-buffer-names '("*compilation*"
+;;   (setq golden-ratio-exclude-buffer-names '(
+;;                                             "*compilation*"
 ;;                                             "*Flycheck errors*"
 ;;                                             "slime-apropos*"
 ;;                                             "*slime-description*"
 ;;                                             "*slime-compilation*"
+;;                                             "*Proccess List*"
 ;;                                             "*Help*"
+;;                                             "*LV*"
 ;;                                             "*Warnings*"))
 ;;   (setq golden-ratio-auto-scale t)
 
@@ -971,8 +974,7 @@
 ;;   (defun no-golden-ratio-guide-key ()
 ;;     (or (no-golden-ratio-for-buffers " *guide-key*")
 ;;         (no-golden-ratio-for-buffers " *popwin-dummy*")))
-;;   (add-to-list 'golden-ratio-inhibit-functions
-;;                'no-golden-ratio-guide-key)
+;;   (add-to-list 'golden-ratio-inhibit-functions 'no-golden-ratio-guide-key)
 ;;   (golden-ratio-mode 1)
 ;;   (diminish 'golden-ratio-mode))
 
