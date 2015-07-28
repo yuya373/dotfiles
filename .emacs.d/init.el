@@ -803,6 +803,7 @@
   (popwin-mode t)
   (evil-leader/set-key "bp" 'popwin:pop-to-buffer)
   (evil-leader/set-key "bf" 'popwin:find-file)
+  (push '(inf-ruby-mode :height 0.3 :noselect t :position bottom) popwin:special-display-config)
   (push '("*Process List*" :noselect t) popwin:special-display-config)
   (push '("*Warnings*" :height 0.3 :noselect t) popwin:special-display-config)
   (push '("*Flycheck errors*" :stick t :height 0.3 :noselect t) popwin:special-display-config)
@@ -980,6 +981,11 @@
   :config
   (setq google-translate-default-source-language "en"
         google-translate-default-target-language "ja"))
+
+(el-get-bundle yaml-mode)
+(use-package yaml-mode
+  :mode (("\\.yml\\'" . yaml-mode)
+         ("\\.yaml\\'" . yaml-mode)))
 
 (require 'server)
 (unless (server-running-p)
