@@ -241,6 +241,8 @@
     )
   (add-hook 'before-save-hook 'evil-cleanup-whitespace)
   ;; mappings
+  (evil-leader/set-key "bn" 'switch-to-next-buffer)
+  (evil-leader/set-key "bp" 'switch-to-prev-buffer)
   (evil-leader/set-key "uv" 'undo-tree-visualize)
   (defun open-below-esc ()
     (interactive)
@@ -352,7 +354,7 @@
   (diminish 'helm-mode)
   (use-package helm-ag
     :config
-    (setq helm-ag-insert-at-point t))
+    (setq helm-ag-insert-at-point 'symbol))
   (use-package helm-ls-git
     :init
     (setq helm-ls-git-fuzzy-match t))
@@ -376,10 +378,12 @@
   (evil-leader/set-key "fp" 'helm-browse-project)
   (evil-leader/set-key "ff" 'helm-find-files)
   (evil-leader/set-key "hl" 'helm-resume)
+  (evil-leader/set-key "hm" 'helm-mini)
   (evil-leader/set-key "o" 'helm-semantic-or-imenu)
   (evil-leader/set-key "p" 'helm-show-kill-ring)
   (define-key evil-normal-state-map (kbd ",ha") 'helm-apropos)
 
+  (define-key helm-map (kbd "C-,") 'helm-toggle-visible-mark)
   (define-key helm-map (kbd "C-a") 'helm-select-action)
   (define-key helm-map (kbd "C-k") 'helm-previous-source)
   (define-key helm-map (kbd "C-j") 'helm-next-source)
@@ -477,7 +481,7 @@
 
   (evil-set-initial-state 'magit-mode 'normal)
   (evil-set-initial-state 'magit-status-mode 'insert)
-  (evil-set-initial-state 'magit-diff-mode 'normal)
+  (evil-set-initial-state 'magit-diff-mode 'insert)
   (evil-set-initial-state 'magit-log-mode 'normal)
   (evil-set-initial-state 'magit-reflog-mode 'normal)
   (evil-set-initial-state 'magit-process-mode 'normal)
@@ -564,8 +568,7 @@
   (evil-leader/set-key "fd" 'helm-projectile-find-dir)
   (evil-leader/set-key "fp" 'helm-projectile-find-file)
   (evil-leader/set-key "fc" 'helm-projectile-find-file-dwim)
-  (evil-leader/set-key "bw" 'projectile-switch-to-buffer-other-window)
-  (evil-leader/set-key "bs" 'helm-projectile-switch-to-buffer))
+  (evil-leader/set-key "bw" 'projectile-switch-to-buffer-other-window))
 
 ;; rails
 (el-get-bundle evil-rails)
@@ -874,15 +877,16 @@
   (evil-define-key 'normal slime-mode-map (kbd ",cc") 'slime-compile-file)
   (evil-define-key 'normal slime-mode-map (kbd ",cC") 'slime-compile-and-load-file)
   (evil-define-key 'normal slime-mode-map (kbd ",cf") 'slime-compile-defun)
-  (evil-define-key 'normal slime-mode-map (kbd ",cr") 'slime-compile-region)
+  (evil-define-key 'visual slime-mode-map (kbd ",cr") 'slime-compile-region)
   (evil-define-key 'normal slime-mode-map (kbd ",eb") 'slime-eval-buffer)
   (evil-define-key 'normal slime-mode-map (kbd ",ef") 'slime-eval-defun)
   (evil-define-key 'normal slime-mode-map (kbd ",ee") 'slime-eval-last-sexp)
   (evil-define-key 'normal slime-mode-map (kbd ",er") 'slime-eval-region)
   (evil-define-key 'normal slime-mode-map (kbd ",gg") 'slime-inspect-definition)
-  (evil-define-key 'normal slime-mode-map (kbd ",ha") 'slime-apropos)
+  (evil-define-key 'normal slime-mode-map (kbd ",hA") 'slime-apropos)
   (evil-define-key 'normal slime-mode-map (kbd ",hh") 'slime-hyperspec-lookup)
-  (evil-define-key 'normal slime-mode-map (kbd ",hf") 'slime-describe-function)
+  (evil-define-key 'normal slime-mode-map (kbd ",hF") 'slime-describe-function)
+  (evil-define-key 'normal slime-mode-map (kbd ",hi") 'slime-inspect-definition)
   (evil-define-key 'normal slime-mode-map (kbd ",si") 'slime)
   (evil-define-key 'normal slime-mode-map (kbd ",sq") 'slime-quit-lisp)
   (evil-define-key 'normal slime-mode-map (kbd ",sr") 'slime-restart-inferior-lisp)
