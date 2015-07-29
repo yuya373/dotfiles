@@ -967,13 +967,14 @@
 ;;                                             "*Help*"
 ;;                                             "*LV*"
 ;;                                             "*Warnings*"))
-;;   (setq golden-ratio-auto-scale t)
+;;   ;; (setq golden-ratio-auto-scale t)
 
 ;;   (defun no-golden-ratio-for-buffers (bufname)
 ;;     (and (get-buffer bufname) (get-buffer-window bufname 'visible)))
 ;;   (defun no-golden-ratio-guide-key ()
 ;;     (or (no-golden-ratio-for-buffers " *guide-key*")
-;;         (no-golden-ratio-for-buffers " *popwin-dummy*")))
+;;         (no-golden-ratio-for-buffers " *popwin-dummy*"))
+;;     )
 ;;   (add-to-list 'golden-ratio-inhibit-functions 'no-golden-ratio-guide-key)
 ;;   (golden-ratio-mode 1)
 ;;   (diminish 'golden-ratio-mode))
@@ -992,6 +993,17 @@
 (use-package yaml-mode
   :mode (("\\.yml\\'" . yaml-mode)
          ("\\.yaml\\'" . yaml-mode)))
+
+(el-get-bundle elscreen)
+(use-package elscreen
+  :commands (elscreen-start)
+  :init
+  (add-hook 'after-init-hook 'elscreen-start)
+  :config
+  (define-key evil-normal-state-map (kbd "tt") 'elscreen-create)
+  (define-key evil-normal-state-map (kbd "tn") 'elscreen-next)
+  (define-key evil-normal-state-map (kbd "tp") 'elscreen-previous)
+  (define-key evil-normal-state-map (kbd "tc") 'elscreen-kill-screen-and-buffers))
 
 (require 'server)
 (unless (server-running-p)
