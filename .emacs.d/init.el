@@ -494,7 +494,7 @@
 
   (define-key magit-mode-map "\s" nil) ;space I use space as my evil-leader key
   (define-key magit-diff-mode-map "\s" nil) ;space
-  (define-key magit-diff-mode-map "j" nil)
+  (define-key magit-diff-mode-map "j" 'next-line)
 
   (define-key magit-status-mode-map "j" 'next-line) ;may be should evil-next-line
   (define-key magit-mode-map "j" 'next-line)
@@ -806,7 +806,7 @@
   (popwin-mode t)
   (evil-leader/set-key "bp" 'popwin:pop-to-buffer)
   (evil-leader/set-key "bf" 'popwin:find-file)
-  (push '(inf-ruby-mode :height 0.3 :noselect t :position bottom) popwin:special-display-config)
+  (push '(inf-ruby-mode :height 0.3 :stick t :position bottom) popwin:special-display-config)
   (push '("*Process List*" :noselect t) popwin:special-display-config)
   (push '("*Warnings*" :height 0.3 :noselect t) popwin:special-display-config)
   (push '("*Flycheck errors*" :stick t :height 0.3 :noselect t) popwin:special-display-config)
@@ -1025,4 +1025,5 @@
  '(powerline-evil-operator-face ((t (:inherit powerline-evil-operator-face :background "#fdf6e3" :foreground "#b58900"))))
  '(powerline-evil-visual-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#d33682"))))
  '(powerline-inactive1 ((t (:inherit mode-line-inactive :background "#fdf6e3" :foreground "#586e75"))))
- '(powerline-inactive2 ((t (:inherit mode-line-inactive :foreground "#586e75")))))
+ '(powerline-inactive2 ((t (:inherit mode-line-inactive :foreground "#586e75"))))
+ '(rbenv-active-ruby-face ((t (:background "#fdf6e3" :foreground "#dc322f" :weight bold)))))
