@@ -368,6 +368,7 @@
         helm-ff-search-library-in-sexp t
         helm-ff-file-name-history-use-recentf t
         helm-exit-idle-delay 0)
+  (evil-leader/set-key "tf" 'helm-etags-select)
   (evil-leader/set-key "agg" 'helm-do-ag)
   (evil-leader/set-key "agb" 'helm-do-ag-buffers)
   (evil-leader/set-key ":"  'helm-M-x)
@@ -1004,6 +1005,22 @@
   (define-key evil-normal-state-map (kbd "tn") 'elscreen-next)
   (define-key evil-normal-state-map (kbd "tp") 'elscreen-previous)
   (define-key evil-normal-state-map (kbd "tc") 'elscreen-kill-screen-and-buffers))
+
+(el-get-bundle open-junk-file)
+(use-package open-junk-file
+  :commands (open-junk-file)
+  :init
+  (evil-leader/set-key "mn" 'open-junk-file)
+  :config
+  (setq open-junk-file-format "~/Dropbox/junk/%Y-%m%d-%H%M%S."))
+
+(el-get-bundle org)
+(use-package org
+  :mode (("\\.org\\'" . org-mode))
+  :config
+  (setq org-src-fontify-natively t)
+  (setq org-directory "~/Dropbox/junk")
+  (setq org-agenda-files (list org-directory)))
 
 (require 'server)
 (unless (server-running-p)
