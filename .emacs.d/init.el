@@ -204,7 +204,12 @@
         "TAB" 'evilmi-jump-items))
     (global-evil-matchit-mode t))
   (use-package evil-anzu)
-  (use-package evil-jumper :config (evil-jumper-mode))
+  (use-package evil-jumper
+    :init
+    (setq evil-jumper-file "~/.emacs.d/.evil-jumper")
+    (setq evil-jumper-auto-save-interval 1)
+    (setq evil-jumper-auto-center t)
+    :config (global-evil-jumper-mode))
   (use-package evil-args
     :commands (evil-inner-arg evil-outer-arg)
     :init
@@ -482,7 +487,7 @@
   (evil-set-initial-state 'magit-mode 'normal)
   (evil-set-initial-state 'magit-status-mode 'insert)
   (evil-set-initial-state 'magit-diff-mode 'insert)
-  (evil-set-initial-state 'magit-log-mode 'normal)
+  (evil-set-initial-state 'magit-log-mode 'insert)
   (evil-set-initial-state 'magit-reflog-mode 'normal)
   (evil-set-initial-state 'magit-process-mode 'normal)
 
@@ -900,17 +905,17 @@
     (add-hook 'slime-repl-mode '(lambda () (set-up-slime-ac t)))))
 
 ;; theme
-(el-get-bundle bbatsov/solarized-emacs)
-(setq solarized-distinct-fringe-background t)
-(setq solarized-use-variable-pitch nil)
-(setq solarized-high-contrast-mode-line t)
-(add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/solarized-emacs")
-(load-theme 'solarized-dark t)
+;; (el-get-bundle bbatsov/solarized-emacs)
+;; (setq solarized-distinct-fringe-background t)
+;; (setq solarized-use-variable-pitch nil)
+;; (setq solarized-high-contrast-mode-line t)
+;; (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/solarized-emacs")
+;; (load-theme 'solarized-dark t)
 
-;; (el-get-bundle color-theme-solarized)
-;; (set-frame-parameter nil 'background-mode 'dark)
-;; (set-terminal-parameter nil 'background-mode 'dark)
-;; (load-theme 'solarized)
+(el-get-bundle color-theme-solarized)
+(set-frame-parameter nil 'background-mode 'dark)
+(set-terminal-parameter nil 'background-mode 'dark)
+(load-theme 'solarized t)
 
 (el-get-bundle powerline)
 (el-get-bundle powerline-evil)
@@ -1044,6 +1049,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(elscreen-tab-background-face ((t (:background "#839496"))))
+ '(elscreen-tab-control-face ((t (:background "white" :foreground "#839496" :underline t))))
+ '(elscreen-tab-current-screen-face ((t (:background "#073642" :foreground "#eee8d5"))))
+ '(elscreen-tab-other-screen-face ((t (:background "#fdf6e3" :foreground "#839496" :underline t))))
  '(enh-ruby-op-face ((t (:foreground "headerColor"))))
  '(enh-ruby-string-delimiter-face ((t (:foreground "#d33682"))))
  '(mode-line ((t (:background "#002b36" :foreground "#fdf6e3" :inverse-video t :box nil))))
