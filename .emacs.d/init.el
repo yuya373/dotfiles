@@ -4,7 +4,7 @@
 
 
 ;; config
-(setq split-width-threshold 100)
+(setq split-width-threshold 110)
 (define-key minibuffer-local-completion-map (kbd "C-w") 'backward-kill-word)
 (global-set-key "\C-m" 'newline-and-indent)
 (setq large-file-warning-threshold nil)
@@ -280,11 +280,11 @@
   (evil-define-key 'normal comint-mode-map (kbd "C-d") 'evil-scroll-down)
   (evil-define-key 'normal comint-mode-map (kbd "C-c") 'evil-window-delete)
   ;; elisp
-  (evil-leader/set-key-for-mode 'emacs-lisp-mode "ec" 'byte-compile-file)
-  (evil-leader/set-key-for-mode 'emacs-lisp-mode "er" 'eval-region)
-  (evil-leader/set-key-for-mode 'emacs-lisp-mode "es" 'eval-sexp)
-  (evil-leader/set-key-for-mode 'emacs-lisp-mode "eb" 'eval-current-buffer)
-  (evil-leader/set-key-for-mode 'emacs-lisp-mode "ef" 'eval-defun)
+  (evil-leader/set-key-for-mode 'emacs-lisp-mode ",c" 'byte-compile-file)
+  (evil-leader/set-key-for-mode 'emacs-lisp-mode ",er" 'eval-region)
+  (evil-leader/set-key-for-mode 'emacs-lisp-mode ",es" 'eval-sexp)
+  (evil-leader/set-key-for-mode 'emacs-lisp-mode ",eb" 'eval-current-buffer)
+  (evil-leader/set-key-for-mode 'emacs-lisp-mode ",ef" 'eval-defun)
   ;; line move
   (defun evil-swap-key (map key1 key2)
     ;; MAP中のKEY1とKEY2を入れ替え
@@ -321,6 +321,7 @@
   :commands (guide-key-mode)
   :init
   (setq guide-key/idle-delay 0.4
+        guide-key/text-scale-amount 1
         guide-key/guide-key-sequence '("\\" "," "<SPC>")
         guide-key/recursive-key-sequence-flag t
         guide-key/popup-window-position 'bottom)
@@ -377,7 +378,7 @@
   (evil-leader/set-key "agg" 'helm-do-ag)
   (evil-leader/set-key "agb" 'helm-do-ag-buffers)
   (evil-leader/set-key ":"  'helm-M-x)
-  (evil-leader/set-key "bl" 'helm-buffers-list)
+  (evil-leader/set-key "bb" 'helm-buffers-list)
   (evil-leader/set-key "fc" 'helm-find-file-at)
   (evil-leader/set-key "fr" 'helm-recentf)
   (evil-leader/set-key "fp" 'helm-browse-project)
@@ -471,9 +472,13 @@
 (el-get-bundle git-gutter)
 
 (use-package magit
-  :commands (magit-status)
+  :commands (magit-status magit-blame-popup
+                          magit-fetch-popup magit-branch-popup)
   :init
-  (evil-leader/set-key "gb" 'magit-blame)
+  (evil-leader/set-key "gf" 'magit-fetch-popup)
+  (evil-leader/set-key "gb" 'magit-branch-popup)
+  (evil-leader/set-key "gvv" 'magit-blame-popup)
+  (evil-leader/set-key "gvq" 'magit-blame-quit)
   (evil-leader/set-key "gg" 'magit-status)
   (add-hook 'magit-mode-hook '(lambda () (linum-mode -1)))
   (setq magit-status-buffer-switch-function 'switch-to-buffer)
@@ -490,6 +495,11 @@
   (evil-set-initial-state 'magit-log-mode 'insert)
   (evil-set-initial-state 'magit-reflog-mode 'normal)
   (evil-set-initial-state 'magit-process-mode 'normal)
+  (evil-set-initial-state 'magit-blame-mode 'motion)
+  (evil-set-initial-state 'magit-revision-mode 'normal)
+
+  (define-key magit-blame-mode-map "p" 'magit-blame-popup)
+  (define-key magit-blame-mode-map "q" 'magit-blame-quit)
 
   (define-key git-rebase-mode-map "k" 'previous-line)
   (define-key git-rebase-mode-map "j" 'next-line)
@@ -537,6 +547,7 @@
   :commands (git-gutter-mode)
   :init
   (add-hook 'projectile-mode-hook 'git-gutter-mode)
+  (evil-leader/set-key "gR" 'git-gutter:update-all-windows)
   (evil-leader/set-key "gP" 'git-gutter:popup-hunk)
   (evil-leader/set-key "gn" 'git-gutter:next-hunk)
   (evil-leader/set-key "gp" 'git-gutter:previous-hunk)
@@ -760,6 +771,7 @@
 (use-package exec-path-from-shell
   :config
   (exec-path-from-shell-initialize))
+
 (el-get-bundle shell-pop)
 (use-package shell-pop
   :commands (shell-pop)
@@ -778,13 +790,6 @@
   (setq imenu-auto-rescan t)
   (add-hook 'imenu-after-jump-hook '(lambda ()
                                       (recenter 10))))
-
-;; yaml
-(el-get-bundle yaml-mode)
-(use-package yaml-mode
-  :mode ("\\.yaml\\'" . yaml-mode))
-
-
 
 ;; (el-get-bundle avy)
 ;; (use-package avy
@@ -807,9 +812,11 @@
 (use-package popwin
   :init
   (setq popwin:popup-window-position 'bottom)
+  (setq popwin:popup-window-height 0.3)
   :config
   (popwin-mode t)
-  (evil-leader/set-key "bp" 'popwin:pop-to-buffer)
+  (evil-leader/set-key "bl" 'popwin:popup-last-buffer)
+  (evil-leader/set-key "bP" 'popwin:pop-to-buffer)
   (evil-leader/set-key "bf" 'popwin:find-file)
   (push '(inf-ruby-mode :height 0.3 :stick t :position bottom) popwin:special-display-config)
   (push '("*Process List*" :noselect t) popwin:special-display-config)
@@ -817,7 +824,7 @@
   (push '("*Flycheck errors*" :stick t :height 0.3 :noselect t) popwin:special-display-config)
   (push '("*compilation*" :stick t :height 0.2 :tail t :noselect t) popwin:special-display-config)
   (push "*slime-apropos*" popwin:special-display-config)
-  (push "*slime-macroexpansion*" popwin:special-display-config)
+  (push '("*slime-macroexpansion*" :noselect t :height 0.3) popwin:special-display-config)
   (push "*slime-description*" popwin:special-display-config)
   (push '("*slime-compilation*" :noselect t) popwin:special-display-config)
   (push "*slime-xref*" popwin:special-display-config)
@@ -879,6 +886,7 @@
   (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
   (setq inferior-lisp-program (executable-find "clisp"))
   (setq slime-contribs '(slime-repl slime-fancy slime-banner slime-fuzzy))
+  (evil-define-key 'visual slime-mode-map (kbd ",me") 'slime-macroexpand-all)
   (evil-define-key 'normal slime-mode-map (kbd ",cc") 'slime-compile-file)
   (evil-define-key 'normal slime-mode-map (kbd ",cC") 'slime-compile-and-load-file)
   (evil-define-key 'normal slime-mode-map (kbd ",cf") 'slime-compile-defun)
@@ -886,7 +894,7 @@
   (evil-define-key 'normal slime-mode-map (kbd ",eb") 'slime-eval-buffer)
   (evil-define-key 'normal slime-mode-map (kbd ",ef") 'slime-eval-defun)
   (evil-define-key 'normal slime-mode-map (kbd ",ee") 'slime-eval-last-sexp)
-  (evil-define-key 'normal slime-mode-map (kbd ",er") 'slime-eval-region)
+  (evil-define-key 'visual slime-mode-map (kbd ",er") 'slime-eval-region)
   (evil-define-key 'normal slime-mode-map (kbd ",gg") 'slime-inspect-definition)
   (evil-define-key 'normal slime-mode-map (kbd ",hA") 'slime-apropos)
   (evil-define-key 'normal slime-mode-map (kbd ",hh") 'slime-hyperspec-lookup)
@@ -902,7 +910,7 @@
     :commands (set-up-slime-ac)
     :init
     (add-hook 'slime-mode-hook '(lambda () (set-up-slime-ac t)))
-    (add-hook 'slime-repl-mode '(lambda () (set-up-slime-ac t)))))
+    (add-hook 'slime-repl-mode-hook '(lambda () (set-up-slime-ac t)))))
 
 ;; theme
 ;; (el-get-bundle bbatsov/solarized-emacs)
@@ -944,6 +952,7 @@
   :init
   (evil-leader/set-key "ig" 'indent-guide-mode)
   (setq indent-guide-recursive t)
+  (add-hook 'lisp-mode-hook 'indent-guide-mode)
   :config
   (diminish 'indent-guide-mode))
 
@@ -1006,10 +1015,15 @@
   :init
   (add-hook 'after-init-hook 'elscreen-start)
   :config
-  (define-key evil-normal-state-map (kbd "tt") 'elscreen-create)
+  (evil-leader/set-key "he" 'helm-elscreen)
+  (define-key evil-normal-state-map (kbd "tt") 'elscreen-clone)
   (define-key evil-normal-state-map (kbd "tn") 'elscreen-next)
   (define-key evil-normal-state-map (kbd "tp") 'elscreen-previous)
-  (define-key evil-normal-state-map (kbd "tc") 'elscreen-kill-screen-and-buffers))
+  (define-key evil-normal-state-map (kbd "td") 'elscreen-dired)
+  (define-key evil-normal-state-map (kbd "tf") 'elscreen-find-file)
+  (define-key evil-normal-state-map (kbd "tb") 'elscreen-find-and-goto-by-buffer)
+  (define-key evil-normal-state-map (kbd "tc") 'elscreen-kill)
+  (define-key evil-normal-state-map (kbd "tC") 'elscreen-kill-screen-and-buffers))
 
 (el-get-bundle open-junk-file)
 (use-package open-junk-file
