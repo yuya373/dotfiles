@@ -33,6 +33,10 @@ esac
 # git-it-on
 source ~/dotfiles/git-it-on.zsh/git-it-on.plugin.zsh
 
+# disable keyboard
+alias disablekeyboard="sudo kextunload /System/Library/Extensions/AppleUSBTopCase.kext/Contents/PlugIns/AppleUSBTCKeyboard.kext/"
+alias enablekeyboard="sudo kextload /System/Library/Extensions/AppleUSBTopCase.kext/Contents/PlugIns/AppleUSBTCKeyboard.kext/"
+
 #Gitit Aliases
 alias compare="gitit compare"
 alias commits="gitit commits"
