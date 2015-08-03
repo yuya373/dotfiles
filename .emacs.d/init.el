@@ -281,7 +281,7 @@
   (evil-define-key 'normal comint-mode-map (kbd "C-c") 'evil-window-delete)
   ;; elisp
   (evil-leader/set-key-for-mode 'emacs-lisp-mode ",c" 'byte-compile-file)
-  (evil-leader/set-key-for-mode 'emacs-lisp-mode ",er" 'eval-region)
+  (evil-define-key 'visual emacs-lisp-mode-map (kbd ",er") 'eval-region)
   (evil-leader/set-key-for-mode 'emacs-lisp-mode ",es" 'eval-sexp)
   (evil-leader/set-key-for-mode 'emacs-lisp-mode ",eb" 'eval-current-buffer)
   (evil-leader/set-key-for-mode 'emacs-lisp-mode ",ef" 'eval-defun)
@@ -481,6 +481,7 @@
   (evil-leader/set-key "gvq" 'magit-blame-quit)
   (evil-leader/set-key "gg" 'magit-status)
   (add-hook 'magit-mode-hook '(lambda () (linum-mode -1)))
+  (setq magit-branch-arguments nil)
   (setq magit-status-buffer-switch-function 'switch-to-buffer)
   :config
   (use-package ert)
@@ -653,7 +654,14 @@
 (el-get-bundle ruby-test-mode)
 (use-package bundler
   :commands (bundle-open bundle-exec bundle-check bundle-gemfile
-                         bundle-update bundle-console bundle-install))
+                         bundle-update bundle-console bundle-install)
+  :init
+  (evil-define-key 'normal enh-ruby-mode-map (kbd ",be") 'bundle-exec)
+  (evil-define-key 'normal enh-ruby-mode-map (kbd ",bc") 'bundle-console)
+  (evil-define-key 'normal enh-ruby-mode-map (kbd ",bg") 'bundle-gemfile)
+  (evil-define-key 'normal enh-ruby-mode-map (kbd ",bu") 'bundle-update)
+  (evil-define-key 'normal enh-ruby-mode-map (kbd ",bi") 'bundle-install)
+  (evil-define-key 'normal enh-ruby-mode-map (kbd ",bo") 'bundle-open))
 (use-package rbenv
   :commands (global-rbenv-mode rbenv-use-corresponding)
   :init
