@@ -199,9 +199,6 @@
     (define-key evil-visual-state-map (kbd ",,") 'evilnc-comment-or-uncomment-lines))
   (use-package evil-matchit
     :config
-    (defun evilmi-customize-keybinding ()
-      (evil-define-key 'normal evil-matchit-mode-map
-        "TAB" 'evilmi-jump-items))
     (global-evil-matchit-mode t))
   (use-package evil-anzu)
   (use-package evil-jumper
@@ -231,7 +228,7 @@
       :config
       (setq ace-jump-mode-scope 'visible)
       (setq ace-jump-mode-move-keys
-            (loop for i from ?a to ?z collect i))
+            '(?a ?s ?d ?f ?g ?h ?j ?k ?l ?q ?w ?e ?r ?u ?i ?o ?v ?b ?n ?m))
       (define-key evil-operator-state-map (kbd "f") #'evil-ace-jump-char-mode)      ; similar to f
       (define-key evil-operator-state-map (kbd "t") #'evil-ace-jump-char-to-mode) ; similar to t
       (define-key evil-normal-state-map (kbd "f") 'ace-jump-char-mode)
@@ -347,12 +344,20 @@
         helm-locate-fuzzy-match t
         helm-recentf-fuzzy-match t
         helm-semantic-fuzzy-match t
+        helm-ag-fuzzy-match t
+        helm-mode-fuzzy-match t
+        helm-completion-in-region-fuzzy-match t
         helm-buffers-fuzzy-matching t)
   (setq helm-prevent-escaping-from-minibuffer t
         helm-bookmark-show-location t
-        helm-display-header-line nil
-        helm-split-window-in-side-p t
+        helm-display-header-line t
+        helm-split-window-in-side-p nil
         helm-always-two-windows t
+        helm-autoresize-mode t
+        helm-ff-file-name-history-use-recentf t
+        helm-exit-idle-delay 0
+        helm-ff-search-library-in-sexp t
+        helm-move-to-line-cycle-in-source t
         helm-echo-input-in-header-line t)
   :config
   (use-package helm-config)
@@ -364,16 +369,6 @@
     (setq helm-ag-insert-at-point 'symbol))
   (helm-mode +1)
   (diminish 'helm-mode)
-  (setq helm-mode-fuzzy-match t
-        helm-buffers-fuzzy-matching t
-        helm-recentf-fuzzy-match t
-        helm-completion-in-region-fuzzy-match t
-        helm-autoresize-mode t
-        helm-ag-fuzzy-match t
-        helm-move-to-line-cycle-in-source t
-        helm-ff-search-library-in-sexp t
-        helm-ff-file-name-history-use-recentf t
-        helm-exit-idle-delay 0)
   (evil-leader/set-key "tf" 'helm-etags-select)
   (evil-leader/set-key "agg" 'helm-do-ag)
   (evil-leader/set-key "agb" 'helm-do-ag-buffers)
@@ -772,6 +767,8 @@
                  (list "rake" "bundle exec rake $*")
                  (list "rc" "bundle exec rails c")
                  (list "rct" "bundle exec rails c test")
+                 (list "rgm" "bundle exec rails g migration $*")
+                 (list "rgmc" "bundle exec rails g migration create_$1")
                  (list "ridgepole-test" "bundle exec rake db:ridgepole:apply[test]")
                  (list "ridgepole-dev" "bundle exec rake db:ridgepole:apply[development]"))
                 ())))
@@ -1017,21 +1014,21 @@
   :mode (("\\.yml\\'" . yaml-mode)
          ("\\.yaml\\'" . yaml-mode)))
 
-(el-get-bundle elscreen)
-(use-package elscreen
-  :commands (elscreen-start)
-  :init
-  (add-hook 'after-init-hook 'elscreen-start)
-  :config
-  (evil-leader/set-key "he" 'helm-elscreen)
-  (define-key evil-normal-state-map (kbd "tt") 'elscreen-clone)
-  (define-key evil-normal-state-map (kbd "tn") 'elscreen-next)
-  (define-key evil-normal-state-map (kbd "tp") 'elscreen-previous)
-  (define-key evil-normal-state-map (kbd "td") 'elscreen-dired)
-  (define-key evil-normal-state-map (kbd "tf") 'elscreen-find-file)
-  (define-key evil-normal-state-map (kbd "tb") 'elscreen-find-and-goto-by-buffer)
-  (define-key evil-normal-state-map (kbd "tc") 'elscreen-kill)
-  (define-key evil-normal-state-map (kbd "tC") 'elscreen-kill-screen-and-buffers))
+;; (el-get-bundle elscreen)
+;; (use-package elscreen
+;;   :commands (elscreen-start)
+;;   :init
+;;   (add-hook 'after-init-hook 'elscreen-start)
+;;   :config
+;;   (evil-leader/set-key "he" 'helm-elscreen)
+;;   (define-key evil-normal-state-map (kbd "tt") 'elscreen-clone)
+;;   (define-key evil-normal-state-map (kbd "tn") 'elscreen-next)
+;;   (define-key evil-normal-state-map (kbd "tp") 'elscreen-previous)
+;;   (define-key evil-normal-state-map (kbd "td") 'elscreen-dired)
+;;   (define-key evil-normal-state-map (kbd "tf") 'elscreen-find-file)
+;;   (define-key evil-normal-state-map (kbd "tb") 'elscreen-find-and-goto-by-buffer)
+;;   (define-key evil-normal-state-map (kbd "tc") 'elscreen-kill)
+;;   (define-key evil-normal-state-map (kbd "tC") 'elscreen-kill-screen-and-buffers))
 
 (el-get-bundle open-junk-file)
 (use-package open-junk-file
