@@ -1069,9 +1069,26 @@
 (use-package pdf-tools
   :mode (("\\.pdf\\'" . pdf-view-mode))
   :init
-  (linum-mode -1)
+  (evil-set-initial-state 'pdf-view-mode 'normal)
+  (evil-define-key 'normal pdf-view-mode-map "j" 'pdf-view-scroll-up-or-next-page)
+  (evil-define-key 'normal pdf-view-mode-map "k" 'pdf-view-scroll-down-or-previous-page)
+  (evil-define-key 'normal pdf-view-mode-map "d" 'pdf-view-next-page-command)
+  (evil-define-key 'normal pdf-view-mode-map "u" 'pdf-view-previous-page-command)
+  (evil-define-key 'normal pdf-view-mode-map "+" 'pdf-view-enlarge)
+  (evil-define-key 'normal pdf-view-mode-map "-" 'pdf-view-shrink)
+  (evil-define-key 'normal pdf-view-mode-map "=" 'pdf-view-fit-width-to-window)
+  (evil-define-key 'normal pdf-view-mode-map "o" 'pdf-outline)
+  (global-linum-mode -1)
   :config
   (use-package pdf-outline))
+
+;; (el-get-bundle clang-complete-async)
+;; (use-package auto-complete-clang-async
+;;   :init
+;;   (add-hook 'c-mode-common-hook (lambda () (add-to-list 'ac-sources 'ac-source-clang-async)))
+;;   :config
+;;   (setq ac-clang-complete-executable "~/.emacs.d/clang-complete")
+;;   )
 
 (require 'server)
 (unless (server-running-p)
