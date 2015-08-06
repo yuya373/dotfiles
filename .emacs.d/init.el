@@ -926,10 +926,14 @@
 ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/solarized-emacs")
 ;; (load-theme 'solarized-dark t)
 
-(el-get-bundle color-theme-solarized)
-(set-frame-parameter nil 'background-mode 'dark)
-(set-terminal-parameter nil 'background-mode 'dark)
-(load-theme 'solarized t)
+;; (el-get-bundle color-theme-solarized)
+;; (set-frame-parameter nil 'background-mode 'dark)
+;; (set-terminal-parameter nil 'background-mode 'dark)
+;; (load-theme 'solarized t)
+
+(el-get-bundle atom-dark-theme)
+(add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/atom-dark-theme")
+(load-theme 'atom-dark t)
 
 (el-get-bundle powerline)
 (el-get-bundle powerline-evil)
@@ -1061,6 +1065,14 @@
   (evil-leader/set-key "l" 'toggle-folding)
   (add-hook 'prog-mode-hook 'hs-minor-mode))
 
+(el-get-bundle pdf-tools)
+(use-package pdf-tools
+  :mode (("\\.pdf\\'" . pdf-view-mode))
+  :init
+  (linum-mode -1)
+  :config
+  (use-package pdf-outline))
+
 (require 'server)
 (unless (server-running-p)
   (server-start))
@@ -1072,7 +1084,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default)))
+    ("90d329edc17c6f4e43dbc67709067ccd6c0a3caa355f305de2041755986548f2" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default)))
  '(evil-shift-width 2)
  '(flycheck-display-errors-function (function flycheck-pos-tip-error-messages))
  '(git-gutter:added-sign "++")
