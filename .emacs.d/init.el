@@ -887,6 +887,7 @@
   :init
   (add-hook 'slime-repl-mode-hook '(lambda () (turn-off-smartparens-mode)))
   (add-hook 'lisp-mode-hook 'slime-mode)
+  (add-hook 'slime-mode-hook '(lambda () (setq-local browse-url-browser-function 'eww-browse-url)))
   (setq slime-complete-symbol*-fancy t)
   (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
   (setq inferior-lisp-program (executable-find "clisp"))
@@ -1045,6 +1046,20 @@
   (setq org-src-fontify-natively t)
   (setq org-directory "~/Dropbox/junk")
   (setq org-agenda-files (list org-directory)))
+
+(use-package hs-minor-mode
+  :init
+  (add-hook 'enh-ruby-mode-hook '(lambda () (setq-local selective-display 4)))
+  (defun toggle-folding ()
+      (interactive)
+    (set-selective-display
+     (unless selective-display
+       ;; 4
+       (1+ (current-column))
+       ))
+    (recenter))
+  (evil-leader/set-key "l" 'toggle-folding)
+  (add-hook 'prog-mode-hook 'hs-minor-mode))
 
 (require 'server)
 (unless (server-running-p)
