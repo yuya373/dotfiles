@@ -1085,10 +1085,8 @@
 ;; (el-get-bundle clang-complete-async)
 ;; (use-package auto-complete-clang-async
 ;;   :init
-;;   (add-hook 'c-mode-common-hook (lambda () (add-to-list 'ac-sources 'ac-source-clang-async)))
-;;   :config
-;;   (setq ac-clang-complete-executable "~/.emacs.d/clang-complete")
-;;   )
+;;   (add-hook 'c-mode-common-hook '(lambda () ((add-to-list 'ac-sources 'ac-source-clang-async)
+;;                                             (ac-clang-launch-completion-process)))))
 
 (require 'server)
 (unless (server-running-p)
