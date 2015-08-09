@@ -22,6 +22,9 @@
   (require 'ls-lisp)
   (setq ls-lisp-use-insert-directory-program nil))
 
+;; folding
+(add-hook 'prog-mode-hook 'hs-minor-mode)
+
 ;; linum
 (setq linum-format "%4d ")
 (add-hook 'prog-mode-hook 'linum-mode)
@@ -241,6 +244,16 @@
       (whitespace-cleanup-region (point-min) (point-max)))
     )
   (add-hook 'before-save-hook 'evil-cleanup-whitespace)
+  (defun toggle-folding ()
+      (interactive)
+    (set-selective-display
+     (unless selective-display
+       4
+       ;; (1+ (current-column))
+       ))
+    (recenter))
+  (evil-leader/set-key "l" 'toggle-folding)
+
   ;; mappings
   (evil-leader/set-key "bn" 'switch-to-next-buffer)
   (evil-leader/set-key "bp" 'switch-to-prev-buffer)
@@ -688,6 +701,7 @@
   (setq enh-ruby-deep-indent-paren nil
         enh-ruby-hanging-paren-deep-indent-level 2)
   (setq enh-ruby-add-encoding-comment-on-save nil)
+  (add-hook 'enh-ruby-mode-hook '(lambda () (setq-local selective-display 4)))
   (add-hook 'enh-ruby-mode-hook 'auto-complete-mode)
   (add-hook 'enh-ruby-mode-hook '(lambda () (turn-off-smartparens-mode)))
   (add-hook 'enh-ruby-mode-hook 'electric-pair-mode)
@@ -1055,20 +1069,6 @@
   (setq org-src-fontify-natively t)
   (setq org-directory "~/Dropbox/junk")
   (setq org-agenda-files (list org-directory)))
-
-(use-package hs-minor-mode
-  :init
-  (add-hook 'enh-ruby-mode-hook '(lambda () (setq-local selective-display 4)))
-  (defun toggle-folding ()
-      (interactive)
-    (set-selective-display
-     (unless selective-display
-       ;; 4
-       (1+ (current-column))
-       ))
-    (recenter))
-  (evil-leader/set-key "l" 'toggle-folding)
-  (add-hook 'prog-mode-hook 'hs-minor-mode))
 
 (el-get-bundle pdf-tools)
 (use-package pdf-tools
