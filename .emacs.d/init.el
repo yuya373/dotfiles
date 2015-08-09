@@ -27,8 +27,7 @@
 (add-hook 'prog-mode-hook 'linum-mode)
 
 ;; tab
-(setq-default tab-width 2
-              indent-tabs-mode nil)
+(setq-default indent-tabs-mode nil)
 ;; auto-insert
 (auto-insert-mode)
 (setq auto-insert-directory "~/dotfiles/vim/template")
@@ -277,11 +276,11 @@
   (evil-define-key 'normal comint-mode-map (kbd "C-d") 'evil-scroll-down)
   (evil-define-key 'normal comint-mode-map (kbd "C-c") 'evil-window-delete)
   ;; elisp
-  (evil-leader/set-key-for-mode 'emacs-lisp-mode ",c" 'byte-compile-file)
+  (evil-define-key 'normal emacs-lisp-mode-map ",c" 'byte-compile-file)
   (evil-define-key 'visual emacs-lisp-mode-map (kbd ",er") 'eval-region)
-  (evil-leader/set-key-for-mode 'emacs-lisp-mode ",es" 'eval-sexp)
-  (evil-leader/set-key-for-mode 'emacs-lisp-mode ",eb" 'eval-current-buffer)
-  (evil-leader/set-key-for-mode 'emacs-lisp-mode ",ef" 'eval-defun)
+  (evil-define-key 'normal emacs-lisp-mode-map ",es" 'eval-sexp)
+  (evil-define-key 'normal emacs-lisp-mode-map ",eb" 'eval-buffer)
+  (evil-define-key 'normal emacs-lisp-mode-map ",ef" 'eval-defun)
   ;; line move
   (defun evil-swap-key (map key1 key2)
     ;; MAP中のKEY1とKEY2を入れ替え
@@ -684,6 +683,7 @@
          ("Schema" . enh-ruby-mode))
   :interpreter ("ruby" . enh-ruby-mode)
   :init
+  (setq tab-width 2)
   (modify-syntax-entry ?_ "w")
   (setq enh-ruby-deep-indent-paren nil
         enh-ruby-hanging-paren-deep-indent-level 2)
@@ -888,6 +888,7 @@
   (add-hook 'slime-repl-mode-hook '(lambda () (turn-off-smartparens-mode)))
   (add-hook 'lisp-mode-hook 'slime-mode)
   (add-hook 'slime-mode-hook '(lambda () (setq-local browse-url-browser-function 'eww-browse-url)))
+  (setq tab-width 2)
   (setq slime-complete-symbol*-fancy t)
   (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
   (setq inferior-lisp-program (executable-find "clisp"))
@@ -919,21 +920,25 @@
     (add-hook 'slime-repl-mode-hook '(lambda () (set-up-slime-ac t)))))
 
 ;; theme
-;; (el-get-bundle bbatsov/solarized-emacs)
-;; (setq solarized-distinct-fringe-background t)
-;; (setq solarized-use-variable-pitch nil)
-;; (setq solarized-high-contrast-mode-line t)
-;; (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/solarized-emacs")
-;; (load-theme 'solarized-dark t)
+(el-get-bundle bbatsov/solarized-emacs)
+(setq solarized-distinct-fringe-background t)
+(setq solarized-use-variable-pitch nil)
+(setq solarized-high-contrast-mode-line t)
+(add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/solarized-emacs")
+(load-theme 'solarized-dark t)
 
-;; (el-get-bundle color-theme-solarized)
+(el-get-bundle color-theme-solarized)
 ;; (set-frame-parameter nil 'background-mode 'dark)
 ;; (set-terminal-parameter nil 'background-mode 'dark)
 ;; (load-theme 'solarized t)
 
+(el-get-bundle color-theme-zenburn)
+;; (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/color-theme-zenburn")
+;; (load-theme 'zenburn t)
+
 (el-get-bundle atom-dark-theme)
-(add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/atom-dark-theme")
-(load-theme 'atom-dark t)
+;; (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/atom-dark-theme")
+;; (load-theme 'atom-dark t)
 
 (el-get-bundle powerline)
 (el-get-bundle powerline-evil)
@@ -1082,11 +1087,35 @@
   :config
   (use-package pdf-outline))
 
-;; (el-get-bundle clang-complete-async)
-;; (use-package auto-complete-clang-async
-;;   :init
-;;   (add-hook 'c-mode-common-hook '(lambda () ((add-to-list 'ac-sources 'ac-source-clang-async)
-;;                                             (ac-clang-launch-completion-process)))))
+;; for objective-c
+(add-to-list 'auto-mode-alist '("\\.mm?$" . objc-mode))
+(add-to-list 'magic-mode-alist '("\\(.\\|\n\\)*\n@implementation" . objc-mode))
+(add-to-list 'magic-mode-alist '("\\(.\\|\n\\)*\n@interface" . objc-mode))
+(add-to-list 'magic-mode-alist '("\\(.\\|\n\\)*\n@protocol" . objc-mode))
+
+(el-get-bundle google-c-style)
+(use-package google-c-style
+  :commands (google-set-c-style)
+  :init
+  (add-hook 'objc-mode-hook 'google-set-c-style)
+  (add-hook 'c-mode-common-hook 'google-set-c-style))
+
+(el-get-bundle yuya373/xcode-headers)
+(el-get-bundle clang-complete-async)
+(use-package auto-complete-clang-async
+  :commands (ac-clang-launch-completion-process)
+  :init
+  (use-package xcode-headers
+    :init
+    (setq xcode-headers-src-root (expand-file-name "~/dev/PalmX/proj.ios_mac/"))
+    (setq xcode-headers-pbxproj-path "~/dev/PalmX/proj.ios_mac/MiriMemo.xcodeproj/project.pbxproj"))
+  (add-hook 'c-mode-common-hook 'ac-clang-launch-completion-process)
+  (add-hook 'objc-mode-hook 'auto-complete-mode)
+  (add-hook 'objc-mode-hook 'ac-clang-launch-completion-process)
+  :config
+  (setq ac-clang-complete-executable (executable-find "clang-complete"))
+  (setq ac-clang-cflags (xcode-headers-format-for-cflags))
+  (add-to-list 'ac-sources 'ac-source-clang-async))
 
 (require 'server)
 (unless (server-running-p)
