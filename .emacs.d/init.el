@@ -5,6 +5,7 @@
 
 ;; config
 (setq split-width-threshold 110)
+
 (define-key minibuffer-local-completion-map (kbd "C-w") 'backward-kill-word)
 (global-set-key "\C-m" 'newline-and-indent)
 (setq large-file-warning-threshold nil)
@@ -576,9 +577,7 @@
 ;; projectile
 (el-get-bundle projectile)
 (use-package helm-projectile
-  :commands (helm-projectile-on)
-  :init
-  (evil-leader/set-key "hp" 'helm-projectile))
+  :commands (helm-projectile-on))
 (use-package projectile
   :commands (projectile-global-mode)
   :init
