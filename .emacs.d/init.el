@@ -229,7 +229,7 @@
     (el-get-bundle ace-jump-mode)
     (use-package ace-jump-mode
       :config
-      (setq ace-jump-mode-scope 'visible)
+      (setq ace-jump-mode-scope 'window)
       (setq ace-jump-mode-move-keys
             '(?a ?s ?d ?f ?g ?h ?j ?k ?l ?q ?w ?e ?r ?u ?i ?o ?v ?b ?n ?m))
       (define-key evil-operator-state-map (kbd "f") #'evil-ace-jump-char-mode)      ; similar to f
@@ -381,6 +381,19 @@
     :config
     (setq helm-ag-insert-at-point 'symbol))
   (helm-mode +1)
+  (defun ace-helm-find-file (candidate)
+    (if (= (length (window-list)) 1)
+        (find-file-other-window (expand-file-name candidate))
+      (let ((buf (find-file-noselect (expand-file-name candidate)))
+            (window (aw-select "Ace - Window")))
+        (unwind-protect
+            (progn
+              (aw-switch-to-window window)
+              (switch-to-buffer buf))))))
+  (defun helm-ace-ff ()
+    (interactive)
+    (with-helm-alive-p
+      (helm-quit-and-execute-action 'ace-helm-find-file)))
   (diminish 'helm-mode)
   (evil-leader/set-key "tf" 'helm-etags-select)
   (evil-leader/set-key "agg" 'helm-do-ag)
@@ -404,19 +417,19 @@
   (define-key helm-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
 
-  (define-key helm-comp-read-map (kbd "C-o") 'helm-ff-run-switch-other-window)
+  (define-key helm-comp-read-map (kbd "C-o") 'helm-ace-ff)
 
   (define-key helm-buffer-map (kbd "C-d") 'helm-buffer-run-kill-buffers)
-  (define-key helm-buffer-map (kbd "C-o") 'helm-buffer-switch-other-window)
+  (define-key helm-buffer-map (kbd "C-o") 'helm-ace-ff)
 
   (define-key helm-find-files-map (kbd "C-t") 'helm-ff-run-etags)
-  (define-key helm-find-files-map (kbd "C-o") 'helm-ff-run-switch-other-window)
+  (define-key helm-find-files-map (kbd "C-o") 'helm-ace-ff)
   (define-key helm-find-files-map (kbd "C-r") 'helm-ff-run-rename-file)
   (define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
 
   (define-key helm-read-file-map (kbd "C-t") 'helm-ff-run-etags)
-  (define-key helm-read-file-map (kbd "C-o") 'helm-ff-run-switch-other-window)
+  (define-key helm-read-file-map (kbd "C-o") 'helm-ace-ff)
   (define-key helm-read-file-map (kbd "C-r") 'helm-ff-run-rename-file)
   (define-key helm-read-file-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
@@ -1117,6 +1130,13 @@
   (setq ac-clang-complete-executable (executable-find "clang-complete"))
   (setq ac-clang-cflags (xcode-headers-format-for-cflags))
   (add-to-list 'ac-sources 'ac-source-clang-async))
+
+(el-get-bundle ace-window)
+(use-package ace-window
+  :commands (ace-window aw-select aw-switch-to-window)
+  :init
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  (evil-leader/set-key "w" 'ace-window))
 
 (require 'server)
 (unless (server-running-p)
