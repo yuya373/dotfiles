@@ -7,14 +7,13 @@ if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprofile"
 fi
 
-if [ -e ${HOME}/.cabel/bin ]; then
+if [ -e ${HOME}/.cabal/bin ]; then
   export PATH=${HOME}/.cabal/bin:${PATH}
 fi
 
-if [ -e ${HOME}/go ]; then
-  export GOPATH=$HOME/go
+if [ -e /usr/local/opt/go ]; then
   export GOROOT=/usr/local/opt/go/libexec
-  export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+  export PATH=$PATH:/usr/local/opt/go/libexec/bin:${HOME}/go/bin
 fi
 
 if [ -d ${HOME}/.rbenv ] ; then
@@ -34,7 +33,7 @@ export HOMEBREW_CASK_OPTS='--appdir=/Applications'
 export LANG=ja_JP.utf8
 export PAGER='less'
 export LESS='-g -n -i -M -R -S -w -X -z4'
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
 if [ -e ${HOME}/.my_zshenv ]; then
   source ${HOME}/.my_zshenv
