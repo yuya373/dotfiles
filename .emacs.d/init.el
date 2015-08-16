@@ -31,6 +31,7 @@
 (add-hook 'prog-mode-hook 'linum-mode)
 
 ;; tab
+(setq tab-always-indent t)
 (setq-default indent-tabs-mode nil)
 ;; auto-insert
 (auto-insert-mode)
@@ -69,7 +70,7 @@
                            trailing
                            tabs
                            spaces
-                           empty
+                           ;; empty
                            newline
                            newline-mark
                            space-mark
@@ -256,8 +257,8 @@
   (evil-leader/set-key "l" 'toggle-folding)
 
   ;; mappings
-  (evil-leader/set-key "bn" 'switch-to-next-buffer)
-  (evil-leader/set-key "bp" 'switch-to-prev-buffer)
+  ;; (evil-leader/set-key "bn" 'switch-to-next-buffer)
+  ;; (evil-leader/set-key "bp" 'switch-to-prev-buffer)
   (evil-leader/set-key "uv" 'undo-tree-visualize)
   (defun open-below-esc ()
     (interactive)
@@ -394,6 +395,19 @@
     (interactive)
     (with-helm-alive-p
       (helm-quit-and-execute-action 'ace-helm-find-file)))
+  (defun ace-helm-switch-to-buffer (buffer-or-name)
+    (if (= (length (window-list)) 1)
+        (switch-to-buffer-other-window buffer-or-name)
+      (let ((buf buffer-or-name)
+            (window (aw-select "Ace - Window")))
+        (unwind-protect
+            (progn
+              (aw-switch-to-window window)
+              (switch-to-buffer buf))))))
+  (defun helm-ace-sb ()
+    (interactive)
+    (with-helm-alive-p
+      (helm-quit-and-execute-action 'ace-helm-switch-to-buffer)))
   (diminish 'helm-mode)
   (evil-leader/set-key "tf" 'helm-etags-select)
   (evil-leader/set-key "agg" 'helm-do-ag)
@@ -420,7 +434,7 @@
   (define-key helm-comp-read-map (kbd "C-o") 'helm-ace-ff)
 
   (define-key helm-buffer-map (kbd "C-d") 'helm-buffer-run-kill-buffers)
-  (define-key helm-buffer-map (kbd "C-o") 'helm-ace-ff)
+  (define-key helm-buffer-map (kbd "C-o") 'helm-ace-sb)
 
   (define-key helm-find-files-map (kbd "C-t") 'helm-ff-run-etags)
   (define-key helm-find-files-map (kbd "C-o") 'helm-ace-ff)
@@ -462,20 +476,24 @@
   :init
   (setq ac-auto-start 3
         ac-delay 0.2
-        ac-quick-help-delay 1
+        ac-auto-show-menu t
+        ac-quick-help-delay 0.5
+        ac-quick-help-prefer-pos-tip t
         ac-use-fuzzy t
+        ac-use-comphist t
         ac-fuzzy-enable t
-        tab-always-indent 'complete
+        tab-always-indent t
+        ac-use-menu-map t
         ac-dwim t)
   (setq-default ac-sources '(ac-source-filename ac-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers))
   (add-hook 'emacs-lisp-mode-hook (lambda () (add-to-list 'ac-sources 'ac-source-symbols)))
-  (add-hook 'enh-ruby-mode-hook (lambda () (add-to-list 'ac-sources 'ac-source-abbrev)))
   :config
-  (use-package auto-complete-config :config (ac-config-default))
-  (global-auto-complete-mode t)
-  (define-key ac-completing-map (kbd "C-n") 'ac-next)
-  (define-key ac-completing-map (kbd "C-p") 'ac-previous)
-  (define-key ac-completing-map (kbd "<S-tab>") 'ac-previous)
+  (use-package auto-complete-config
+    :config
+    (ac-config-default))
+  (evil-define-key 'insert ac-menu-map (kbd "C-n") 'ac-next)
+  (evil-define-key 'insert ac-menu-map (kbd "C-p") 'ac-previous)
+  (evil-define-key 'insert ac-menu-map (kbd "<S-tab>") 'ac-previous)
   (ac-set-trigger-key "TAB")
   (diminish 'auto-complete-mode))
 
@@ -710,6 +728,7 @@
          ("Schema" . enh-ruby-mode))
   :interpreter ("ruby" . enh-ruby-mode)
   :init
+  (add-hook 'enh-ruby-mode-hook (lambda () (add-to-list 'ac-sources 'ac-source-abbrev)))
   (setq tab-width 2)
   (modify-syntax-entry ?_ "w")
   (setq enh-ruby-deep-indent-paren nil
@@ -849,7 +868,7 @@
   :config
   (popwin-mode t)
   (evil-leader/set-key "bl" 'popwin:popup-last-buffer)
-  (evil-leader/set-key "bP" 'popwin:pop-to-buffer)
+  (evil-leader/set-key "bp" 'popwin:pop-to-buffer)
   (evil-leader/set-key "bf" 'popwin:find-file)
   (push '(inf-ruby-mode :height 0.3 :stick t :position bottom) popwin:special-display-config)
   (push '("*Process List*" :noselect t) popwin:special-display-config)
@@ -864,7 +883,11 @@
   (push '("*inferior-lisp*" :noselect t :tail t) popwin:special-display-config)
   (push '(sldb-mode :stick t) popwin:special-display-config)
   (push '(slime-repl-mode :noselect t :position bottom :height 0.3) popwin:special-display-config)
-  (push 'slime-connection-list-mode popwin:special-display-config))
+  (push 'slime-connection-list-mode popwin:special-display-config)
+  (push '("*alchemist-eval-mode*" :noselect t :height 0.2) popwin:special-display-config)
+  (push '("*Alchemist-IEx*" :noselect t :height 0.2) popwin:special-display-config)
+  (push '("*alchemist help*" :noselect t :height 0.3) popwin:special-display-config)
+  (push '("*elixirc*" :noselect t) popwin:special-display-config))
 
 (el-get-bundle hydra)
 (use-package hydra
@@ -1089,8 +1112,10 @@
   :mode (("\\.pdf\\'" . pdf-view-mode))
   :init
   (evil-set-initial-state 'pdf-view-mode 'normal)
+  (evil-define-key 'normal pdf-view-mode-map "g" 'pdf-view-goto-page)
   (evil-define-key 'normal pdf-view-mode-map "j" 'pdf-view-scroll-up-or-next-page)
   (evil-define-key 'normal pdf-view-mode-map "k" 'pdf-view-scroll-down-or-previous-page)
+  (evil-define-key 'normal pdf-view-mode-map "h" 'pdf-view-scroll)
   (evil-define-key 'normal pdf-view-mode-map "d" 'pdf-view-next-page-command)
   (evil-define-key 'normal pdf-view-mode-map "u" 'pdf-view-previous-page-command)
   (evil-define-key 'normal pdf-view-mode-map "+" 'pdf-view-enlarge)
@@ -1138,6 +1163,74 @@
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
   (evil-leader/set-key "w" 'ace-window))
 
+(el-get-bundle elixir)
+(use-package elixir-mode
+  :mode (("\\.ex\\'" . elixir-mode)
+         ("\\.exs\\'" . elixir-mode)
+         ("\\.elixir\\'" . elixir-mode)))
+(el-get-bundle alchemist :depends company-mode)
+(use-package alchemist
+  :init
+  (evil-define-key 'normal alchemist-mode-map (kbd ",x")'alchemist-mix)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",mc") 'alchemist-mix-compile)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",mr") 'alchemist-mix-run)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",tt") 'alchemist-mix-test-at-point)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",tb") 'alchemist-mix-test-this-buffer)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",tr") 'alchemist-mix-test-rerun-last-test)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",eeb") 'alchemist-execute-this-buffer)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",eef") 'alchemist-execute-file)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",el") 'alchemist-eval-current-line)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",eL") 'alchemist-eval-print-current-line)
+  (evil-define-key 'visual alchemist-mode-map (kbd ",er") 'alchemist-eval-region)
+  (evil-define-key 'visual alchemist-mode-map (kbd ",eR") 'alchemist-eval-print-region)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",eb") 'alchemist-eval-buffer)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",eB") 'alchemist-eval-print-buffer)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",ft") 'alchemist-project-find-test)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",fT") 'alchemist-project-toggle-file-and-tests-other-window)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",hh") 'alchemist-help)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",ht") 'alchemist-help-search-at-point)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",ii") 'alchemist-iex-run)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",ip") 'alchemist-iex-project-run)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",ic") 'alchemist-iex-compile-this-buffer)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",ie") 'alchemist-iex-send-current-line)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",iE") 'alchemist-iex-send-current-line-and-go)
+  (evil-define-key 'visual alchemist-mode-map (kbd ",ir") 'alchemist-iex-send-region)
+  (evil-define-key 'visual alchemist-mode-map (kbd ",iR") 'alchemist-iex-send-region-and-go)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",gd") 'alchemist-goto-definition-at-point)
+  (add-hook 'elixir-mode-hook 'alchemist-mode))
+(use-package alchemist-compile
+  :commands (alchemist-compile-this-buffer alchemist-compile-file)
+  :init
+  (evil-define-key 'normal alchemist-mode-map (kbd ",cc") 'alchemist-compile-this-buffer)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",cf") 'alchemist-compile-file))
+(el-get-bundle syohex/emacs-ac-alchemist)
+(use-package ac-alchemist
+  :commands (ac-alchemist-setup)
+  :init
+  (add-hook 'elixir-mode-hook 'ac-alchemist-setup))
+
+(el-get-bundle haskell-mode)
+(use-package haskell-mode
+  :mode (("\\.hs\\'" . haskell-mode)
+         ("\\.lhs\\'" . literate-haskell-mode))
+  :init
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+  (add-hook 'haskell-mode-hook 'font-lock-mode)
+  (add-hook 'haskell-mode-hook 'inf-haskell-mode))
+(use-package haskell-cabel-mode
+  :mode (("\\.cabal\\'" . haskell-cabel-mode)))
+(use-package haskell-indentation-mode
+  :commands (haskell-indentation-mode)
+  :init
+  (add-hook 'haskell-mode-hook 'haskell-indentation-mode))
+(el-get-bundle ghc-mod)
+(use-package ghc
+  :commands (ghc-init)
+  :init
+  (add-hook 'haskell-mode-hook '(lambda () (ghc-init)))
+  :config
+  (add-to-list 'ac-sources 'ac-source-ghc-mod))
+
 (require 'server)
 (unless (server-running-p)
   (server-start))
@@ -1177,4 +1270,5 @@
  '(powerline-evil-visual-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#d33682"))))
  '(powerline-inactive1 ((t (:inherit mode-line-inactive :background "#fdf6e3" :foreground "#586e75"))))
  '(powerline-inactive2 ((t (:inherit mode-line-inactive :foreground "#586e75"))))
- '(rbenv-active-ruby-face ((t (:background "#fdf6e3" :foreground "#dc322f" :weight bold)))))
+ '(rbenv-active-ruby-face ((t (:background "#fdf6e3" :foreground "#dc322f" :weight bold))))
+ '(whitespace-empty ((t (:foreground "#dc322f" :inverse-video nil :underline (:color foreground-color :style wave))))))
