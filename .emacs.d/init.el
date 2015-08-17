@@ -365,7 +365,7 @@
   (setq helm-prevent-escaping-from-minibuffer t
         helm-bookmark-show-location t
         helm-display-header-line t
-        helm-split-window-in-side-p nil
+        helm-split-window-in-side-p t
         helm-always-two-windows t
         helm-autoresize-mode t
         helm-ff-file-name-history-use-recentf t
@@ -628,7 +628,6 @@
   (evil-leader/set-key "bw" 'projectile-switch-to-buffer-other-window))
 
 ;; rails
-(el-get-bundle evil-rails)
 (el-get-bundle projectile-rails)
 (use-package projectile-rails
   :commands (projectile-rails-on)
@@ -653,9 +652,7 @@
   (evil-define-key 'normal projectile-rails-mode-map ",gf" 'projectile-rails-goto-file-at-point)
   (evil-define-key 'normal projectile-rails-mode-map ",gm" 'projectile-rails-goto-gemfile)
   (evil-define-key 'normal projectile-rails-mode-map ",gr" 'projectile-rails-goto-routes)
-  (add-hook 'projectile-mode-hook 'projectile-rails-on)
-  :config
-  (use-package evil-rails))
+  (add-hook 'projectile-mode-hook 'projectile-rails-on))
 
 ;; syntax check
 (el-get-bundle flycheck)
@@ -864,6 +861,7 @@
 (el-get-bundle popwin)
 (use-package popwin
   :init
+  (setq popwin:adjust-other-windows t)
   (setq popwin:popup-window-position 'bottom)
   (setq popwin:popup-window-height 0.3)
   :config
@@ -1116,15 +1114,25 @@
   (evil-define-key 'normal pdf-view-mode-map "g" 'pdf-view-goto-page)
   (evil-define-key 'normal pdf-view-mode-map "j" 'pdf-view-scroll-up-or-next-page)
   (evil-define-key 'normal pdf-view-mode-map "k" 'pdf-view-scroll-down-or-previous-page)
-  (evil-define-key 'normal pdf-view-mode-map "h" 'pdf-view-scroll)
+  (evil-define-key 'normal pdf-view-mode-map "h" 'left-char)
+  (evil-define-key 'normal pdf-view-mode-map "l" 'right-char)
   (evil-define-key 'normal pdf-view-mode-map "d" 'pdf-view-next-page-command)
   (evil-define-key 'normal pdf-view-mode-map "u" 'pdf-view-previous-page-command)
   (evil-define-key 'normal pdf-view-mode-map "+" 'pdf-view-enlarge)
   (evil-define-key 'normal pdf-view-mode-map "-" 'pdf-view-shrink)
   (evil-define-key 'normal pdf-view-mode-map "=" 'pdf-view-fit-width-to-window)
   (evil-define-key 'normal pdf-view-mode-map "o" 'pdf-outline)
+  (evil-define-key 'normal pdf-view-mode-map "b" 'pdf-view-position-to-register)
+  (evil-define-key 'normal pdf-view-mode-map "B" 'pdf-view-jump-to-register)
   (global-linum-mode -1)
+  (add-hook 'pdf-view-mode-hook 'pdf-view-dark-minor-mode)
+  (add-hook 'pdf-view-mode-hook 'pdf-view-midnight-minor-mode)
   :config
+  (use-package pdf-annot)
+  (use-package pdf-links)
+  (use-package pdf-info)
+  (use-package pdf-misc)
+  (use-package pdf-sync)
   (use-package pdf-outline))
 
 ;; for objective-c
