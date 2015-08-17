@@ -477,6 +477,7 @@
   (setq ac-auto-start 3
         ac-delay 0.2
         ac-auto-show-menu t
+        ac-max-width 0.4
         ac-quick-help-delay 0.5
         ac-quick-help-prefer-pos-tip t
         ac-use-fuzzy t
@@ -1177,12 +1178,12 @@
   (evil-define-key 'normal alchemist-mode-map (kbd ",tt") 'alchemist-mix-test-at-point)
   (evil-define-key 'normal alchemist-mode-map (kbd ",tb") 'alchemist-mix-test-this-buffer)
   (evil-define-key 'normal alchemist-mode-map (kbd ",tr") 'alchemist-mix-test-rerun-last-test)
-  (evil-define-key 'normal alchemist-mode-map (kbd ",eeb") 'alchemist-execute-this-buffer)
-  (evil-define-key 'normal alchemist-mode-map (kbd ",eef") 'alchemist-execute-file)
-  (evil-define-key 'normal alchemist-mode-map (kbd ",el") 'alchemist-eval-current-line)
-  (evil-define-key 'normal alchemist-mode-map (kbd ",eL") 'alchemist-eval-print-current-line)
-  (evil-define-key 'visual alchemist-mode-map (kbd ",er") 'alchemist-eval-region)
-  (evil-define-key 'visual alchemist-mode-map (kbd ",eR") 'alchemist-eval-print-region)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",rb") 'alchemist-execute-this-buffer)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",rf") 'alchemist-execute-file)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",ee") 'alchemist-eval-current-line)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",eE") 'alchemist-eval-print-current-line)
+  (evil-define-key 'visual alchemist-mode-map (kbd ",ee") 'alchemist-eval-region)
+  (evil-define-key 'visual alchemist-mode-map (kbd ",eE") 'alchemist-eval-print-region)
   (evil-define-key 'normal alchemist-mode-map (kbd ",eb") 'alchemist-eval-buffer)
   (evil-define-key 'normal alchemist-mode-map (kbd ",eB") 'alchemist-eval-print-buffer)
   (evil-define-key 'normal alchemist-mode-map (kbd ",ft") 'alchemist-project-find-test)
@@ -1261,6 +1262,7 @@
  '(enh-ruby-string-delimiter-face ((t (:foreground "#d33682"))))
  '(mode-line ((t (:background "#002b36" :foreground "#fdf6e3" :inverse-video t :box nil))))
  '(mode-line-inactive ((t (:background "#eee8d5" :foreground "#586e75" :inverse-video t :box nil))))
+ '(popup-tip-face ((t (:background "#073642" :foreground "#b58900"))))
  '(powerline-active1 ((t (:background "#002b36" :foreground "#eee8d5"))))
  '(powerline-active2 ((t (:background "#002b36" :foreground "#eee8d5"))))
  '(powerline-evil-base-face ((t (:background "#fdf6e3" :foreground "#002b36" :width extra-expanded))))
