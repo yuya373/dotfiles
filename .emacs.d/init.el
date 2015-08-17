@@ -521,6 +521,7 @@
   (evil-leader/set-key "gvq" 'magit-blame-quit)
   (evil-leader/set-key "gg" 'magit-status)
   (add-hook 'magit-mode-hook '(lambda () (linum-mode -1)))
+  (setq magit-push-always-verify nil)
   (setq magit-branch-arguments nil)
   (setq magit-status-buffer-switch-function 'switch-to-buffer)
   :config
