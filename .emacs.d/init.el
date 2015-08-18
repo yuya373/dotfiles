@@ -807,7 +807,7 @@
         (append (list
                  (list "emacs" "find-file $1")
                  (list "ppr" "find-file PULLREQ_MSG")
-                 (list "pr" "hub pull-request -b $1 -F PULLREQ_MSG")
+                 (list "pr" "hub pull-request -b $1 -F PULLREQ_MSG && rm PULLREQ_MSG")
                  (list "b" "bundle exec $*")
                  (list "rails" "bundle exec rails $*")
                  (list "rake" "bundle exec rake $*")
