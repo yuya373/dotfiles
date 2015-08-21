@@ -207,6 +207,7 @@
   (use-package evil-anzu)
   (use-package evil-jumper
     :init
+    (setq evil-jumper--debug nil)
     (setq evil-jumper-file "~/.emacs.d/.evil-jumper")
     (setq evil-jumper-auto-save-interval 1)
     (setq evil-jumper-auto-center t)
@@ -1062,7 +1063,7 @@
 
 (el-get-bundle google-translate)
 (use-package google-translate
-  :commands (google-translate-at-point)
+  :commands (google-translate-at-point google-translate-query-translate)
   :init
   (evil-leader/set-key "gta" 'google-translate-at-point)
   (evil-leader/set-key "gtq" 'google-translate-query-translate)
