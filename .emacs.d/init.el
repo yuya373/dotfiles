@@ -1141,6 +1141,21 @@
   (global-linum-mode -1)
   (add-hook 'pdf-view-mode-hook 'pdf-view-dark-minor-mode)
   (add-hook 'pdf-view-mode-hook 'pdf-view-midnight-minor-mode)
+  (defun mcc-pdf-view-save ()
+    (cl-loop for win in (window-list)
+             do (with-selected-window win
+                  (when (eql major-mode 'pdf-view-mode)
+                    (setq-local pdf-view-last-visited-page
+                                (pdf-view-current-page))))))
+
+  (defun mcc-pdf-view-restore ()
+    (cl-loop for win in (window-list)
+             do (with-selected-window win
+                  (when (eql major-mode 'pdf-view-mode)
+                    (pdf-view-goto-page pdf-view-last-visited-page)))))
+
+  (add-hook 'popwin:before-popup-hook #'mcc-pdf-view-save)
+  (add-hook 'popwin:after-popup-hook #'mcc-pdf-view-restore)
   :config
   (use-package pdf-annot)
   (use-package pdf-links)
