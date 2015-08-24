@@ -517,9 +517,7 @@
                           magit-fetch-popup magit-branch-popup)
   :init
   (evil-leader/set-key "gf" 'magit-fetch-popup)
-  (evil-leader/set-key "gb" 'magit-branch-popup)
-  (evil-leader/set-key "gvv" 'magit-blame-popup)
-  (evil-leader/set-key "gvq" 'magit-blame-quit)
+  (evil-leader/set-key "gb" 'magit-blame-popup)
   (evil-leader/set-key "gg" 'magit-status)
   (add-hook 'magit-mode-hook '(lambda () (linum-mode -1)))
   (setq magit-push-always-verify nil)
@@ -1126,6 +1124,21 @@
   :init
   (evil-set-initial-state 'pdf-view-mode 'normal)
   (evil-define-key 'normal pdf-view-mode-map "g" 'pdf-view-goto-page)
+  (defun mcc-pdf-view-save ()
+    (cl-loop for win in (window-list)
+             do (with-selected-window win
+                  (when (eql major-mode 'pdf-view-mode)
+                    (setq-local pdf-view-last-visited-page
+                                (pdf-view-current-page))))))
+
+  (defun mcc-pdf-view-restore ()
+    (cl-loop for win in (window-list)
+             do (with-selected-window win
+                  (when (eql major-mode 'pdf-view-mode)
+                    (pdf-view-goto-page pdf-view-last-visited-page)))))
+
+  (add-hook 'popwin:before-popup-hook #'mcc-pdf-view-save)
+  (add-hook 'popwin:after-popup-hook #'mcc-pdf-view-restore)
   (evil-define-key 'normal pdf-view-mode-map "j" 'pdf-view-scroll-up-or-next-page)
   (evil-define-key 'normal pdf-view-mode-map "k" 'pdf-view-scroll-down-or-previous-page)
   (evil-define-key 'normal pdf-view-mode-map "h" 'left-char)
