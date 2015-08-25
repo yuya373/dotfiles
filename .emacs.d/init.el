@@ -1093,14 +1093,14 @@
                  evil-jumper--screen-jump-list))
       (setf evil-jumper--window-jumps window-jump)))
   (evil-leader/set-key "he" 'helm-elscreen)
-  (define-key evil-normal-state-map (kbd "tt") 'elscreen-clone)
+  (define-key evil-normal-state-map (kbd "tt") 'elscreen-create)
   (define-key evil-normal-state-map (kbd "tn") 'elscreen-next)
   (define-key evil-normal-state-map (kbd "tp") 'elscreen-previous)
   (define-key evil-normal-state-map (kbd "td") 'elscreen-dired)
   (define-key evil-normal-state-map (kbd "tf") 'elscreen-find-file)
   (define-key evil-normal-state-map (kbd "tb") 'elscreen-find-and-goto-by-buffer)
-  (define-key evil-normal-state-map (kbd "tc") 'elscreen-kill)
-  (define-key evil-normal-state-map (kbd "tC") 'elscreen-kill-screen-and-buffers))
+  (define-key evil-normal-state-map (kbd "tC") 'elscreen-kill)
+  (define-key evil-normal-state-map (kbd "tc") 'elscreen-kill-screen-and-buffers))
 
 (el-get-bundle open-junk-file)
 (use-package open-junk-file
