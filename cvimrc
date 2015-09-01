@@ -1,7 +1,7 @@
 set noautofocus
 let locale = "jp"
 let mapleader = ","
-let searchalias g = "google" 
+let searchalias g = "google"
 map M centerMatchH
 map T centerMatchT
 map B centerMatchB
@@ -16,5 +16,6 @@ map tl lastTab
 map b :buffer<Space>
 imap <C-w> deleteWord
 imap <C-h> deleteChar
-imap <C-b> backwardWord
-imap <C-f> forwardWord
+iunmap <C-i>
+iunmap <C-p>
+iunmap <C-n>
