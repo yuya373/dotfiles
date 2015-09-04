@@ -208,8 +208,8 @@
   (use-package evil-jumper
     :init
     (setq evil-jumper--debug nil)
-    (setq evil-jumper-file "~/.emacs.d/.evil-jumper")
-    (setq evil-jumper-auto-save-interval 1)
+    ;; (setq evil-jumper-file "~/.emacs.d/.evil-jumper")
+    ;; (setq evil-jumper-auto-save-interval 1)
     (setq evil-jumper-auto-center t)
     :config (global-evil-jumper-mode))
   (use-package evil-args
