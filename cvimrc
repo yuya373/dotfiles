@@ -19,3 +19,4 @@ imap <C-h> deleteChar
 iunmap <C-i>
 iunmap <C-p>
 iunmap <C-n>
+unmap .
