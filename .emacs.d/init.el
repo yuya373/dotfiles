@@ -93,9 +93,9 @@
   (diminish 'global-whitespace-mode))
 
 ; initchart
-;; (el-get-bundle yuttie/initchart)
-;; (use-package initchart
-;;   :commands (initchart-record-execution-time-of))
+(el-get-bundle yuttie/initchart)
+(use-package initchart
+  :commands (initchart-record-execution-time-of))
 ;; (initchart-record-execution-time-of load file)
 ;; (initchart-record-execution-time-of require feature)
 
@@ -890,46 +890,46 @@
   (push '("*alchemist help*" :noselect t :height 0.3) popwin:special-display-config)
   (push '("*elixirc*" :noselect t) popwin:special-display-config))
 
-(el-get-bundle hydra)
-(use-package hydra
-  :config
-  (defhydra helm-like-unite (:hint nil
-                                   :color pink)
-    "
-------------------------------------------------------------------------
-| [K] ScrollUp   | [k] move up   | [m] mark   | [v] view   | [i] cancel |
-| [J] ScrollDown | [j] move down | [t] toggle | [H] help   | [o] quit   |
-| [h] left       |               | [d] delete |            |            |
-| [l] right      | [u] unmark    | [y] yank   | [w] toggle |            |
-|                |     all       | [f] follow |     window |            |
-------------------------------------------------------------------------
-"
-    ("h" helm-beginning-of-buffer)
-    ("j" helm-next-line)
-    ("k" helm-previous-line)
-    ("l" helm-end-of-buffer)
-    ("g" helm-beginning-of-buffer)
-    ("G" helm-end-of-buffer)
-    ("K" helm-scroll-other-window-down)
-    ("J" helm-scroll-other-window)
-    ("m" helm-toggle-visible-mark)
-    ("t" helm-toggle-all-marks)
-    ("u" helm-unmark-all)
-    ("<escape>" keyboard-escape-quit "" :exit t)
-    ("o" keyboard-escape-quit :exit t)
-    ("i" nil)
-    ("n" helm-next-source)
-    ("p" helm-previous-source)
-    ("H" helm-help)
-    ("v" helm-execute-persistent-action)
-    ("y" helm-yank-selection)
-    ("w" helm-toggle-resplit-and-swap-windows)
-    ("a" helm-select-action)
-    ("d" helm-delete-marked-files)
-    ("r" helm-ff-run-rename-file)
-    ("f" helm-follow-mode))
-  (define-key helm-map (kbd "<escape>") 'helm-like-unite/body)
-  (define-key helm-map (kbd "C-k") 'helm-like-unite/body))
+;; (el-get-bundle hydra)
+;; (use-package hydra
+;;   :config
+;;   (defhydra helm-like-unite (:hint nil
+;;                                    :color pink)
+;;     "
+;; ------------------------------------------------------------------------
+;; | [K] ScrollUp   | [k] move up   | [m] mark   | [v] view   | [i] cancel |
+;; | [J] ScrollDown | [j] move down | [t] toggle | [H] help   | [o] quit   |
+;; | [h] left       |               | [d] delete |            |            |
+;; | [l] right      | [u] unmark    | [y] yank   | [w] toggle |            |
+;; |                |     all       | [f] follow |     window |            |
+;; ------------------------------------------------------------------------
+;; "
+;;     ("h" helm-beginning-of-buffer)
+;;     ("j" helm-next-line)
+;;     ("k" helm-previous-line)
+;;     ("l" helm-end-of-buffer)
+;;     ("g" helm-beginning-of-buffer)
+;;     ("G" helm-end-of-buffer)
+;;     ("K" helm-scroll-other-window-down)
+;;     ("J" helm-scroll-other-window)
+;;     ("m" helm-toggle-visible-mark)
+;;     ("t" helm-toggle-all-marks)
+;;     ("u" helm-unmark-all)
+;;     ("<escape>" keyboard-escape-quit "" :exit t)
+;;     ("o" keyboard-escape-quit :exit t)
+;;     ("i" nil)
+;;     ("n" helm-next-source)
+;;     ("p" helm-previous-source)
+;;     ("H" helm-help)
+;;     ("v" helm-execute-persistent-action)
+;;     ("y" helm-yank-selection)
+;;     ("w" helm-toggle-resplit-and-swap-windows)
+;;     ("a" helm-select-action)
+;;     ("d" helm-delete-marked-files)
+;;     ("r" helm-ff-run-rename-file)
+;;     ("f" helm-follow-mode))
+;;   (define-key helm-map (kbd "<escape>") 'helm-like-unite/body)
+;;   (define-key helm-map (kbd "C-k") 'helm-like-unite/body))
 
 ;; lisp
 (el-get-bundle slime)
@@ -1076,33 +1076,33 @@
   :mode (("\\.yml\\'" . yaml-mode)
          ("\\.yaml\\'" . yaml-mode)))
 
-(el-get-bundle elscreen)
-(use-package elscreen
-  :commands (elscreen-start)
-  :init
-  (add-hook 'after-init-hook 'elscreen-start)
-  :config
-  (defvar evil-jumper--screen-jump-list
-    (make-hash-table))
-  (defadvice evil-jumper--get-current
-      (before evil-jumper--get-current-per-screen activate)
-    (let* ((screen (elscreen-get-current-screen))
-           (window-jump
-            (gethash screen evil-jumper--screen-jump-list)))
-      (unless window-jump
-        (setq window-jump (make-hash-table))
-        (puthash screen window-jump
-                 evil-jumper--screen-jump-list))
-      (setf evil-jumper--window-jumps window-jump)))
-  (evil-leader/set-key "he" 'helm-elscreen)
-  (define-key evil-normal-state-map (kbd "tt") 'elscreen-create)
-  (define-key evil-normal-state-map (kbd "tn") 'elscreen-next)
-  (define-key evil-normal-state-map (kbd "tp") 'elscreen-previous)
-  (define-key evil-normal-state-map (kbd "td") 'elscreen-dired)
-  (define-key evil-normal-state-map (kbd "tf") 'elscreen-find-file)
-  (define-key evil-normal-state-map (kbd "tb") 'elscreen-find-and-goto-by-buffer)
-  (define-key evil-normal-state-map (kbd "tC") 'elscreen-kill)
-  (define-key evil-normal-state-map (kbd "tc") 'elscreen-kill-screen-and-buffers))
+;; (el-get-bundle elscreen)
+;; (use-package elscreen
+;;   :commands (elscreen-start)
+;;   :init
+;;   (add-hook 'after-init-hook 'elscreen-start)
+;;   :config
+;;   (defvar evil-jumper--screen-jump-list
+;;     (make-hash-table))
+;;   (defadvice evil-jumper--get-current
+;;       (before evil-jumper--get-current-per-screen activate)
+;;     (let* ((screen (elscreen-get-current-screen))
+;;            (window-jump
+;;             (gethash screen evil-jumper--screen-jump-list)))
+;;       (unless window-jump
+;;         (setq window-jump (make-hash-table))
+;;         (puthash screen window-jump
+;;                  evil-jumper--screen-jump-list))
+;;       (setf evil-jumper--window-jumps window-jump)))
+;;   (evil-leader/set-key "he" 'helm-elscreen)
+;;   (define-key evil-normal-state-map (kbd "tt") 'elscreen-create)
+;;   (define-key evil-normal-state-map (kbd "tn") 'elscreen-next)
+;;   (define-key evil-normal-state-map (kbd "tp") 'elscreen-previous)
+;;   (define-key evil-normal-state-map (kbd "td") 'elscreen-dired)
+;;   (define-key evil-normal-state-map (kbd "tf") 'elscreen-find-file)
+;;   (define-key evil-normal-state-map (kbd "tb") 'elscreen-find-and-goto-by-buffer)
+;;   (define-key evil-normal-state-map (kbd "tC") 'elscreen-kill)
+;;   (define-key evil-normal-state-map (kbd "tc") 'elscreen-kill-screen-and-buffers))
 
 (el-get-bundle open-junk-file)
 (use-package open-junk-file
@@ -1206,9 +1206,12 @@
   :mode (("\\.ex\\'" . elixir-mode)
          ("\\.exs\\'" . elixir-mode)
          ("\\.elixir\\'" . elixir-mode)))
-(el-get-bundle alchemist :depends company-mode)
+(el-get-bundle company-mode)
+(el-get-bundle alchemist)
 (use-package alchemist
+  :commands (alchemist-mode)
   :init
+  (add-hook 'elixir-mode-hook 'alchemist-mode)
   (evil-define-key 'normal alchemist-mode-map (kbd ",x")'alchemist-mix)
   (evil-define-key 'normal alchemist-mode-map (kbd ",mc") 'alchemist-mix-compile)
   (evil-define-key 'normal alchemist-mode-map (kbd ",mr") 'alchemist-mix-run)
@@ -1235,7 +1238,8 @@
   (evil-define-key 'visual alchemist-mode-map (kbd ",ir") 'alchemist-iex-send-region)
   (evil-define-key 'visual alchemist-mode-map (kbd ",iR") 'alchemist-iex-send-region-and-go)
   (evil-define-key 'normal alchemist-mode-map (kbd ",gd") 'alchemist-goto-definition-at-point)
-  (add-hook 'elixir-mode-hook 'alchemist-mode))
+  :config
+  (use-package company-mode))
 (use-package alchemist-compile
   :commands (alchemist-compile-this-buffer alchemist-compile-file)
   :init
