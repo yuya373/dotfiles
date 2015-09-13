@@ -22,6 +22,11 @@ if [ -d ${HOME}/.rbenv ] ; then
   eval "$(rbenv init -)"
 fi
 
+if [ -d ${HOME}/.roswell ]; then
+    PATH=${HOME}/.roswell/bin:${PATH}
+    export PATH
+fi
+
 if [ -d /usr/local/opt/coreutils/libexec/gnubin ] ; then
   export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
   export MANPATH=/usr/local/opt/coreutils/libexec/gnuman/:$MANPATH
