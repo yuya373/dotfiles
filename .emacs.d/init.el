@@ -1289,6 +1289,20 @@
   :config
   (add-to-list 'ac-sources 'ac-source-ghc-mod))
 
+(el-get-bundle js2-mode)
+(use-package js2-mode
+  :mode (("\\.js\\'" . js2-mode)))
+
+(el-get-bundle coffee-mode)
+(use-package coffee-mode
+  :mode (("\\.coffee\\'" . coffee-mode))
+  (add-hook 'coffee-mode-hook '(lambda () ((set (make-local-variable 'tab-width) 2)
+                                           (set (make-local-variable 'coffee-tab-width)2)))))
+
+(el-get-bundle scss-mode)
+(use-package scss-mode
+  :mode (("\\.scss\\'" . scss-mode)))
+
 (require 'server)
 (unless (server-running-p)
   (server-start))
