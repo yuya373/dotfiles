@@ -1296,6 +1296,7 @@
 (el-get-bundle coffee-mode)
 (use-package coffee-mode
   :mode (("\\.coffee\\'" . coffee-mode))
+  :init
   (add-hook 'coffee-mode-hook '(lambda () ((set (make-local-variable 'tab-width) 2)
                                            (set (make-local-variable 'coffee-tab-width)2)))))
 
