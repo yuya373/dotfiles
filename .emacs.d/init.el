@@ -465,8 +465,10 @@
   (add-hook 'enh-ruby-mode-hook '(lambda () (setq-local helm-dash-docsets '("Ruby"))))
   (add-hook 'projectile-rails-mode-hook '(lambda () (setq-local helm-dash-docsets '("Ruby on Rails"))))
   (add-hook 'emacs-lisp-mode-hook '(lambda () (setq-local helm-dash-docsets '("Emacs Lisp"))))
-  (add-hook 'lisp-mode-hook '(lambda () (setq-local helm-dash-docsets '("Common Lisp"))))
-  )
+  (defun helm-lisp-mode ()
+    (setq-local helm-dash-docsets '("Common Lisp")))
+  (add-hook 'lisp-mode-hook 'helm-lisp-mode)
+  (add-hook 'slime-repl-mode-hook 'helm-lisp-mode))
 
 (el-get-bundle rainbow-delimiters)
 (use-package rainbow-delimiters
