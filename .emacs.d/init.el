@@ -459,9 +459,9 @@
   :init
   (setq helm-dash-browser-func 'eww)
   (setq helm-dash-docsets-path (expand-file-name "~/.docsets"))
-  (evil-leader/set-key "hdi" 'helm-dash-install-docset)
-  (evil-leader/set-key "hdd" 'helm-dash)
-  (evil-leader/set-key "hda" 'helm-dash-at-point)
+  (evil-leader/set-key "di" 'helm-dash-install-docset)
+  (evil-leader/set-key "dd" 'helm-dash)
+  (evil-leader/set-key "da" 'helm-dash-at-point)
   (add-hook 'enh-ruby-mode-hook '(lambda () (setq-local helm-dash-docsets '("Ruby"))))
   (add-hook 'projectile-rails-mode-hook '(lambda () (setq-local helm-dash-docsets '("Ruby on Rails"))))
   (add-hook 'emacs-lisp-mode-hook '(lambda () (setq-local helm-dash-docsets '("Emacs Lisp"))))
@@ -980,6 +980,7 @@
   (evil-define-key 'normal slime-mode-map (kbd ",si") 'slime)
   (evil-define-key 'normal slime-mode-map (kbd ",sq") 'slime-quit-lisp)
   (evil-define-key 'normal slime-mode-map (kbd ",sr") 'slime-restart-inferior-lisp)
+  (evil-define-key 'normal slime-mode-map (kbd ",r") 'slime-repl)
   (add-hook 'slime-repl-mode-hook (lambda () (linum-mode -1)))
   :config
   (slime-setup '(slime-repl slime-fancy slime-banner slime-fuzzy slime-indentation))
