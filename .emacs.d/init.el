@@ -877,7 +877,9 @@
   (push '("*Process List*" :noselect t) popwin:special-display-config)
   (push '("*Warnings*" :height 0.3 :noselect t) popwin:special-display-config)
   (push '("*Flycheck errors*" :stick t :height 0.3 :noselect t) popwin:special-display-config)
-  (push '("*compilation*" :stick t :height 0.2 :tail t :noselect t) popwin:special-display-config)
+  (push '("*compilation*" :stick t :height 0.2 :tail t :noselect t)
+        popwin:special-display-config)
+  (push '("*Codic Result*" :noselect t :stick t) popwin:special-display-config)
   (push "*slime-apropos*" popwin:special-display-config)
   (push '("*slime-macroexpansion*" :noselect t :height 0.3) popwin:special-display-config)
   (push "*slime-description*" popwin:special-display-config)
@@ -1082,13 +1084,20 @@
 
 (el-get-bundle google-translate)
 (use-package google-translate
-  :commands (google-translate-at-point google-translate-query-translate)
+  :commands (google-translate-at-point
+             google-translate-query-translate
+             google-translate-query-translate-reverse)
   :init
   (evil-leader/set-key "gta" 'google-translate-at-point)
   (evil-leader/set-key "gtq" 'google-translate-query-translate)
+  (evil-leader/set-key "gtQ" 'google-translate-query-translate-reverse)
   :config
   (setq google-translate-default-source-language "en"
         google-translate-default-target-language "ja"))
+
+(el-get-bundle syohex/emacs-codic)
+(use-package codic
+  :commands (codic codic-translate))
 
 (el-get-bundle yaml-mode)
 (use-package yaml-mode
