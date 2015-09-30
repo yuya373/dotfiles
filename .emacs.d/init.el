@@ -783,6 +783,7 @@
   :mode (("\\.erb\\'" . web-mode)
          ("\\.html?\\'" . web-mode))
   :init
+  (add-hook 'web-mode-hook '(lambda () (turn-off-smartparens-mode)))
   (setq web-mode-markup-indent-offset 2))
 
 ;; shell
