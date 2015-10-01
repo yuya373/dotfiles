@@ -265,7 +265,7 @@ if neobundle#tap('unite.vim')
   function! s:cd_root_and_unite(...)
     let args = join(a:000, ' ')
     execute 'Rooter'
-    execute 'Unite'.' '.args
+    execute 'Unite -start-insert file_rec/async:!'.' '.args
   endfunction
   command! -nargs=* RootAndUnite call s:cd_root_and_unite(<f-args>)
 
@@ -302,7 +302,7 @@ if neobundle#tap('unite.vim')
     nnoremap <silent> [unite]rsr :RootAndUnite file file/new directory/new -input=spec/requests/ -buffer-name=spec/requests<CR>
     nnoremap <silent> [unite]rsf :RootAndUnite file file/new directory/new -input=spec/factories/ -buffer-name=spec/factories<CR>
     nnoremap <silent> [unite]rss :RootAndUnite file file/new directory/new -input=spec/services/ -buffer-name=spec/factories<CR>
-    nnoremap <silent> [unite]rs  :RootAndUnite file file/new directory/new -input=spec/ -buffer-name=spec<CR>
+    nnoremap <silent> [unite]rS  :RootAndUnite file file/new directory/new -input=spec/ -buffer-name=spec<CR>
   endif
 
 

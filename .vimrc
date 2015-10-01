@@ -199,7 +199,7 @@ let g:foldCCtext_tail = 'v:foldend-v:foldstart+1'
 set foldcolumn=3
 
 MyAutoCmd FileType vim setlocal foldlevel=0
-MyAutoCmd Filetype ruby,coffeescript,cpp setlocal foldlevel=1
+MyAutoCmd Filetype ruby,coffeescript,cpp setlocal foldlevel=2
 MyAutoCmd Filetype ruby,coffeescript setlocal foldnestmax=2
 MyAutoCmd FileType haml setlocal foldmethod=manual
 
