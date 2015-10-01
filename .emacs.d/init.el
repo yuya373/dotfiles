@@ -61,6 +61,7 @@
 ;; (setq use-package-verbose t)
 (require 'use-package)
 (require 'diminish)
+(diminish 'hs-minor-mode)
 (diminish 'abbrev-mode)
 
 ;; whitespace
