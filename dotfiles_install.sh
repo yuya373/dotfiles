@@ -12,3 +12,6 @@ ln -sf ~/dotfiles/.zprofile ~/.zprofile
 ln -sf ~/dotfiles/.tmux.conf ~/.tmux.conf
 ln -sf ~/dotfiles/.tmux-powerlinerc.default ~/.tmux-powerlinerc
 ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
+mkdir -p ~/.config/common-lisp/
+ln -sf ~/dotfiles/.config/common-lisp/source-registry.conf ~/.config/common-lisp/source-registry.conf
+ln -sf ~/dotfiles/.sbclrc ~/.sbclrc
