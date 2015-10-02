@@ -23,9 +23,6 @@
   (require 'ls-lisp)
   (setq ls-lisp-use-insert-directory-program nil))
 
-;; folding
-(add-hook 'prog-mode-hook 'hs-minor-mode)
-
 ;; linum
 (setq linum-format "%4d ")
 (add-hook 'prog-mode-hook 'linum-mode)
@@ -61,8 +58,13 @@
 ;; (setq use-package-verbose t)
 (require 'use-package)
 (require 'diminish)
-(diminish 'hs-minor-mode)
 (diminish 'abbrev-mode)
+
+(use-package hs-minor-mode
+             :init
+             (add-hook 'prog-mode-hook 'hs-minor-mode)
+             :config
+             (diminish 'hs-minor-mode))
 
 ;; whitespace
 (use-package whitespace
