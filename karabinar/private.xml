@@ -9,6 +9,7 @@
   <item>
     <name>LeaveInsMode with EISUU(Terminal)</name>
     <identifier>private.app_terminal_esc_with_eisuu</identifier>
+    <only>TERMINAL</only>
     <autogen>
       --KeyToKey-- KeyCode::ESCAPE, KeyCode::ESCAPE, KeyCode::JIS_EISUU
     </autogen>
@@ -72,11 +73,17 @@
     <name>Vim in Preview</name>
     <identifier>private.app_preview_vimium_in_preview</identifier>
     <only>PREVIEW</only>
-    <autogen>__KeyToKey__ KeyCode::J, ModifierFlag::NONE, KeyCode::CURSOR_DOWN</autogen>
-    <autogen>__KeyToKey__ KeyCode::K, ModifierFlag::NONE, KeyCode::CURSOR_UP</autogen>
-    <autogen>__KeyToKey__ KeyCode::H, ModifierFlag::NONE, KeyCode::CURSOR_LEFT</autogen>
-    <autogen>__KeyToKey__ KeyCode::L, ModifierFlag::NONE, KeyCode::CURSOR_RIGHT</autogen>
-    <autogen>__KeyToKey__ KeyCode::D, ModifierFlag::NONE, KeyCode::PAGEDOWN</autogen>
-    <autogen>__KeyToKey__ KeyCode::U, ModifierFlag::NONE, KeyCode::PAGEUP</autogen>
+    <autogen>__KeyToKey__ KeyCode::J, ModifierFlag::CONTROL_L, KeyCode::CURSOR_DOWN</autogen>
+    <autogen>__KeyToKey__ KeyCode::K, ModifierFlag::CONTROL_L, KeyCode::CURSOR_UP</autogen>
+    <autogen>__KeyToKey__ KeyCode::H, ModifierFlag::CONTROL_L, KeyCode::CURSOR_LEFT</autogen>
+    <autogen>__KeyToKey__ KeyCode::L, ModifierFlag::CONTROL_L, KeyCode::CURSOR_RIGHT</autogen>
+    <autogen>__KeyToKey__ KeyCode::D, ModifierFlag::CONTROL_L, KeyCode::PAGEDOWN</autogen>
+    <autogen>__KeyToKey__ KeyCode::U, ModifierFlag::CONTROL_L, KeyCode::PAGEUP</autogen>
+    <autogen>__KeyToKey__ KeyCode::J, ModifierFlag::CONTROL_R, KeyCode::CURSOR_DOWN</autogen>
+    <autogen>__KeyToKey__ KeyCode::K, ModifierFlag::CONTROL_R, KeyCode::CURSOR_UP</autogen>
+    <autogen>__KeyToKey__ KeyCode::H, ModifierFlag::CONTROL_R, KeyCode::CURSOR_LEFT</autogen>
+    <autogen>__KeyToKey__ KeyCode::L, ModifierFlag::CONTROL_R, KeyCode::CURSOR_RIGHT</autogen>
+    <autogen>__KeyToKey__ KeyCode::D, ModifierFlag::CONTROL_R, KeyCode::PAGEDOWN</autogen>
+    <autogen>__KeyToKey__ KeyCode::U, ModifierFlag::CONTROL_R, KeyCode::PAGEUP</autogen>
   </item>
 </root>
