@@ -10,7 +10,15 @@
 (global-set-key "\C-m" 'newline-and-indent)
 (setq large-file-warning-threshold nil)
 (fset 'yes-or-no-p 'y-or-n-p)
-(add-to-list 'default-frame-alist '(font . "Ricty for Powerline-17"))
+;; Ricty フォントの利用
+(create-fontset-from-ascii-font "Ricty for Powerline-17:weight=normal:slant=normal" nil "ricty")
+(set-fontset-font "fontset-ricty"
+                  'unicode
+                  (font-spec :family "Ricty for Powerline" :size 17)
+                  nil
+                  'append)
+(add-to-list 'default-frame-alist '(font . "fontset-ricty"))
+;; (add-to-list 'default-frame-alist '(font . "Ricty for Powerline-17"))
 (setq gc-cons-threshold (* 128 1024 1024))
 (set-language-environment 'utf-8)
 (prefer-coding-system 'utf-8)
@@ -113,7 +121,7 @@
   (setq make-backup-files nil)
   (setq auto-save-list-file-prefix nil)
   (setq create-lockfiles nil)
-  (setq auto-save-buffers-enhanced-interval 0.5)
+  (setq auto-save-buffers-enhanced-interval 1)
   :config
   (auto-save-buffers-enhanced t))
 
@@ -240,20 +248,14 @@
       (define-key evil-operator-state-map (kbd "t") #'evil-ace-jump-char-to-mode) ; similar to t
       (define-key evil-normal-state-map (kbd "f") 'ace-jump-char-mode)
       (evil-leader/set-key "<SPC>" 'ace-jump-word-mode))
-    (defun make-transparent ()
+    (defun toggle-frame-alpha ()
       (interactive)
-      ;; for window system
       (if window-system
-          (progn
-            (set-frame-parameter nil 'alpha 80))))
-    (defun make-opaque ()
-      (interactive)
-      ;; for window system
-      (if window-system
-          (progn
-            (set-frame-parameter nil 'alpha 100))))
-    (evil-leader/set-key "wt" 'make-transparent)
-    (evil-leader/set-key "wT" 'make-opaque)
+          (let ((current-alpha (frame-parameter nil 'alpha)))
+            (if (or (null current-alpha) (= current-alpha 100))
+                (set-frame-parameter nil 'alpha 78)
+              (set-frame-parameter nil 'alpha 100)))))
+    (evil-leader/set-key "wt" 'toggle-frame-alpha)
     )
 
   ;; cleanup whitespace
