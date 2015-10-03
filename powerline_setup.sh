@@ -1,3 +1,5 @@
+set -e
+
 cd ~
 
 git clone https://github.com/erikw/tmux-powerline.git
