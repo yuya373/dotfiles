@@ -240,6 +240,20 @@
       (define-key evil-operator-state-map (kbd "t") #'evil-ace-jump-char-to-mode) ; similar to t
       (define-key evil-normal-state-map (kbd "f") 'ace-jump-char-mode)
       (evil-leader/set-key "<SPC>" 'ace-jump-word-mode))
+    (defun make-transparent ()
+      (interactive)
+      ;; for window system
+      (if window-system
+          (progn
+            (set-frame-parameter nil 'alpha 80))))
+    (defun make-opaque ()
+      (interactive)
+      ;; for window system
+      (if window-system
+          (progn
+            (set-frame-parameter nil 'alpha 100))))
+    (evil-leader/set-key "wt" 'make-transparent)
+    (evil-leader/set-key "wT" 'make-opaque)
     )
 
   ;; cleanup whitespace
@@ -888,7 +902,7 @@
   (push "*slime-description*" popwin:special-display-config)
   (push '("*slime-compilation*" :noselect t) popwin:special-display-config)
   (push "*slime-xref*" popwin:special-display-config)
-  (push '("*inferior-lisp*" :noselect t :tail t) popwin:special-display-config)
+  (push '("*inferior-lisp*" :noselect t :tail t :stick t) popwin:special-display-config)
   (push '(sldb-mode :stick t) popwin:special-display-config)
   (push '(slime-repl-mode :stick t :position bottom :height 0.3) popwin:special-display-config)
   (push 'slime-connection-list-mode popwin:special-display-config)
@@ -996,17 +1010,17 @@
     (add-hook 'slime-repl-mode-hook '(lambda () (set-up-slime-ac t)))))
 
 ;; theme
-(el-get-bundle bbatsov/solarized-emacs)
-(setq solarized-distinct-fringe-background t)
-(setq solarized-use-variable-pitch nil)
-(setq solarized-high-contrast-mode-line t)
-(add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/solarized-emacs")
-(load-theme 'solarized-dark t)
+;; (el-get-bundle bbatsov/solarized-emacs)
+;; (setq solarized-distinct-fringe-background t)
+;; (setq solarized-use-variable-pitch nil)
+;; (setq solarized-high-contrast-mode-line t)
+;; (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/solarized-emacs")
+;; (load-theme 'solarized-dark t)
 
 (el-get-bundle color-theme-solarized)
-;; (set-frame-parameter nil 'background-mode 'dark)
-;; (set-terminal-parameter nil 'background-mode 'dark)
-;; (load-theme 'solarized t)
+(set-frame-parameter nil 'background-mode 'dark)
+(set-terminal-parameter nil 'background-mode 'dark)
+(load-theme 'solarized t)
 
 (el-get-bundle color-theme-zenburn)
 ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/color-theme-zenburn")
@@ -1230,7 +1244,7 @@
   :commands (ace-window aw-select aw-switch-to-window)
   :init
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-  (evil-leader/set-key "w" 'ace-window))
+  (evil-leader/set-key "aw" 'ace-window))
 
 (el-get-bundle elixir)
 (use-package elixir-mode
