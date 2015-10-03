@@ -60,10 +60,9 @@
 (require 'diminish)
 (diminish 'abbrev-mode)
 
-(use-package hs-minor-mode
-             :init
-             (add-hook 'prog-mode-hook 'hs-minor-mode)
+(use-package hideshow
              :config
+             (add-hook 'prog-mode-hook 'hs-minor-mode)
              (diminish 'hs-minor-mode))
 
 ;; whitespace
