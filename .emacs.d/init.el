@@ -5,7 +5,13 @@
 
 ;; config
 (setq split-width-threshold 110)
-
+;; 警告音の代わりに画面フラッシュ
+;; (setq visible-bell t)
+;; 警告音もフラッシュも全て無効(警告音が完全に鳴らなくなるので注意)
+(setq ring-bell-function 'ignore)
+;; スクリプトを保存する時，自動的に chmod +x を行う
+(add-hook 'after-save-hook
+          'executable-make-buffer-file-executable-if-script-p)
 (define-key minibuffer-local-completion-map (kbd "C-w") 'backward-kill-word)
 (global-set-key "\C-m" 'newline-and-indent)
 (setq large-file-warning-threshold nil)
@@ -540,7 +546,7 @@
   :init
   (evil-leader/set-key "gf" 'magit-fetch-popup)
   (evil-leader/set-key "gb" 'magit-blame-popup)
-  (evil-leader/set-key "gg" 'magit-status)
+  (evil-leader/set-key "gs" 'magit-status)
   (add-hook 'magit-mode-hook '(lambda () (linum-mode -1)))
   (setq magit-push-always-verify nil)
   (setq magit-branch-arguments nil)
@@ -610,12 +616,12 @@
   :commands (git-gutter-mode)
   :init
   (add-hook 'projectile-mode-hook 'git-gutter-mode)
-  (evil-leader/set-key "gR" 'git-gutter:update-all-windows)
-  (evil-leader/set-key "gP" 'git-gutter:popup-hunk)
-  (evil-leader/set-key "gn" 'git-gutter:next-hunk)
-  (evil-leader/set-key "gp" 'git-gutter:previous-hunk)
-  (evil-leader/set-key "gs" 'git-gutter:stage-hunk)
-  (evil-leader/set-key "gr" 'git-gutter:revert-hunk)
+  (evil-leader/set-key "ggr" 'git-gutter:update-all-windows)
+  (evil-leader/set-key "ggP" 'git-gutter:popup-hunk)
+  (evil-leader/set-key "ggn" 'git-gutter:next-hunk)
+  (evil-leader/set-key "ggp" 'git-gutter:previous-hunk)
+  (evil-leader/set-key "ggs" 'git-gutter:stage-hunk)
+  (evil-leader/set-key "ggr" 'git-gutter:revert-hunk)
   (setq git-gutter:update-interval 2)
   :config
   (custom-set-variables
