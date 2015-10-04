@@ -254,6 +254,14 @@
       (define-key evil-operator-state-map (kbd "t") #'evil-ace-jump-char-to-mode) ; similar to t
       (define-key evil-normal-state-map (kbd "f") 'ace-jump-char-mode)
       (evil-leader/set-key "<SPC>" 'ace-jump-word-mode))
+    (defun toggle-window-maximized ()
+      (interactive)
+      (if window-system
+        (let ((current-size (frame-parameter nil 'fullscreen)))
+          (message "%s" current-size)
+          (if (null current-size)
+              (set-frame-parameter nil 'fullscreen 'maximized)
+            (set-frame-parameter nil 'fullscreen nil)))))
     (defun toggle-frame-alpha ()
       (interactive)
       (if window-system
@@ -261,6 +269,7 @@
             (if (or (null current-alpha) (= current-alpha 100))
                 (set-frame-parameter nil 'alpha 78)
               (set-frame-parameter nil 'alpha 100)))))
+    (evil-leader/set-key "wm" 'toggle-window-maximized)
     (evil-leader/set-key "wt" 'toggle-frame-alpha)
     )
 
