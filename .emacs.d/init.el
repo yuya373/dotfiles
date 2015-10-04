@@ -5,10 +5,19 @@
 
 ;; config
 (setq split-width-threshold 110)
-;; 警告音の代わりに画面フラッシュ
-;; (setq visible-bell t)
-;; 警告音もフラッシュも全て無効(警告音が完全に鳴らなくなるので注意)
-(setq ring-bell-function 'ignore)
+(when window-system
+  ;; Ricty フォントの利用
+  (create-fontset-from-ascii-font "Ricty for Powerline-17:weight=normal:slant=normal" nil "ricty")
+  (set-fontset-font "fontset-ricty"
+                    'unicode
+                    (font-spec :family "Ricty for Powerline" :size 17)
+                    nil
+                    'append)
+  (add-to-list 'default-frame-alist '(font . "fontset-ricty"))
+    ;; 警告音の代わりに画面フラッシュ
+    ;; (setq visible-bell t)
+    ;; 警告音もフラッシュも全て無効(警告音が完全に鳴らなくなるので注意)
+    (setq ring-bell-function 'ignore))
 ;; スクリプトを保存する時，自動的に chmod +x を行う
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
@@ -16,15 +25,6 @@
 (global-set-key "\C-m" 'newline-and-indent)
 (setq large-file-warning-threshold nil)
 (fset 'yes-or-no-p 'y-or-n-p)
-;; Ricty フォントの利用
-(create-fontset-from-ascii-font "Ricty for Powerline-17:weight=normal:slant=normal" nil "ricty")
-(set-fontset-font "fontset-ricty"
-                  'unicode
-                  (font-spec :family "Ricty for Powerline" :size 17)
-                  nil
-                  'append)
-(add-to-list 'default-frame-alist '(font . "fontset-ricty"))
-;; (add-to-list 'default-frame-alist '(font . "Ricty for Powerline-17"))
 (setq gc-cons-threshold (* 128 1024 1024))
 (set-language-environment 'utf-8)
 (prefer-coding-system 'utf-8)
@@ -490,6 +490,7 @@
 (use-package helm-dash
   :commands (helm-dash-at-point helm-dash helm-dash-install-docset)
   :init
+  (setq helm-dash-min-length 1)
   (setq helm-dash-browser-func 'eww)
   (setq helm-dash-docsets-path (expand-file-name "~/.docsets"))
   (evil-leader/set-key "di" 'helm-dash-install-docset)
