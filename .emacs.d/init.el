@@ -626,7 +626,7 @@
   :commands (git-gutter-mode)
   :init
   (add-hook 'projectile-mode-hook 'git-gutter-mode)
-  (evil-leader/set-key "ggr" 'git-gutter:update-all-windows)
+  (evil-leader/set-key "ggu" 'git-gutter:update-all-windows)
   (evil-leader/set-key "ggP" 'git-gutter:popup-hunk)
   (evil-leader/set-key "ggn" 'git-gutter:next-hunk)
   (evil-leader/set-key "ggp" 'git-gutter:previous-hunk)
