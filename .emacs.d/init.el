@@ -174,8 +174,6 @@
 (el-get-bundle evil-surround)
 (el-get-bundle evil-terminal-cursor-changer)
 (el-get-bundle evil-visualstar)
-(el-get-bundle fold-this)
-(el-get-bundle Dewdrops/evil-extra-operator)
 
 (use-package evil
   :init
@@ -188,22 +186,12 @@
         evil-shift-width 2
         evil-cross-lines t)
   :config
-  (use-package evil-leader :config
+  (use-package evil-leader
+    :config
     (global-evil-leader-mode)
     (evil-leader/set-leader "<SPC>"))
-  ;; init evil-mode
   (evil-mode t)
   (diminish 'undo-tree-mode)
-  (use-package evil-lisp-state
-    :init
-    (defun evil-lisp-state-lisp-mode-hook ()
-      (require 'evil-lisp-state)
-      (add-to-list 'evil-lisp-state-major-modes 'lisp-mode))
-    (add-hook 'lisp-mode-hook 'evil-lisp-state-lisp-mode-hook)
-
-    (defun evil-lisp-state-emacs-lisp-mode-hook ()
-      (require 'evil-lisp-state))
-    (add-hook 'emacs-lisp-mode-hook 'evil-lisp-state-emacs-lisp-mode-hook))
   (use-package evil-visualstar :config (global-evil-visualstar-mode))
   (use-package evil-terminal-cursor-changer)
   (use-package evil-surround :config (global-evil-surround-mode t))
@@ -233,15 +221,6 @@
     :init
     (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
     (define-key evil-outer-text-objects-map "a" 'evil-outer-arg))
-  (use-package evil-extra-operator
-    :init
-    (use-package fold-this
-      :init
-      (evil-leader/set-key "ft" 'fold-this)
-      (evil-leader/set-key "fa" 'fold-this-all)
-      (evil-leader/set-key "fu" 'fold-this-unfold-all))
-    :config
-    (global-evil-extra-operator-mode 1))
   (use-package evil-integration
     :init
     (el-get-bundle ace-jump-mode)
@@ -380,9 +359,19 @@
 (el-get-bundle helm-ls-git)
 (el-get-bundle helm-ag)
 (use-package helm
-  ;; :commands (helm-M-x helm-buffers-list helm-recent helm-browse-project
-  ;;                     helm-for-files helm-do-ag-project-root
-  ;;                     helm-do-ag-buffers)
+  :commands (helm-etags-select
+             helm-do-ag
+             helm-do-ag-buffers
+             helm-M-x
+             helm-buffers-list
+             helm-find-file-at
+             helm-recentf
+             helm-browse-project
+             helm-find-files
+             helm-resume
+             helm-mini
+             helm-semantic-or-imenu
+             helm-show-kill-ring)
   :init
   (setq helm-M-x-fuzzy-match t
         helm-apropos-fuzzy-match t
@@ -512,6 +501,7 @@
 
 (el-get-bundle auto-complete)
 (use-package auto-complete
+  :commands (global-auto-complete-mode)
   :init
   (setq ac-auto-start 3
         ac-delay 0.2
@@ -528,21 +518,26 @@
   (setq-default ac-sources '(ac-source-filename ac-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers))
   (add-hook 'emacs-lisp-mode-hook (lambda () (add-to-list 'ac-sources 'ac-source-symbols)))
   :config
-  (use-package auto-complete-config
-    :config
-    (ac-config-default))
+
   (evil-define-key 'insert ac-menu-map (kbd "C-n") 'ac-next)
   (evil-define-key 'insert ac-menu-map (kbd "C-p") 'ac-previous)
   (evil-define-key 'insert ac-menu-map (kbd "<S-tab>") 'ac-previous)
   (ac-set-trigger-key "TAB")
-  (diminish 'auto-complete-mode))
+  ;; (diminish 'auto-complete-mode)
+  )
+
+(use-package auto-complete-config
+    :commands (ac-config-default)
+    :init
+    (add-hook 'after-init-hook 'ac-config-default))
 
 (use-package eldoc
   :commands (eldoc-mode)
   :init
   (add-hook 'prog-mode-hook 'eldoc-mode)
   :config
-  (diminish 'eldoc-mode))
+  ;; (diminish 'eldoc-mode)
+  )
 
 ;; git
 (el-get-bundle magit)
@@ -823,7 +818,7 @@
 ;; shell
 (use-package eshell
   :commands (eshell)
-  :init
+  :config
   (use-package pcomplete)
   (add-to-list 'ac-modes 'eshell-mode)
   (ac-define-source pcomplete
@@ -836,7 +831,6 @@
                                          ac-source-words-in-buffer
                                          ac-source-dictionary))
                                  (evil-define-key 'insert eshell-mode-map (kbd "C-p") 'helm-eshell-history)))
-  :config
   (setq eshell-ask-to-save-history (quote always))
   (setq eshell-cmpl-cycle-completions nil)
   (setq eshell-cmpl-ignore-case t)
@@ -858,8 +852,9 @@
                 ())))
 (el-get-bundle exec-path-from-shell)
 (use-package exec-path-from-shell
-  :config
-  (exec-path-from-shell-initialize))
+  :commands (exec-path-from-shell-initialize)
+  :init
+  (add-hook 'after-init-hook 'exec-path-from-shell-initialize))
 
 (el-get-bundle shell-pop)
 (use-package shell-pop
@@ -899,12 +894,13 @@
 
 (el-get-bundle popwin)
 (use-package popwin
+  :commands (popwin-mode)
   :init
   (setq popwin:adjust-other-windows t)
   (setq popwin:popup-window-position 'bottom)
   (setq popwin:popup-window-height 0.3)
+  (add-hook 'after-init-hook #'(lambda () (popwin-mode t)))
   :config
-  (popwin-mode t)
   (evil-leader/set-key "bl" 'popwin:popup-last-buffer)
   (evil-leader/set-key "bp" 'popwin:pop-to-buffer)
   (evil-leader/set-key "bf" 'popwin:find-file)
@@ -991,14 +987,18 @@
   (setq tab-width 2)
   (setq slime-complete-symbol*-fancy t)
   (setq slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
-  (if (executable-find "ros")
-      (progn
-        (let ((slime-helper "~/.roswell/impls/ALL/ALL/quicklisp/slime-helper.el"))
-          (if (file-exists-p slime-helper)
-              (load (expand-file-name slime-helper))
-            (shell-command "ros -Q -e '(ql:quickload :quicklisp-slime-helper)' -q")))
-        (setq inferior-lisp-program "ros -L sbcl -Q -l ~/.sbclrc run"))
-    (setq inferior-lisp-program (executable-find "sbcl")))
+  (defun set-inferior-lisp-program ()
+    (interactive)
+    (if (executable-find "ros")
+        (progn
+          (message (executable-find "ros"))
+          (let ((slime-helper "~/.roswell/impls/ALL/ALL/quicklisp/slime-helper.el"))
+            (if (file-exists-p slime-helper)
+                (load (expand-file-name slime-helper))
+              (shell-command "ros -Q -e '(ql:quickload :quicklisp-slime-helper)' -q")))
+          (setq inferior-lisp-program "ros -L sbcl -Q -l ~/.sbclrc run"))
+      (setq inferior-lisp-program (executable-find "sbcl"))))
+  (add-hook 'lisp-mode-hook 'set-inferior-lisp-program)
   (setq slime-contribs '(slime-repl slime-fancy slime-banner slime-fuzzy))
   (evil-define-key 'normal slime-mode-map (kbd ",me") 'slime-macroexpand-1)
   (evil-define-key 'normal slime-mode-map (kbd ",cc") 'slime-compile-file)
@@ -1245,10 +1245,10 @@
 (use-package auto-complete-clang-async
   :commands (ac-clang-launch-completion-process)
   :init
-  (use-package xcode-headers
-    :init
-    (setq xcode-headers-src-root (expand-file-name "~/dev/PalmX/proj.ios_mac/"))
-    (setq xcode-headers-pbxproj-path "~/dev/PalmX/proj.ios_mac/MiriMemo.xcodeproj/project.pbxproj"))
+  ;; (use-package xcode-headers
+  ;;   :init
+  ;;   (setq xcode-headers-src-root (expand-file-name "~/dev/PalmX/proj.ios_mac/"))
+  ;;   (setq xcode-headers-pbxproj-path "~/dev/PalmX/proj.ios_mac/MiriMemo.xcodeproj/project.pbxproj"))
   (add-hook 'c-mode-common-hook 'ac-clang-launch-completion-process)
   (add-hook 'objc-mode-hook 'auto-complete-mode)
   (add-hook 'objc-mode-hook 'ac-clang-launch-completion-process)
