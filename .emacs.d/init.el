@@ -770,7 +770,7 @@
   (setq enh-ruby-deep-indent-paren nil
         enh-ruby-hanging-paren-deep-indent-level 2)
   (setq enh-ruby-add-encoding-comment-on-save nil)
-  (add-hook 'enh-ruby-mode-hook '(lambda () (setq-local selective-display 4)))
+  ;; (add-hook 'enh-ruby-mode-hook '(lambda () (setq-local selective-display 4)))
   (add-hook 'enh-ruby-mode-hook 'auto-complete-mode)
   (add-hook 'enh-ruby-mode-hook '(lambda () (turn-off-smartparens-mode)))
   (add-hook 'enh-ruby-mode-hook 'electric-pair-mode)
