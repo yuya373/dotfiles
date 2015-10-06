@@ -3,7 +3,13 @@
 ;;; Code:
 
 
+;; (add-to-list 'load-path "~/.emacs.d/el-get/initchart")
+;; (require 'initchart)
+;; (initchart-record-execution-time-of load file)
+;; (initchart-record-execution-time-of require feature)
+
 ;; config
+
 (setq split-width-threshold 110)
 (when window-system
   ;; Ricty フォントの利用
@@ -110,8 +116,8 @@
 
 ; initchart
 (el-get-bundle yuttie/initchart)
-(use-package initchart
-  :commands (initchart-record-execution-time-of))
+;; (use-package initchart
+;;   :commands (initchart-record-execution-time-of))
 ;; (initchart-record-execution-time-of load file)
 ;; (initchart-record-execution-time-of require feature)
 
