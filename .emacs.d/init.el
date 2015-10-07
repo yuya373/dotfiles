@@ -400,7 +400,7 @@
         helm-ff-file-name-history-use-recentf t
         helm-exit-idle-delay 0
         helm-ff-search-library-in-sexp t
-        helm-move-to-line-cycle-in-source t
+        helm-move-to-line-cycle-in-source nil
         helm-echo-input-in-header-line t)
   :config
   (use-package helm-config)
@@ -721,7 +721,10 @@
 (use-package markdown-mode
   :mode (("\\.markdown\\'" . markdown-mode)
          ("\\.md\\'" . markdown-mode)
-         ("PULLREQ_MSG" . markdown-mode)))
+         ("PULLREQ_MSG" . markdown-mode))
+  :init
+  (setq tab-width 2)
+  (add-hook 'markdown-mode-hook 'gfm-mode))
 
 ;; ruby
 (setq ruby-insert-encoding-magic-comment nil)
