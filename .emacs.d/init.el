@@ -80,6 +80,11 @@
 (require 'diminish)
 (diminish 'abbrev-mode)
 
+(el-get-bundle exec-path-from-shell)
+(use-package exec-path-from-shell
+             :config
+             (exec-path-from-shell-initialize))
+
 (use-package hideshow
              :config
              (add-hook 'prog-mode-hook 'hs-minor-mode)
@@ -863,11 +868,6 @@
                  (list "ridgepole-test" "bundle exec rake db:ridgepole:apply[test]")
                  (list "ridgepole-dev" "bundle exec rake db:ridgepole:apply[development]"))
                 ())))
-(el-get-bundle exec-path-from-shell)
-(use-package exec-path-from-shell
-  :commands (exec-path-from-shell-initialize)
-  :init
-  (add-hook 'after-init-hook 'exec-path-from-shell-initialize))
 
 (el-get-bundle shell-pop)
 (use-package shell-pop
@@ -1053,11 +1053,11 @@
 (set-terminal-parameter nil 'background-mode 'dark)
 (load-theme 'solarized t)
 
-(el-get-bundle color-theme-zenburn)
+;; (el-get-bundle color-theme-zenburn)
 ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/color-theme-zenburn")
 ;; (load-theme 'zenburn t)
 
-(el-get-bundle atom-dark-theme)
+;; (el-get-bundle atom-dark-theme)
 ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/atom-dark-theme")
 ;; (load-theme 'atom-dark t)
 
@@ -1253,22 +1253,22 @@
   (add-hook 'objc-mode-hook 'google-set-c-style)
   (add-hook 'c-mode-common-hook 'google-set-c-style))
 
-(el-get-bundle yuya373/xcode-headers)
-(el-get-bundle clang-complete-async)
-(use-package auto-complete-clang-async
-  :commands (ac-clang-launch-completion-process)
-  :init
-  ;; (use-package xcode-headers
-  ;;   :init
-  ;;   (setq xcode-headers-src-root (expand-file-name "~/dev/PalmX/proj.ios_mac/"))
-  ;;   (setq xcode-headers-pbxproj-path "~/dev/PalmX/proj.ios_mac/MiriMemo.xcodeproj/project.pbxproj"))
-  (add-hook 'c-mode-common-hook 'ac-clang-launch-completion-process)
-  (add-hook 'objc-mode-hook 'auto-complete-mode)
-  (add-hook 'objc-mode-hook 'ac-clang-launch-completion-process)
-  :config
-  (setq ac-clang-complete-executable (executable-find "clang-complete"))
-  (setq ac-clang-cflags (xcode-headers-format-for-cflags))
-  (add-to-list 'ac-sources 'ac-source-clang-async))
+;; (el-get-bundle yuya373/xcode-headers)
+;; (el-get-bundle clang-complete-async)
+;; (use-package auto-complete-clang-async
+;;   :commands (ac-clang-launch-completion-process)
+;;   :init
+;;   ;; (use-package xcode-headers
+;;   ;;   :init
+;;   ;;   (setq xcode-headers-src-root (expand-file-name "~/dev/PalmX/proj.ios_mac/"))
+;;   ;;   (setq xcode-headers-pbxproj-path "~/dev/PalmX/proj.ios_mac/MiriMemo.xcodeproj/project.pbxproj"))
+;;   (add-hook 'c-mode-common-hook 'ac-clang-launch-completion-process)
+;;   (add-hook 'objc-mode-hook 'auto-complete-mode)
+;;   (add-hook 'objc-mode-hook 'ac-clang-launch-completion-process)
+;;   :config
+;;   (setq ac-clang-complete-executable (executable-find "clang-complete"))
+;;   (setq ac-clang-cflags (xcode-headers-format-for-cflags))
+;;   (add-to-list 'ac-sources 'ac-source-clang-async))
 
 (el-get-bundle ace-window)
 (use-package ace-window
