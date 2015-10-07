@@ -478,6 +478,10 @@
   (define-key helm-read-file-map (kbd "C-r") 'helm-ff-run-rename-file)
   (define-key helm-read-file-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
+  (define-key helm-generic-files-map (kbd "C-o") 'helm-ace-ff)
+  (define-key helm-generic-files-map (kbd "C-r") 'helm-ff-run-rename-file)
+  (define-key helm-generic-files-map (kbd "C-h") 'delete-backward-char)
+  (define-key helm-generic-files-map (kbd "TAB") 'helm-execute-persistent-action)
 
   (define-key helm-ag-map (kbd "C-o") 'helm-ag--run-other-window-action))
 
@@ -1271,7 +1275,7 @@
   (evil-leader/set-key "aw" 'ace-window))
 
 (el-get-bundle elixir)
-(use-package elixir-mode
+(use-package elixir
   :mode (("\\.ex\\'" . elixir-mode)
          ("\\.exs\\'" . elixir-mode)
          ("\\.elixir\\'" . elixir-mode)))
@@ -1281,7 +1285,7 @@
   :commands (alchemist-mode)
   :init
   (add-hook 'elixir-mode-hook 'alchemist-mode)
-  (evil-define-key 'normal alchemist-mode-map (kbd ",x")'alchemist-mix)
+  (evil-define-key 'normal alchemist-mode-map (kbd ",x") 'alchemist-mix)
   (evil-define-key 'normal alchemist-mode-map (kbd ",mc") 'alchemist-mix-compile)
   (evil-define-key 'normal alchemist-mode-map (kbd ",mr") 'alchemist-mix-run)
   (evil-define-key 'normal alchemist-mode-map (kbd ",tt") 'alchemist-mix-test-at-point)
