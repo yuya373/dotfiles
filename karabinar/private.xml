@@ -7,9 +7,9 @@
     <autogen>__KeyToKey__ KeyCode::TAB, KeyCode::SPACE</autogen>
   </item>
   <item>
-    <name>LeaveInsMode with EISUU(Terminal)</name>
+    <name>LeaveInsMode with EISUU</name>
     <identifier>private.app_terminal_esc_with_eisuu</identifier>
-    <only>TERMINAL</only>
+    <!-- <only>TERMINAL</only> -->
     <autogen>
       --KeyToKey-- KeyCode::ESCAPE, KeyCode::ESCAPE, KeyCode::JIS_EISUU
     </autogen>
