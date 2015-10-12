@@ -269,6 +269,7 @@
               (set-frame-parameter nil 'alpha 100)))))
     (evil-leader/set-key "wm" 'toggle-window-maximized)
     (evil-leader/set-key "wt" 'toggle-frame-alpha)
+    (evil-leader/set-key "nh" 'evil-ex-nohighlight)
     )
 
   ;; cleanup whitespace
