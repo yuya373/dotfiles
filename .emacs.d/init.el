@@ -406,6 +406,8 @@
         helm-completion-in-region-fuzzy-match t
         helm-buffers-fuzzy-matching t)
   (setq helm-prevent-escaping-from-minibuffer t
+        helm-buffers-truncate-lines nil
+        helm-ff-transformer-show-only-basename t
         helm-bookmark-show-location t
         helm-display-header-line t
         helm-split-window-in-side-p nil
@@ -693,14 +695,6 @@
 (use-package projectile-rails
   :commands (projectile-rails-on)
   :init
-  (evil-define-key 'normal projectile-rails-mode-map ",rfm" 'projectile-rails-find-model)
-  (evil-define-key 'normal projectile-rails-mode-map ",rfc" 'projectile-rails-find-controller)
-  (evil-define-key 'normal projectile-rails-mode-map ",rfv" 'projectile-rails-find-view)
-  (evil-define-key 'normal projectile-rails-mode-map ",rfs" 'projectile-rails-find-spec)
-  (evil-define-key 'normal projectile-rails-mode-map ",rfl" 'projectile-rails-find-lib)
-  (evil-define-key 'normal projectile-rails-mode-map ",rfi" 'projectile-rails-find-initializer)
-  (evil-define-key 'normal projectile-rails-mode-map ",rfe" 'projectile-rails-find-environment)
-  (evil-define-key 'normal projectile-rails-mode-map ",rfd" 'projectile-rails-find-migration)
   (evil-define-key 'normal projectile-rails-mode-map ",rcm" 'projectile-rails-find-current-model)
   (evil-define-key 'normal projectile-rails-mode-map ",rcc" 'projectile-rails-find-current-controller)
   (evil-define-key 'normal projectile-rails-mode-map ",rcv" 'projectile-rails-find-current-view)
@@ -713,7 +707,71 @@
   (evil-define-key 'normal projectile-rails-mode-map ",gf" 'projectile-rails-goto-file-at-point)
   (evil-define-key 'normal projectile-rails-mode-map ",gm" 'projectile-rails-goto-gemfile)
   (evil-define-key 'normal projectile-rails-mode-map ",gr" 'projectile-rails-goto-routes)
-  (add-hook 'projectile-mode-hook 'projectile-rails-on))
+  (add-hook 'projectile-mode-hook 'projectile-rails-on)
+
+  :config
+
+  (defun define-rails-find-file-in (dir)
+    (let* ((normalized-dir (subst-char-in-string ?/ ?- (substring dir 0 -1)))
+           (fname (intern (concat "find-file-in-" normalized-dir))))
+      `(defun ,fname ()
+         (interactive)
+         (let* ((rails-root (projectile-rails-root))
+                (target-dir (concat rails-root ,dir)))
+           (message target-dir)
+           (helm-find-files-1 target-dir)))))
+
+  (defmacro rails-find-file-in (dirs)
+    `(progn
+       ,@(mapcar #'define-rails-find-file-in
+                 dirs)))
+
+  (rails-find-file-in ("spec/"
+                       "spec/controllers/"
+                       "spec/factories/"
+                       "spec/features/"
+                       "spec/jobs/"
+                       "spec/lib/"
+                       "spec/mailers/"
+                       "spec/models/"
+                       "spec/requests/"
+                       "spec/routing/"
+                       "spec/services/"))
+
+  (evil-define-key 'normal projectile-rails-mode-map ",rtt" 'find-file-in-spec)
+  (evil-define-key 'normal projectile-rails-mode-map ",rtc" 'find-file-in-spec-controllers)
+  (evil-define-key 'normal projectile-rails-mode-map ",rtf" 'find-file-in-spec-factories)
+  (evil-define-key 'normal projectile-rails-mode-map ",rtj" 'find-file-in-spec-jobs)
+  (evil-define-key 'normal projectile-rails-mode-map ",rtl" 'find-file-in-spec-lib)
+  (evil-define-key 'normal projectile-rails-mode-map ",rtm" 'find-file-in-spec-models)
+  (evil-define-key 'normal projectile-rails-mode-map ",rtr" 'find-file-in-spec-requests)
+  (evil-define-key 'normal projectile-rails-mode-map ",rts" 'find-file-in-spec-services)
+
+  (rails-find-file-in ("config/initializers/"
+                       "config/environments/"
+                       "db/migrate/"
+                       "db/ridgepole/"
+                       "lib/"))
+  (evil-define-key 'normal projectile-rails-mode-map ",rfl" 'find-fine-in-lib)
+  (evil-define-key 'normal projectile-rails-mode-map ",rfi" 'find-file-in-config-initializers)
+  (evil-define-key 'normal projectile-rails-mode-map ",rfe" 'find-file-in-config-environments)
+  (evil-define-key 'normal projectile-rails-mode-map ",rfdm" 'find-file-in-db-migrate)
+  (evil-define-key 'normal projectile-rails-mode-map ",rfdr" 'find-file-in-db-ridgepole)
+
+  (rails-find-file-in ("app/controllers/"
+                       "app/helpers/"
+                       "app/jobs/"
+                       "app/mailers/"
+                       "app/models/"
+                       "app/services/"
+                       "app/validators/"
+                       "app/views/"))
+  (evil-define-key 'normal projectile-rails-mode-map ",rfc" 'find-file-in-app-controllers)
+  (evil-define-key 'normal projectile-rails-mode-map ",rfh" 'find-file-in-app-helpers)
+  (evil-define-key 'normal projectile-rails-mode-map ",rfj" 'find-file-in-app-jobs)
+  (evil-define-key 'normal projectile-rails-mode-map ",rfm" 'find-file-in-app-models)
+  (evil-define-key 'normal projectile-rails-mode-map ",rfs" 'find-file-in-app-services)
+  (evil-define-key 'normal projectile-rails-mode-map ",rfv" 'find-file-in-app-views))
 
 ;; syntax check
 (el-get-bundle flycheck)
