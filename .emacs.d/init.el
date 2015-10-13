@@ -80,6 +80,14 @@
 (require 'diminish)
 (diminish 'abbrev-mode)
 
+(el-get-bundle el-get-lock
+  :type github
+  :pkgname tarao/el-get-lock
+  :name el-get-lock)
+
+(use-package el-get-lock
+  :commands (el-get-lock))
+
 (el-get-bundle exec-path-from-shell)
 (use-package exec-path-from-shell
              :config
@@ -261,6 +269,7 @@
               (set-frame-parameter nil 'alpha 100)))))
     (evil-leader/set-key "wm" 'toggle-window-maximized)
     (evil-leader/set-key "wt" 'toggle-frame-alpha)
+    (evil-leader/set-key "nh" 'evil-ex-nohighlight)
     )
 
   ;; cleanup whitespace
@@ -590,12 +599,6 @@
   (define-key magit-blame-mode-map "p" 'magit-blame-popup)
   (define-key magit-blame-mode-map "q" 'magit-blame-quit)
 
-  (define-key git-rebase-mode-map "k" 'previous-line)
-  (define-key git-rebase-mode-map "j" 'next-line)
-  (define-key git-rebase-mode-map "K" 'git-rebase-kill-line)
-  (define-key git-rebase-mode-map "n" 'git-rebase-move-line-down)
-  (define-key git-rebase-mode-map "p" 'git-rebase-move-line-up)
-
   (define-key magit-mode-map "\s" nil) ;space I use space as my evil-leader key
   (define-key magit-diff-mode-map "\s" nil) ;space
   (define-key magit-diff-mode-map "j" 'next-line)
@@ -626,7 +629,15 @@
   (define-key magit-remote-section-map "k" nil)
 
   (define-key magit-tag-section-map "k" nil)
-  (define-key magit-tag-section-map "K" 'magit-tag-delete))
+  (define-key magit-tag-section-map "K" 'magit-tag-delete)
+
+  (use-package git-rebase
+    :config
+    (define-key git-rebase-mode-map "k" 'previous-line)
+    (define-key git-rebase-mode-map "j" 'next-line)
+    (define-key git-rebase-mode-map "K" 'git-rebase-kill-line)
+    (define-key git-rebase-mode-map "n" 'git-rebase-move-line-down)
+    (define-key git-rebase-mode-map "p" 'git-rebase-move-line-up)))
 
 (use-package gist
   :commands (gist-list gist-region gist-region-private
