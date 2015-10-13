@@ -408,7 +408,7 @@
   (setq helm-prevent-escaping-from-minibuffer t
         helm-bookmark-show-location t
         helm-display-header-line t
-        helm-split-window-in-side-p t
+        helm-split-window-in-side-p nil
         helm-always-two-windows t
         helm-autoresize-mode t
         helm-ff-file-name-history-use-recentf t
@@ -509,6 +509,7 @@
   (evil-leader/set-key "di" 'helm-dash-install-docset)
   (evil-leader/set-key "dd" 'helm-dash)
   (evil-leader/set-key "da" 'helm-dash-at-point)
+  (add-hook 'markdown-mode-hook '(lambda () (setq-local helm-dash-docsets '("Markdown"))))
   (add-hook 'enh-ruby-mode-hook '(lambda () (setq-local helm-dash-docsets '("Ruby"))))
   (add-hook 'projectile-rails-mode-hook '(lambda () (setq-local helm-dash-docsets '("Ruby on Rails"))))
   (add-hook 'emacs-lisp-mode-hook '(lambda () (setq-local helm-dash-docsets '("Emacs Lisp"))))
@@ -735,12 +736,11 @@
 (el-get-bundle markdown-mode)
 (el-get-bundle markdown-toc)
 (use-package markdown-mode
-  :mode (("\\.markdown\\'" . markdown-mode)
-         ("\\.md\\'" . markdown-mode)
-         ("PULLREQ_MSG" . markdown-mode))
+  :mode (("\\.markdown\\'" . gfm-mode)
+         ("\\.md\\'" . gfm-mode)
+         ("PULLREQ_MSG" . gfm-mode))
   :init
-  (setq tab-width 2)
-  (add-hook 'markdown-mode-hook 'gfm-mode))
+  (add-hook 'markdown-mode-hook '(lambda () (set (make-local-variable 'tab-width) 2))))
 
 ;; ruby
 (setq ruby-insert-encoding-magic-comment nil)
@@ -1195,6 +1195,11 @@
 (use-package open-junk-file
   :commands (open-junk-file)
   :init
+  (defun open-junk-dir ()
+    (interactive)
+    (let ((junk-dir "~/Dropbox/junk"))
+      (dired junk-dir)))
+  (evil-leader/set-key "ml" 'open-junk-dir)
   (evil-leader/set-key "mn" 'open-junk-file)
   :config
   (setq open-junk-file-format "~/Dropbox/junk/%Y-%m%d-%H%M%S."))
