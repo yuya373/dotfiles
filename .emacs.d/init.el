@@ -82,7 +82,7 @@
 
 (el-get-bundle el-get-lock
   :type github
-  :pkgname tarao/el-get-lock
+  :pkgname "tarao/el-get-lock"
   :name el-get-lock)
 
 (use-package el-get-lock
@@ -374,7 +374,7 @@
   (diminish 'guide-key-mode))
 
 ;; helm
-(el-get-bundle async)
+;; (el-get-bundle async)
 (el-get-bundle helm)
 (el-get-bundle helm-ls-git)
 (el-get-bundle helm-ag)
@@ -420,6 +420,7 @@
   (use-package helm-config)
   (use-package helm-ls-git
     :init
+    (setq helm-ls-git-default-sources '(helm-source-ls-git))
     (setq helm-ls-git-fuzzy-match t))
   (use-package helm-ag
     :config
