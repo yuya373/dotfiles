@@ -156,6 +156,7 @@
   :commands (turn-on-smartparens-mode)
   :init
   (add-hook 'prog-mode-hook 'turn-on-smartparens-mode)
+  (add-hook 'emacs-lisp-mode-hook 'turn-off-smartparens-mode)
   :config
   (use-package smartparens-config)
   ;; (defun my-smartparens-pair-newline-and-indent (id action context)
