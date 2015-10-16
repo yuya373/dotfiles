@@ -709,6 +709,11 @@
   (evil-define-key 'normal projectile-rails-mode-map ",gm" 'projectile-rails-goto-gemfile)
   (evil-define-key 'normal projectile-rails-mode-map ",gr" 'projectile-rails-goto-routes)
   (add-hook 'projectile-mode-hook 'projectile-rails-on)
+  (defun set-projectile-rails-tags-command ()
+    (interactive)
+    (when (projectile-rails-root)
+      (setq projectile-tags-command (concat "ctags -Re -f TAGS --languages=+Ruby --languages=-JavaScript " (projectile-rails-root)))))
+  (add-hook 'projectile-rails-mode-hook 'set-projectile-rails-tags-command)
 
   :config
 
@@ -756,8 +761,8 @@
   (evil-define-key 'normal projectile-rails-mode-map ",rfl" 'find-file-in-lib)
   (evil-define-key 'normal projectile-rails-mode-map ",rfi" 'find-file-in-config-initializers)
   (evil-define-key 'normal projectile-rails-mode-map ",rfe" 'find-file-in-config-environments)
-  (evil-define-key 'normal projectile-rails-mode-map ",rdm" 'find-file-in-db-migrate)
-  (evil-define-key 'normal projectile-rails-mode-map ",rdr" 'find-file-in-db-ridgepole)
+  (evil-define-key 'normal projectile-rails-mode-map ",rfdm" 'find-file-in-db-migrate)
+  (evil-define-key 'normal projectile-rails-mode-map ",rfdr" 'find-file-in-db-ridgepole)
 
   (rails-find-file-in ("app/"
                        "app/controllers/"
@@ -824,7 +829,7 @@
   (evil-define-key 'normal enh-ruby-mode-map (kbd ",bi") 'bundle-install)
   (evil-define-key 'normal enh-ruby-mode-map (kbd ",bo") 'bundle-open))
 (use-package rbenv
-  :commands (global-rbenv-mode rbenv-use-corresponding)
+  :commands (global-rbenv-mode rbenv-use-global rbenv-use-corresponding)
   :init
   (add-hook 'enh-ruby-mode-hook 'global-rbenv-mode)
   (add-hook 'enh-ruby-mode-hook (lambda () (rbenv-use-corresponding))))
@@ -842,6 +847,10 @@
   (add-hook 'enh-ruby-mode-hook 'robe-mode)
   (add-hook 'robe-mode-hook 'robe-start)
   (add-hook 'robe-mode-hook 'ac-robe-setup)
+  (evil-define-key 'normal robe-mode-map (kbd ",rd") 'robe-doc)
+  (evil-define-key 'normal robe-mode-map (kbd ",ra") 'robe-ask)
+  (evil-define-key 'normal robe-mode-map (kbd ",rj") 'robe-jump)
+  (evil-define-key 'normal robe-mode-map (kbd ",rR") 'robe-rails-refresh)
   :config
   (diminish 'robe-mode))
 (use-package enh-ruby-mode
