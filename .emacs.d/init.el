@@ -752,13 +752,14 @@
                        "db/migrate/"
                        "db/ridgepole/"
                        "lib/"))
-  (evil-define-key 'normal projectile-rails-mode-map ",rfl" 'find-fine-in-lib)
+  (evil-define-key 'normal projectile-rails-mode-map ",rfl" 'find-file-in-lib)
   (evil-define-key 'normal projectile-rails-mode-map ",rfi" 'find-file-in-config-initializers)
   (evil-define-key 'normal projectile-rails-mode-map ",rfe" 'find-file-in-config-environments)
-  (evil-define-key 'normal projectile-rails-mode-map ",rfdm" 'find-file-in-db-migrate)
-  (evil-define-key 'normal projectile-rails-mode-map ",rfdr" 'find-file-in-db-ridgepole)
+  (evil-define-key 'normal projectile-rails-mode-map ",rdm" 'find-file-in-db-migrate)
+  (evil-define-key 'normal projectile-rails-mode-map ",rdr" 'find-file-in-db-ridgepole)
 
-  (rails-find-file-in ("app/controllers/"
+  (rails-find-file-in ("app/"
+                       "app/controllers/"
                        "app/helpers/"
                        "app/jobs/"
                        "app/mailers/"
@@ -766,6 +767,7 @@
                        "app/services/"
                        "app/validators/"
                        "app/views/"))
+  (evil-define-key 'normal projectile-rails-mode-map ",rfa" 'find-file-in-app)
   (evil-define-key 'normal projectile-rails-mode-map ",rfc" 'find-file-in-app-controllers)
   (evil-define-key 'normal projectile-rails-mode-map ",rfh" 'find-file-in-app-helpers)
   (evil-define-key 'normal projectile-rails-mode-map ",rfj" 'find-file-in-app-jobs)
@@ -1256,8 +1258,8 @@
   :init
   (defun open-junk-dir ()
     (interactive)
-    (let ((junk-dir "~/Dropbox/junk"))
-      (dired junk-dir)))
+    (let ((junk-dir "~/Dropbox/junk/"))
+      (helm-find-files-1 (expand-file-name junk-dir))))
   (evil-leader/set-key "ml" 'open-junk-dir)
   (evil-leader/set-key "mn" 'open-junk-file)
   :config
