@@ -47,6 +47,9 @@
 (setq linum-format "%4d ")
 (add-hook 'prog-mode-hook 'linum-mode)
 
+;; line wrap
+(add-hook 'prog-mode-hook 'visual-line-mode)
+
 ;; tab
 (setq tab-always-indent t)
 (setq-default indent-tabs-mode nil)
@@ -94,9 +97,10 @@
              (exec-path-from-shell-initialize))
 
 (use-package hideshow
-             :config
-             (add-hook 'prog-mode-hook 'hs-minor-mode)
-             (diminish 'hs-minor-mode))
+  :commands (hs-minor-mode)
+  :config
+  (add-hook 'prog-mode-hook 'hs-minor-mode)
+  (diminish 'hs-minor-mode))
 
 ;; whitespace
 (use-package whitespace
@@ -124,6 +128,7 @@
   (set-face-background 'whitespace-trailing "#d33682")
   (set-face-foreground 'whitespace-newline  "headerColor")
   (set-face-background 'whitespace-newline 'nil)
+  (set-face-background 'whitespace-tab 'nil)
   (global-whitespace-mode)
   (diminish 'global-whitespace-mode))
 
@@ -155,8 +160,8 @@
 (use-package smartparens
   :commands (turn-on-smartparens-mode)
   :init
-  (add-hook 'prog-mode-hook 'turn-on-smartparens-mode)
-  (add-hook 'emacs-lisp-mode-hook 'turn-off-smartparens-mode)
+  ;; (add-hook 'prog-mode-hook 'turn-on-smartparens-mode)
+  (add-hook 'emacs-lisp-mode-hook 'turn-on-smartparens-mode)
   :config
   (use-package smartparens-config)
   ;; (defun my-smartparens-pair-newline-and-indent (id action context)
@@ -277,9 +282,9 @@
   (defun evil-cleanup-whitespace ()
     (interactive)
     (unless (evil-insert-state-p)
-      (whitespace-cleanup-region (point-min) (point-max)))
-    )
+      (whitespace-cleanup-region (point-min) (point-max))))
   (add-hook 'before-save-hook 'evil-cleanup-whitespace)
+
   (defun toggle-folding ()
       (interactive)
     (set-selective-display
@@ -311,6 +316,12 @@
   (define-key evil-normal-state-map (kbd "C-h") 'windmove-left)
   (define-key evil-normal-state-map (kbd "C-l") 'windmove-right)
   (define-key evil-normal-state-map (kbd "C-c") 'evil-window-delete)
+
+  (define-key evil-motion-state-map (kbd "C-k") 'windmove-up)
+  (define-key evil-motion-state-map (kbd "C-j") 'windmove-down)
+  (define-key evil-motion-state-map (kbd "C-h") 'windmove-left)
+  (define-key evil-motion-state-map (kbd "C-l") 'windmove-right)
+  (define-key evil-motion-state-map (kbd "C-c") 'evil-window-delete)
   ;; describe
   (define-key evil-normal-state-map (kbd ",hf") 'describe-function)
   (define-key evil-normal-state-map (kbd ",hv") 'describe-variable)
@@ -408,6 +419,7 @@
         helm-buffers-fuzzy-matching t)
   (setq helm-prevent-escaping-from-minibuffer t
         helm-buffers-truncate-lines nil
+        helm-buffer-max-length nil
         helm-ff-transformer-show-only-basename t
         helm-bookmark-show-location t
         helm-display-header-line t
@@ -427,11 +439,76 @@
     (setq helm-ls-git-fuzzy-match t))
   (use-package helm-ag
     :config
+    (evil-leader/set-key "agg" 'helm-do-ag)
+    (evil-leader/set-key "agb" 'helm-do-ag-buffers)
     (setq helm-ag-insert-at-point 'symbol))
   (helm-mode +1)
+  (diminish 'helm-mode)
+
+  (defun switch-window-if-gteq-3-windows ()
+    (if (>= (length (window-list)) 3)
+        (aw-switch-to-window (aw-select "Ace - Window"))))
+
+  (defun my-evil-vsplit-window (file-name)
+    (let ((evil-vsplit-window-right t)
+          (evil-auto-balance-windows t))
+      (evil-window-vsplit nil (expand-file-name file-name))))
+
+  (defun my-evil-split-window (file-name)
+    (let ((evil-split-window-below nil)
+          (evil-auto-balance-windows t))
+      (evil-window-split nil (expand-file-name file-name))))
+
+  (defun ace-split-find-file (candidate)
+    (switch-window-if-gteq-3-windows)
+    (my-evil-split-window candidate))
+  (defun helm-ace-split-ff ()
+    (interactive)
+    (with-helm-alive-p
+      (helm-quit-and-execute-action 'ace-split-find-file)))
+
+  (defun ace-split-switch-to-buffer (buffer-or-name)
+    (switch-window-if-gteq-3-windows)
+    (let ((file-name (buffer-file-name buffer-or-name)))
+      (if file-name
+          (my-evil-split-window file-name)
+        (let ((window (split-window (selected-window) nil 'above)))
+          (unwind-protect
+              (progn
+                (aw-switch-to-window window)
+                (switch-to-buffer buffer-or-name)))))))
+  (defun helm-ace-split-sb ()
+    (interactive)
+    (with-helm-alive-p
+      (helm-quit-and-execute-action 'ace-split-switch-to-buffer)))
+
+  (defun ace-vsplit-find-file (candidate)
+    (switch-window-if-gteq-3-windows)
+    (my-evil-vsplit-window candidate))
+  (defun helm-ace-vsplit-ff ()
+    (interactive)
+    (with-helm-alive-p
+      (helm-quit-and-execute-action 'ace-vsplit-find-file)))
+
+  (defun ace-vsplit-switch-to-buffer (buffer-or-name)
+    (switch-window-if-gteq-3-windows)
+    (let ((file-name (buffer-file-name buffer-or-name)))
+      (if file-name
+          (my-evil-vsplit-window file-name)
+        (let ((window (split-window-right)))
+          (unwind-protect
+              (progn
+                (aw-switch-to-window window)
+                (switch-to-buffer buffer-or-name)))))))
+
+  (defun helm-ace-vsplit-sb ()
+    (interactive)
+    (with-helm-alive-p
+      (helm-quit-and-execute-action 'ace-vsplit-switch-to-buffer)))
+
   (defun ace-helm-find-file (candidate)
     (popwin:close-popup-window)
-    (if (= (length (window-list)) 1)
+    (if (one-window-p)
         (find-file-other-window (expand-file-name candidate))
       (let ((buf (find-file-noselect (expand-file-name candidate)))
             (window (aw-select "Ace - Window")))
@@ -457,10 +534,8 @@
     (interactive)
     (with-helm-alive-p
       (helm-quit-and-execute-action 'ace-helm-switch-to-buffer)))
-  (diminish 'helm-mode)
-  (evil-leader/set-key "tf" 'helm-etags-select)
-  (evil-leader/set-key "agg" 'helm-do-ag)
-  (evil-leader/set-key "agb" 'helm-do-ag-buffers)
+
+  (evil-leader/set-key "tt" 'helm-etags-select)
   (evil-leader/set-key ":"  'helm-M-x)
   (evil-leader/set-key "bb" 'helm-buffers-list)
   (evil-leader/set-key "fc" 'helm-find-file-at)
@@ -480,27 +555,40 @@
   (define-key helm-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
 
+  (define-key helm-comp-read-map (kbd "C-v") 'helm-ace-vsplit-ff)
+  (define-key helm-comp-read-map (kbd "C-s") 'helm-ace-split-ff)
   (define-key helm-comp-read-map (kbd "C-o") 'helm-ace-ff)
 
+  (define-key helm-buffer-map (kbd "C-s") 'helm-ace-split-sb)
+  (define-key helm-buffer-map (kbd "C-v") 'helm-ace-vsplit-sb)
   (define-key helm-buffer-map (kbd "C-d") 'helm-buffer-run-kill-buffers)
   (define-key helm-buffer-map (kbd "C-o") 'helm-ace-sb)
 
+  (define-key helm-find-files-map (kbd "C-s") 'helm-ace-split-ff)
+  (define-key helm-find-files-map (kbd "C-v") 'helm-ace-vsplit-ff)
   (define-key helm-find-files-map (kbd "C-t") 'helm-ff-run-etags)
   (define-key helm-find-files-map (kbd "C-o") 'helm-ace-ff)
   (define-key helm-find-files-map (kbd "C-r") 'helm-ff-run-rename-file)
   (define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
 
+  (define-key helm-read-file-map (kbd "C-s") 'helm-ace-split-ff)
+  (define-key helm-read-file-map (kbd "C-v") 'helm-ace-vsplit-ff)
   (define-key helm-read-file-map (kbd "C-t") 'helm-ff-run-etags)
   (define-key helm-read-file-map (kbd "C-o") 'helm-ace-ff)
   (define-key helm-read-file-map (kbd "C-r") 'helm-ff-run-rename-file)
   (define-key helm-read-file-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
+
+  (define-key helm-generic-files-map (kbd "C-s") 'helm-ace-split-ff)
+  (define-key helm-generic-files-map (kbd "C-v") 'helm-ace-vsplit-ff)
   (define-key helm-generic-files-map (kbd "C-o") 'helm-ace-ff)
   (define-key helm-generic-files-map (kbd "C-r") 'helm-ff-run-rename-file)
   (define-key helm-generic-files-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-generic-files-map (kbd "TAB") 'helm-execute-persistent-action)
 
+  (define-key helm-ag-map (kbd "C-s") 'helm-ace-split-ff)
+  (define-key helm-ag-map (kbd "C-v") 'helm-ace-vsplit-ff)
   (define-key helm-ag-map (kbd "C-o") 'helm-ag--run-other-window-action))
 
 (el-get-bundle helm-dash)
@@ -1130,18 +1218,19 @@
 ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/solarized-emacs")
 ;; (load-theme 'solarized-dark t)
 
-(el-get-bundle color-theme-solarized)
-(set-frame-parameter nil 'background-mode 'dark)
-(set-terminal-parameter nil 'background-mode 'dark)
-(load-theme 'solarized t)
+;; (el-get-bundle color-theme-solarized)
+;; (set-frame-parameter nil 'background-mode 'dark)
+;; (set-terminal-parameter nil 'background-mode 'dark)
+;; (load-theme 'solarized t)
 
 ;; (el-get-bundle color-theme-zenburn)
 ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/color-theme-zenburn")
 ;; (load-theme 'zenburn t)
 
-;; (el-get-bundle atom-dark-theme)
-;; (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/atom-dark-theme")
-;; (load-theme 'atom-dark t)
+
+(el-get-bundle aurora-theme)
+(add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/aurora-theme")
+(load-theme 'aurora t)
 
 (el-get-bundle powerline)
 (el-get-bundle powerline-evil)
@@ -1150,18 +1239,18 @@
   (setq powerline-default-separator 'arrow)
   (setq powerline-evil-tag-style 'verbose)
   :config
-  (custom-set-faces
-   '(mode-line ((t (:background "#002b36" :foreground "#fdf6e3" :inverse-video t :box nil))))
-   '(mode-line-inactive ((t (:background "#eee8d5" :foreground "#586e75" :inverse-video t :box nil))))
-   '(powerline-active1 ((t (:background "#002b36" :foreground "#eee8d5"))))
-   '(powerline-active2 ((t (:background "#002b36" :foreground "#eee8d5"))))
-   '(powerline-evil-base-face ((t (:background "#fdf6e3" :foreground "#002b36" :width extra-expanded))))
-   '(powerline-evil-insert-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#657b83"))))
-   '(powerline-evil-normal-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#268bd2"))))
-   '(powerline-evil-operator-face ((t (:inherit powerline-evil-operator-face :background "#fdf6e3" :foreground "#b58900"))))
-   '(powerline-evil-visual-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#d33682"))))
-   '(powerline-inactive1 ((t (:inherit mode-line-inactive :background "#fdf6e3" :foreground "#586e75"))))
-   '(powerline-inactive2 ((t (:inherit mode-line-inactive :foreground "#586e75")))))
+  ;; (custom-set-faces
+  ;;  '(mode-line ((t (:background "#002b36" :foreground "#fdf6e3" :inverse-video t :box nil))))
+  ;;  '(mode-line-inactive ((t (:background "#eee8d5" :foreground "#586e75" :inverse-video t :box nil))))
+  ;;  '(powerline-active1 ((t (:background "#002b36" :foreground "#eee8d5"))))
+  ;;  '(powerline-active2 ((t (:background "#002b36" :foreground "#eee8d5"))))
+  ;;  '(powerline-evil-base-face ((t (:background "#fdf6e3" :foreground "#002b36" :width extra-expanded))))
+  ;;  '(powerline-evil-insert-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#657b83"))))
+  ;;  '(powerline-evil-normal-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#268bd2"))))
+  ;;  '(powerline-evil-operator-face ((t (:inherit powerline-evil-operator-face :background "#fdf6e3" :foreground "#b58900"))))
+  ;;  '(powerline-evil-visual-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#d33682"))))
+  ;;  '(powerline-inactive1 ((t (:inherit mode-line-inactive :background "#fdf6e3" :foreground "#586e75"))))
+  ;;  '(powerline-inactive2 ((t (:inherit mode-line-inactive :foreground "#586e75")))))
   (powerline-evil-vim-color-theme))
 
 (el-get-bundle indent-guide)
@@ -1462,34 +1551,34 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("90d329edc17c6f4e43dbc67709067ccd6c0a3caa355f305de2041755986548f2" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default)))
+    ("790e74b900c074ac8f64fa0b610ad05bcfece9be44e8f5340d2d94c1e47538de" "90d329edc17c6f4e43dbc67709067ccd6c0a3caa355f305de2041755986548f2" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default)))
  '(evil-shift-width 2)
  '(flycheck-display-errors-function (function flycheck-pos-tip-error-messages))
  '(git-gutter:added-sign "++")
  '(git-gutter:deleted-sign "--")
  '(git-gutter:modified-sign "**"))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(elscreen-tab-background-face ((t (:background "#839496"))))
- '(elscreen-tab-control-face ((t (:background "white" :foreground "#839496" :underline t))))
- '(elscreen-tab-current-screen-face ((t (:background "#073642" :foreground "#eee8d5"))))
- '(elscreen-tab-other-screen-face ((t (:background "#fdf6e3" :foreground "#839496" :underline t))))
- '(enh-ruby-op-face ((t (:foreground "headerColor"))))
- '(enh-ruby-string-delimiter-face ((t (:foreground "#d33682"))))
- '(mode-line ((t (:background "#002b36" :foreground "#fdf6e3" :inverse-video t :box nil))))
- '(mode-line-inactive ((t (:background "#eee8d5" :foreground "#586e75" :inverse-video t :box nil))))
- '(popup-tip-face ((t (:background "#073642" :foreground "#b58900"))))
- '(powerline-active1 ((t (:background "#002b36" :foreground "#eee8d5"))))
- '(powerline-active2 ((t (:background "#002b36" :foreground "#eee8d5"))))
- '(powerline-evil-base-face ((t (:background "#fdf6e3" :foreground "#002b36" :width extra-expanded))))
- '(powerline-evil-insert-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#657b83"))))
- '(powerline-evil-normal-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#268bd2"))))
- '(powerline-evil-operator-face ((t (:inherit powerline-evil-operator-face :background "#fdf6e3" :foreground "#b58900"))))
- '(powerline-evil-visual-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#d33682"))))
- '(powerline-inactive1 ((t (:inherit mode-line-inactive :background "#fdf6e3" :foreground "#586e75"))))
- '(powerline-inactive2 ((t (:inherit mode-line-inactive :foreground "#586e75"))))
- '(rbenv-active-ruby-face ((t (:background "#fdf6e3" :foreground "#dc322f" :weight bold))))
- '(whitespace-empty ((t (:foreground "#dc322f" :inverse-video nil :underline (:color foreground-color :style wave))))))
+;; (custom-set-faces
+;;  ;; custom-set-faces was added by Custom.
+;;  ;; If you edit it by hand, you could mess it up, so be careful.
+;;  ;; Your init file should contain only one such instance.
+;;  ;; If there is more than one, they won't work right.
+;;  '(elscreen-tab-background-face ((t (:background "#839496"))))
+;;  '(elscreen-tab-control-face ((t (:background "white" :foreground "#839496" :underline t))))
+;;  '(elscreen-tab-current-screen-face ((t (:background "#073642" :foreground "#eee8d5"))))
+;;  '(elscreen-tab-other-screen-face ((t (:background "#fdf6e3" :foreground "#839496" :underline t))))
+;;  '(enh-ruby-op-face ((t (:foreground "headerColor"))))
+;;  '(enh-ruby-string-delimiter-face ((t (:foreground "#d33682"))))
+;;  '(mode-line ((t (:background "#002b36" :foreground "#fdf6e3" :inverse-video t :box nil))))
+;;  '(mode-line-inactive ((t (:background "#eee8d5" :foreground "#586e75" :inverse-video t :box nil))))
+;;  '(popup-tip-face ((t (:background "#073642" :foreground "#b58900"))))
+;;  '(powerline-active1 ((t (:background "#002b36" :foreground "#eee8d5"))))
+;;  '(powerline-active2 ((t (:background "#002b36" :foreground "#eee8d5"))))
+;;  '(powerline-evil-base-face ((t (:background "#fdf6e3" :foreground "#002b36" :width extra-expanded))))
+;;  '(powerline-evil-insert-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#657b83"))))
+;;  '(powerline-evil-normal-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#268bd2"))))
+;;  '(powerline-evil-operator-face ((t (:inherit powerline-evil-operator-face :background "#fdf6e3" :foreground "#b58900"))))
+;;  '(powerline-evil-visual-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#d33682"))))
+;;  '(powerline-inactive1 ((t (:inherit mode-line-inactive :background "#fdf6e3" :foreground "#586e75"))))
+;;  '(powerline-inactive2 ((t (:inherit mode-line-inactive :foreground "#586e75"))))
+;;  '(rbenv-active-ruby-face ((t (:background "#fdf6e3" :foreground "#dc322f" :weight bold))))
+;;  '(whitespace-empty ((t (:foreground "#dc322f" :inverse-video nil :underline (:color foreground-color :style wave))))))
