@@ -1,5 +1,5 @@
 [core]
-  editor = emacsclient
+  editor = vim
   pager = less
   quotepath = false
 [include]
@@ -15,7 +15,7 @@
   rb = rebase
   rbc = rebase --continue
   rba = rebase --abort
-	rbs = rebase --skip
+  rbs = rebase --skip
   rs = reset --soft
   p = push
   pf = push -f
@@ -29,4 +29,4 @@
 [merge]
   tool = vimdiff
 [gc]
-	auto = 1
+  auto = 1
