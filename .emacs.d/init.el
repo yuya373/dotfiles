@@ -617,7 +617,10 @@
         tab-always-indent t
         ac-use-menu-map t
         ac-dwim t)
-  (setq-default ac-sources '(ac-source-filename ac-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers))
+  (setq-default ac-sources '(ac-source-filename
+                             ac-abbrev
+                             ac-source-dictionary
+                             ac-source-words-in-same-mode-buffers))
   (add-hook 'emacs-lisp-mode-hook (lambda () (add-to-list 'ac-sources 'ac-source-symbols)))
   :config
 
@@ -826,16 +829,22 @@
   (evil-define-key 'normal projectile-rails-mode-map ",rtr" 'find-file-in-spec-requests)
   (evil-define-key 'normal projectile-rails-mode-map ",rts" 'find-file-in-spec-services)
 
-  (rails-find-file-in ("config/initializers/"
+  (rails-find-file-in ("config/"
+                       "config/initializers/"
                        "config/environments/"
+                       "config/locales/"
+                       "config/settings/"
                        "db/migrate/"
                        "db/ridgepole/"
                        "lib/"))
-  (evil-define-key 'normal projectile-rails-mode-map ",rfl" 'find-file-in-lib)
-  (evil-define-key 'normal projectile-rails-mode-map ",rfi" 'find-file-in-config-initializers)
-  (evil-define-key 'normal projectile-rails-mode-map ",rfe" 'find-file-in-config-environments)
+  (evil-define-key 'normal projectile-rails-mode-map ",rCC" 'find-file-in-config)
+  (evil-define-key 'normal projectile-rails-mode-map ",rCi" 'find-file-in-config-initializers)
+  (evil-define-key 'normal projectile-rails-mode-map ",rCe" 'find-file-in-config-environments)
+  (evil-define-key 'normal projectile-rails-mode-map ",rCl" 'find-file-in-config-locales)
+  (evil-define-key 'normal projectile-rails-mode-map ",rCs" 'find-file-in-config-settings)
   (evil-define-key 'normal projectile-rails-mode-map ",rdm" 'find-file-in-db-migrate)
   (evil-define-key 'normal projectile-rails-mode-map ",rdr" 'find-file-in-db-ridgepole)
+  (evil-define-key 'normal projectile-rails-mode-map ",rfl" 'find-file-in-lib)
 
   (rails-find-file-in ("app/"
                        "app/controllers/"
