@@ -8,6 +8,11 @@
 ;; (initchart-record-execution-time-of load file)
 ;; (initchart-record-execution-time-of require feature)
 
+;; (defun auto-compile-init-file ()
+;;   (if (string= "init.el" (buffer-name (current-buffer)))
+;;       (byte-compile-file (buffer-file-name (current-buffer)))))
+;; (add-hook 'after-save-hook 'auto-compile-init-file)
+
 ;; config
 
 (setq split-width-threshold 110)
@@ -120,10 +125,10 @@
           (newline-mark ?\n [?\¬ ?\n])
           (tab-mark ?\t [?\▸ ?\▸])))
   (setq whitespace-space-regexp "\\(\u3000+\\)")
-  (set-face-bold-p 'whitespace-space t)
+  (set-face-bold 'whitespace-space t)
   (set-face-foreground 'whitespace-space "#d33682")
   (set-face-background 'whitespace-space "#d33682")
-  (set-face-bold-p 'whitespace-trailing t)
+  (set-face-bold 'whitespace-trailing t)
   (set-face-underline  'whitespace-trailing t)
   (set-face-foreground 'whitespace-trailing "#d33682")
   (set-face-background 'whitespace-trailing "#d33682")
@@ -446,7 +451,7 @@
   (defun helm-ace-split-ff ()
     (interactive)
     (with-helm-alive-p
-      (helm-quit-and-execute-action 'ace-split-find-file)))
+      (helm-exit-and-execute-action 'ace-split-find-file)))
 
   (defun ace-split-switch-to-buffer (buffer-or-name)
     (switch-window-if-gteq-3-windows)
@@ -461,7 +466,7 @@
   (defun helm-ace-split-sb ()
     (interactive)
     (with-helm-alive-p
-      (helm-quit-and-execute-action 'ace-split-switch-to-buffer)))
+      (helm-exit-and-execute-action 'ace-split-switch-to-buffer)))
 
   (defun ace-vsplit-find-file (candidate)
     (switch-window-if-gteq-3-windows)
@@ -469,7 +474,7 @@
   (defun helm-ace-vsplit-ff ()
     (interactive)
     (with-helm-alive-p
-      (helm-quit-and-execute-action 'ace-vsplit-find-file)))
+      (helm-exit-and-execute-action 'ace-vsplit-find-file)))
 
   (defun ace-vsplit-switch-to-buffer (buffer-or-name)
     (switch-window-if-gteq-3-windows)
@@ -485,7 +490,7 @@
   (defun helm-ace-vsplit-sb ()
     (interactive)
     (with-helm-alive-p
-      (helm-quit-and-execute-action 'ace-vsplit-switch-to-buffer)))
+      (helm-exit-and-execute-action 'ace-vsplit-switch-to-buffer)))
 
   (defun ace-helm-find-file (candidate)
     (popwin:close-popup-window)
@@ -500,7 +505,7 @@
   (defun helm-ace-ff ()
     (interactive)
     (with-helm-alive-p
-      (helm-quit-and-execute-action 'ace-helm-find-file)))
+      (helm-exit-and-execute-action 'ace-helm-find-file)))
   (defun ace-helm-switch-to-buffer (buffer-or-name)
     (popwin:close-popup-window)
     (if (= (length (window-list)) 1)
@@ -514,7 +519,7 @@
   (defun helm-ace-sb ()
     (interactive)
     (with-helm-alive-p
-      (helm-quit-and-execute-action 'ace-helm-switch-to-buffer)))
+      (helm-exit-and-execute-action 'ace-helm-switch-to-buffer)))
 
   (evil-leader/set-key "tt" 'helm-etags-select)
   (evil-leader/set-key ":"  'helm-M-x)
@@ -1023,6 +1028,7 @@
   (add-hook 'enh-ruby-mode-hook 'ruby-test-mode)
   (evil-define-key 'normal ruby-test-mode-map (kbd ",tt") 'ruby-test-run-at-point)
   (evil-define-key 'normal ruby-test-mode-map (kbd ",tb") 'ruby-test-run)
+  :config
   (defun ruby-test-toggle-vsplit ()
     (interactive)
     (let ((window (split-window-right)))
@@ -1038,7 +1044,6 @@
       (ruby-test-toggle-implementation-and-specification)))
   (evil-define-key 'normal ruby-test-mode-map (kbd ",tv") 'ruby-test-toggle-vsplit)
   (evil-define-key 'normal ruby-test-mode-map (kbd ",ts") 'ruby-test-toggle-split)
-  :config
   (diminish 'ruby-test-mode))
 ;; (use-package ruby-end
 ;;   :commands (ruby-end-mode)
@@ -1313,12 +1318,6 @@
   :config
   (diminish 'indent-guide-mode))
 
-(el-get-bundle krisajenkins/helm-spotify)
-(use-package helm-spotify
-  :commands (helm-spotify)
-  :init
-  (evil-leader/set-key "hs" 'helm-spotify))
-
 ;; (el-get-bundle golden-ratio)
 ;; (use-package golden-ratio
 ;;   :config
@@ -1443,6 +1442,7 @@
   (global-linum-mode -1)
   (add-hook 'pdf-view-mode-hook 'pdf-view-dark-minor-mode)
   (add-hook 'pdf-view-mode-hook 'pdf-view-midnight-minor-mode)
+  :config
   (defun mcc-pdf-view-save ()
     (cl-loop for win in (window-list)
              do (with-selected-window win
@@ -1458,8 +1458,7 @@
 
   (add-hook 'popwin:before-popup-hook #'mcc-pdf-view-save)
   (add-hook 'popwin:after-popup-hook #'mcc-pdf-view-restore)
-  :config
-  (use-package pdf-annot)
+  ;; (use-package pdf-annot)
   (use-package pdf-links)
   (use-package pdf-info)
   (use-package pdf-misc)
