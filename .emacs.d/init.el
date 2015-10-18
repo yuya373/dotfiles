@@ -82,6 +82,7 @@
 (require 'use-package)
 (require 'diminish)
 (diminish 'abbrev-mode)
+(diminish 'visual-line-mode)
 
 (el-get-bundle el-get-lock
   :type github
@@ -157,32 +158,12 @@
 
 ;; smartparens
 (el-get-bundle smartparens)
-(use-package smartparens
-  :commands (turn-on-smartparens-mode)
+(use-package smartparens-config
+  :commands (smartparens-mode turn-on-smartparens-mode)
   :init
-  ;; (add-hook 'prog-mode-hook 'turn-on-smartparens-mode)
-  (add-hook 'emacs-lisp-mode-hook 'turn-on-smartparens-mode)
+  (add-hook 'prog-mode-hook 'smartparens-mode)
   :config
-  (use-package smartparens-config)
-  ;; (defun my-smartparens-pair-newline-and-indent (id action context)
-  ;;   (save-excursion
-  ;;     (newline)
-  ;;     (newline)
-  ;;     (indent-according-to-mode)
-  ;;     (forward-line -1)
-  ;;     (indent-according-to-mode)))
-  ;; (sp-with-modes '(ruby-mode enh-ruby-mode)
-  ;;   (sp-local-pair "{" "}"
-  ;;                  :when '(("SPC" "RET" "<evil-ret>"))
-  ;;                  :actions '(insert)
-  ;;                  :pre-handlers '(sp-ruby-pre-handler)
-  ;;                  :post-handlers '(my-smartparens-pair-newline-and-indent)
-  ;;                  :suffix ""))
-  ;; (sp-pair "{" nil :post-handlers
-  ;;          '(:add (my-smartparens-pair-newline-and-indent "RET")))
-  ;; (sp-pair "[" nil :post-handlers
-  ;;          '(:add (my-smartparens-pair-newline-and-indent "RET")))
-  (show-smartparens-global-mode))
+  (diminish 'smartparens-mode))
 
 ;; evil
 (el-get-bundle evil)
@@ -601,10 +582,14 @@
   (evil-leader/set-key "di" 'helm-dash-install-docset)
   (evil-leader/set-key "dd" 'helm-dash)
   (evil-leader/set-key "da" 'helm-dash-at-point)
-  (add-hook 'markdown-mode-hook '(lambda () (setq-local helm-dash-docsets '("Markdown"))))
-  (add-hook 'enh-ruby-mode-hook '(lambda () (setq-local helm-dash-docsets '("Ruby"))))
-  (add-hook 'projectile-rails-mode-hook '(lambda () (setq-local helm-dash-docsets '("Ruby on Rails"))))
-  (add-hook 'emacs-lisp-mode-hook '(lambda () (setq-local helm-dash-docsets '("Emacs Lisp"))))
+  (add-hook 'markdown-mode-hook
+            '(lambda () (setq-local helm-dash-docsets '("Markdown"))))
+  (add-hook 'enh-ruby-mode-hook
+            '(lambda () (setq-local helm-dash-docsets '("Ruby"))))
+  (add-hook 'projectile-rails-mode-hook
+            '(lambda () (setq-local helm-dash-docsets '("Ruby" "Ruby on Rails"))))
+  (add-hook 'emacs-lisp-mode-hook
+            '(lambda () (setq-local helm-dash-docsets '("Emacs" "Emacs Lisp"))))
   (defun helm-lisp-mode ()
     (setq-local helm-dash-docsets '("Common Lisp")))
   (add-hook 'lisp-mode-hook 'helm-lisp-mode)
@@ -653,8 +638,7 @@
   :init
   (add-hook 'prog-mode-hook 'eldoc-mode)
   :config
-  ;; (diminish 'eldoc-mode)
-  )
+  (diminish 'eldoc-mode))
 
 ;; git
 (el-get-bundle magit)
@@ -670,6 +654,7 @@
   (evil-leader/set-key "gb" 'magit-blame-popup)
   (evil-leader/set-key "gs" 'magit-status)
   (add-hook 'magit-mode-hook '(lambda () (linum-mode -1)))
+  (add-hook 'magit-status-mode-hook 'delete-other-windows)
   (setq magit-push-always-verify nil)
   (setq magit-branch-arguments nil)
   (setq magit-status-buffer-switch-function 'switch-to-buffer)
@@ -726,11 +711,16 @@
 
   (use-package git-rebase
     :config
-    (define-key git-rebase-mode-map "k" 'previous-line)
-    (define-key git-rebase-mode-map "j" 'next-line)
+    (define-key git-rebase-mode-map "RET" 'git-rebase-show-commit)
+    (define-key git-rebase-mode-map "x" 'git-rebase-exec)
+    (define-key git-rebase-mode-map "u" 'git-rebase-undo)
+    (define-key git-rebase-mode-map "p" 'git-rebase-pick)
+    (define-key git-rebase-mode-map "e" 'git-rebase-edit)
+    (define-key git-rebase-mode-map "f" 'git-rebase-fixup)
+    (define-key git-rebase-mode-map "s" 'git-rebase-squash)
     (define-key git-rebase-mode-map "K" 'git-rebase-kill-line)
-    (define-key git-rebase-mode-map "n" 'git-rebase-move-line-down)
-    (define-key git-rebase-mode-map "p" 'git-rebase-move-line-up)))
+    (define-key git-rebase-mode-map "k" 'git-rebase-move-line-up)
+    (define-key git-rebase-mode-map "j" 'git-rebase-move-line-down)))
 
 (use-package gist
   :commands (gist-list gist-region gist-region-private
@@ -784,11 +774,6 @@
 (use-package projectile-rails
   :commands (projectile-rails-on)
   :init
-  (evil-define-key 'normal projectile-rails-mode-map ",rcm" 'projectile-rails-find-current-model)
-  (evil-define-key 'normal projectile-rails-mode-map ",rcc" 'projectile-rails-find-current-controller)
-  (evil-define-key 'normal projectile-rails-mode-map ",rcv" 'projectile-rails-find-current-view)
-  (evil-define-key 'normal projectile-rails-mode-map ",rcs" 'projectile-rails-find-current-spec)
-  (evil-define-key 'normal projectile-rails-mode-map ",ric" 'projectile-rails-console)
   (evil-define-key 'normal projectile-rails-mode-map ",ris" 'projectile-rails-server)
   (evil-define-key 'normal projectile-rails-mode-map ",rir" 'projectile-rails-rake)
   (evil-define-key 'normal projectile-rails-mode-map ",rig" 'projectile-rails-generate)
@@ -849,8 +834,8 @@
   (evil-define-key 'normal projectile-rails-mode-map ",rfl" 'find-file-in-lib)
   (evil-define-key 'normal projectile-rails-mode-map ",rfi" 'find-file-in-config-initializers)
   (evil-define-key 'normal projectile-rails-mode-map ",rfe" 'find-file-in-config-environments)
-  (evil-define-key 'normal projectile-rails-mode-map ",rfdm" 'find-file-in-db-migrate)
-  (evil-define-key 'normal projectile-rails-mode-map ",rfdr" 'find-file-in-db-ridgepole)
+  (evil-define-key 'normal projectile-rails-mode-map ",rdm" 'find-file-in-db-migrate)
+  (evil-define-key 'normal projectile-rails-mode-map ",rdr" 'find-file-in-db-ridgepole)
 
   (rails-find-file-in ("app/"
                        "app/controllers/"
@@ -867,7 +852,47 @@
   (evil-define-key 'normal projectile-rails-mode-map ",rfj" 'find-file-in-app-jobs)
   (evil-define-key 'normal projectile-rails-mode-map ",rfm" 'find-file-in-app-models)
   (evil-define-key 'normal projectile-rails-mode-map ",rfs" 'find-file-in-app-services)
-  (evil-define-key 'normal projectile-rails-mode-map ",rfv" 'find-file-in-app-views))
+  (evil-define-key 'normal projectile-rails-mode-map ",rfv" 'find-file-in-app-views)
+
+  (defmacro rails-find-file-current (dir re fallback)
+    `(let* ((singular (projectile-rails-current-resource-name))
+            (plural (pluralize-string singular))
+            (abs-current-file (buffer-file-name (current-buffer)))
+            (current-file (if abs-current-file
+                              (file-relative-name abs-current-file
+                                                  (projectile-project-root))))
+            (choices (projectile-rails-choices
+                      (list (list ,dir (s-lex-format ,re)))))
+            (files (projectile-rails-hash-keys choices))
+            (target-dir (concat (projectile-rails-root)
+                                (f-dirname (gethash (-first-item files) choices)))))
+       (message "target-dir: %s" target-dir)
+       (if (eq files ())
+           (funcall ,fallback)
+         (helm-find-files-1 target-dir))))
+
+  (defun find-file-current-model ()
+    (interactive)
+    (rails-find-file-current "app/models/"
+                             "/${singular}\\.rb$"
+                             'projectile-rails-find-model))
+
+  (defun find-file-current-controller ()
+    (interactive)
+    (rails-find-file-current "app/controllers/"
+                             "app/controllers/\\(.*${plural}\\)_controller\\.rb$"
+                             'projectile-rails-find-controller))
+
+  (defun find-file-current-view ()
+    (interactive)
+    (rails-find-file-current "app/views/"
+                             "/${plural}/\\(.+\\)$"
+                             'projectile-rails-find-view))
+
+  (evil-define-key 'normal projectile-rails-mode-map ",rcm" 'find-file-current-model)
+  (evil-define-key 'normal projectile-rails-mode-map ",rcc" 'find-file-current-controller)
+  (evil-define-key 'normal projectile-rails-mode-map ",rcv" 'find-file-current-view)
+  )
 
 ;; syntax check
 (el-get-bundle flycheck)
@@ -924,6 +949,7 @@
 (use-package inf-ruby
   :commands (inf-ruby inf-ruby-minor-mode inf-ruby-console-auto)
   :init
+  (evil-define-key 'normal inf-ruby-mode-map (kbd ",ric") 'inf-ruby-console-auto)
   (add-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode))
 (use-package ac-robe
   :commands (ac-robe-setup)
@@ -935,7 +961,7 @@
   (add-hook 'enh-ruby-mode-hook 'robe-mode)
   (add-hook 'robe-mode-hook 'robe-start)
   (add-hook 'robe-mode-hook 'ac-robe-setup)
-  (evil-define-key 'normal robe-mode-map (kbd ",rd") 'robe-doc)
+  (evil-define-key 'normal robe-mode-map (kbd ",rh") 'robe-doc)
   (evil-define-key 'normal robe-mode-map (kbd ",ra") 'robe-ask)
   (evil-define-key 'normal robe-mode-map (kbd ",rj") 'robe-jump)
   (evil-define-key 'normal robe-mode-map (kbd ",rR") 'robe-rails-refresh)
@@ -955,44 +981,60 @@
   (setq enh-ruby-add-encoding-comment-on-save nil)
   ;; (add-hook 'enh-ruby-mode-hook '(lambda () (setq-local selective-display 4)))
   (add-hook 'enh-ruby-mode-hook 'auto-complete-mode)
-  (add-hook 'enh-ruby-mode-hook '(lambda () (turn-off-smartparens-mode)))
-  (add-hook 'enh-ruby-mode-hook 'electric-pair-mode)
-  (add-hook 'enh-ruby-mode-hook 'electric-indent-mode)
-  (add-hook 'enh-ruby-mode-hook 'electric-layout-mode)
+  (add-hook 'enh-ruby-mode-hook '(lambda () (smartparens-mode)))
+  ;; (add-hook 'enh-ruby-mode-hook 'electric-pair-mode)
+  ;; (add-hook 'enh-ruby-mode-hook 'electric-indent-mode)
+  ;; (add-hook 'enh-ruby-mode-hook 'electric-layout-mode)
   (custom-set-faces
    '(enh-ruby-op-face ((t (:foreground "headerColor"))))
    '(enh-ruby-string-delimiter-face ((t (:foreground "#d33682")))))
   :config
-  (evil-define-key 'insert electric-pair-mode-map (kbd "C-h")
-    `(menu-item
-      "" electric-pair-delete-pair
-      :filter
-      ,(lambda (cmd)
-         (let* ((prev (char-before))
-                (next (char-after))
-                (syntax-info (and prev
-                                  (electric-pair-syntax-info prev)))
-                (syntax (car syntax-info))
-                (pair (cadr syntax-info)))
-           (and next pair
-                (memq syntax '(?\( ?\" ?\$))
-                (eq pair next)
-                (if (functionp electric-pair-delete-adjacent-pairs)
-                    (funcall electric-pair-delete-adjacent-pairs)
-                  electric-pair-delete-adjacent-pairs)
-                cmd))))))
+  ;; (evil-define-key 'insert electric-pair-mode-map (kbd "C-h")
+  ;;   `(menu-item
+  ;;     "" electric-pair-delete-pair
+  ;;     :filter
+  ;;     ,(lambda (cmd)
+  ;;        (let* ((prev (char-before))
+  ;;               (next (char-after))
+  ;;               (syntax-info (and prev
+  ;;                                 (electric-pair-syntax-info prev)))
+  ;;               (syntax (car syntax-info))
+  ;;               (pair (cadr syntax-info)))
+  ;;          (and next pair
+  ;;               (memq syntax '(?\( ?\" ?\$))
+  ;;               (eq pair next)
+  ;;               (if (functionp electric-pair-delete-adjacent-pairs)
+  ;;                   (funcall electric-pair-delete-adjacent-pairs)
+  ;;                 electric-pair-delete-adjacent-pairs)
+  ;;               cmd)))))
+  )
 (use-package ruby-test-mode
   :commands (ruby-test-mode)
   :init
   (add-hook 'enh-ruby-mode-hook 'ruby-test-mode)
   (evil-define-key 'normal ruby-test-mode-map (kbd ",tt") 'ruby-test-run-at-point)
   (evil-define-key 'normal ruby-test-mode-map (kbd ",tb") 'ruby-test-run)
+  (defun ruby-test-toggle-vsplit ()
+    (interactive)
+    (let ((window (split-window-right)))
+      (message "%s" window)
+      (select-window window)
+      (balance-windows)
+      (ruby-test-toggle-implementation-and-specification)))
+  (defun ruby-test-toggle-split ()
+    (interactive)
+    (let ((window (split-window (selected-window) nil 'above)))
+      (select-window window)
+      (balance-windows)
+      (ruby-test-toggle-implementation-and-specification)))
+  (evil-define-key 'normal ruby-test-mode-map (kbd ",tv") 'ruby-test-toggle-vsplit)
+  (evil-define-key 'normal ruby-test-mode-map (kbd ",ts") 'ruby-test-toggle-split)
   :config
   (diminish 'ruby-test-mode))
-(use-package ruby-end
-  :commands (ruby-end-mode)
-  :init
-  (add-hook 'enh-ruby-mode-hook 'ruby-end-mode))
+;; (use-package ruby-end
+;;   :commands (ruby-end-mode)
+;;   :init
+;;   (add-hook 'enh-ruby-mode-hook 'ruby-end-mode))
 
 ;; html, erb
 (el-get-bundle web-mode)
@@ -1223,14 +1265,13 @@
 ;; (set-terminal-parameter nil 'background-mode 'dark)
 ;; (load-theme 'solarized t)
 
-;; (el-get-bundle color-theme-zenburn)
-;; (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/color-theme-zenburn")
-;; (load-theme 'zenburn t)
+(el-get-bundle material-theme)
+(add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/material-theme")
+(load-theme 'material t)
 
-
-(el-get-bundle aurora-theme)
-(add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/aurora-theme")
-(load-theme 'aurora t)
+;; (el-get-bundle aurora-theme)
+;; (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/aurora-theme")
+;; (load-theme 'aurora t)
 
 (el-get-bundle powerline)
 (el-get-bundle powerline-evil)
@@ -1551,7 +1592,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("790e74b900c074ac8f64fa0b610ad05bcfece9be44e8f5340d2d94c1e47538de" "90d329edc17c6f4e43dbc67709067ccd6c0a3caa355f305de2041755986548f2" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default)))
+    ("97f9438943105a17eeca9f1a1c4c946765e364957749e83047d6ee337b5c0a73" "790e74b900c074ac8f64fa0b610ad05bcfece9be44e8f5340d2d94c1e47538de" "90d329edc17c6f4e43dbc67709067ccd6c0a3caa355f305de2041755986548f2" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default)))
  '(evil-shift-width 2)
  '(flycheck-display-errors-function (function flycheck-pos-tip-error-messages))
  '(git-gutter:added-sign "++")
@@ -1582,3 +1623,10 @@
 ;;  '(powerline-inactive2 ((t (:inherit mode-line-inactive :foreground "#586e75"))))
 ;;  '(rbenv-active-ruby-face ((t (:background "#fdf6e3" :foreground "#dc322f" :weight bold))))
 ;;  '(whitespace-empty ((t (:foreground "#dc322f" :inverse-video nil :underline (:color foreground-color :style wave))))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(enh-ruby-op-face ((t (:foreground "headerColor"))))
+ '(enh-ruby-string-delimiter-face ((t (:foreground "#d33682")))))
