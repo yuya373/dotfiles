@@ -3,10 +3,10 @@
 ;;; Code:
 
 
-;; (add-to-list 'load-path "~/.emacs.d/el-get/initchart")
-;; (require 'initchart)
-;; (initchart-record-execution-time-of load file)
-;; (initchart-record-execution-time-of require feature)
+(add-to-list 'load-path "~/.emacs.d/el-get/initchart")
+(require 'initchart)
+(initchart-record-execution-time-of load file)
+(initchart-record-execution-time-of require feature)
 
 ;; (defun auto-compile-init-file ()
 ;;   (if (string= "init.el" (buffer-name (current-buffer)))
@@ -440,6 +440,7 @@
 (el-get-bundle helm)
 (el-get-bundle helm-ls-git)
 (el-get-bundle helm-ag)
+
 (use-package helm
   :commands (helm-etags-select
              helm-do-ag
