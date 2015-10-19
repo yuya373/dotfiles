@@ -104,12 +104,13 @@
 
 (use-package hideshow
   :commands (hs-minor-mode)
+  :diminish hs-minor-mode
   :config
-  (add-hook 'prog-mode-hook 'hs-minor-mode)
-  (diminish 'hs-minor-mode))
+  (add-hook 'prog-mode-hook 'hs-minor-mode))
 
 ;; whitespace
 (use-package whitespace
+  :diminish global-whitespace-mode
   :config
   (setq whitespace-style '(face
                            trailing
@@ -135,8 +136,7 @@
   (set-face-foreground 'whitespace-newline  "headerColor")
   (set-face-background 'whitespace-newline 'nil)
   (set-face-background 'whitespace-tab 'nil)
-  (global-whitespace-mode)
-  (diminish 'global-whitespace-mode))
+  (global-whitespace-mode))
 
                                         ; initchart
 (el-get-bundle yuttie/initchart)
@@ -164,11 +164,12 @@
 ;; smartparens
 (el-get-bundle smartparens)
 (use-package smartparens-config
+  :diminish smartparens-mode
   :commands (smartparens-mode turn-on-smartparens-mode)
   :init
   (add-hook 'prog-mode-hook 'smartparens-mode)
   :config
-  (diminish 'smartparens-mode))
+  )
 
 ;; evil
 (el-get-bundle evil)
@@ -186,9 +187,88 @@
 (el-get-bundle evil-terminal-cursor-changer)
 (el-get-bundle evil-visualstar)
 (el-get-bundle expand-region)
+(el-get-bundle evil-indent-textobject)
+(el-get-bundle evil-exchange)
+(el-get-bundle evil-org-mode)
 
+(use-package evil-leader
+  :commands (global-evil-leader-mode)
+  :init
+  (add-hook 'after-init-hook 'global-evil-leader-mode)
+  (add-hook 'global-evil-leader-mode-hook '(lambda () (evil-mode t)))
+  :config
+  (evil-leader/set-leader "<SPC>")
+  (evil-leader/set-key "di" 'helm-dash-install-docset)
+  (evil-leader/set-key "dd" 'helm-dash)
+  (evil-leader/set-key "da" 'helm-dash-at-point)
+  (evil-leader/set-key "gf" 'magit-fetch-popup)
+  (evil-leader/set-key "gb" 'magit-blame-popup)
+  (evil-leader/set-key "gs" 'magit-status)
+  (evil-leader/set-key "ggu" 'git-gutter:update-all-windows)
+  (evil-leader/set-key "ggv" 'git-gutter:popup-hunk)
+  (evil-leader/set-key "ggn" 'git-gutter:next-hunk)
+  (evil-leader/set-key "ggp" 'git-gutter:previous-hunk)
+  (evil-leader/set-key "ggs" 'git-gutter:stage-hunk)
+  (evil-leader/set-key "ggr" 'git-gutter:revert-hunk)
+  (evil-leader/set-key "ps" 'projectile-switch-project)
+  (evil-leader/set-key "pk" 'projectile-invalidate-cache)
+  (evil-leader/set-key "tG" 'projectile-regenerate-tags)
+  (evil-leader/set-key "bk" 'projectile-kill-buffers)
+  (evil-leader/set-key "agp" 'helm-projectile-ag)
+  (evil-leader/set-key "fd" 'helm-projectile-find-dir)
+  (evil-leader/set-key "fp" 'helm-projectile-find-file)
+  (evil-leader/set-key "fc" 'helm-projectile-find-file-dwim)
+  (evil-leader/set-key "bw" 'projectile-switch-to-buffer-other-window)
+  (evil-leader/set-key "el" 'flycheck-list-errors)
+  (evil-leader/set-key "en" 'flycheck-next-error)
+  (evil-leader/set-key "ep" 'flycheck-previous-error)
+  (evil-leader/set-key "s" 'shell-pop)
+  (evil-leader/set-key "bl" 'popwin:popup-last-buffer)
+  (evil-leader/set-key "bp" 'popwin:pop-to-buffer)
+  (evil-leader/set-key "bf" 'popwin:find-file)
+  (evil-leader/set-key "<SPC>" 'ace-jump-word-mode)
+  (evil-leader/set-key "wm" 'toggle-window-maximized)
+  (evil-leader/set-key "wt" 'toggle-frame-alpha)
+  (evil-leader/set-key "nh" 'evil-ex-nohighlight)
+  (defun toggle-folding ()
+    (interactive)
+    (set-selective-display
+     (unless selective-display
+       4
+       ;; (1+ (current-column))
+       ))
+    (recenter))
+  (evil-leader/set-key "l" 'toggle-folding)
+  (evil-leader/set-key "uv" 'undo-tree-visualize)
+  (evil-leader/set-key "agg" 'helm-do-ag)
+  (evil-leader/set-key "agb" 'helm-do-ag-buffers)
+  (evil-leader/set-key "tt" 'helm-etags-select)
+  (evil-leader/set-key ":"  'helm-M-x)
+  (evil-leader/set-key "bb" 'helm-buffers-list)
+  (evil-leader/set-key "fc" 'helm-find-file-at)
+  (evil-leader/set-key "fr" 'helm-recentf)
+  (evil-leader/set-key "fp" 'helm-browse-project)
+  (evil-leader/set-key "ff" 'helm-find-files)
+  (evil-leader/set-key "hl" 'helm-resume)
+  (evil-leader/set-key "hm" 'helm-mini)
+  (evil-leader/set-key "ho" 'helm-semantic-or-imenu)
+  (evil-leader/set-key "hp" 'helm-show-kill-ring)
+  (evil-leader/set-key "ig" 'indent-guide-mode)
+  ;; (evil-leader/set-key "bn" 'switch-to-next-buffer)
+  ;; (evil-leader/set-key "bp" 'switch-to-prev-buffer)
+  (evil-leader/set-key "gta" 'google-translate-at-point)
+  (evil-leader/set-key "gtq" 'google-translate-query-translate)
+  (evil-leader/set-key "gtQ" 'google-translate-query-translate-reverse)
+  (defun open-junk-dir ()
+    (interactive)
+    (let ((junk-dir "~/Dropbox/junk/"))
+      (helm-find-files-1 (expand-file-name junk-dir))))
+  (evil-leader/set-key "ml" 'open-junk-dir)
+  (evil-leader/set-key "mn" 'open-junk-file)
+  (evil-leader/set-key "aw" 'ace-window))
 (use-package evil
-  ;; :commands (evil-mode t)
+  :commands (evil-mode)
+  :diminish undo-tree-mode
   :init
   ;; DO NOT LOAD evil plugin before here
   (setq evil-fold-level 4
@@ -199,84 +279,11 @@
         evil-shift-width 2
         evil-cross-lines t)
   :config
-  (use-package evil-leader
-    ;; :commands (global-evil-leader-mode)
-    ;; :init
-    ;; (add-hook 'after-init-hook 'global-evil-leader-mode)
-    ;; (add-hook 'global-evil-leader-mode-hook '(lambda () (evil-mode t)))
+  (use-package evil-org-mode)
+  (use-package evil-exchange
     :config
-    (evil-leader/set-leader "<SPC>")
-    (evil-leader/set-key "di" 'helm-dash-install-docset)
-    (evil-leader/set-key "dd" 'helm-dash)
-    (evil-leader/set-key "da" 'helm-dash-at-point)
-    (evil-leader/set-key "gf" 'magit-fetch-popup)
-    (evil-leader/set-key "gb" 'magit-blame-popup)
-    (evil-leader/set-key "gs" 'magit-status)
-    (evil-leader/set-key "ggu" 'git-gutter:update-all-windows)
-    (evil-leader/set-key "ggv" 'git-gutter:popup-hunk)
-    (evil-leader/set-key "ggn" 'git-gutter:next-hunk)
-    (evil-leader/set-key "ggp" 'git-gutter:previous-hunk)
-    (evil-leader/set-key "ggs" 'git-gutter:stage-hunk)
-    (evil-leader/set-key "ggr" 'git-gutter:revert-hunk)
-    (evil-leader/set-key "ps" 'projectile-switch-project)
-    (evil-leader/set-key "pk" 'projectile-invalidate-cache)
-    (evil-leader/set-key "tG" 'projectile-regenerate-tags)
-    (evil-leader/set-key "bk" 'projectile-kill-buffers)
-    (evil-leader/set-key "agp" 'helm-projectile-ag)
-    (evil-leader/set-key "fd" 'helm-projectile-find-dir)
-    (evil-leader/set-key "fp" 'helm-projectile-find-file)
-    (evil-leader/set-key "fc" 'helm-projectile-find-file-dwim)
-    (evil-leader/set-key "bw" 'projectile-switch-to-buffer-other-window)
-    (evil-leader/set-key "el" 'flycheck-list-errors)
-    (evil-leader/set-key "en" 'flycheck-next-error)
-    (evil-leader/set-key "ep" 'flycheck-previous-error)
-    (evil-leader/set-key "s" 'shell-pop)
-    (evil-leader/set-key "bl" 'popwin:popup-last-buffer)
-    (evil-leader/set-key "bp" 'popwin:pop-to-buffer)
-    (evil-leader/set-key "bf" 'popwin:find-file)
-    (evil-leader/set-key "<SPC>" 'ace-jump-word-mode)
-    (evil-leader/set-key "wm" 'toggle-window-maximized)
-    (evil-leader/set-key "wt" 'toggle-frame-alpha)
-    (evil-leader/set-key "nh" 'evil-ex-nohighlight)
-    (defun toggle-folding ()
-      (interactive)
-      (set-selective-display
-       (unless selective-display
-         4
-         ;; (1+ (current-column))
-         ))
-      (recenter))
-    (evil-leader/set-key "l" 'toggle-folding)
-    (evil-leader/set-key "uv" 'undo-tree-visualize)
-    (evil-leader/set-key "agg" 'helm-do-ag)
-    (evil-leader/set-key "agb" 'helm-do-ag-buffers)
-    (evil-leader/set-key "tt" 'helm-etags-select)
-    (evil-leader/set-key ":"  'helm-M-x)
-    (evil-leader/set-key "bb" 'helm-buffers-list)
-    (evil-leader/set-key "fc" 'helm-find-file-at)
-    (evil-leader/set-key "fr" 'helm-recentf)
-    (evil-leader/set-key "fp" 'helm-browse-project)
-    (evil-leader/set-key "ff" 'helm-find-files)
-    (evil-leader/set-key "hl" 'helm-resume)
-    (evil-leader/set-key "hm" 'helm-mini)
-    (evil-leader/set-key "ho" 'helm-semantic-or-imenu)
-    (evil-leader/set-key "hp" 'helm-show-kill-ring)
-    (evil-leader/set-key "ig" 'indent-guide-mode)
-    ;; (evil-leader/set-key "bn" 'switch-to-next-buffer)
-    ;; (evil-leader/set-key "bp" 'switch-to-prev-buffer)
-    (evil-leader/set-key "gta" 'google-translate-at-point)
-    (evil-leader/set-key "gtq" 'google-translate-query-translate)
-    (evil-leader/set-key "gtQ" 'google-translate-query-translate-reverse)
-    (defun open-junk-dir ()
-      (interactive)
-      (let ((junk-dir "~/Dropbox/junk/"))
-        (helm-find-files-1 (expand-file-name junk-dir))))
-    (evil-leader/set-key "ml" 'open-junk-dir)
-    (evil-leader/set-key "mn" 'open-junk-file)
-    (evil-leader/set-key "aw" 'ace-window))
-  (global-evil-leader-mode)
-  (evil-mode t)
-  (diminish 'undo-tree-mode)
+    (evil-exchange-install))
+  (use-package evil-indent-textobject)
   (use-package evil-visualstar :config (global-evil-visualstar-mode))
   (use-package evil-terminal-cursor-changer)
   (use-package evil-surround :config (global-evil-surround-mode t))
@@ -424,6 +431,7 @@
 ;; guide-key
 (el-get-bundle guide-key)
 (use-package guide-key
+  :diminish guide-key-mode
   :commands (guide-key-mode)
   :init
   (setq guide-key/idle-delay 0.4
@@ -431,9 +439,7 @@
         guide-key/guide-key-sequence '("\\" "," "<SPC>")
         guide-key/recursive-key-sequence-flag t
         guide-key/popup-window-position 'bottom)
-  (add-hook 'after-init-hook 'guide-key-mode)
-  :config
-  (diminish 'guide-key-mode))
+  (add-hook 'after-init-hook 'guide-key-mode))
 
 ;; helm
 ;; (el-get-bundle async)
@@ -442,6 +448,7 @@
 (el-get-bundle helm-ag)
 
 (use-package helm
+  :diminish helm-mode
   :commands (helm-etags-select
              helm-do-ag
              helm-do-ag-buffers
@@ -492,7 +499,7 @@
     :config
     (setq helm-ag-insert-at-point 'symbol))
   (helm-mode +1)
-  (diminish 'helm-mode)
+
 
   (defun switch-window-if-gteq-3-windows ()
     (if (>= (length (window-list)) 3)
@@ -654,6 +661,7 @@
   :commands (helm-gtags-mode)
   :init
   (add-hook 'enh-ruby-mode-hook 'helm-gtags-mode)
+  (setq helm-gtags-path-style 'root)
   (setq helm-gtags-auto-update t)
   (setq helm-gtags-preselect t)
   (setq helm-gtags-use-input-at-cursor t)
@@ -670,17 +678,18 @@
           (if (not proc)
               (message "Failed: %s" (mapconcat 'identity cmds " "))
             (set-process-sentinel proc (helm-gtags--make-gtags-sentinel 'update))
-            (setq helm-gtags--last-update-time current-time)))))
-    )
-  (evil-leader/set-key "tc" 'helm-gtags-create-tags)
-  (evil-leader/set-key "tf" 'helm-gtags-select)
-  (evil-leader/set-key "tu" 'helm-gtags-update-tags)
-  (evil-leader/set-key "tU" 'helm-gtags-update-all-tags)
-  (evil-leader/set-key "tt" 'helm-gtags-find-tag)
-  (evil-leader/set-key "tr" 'helm-gtags-find-rtag)
-  (evil-leader/set-key "ts" 'helm-gtags-find-symbol)
-  (evil-leader/set-key "tn" 'helm-gtags-next-history)
-  (evil-leader/set-key "tp" 'helm-gtags-previous-history)
+            (setq helm-gtags--last-update-time current-time))))))
+  (evil-define-key 'normal helm-gtags-mode-map
+    (kbd "\C-]") 'helm-gtags-find-tag-from-here
+    (kbd "\C-t") 'helm-gtags-pop-stack
+    ",tc" 'helm-gtags-create-tags
+    ",tf" 'helm-gtags-select
+    ",tu" 'helm-gtags-update-tags
+    ",tU" 'helm-gtags-update-all-tags
+    ",td" 'helm-gtags-find-tag
+    ",tr" 'helm-gtags-find-rtag
+    ",tn" 'helm-gtags-next-history
+    ",tp" 'helm-gtags-previous-history)
   )
 
 (el-get-bundle rainbow-delimiters)
@@ -691,9 +700,10 @@
 
 (el-get-bundle auto-complete)
 (use-package auto-complete-config
+  :diminish auto-complete-mode
   :commands (ac-config-default)
   :init
-  (add-hook 'after-init-hook 'ac-config-default)
+  (add-hook 'prog-mode-hook 'ac-config-default)
   :config
   (use-package auto-complete
     :init
@@ -718,16 +728,13 @@
     (evil-define-key 'insert ac-menu-map (kbd "C-n") 'ac-next)
     (evil-define-key 'insert ac-menu-map (kbd "C-p") 'ac-previous)
     (evil-define-key 'insert ac-menu-map (kbd "<S-tab>") 'ac-previous)
-    (ac-set-trigger-key "TAB")
-    ;; (diminish 'auto-complete-mode)
-    ))
+    (ac-set-trigger-key "TAB")))
 
 (use-package eldoc
+  :diminish eldoc-mode
   :commands (eldoc-mode)
   :init
-  (add-hook 'prog-mode-hook 'eldoc-mode)
-  :config
-  (diminish 'eldoc-mode))
+  (add-hook 'prog-mode-hook 'eldoc-mode))
 
 ;; git
 (el-get-bundle magit)
@@ -812,6 +819,7 @@
                        gist-buffer gist-buffer-private))
 
 (use-package git-gutter
+  :diminish git-gutter-mode
   :commands (git-gutter-mode)
   :init
   (add-hook 'projectile-mode-hook 'git-gutter-mode)
@@ -824,7 +832,6 @@
   (set-face-foreground 'git-gutter:modified "#eee8d5")
   (set-face-foreground 'git-gutter:added "#859900")
   (set-face-foreground 'git-gutter:deleted "#dc322f")
-  (diminish 'git-gutter-mode)
   (git-gutter:linum-setup))
 
 ;; projectile
@@ -836,7 +843,7 @@
   :init
   (setq projectile-enable-caching t
         projectile-completion-system 'helm)
-  (add-hook 'after-init-hook 'projectile-global-mode)
+  (add-hook 'prog-mode-hook 'projectile-global-mode)
   (add-hook 'projectile-global-mode-hook 'helm-projectile-on))
 
 ;; rails
@@ -1014,21 +1021,22 @@
   :config
   (evil-define-key 'normal inf-ruby-mode-map (kbd ",ric") 'inf-ruby-console-auto))
 (use-package ac-robe
-  :commands (ac-robe-setup)
-  :init
-  (add-hook 'robe-mode-hook 'ac-robe-setup))
+  :commands (ac-robe-setup))
 (use-package robe
+  :diminish robe-mode
   :commands (robe-mode robe-start)
   :init
   (add-hook 'enh-ruby-mode-hook 'robe-mode)
-  (add-hook 'robe-mode-hook 'robe-start)
-  (add-hook 'robe-mode-hook 'ac-robe-setup)
   :config
+  (defun enable-robe-server ()
+    (interactive)
+    (robe-start)
+    (ac-robe-setup))
+  (evil-define-key 'normal robe-mode-map (kbd ",rs") 'enable-robe-server)
   (evil-define-key 'normal robe-mode-map (kbd ",rh") 'robe-doc)
   (evil-define-key 'normal robe-mode-map (kbd ",ra") 'robe-ask)
   (evil-define-key 'normal robe-mode-map (kbd ",rj") 'robe-jump)
-  (evil-define-key 'normal robe-mode-map (kbd ",rR") 'robe-rails-refresh)
-  (diminish 'robe-mode))
+  (evil-define-key 'normal robe-mode-map (kbd ",rR") 'robe-rails-refresh))
 (use-package enh-ruby-mode
   :mode (("\\(Rake\\|Thor\\|Guard\\|Gem\\|Cap\\|Vagrant\\|Berks\\|Pod\\|Puppet\\)file\\'" . enh-ruby-mode)
          ("\\.\\(rb\\|rabl\\|ru\\|builder\\|rake\\|thor\\|gemspec\\|jbuilder\\|schema\\|cap\\)\\'" . enh-ruby-mode)
@@ -1080,6 +1088,7 @@
   ;;               cmd)))))
   )
 (use-package ruby-test-mode
+  :diminish ruby-test-mode
   :commands (ruby-test-mode)
   :init
   (add-hook 'enh-ruby-mode-hook 'ruby-test-mode)
@@ -1100,8 +1109,7 @@
       (balance-windows)
       (ruby-test-toggle-implementation-and-specification)))
   (evil-define-key 'normal ruby-test-mode-map (kbd ",tv") 'ruby-test-toggle-vsplit)
-  (evil-define-key 'normal ruby-test-mode-map (kbd ",ts") 'ruby-test-toggle-split)
-  (diminish 'ruby-test-mode))
+  (evil-define-key 'normal ruby-test-mode-map (kbd ",ts") 'ruby-test-toggle-split))
 ;; (use-package ruby-end
 ;;   :commands (ruby-end-mode)
 ;;   :init
@@ -1335,7 +1343,9 @@
 (el-get-bundle powerline)
 (el-get-bundle powerline-evil)
 (use-package powerline-evil
+  :commands (powerline-evil-vim-color-theme)
   :init
+  (add-hook 'evil-mode-hook 'powerline-evil-vim-color-theme)
   (setq powerline-default-separator 'arrow)
   (setq powerline-evil-tag-style 'verbose)
   :config
@@ -1351,16 +1361,16 @@
   ;;  '(powerline-evil-visual-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#d33682"))))
   ;;  '(powerline-inactive1 ((t (:inherit mode-line-inactive :background "#fdf6e3" :foreground "#586e75"))))
   ;;  '(powerline-inactive2 ((t (:inherit mode-line-inactive :foreground "#586e75")))))
-  (powerline-evil-vim-color-theme))
+  ;; (powerline-evil-vim-color-theme)
+  )
 
 (el-get-bundle indent-guide)
 (use-package indent-guide
+  :diminish indent-guide-mode
   :commands (indent-guide-mode)
   :init
   (setq indent-guide-recursive t)
-  (add-hook 'lisp-mode-hook 'indent-guide-mode)
-  :config
-  (diminish 'indent-guide-mode))
+  (add-hook 'lisp-mode-hook 'indent-guide-mode))
 
 ;; (el-get-bundle golden-ratio)
 ;; (use-package golden-ratio
@@ -1664,10 +1674,25 @@
 ;;  '(powerline-inactive2 ((t (:inherit mode-line-inactive :foreground "#586e75"))))
 ;;  '(rbenv-active-ruby-face ((t (:background "#fdf6e3" :foreground "#dc322f" :weight bold))))
 ;;  '(whitespace-empty ((t (:foreground "#dc322f" :inverse-video nil :underline (:color foreground-color :style wave))))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(enh-ruby-op-face ((t (:foreground "headerColor"))))
- '(enh-ruby-string-delimiter-face ((t (:foreground "#d33682")))))
+;; (custom-set-faces
+;;  ;; custom-set-faces was added by Custom.
+;;  ;; If you edit it by hand, you could mess it up, so be careful.
+;;  ;; Your init file should contain only one such instance.
+;;  ;; If there is more than one, they won't work right.
+;;  '(enh-ruby-op-face ((t (:foreground "headerColor"))))
+;;  '(enh-ruby-string-delimiter-face ((t (:foreground "#d33682")))))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
