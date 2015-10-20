@@ -259,6 +259,10 @@
   (evil-leader/set-key "gta" 'google-translate-at-point)
   (evil-leader/set-key "gtq" 'google-translate-query-translate)
   (evil-leader/set-key "gtQ" 'google-translate-query-translate-reverse)
+  (evil-leader/set-key "hgf" 'helm-open-github-from-file)
+  (evil-leader/set-key "hgc" 'helm-open-github-from-commit)
+  (evil-leader/set-key "hgi" 'helm-open-github-from-issues)
+  (evil-leader/set-key "hgp" 'helm-open-github-from-pull-requests)
   (defun open-junk-dir ()
     (interactive)
     (let ((junk-dir "~/Dropbox/junk/"))
@@ -692,6 +696,13 @@
     ",tp" 'helm-gtags-previous-history)
   )
 
+(el-get-bundle helm-open-github)
+(use-package helm-open-github
+  :commands (helm-open-github-from-file
+             helm-open-github-from-commit
+             helm-open-github-from-issues
+             helm-open-github-from-pull-requests))
+
 (el-get-bundle rainbow-delimiters)
 (use-package rainbow-delimiters
   :commands (rainbow-delimiters-mode)
@@ -981,13 +992,12 @@
 (use-package flycheck
   :commands (global-flycheck-mode)
   :init
-  (add-hook 'after-init-hook 'global-flycheck-mode)
-  :config
-  (use-package flycheck-pos-tip
-    :commands (flycheck-pos-tip-error-messages)
-    :init
-    (custom-set-variables
-     '(flycheck-display-errors-function #'flycheck-pos-tip-error-messages))))
+  (add-hook 'after-init-hook 'global-flycheck-mode))
+
+(use-package flycheck-pos-tip
+  :commands (flycheck-pos-tip-error-messages)
+  :init
+  (setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
 
 ;; markdown
 (el-get-bundle markdown-mode)
