@@ -198,6 +198,7 @@
   (add-hook 'global-evil-leader-mode-hook '(lambda () (evil-mode t)))
   :config
   (evil-leader/set-leader "<SPC>")
+  (use-package evil-org)
   (evil-leader/set-key "di" 'helm-dash-install-docset)
   (evil-leader/set-key "dd" 'helm-dash)
   (evil-leader/set-key "da" 'helm-dash-at-point)
@@ -263,6 +264,7 @@
   (evil-leader/set-key "hgc" 'helm-open-github-from-commit)
   (evil-leader/set-key "hgi" 'helm-open-github-from-issues)
   (evil-leader/set-key "hgp" 'helm-open-github-from-pull-requests)
+  (evil-leader/set-key "rc" 'restclient-mode)
   (defun open-junk-dir ()
     (interactive)
     (let ((junk-dir "~/Dropbox/junk/"))
@@ -283,7 +285,6 @@
         evil-shift-width 2
         evil-cross-lines t)
   :config
-  (use-package evil-org-mode)
   (use-package evil-exchange
     :config
     (evil-exchange-install))
@@ -714,7 +715,7 @@
   :diminish auto-complete-mode
   :commands (ac-config-default)
   :init
-  (add-hook 'prog-mode-hook 'ac-config-default)
+  (add-hook 'evil-mode-hook 'ac-config-default)
   :config
   (use-package auto-complete
     :init
@@ -836,10 +837,9 @@
   (add-hook 'projectile-mode-hook 'git-gutter-mode)
   (setq git-gutter:update-interval 2)
   :config
-  (custom-set-variables
-   '(git-gutter:modified-sign "**")
-   '(git-gutter:added-sign "++")
-   '(git-gutter:deleted-sign "--"))
+  (setq git-gutter:modified-sign "**"
+        git-gutter:added-sign    "++"
+        git-gutter:deleted-sign  "--")
   (set-face-foreground 'git-gutter:modified "#eee8d5")
   (set-face-foreground 'git-gutter:added "#859900")
   (set-face-foreground 'git-gutter:deleted "#dc322f")
@@ -854,7 +854,7 @@
   :init
   (setq projectile-enable-caching t
         projectile-completion-system 'helm)
-  (add-hook 'prog-mode-hook 'projectile-global-mode)
+  (add-hook 'evil-mode-hook 'projectile-global-mode)
   (add-hook 'projectile-global-mode-hook 'helm-projectile-on))
 
 ;; rails
@@ -862,21 +862,13 @@
 (use-package projectile-rails
   :commands (projectile-rails-on)
   :init
-  (add-hook 'projectile-mode-hook 'projectile-rails-on)
+  (add-hook 'enh-ruby-mode 'projectile-rails-on)
   (defun set-projectile-rails-tags-command ()
     (interactive)
     (when (projectile-rails-root)
       (setq projectile-tags-command (concat "ctags -Re -f TAGS --languages=+Ruby --languages=-JavaScript " (projectile-rails-root)))))
   (add-hook 'projectile-rails-mode-hook 'set-projectile-rails-tags-command)
-  :config
-  (evil-define-key 'normal projectile-rails-mode-map ",ris" 'projectile-rails-server)
-  (evil-define-key 'normal projectile-rails-mode-map ",rir" 'projectile-rails-rake)
-  (evil-define-key 'normal projectile-rails-mode-map ",rig" 'projectile-rails-generate)
-  (evil-define-key 'normal projectile-rails-mode-map ",rer" 'projectile-rails-extract-region)
-  (evil-define-key 'normal projectile-rails-mode-map ",gf" 'projectile-rails-goto-file-at-point)
-  (evil-define-key 'normal projectile-rails-mode-map ",gm" 'projectile-rails-goto-gemfile)
-  (evil-define-key 'normal projectile-rails-mode-map ",gr" 'projectile-rails-goto-routes)
-  (defun define-rails-find-file-in (dir)
+(defun define-rails-find-file-in (dir)
     (let* ((normalized-dir (subst-char-in-string ?/ ?- (substring dir 0 -1)))
            (fname (intern (concat "find-file-in-" normalized-dir))))
       `(defun ,fname ()
@@ -885,11 +877,51 @@
                 (target-dir (concat rails-root ,dir)))
            (message target-dir)
            (helm-find-files-1 target-dir)))))
-
-  (defmacro rails-find-file-in (dirs)
+(defmacro rails-find-file-in (dirs)
     `(progn
        ,@(mapcar #'define-rails-find-file-in
                  dirs)))
+(defmacro rails-find-file-current (dir re fallback)
+    `(let* ((singular (projectile-rails-current-resource-name))
+            (plural (pluralize-string singular))
+            (abs-current-file (buffer-file-name (current-buffer)))
+            (current-file (if abs-current-file
+                              (file-relative-name abs-current-file
+                                                  (projectile-project-root))))
+            (choices (projectile-rails-choices
+                      (list (list ,dir (s-lex-format ,re)))))
+            (files (projectile-rails-hash-keys choices))
+            (target-dir (concat (projectile-rails-root)
+                                (f-dirname (gethash (-first-item files) choices)))))
+       (message "target-dir: %s" target-dir)
+       (if (eq files ())
+           (funcall ,fallback)
+         (helm-find-files-1 target-dir))))
+  (defun find-file-current-model ()
+    (interactive)
+    (rails-find-file-current "app/models/"
+                             "/${singular}\\.rb$"
+                             'projectile-rails-find-model))
+
+  (defun find-file-current-controller ()
+    (interactive)
+    (rails-find-file-current "app/controllers/"
+                             "app/controllers/\\(.*${plural}\\)_controller\\.rb$"
+                             'projectile-rails-find-controller))
+
+  (defun find-file-current-view ()
+    (interactive)
+    (rails-find-file-current "app/views/"
+                             "/${plural}/\\(.+\\)$"
+                             'projectile-rails-find-view))
+  :config
+  (evil-define-key 'normal projectile-rails-mode-map ",ris" 'projectile-rails-server)
+  (evil-define-key 'normal projectile-rails-mode-map ",rir" 'projectile-rails-rake)
+  (evil-define-key 'normal projectile-rails-mode-map ",rig" 'projectile-rails-generate)
+  (evil-define-key 'normal projectile-rails-mode-map ",rer" 'projectile-rails-extract-region)
+  (evil-define-key 'normal projectile-rails-mode-map ",gf" 'projectile-rails-goto-file-at-point)
+  (evil-define-key 'normal projectile-rails-mode-map ",gm" 'projectile-rails-goto-gemfile)
+  (evil-define-key 'normal projectile-rails-mode-map ",gr" 'projectile-rails-goto-routes)
 
   (rails-find-file-in ("spec/"
                        "spec/controllers/"
@@ -920,6 +952,7 @@
                        "db/migrate/"
                        "db/ridgepole/"
                        "lib/"))
+
   (evil-define-key 'normal projectile-rails-mode-map ",rCC" 'find-file-in-config)
   (evil-define-key 'normal projectile-rails-mode-map ",rCi" 'find-file-in-config-initializers)
   (evil-define-key 'normal projectile-rails-mode-map ",rCe" 'find-file-in-config-environments)
@@ -938,6 +971,7 @@
                        "app/services/"
                        "app/validators/"
                        "app/views/"))
+
   (evil-define-key 'normal projectile-rails-mode-map ",rfa" 'find-file-in-app)
   (evil-define-key 'normal projectile-rails-mode-map ",rfc" 'find-file-in-app-controllers)
   (evil-define-key 'normal projectile-rails-mode-map ",rfh" 'find-file-in-app-helpers)
@@ -945,42 +979,6 @@
   (evil-define-key 'normal projectile-rails-mode-map ",rfm" 'find-file-in-app-models)
   (evil-define-key 'normal projectile-rails-mode-map ",rfs" 'find-file-in-app-services)
   (evil-define-key 'normal projectile-rails-mode-map ",rfv" 'find-file-in-app-views)
-
-  (defmacro rails-find-file-current (dir re fallback)
-    `(let* ((singular (projectile-rails-current-resource-name))
-            (plural (pluralize-string singular))
-            (abs-current-file (buffer-file-name (current-buffer)))
-            (current-file (if abs-current-file
-                              (file-relative-name abs-current-file
-                                                  (projectile-project-root))))
-            (choices (projectile-rails-choices
-                      (list (list ,dir (s-lex-format ,re)))))
-            (files (projectile-rails-hash-keys choices))
-            (target-dir (concat (projectile-rails-root)
-                                (f-dirname (gethash (-first-item files) choices)))))
-       (message "target-dir: %s" target-dir)
-       (if (eq files ())
-           (funcall ,fallback)
-         (helm-find-files-1 target-dir))))
-
-  (defun find-file-current-model ()
-    (interactive)
-    (rails-find-file-current "app/models/"
-                             "/${singular}\\.rb$"
-                             'projectile-rails-find-model))
-
-  (defun find-file-current-controller ()
-    (interactive)
-    (rails-find-file-current "app/controllers/"
-                             "app/controllers/\\(.*${plural}\\)_controller\\.rb$"
-                             'projectile-rails-find-controller))
-
-  (defun find-file-current-view ()
-    (interactive)
-    (rails-find-file-current "app/views/"
-                             "/${plural}/\\(.+\\)$"
-                             'projectile-rails-find-view))
-
   (evil-define-key 'normal projectile-rails-mode-map ",rcm" 'find-file-current-model)
   (evil-define-key 'normal projectile-rails-mode-map ",rcc" 'find-file-current-controller)
   (evil-define-key 'normal projectile-rails-mode-map ",rcv" 'find-file-current-view)
@@ -1170,6 +1168,13 @@
                  (list "ridgepole-dev" "bundle exec rake db:ridgepole:apply[development]"))
                 ())))
 
+(el-get-bundle eshell-prompt-extras)
+(use-package eshell-prompt-extras
+  :commands (epe-theme-dakrone epe-theme-lambda)
+  :init
+  (setq eshell-highlight-prompt nil
+        eshell-prompt-function 'epe-theme-dakrone)
+  (add-hook 'eshell-mode-hook 'epe-theme-dakrone))
 (el-get-bundle shell-pop)
 (use-package shell-pop
   :commands (shell-pop)
@@ -1350,29 +1355,67 @@
 ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/aurora-theme")
 ;; (load-theme 'aurora t)
 
-(el-get-bundle powerline)
-(el-get-bundle powerline-evil)
-(use-package powerline-evil
-  :commands (powerline-evil-vim-color-theme)
+(el-get-bundle TheBB/spaceline)
+(use-package spaceline-config
+  :commands (spaceline-install spaceline-spacemacs-theme)
   :init
-  (add-hook 'evil-mode-hook 'powerline-evil-vim-color-theme)
-  (setq powerline-default-separator 'arrow)
-  (setq powerline-evil-tag-style 'verbose)
-  :config
-  ;; (custom-set-faces
-  ;;  '(mode-line ((t (:background "#002b36" :foreground "#fdf6e3" :inverse-video t :box nil))))
-  ;;  '(mode-line-inactive ((t (:background "#eee8d5" :foreground "#586e75" :inverse-video t :box nil))))
-  ;;  '(powerline-active1 ((t (:background "#002b36" :foreground "#eee8d5"))))
-  ;;  '(powerline-active2 ((t (:background "#002b36" :foreground "#eee8d5"))))
-  ;;  '(powerline-evil-base-face ((t (:background "#fdf6e3" :foreground "#002b36" :width extra-expanded))))
-  ;;  '(powerline-evil-insert-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#657b83"))))
-  ;;  '(powerline-evil-normal-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#268bd2"))))
-  ;;  '(powerline-evil-operator-face ((t (:inherit powerline-evil-operator-face :background "#fdf6e3" :foreground "#b58900"))))
-  ;;  '(powerline-evil-visual-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#d33682"))))
-  ;;  '(powerline-inactive1 ((t (:inherit mode-line-inactive :background "#fdf6e3" :foreground "#586e75"))))
-  ;;  '(powerline-inactive2 ((t (:inherit mode-line-inactive :foreground "#586e75")))))
-  ;; (powerline-evil-vim-color-theme)
-  )
+  (setq powerline-default-separator 'bar)
+  (defun install-my-spaceline-theme ()
+    (spaceline-install
+     '((evil-state
+        :face highlight-face)
+       ;; ((workspace-number window-number)
+       ;;  :fallback evil-state
+       ;;  :separator "|"
+       ;;  :face highlight-face)
+       (buffer-modified buffer-size buffer-id remote-host)
+       ((flycheck-error flycheck-warning flycheck-info)
+        :when active)
+       major-mode
+       (((minor-modes :separator spaceline-minor-modes-separator)
+         process)
+        :when active)
+       (erc-track :when active)
+       (version-control :when active)
+       (org-pomodoro :when active)
+       (org-clock :when active)
+       nyan-cat)
+
+     `((battery :when active)
+       process
+       selection-info
+       ((buffer-encoding-abbrev
+         point-position
+         line-column)
+        :separator " | ")
+       (global :when active)
+       buffer-position
+       hud)))
+  (add-hook 'evil-mode-hook 'install-my-spaceline-theme))
+
+;; (el-get-bundle powerline)
+;; (el-get-bundle powerline-evil)
+;; (use-package powerline-evil
+;;   :commands (powerline-evil-vim-color-theme)
+;;   :init
+;;   (add-hook 'evil-mode-hook 'powerline-evil-vim-color-theme)
+;;   (setq powerline-default-separator 'arrow)
+;;   (setq powerline-evil-tag-style 'verbose)
+;;   :config
+;;   ;; (custom-set-faces
+;;   ;;  '(mode-line ((t (:background "#002b36" :foreground "#fdf6e3" :inverse-video t :box nil))))
+;;   ;;  '(mode-line-inactive ((t (:background "#eee8d5" :foreground "#586e75" :inverse-video t :box nil))))
+;;   ;;  '(powerline-active1 ((t (:background "#002b36" :foreground "#eee8d5"))))
+;;   ;;  '(powerline-active2 ((t (:background "#002b36" :foreground "#eee8d5"))))
+;;   ;;  '(powerline-evil-base-face ((t (:background "#fdf6e3" :foreground "#002b36" :width extra-expanded))))
+;;   ;;  '(powerline-evil-insert-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#657b83"))))
+;;   ;;  '(powerline-evil-normal-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#268bd2"))))
+;;   ;;  '(powerline-evil-operator-face ((t (:inherit powerline-evil-operator-face :background "#fdf6e3" :foreground "#b58900"))))
+;;   ;;  '(powerline-evil-visual-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#d33682"))))
+;;   ;;  '(powerline-inactive1 ((t (:inherit mode-line-inactive :background "#fdf6e3" :foreground "#586e75"))))
+;;   ;;  '(powerline-inactive2 ((t (:inherit mode-line-inactive :foreground "#586e75")))))
+;;   ;; (powerline-evil-vim-color-theme)
+;;   )
 
 (el-get-bundle indent-guide)
 (use-package indent-guide
@@ -1642,6 +1685,26 @@
 (use-package scss-mode
   :mode (("\\.scss\\'" . scss-mode)))
 
+(el-get-bundle restclient)
+(use-package restclient
+  :commands (restclient-mode)
+  :config
+  (evil-define-key 'normal restclient-mode-map
+    ",y"  'restclient-copy-curl-command
+    ",ss" 'restclient-http-send-current
+    ",sr" 'restclient-http-send-current-raw
+    ",sv" 'restclient-http-send-current-stay-in-window
+    ",n"  'restclient-jump-next
+    ",p"  'restclient-jump-prev
+    ",m"  'restclient-mark-current))
+
+(el-get-bundle volatile-highlights)
+(use-package volatile-highlights
+  :diminish volatile-highlights-mode
+  :commands (volatile-highlights-mode)
+  :init
+  (add-hook 'prog-mode-hook 'volatile-highlights-mode))
+
 (require 'server)
 (unless (server-running-p)
   (server-start))
@@ -1654,55 +1717,6 @@
  '(custom-safe-themes
    (quote
     ("97f9438943105a17eeca9f1a1c4c946765e364957749e83047d6ee337b5c0a73" "790e74b900c074ac8f64fa0b610ad05bcfece9be44e8f5340d2d94c1e47538de" "90d329edc17c6f4e43dbc67709067ccd6c0a3caa355f305de2041755986548f2" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" default)))
- '(evil-shift-width 2)
- '(flycheck-display-errors-function (function flycheck-pos-tip-error-messages))
  '(git-gutter:added-sign "++")
  '(git-gutter:deleted-sign "--")
  '(git-gutter:modified-sign "**"))
-;; (custom-set-faces
-;;  ;; custom-set-faces was added by Custom.
-;;  ;; If you edit it by hand, you could mess it up, so be careful.
-;;  ;; Your init file should contain only one such instance.
-;;  ;; If there is more than one, they won't work right.
-;;  '(elscreen-tab-background-face ((t (:background "#839496"))))
-;;  '(elscreen-tab-control-face ((t (:background "white" :foreground "#839496" :underline t))))
-;;  '(elscreen-tab-current-screen-face ((t (:background "#073642" :foreground "#eee8d5"))))
-;;  '(elscreen-tab-other-screen-face ((t (:background "#fdf6e3" :foreground "#839496" :underline t))))
-;;  '(enh-ruby-op-face ((t (:foreground "headerColor"))))
-;;  '(enh-ruby-string-delimiter-face ((t (:foreground "#d33682"))))
-;;  '(mode-line ((t (:background "#002b36" :foreground "#fdf6e3" :inverse-video t :box nil))))
-;;  '(mode-line-inactive ((t (:background "#eee8d5" :foreground "#586e75" :inverse-video t :box nil))))
-;;  '(popup-tip-face ((t (:background "#073642" :foreground "#b58900"))))
-;;  '(powerline-active1 ((t (:background "#002b36" :foreground "#eee8d5"))))
-;;  '(powerline-active2 ((t (:background "#002b36" :foreground "#eee8d5"))))
-;;  '(powerline-evil-base-face ((t (:background "#fdf6e3" :foreground "#002b36" :width extra-expanded))))
-;;  '(powerline-evil-insert-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#657b83"))))
-;;  '(powerline-evil-normal-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#268bd2"))))
-;;  '(powerline-evil-operator-face ((t (:inherit powerline-evil-operator-face :background "#fdf6e3" :foreground "#b58900"))))
-;;  '(powerline-evil-visual-face ((t (:inherit powerline-evil-base-face :background "#fdf6e3" :foreground "#d33682"))))
-;;  '(powerline-inactive1 ((t (:inherit mode-line-inactive :background "#fdf6e3" :foreground "#586e75"))))
-;;  '(powerline-inactive2 ((t (:inherit mode-line-inactive :foreground "#586e75"))))
-;;  '(rbenv-active-ruby-face ((t (:background "#fdf6e3" :foreground "#dc322f" :weight bold))))
-;;  '(whitespace-empty ((t (:foreground "#dc322f" :inverse-video nil :underline (:color foreground-color :style wave))))))
-;; (custom-set-faces
-;;  ;; custom-set-faces was added by Custom.
-;;  ;; If you edit it by hand, you could mess it up, so be careful.
-;;  ;; Your init file should contain only one such instance.
-;;  ;; If there is more than one, they won't work right.
-;;  '(enh-ruby-op-face ((t (:foreground "headerColor"))))
-;;  '(enh-ruby-string-delimiter-face ((t (:foreground "#d33682")))))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
