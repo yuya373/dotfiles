@@ -41,7 +41,7 @@
 (prefer-coding-system 'utf-8)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-(menu-bar-mode -1)
+;; (menu-bar-mode -1)
 (setq require-final-newline t)
 (setq ad-redefinition-action 'accept)
 (when (eq system-type 'darwin)
@@ -1046,6 +1046,7 @@
 (use-package rbenv
   :commands (global-rbenv-mode rbenv-use-global rbenv-use-corresponding)
   :init
+  (setq rbenv-show-active-ruby-in-modeline nil)
   (add-hook 'enh-ruby-mode-hook 'global-rbenv-mode)
   (add-hook 'enh-ruby-mode-hook (lambda () (rbenv-use-corresponding))))
 (use-package inf-ruby
@@ -1385,11 +1386,14 @@
 (el-get-bundle powerline)
 (el-get-bundle TheBB/spaceline)
 (use-package spaceline-config
-  :commands (spaceline-install spaceline-spacemacs-theme)
+  :commands (spaceline-define-segment spaceline-install spaceline-spacemacs-theme)
   :init
-  (setq powerline-default-separator 'bar)
+  (add-hook 'evil-mode-hook 'install-my-spaceline-theme)
+  (setq powerline-height 25)
+  (setq powerline-default-separator 'wave)
   (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
   (defun install-my-spaceline-theme ()
+
     (spaceline-install
      '((evil-state
         :face highlight-face)
@@ -1403,7 +1407,7 @@
        major-mode
        (((minor-modes :separator spaceline-minor-modes-separator)
          process)
-        :when active)
+        )
        (erc-track :when active)
        (version-control :when active)
        (org-pomodoro :when active)
@@ -1411,16 +1415,21 @@
        nyan-cat)
 
      `((battery :when active)
-       process
        selection-info
        ((buffer-encoding-abbrev
          point-position
          line-column)
         :separator " | ")
-       (global :when active)
        buffer-position
+       (global :when active)
+       (rbenv :when active)
        hud)))
-  (add-hook 'evil-mode-hook 'install-my-spaceline-theme))
+  :config
+  (spaceline-define-segment rbenv
+    "ruby version used in rbenv"
+    (rbenv--update-mode-line)
+    :when (bound-and-true-p global-rbenv-mode))
+  )
 
 ;; (el-get-bundle powerline)
 ;; (el-get-bundle powerline-evil)
