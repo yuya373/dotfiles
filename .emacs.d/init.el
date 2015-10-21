@@ -229,38 +229,46 @@
   (evil-leader/set-key "da" 'helm-dash-at-point)
   (evil-leader/set-key "gf" 'magit-fetch-popup)
   (evil-leader/set-key "gb" 'magit-blame-popup)
-  (evil-leader/set-key "gs" 'magit-status)
-  (evil-leader/set-key "ggu" 'git-gutter:update-all-windows)
-  (evil-leader/set-key "ggv" 'git-gutter:popup-hunk)
-  (evil-leader/set-key "ggn" 'git-gutter:next-hunk)
-  (evil-leader/set-key "ggp" 'git-gutter:previous-hunk)
-  (evil-leader/set-key "ggs" 'git-gutter:stage-hunk)
-  (evil-leader/set-key "ggr" 'git-gutter:revert-hunk)
+  (evil-leader/set-key "gg" 'magit-status)
+  (evil-leader/set-key "gu" 'git-gutter:update-all-windows)
+  (evil-leader/set-key "gv" 'git-gutter:popup-hunk)
+  (evil-leader/set-key "gn" 'git-gutter:next-hunk)
+  (evil-leader/set-key "gp" 'git-gutter:previous-hunk)
+  (evil-leader/set-key "gs" 'git-gutter:stage-hunk)
+  (evil-leader/set-key "gr" 'git-gutter:revert-hunk)
+  (evil-leader/set-key "gm" 'git-messenger:popup-message)
+  (evil-leader/set-key "gt" 'git-timemachine)
   (evil-leader/set-key "ps" 'projectile-switch-project)
   (evil-leader/set-key "pk" 'projectile-invalidate-cache)
   (evil-leader/set-key "tG" 'projectile-regenerate-tags)
-  (evil-leader/set-key "bk" 'projectile-kill-buffers)
-  (evil-leader/set-key "agp" 'helm-projectile-ag)
+  (evil-leader/set-key "tt" 'helm-etags-select)
+  (evil-leader/set-key "ta" 'google-translate-at-point)
+  (evil-leader/set-key "tq" 'google-translate-query-translate)
+  (evil-leader/set-key "tQ" 'google-translate-query-translate-reverse)
   (evil-leader/set-key "fd" 'helm-projectile-find-dir)
   (evil-leader/set-key "fp" 'helm-projectile-find-file)
   (evil-leader/set-key "fc" 'helm-projectile-find-file-dwim)
+  (evil-leader/set-key "bk" 'projectile-kill-buffers)
   (evil-leader/set-key "bw" 'projectile-switch-to-buffer-other-window)
+  (evil-leader/set-key "bl" 'popwin:popup-last-buffer)
+  (evil-leader/set-key "bp" 'popwin:pop-to-buffer)
+  ;; (evil-leader/set-key "bn" 'switch-to-next-buffer)
+  ;; (evil-leader/set-key "bp" 'switch-to-prev-buffer)
   (evil-leader/set-key "el" 'flycheck-list-errors)
   (evil-leader/set-key "en" 'flycheck-next-error)
   (evil-leader/set-key "ep" 'flycheck-previous-error)
   (evil-leader/set-key "s" 'shell-pop)
-  (evil-leader/set-key "bl" 'popwin:popup-last-buffer)
-  (evil-leader/set-key "bp" 'popwin:pop-to-buffer)
   (evil-leader/set-key "bf" 'popwin:find-file)
   (evil-leader/set-key "<SPC>" 'ace-jump-word-mode)
+  (evil-leader/set-key "wb" 'balance-windows)
+  (evil-leader/set-key "wg" 'golden-ratio-mode)
   (evil-leader/set-key "wm" 'toggle-window-maximized)
   (evil-leader/set-key "wt" 'toggle-frame-alpha)
-  (evil-leader/set-key "nh" 'evil-ex-nohighlight)
   (evil-leader/set-key "l" 'toggle-folding)
   (evil-leader/set-key "uv" 'undo-tree-visualize)
-  (evil-leader/set-key "agg" 'helm-do-ag)
-  (evil-leader/set-key "agb" 'helm-do-ag-buffers)
-  (evil-leader/set-key "tt" 'helm-etags-select)
+  (evil-leader/set-key "rp" 'helm-projectile-ag)
+  (evil-leader/set-key "rr" 'helm-do-ag)
+  (evil-leader/set-key "rb" 'helm-do-ag-buffers)
   (evil-leader/set-key ":"  'helm-M-x)
   (evil-leader/set-key "bb" 'helm-buffers-list)
   (evil-leader/set-key "fc" 'helm-find-file-at)
@@ -272,11 +280,6 @@
   (evil-leader/set-key "ho" 'helm-semantic-or-imenu)
   (evil-leader/set-key "hp" 'helm-show-kill-ring)
   (evil-leader/set-key "ig" 'indent-guide-mode)
-  ;; (evil-leader/set-key "bn" 'switch-to-next-buffer)
-  ;; (evil-leader/set-key "bp" 'switch-to-prev-buffer)
-  (evil-leader/set-key "gta" 'google-translate-at-point)
-  (evil-leader/set-key "gtq" 'google-translate-query-translate)
-  (evil-leader/set-key "gtQ" 'google-translate-query-translate-reverse)
   (evil-leader/set-key "hgf" 'helm-open-github-from-file)
   (evil-leader/set-key "hgc" 'helm-open-github-from-commit)
   (evil-leader/set-key "hgi" 'helm-open-github-from-issues)
@@ -458,17 +461,49 @@
   (evil-define-key 'normal eww-mode-map "q" 'quit-window))
 
 ;; guide-key
-(el-get-bundle guide-key)
-(use-package guide-key
-  :diminish guide-key-mode
-  :commands (guide-key-mode)
+;; (el-get-bundle guide-key)
+;; (use-package guide-key
+;;   :diminish guide-key-mode
+;;   :commands (guide-key-mode)
+;;   :init
+;;   (setq guide-key/idle-delay 0.4
+;;         guide-key/text-scale-amount 1
+;;         guide-key/guide-key-sequence '("\\" "," "<SPC>")
+;;         guide-key/recursive-key-sequence-flag t
+;;         guide-key/popup-window-position 'bottom)
+;;   (add-hook 'after-init-hook 'guide-key-mode))
+
+(el-get-bundle which-key)
+(use-package which-key
+  :diminish which-key-mode
+  :commands (which-key-mode)
   :init
-  (setq guide-key/idle-delay 0.4
-        guide-key/text-scale-amount 1
-        guide-key/guide-key-sequence '("\\" "," "<SPC>")
-        guide-key/recursive-key-sequence-flag t
-        guide-key/popup-window-position 'bottom)
-  (add-hook 'after-init-hook 'guide-key-mode))
+  (setq which-key-use-C-h-for-paging nil)
+  (setq which-key-idle-delay 0.3)
+  (setq which-key-separator " - ")
+  (setq which-key-show-prefix 'echo)
+  (setq which-key-popup-type 'side-window)
+  (setq which-key-side-window-location 'bottom)
+  (setq which-key-side-window-max-height 0.50)
+  (add-hook 'after-init-hook 'which-key-mode)
+  :config
+  (which-key-add-key-based-replacements "SPC r" " text-replacement")
+  (which-key-add-key-based-replacements "SPC d" " dash")
+  (which-key-add-key-based-replacements "SPC f" " find-file")
+  (which-key-add-key-based-replacements "SPC h" " helm")
+  (which-key-add-key-based-replacements "SPC p" " projectile")
+  (which-key-add-key-based-replacements "SPC u" " undo-tree")
+  (which-key-add-key-based-replacements "SPC b" " buffers")
+  (which-key-add-key-based-replacements "SPC e" " errors")
+  (which-key-add-key-based-replacements "SPC i" " indent-guides")
+  (which-key-add-key-based-replacements "SPC t" " tags, transrate")
+  (which-key-add-key-based-replacements "SPC w" " windows")
+  (which-key-add-key-based-replacements "SPC g" " git")
+  (which-key-add-key-based-replacements ", h" " help")
+
+  (which-key-add-major-mode-key-based-replacements 'emacs-lisp-mode
+    ", e" " eval")
+  )
 
 ;; helm
 ;; (el-get-bundle async)
@@ -779,6 +814,23 @@
 (el-get-bundle magit-gh-pulls)
 (el-get-bundle gist)
 (el-get-bundle git-gutter)
+(el-get-bundle git-messenger)
+(el-get-bundle git-timemachine)
+
+(use-package git-timemachine
+  :commands (git-timemachine)
+  :config
+  (evil-set-initial-state 'git-timemachine-mode 'motion)
+  (evil-define-key 'motion git-timemachine-mode-map
+    "p" 'git-timemachine-show-previous-revision
+    "n" 'git-timemachine-show-next-revision
+    "g" 'git-timemachine-show-nth-revision
+    "q" 'git-timemachine-quit
+    "w" 'git-timemachine-kill-abbreviated-revision
+    "W" 'git-timemachine-kill-revision))
+
+(use-package git-messenger
+  :commands (git-messenger:popup-message))
 
 (use-package magit
   :commands (magit-status magit-blame-popup
@@ -804,8 +856,17 @@
   (evil-set-initial-state 'magit-blame-mode 'motion)
   (evil-set-initial-state 'magit-revision-mode 'normal)
 
-  (define-key magit-blame-mode-map "p" 'magit-blame-popup)
   (define-key magit-blame-mode-map "q" 'magit-blame-quit)
+  (define-key magit-blame-mode-map "b" 'magit-blame-popup)
+  (define-key magit-blame-mode-map "r" 'magit-show-commit)
+  (define-key magit-blame-mode-map "s" 'magit-diff-show-or-scroll-up)
+  (define-key magit-blame-mode-map "d" 'magit-diff-show-or-scroll-down)
+  (define-key magit-blame-mode-map "n" 'magit-blame-next-chunk)
+  (define-key magit-blame-mode-map "N" 'magit-blame-next-chunk-same-commit)
+  (define-key magit-blame-mode-map "p" 'magit-blame-previous-chunk)
+  (define-key magit-blame-mode-map "P" 'magit-blame-previous-chunk-same-commit)
+  (define-key magit-blame-mode-map "t" 'magit-blame-toggle-headings)
+  (define-key magit-blame-mode-map "y" 'magit-blame-copy-hash)
 
   (define-key magit-mode-map "\s" nil) ;space I use space as my evil-leader key
   (define-key magit-diff-mode-map "\s" nil) ;space
@@ -1014,6 +1075,7 @@
 (el-get-bundle flycheck)
 (el-get-bundle flycheck-pos-tip)
 (use-package flycheck
+  :diminish flycheck-mode
   :commands (global-flycheck-mode)
   :init
   (add-hook 'after-init-hook 'global-flycheck-mode))
@@ -1393,7 +1455,6 @@
   (setq powerline-default-separator 'wave)
   (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
   (defun install-my-spaceline-theme ()
-
     (spaceline-install
      '((evil-state
         :face highlight-face)
@@ -1463,37 +1524,30 @@
   (setq indent-guide-recursive t)
   (add-hook 'lisp-mode-hook 'indent-guide-mode))
 
-;; (el-get-bundle golden-ratio)
-;; (use-package golden-ratio
-;;   :config
-;;   (setq golden-ratio-exclude-modes '("bs-mode"
-;;                                      "calc-mode"
-;;                                      "ediff-mode"
-;;                                      "dired-mode"
-;;                                      "comint-mode"
-;;                                      "slime-repl-mode"
-;;                                      ))
-;;   (setq golden-ratio-exclude-buffer-names '(
-;;                                             "*compilation*"
-;;                                             "*Flycheck errors*"
-;;                                             "slime-apropos*"
-;;                                             "*slime-description*"
-;;                                             "*slime-compilation*"
-;;                                             "*Proccess List*"
-;;                                             "*Help*"
-;;                                             "*LV*"
-;;                                             "*Warnings*"))
-;;   ;; (setq golden-ratio-auto-scale t)
-
-;;   (defun no-golden-ratio-for-buffers (bufname)
-;;     (and (get-buffer bufname) (get-buffer-window bufname 'visible)))
-;;   (defun no-golden-ratio-guide-key ()
-;;     (or (no-golden-ratio-for-buffers " *guide-key*")
-;;         (no-golden-ratio-for-buffers " *popwin-dummy*"))
-;;     )
-;;   (add-to-list 'golden-ratio-inhibit-functions 'no-golden-ratio-guide-key)
-;;   (golden-ratio-mode 1)
-;;   (diminish 'golden-ratio-mode))
+(el-get-bundle golden-ratio)
+(use-package golden-ratio
+  :commands (golden-ratio-mode)
+  :diminish golden-ratio-mode
+  :init
+  (setq golden-ratio-exclude-modes '("bs-mode"
+                                     "calc-mode"
+                                     "ediff-mode"
+                                     "dired-mode"
+                                     "comint-mode"
+                                     "slime-repl-mode"
+                                     ))
+  (setq golden-ratio-exclude-buffer-names '(
+                                            "*compilation*"
+                                            "*which-key*"
+                                            "*Flycheck errors*"
+                                            "slime-apropos*"
+                                            "*slime-description*"
+                                            "*slime-compilation*"
+                                            "*Proccess List*"
+                                            "*Help*"
+                                            "*LV*"
+                                            "*Warnings*"))
+  (setq golden-ratio-auto-scale t))
 
 (el-get-bundle google-translate)
 (use-package google-translate
