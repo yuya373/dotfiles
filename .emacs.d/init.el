@@ -302,6 +302,7 @@
         evil-shift-width 2
         evil-cross-lines t)
   :config
+  (add-hook 'evil-insert-state-entry-hook 'evil-ex-nohighlight)
   (use-package evil-exchange
     :config
     (evil-exchange-install))
@@ -1165,14 +1166,16 @@
   (add-to-list 'ac-modes 'eshell-mode)
   (ac-define-source pcomplete
     '((candidates . pcomplete-completions)))
-  (add-hook 'eshell-mode-hook '(lambda ()
-                                 (setq ac-sources
-                                       '(ac-source-pcomplete
-                                         ac-source-filename
-                                         ac-source-files-in-current-dir
-                                         ac-source-words-in-buffer
-                                         ac-source-dictionary))
-                                 (evil-define-key 'insert eshell-mode-map (kbd "C-p") 'helm-eshell-history)))
+  (defun my-eshell-mode-hook ()
+    (setq ac-sources
+          '(ac-source-pcomplete
+            ac-source-filename
+            ac-source-files-in-current-dir
+            ac-source-words-in-buffer
+            ac-source-dictionary))
+    (evil-define-key 'insert eshell-mode-map (kbd "C-p") 'helm-eshell-history))
+  (add-hook 'eshell-mode-hook 'my-eshell-mode-hook)
+  (setq eshell-highlight-prompt t)
   (setq eshell-ask-to-save-history (quote always))
   (setq eshell-cmpl-cycle-completions nil)
   (setq eshell-cmpl-ignore-case t)
@@ -1197,8 +1200,7 @@
 (use-package eshell-prompt-extras
   :commands (epe-theme-dakrone epe-theme-lambda)
   :init
-  (setq eshell-highlight-prompt nil
-        eshell-prompt-function 'epe-theme-dakrone)
+  (setq eshell-prompt-function 'epe-theme-dakrone)
   (add-hook 'eshell-mode-hook 'epe-theme-dakrone))
 (el-get-bundle shell-pop)
 (use-package shell-pop
