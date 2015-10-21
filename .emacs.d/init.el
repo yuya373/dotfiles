@@ -157,7 +157,7 @@
   (setq make-backup-files nil)
   (setq auto-save-list-file-prefix nil)
   (setq create-lockfiles nil)
-  (setq auto-save-buffers-enhanced-interval 1)
+  (setq auto-save-buffers-enhanced-interval 0.5)
   :config
   (auto-save-buffers-enhanced t))
 
@@ -190,12 +190,37 @@
 (el-get-bundle evil-indent-textobject)
 (el-get-bundle evil-exchange)
 (el-get-bundle evil-org-mode)
+(el-get-bundle evil-snipe)
+(el-get-bundle ace-jump-mode)
 
 (use-package evil-leader
   :commands (global-evil-leader-mode)
   :init
   (add-hook 'after-init-hook 'global-evil-leader-mode)
   (add-hook 'global-evil-leader-mode-hook '(lambda () (evil-mode t)))
+  (defun toggle-window-maximized ()
+    (interactive)
+    (if window-system
+        (let ((current-size (frame-parameter nil 'fullscreen)))
+          (message "%s" current-size)
+          (if (null current-size)
+              (set-frame-parameter nil 'fullscreen 'maximized)
+            (set-frame-parameter nil 'fullscreen nil)))))
+  (defun toggle-frame-alpha ()
+    (interactive)
+    (if window-system
+        (let ((current-alpha (frame-parameter nil 'alpha)))
+          (if (or (null current-alpha) (= current-alpha 100))
+              (set-frame-parameter nil 'alpha 78)
+            (set-frame-parameter nil 'alpha 100)))))
+  (defun toggle-folding ()
+    (interactive)
+    (set-selective-display
+     (unless selective-display
+       4
+       ;; (1+ (current-column))
+       ))
+    (recenter))
   :config
   (evil-leader/set-leader "<SPC>")
   (use-package evil-org)
@@ -231,14 +256,6 @@
   (evil-leader/set-key "wm" 'toggle-window-maximized)
   (evil-leader/set-key "wt" 'toggle-frame-alpha)
   (evil-leader/set-key "nh" 'evil-ex-nohighlight)
-  (defun toggle-folding ()
-    (interactive)
-    (set-selective-display
-     (unless selective-display
-       4
-       ;; (1+ (current-column))
-       ))
-    (recenter))
   (evil-leader/set-key "l" 'toggle-folding)
   (evil-leader/set-key "uv" 'undo-tree-visualize)
   (evil-leader/set-key "agg" 'helm-do-ag)
@@ -318,34 +335,32 @@
     :init
     (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
     (define-key evil-outer-text-objects-map "a" 'evil-outer-arg))
-  (use-package evil-integration
+  (use-package evil-snipe
+    :diminish evil-snipe-mode
     :init
-    (el-get-bundle ace-jump-mode)
+    (setq evil-snipe-repeat-keys t)
+    ;; or 'buffer, 'whole-visible or 'whole-buffer
+    (setq evil-snipe-tab-increment t)
+    (setq evil-snipe-scope 'whole-visible)
+    (setq evil-snipe-repeat-scope 'whole-visible)
+    (setq evil-snipe-enable-highlight t)
+    (setq evil-snipe-enble-incremental-highlight t)
+    (setq evil-snipe-override-evil-repeat-keys t)
+    :config
+    (evil-snipe-mode 1)
+    (evil-snipe-override-mode 1))
+
+  (use-package evil-integration
+    :config
     (use-package ace-jump-mode
+      :commands (ace-jump-word-mode)
       :config
-      (setq ace-jump-mode-scope 'window)
-      (setq ace-jump-mode-move-keys
-            '(?a ?s ?d ?f ?g ?h ?j ?k ?l ?q ?w ?e ?r ?u ?i ?o ?v ?b ?n ?m))
       (define-key evil-operator-state-map (kbd "f") #'evil-ace-jump-char-mode)      ; similar to f
       (define-key evil-operator-state-map (kbd "t") #'evil-ace-jump-char-to-mode) ; similar to t
-      (define-key evil-normal-state-map (kbd "f") 'ace-jump-char-mode)
-      )
-    (defun toggle-window-maximized ()
-      (interactive)
-      (if window-system
-          (let ((current-size (frame-parameter nil 'fullscreen)))
-            (message "%s" current-size)
-            (if (null current-size)
-                (set-frame-parameter nil 'fullscreen 'maximized)
-              (set-frame-parameter nil 'fullscreen nil)))))
-    (defun toggle-frame-alpha ()
-      (interactive)
-      (if window-system
-          (let ((current-alpha (frame-parameter nil 'alpha)))
-            (if (or (null current-alpha) (= current-alpha 100))
-                (set-frame-parameter nil 'alpha 78)
-              (set-frame-parameter nil 'alpha 100)))))
-    )
+      (setq ace-jump-mode-scope 'window)
+      (setq ace-jump-mode-move-keys
+            '(?a ?s ?d ?f ?g ?h ?j ?k ?l ?q ?w ?e ?r ?u ?i ?o ?v ?b ?n ?m))))
+
 
   ;; cleanup whitespace
   (defun evil-cleanup-whitespace ()
@@ -412,6 +427,14 @@
       (define-key map key2 def1)))
   (evil-swap-key evil-motion-state-map "j" "gj")
   (evil-swap-key evil-motion-state-map "k" "gk"))
+
+
+(el-get-bundle ace-window)
+(use-package ace-window
+  :commands (ace-window aw-select aw-switch-to-window)
+  :init
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+
 
 (use-package eww
   :commands (eww)
@@ -481,7 +504,7 @@
         helm-completion-in-region-fuzzy-match t
         helm-buffers-fuzzy-matching t)
   (setq helm-prevent-escaping-from-minibuffer t
-        helm-buffers-truncate-lines nil
+        helm-buffers-truncate-lines t
         helm-buffer-max-length nil
         helm-ff-transformer-show-only-basename t
         helm-bookmark-show-location t
@@ -663,13 +686,15 @@
 
 (el-get-bundle helm-gtags)
 (use-package helm-gtags
+  :diminish helm-gtags-mode
   :commands (helm-gtags-mode)
   :init
   (add-hook 'enh-ruby-mode-hook 'helm-gtags-mode)
-  (setq helm-gtags-path-style 'root)
+  (setq helm-gtags-update-interval-second 1)
   (setq helm-gtags-auto-update t)
   (setq helm-gtags-preselect t)
   (setq helm-gtags-use-input-at-cursor t)
+  (setq helm-gtags-path-style 'root)
   (setq helm-gtags-display-style 'detail)
   :config
   (defun helm-gtags-update-all-tags ()
@@ -862,7 +887,7 @@
 (use-package projectile-rails
   :commands (projectile-rails-on)
   :init
-  (add-hook 'enh-ruby-mode 'projectile-rails-on)
+  (add-hook 'enh-ruby-mode-hook 'projectile-rails-on)
   (defun set-projectile-rails-tags-command ()
     (interactive)
     (when (projectile-rails-root)
@@ -1355,6 +1380,7 @@
 ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/aurora-theme")
 ;; (load-theme 'aurora t)
 
+(el-get-bundle powerline)
 (el-get-bundle TheBB/spaceline)
 (use-package spaceline-config
   :commands (spaceline-install spaceline-spacemacs-theme)
@@ -1591,13 +1617,6 @@
 ;;   (setq ac-clang-complete-executable (executable-find "clang-complete"))
 ;;   (setq ac-clang-cflags (xcode-headers-format-for-cflags))
 ;;   (add-to-list 'ac-sources 'ac-source-clang-async))
-
-(el-get-bundle ace-window)
-(use-package ace-window
-  :commands (ace-window aw-select aw-switch-to-window)
-  :init
-  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
-
 
 (el-get-bundle elixir)
 (use-package elixir
