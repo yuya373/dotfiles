@@ -1642,6 +1642,10 @@
 (use-package scss-mode
   :mode (("\\.scss\\'" . scss-mode)))
 
+(el-get-bundle csv-mode)
+(use-package csv-mode
+  :mode (("\\.csv\\'" . csv-mode)))
+
 (require 'server)
 (unless (server-running-p)
   (server-start))
@@ -1691,18 +1695,3 @@
 ;;  ;; If there is more than one, they won't work right.
 ;;  '(enh-ruby-op-face ((t (:foreground "headerColor"))))
 ;;  '(enh-ruby-string-delimiter-face ((t (:foreground "#d33682")))))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
