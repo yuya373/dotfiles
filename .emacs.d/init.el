@@ -1360,6 +1360,7 @@
   :commands (spaceline-install spaceline-spacemacs-theme)
   :init
   (setq powerline-default-separator 'bar)
+  (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
   (defun install-my-spaceline-theme ()
     (spaceline-install
      '((evil-state
