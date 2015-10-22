@@ -277,7 +277,7 @@
   (evil-leader/set-key "fp" 'helm-browse-project)
   (evil-leader/set-key "ff" 'helm-find-files)
   (evil-leader/set-key "hl" 'helm-resume)
-  (evil-leader/set-key "hm" 'helm-mini)
+  (evil-leader/set-key "bb" 'my-helm-mini)
   (evil-leader/set-key "ho" 'helm-semantic-or-imenu)
   (evil-leader/set-key "hp" 'helm-show-kill-ring)
   (evil-leader/set-key "ig" 'indent-guide-mode)
@@ -305,7 +305,7 @@
         evil-shift-width 2
         evil-cross-lines t)
   :config
-  (add-hook 'evil-insert-state-entry-hook 'evil-ex-nohighlight)
+  (add-hook 'evil-normal-state-exit-hook 'evil-ex-nohighlight)
   (use-package evil-exchange
     :config
     (evil-exchange-install))
@@ -518,6 +518,14 @@
 (el-get-bundle helm-ls-git)
 (el-get-bundle helm-ag)
 
+(use-package helm-ls-git
+  :commands (helm-ls-git-ls
+             helm-ls-git-source
+             helm-ls-git-not-inside-git-repo)
+  :init
+  (setq helm-ls-git-default-sources '(helm-source-ls-git))
+  (setq helm-ls-git-fuzzy-match t))
+
 (use-package helm
   :diminish helm-mode
   :commands (helm-etags-select
@@ -534,6 +542,10 @@
              helm-semantic-or-imenu
              helm-show-kill-ring)
   :init
+  (setq helm-mini-default-sources '(helm-source-buffers-list
+                                    helm-source-ls-git
+                                    helm-source-recentf
+                                    helm-source-buffer-not-found))
   (setq helm-M-x-fuzzy-match t
         helm-apropos-fuzzy-match t
         helm-file-cache-fuzzy-match t
@@ -562,10 +574,17 @@
         helm-echo-input-in-header-line t)
   :config
   (use-package helm-config)
-  (use-package helm-ls-git
-    :init
-    (setq helm-ls-git-default-sources '(helm-source-ls-git))
-    (setq helm-ls-git-fuzzy-match t))
+  (defun make-helm-git-source ()
+    (unless (helm-ls-git-not-inside-git-repo)
+      (setq helm-source-ls-git
+            (helm-make-source "Git files" 'helm-ls-git-source
+      :fuzzy-match helm-ls-git-fuzzy-match))))
+
+  (defun my-helm-mini ()
+    (interactive)
+    (make-helm-git-source)
+    (helm-mini))
+
   (use-package helm-ag
     :config
     (setq helm-ag-insert-at-point 'symbol))
