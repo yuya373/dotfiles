@@ -594,6 +594,20 @@
     (with-helm-alive-p
       (helm-exit-and-execute-action 'ace-split-find-file)))
 
+  (defun ace-split-helm-ag (filename)
+    (let ((dir (or helm-ag--default-directory
+                   helm-ag--last-default-directory
+                   default-directory)))
+      (switch-window-if-gteq-3-windows)
+      (my-evil-split-window (concat dir filename))))
+  (defun ace-split--helm-ag (candidate)
+    (helm-ag--find-file-action candidate 'ace-split-helm-ag
+                               (helm-ag--search-this-file-p)))
+  (defun helm-ace-split-ag ()
+    (interactive)
+    (with-helm-alive-p
+      (helm-exit-and-execute-action 'ace-split--helm-ag)))
+
   (defun ace-split-switch-to-buffer (buffer-or-name)
     (switch-window-if-gteq-3-windows)
     (let ((file-name (buffer-file-name buffer-or-name)))
@@ -616,6 +630,20 @@
     (interactive)
     (with-helm-alive-p
       (helm-exit-and-execute-action 'ace-vsplit-find-file)))
+
+  (defun ace-vsplit-helm-ag (filename)
+    (let ((dir (or helm-ag--default-directory
+                   helm-ag--last-default-directory
+                   default-directory)))
+      (switch-window-if-gteq-3-windows)
+      (my-evil-vsplit-window (concat dir filename))))
+  (defun ace-vsplit--helm-ag (candidate)
+    (helm-ag--find-file-action candidate 'ace-vsplit-helm-ag
+                               (helm-ag--search-this-file-p)))
+  (defun helm-ace-vsplit-ag ()
+    (interactive)
+    (with-helm-alive-p
+      (helm-exit-and-execute-action 'ace-vsplit--helm-ag)))
 
   (defun ace-vsplit-switch-to-buffer (buffer-or-name)
     (switch-window-if-gteq-3-windows)
@@ -703,8 +731,8 @@
   (define-key helm-generic-files-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-generic-files-map (kbd "TAB") 'helm-execute-persistent-action)
 
-  (define-key helm-ag-map (kbd "C-s") 'helm-ace-split-ff)
-  (define-key helm-ag-map (kbd "C-v") 'helm-ace-vsplit-ff)
+  (define-key helm-ag-map (kbd "C-s") 'helm-ace-split-ag)
+  (define-key helm-ag-map (kbd "C-v") 'helm-ace-vsplit-ag)
   (define-key helm-ag-map (kbd "C-o") 'helm-ag--run-other-window-action))
 
 (el-get-bundle helm-dash)
