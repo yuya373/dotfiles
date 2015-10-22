@@ -41,7 +41,7 @@
 (prefer-coding-system 'utf-8)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-;; (menu-bar-mode -1)
+(menu-bar-mode -1)
 (setq require-final-newline t)
 (setq ad-redefinition-action 'accept)
 (when (eq system-type 'darwin)
@@ -264,11 +264,12 @@
   (evil-leader/set-key "wg" 'golden-ratio-mode)
   (evil-leader/set-key "wm" 'toggle-window-maximized)
   (evil-leader/set-key "wt" 'toggle-frame-alpha)
+  (evil-leader/set-key "ww" 'ace-window)
   (evil-leader/set-key "l" 'toggle-folding)
   (evil-leader/set-key "uv" 'undo-tree-visualize)
-  (evil-leader/set-key "rp" 'helm-projectile-ag)
-  (evil-leader/set-key "rr" 'helm-do-ag)
-  (evil-leader/set-key "rb" 'helm-do-ag-buffers)
+  (evil-leader/set-key "ap" 'helm-projectile-ag)
+  (evil-leader/set-key "aa" 'helm-do-ag)
+  (evil-leader/set-key "ab" 'helm-do-ag-buffers)
   (evil-leader/set-key ":"  'helm-M-x)
   (evil-leader/set-key "bb" 'helm-buffers-list)
   (evil-leader/set-key "fc" 'helm-find-file-at)
@@ -284,14 +285,13 @@
   (evil-leader/set-key "hgc" 'helm-open-github-from-commit)
   (evil-leader/set-key "hgi" 'helm-open-github-from-issues)
   (evil-leader/set-key "hgp" 'helm-open-github-from-pull-requests)
-  (evil-leader/set-key "rc" 'restclient-mode)
+  (evil-leader/set-key "r" 'restclient-mode)
   (defun open-junk-dir ()
     (interactive)
     (let ((junk-dir "~/Dropbox/junk/"))
       (helm-find-files-1 (expand-file-name junk-dir))))
   (evil-leader/set-key "ml" 'open-junk-dir)
-  (evil-leader/set-key "mn" 'open-junk-file)
-  (evil-leader/set-key "aw" 'ace-window))
+  (evil-leader/set-key "mn" 'open-junk-file))
 (use-package evil
   :commands (evil-mode)
   :diminish undo-tree-mode
@@ -487,7 +487,8 @@
   (setq which-key-side-window-max-height 0.50)
   (add-hook 'after-init-hook 'which-key-mode)
   :config
-  (which-key-add-key-based-replacements "SPC r" " Text-Replacement")
+  ;; (which-key-add-key-based-replacements "SPC r" " Rest")
+  (which-key-add-key-based-replacements "SPC a" " Ag")
   (which-key-add-key-based-replacements "SPC d" " Dash")
   (which-key-add-key-based-replacements "SPC f" " Find-File")
   (which-key-add-key-based-replacements "SPC h" " Helm")
@@ -499,10 +500,16 @@
   (which-key-add-key-based-replacements "SPC t" " Tags, Transrate")
   (which-key-add-key-based-replacements "SPC w" " Windows")
   (which-key-add-key-based-replacements "SPC g" " Git")
+  (which-key-add-key-based-replacements "SPC h g" " Helm-Github")
   (which-key-add-key-based-replacements ", h" " Help")
 
   (which-key-add-major-mode-key-based-replacements 'emacs-lisp-mode
     ", e" " Eval")
+  (which-key-add-major-mode-key-based-replacements 'enh-ruby-mode
+    ", b" " Bundler"
+    ", r" " Rails"
+    ", g" " Goto"
+    ", t" " Test, Tags")
   )
 
 ;; helm
@@ -856,7 +863,11 @@
   (evil-set-initial-state 'magit-blame-mode 'motion)
   (evil-set-initial-state 'magit-revision-mode 'normal)
 
-  (define-key magit-blame-mode-map "q" 'magit-blame-quit)
+  (defun magit-blame-quit-and-escape ()
+    (interactive)
+    (magit-blame-quit)
+    (evil-normal-state 1))
+  (define-key magit-blame-mode-map "q" 'magit-blame-quit-and-escape)
   (define-key magit-blame-mode-map "b" 'magit-blame-popup)
   (define-key magit-blame-mode-map "r" 'magit-show-commit)
   (define-key magit-blame-mode-map "s" 'magit-diff-show-or-scroll-up)
