@@ -190,8 +190,6 @@
 (el-get-bundle evil-indent-textobject)
 (el-get-bundle evil-exchange)
 (el-get-bundle evil-org-mode)
-(el-get-bundle evil-snipe)
-(el-get-bundle ace-jump-mode)
 
 (use-package evil-leader
   :commands (global-evil-leader-mode)
@@ -259,7 +257,7 @@
   (evil-leader/set-key "ep" 'flycheck-previous-error)
   (evil-leader/set-key "s" 'shell-pop)
   (evil-leader/set-key "bf" 'popwin:find-file)
-  (evil-leader/set-key "<SPC>" 'ace-jump-word-mode)
+  (evil-leader/set-key "<SPC>" 'avy-goto-word-1)
   (evil-leader/set-key "wb" 'balance-windows)
   (evil-leader/set-key "wg" 'golden-ratio-mode)
   (evil-leader/set-key "wm" 'toggle-window-maximized)
@@ -339,32 +337,6 @@
     :init
     (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
     (define-key evil-outer-text-objects-map "a" 'evil-outer-arg))
-  (use-package evil-snipe
-    :diminish evil-snipe-mode
-    :init
-    (setq evil-snipe-repeat-keys t)
-    ;; or 'buffer, 'whole-visible or 'whole-buffer
-    (setq evil-snipe-tab-increment t)
-    (setq evil-snipe-scope 'whole-visible)
-    (setq evil-snipe-repeat-scope 'whole-visible)
-    (setq evil-snipe-enable-highlight t)
-    (setq evil-snipe-enble-incremental-highlight t)
-    (setq evil-snipe-override-evil-repeat-keys t)
-    :config
-    (evil-snipe-mode 1)
-    (evil-snipe-override-mode 1))
-
-  (use-package evil-integration
-    :config
-    (use-package ace-jump-mode
-      :commands (ace-jump-word-mode)
-      :config
-      (define-key evil-operator-state-map (kbd "f") #'evil-ace-jump-char-mode)      ; similar to f
-      (define-key evil-operator-state-map (kbd "t") #'evil-ace-jump-char-to-mode) ; similar to t
-      (setq ace-jump-mode-scope 'window)
-      (setq ace-jump-mode-move-keys
-            '(?a ?s ?d ?f ?g ?h ?j ?k ?l ?q ?w ?e ?r ?u ?i ?o ?v ?b ?n ?m))))
-
 
   ;; cleanup whitespace
   (defun evil-cleanup-whitespace ()
@@ -1340,15 +1312,41 @@
   (add-hook 'imenu-after-jump-hook '(lambda ()
                                       (recenter 10))))
 
-;; (el-get-bundle avy)
-;; (use-package avy
-;;   :commands (avy-goto-char-2 avy-goto-word-1 avy-goto-line)
-;;   :init
-;;   (setq avy-all-windows nil)
-;;   (setq avy-keys (number-sequence ?a ?z))
-;;   (define-key evil-normal-state-map (kbd "f") 'avy-goto-char-2)
-;;   (evil-leader/set-key "<SPC>" 'avy-goto-word-1)
-;;   (evil-leader/set-key "l" 'avy-goto-line))
+(el-get-bundle avy)
+(use-package avy
+  :commands (avy-goto-char-2 avy-goto-word-1 avy-goto-char-in-line)
+  :init
+  (setq avy-all-windows nil)
+  (setq avy-keys (number-sequence ?a ?z))
+  :config
+  (evil-define-motion evil-avy-goto-char-in-line (count)
+    :type inclusive
+    (evil-without-repeat
+      (let ((pnt (point))
+            (buf (current-buffer)))
+        (call-interactively 'avy-goto-char-in-line)
+        (when (and (equal buf (current-buffer))
+                   (< (point) pnt))
+          (setq evil-this-type
+                (cond
+                 ((eq evil-this-type 'exclusive)
+                  'inclusive)
+                 ((eq evil-this-type 'inclusive)
+                  'exclusive)))))))
+
+  (evil-define-motion evil-avy-goto-word (count)
+    :type inclusive
+    :repeat abort
+    (evil-without-repeat
+      (call-interactively 'avy-goto-word-1)))
+
+  (define-key evil-operator-state-map (kbd "a") #'evil-avy-goto-word)
+  (define-key evil-operator-state-map (kbd "f") #'evil-avy-goto-char-in-line)
+  (define-key evil-normal-state-map (kbd "f") 'evil-avy-goto-char-in-line)
+  (define-key evil-visual-state-map (kbd "f") 'evil-avy-goto-char-in-line)
+  (define-key evil-visual-state-map (kbd "a") 'evil-avy-goto-word)
+
+  )
 
 (el-get-bundle popwin)
 (use-package popwin
@@ -1359,25 +1357,26 @@
   (setq popwin:popup-window-height 0.3)
   (add-hook 'after-init-hook #'(lambda () (popwin-mode t)))
   :config
-  (push '(inf-ruby-mode :height 0.3 :stick t :position bottom) popwin:special-display-config)
+  (push '("*Bundler*" :noselect t) popwin:special-display-config)
+  (push '(inf-ruby-mode :stick t) popwin:special-display-config)
   (push '("*Process List*" :noselect t) popwin:special-display-config)
-  (push '("*Warnings*" :height 0.3 :noselect t) popwin:special-display-config)
-  (push '("*Flycheck errors*" :stick t :height 0.3 :noselect t) popwin:special-display-config)
-  (push '("*compilation*" :stick t :height 0.2 :tail t :noselect t)
+  (push '("*Warnings*" :noselect t) popwin:special-display-config)
+  (push '("*Flycheck errors*" :stick t :noselect t) popwin:special-display-config)
+  (push '("*compilation*" :stick t :tail t :noselect t)
         popwin:special-display-config)
   (push '("*Codic Result*" :noselect t :stick t) popwin:special-display-config)
   (push "*slime-apropos*" popwin:special-display-config)
-  (push '("*slime-macroexpansion*" :noselect t :height 0.3) popwin:special-display-config)
+  (push '("*slime-macroexpansion*" :noselect t) popwin:special-display-config)
   (push "*slime-description*" popwin:special-display-config)
   (push '("*slime-compilation*" :noselect t) popwin:special-display-config)
   (push "*slime-xref*" popwin:special-display-config)
   (push '("*inferior-lisp*" :noselect t :tail t :stick t) popwin:special-display-config)
   (push '(sldb-mode :stick t) popwin:special-display-config)
-  (push '(slime-repl-mode :stick t :position bottom :height 0.3) popwin:special-display-config)
+  (push '(slime-repl-mode :stick t :position bottom) popwin:special-display-config)
   (push 'slime-connection-list-mode popwin:special-display-config)
   (push '("*alchemist-eval-mode*" :noselect t :height 0.2) popwin:special-display-config)
   (push '("*Alchemist-IEx*" :noselect t :height 0.2) popwin:special-display-config)
-  (push '("*alchemist help*" :noselect t :height 0.3) popwin:special-display-config)
+  (push '("*alchemist help*" :noselect t) popwin:special-display-config)
   (push '("*elixirc*" :noselect t) popwin:special-display-config))
 
 ;; (el-get-bundle hydra)
@@ -1816,6 +1815,10 @@
 (el-get-bundle js2-mode)
 (use-package js2-mode
   :mode (("\\.js\\'" . js2-mode)))
+
+(el-get-bundle json-mode)
+(use-package json-mode
+  :mode (("\\.json\\'" . json-mode)))
 
 (el-get-bundle coffee-mode)
 (use-package coffee-mode
