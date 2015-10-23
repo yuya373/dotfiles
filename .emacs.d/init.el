@@ -1783,7 +1783,10 @@
 
 (el-get-bundle csv-mode)
 (use-package csv-mode
-  :mode (("\\.csv\\'" . csv-mode)))
+  :mode (("\\.csv\\'" . csv-mode))
+  :config
+  (evil-define-key 'normal csv-mode-map
+    ",a" 'csv-align-fields))
 
 (el-get-bundle restclient)
 (use-package restclient
