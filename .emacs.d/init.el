@@ -277,7 +277,7 @@
   (evil-leader/set-key "fp" 'helm-browse-project)
   (evil-leader/set-key "ff" 'helm-find-files)
   (evil-leader/set-key "hl" 'helm-resume)
-  (evil-leader/set-key "hm" 'helm-mini)
+  (evil-leader/set-key "bb" 'my-helm-mini)
   (evil-leader/set-key "ho" 'helm-semantic-or-imenu)
   (evil-leader/set-key "hp" 'helm-show-kill-ring)
   (evil-leader/set-key "ig" 'indent-guide-mode)
@@ -305,7 +305,7 @@
         evil-shift-width 2
         evil-cross-lines t)
   :config
-  (add-hook 'evil-insert-state-entry-hook 'evil-ex-nohighlight)
+  (add-hook 'evil-normal-state-exit-hook 'evil-ex-nohighlight)
   (use-package evil-exchange
     :config
     (evil-exchange-install))
@@ -518,6 +518,14 @@
 (el-get-bundle helm-ls-git)
 (el-get-bundle helm-ag)
 
+(use-package helm-ls-git
+  :commands (helm-ls-git-ls
+             helm-ls-git-source
+             helm-ls-git-not-inside-git-repo)
+  :init
+  (setq helm-ls-git-default-sources '(helm-source-ls-git))
+  (setq helm-ls-git-fuzzy-match t))
+
 (use-package helm
   :diminish helm-mode
   :commands (helm-etags-select
@@ -534,6 +542,10 @@
              helm-semantic-or-imenu
              helm-show-kill-ring)
   :init
+  (setq helm-mini-default-sources '(helm-source-buffers-list
+                                    helm-source-ls-git
+                                    helm-source-recentf
+                                    helm-source-buffer-not-found))
   (setq helm-M-x-fuzzy-match t
         helm-apropos-fuzzy-match t
         helm-file-cache-fuzzy-match t
@@ -562,10 +574,17 @@
         helm-echo-input-in-header-line t)
   :config
   (use-package helm-config)
-  (use-package helm-ls-git
-    :init
-    (setq helm-ls-git-default-sources '(helm-source-ls-git))
-    (setq helm-ls-git-fuzzy-match t))
+  (defun make-helm-git-source ()
+    (unless (helm-ls-git-not-inside-git-repo)
+      (setq helm-source-ls-git
+            (helm-make-source "Git files" 'helm-ls-git-source
+      :fuzzy-match helm-ls-git-fuzzy-match))))
+
+  (defun my-helm-mini ()
+    (interactive)
+    (make-helm-git-source)
+    (helm-mini))
+
   (use-package helm-ag
     :config
     (setq helm-ag-insert-at-point 'symbol))
@@ -594,6 +613,20 @@
     (with-helm-alive-p
       (helm-exit-and-execute-action 'ace-split-find-file)))
 
+  (defun ace-split-helm-ag (filename)
+    (let ((dir (or helm-ag--default-directory
+                   helm-ag--last-default-directory
+                   default-directory)))
+      (switch-window-if-gteq-3-windows)
+      (my-evil-split-window (concat dir filename))))
+  (defun ace-split--helm-ag (candidate)
+    (helm-ag--find-file-action candidate 'ace-split-helm-ag
+                               (helm-ag--search-this-file-p)))
+  (defun helm-ace-split-ag ()
+    (interactive)
+    (with-helm-alive-p
+      (helm-exit-and-execute-action 'ace-split--helm-ag)))
+
   (defun ace-split-switch-to-buffer (buffer-or-name)
     (switch-window-if-gteq-3-windows)
     (let ((file-name (buffer-file-name buffer-or-name)))
@@ -616,6 +649,20 @@
     (interactive)
     (with-helm-alive-p
       (helm-exit-and-execute-action 'ace-vsplit-find-file)))
+
+  (defun ace-vsplit-helm-ag (filename)
+    (let ((dir (or helm-ag--default-directory
+                   helm-ag--last-default-directory
+                   default-directory)))
+      (switch-window-if-gteq-3-windows)
+      (my-evil-vsplit-window (concat dir filename))))
+  (defun ace-vsplit--helm-ag (candidate)
+    (helm-ag--find-file-action candidate 'ace-vsplit-helm-ag
+                               (helm-ag--search-this-file-p)))
+  (defun helm-ace-vsplit-ag ()
+    (interactive)
+    (with-helm-alive-p
+      (helm-exit-and-execute-action 'ace-vsplit--helm-ag)))
 
   (defun ace-vsplit-switch-to-buffer (buffer-or-name)
     (switch-window-if-gteq-3-windows)
@@ -703,8 +750,8 @@
   (define-key helm-generic-files-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-generic-files-map (kbd "TAB") 'helm-execute-persistent-action)
 
-  (define-key helm-ag-map (kbd "C-s") 'helm-ace-split-ff)
-  (define-key helm-ag-map (kbd "C-v") 'helm-ace-vsplit-ff)
+  (define-key helm-ag-map (kbd "C-s") 'helm-ace-split-ag)
+  (define-key helm-ag-map (kbd "C-v") 'helm-ace-vsplit-ag)
   (define-key helm-ag-map (kbd "C-o") 'helm-ag--run-other-window-action))
 
 (el-get-bundle helm-dash)
