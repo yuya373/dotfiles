@@ -190,6 +190,7 @@
 (el-get-bundle evil-indent-textobject)
 (el-get-bundle evil-exchange)
 (el-get-bundle evil-org-mode)
+(el-get-bundle avy)
 
 (use-package evil-leader
   :commands (global-evil-leader-mode)
@@ -393,6 +394,41 @@
     :commands (er/expand-region er/contract-region))
   (define-key evil-visual-state-map (kbd "v") 'er/expand-region)
   (define-key evil-visual-state-map (kbd "C-v") 'er/contract-region)
+  ;; avy
+  (use-package evil-integration
+    :init
+    (use-package avy
+      :init
+      (setq avy-all-windows nil)
+      (setq avy-keys (number-sequence ?a ?z))
+      :config
+      (evil-define-motion evil-avy-goto-char-in-line (count)
+        :type inclusive
+        (evil-without-repeat
+          (let ((pnt (point))
+                (buf (current-buffer)))
+            (call-interactively 'avy-goto-char-in-line)
+            (when (and (equal buf (current-buffer))
+                       (< (point) pnt))
+              (setq evil-this-type
+                    (cond
+                     ((eq evil-this-type 'exclusive)
+                      'inclusive)
+                     ((eq evil-this-type 'inclusive)
+                      'exclusive))))))))
+      :config
+      (evil-define-motion evil-avy-goto-word (count)
+        :type inclusive
+        :jump t
+        :repeat abort
+        (evil-without-repeat
+          (evil-enclose-avy-for-motion
+            (call-interactively 'avy-goto-word-1))))
+      (define-key evil-operator-state-map (kbd "f") #'evil-avy-goto-char-in-line)
+      (define-key evil-normal-state-map (kbd "f") #'evil-avy-goto-char-in-line)
+      (define-key evil-visual-state-map (kbd "f") #'evil-avy-goto-char-in-line)
+      (define-key evil-operator-state-map (kbd "m") #'evil-avy-goto-word)
+      (define-key evil-visual-state-map (kbd "m") #'evil-avy-goto-word))
   ;; line move
   (defun evil-swap-key (map key1 key2)
     ;; MAP中のKEY1とKEY2を入れ替え
@@ -1312,42 +1348,6 @@
   (add-hook 'imenu-after-jump-hook '(lambda ()
                                       (recenter 10))))
 
-(el-get-bundle avy)
-(use-package avy
-  :commands (avy-goto-char-2 avy-goto-word-1 avy-goto-char-in-line)
-  :init
-  (setq avy-all-windows nil)
-  (setq avy-keys (number-sequence ?a ?z))
-  :config
-  (evil-define-motion evil-avy-goto-char-in-line (count)
-    :type inclusive
-    (evil-without-repeat
-      (let ((pnt (point))
-            (buf (current-buffer)))
-        (call-interactively 'avy-goto-char-in-line)
-        (when (and (equal buf (current-buffer))
-                   (< (point) pnt))
-          (setq evil-this-type
-                (cond
-                 ((eq evil-this-type 'exclusive)
-                  'inclusive)
-                 ((eq evil-this-type 'inclusive)
-                  'exclusive)))))))
-
-  (evil-define-motion evil-avy-goto-word (count)
-    :type inclusive
-    :repeat abort
-    (evil-without-repeat
-      (call-interactively 'avy-goto-word-1)))
-
-  (define-key evil-operator-state-map (kbd "a") #'evil-avy-goto-word)
-  (define-key evil-operator-state-map (kbd "f") #'evil-avy-goto-char-in-line)
-  (define-key evil-normal-state-map (kbd "f") 'evil-avy-goto-char-in-line)
-  (define-key evil-visual-state-map (kbd "f") 'evil-avy-goto-char-in-line)
-  (define-key evil-visual-state-map (kbd "a") 'evil-avy-goto-word)
-
-  )
-
 (el-get-bundle popwin)
 (use-package popwin
   :commands (popwin-mode)
@@ -1861,6 +1861,12 @@
 (require 'server)
 (unless (server-running-p)
   (server-start))
+
+(el-get-bundle websocket)
+(el-get-bundle request)
+(el-get-bundle oauth2)
+(add-to-list 'load-path
+             (locate-user-emacs-file "private/emacs-slack/"))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
