@@ -1357,6 +1357,8 @@
   (setq popwin:popup-window-height 0.3)
   (add-hook 'after-init-hook #'(lambda () (popwin-mode t)))
   :config
+  (push '("^\\*Slack.*\\*$" :noselect t :stick t :tail t)
+        popwin:special-display-config)
   (push '("*Bundler*" :noselect t) popwin:special-display-config)
   (push '(inf-ruby-mode :stick t) popwin:special-display-config)
   (push '("*Process List*" :noselect t) popwin:special-display-config)
