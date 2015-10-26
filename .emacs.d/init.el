@@ -290,7 +290,11 @@
     (let ((junk-dir "~/Dropbox/junk/"))
       (helm-find-files-1 (expand-file-name junk-dir))))
   (evil-leader/set-key "ml" 'open-junk-dir)
-  (evil-leader/set-key "mn" 'open-junk-file))
+  (evil-leader/set-key "mn" 'open-junk-file)
+  (evil-leader/set-key "ms" 'slack-start)
+  (evil-leader/set-key "mg" 'slack-group)
+  (evil-leader/set-key "mi" 'slack-im)
+  (evil-leader/set-key "mm" 'slack-message-send))
 (use-package evil
   :commands (evil-mode)
   :diminish undo-tree-mode
@@ -1357,7 +1361,7 @@
   (setq popwin:popup-window-height 0.3)
   (add-hook 'after-init-hook #'(lambda () (popwin-mode t)))
   :config
-  (push '("^\\*Slack.*\\*$" :noselect t :stick t :tail t)
+  (push '("^\\*Slack.*\\*$" :height 0.25 :noselect t :stick t :tail t :regexp t)
         popwin:special-display-config)
   (push '("*Bundler*" :noselect t) popwin:special-display-config)
   (push '(inf-ruby-mode :stick t) popwin:special-display-config)
