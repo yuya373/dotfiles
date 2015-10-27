@@ -290,7 +290,13 @@
     (let ((junk-dir "~/Dropbox/junk/"))
       (helm-find-files-1 (expand-file-name junk-dir))))
   (evil-leader/set-key "ml" 'open-junk-dir)
-  (evil-leader/set-key "mn" 'open-junk-file))
+  (evil-leader/set-key "mn" 'open-junk-file)
+  (evil-leader/set-key "ms" 'slack-start)
+  (evil-leader/set-key "mk" 'slack-ws-close)
+  (evil-leader/set-key "mm" 'slack-message-send)
+  (evil-leader/set-key "mg" 'slack-group)
+  (evil-leader/set-key "mi" 'slack-im)
+  )
 (use-package evil
   :commands (evil-mode)
   :diminish undo-tree-mode
