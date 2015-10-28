@@ -1361,6 +1361,8 @@
   (setq popwin:popup-window-height 0.3)
   (add-hook 'after-init-hook #'(lambda () (popwin-mode t)))
   :config
+  (push '("*Backtrace*") popwin:special-display-config)
+  (push '("*Messages*") popwin:special-display-config)
   (push '("^\\*Slack.*\\*$" :height 0.25 :noselect t :stick t :tail t :regexp t)
         popwin:special-display-config)
   (push '("*Bundler*" :noselect t) popwin:special-display-config)
