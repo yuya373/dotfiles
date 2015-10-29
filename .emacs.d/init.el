@@ -37,7 +37,7 @@
 (setq large-file-warning-threshold nil)
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq gc-cons-threshold (* 128 1024 1024))
-(set-language-environment 'utf-8)
+(set-language-environment "Japanese")
 (prefer-coding-system 'utf-8)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
@@ -294,8 +294,11 @@
   (evil-leader/set-key "ms" 'slack-start)
   (evil-leader/set-key "mk" 'slack-ws-close)
   (evil-leader/set-key "mm" 'slack-message-send)
-  (evil-leader/set-key "mg" 'slack-group-select)
-  (evil-leader/set-key "mi" 'slack-im-select)
+  (evil-leader/set-key "mgg" 'slack-group-select)
+  (evil-leader/set-key "mgu" 'slack-group-list-update)
+  (evil-leader/set-key "mii" 'slack-im-select)
+  (evil-leader/set-key "miu" 'slack-im-list-update)
+  (evil-leader/set-key "mcc" 'slack-channel-select)
   )
 (use-package evil
   :commands (evil-mode)
@@ -516,6 +519,10 @@
   (which-key-add-key-based-replacements "SPC g" " Git")
   (which-key-add-key-based-replacements "SPC h g" " Helm-Github")
   (which-key-add-key-based-replacements ", h" " Help")
+  (which-key-add-key-based-replacements "SPC m" " Memo, Message")
+  (which-key-add-key-based-replacements "SPC m i" " slack-im")
+  (which-key-add-key-based-replacements "SPC m g" " slack-group")
+  (which-key-add-key-based-replacements "SPC m c" " slack-channel")
 
   (which-key-add-major-mode-key-based-replacements 'emacs-lisp-mode
     ", e" " Eval")
@@ -1388,47 +1395,6 @@
   (push '("*Alchemist-IEx*" :noselect t :height 0.2) popwin:special-display-config)
   (push '("*alchemist help*" :noselect t) popwin:special-display-config)
   (push '("*elixirc*" :noselect t) popwin:special-display-config))
-
-;; (el-get-bundle hydra)
-;; (use-package hydra
-;;   :config
-;;   (defhydra helm-like-unite (:hint nil
-;;                                    :color pink)
-;;     "
-;; ------------------------------------------------------------------------
-;; | [K] ScrollUp   | [k] move up   | [m] mark   | [v] view   | [i] cancel |
-;; | [J] ScrollDown | [j] move down | [t] toggle | [H] help   | [o] quit   |
-;; | [h] left       |               | [d] delete |            |            |
-;; | [l] right      | [u] unmark    | [y] yank   | [w] toggle |            |
-;; |                |     all       | [f] follow |     window |            |
-;; ------------------------------------------------------------------------
-;; "
-;;     ("h" helm-beginning-of-buffer)
-;;     ("j" helm-next-line)
-;;     ("k" helm-previous-line)
-;;     ("l" helm-end-of-buffer)
-;;     ("g" helm-beginning-of-buffer)
-;;     ("G" helm-end-of-buffer)
-;;     ("K" helm-scroll-other-window-down)
-;;     ("J" helm-scroll-other-window)
-;;     ("m" helm-toggle-visible-mark)
-;;     ("t" helm-toggle-all-marks)
-;;     ("u" helm-unmark-all)
-;;     ("<escape>" keyboard-escape-quit "" :exit t)
-;;     ("o" keyboard-escape-quit :exit t)
-;;     ("i" nil)
-;;     ("n" helm-next-source)
-;;     ("p" helm-previous-source)
-;;     ("H" helm-help)
-;;     ("v" helm-execute-persistent-action)
-;;     ("y" helm-yank-selection)
-;;     ("w" helm-toggle-resplit-and-swap-windows)
-;;     ("a" helm-select-action)
-;;     ("d" helm-delete-marked-files)
-;;     ("r" helm-ff-run-rename-file)
-;;     ("f" helm-follow-mode))
-;;   (define-key helm-map (kbd "<escape>") 'helm-like-unite/body)
-;;   (define-key helm-map (kbd "C-k") 'helm-like-unite/body))
 
 ;; lisp
 (el-get-bundle slime)
