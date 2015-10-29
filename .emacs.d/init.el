@@ -294,8 +294,8 @@
   (evil-leader/set-key "ms" 'slack-start)
   (evil-leader/set-key "mk" 'slack-ws-close)
   (evil-leader/set-key "mm" 'slack-message-send)
-  (evil-leader/set-key "mg" 'slack-group)
-  (evil-leader/set-key "mi" 'slack-im)
+  (evil-leader/set-key "mg" 'slack-group-select)
+  (evil-leader/set-key "mi" 'slack-im-select)
   )
 (use-package evil
   :commands (evil-mode)
@@ -1365,7 +1365,7 @@
   :config
   (push '("*Backtrace*") popwin:special-display-config)
   (push '("*Messages*") popwin:special-display-config)
-  (push '("^\\*Slack.*\\*$" :height 0.25 :noselect t :stick t :tail t :regexp t)
+  (push '(slack-mode :height 0.25 :noselect t :stick t :tail t :regexp t)
         popwin:special-display-config)
   (push '("*Bundler*" :noselect t) popwin:special-display-config)
   (push '(inf-ruby-mode :stick t) popwin:special-display-config)
