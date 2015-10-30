@@ -294,11 +294,12 @@
   (evil-leader/set-key "ms" 'slack-start)
   (evil-leader/set-key "mk" 'slack-ws-close)
   (evil-leader/set-key "mm" 'slack-message-send)
-  (evil-leader/set-key "mgg" 'slack-group-select)
-  (evil-leader/set-key "mgu" 'slack-group-list-update)
-  (evil-leader/set-key "mii" 'slack-im-select)
-  (evil-leader/set-key "miu" 'slack-im-list-update)
-  (evil-leader/set-key "mcc" 'slack-channel-select)
+  (evil-leader/set-key "mg" 'slack-group-select)
+  (evil-leader/set-key "mi" 'slack-im-select)
+  (evil-leader/set-key "mc" 'slack-channel-select)
+  (evil-leader/set-key "mug" 'slack-group-list-update)
+  (evil-leader/set-key "mui" 'slack-im-list-update)
+  (evil-leader/set-key "muc" 'slack-channel-list-update)
   )
 (use-package evil
   :commands (evil-mode)
@@ -520,9 +521,7 @@
   (which-key-add-key-based-replacements "SPC h g" " Helm-Github")
   (which-key-add-key-based-replacements ", h" " Help")
   (which-key-add-key-based-replacements "SPC m" " Memo, Message")
-  (which-key-add-key-based-replacements "SPC m i" " slack-im")
-  (which-key-add-key-based-replacements "SPC m g" " slack-group")
-  (which-key-add-key-based-replacements "SPC m c" " slack-channel")
+  (which-key-add-key-based-replacements "SPC m u" " slack-update")
 
   (which-key-add-major-mode-key-based-replacements 'emacs-lisp-mode
     ", e" " Eval")
@@ -912,10 +911,11 @@
                           magit-fetch-popup magit-branch-popup)
   :init
   (add-hook 'magit-mode-hook '(lambda () (linum-mode -1)))
-  (add-hook 'magit-status-mode-hook 'delete-other-windows)
   (setq magit-push-always-verify nil)
   (setq magit-branch-arguments nil)
-  (setq magit-status-buffer-switch-function 'switch-to-buffer)
+  (setq magit-status-buffer-switch-function #'(lambda (buf)
+                                                (pop-to-buffer buf)
+                                                (delete-other-windows)))
   :config
   (use-package ert)
   ;; (use-package magit-gh-pulls
@@ -1632,7 +1632,7 @@
 (use-package open-junk-file
   :commands (open-junk-file)
   :config
-  (setq open-junk-file-format "~/Dropbox/junk/%Y-%m%d-%H%M%S."))
+  (setq open-junk-file-format "~/Dropbox/junk/%Y-%m-%d."))
 
 (el-get-bundle org)
 (use-package org
@@ -1833,6 +1833,29 @@
   :commands (volatile-highlights-mode)
   :init
   (add-hook 'prog-mode-hook 'volatile-highlights-mode))
+
+(el-get-bundle scala-mode2)
+(el-get-bundle ensime)
+
+(use-package scala-mode
+  :mode (("\\.scala\\'" . scala-mode)))
+(use-package ensime
+  :commands (ensime-scala-mode-hook)
+  :init
+  (defun scala/enable-eldoc ()
+    "Show error message or type name at point by Eldoc."
+    (setq-local eldoc-documentation-function
+                #'(lambda ()
+                    (when (ensime-connected-p)
+                      (let ((err (ensime-print-errors-at-point)))
+                        (or (and err (not (string= err "")) err)
+                            (ensime-print-type-at-point))))))
+    (eldoc-mode +1))
+  (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+  (add-hook 'ensime-mode-hook 'scala/enable-eldoc)
+  (setq ensime-completion-style 'auto-complete)
+  :config
+  (evil-define-key 'insert ensime-mode-map "." 'scala/completing-dot))
 
 (require 'server)
 (unless (server-running-p)
