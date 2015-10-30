@@ -1837,7 +1837,7 @@
 (el-get-bundle scala-mode2)
 (el-get-bundle ensime)
 
-(use-package scala-mode
+(use-package scala-mode2
   :mode (("\\.scala\\'" . scala-mode)))
 (use-package ensime
   :commands (ensime-scala-mode-hook)
@@ -1856,6 +1856,30 @@
   (setq ensime-completion-style 'auto-complete)
   :config
   (evil-define-key 'insert ensime-mode-map "." 'scala/completing-dot))
+
+(el-get-bundle clojure-mode)
+(el-get-bundle cider)
+(el-get-bundle ac-cider)
+
+(use-package clojure-mode
+  :mode (("\\.clj\\'" . clojure-mode))
+  :config
+  (put-clojure-indent 'do 0)
+  (put-clojure-indent 'my-ns/do 1)
+  (define-clojure-indent
+    (-> 1)
+    (->> 1)))
+(use-package cider
+  :commands (cider-mode)
+  :init
+  (setq cider-stacktrace-fill-column 80)
+  (add-hook 'clojure-mode-hook 'cider-mode)
+  (add-hook 'cider-mode-hook 'eldoc-mode))
+(use-package ac-cider
+  :init
+  (add-hook 'cider-mode-hook 'ac-flyspell-workaround)
+  (add-hook 'cider-mode-hook 'ac-cider-setup)
+  (add-hook 'cider-repl-mode-hook 'ac-cider-setup))
 
 (require 'server)
 (unless (server-running-p)
