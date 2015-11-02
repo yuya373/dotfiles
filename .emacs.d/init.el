@@ -158,6 +158,7 @@
   (setq auto-save-list-file-prefix nil)
   (setq create-lockfiles nil)
   (setq auto-save-buffers-enhanced-interval 0.5)
+  (setq auto-save-buffers-enhanced-quiet-save-p t)
   :config
   (auto-save-buffers-enhanced t))
 
@@ -223,6 +224,13 @@
   :config
   (evil-leader/set-leader "<SPC>")
   (use-package evil-org)
+  ;; describe
+  (evil-leader/set-key "ehf" 'describe-function)
+  (evil-leader/set-key "ehv" 'describe-variable)
+  (evil-leader/set-key "ehs" 'describe-syntax)
+  (evil-leader/set-key "ehp" 'describe-package)
+  (evil-leader/set-key "ehm" 'describe-mode)
+  (evil-leader/set-key "ehb" 'describe-bindings)
   (evil-leader/set-key "di" 'helm-dash-install-docset)
   (evil-leader/set-key "dd" 'helm-dash)
   (evil-leader/set-key "da" 'helm-dash-at-point)
@@ -264,6 +272,7 @@
   (evil-leader/set-key "wm" 'toggle-window-maximized)
   (evil-leader/set-key "wt" 'toggle-frame-alpha)
   (evil-leader/set-key "ww" 'ace-window)
+  (evil-leader/set-key "wc" 'whitespace-cleanup)
   (evil-leader/set-key "l" 'toggle-folding)
   (evil-leader/set-key "uv" 'undo-tree-visualize)
   (evil-leader/set-key "ap" 'helm-projectile-ag)
@@ -380,15 +389,6 @@
   (define-key evil-motion-state-map (kbd "C-h") 'windmove-left)
   (define-key evil-motion-state-map (kbd "C-l") 'windmove-right)
   (define-key evil-motion-state-map (kbd "C-c") 'evil-window-delete)
-  ;; describe
-  (define-key evil-normal-state-map (kbd ",hf") 'describe-function)
-  (define-key evil-normal-state-map (kbd ",hv") 'describe-variable)
-  (define-key evil-normal-state-map (kbd ",hs") 'describe-syntax)
-  (define-key evil-normal-state-map (kbd ",hp") 'describe-package)
-  (define-key evil-normal-state-map (kbd ",hm") 'describe-mode)
-  (define-key evil-normal-state-map (kbd ",hb") 'describe-bindings)
-  ;; whitespace
-  (define-key evil-normal-state-map (kbd ",c") 'whitespace-cleanup)
   ;; comint-mode
   (evil-set-initial-state 'comint-mode 'normal)
   (evil-define-key 'normal comint-mode-map (kbd "C-d") 'evil-scroll-down)
@@ -406,12 +406,13 @@
   (define-key evil-visual-state-map (kbd "C-v") 'er/contract-region)
   ;; avy
   (use-package evil-integration
-    :init
+    :config
     (use-package avy
       :init
       (setq avy-all-windows nil)
       (setq avy-keys (number-sequence ?a ?z))
       :config
+      (define-key evil-normal-state-map "s" 'avy-goto-char-2)
       (evil-define-motion evil-avy-goto-char-in-line (count)
         :type inclusive
         (evil-without-repeat
@@ -425,8 +426,7 @@
                      ((eq evil-this-type 'exclusive)
                       'inclusive)
                      ((eq evil-this-type 'inclusive)
-                      'exclusive))))))))
-      :config
+                      'exclusive)))))))
       (evil-define-motion evil-avy-goto-word (count)
         :type inclusive
         :jump t
@@ -438,7 +438,7 @@
       (define-key evil-normal-state-map (kbd "f") #'evil-avy-goto-char-in-line)
       (define-key evil-visual-state-map (kbd "f") #'evil-avy-goto-char-in-line)
       (define-key evil-operator-state-map (kbd "m") #'evil-avy-goto-word)
-      (define-key evil-visual-state-map (kbd "m") #'evil-avy-goto-word))
+      (define-key evil-visual-state-map (kbd "m") #'evil-avy-goto-word)))
   ;; line move
   (defun evil-swap-key (map key1 key2)
     ;; MAP中のKEY1とKEY2を入れ替え
@@ -457,10 +457,13 @@
   :init
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
-
 (use-package eww
   :commands (eww)
   :init
+  (defun eww-mode-hook--rename-buffer ()
+    "Rename eww browser's buffer so sites open in new page."
+    (rename-buffer "eww" t))
+  (add-hook 'eww-mode-hook 'eww-mode-hook--rename-buffer)
   (add-hook 'eww-mode-hook '(lambda () (linum-mode -1)))
   (setq eww-search-prefix "http://www.google.co.jp/search?q=")
   :config
@@ -847,9 +850,12 @@
 
 (el-get-bundle auto-complete)
 (use-package auto-complete-config
-  :diminish auto-complete-mode
   :commands (ac-config-default)
   :init
+  (defun set-auto-complete-as-completion-at-point-function ()
+    (setq completion-at-point-functions '(auto-complete)))
+  (add-hook 'auto-complete-mode-hook
+            'set-auto-complete-as-completion-at-point-function)
   (add-hook 'evil-mode-hook 'ac-config-default)
   :config
   (use-package auto-complete
@@ -863,7 +869,6 @@
           ac-use-fuzzy t
           ac-use-comphist t
           ac-fuzzy-enable t
-          tab-always-indent t
           ac-use-menu-map t
           ac-dwim t)
     (setq-default ac-sources '(ac-source-filename
@@ -1370,6 +1375,12 @@
   (setq popwin:popup-window-height 0.3)
   (add-hook 'after-init-hook #'(lambda () (popwin-mode t)))
   :config
+  (push '(cider-inspector-mode) popwin:special-display-config)
+  (push '(cider-popup-buffer-mode) popwin:special-display-config)
+  (push '("*cider grimoire*") popwin:special-display-config)
+  (push '("*cider-error*") popwin:special-display-config)
+  (push '("*cider-result*") popwin:special-display-config)
+  (push '(cider-repl-mode :tail t :stick t) popwin:special-display-config)
   (push '("*Backtrace*") popwin:special-display-config)
   (push '("*Messages*") popwin:special-display-config)
   (push '(slack-mode :height 0.25 :noselect t :stick t :tail t :regexp t)
@@ -1858,28 +1869,92 @@
   (evil-define-key 'insert ensime-mode-map "." 'scala/completing-dot))
 
 (el-get-bundle clojure-mode)
-(el-get-bundle cider)
-(el-get-bundle ac-cider)
-
 (use-package clojure-mode
   :mode (("\\.clj\\'" . clojure-mode))
+  :init
+  (defun my-clojure-mode-hook ()
+    (setq-local helm-dash-docsets '("Clojure"))
+    (cider-mode 1))
+  (add-hook 'clojure-mode-hook #'my-clojure-mode-hook)
   :config
   (put-clojure-indent 'do 0)
   (put-clojure-indent 'my-ns/do 1)
-  (define-clojure-indent
-    (-> 1)
-    (->> 1)))
+  (define-clojure-indent (-> 1))
+  (define-clojure-indent (->> 1)))
+
+(el-get-bundle cider)
 (use-package cider
   :commands (cider-mode)
   :init
   (setq cider-stacktrace-fill-column 80)
-  (add-hook 'clojure-mode-hook 'cider-mode)
-  (add-hook 'cider-mode-hook 'eldoc-mode))
+  (add-hook 'cider-mode-hook #'(lambda () (eldoc-mode 1))))
+
+(el-get-bundle ac-cider)
 (use-package ac-cider
+  :commands (ac-cider-setup ac-flyspell-workaround)
   :init
   (add-hook 'cider-mode-hook 'ac-flyspell-workaround)
   (add-hook 'cider-mode-hook 'ac-cider-setup)
-  (add-hook 'cider-repl-mode-hook 'ac-cider-setup))
+  (add-hook 'cider-repl-mode-hook 'ac-cider-setup)
+  :config
+  (eval-after-load "auto-complete"
+    '(progn
+       (add-to-list 'ac-modes 'cider-mode)
+       (add-to-list 'ac-modes 'cider-repl-mode)))
+  (evil-define-key 'normal cider-stacktrace-mode-map
+    "q" 'cider-popup-buffer-quit-function)
+  (evil-define-key 'normal cider-inspector-mode-map
+    "q" 'cider-popup-buffer-quit-function)
+  (evil-define-key 'visual cider-mode-map
+    ",er" 'cider-eval-region)
+  (evil-define-key 'normal cider-mode-map
+    ",cj" 'cider-jack-in
+    ",cJ" 'cider-connect
+    ",cr" 'cider-refresh
+    ",cq" 'cider-quit
+    ",ci" 'cider-inspect
+    ",cu" 'cider-undef
+    ",gn" 'cider-browse-ns--find-at-point
+    ",hn" 'cider-browse-ns--doc-at-point
+    ",hN" 'cider-browse-ns-all
+    ",ha" 'cider-apropos
+    ",hA" 'cider-apropos-documentation
+    ",hd" 'cider-doc
+    ",hg" 'cider-grimoire
+    ",hG" 'cider-grimoire-web
+    ",hj" 'cider-javadoc
+    ",fv" 'cider-find-var
+    ",fn" 'cider-find-ns
+    ",fr" 'cider-find-resource
+    ",eb" 'cider-eval-buffer
+    ",ef" 'cider-eval-defun-at-point
+    ",eF" 'cider-pprint-eval-defun-at-point
+    ",es" 'cider-pprint-eval-last-sexp
+    ",eS" 'cider-eval-last-sexp-to-repl
+    ",en" 'cider-eval-ns-form
+    ",me" 'cider-macroexpand-1
+    ",ma" 'cider-macroexpand-all
+    ",r" 'cider-switch-to-repl-buffer
+    ",R" 'cider-load-buffer-and-switch-to-repl-buffer
+    ",lb" 'cider-load-buffer
+    ",lf" 'cider-load-file
+    ",tt" 'cider-test-run-test
+    ",ta" 'cider-test-run-test
+    ",tr" 'cider-test-rerun-tests
+    ",tv" 'cider-test-show-report))
+
+;; can not connect with Melpa
+;; Error (el-get): while installing flycheck-clojure: http://melpa.org/packages/flycheck-20151014.1156.tar: Not found
+(el-get-bundle clojure-emacs/squiggly-clojure
+  :name flycheck-clojure)
+(use-package flycheck-clojure
+  :commands (flycheck-clojure-setup)
+  :init
+  (add-to-list 'load-path
+               (locate-user-emacs-file
+                "el-get/flycheck-clojure/elisp/flycheck-clojure/"))
+  (add-hook 'clojure-mode-hook 'flycheck-clojure-setup))
+
 
 (require 'server)
 (unless (server-running-p)
