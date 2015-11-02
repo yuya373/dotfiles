@@ -1849,7 +1849,8 @@
 (el-get-bundle ensime)
 
 (use-package scala-mode2
-  :mode (("\\.scala\\'" . scala-mode)))
+  :mode (("\\.scala\\'" . scala-mode)
+         ("\\.sbt\\'" . scala-mode)))
 (use-package ensime
   :commands (ensime-scala-mode-hook)
   :init
@@ -1866,7 +1867,7 @@
   (add-hook 'ensime-mode-hook 'scala/enable-eldoc)
   (setq ensime-completion-style 'auto-complete)
   :config
-  (evil-define-key 'insert ensime-mode-map "." 'scala/completing-dot))
+  (evil-define-key 'insert ensime-mode-map "." nil))
 
 (el-get-bundle clojure-mode)
 (use-package clojure-mode
