@@ -16,9 +16,9 @@
     <autogen>
       --KeyToKey-- KeyCode::BRACKET_LEFT, VK_CONTROL, KeyCode::ESCAPE, KeyCode::JIS_EISUU
     </autogen>
-    <autogen>
-      --KeyToKey-- KeyCode::J, VK_CONTROL, KeyCode::J, VK_CONTROL, KeyCode::JIS_EISUU
-    </autogen>
+    <!-- <autogen>                                                                         -->
+    <!--   --KeyToKey-- KeyCode::J, VK_CONTROL, KeyCode::J, VK_CONTROL, KeyCode::JIS_EISUU -->
+    <!-- </autogen>                                                                        -->
   </item>
   <item>
     <name>Change Right Command Key to Escape</name>
