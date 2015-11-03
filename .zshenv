@@ -43,3 +43,8 @@ export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 if [ -e ${HOME}/.my_zshenv ]; then
   source ${HOME}/.my_zshenv
 fi
+
+if which pyenv > /dev/null; then
+  PATH=/usr/local/opt/pyenv/shims:${PATH}
+  export PATH
+fi
