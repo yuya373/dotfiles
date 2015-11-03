@@ -309,6 +309,10 @@
   (evil-leader/set-key "mug" 'slack-group-list-update)
   (evil-leader/set-key "mui" 'slack-im-list-update)
   (evil-leader/set-key "muc" 'slack-channel-list-update)
+  (evil-leader/set-key "qr" 'quickrun)
+  (evil-leader/set-key "qR" 'quickrun-region)
+  (evil-leader/set-key "qa" 'quickrun-with-arg)
+  (evil-leader/set-key "qs" 'quickrun-shell)
   )
 (use-package evil
   :commands (evil-mode)
@@ -1375,6 +1379,10 @@
   (setq popwin:popup-window-height 0.3)
   (add-hook 'after-init-hook #'(lambda () (popwin-mode t)))
   :config
+  (puth '("*quickrun*" :tail t :stick t)
+        popwin:special-display-config)
+  (push '(inferior-python-mode :tail t :stick t)
+        popwin:special-display-config)
   (push '(cider-inspector-mode) popwin:special-display-config)
   (push '(cider-popup-buffer-mode) popwin:special-display-config)
   (push '("*cider grimoire*") popwin:special-display-config)
@@ -1655,6 +1663,7 @@
 
 (el-get-bundle pdf-tools)
 (use-package pdf-tools
+  :commands (pdf-tools-install)
   :mode (("\\.pdf\\'" . pdf-view-mode))
   :init
   (global-linum-mode -1)
@@ -1695,7 +1704,8 @@
   (use-package pdf-info)
   (use-package pdf-misc)
   (use-package pdf-sync)
-  (use-package pdf-outline))
+  (use-package pdf-outline)
+  (use-package pdf-occur))
 
 ;; for objective-c
 (add-to-list 'auto-mode-alist '("\\.mm?$" . objc-mode))
@@ -1956,6 +1966,50 @@
                 "el-get/flycheck-clojure/elisp/flycheck-clojure/"))
   (add-hook 'clojure-mode-hook 'flycheck-clojure-setup))
 
+(use-package python-mode
+  :mode (("\\.py\\'" . python-mode))
+  :init
+  (add-hook 'python-mode-hook
+            #'(lambda ()
+                (run-python (python-shell-parse-command))
+                (setq python-indent-offset 4)))
+  (defun set-python-helm-dash ()
+    (setq-local helm-dash-docsets '("Python 2")))
+  (add-hook 'python-mode-hook #'set-python-helm-dash)
+  (add-hook 'inferior-python-mode-hook #'(lambda ()
+                                           (auto-complete-mode)
+                                           (smartparens-mode)
+                                           (set-python-helm-dash))))
+(el-get-bundle jedi)
+(use-package jedi
+  :commands (jedi:setup)
+  :init
+  (setq jedi:complete-on-doc t)
+  (add-hook 'python-mode-hook 'jedi:setup)
+  :config
+  (evil-define-key 'normal jedi-mode-map
+    ",hh" 'jedi:show-doc
+    ",gd" 'jedi:goto-definition
+    ",js" 'jedi:stop-server))
+
+(el-get-bundle elpy)
+(use-package elpy
+  :commands (elpy-enable)
+  :init
+  (setq elpy-modules '(elpy-module-sane-defaults
+                       elpy-module-eldoc
+                       elpy-module-highlight-indentation
+                       elpy-module-pyvenv))
+  (add-hook 'python-mode-hook 'elpy-enable))
+
+(el-get-bundle quickrun)
+(use-package quickrun
+  :commands (quickrun
+             quickrun-region
+             quickrun-with-arg
+             quickrun-shell)
+  :init
+  (setq quickrun-focus-p nil))
 
 (require 'server)
 (unless (server-running-p)
