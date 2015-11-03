@@ -1379,7 +1379,7 @@
   (setq popwin:popup-window-height 0.3)
   (add-hook 'after-init-hook #'(lambda () (popwin-mode t)))
   :config
-  (puth '("*quickrun*" :tail t :stick t)
+  (push '("*quickrun*" :tail t :stick t)
         popwin:special-display-config)
   (push '(inferior-python-mode :tail t :stick t)
         popwin:special-display-config)
