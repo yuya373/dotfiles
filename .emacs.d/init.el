@@ -110,7 +110,9 @@
 
 ;; whitespace
 (use-package whitespace
-  :diminish global-whitespace-mode
+  :diminish whitespace-mode
+  :init
+  (add-hook 'prog-mode-hook #'(lambda () (whitespace-mode 1)))
   :config
   (setq whitespace-style '(face
                            trailing
@@ -135,8 +137,7 @@
   (set-face-background 'whitespace-trailing "#d33682")
   (set-face-foreground 'whitespace-newline  "headerColor")
   (set-face-background 'whitespace-newline 'nil)
-  (set-face-background 'whitespace-tab 'nil)
-  (global-whitespace-mode))
+  (set-face-background 'whitespace-tab 'nil))
 
                                         ; initchart
 (el-get-bundle yuttie/initchart)
@@ -468,7 +469,8 @@
     "Rename eww browser's buffer so sites open in new page."
     (rename-buffer "eww" t))
   (add-hook 'eww-mode-hook 'eww-mode-hook--rename-buffer)
-  (add-hook 'eww-mode-hook '(lambda () (linum-mode -1)))
+  (add-hook 'eww-mode-hook #'(lambda () (linum-mode -1)))
+  (add-hook 'eww-mode-hook #'(lambda () (whitespace-mode -1)))
   (setq eww-search-prefix "http://www.google.co.jp/search?q=")
   :config
   (evil-define-key 'normal eww-history-mode-map "o" 'eww-history-browse)
