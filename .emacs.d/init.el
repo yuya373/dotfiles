@@ -1168,6 +1168,7 @@
   :diminish flycheck-mode
   :commands (global-flycheck-mode)
   :init
+  (setq flycheck-emacs-lisp-load-path 'inherit)
   (add-hook 'after-init-hook 'global-flycheck-mode))
 
 (use-package flycheck-pos-tip
