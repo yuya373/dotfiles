@@ -779,6 +779,10 @@
   (define-key helm-generic-files-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-generic-files-map (kbd "TAB") 'helm-execute-persistent-action)
 
+  (define-key helm-ls-git-map (kbd "C-s") 'helm-ace-split-ff)
+  (define-key helm-ls-git-map (kbd "C-v") 'helm-ace-vsplit-ff)
+  (define-key helm-ls-git-map (kbd "C-o") 'helm-ace-ff)
+
   (define-key helm-ag-map (kbd "C-s") 'helm-ace-split-ag)
   (define-key helm-ag-map (kbd "C-v") 'helm-ace-vsplit-ag)
   (define-key helm-ag-map (kbd "C-o") 'helm-ag--run-other-window-action))
@@ -2013,6 +2017,13 @@
              quickrun-shell)
   :init
   (setq quickrun-focus-p nil))
+
+(el-get-bundle hackernews)
+(use-package hackernews
+  :commands (hackernews))
+
+
+
 
 (require 'server)
 (unless (server-running-p)
