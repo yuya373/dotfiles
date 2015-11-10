@@ -63,6 +63,9 @@
 (setq auto-insert-directory "~/dotfiles/vim/template")
 (define-auto-insert "PULLREQ_MSG" "PULLREQ_MSG")
 
+;; symboliclink
+(setq vc-follow-symlinks t)
+
 ;; self hosting el-get
 (when load-file-name
   (setq user-emacs-directory (file-name-directory load-file-name)))
@@ -96,6 +99,8 @@
 
 (use-package el-get-lock
   :commands (el-get-lock))
+
+(el-get-lock)
 
 (el-get-bundle exec-path-from-shell)
 (use-package exec-path-from-shell
@@ -139,7 +144,13 @@
   (set-face-background 'whitespace-newline 'nil)
   (set-face-background 'whitespace-tab 'nil))
 
-                                        ; initchart
+(use-package autorevert
+  :commands (global-auto-revert-mode)
+  :init
+  (setq auto-revert-interval 1)
+  (add-hook 'after-init-hook #'(lambda () (global-auto-revert-mode 1))))
+
+;; initchart
 (el-get-bundle yuttie/initchart)
 ;; (use-package initchart
 ;;   :commands (initchart-record-execution-time-of))
@@ -779,9 +790,10 @@
   (define-key helm-generic-files-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-generic-files-map (kbd "TAB") 'helm-execute-persistent-action)
 
-  (define-key helm-ls-git-map (kbd "C-s") 'helm-ace-split-ff)
-  (define-key helm-ls-git-map (kbd "C-v") 'helm-ace-vsplit-ff)
-  (define-key helm-ls-git-map (kbd "C-o") 'helm-ace-ff)
+  (with-eval-after-load "helm-ls-git"
+    (define-key helm-ls-git-map (kbd "C-s") 'helm-ace-split-ff)
+    (define-key helm-ls-git-map (kbd "C-v") 'helm-ace-vsplit-ff)
+    (define-key helm-ls-git-map (kbd "C-o") 'helm-ace-ff))
 
   (define-key helm-ag-map (kbd "C-s") 'helm-ace-split-ag)
   (define-key helm-ag-map (kbd "C-v") 'helm-ace-vsplit-ag)
@@ -875,7 +887,7 @@
           ac-auto-show-menu t
           ac-max-width 0.4
           ac-quick-help-delay 0.5
-          ac-quick-help-prefer-pos-tip t
+          ac-quick-help-prefer-pos-tip nil
           ac-use-fuzzy t
           ac-use-comphist t
           ac-fuzzy-enable t
@@ -1167,7 +1179,8 @@
 
 ;; syntax check
 (el-get-bundle flycheck)
-(el-get-bundle flycheck-pos-tip)
+(el-get-bundle flycheck-tip)
+
 (use-package flycheck
   :diminish flycheck-mode
   :commands (global-flycheck-mode)
@@ -1175,10 +1188,11 @@
   (setq flycheck-emacs-lisp-load-path 'inherit)
   (add-hook 'after-init-hook 'global-flycheck-mode))
 
-(use-package flycheck-pos-tip
-  :commands (flycheck-pos-tip-error-messages)
+(use-package flycheck-tip
+  :commands (flycheck-tip-display-current-line-error-message)
   :init
-  (setq flycheck-display-errors-function #'flycheck-pos-tip-error-messages))
+  (setq flycheck-tip-avoid-show-func nil)
+  (setq flycheck-display-errors-function #'flycheck-tip-display-current-line-error-message))
 
 ;; markdown
 (el-get-bundle markdown-mode)
@@ -1720,13 +1734,6 @@
 (add-to-list 'magic-mode-alist '("\\(.\\|\n\\)*\n@interface" . objc-mode))
 (add-to-list 'magic-mode-alist '("\\(.\\|\n\\)*\n@protocol" . objc-mode))
 
-(el-get-bundle google-c-style)
-(use-package google-c-style
-  :commands (google-set-c-style)
-  :init
-  (add-hook 'objc-mode-hook 'google-set-c-style)
-  (add-hook 'c-mode-common-hook 'google-set-c-style))
-
 ;; (el-get-bundle yuya373/xcode-headers)
 ;; (el-get-bundle clang-complete-async)
 ;; (use-package auto-complete-clang-async
@@ -2021,8 +2028,6 @@
 (el-get-bundle hackernews)
 (use-package hackernews
   :commands (hackernews))
-
-
 
 
 (require 'server)
