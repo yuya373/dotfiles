@@ -84,19 +84,17 @@
     (goto-char (point-max))
     (eval-print-last-sexp)))
 
-;; use use-package for config description
+;; use use-package for config description and lazy loading
 (setq el-get-use-autoloads nil)
 (setq el-get-is-lazy t)
+
+(el-get-bundle use-package)
+(el-get-bundle diminish)
+(require 'diminish)
+(require 'use-package)
 ;; for debug
 ;; (setq el-get-verbose t)
-
-(el-get-bundle diminish)
-(el-get-bundle use-package)
 ;; (setq use-package-verbose t)
-(require 'use-package)
-(require 'diminish)
-(diminish 'abbrev-mode)
-(diminish 'visual-line-mode)
 
 (el-get-bundle el-get-lock
   :type github
@@ -913,6 +911,7 @@
     (use-package ac-emoji
       :commands (ac-emoji-setup)
       :init
+      (add-hook 'git-commit-mode-hook 'ac-emoji-setup)
       (add-hook 'gfm-mode-hook 'ac-emoji-setup)
       (add-hook 'markdown-mode-hook 'ac-emoji-setup))))
 
