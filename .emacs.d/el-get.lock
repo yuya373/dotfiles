@@ -1,5 +1,6 @@
 (setq el-get-lock-package-versions
-      '((magit :checksum "758b0ce74f70c89a1fc482e8d526ce45451c37ac")
+      '((el-get :checksum "7d9e02bce863c8aa3fa7a3ed44bd6a7c6c7d1460")
+        (magit :checksum "758b0ce74f70c89a1fc482e8d526ce45451c37ac")
         (haskell-mode :checksum "be83c8a383f464b80b68fe90fc2c3523c352b5b6")
         (pdf-tools :checksum "0107f80dcf268d08ac075b01729820062c0fbd67")
         (websocket :checksum "e5cd7c955734f6864fd9f2fa001f076b1a024044")
