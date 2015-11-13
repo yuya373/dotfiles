@@ -88,7 +88,7 @@
         (helm-dash :checksum "60b6053b558d7ea32d40d46e2ece2b35fe54eb83")
         (helm-ag :checksum "d015593c34155db60d91e6e8bb29546cf353088a")
         (helm-ls-git :checksum "8cddd84ee4361b9d21f800adbaeeacf72645ab62")
-        (helm :checksum "5d19ff5164eee22d29a2457e2beb32ac9166741b")
+        (helm :checksum "4ebb246a874c8927318598d79d20d787a9ac3eca")
         (which-key :checksum "b0a13d88dffe9a729d79b7098ee670a505711d73")
         (ace-window :checksum "f6653fb5d8bfe8d7bcad94fc72ca9561e28180f0")
         (avy :checksum "edf1259f2507f7512264d5f04a61f6aced8b50c1")
