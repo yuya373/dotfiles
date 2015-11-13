@@ -28,7 +28,11 @@
   ;; 警告音の代わりに画面フラッシュ
   ;; (setq visible-bell t)
   ;; 警告音もフラッシュも全て無効(警告音が完全に鳴らなくなるので注意)
-  (setq ring-bell-function 'ignore))
+  (setq ring-bell-function 'ignore)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1))
+(menu-bar-mode -1)
+
 ;; スクリプトを保存する時，自動的に chmod +x を行う
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
@@ -39,9 +43,6 @@
 (setq gc-cons-threshold (* 128 1024 1024))
 (set-language-environment "Japanese")
 (prefer-coding-system 'utf-8)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-(menu-bar-mode -1)
 (setq require-final-newline t)
 (setq ad-redefinition-action 'accept)
 (when (eq system-type 'darwin)
@@ -1687,7 +1688,7 @@
   :commands (pdf-tools-install)
   :mode (("\\.pdf\\'" . pdf-view-mode))
   :init
-  (global-linum-mode -1)
+  (linum-mode -1)
   (add-hook 'pdf-view-mode-hook 'pdf-view-dark-minor-mode)
   (add-hook 'pdf-view-mode-hook 'pdf-view-midnight-minor-mode)
   :config
