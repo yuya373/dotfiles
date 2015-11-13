@@ -30,7 +30,12 @@
   ;; 警告音もフラッシュも全て無効(警告音が完全に鳴らなくなるので注意)
   (setq ring-bell-function 'ignore)
   (tool-bar-mode -1)
-  (scroll-bar-mode -1))
+  (scroll-bar-mode -1)
+  (when (eq window-system 'ns)
+    (set-fontset-font
+     t 'symbol
+     (font-spec :family "Apple Color Emoji") nil 'prepend)))
+
 (menu-bar-mode -1)
 
 ;; スクリプトを保存する時，自動的に chmod +x を行う
@@ -872,6 +877,7 @@
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
 (el-get-bundle auto-complete)
+(el-get-bundle ac-emoji)
 (use-package auto-complete-config
   :commands (ac-config-default)
   :init
@@ -903,7 +909,12 @@
     (evil-define-key 'insert ac-menu-map (kbd "C-n") 'ac-next)
     (evil-define-key 'insert ac-menu-map (kbd "C-p") 'ac-previous)
     (evil-define-key 'insert ac-menu-map (kbd "<S-tab>") 'ac-previous)
-    (ac-set-trigger-key "TAB")))
+    (ac-set-trigger-key "TAB")
+    (use-package ac-emoji
+      :commands (ac-emoji-setup)
+      :init
+      (add-hook 'gfm-mode-hook 'ac-emoji-setup)
+      (add-hook 'markdown-mode-hook 'ac-emoji-setup))))
 
 (use-package eldoc
   :diminish eldoc-mode
