@@ -141,7 +141,7 @@
   (set-face-underline  'whitespace-trailing t)
   (set-face-foreground 'whitespace-trailing "#d33682")
   (set-face-background 'whitespace-trailing "#d33682")
-  (set-face-foreground 'whitespace-newline  "headerColor")
+  (set-face-foreground 'whitespace-newline  "#d33682")
   (set-face-background 'whitespace-newline 'nil)
   (set-face-background 'whitespace-tab 'nil))
 
