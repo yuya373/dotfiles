@@ -262,6 +262,7 @@
   (define-key helm-find-files-map (kbd "C-r") 'helm-ff-run-rename-file)
   (define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
+  (define-key helm-find-files-map (kbd "C-d") 'helm-ff-run-delete-file)
 
   (define-key helm-read-file-map (kbd "C-s") 'helm-ace-split-ff)
   (define-key helm-read-file-map (kbd "C-v") 'helm-ace-vsplit-ff)

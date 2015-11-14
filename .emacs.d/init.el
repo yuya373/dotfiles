@@ -18,6 +18,14 @@
 (setq el-get-use-autoloads nil)
 (setq el-get-is-lazy t)
 
+;; el-get-lock
+(el-get-bundle el-get-lock
+  :type github
+  :pkgname "tarao/el-get-lock"
+  :name el-get-lock)
+(require 'el-get-lock)
+(el-get-lock)
+
 (el-get-bundle use-package)
 (el-get-bundle diminish)
 (require 'diminish)
@@ -33,15 +41,6 @@
 (initchart-record-execution-time-of load file)
 (initchart-record-execution-time-of require feature)
 
-;; el-get-lock
-(el-get-bundle el-get-lock
-  :type github
-  :pkgname "tarao/el-get-lock"
-  :name el-get-lock)
-(use-package el-get-lock
-  :commands (el-get-lock))
-(el-get-lock)
-
 ;; init-loader
 (el-get-bundle init-loader)
 (use-package init-loader
@@ -49,12 +48,6 @@
   :init
   (setq init-loader-byte-compile t))
 (init-loader-load)
-
-(el-get-bundle websocket)
-(el-get-bundle request)
-(el-get-bundle oauth2)
-(add-to-list 'load-path
-             (locate-user-emacs-file "private/emacs-slack/"))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
