@@ -28,6 +28,8 @@
   (require 'evil))
 
 (el-get-bundle ess)
+(add-to-list 'load-path
+             (locate-user-emacs-file "el-get/ess/lisp"))
 (el-get-bundle ess-R-data-view)
 (el-get-bundle ess-R-object-popup)
 (el-get-bundle helm-R)
@@ -36,6 +38,7 @@
   :mode (("\\.[rR]\\'" . R-mode))
   :init
   (add-hook 'ess-mode-hook 'linum-mode)
+  (add-hook 'ess-mode-hook 'smartparens-mode)
   (setq ess-use-auto-complete t
         ess-use-eldoc t
         ess-use-ido nil

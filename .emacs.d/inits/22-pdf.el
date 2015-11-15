@@ -36,6 +36,7 @@
   (add-hook 'pdf-view-mode-hook #'(lambda () (linum-mode -1)))
   (add-hook 'pdf-view-mode-hook 'pdf-view-dark-minor-mode)
   (add-hook 'pdf-view-mode-hook 'pdf-view-midnight-minor-mode)
+  (add-hook 'pdf-view-mode-hook #'(lambda () (blink-cursor-mode -1)))
   :config
   (evil-set-initial-state 'pdf-view-mode 'normal)
   (evil-define-key 'normal pdf-view-mode-map
@@ -78,10 +79,10 @@
 
   (add-hook 'popwin:before-popup-hook #'mcc-pdf-view-save)
   (add-hook 'popwin:after-popup-hook #'mcc-pdf-view-restore)
-  (add-hook 'helm-before-initialize-hook #'mcc-pdf-view-save t)
+  ;; (add-hook 'helm-before-initialize-hook #'mcc-pdf-view-save t)
   ;; (remove-hook 'helm-before-initialize-hook #'mcc-pdf-view-save)
-  (add-hook 'helm-cleanup-hook #'mcc-pdf-view-restore t)
-  ;; (remove-hook 'helm-exit-minibuffer-hook #'mcc-pdf-view-restore)
+  ;; (add-hook 'helm-cleanup-hook #'mcc-pdf-view-restore t)
+  ;; (remove-hook 'helm-cleanup-hook #'mcc-pdf-view-restore)
  ; (use-package pdf-annot)
   (use-package pdf-links)
   (use-package pdf-info)

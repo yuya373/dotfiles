@@ -81,7 +81,8 @@
     :when (bound-and-true-p global-rbenv-mode))
   (spaceline-define-segment pdf
     "pdf tool infomation"
-    (format "Page: %s" (pdf-view-current-page))
+    (format "Page: %s" (pdf-view-current-page
+                        (get-buffer-window)))
     :when (eql major-mode 'pdf-view-mode)))
 
 (provide '12-theme)

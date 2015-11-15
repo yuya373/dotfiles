@@ -1,5 +1,6 @@
 (setq el-get-lock-package-versions
-      '((ess :checksum "626ca5a2f92a37d849d407875b20a47e747dcea3")
+      '((twittering-mode :checksum "97197cdd3cc005000dc2599f67c754d74fab5972")
+        (ess :checksum "626ca5a2f92a37d849d407875b20a47e747dcea3")
         (use-package :checksum "77a77c8b03044f0279e00cadd6a6d1a7ae97b016")
         (diminish :checksum "73669b69e5f9a0c9261c5b53624329d0e24d1ed8")
         (init-loader :checksum "1f28a0b801cbb08aa9b47fd15ceab243a2bc064c")
