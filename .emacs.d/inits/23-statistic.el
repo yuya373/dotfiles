@@ -35,6 +35,7 @@
 (use-package ess-site
   :mode (("\\.[rR]\\'" . R-mode))
   :init
+  (add-hook 'ess-mode-hook 'linum-mode)
   (setq ess-use-auto-complete t
         ess-use-eldoc t
         ess-use-ido nil
