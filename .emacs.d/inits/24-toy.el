@@ -32,8 +32,8 @@
   :commands (twit)
   :init
   (evil-set-initial-state 'twittering-mode 'normal)
+  (add-hook 'twittering-mode-hook #'(lambda () (twittering-icon-mode 1)))
   (setq twittering-use-master-password nil
-        twittering-icon-mode t
         twittering-timer-interval 300)
   :config
   (evil-define-key 'normal twittering-mode-map
