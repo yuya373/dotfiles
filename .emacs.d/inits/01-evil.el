@@ -284,7 +284,7 @@
   (evil-leader/set-key "fp" 'helm-browse-project)
   (evil-leader/set-key "ff" 'helm-find-files)
   (evil-leader/set-key "hl" 'helm-resume)
-  (evil-leader/set-key "bb" 'my-helm-mini)
+  (evil-leader/set-key "bb" 'helm-mini)
   (evil-leader/set-key "ho" 'helm-semantic-or-imenu)
   (evil-leader/set-key "hp" 'helm-show-kill-ring)
   (evil-leader/set-key "ig" 'indent-guide-mode)

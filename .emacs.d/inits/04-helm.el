@@ -71,7 +71,6 @@
              helm-show-kill-ring)
   :init
   (setq helm-mini-default-sources '(helm-source-buffers-list
-                                    helm-source-ls-git
                                     helm-source-recentf
                                     helm-source-buffer-not-found))
   (setq helm-M-x-fuzzy-match t
