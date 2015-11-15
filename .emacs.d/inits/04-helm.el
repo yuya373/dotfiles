@@ -107,18 +107,10 @@
       (setq helm-source-ls-git
             (helm-make-source "Git files" 'helm-ls-git-source
               :fuzzy-match helm-ls-git-fuzzy-match))))
-
-  (defun my-helm-mini ()
-    (interactive)
-    (make-helm-git-source)
-    (helm-mini))
-
   (use-package helm-ag
     :config
     (setq helm-ag-insert-at-point 'symbol))
   (helm-mode +1)
-
-
   (defun switch-window-if-gteq-3-windows ()
     (if (>= (length (window-list)) 3)
         (aw-switch-to-window (aw-select "Ace - Window"))))
@@ -237,7 +229,8 @@
     (with-helm-alive-p
       (helm-exit-and-execute-action 'ace-helm-switch-to-buffer)))
 
-  (define-key evil-normal-state-map (kbd ",ha") 'helm-apropos)
+  (with-eval-after-load "evil"
+    (define-key evil-normal-state-map (kbd ",ha") 'helm-apropos))
 
   (define-key helm-map (kbd "C-,") 'helm-toggle-visible-mark)
   (define-key helm-map (kbd "C-a") 'helm-select-action)
@@ -254,6 +247,7 @@
   (define-key helm-buffer-map (kbd "C-v") 'helm-ace-vsplit-sb)
   (define-key helm-buffer-map (kbd "C-d") 'helm-buffer-run-kill-buffers)
   (define-key helm-buffer-map (kbd "C-o") 'helm-ace-sb)
+  (define-key helm-buffer-map (kbd "C-g") 'helm-keyboard-quit)
 
   (define-key helm-find-files-map (kbd "C-s") 'helm-ace-split-ff)
   (define-key helm-find-files-map (kbd "C-v") 'helm-ace-vsplit-ff)

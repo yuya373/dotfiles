@@ -24,30 +24,14 @@
 
 ;;; Code:
 
-;; theme
-;; (el-get-bundle bbatsov/solarized-emacs)
-;; (setq solarized-distinct-fringe-background t)
-;; (setq solarized-use-variable-pitch nil)
-;; (setq solarized-high-contrast-mode-line t)
-;; (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/solarized-emacs")
-;; (load-theme 'solarized-dark t)
-
-;; (el-get-bundle color-theme-solarized)
-;; (set-frame-parameter nil 'background-mode 'dark)
-;; (set-terminal-parameter nil 'background-mode 'dark)
-;; (load-theme 'solarized t)
-
-(el-get-bundle material-theme)
-(add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/material-theme")
-(load-theme 'material t)
-
-;; (el-get-bundle aurora-theme)
-;; (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/aurora-theme")
-;; (load-theme 'aurora t)
 (eval-when-compile
   (el-get-bundle powerline)
   (el-get-bundle TheBB/spaceline)
   (require 'spaceline))
+
+(el-get-bundle material-theme)
+(add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/material-theme")
+(load-theme 'material t)
 
 (el-get-bundle powerline)
 (el-get-bundle TheBB/spaceline)
@@ -67,6 +51,7 @@
        ;;  :separator "|"
        ;;  :face highlight-face)
        (buffer-modified buffer-size buffer-id remote-host)
+       (pdf :when active)
        ((flycheck-error flycheck-warning flycheck-info)
         :when active)
        major-mode
@@ -93,7 +78,11 @@
   (spaceline-define-segment rbenv
     "ruby version used in rbenv"
     (rbenv--update-mode-line)
-    :when (bound-and-true-p global-rbenv-mode)))
+    :when (bound-and-true-p global-rbenv-mode))
+  (spaceline-define-segment pdf
+    "pdf tool infomation"
+    (format "Page: %s" (pdf-view-current-page))
+    :when (eql major-mode 'pdf-view-mode)))
 
 (provide '12-theme)
 ;;; 12-theme.el ends here
