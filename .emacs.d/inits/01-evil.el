@@ -72,10 +72,17 @@
   (use-package evil-anzu)
   (use-package evil-indent-textobject)
   (use-package evil-terminal-cursor-changer)
-  (use-package evil-matchit :config (global-evil-matchit-mode t))
   (use-package evil-exchange :config (evil-exchange-install))
   (use-package evil-visualstar :config (global-evil-visualstar-mode))
   (use-package evil-surround :config (global-evil-surround-mode t))
+  (use-package evil-matchit
+    :config
+    (setq evilmi-ignore-comments nil)
+    (evil-define-key 'normal evil-matchit-mode-map
+      "t" 'evilmi-jump-items)
+    (evil-define-key 'visual evil-matchit-mode-map
+      "t" 'evilmi-jump-items)
+    (global-evil-matchit-mode t))
   (use-package expand-region
     :commands (er/expand-region er/contract-region))
   (use-package evil-numbers
@@ -112,7 +119,6 @@
     (evil-open-below 1)
     (evil-normal-state))
   (define-key evil-normal-state-map (kbd "RET") 'open-below-esc)
-  (define-key evil-insert-state-map (kbd "C-j") 'evil-normal-state)
   ;; C-h map
   (define-key evil-insert-state-map (kbd "C-h") 'delete-backward-char)
   (define-key evil-ex-search-keymap (kbd "C-h") 'delete-backward-char)

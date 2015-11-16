@@ -184,10 +184,6 @@
   (evil-define-key 'normal csv-mode-map
     ",a" 'csv-align-fields))
 
-(el-get-bundle hackernews)
-(use-package hackernews
-  :commands (hackernews))
-
 ;; esup
 (el-get-bundle esup)
 (use-package esup
@@ -212,6 +208,20 @@
     (unless (server-running-p)
       (server-start)))
   (add-hook 'after-init-hook 'start-server))
+
+(el-get-bundle ddskk)
+(use-package skk
+  :commands (skk-mode skk-auto-fill-mode)
+  :init
+  (setq skk-tut-file (concat user-emacs-directory
+                             "el-get/ddskk/etc/SKK.tut"))
+  (setq define-input-method "japanese-skk")
+  (add-hook 'skk-mode-hook 'skk-auto-fill-mode)
+  :config
+  (use-package skk-tut)
+  (use-package skk-cus)
+  (use-package skk-cursor)
+  (use-package skk-study))
 
 (provide '03-util)
 ;;; 03-util.el ends here

@@ -27,6 +27,10 @@
 (eval-when-compile
   (require 'evil))
 
+(el-get-bundle hackernews)
+(use-package hackernews
+  :commands (hackernews))
+
 (el-get-bundle twittering-mode)
 (use-package twittering-mode
   :commands (twit)
