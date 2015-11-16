@@ -37,7 +37,39 @@
   (add-hook 'pdf-view-mode-hook 'pdf-view-dark-minor-mode)
   (add-hook 'pdf-view-mode-hook 'pdf-view-midnight-minor-mode)
   (add-hook 'pdf-view-mode-hook #'(lambda () (blink-cursor-mode -1)))
+  (setq pdf-view-dump-file-name "pdf-view-dump")
   :config
+  (defun pdf-view-dump-last-page ()
+    (interactive)
+    (let* ((file-path (concat user-emacs-directory
+                              pdf-view-dump-file-name))
+           (current-page (pdf-view-current-page))
+           (pdf-file-name (pdf-view-buffer-file-name))
+           (old-data (pdf-view-read-dumped file-path))
+           (data (cons (cons pdf-file-name current-page)
+                       (cl-delete-if #'(lambda (n)
+                                         (string= n pdf-file-name))
+                                     old-data
+                                     :key #'car))))
+      (with-temp-buffer
+        (insert (format "%s" data))
+        (write-file file-path))))
+  (defun pdf-view-read-dumped (file-path)
+    (when (file-readable-p file-path)
+      (with-temp-buffer
+        (insert-file-contents file-path)
+        (when (> (length (buffer-string)) 0)
+          (read (buffer-string))))))
+  (defun pdf-view-restore-last-page ()
+    (interactive)
+    (let* ((file-path (concat user-emacs-directory
+                              pdf-view-dump-file-name))
+           (data (pdf-view-read-dumped file-path))
+           (pdf-file-name (pdf-view-buffer-file-name))
+           (last-page (cdr (cl-assoc pdf-file-name data
+                                     :test #'string=))))
+      (when last-page
+        (pdf-view-goto-page last-page))))
   (evil-set-initial-state 'pdf-view-mode 'normal)
   (evil-define-key 'normal pdf-view-mode-map
     "g" 'pdf-view-goto-page
@@ -52,7 +84,9 @@
     "=" 'pdf-view-fit-width-to-window
     "o" 'pdf-outline
     "b" 'pdf-view-position-to-register
-    "B" 'pdf-view-jump-to-register)
+    "B" 'pdf-view-jump-to-register
+    ",r" 'pdf-view-restore-last-page
+    ",s" 'pdf-view-dump-last-page)
   (defun mcc-pdf-view-save ()
     (message "mcc-pdf-view-save called!!!")
     (cl-loop for win in (window-list)
