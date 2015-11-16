@@ -31,11 +31,11 @@
 (use-package twittering-mode
   :commands (twit)
   :init
-  (evil-set-initial-state 'twittering-mode 'normal)
   (add-hook 'twittering-mode-hook #'(lambda () (twittering-icon-mode 1)))
   (setq twittering-use-master-password nil
         twittering-timer-interval 300)
   :config
+  (evil-set-initial-state 'twittering-mode 'normal)
   (evil-define-key 'normal twittering-mode-map
     "q" 'twittering-kill-buffer
     ",T" 'twittering-visit-timeline

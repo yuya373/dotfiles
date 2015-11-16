@@ -1,4 +1,4 @@
-;;; 22-pdf.el ---                                    -*- lexical-binding: t; -*-
+;;; 22-document.el ---                                    -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2015  南優也
 
@@ -97,5 +97,11 @@
       "t" 'outline-toggle-children))
   (use-package pdf-occur))
 
-(provide '22-pdf)
-;;; 22-pdf.el ends here
+(el-get-bundle adoc-mode)
+(use-package adoc-mode
+  :mode (("\\.asciidoc\\'" . adoc-mode))
+  :init
+  (add-hook 'adoc-mode-hook #'(lambda () (buffer-face-mode t))))
+
+(provide '22-document)
+;;; 22-document.el ends here

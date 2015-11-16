@@ -71,7 +71,7 @@
     ",h" 'ess-display-help-on-object
     ",H" 'ess-display-help-apropos))
 
-(use-package helm-R)
+;; (use-package helm-R)
 
 
 (provide '23-statistic)
