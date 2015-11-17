@@ -298,7 +298,7 @@
   (evil-leader/set-key "hgc" 'helm-open-github-from-commit)
   (evil-leader/set-key "hgi" 'helm-open-github-from-issues)
   (evil-leader/set-key "hgp" 'helm-open-github-from-pull-requests)
-  (evil-leader/set-key "r" 'restclient-mode)
+  (evil-leader/set-key "r" 'create-restclient-buffer)
   (evil-leader/set-key "ml" 'open-junk-dir)
   (evil-leader/set-key "mn" 'open-junk-file)
   (evil-leader/set-key "ms" 'slack-start)

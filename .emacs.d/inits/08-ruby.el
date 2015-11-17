@@ -72,7 +72,6 @@
          ("Schema" . enh-ruby-mode))
   :interpreter ("ruby" . enh-ruby-mode)
   :init
-  (add-hook 'enh-ruby-mode-hook (lambda () (add-to-list 'ac-sources 'ac-source-abbrev)))
   (setq tab-width 2)
   (modify-syntax-entry ?_ "w")
   (setq enh-ruby-deep-indent-paren nil
@@ -102,7 +101,6 @@
   (defun ruby-test-toggle-vsplit ()
     (interactive)
     (let ((window (split-window-right)))
-      (message "%s" window)
       (select-window window)
       (balance-windows)
       (ruby-test-toggle-implementation-and-specification)))

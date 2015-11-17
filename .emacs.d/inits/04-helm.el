@@ -307,7 +307,7 @@
   :commands (helm-gtags-mode)
   :init
   (add-hook 'enh-ruby-mode-hook 'helm-gtags-mode)
-  (setq helm-gtags-update-interval-second 1)
+  (setq helm-gtags-update-interval-second 60)
   (setq helm-gtags-auto-update t)
   (setq helm-gtags-preselect t)
   (setq helm-gtags-use-input-at-cursor t)

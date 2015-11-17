@@ -75,8 +75,10 @@
   (setq popwin:popup-window-height 0.3)
   (add-hook 'after-init-hook #'(lambda () (popwin-mode t)))
   :config
-  (push '("*quickrun*" :tail t :stick t)
-        popwin:special-display-config)
+  (push '(sbt-mode :tail t :noselect t) popwin:special-display-config)
+  (push '("*ensime-update*" :tail t) popwin:special-display-config)
+  (push '("*HTTP Response*" :noselect t :stick t) popwin:special-display-config)
+  (push '("*quickrun*" :tail t :stick t) popwin:special-display-config)
   (push '(inferior-python-mode :tail t :stick t)
         popwin:special-display-config)
   (push '(cider-inspector-mode) popwin:special-display-config)
@@ -167,7 +169,14 @@
 (el-get-bundle restclient)
 (use-package restclient
   :commands (restclient-mode)
+  :init
+  (setq restclient-client-buf-name "*RestClient - Client*")
   :config
+  (defun create-restclient-buffer ()
+    (interactive)
+    (let ((buf (get-buffer-create restclient-client-buf-name)))
+      (switch-to-buffer-other-window buf)
+      (with-current-buffer (restclient-mode))))
   (evil-define-key 'normal restclient-mode-map
     ",y"  'restclient-copy-curl-command
     ",ss" 'restclient-http-send-current

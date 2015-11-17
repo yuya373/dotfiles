@@ -128,7 +128,7 @@
       "o" 'pdf-outline-follow-link-and-quit
       "q" 'quit-window
       "c" 'pdf-outline-move-to-current-page
-      "t" 'outline-toggle-children))
+      "l" 'outline-toggle-children))
   (use-package pdf-occur))
 
 (el-get-bundle adoc-mode)

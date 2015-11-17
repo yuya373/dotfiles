@@ -52,7 +52,6 @@
           ac-use-menu-map t
           ac-dwim t)
     (setq-default ac-sources '(ac-source-filename
-                               ac-source-abbrev
                                ac-source-dictionary
                                ac-source-words-in-same-mode-buffers))
     (add-hook 'emacs-lisp-mode-hook (lambda () (add-to-list 'ac-sources 'ac-source-symbols)))

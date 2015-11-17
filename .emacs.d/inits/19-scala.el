@@ -44,12 +44,43 @@
                       (let ((err (ensime-print-errors-at-point)))
                         (or (and err (not (string= err "")) err)
                             (ensime-print-type-at-point))))))
-    (eldoc-mode +1))
+    (eldoc-mode 1))
   (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
   (add-hook 'ensime-mode-hook 'scala/enable-eldoc)
   (setq ensime-completion-style 'auto-complete)
   :config
-  (evil-define-key 'insert ensime-mode-map "." nil))
+  (evil-define-key 'normal ensime-mode-map
+    ",e" 'ensime
+    ",R" 'ensime-reload-open-files
+    ",I" 'ensime-import-type-at-point
+
+    ",rr" 'ensime-refactor-rename
+    ",ro" 'ensime-refactor-organize-imports
+    ",rl" 'ensime-refactor-extract-local
+    ",rm" 'ensime-refactor-extract-method
+    ",ri" 'ensime-refactor-inline-local
+
+    ",cg" 'ensime-config-gen
+    ",ht" 'ensime-inspect-type-at-point
+    ",hp" 'ensime-inspect-package-at-point
+    ",hh" 'ensime-show-uses-of-symbol-at-point
+
+    ",ss" 'ensime-sbt-switch
+    ",sc" 'ensime-sbt-do-compile
+    ",sC" 'ensime-sbt-do-clean
+    ",sg" 'ensime-sbt-do-gen-ensime
+    ",st" 'ensime-sbt-do-test-dwim
+    ",sp" 'ensime-sbt-do-package
+    ",sr" 'ensime-sbt-do-run
+
+    ",is" 'ensime-inf-switch
+    ",il" 'ensime-inf-load-file
+    ",ieb" 'ensime-inf-eval-buffer
+
+    ",gt" 'ensime-goto-test
+    ",gi" 'ensime-goto-impl)
+  (evil-define-key 'insert ensime-mode-map
+    "." 'nil))
 
 (provide '19-scala)
 ;;; 19-scala.el ends here
