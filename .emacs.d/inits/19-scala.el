@@ -47,6 +47,8 @@
     (eldoc-mode 1))
   (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
   (add-hook 'ensime-mode-hook 'scala/enable-eldoc)
+  (add-hook 'ensime-inf-mode-hook 'auto-complete-mode)
+  ;; (add-hook 'ensime-inf-mode-hook 'smartparens-mode)
   (setq ensime-completion-style 'auto-complete)
   :config
   (evil-define-key 'normal ensime-mode-map
@@ -76,9 +78,12 @@
     ",is" 'ensime-inf-switch
     ",il" 'ensime-inf-load-file
     ",ieb" 'ensime-inf-eval-buffer
+    ",ied" 'ensime-inf-eval-definition
 
     ",gt" 'ensime-goto-test
     ",gi" 'ensime-goto-impl)
+  (evil-define-key 'visual ensime-mode-map
+    ",ier" 'ensime-inf-eval-region)
   (evil-define-key 'insert ensime-mode-map
     "." 'nil))
 

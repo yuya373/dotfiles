@@ -48,10 +48,11 @@
   (defun eww-mode-hook--rename-buffer ()
     "Rename eww browser's buffer so sites open in new page."
     (rename-buffer "eww" t))
-  (add-hook 'eww-mode-hook 'eww-mode-hook--rename-buffer)
+  ;; (add-hook 'eww-mode-hook 'eww-mode-hook--rename-buffer)
   (add-hook 'eww-mode-hook #'(lambda () (linum-mode -1)))
   (add-hook 'eww-mode-hook #'(lambda () (whitespace-mode -1)))
-  (setq eww-search-prefix "http://www.google.co.jp/search?q=")
+  (setq eww-search-prefix "https://www.google.co.jp/search?q=")
+  ;; (setq url-user-agent "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12A366 Safari/600.1.4")
   :config
   (evil-define-key 'normal eww-history-mode-map "o" 'eww-history-browse)
   (evil-define-key 'normal eww-history-mode-map "q" 'quit-window)
@@ -61,18 +62,11 @@
   (evil-define-key 'normal eww-mode-map "r" 'eww-reload)
   (evil-define-key 'normal eww-mode-map "H" 'eww-back-url)
   (evil-define-key 'normal eww-mode-map "L" 'eww-forward-url)
-  (evil-define-key 'normal eww-mode-map "&" 'eww-browse-with-external-browser)
-  (evil-define-key 'normal eww-mode-map "B" 'eww-list-bookmarks)
-  (evil-define-key 'normal eww-mode-map "b" 'eww-add-bookmark)
-  (evil-define-key 'normal eww-mode-map "@" 'eww-list-histories)
+  (evil-define-key 'normal eww-mode-map ",o" 'eww-browse-with-external-browser)
+  (evil-define-key 'normal eww-mode-map ",B" 'eww-list-bookmarks)
+  (evil-define-key 'normal eww-mode-map ",b" 'eww-add-bookmark)
+  (evil-define-key 'normal eww-mode-map ",@" 'eww-list-histories)
   (evil-define-key 'normal eww-mode-map "q" 'quit-window))
-
-(use-package url-http
-  :commands (url-http-user-agent-string)
-  :config
-  (defvar url-user-agent "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12A366 Safari/600.1.4")
-  (defun url-http-user-agent-string ()
-    (format "User-Agent: %s\r\n" url-user-agent)))
 
 (provide '09-web)
 ;;; 09-web.el ends here

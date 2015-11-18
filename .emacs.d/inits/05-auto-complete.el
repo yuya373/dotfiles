@@ -32,10 +32,10 @@
 (use-package auto-complete-config
   :commands (ac-config-default)
   :init
-  (defun set-auto-complete-as-completion-at-point-function ()
-    (setq completion-at-point-functions '(auto-complete)))
-  (add-hook 'auto-complete-mode-hook
-            'set-auto-complete-as-completion-at-point-function)
+  ;; (defun set-auto-complete-as-completion-at-point-function ()
+  ;;   (setq completion-at-point-functions '(auto-complete)))
+  ;; (add-hook 'auto-complete-mode-hook
+  ;;           'set-auto-complete-as-completion-at-point-function)
   (add-hook 'evil-mode-hook 'ac-config-default)
   :config
   (use-package auto-complete
