@@ -53,7 +53,7 @@
                                      :key #'car))))
       (with-temp-buffer
         (insert (format "%s" data))
-        (write-file file-path))))
+        (write-region (point-min) (point-max) file-path))))
   (defun pdf-view-read-dumped (file-path)
     (when (file-readable-p file-path)
       (with-temp-buffer
@@ -70,6 +70,7 @@
                                      :test #'string=))))
       (when last-page
         (pdf-view-goto-page last-page))))
+  (add-hook 'pdf-view-change-page-hook 'pdf-view-dump-last-page)
   (evil-set-initial-state 'pdf-view-mode 'normal)
   (evil-define-key 'normal pdf-view-mode-map
     "g" 'pdf-view-goto-page

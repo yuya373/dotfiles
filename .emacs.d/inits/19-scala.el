@@ -36,6 +36,9 @@
 (use-package ensime
   :commands (ensime-scala-mode-hook)
   :init
+  (setq ensime-completion-style 'auto-complete)
+  (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+
   (defun scala/enable-eldoc ()
     "Show error message or type name at point by Eldoc."
     (setq-local eldoc-documentation-function
@@ -45,11 +48,19 @@
                         (or (and err (not (string= err "")) err)
                             (ensime-print-type-at-point))))))
     (eldoc-mode 1))
-  (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
   (add-hook 'ensime-mode-hook 'scala/enable-eldoc)
+
+  (defun my-ensime-ac-set-up ()
+    (setq ac-auto-start 5
+          ac-sources '(ac-source-ensime-completions
+                       ac-source-words-in-same-mode-buffers
+                       ac-source-words-in-buffer)
+          ac-use-comphist t
+          ac-dwim t))
   (add-hook 'ensime-inf-mode-hook 'auto-complete-mode)
+  (add-hook 'ensime-mode-hook 'my-ensime-ac-set-up)
+
   ;; (add-hook 'ensime-inf-mode-hook 'smartparens-mode)
-  (setq ensime-completion-style 'auto-complete)
   :config
   (evil-define-key 'normal ensime-mode-map
     ",e" 'ensime
