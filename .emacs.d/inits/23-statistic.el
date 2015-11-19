@@ -38,7 +38,8 @@
   :mode (("\\.[rR]\\'" . R-mode))
   :init
   (add-hook 'ess-mode-hook 'linum-mode)
-  (add-hook 'ess-mode-hook #'(lambda () (smartparens-mode t)))
+  (add-hook 'ess-mode-hook 'smartparens-mode)
+  (add-hook 'inferior-ess-mode-hook 'smartparens-mode)
   (setq ess-use-auto-complete t
         ess-use-eldoc t
         ess-use-ido nil

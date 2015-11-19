@@ -75,8 +75,7 @@
     (interactive)
     (let ((last-page (pdf-view-find-last-page)))
       (if (and last-page (y-or-n-p "Restore previous page? "))
-          (pdf-view-goto-page last-page)
-        (error "Saved page data not found"))))
+          (pdf-view-goto-page last-page))))
 
   (defun pdf-view-restore-or-dump-page ()
     (interactive)
@@ -103,7 +102,6 @@
     ",r" 'pdf-view-restore-last-page
     ",s" 'pdf-view-dump-last-page)
   (defun mcc-pdf-view-save ()
-    (message "mcc-pdf-view-save called!!!")
     (cl-loop for win in (window-list)
              do (with-selected-window win
                   (when (eql major-mode 'pdf-view-mode)
@@ -113,7 +111,6 @@
                                 (pdf-view-current-page))))))
 
   (defun mcc-pdf-view-restore ()
-    (message "mcc-pdf-view-restore called!!!")
     (cl-loop for win in (window-list)
              do (with-selected-window win
                   (message "%s" major-mode)
