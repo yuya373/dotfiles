@@ -51,7 +51,7 @@
   (add-hook 'ensime-mode-hook 'scala/enable-eldoc)
 
   (defun my-ensime-ac-set-up ()
-    (setq ac-auto-start 5
+    (setq ac-auto-start nil
           ac-sources '(ac-source-ensime-completions
                        ac-source-words-in-same-mode-buffers
                        ac-source-words-in-buffer)

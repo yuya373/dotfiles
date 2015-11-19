@@ -229,7 +229,8 @@
       (helm-exit-and-execute-action 'ace-helm-switch-to-buffer)))
 
   (with-eval-after-load "evil"
-    (define-key evil-normal-state-map (kbd ",ha") 'helm-apropos))
+    (define-key evil-normal-state-map
+      (kbd "C-b") 'helm-mini))
 
   (define-key helm-map (kbd "C-,") 'helm-toggle-visible-mark)
   (define-key helm-map (kbd "C-a") 'helm-select-action)

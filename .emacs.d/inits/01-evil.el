@@ -230,6 +230,7 @@
   (evil-leader/set-leader "<SPC>")
   (use-package evil-org)
   ;; describe
+  (evil-leader/set-key "eha" 'helm-apropos)
   (evil-leader/set-key "ehf" 'describe-function)
   (evil-leader/set-key "ehv" 'describe-variable)
   (evil-leader/set-key "ehs" 'describe-syntax)

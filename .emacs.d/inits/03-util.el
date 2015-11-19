@@ -76,8 +76,7 @@
   (add-hook 'after-init-hook #'(lambda () (popwin-mode t)))
   :config
   (push '(comint-mode :tail t :noselect t :stick t) popwin:special-display-config)
-  (push '(ensime-inf-mode :tail t :noselect t :stick t) popwin:special-display-config)
-  (push '(inferior-scala-mode :tail t :noselect t :stick t) popwin:special-display-config)
+  (push '("*ensime-inferior-scala*" :tail t :noselect t :stick t) popwin:special-display-config)
   (push '(sbt-mode :tail t :noselect t) popwin:special-display-config)
   (push '("*ensime-update*" :tail t) popwin:special-display-config)
   (push '("*HTTP Response*" :noselect t :stick t) popwin:special-display-config)

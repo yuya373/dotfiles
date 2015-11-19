@@ -41,36 +41,50 @@
   :config
   (defun pdf-view-dump-last-page ()
     (interactive)
-    (let* ((file-path (concat user-emacs-directory
-                              pdf-view-dump-file-name))
-           (current-page (pdf-view-current-page))
-           (pdf-file-name (pdf-view-buffer-file-name))
-           (old-data (pdf-view-read-dumped file-path))
-           (data (cons (cons pdf-file-name current-page)
-                       (cl-delete-if #'(lambda (n)
-                                         (string= n pdf-file-name))
-                                     old-data
-                                     :key #'car))))
-      (with-temp-buffer
-        (insert (format "%s" data))
-        (write-region (point-min) (point-max) file-path))))
+    (let ((current-page (pdf-view-current-page)))
+      (when (and current-page (< 1 current-page))
+        (message "pdf-view-dump-last-page: %s" current-page)
+        (let* ((file-path (concat user-emacs-directory
+                                  pdf-view-dump-file-name))
+               (pdf-file-name (pdf-view-buffer-file-name))
+               (old-data (pdf-view-read-dumped file-path))
+               (data (cons (cons pdf-file-name current-page)
+                           (cl-delete-if #'(lambda (n)
+                                             (string= n pdf-file-name))
+                                         old-data
+                                         :key #'car))))
+          (with-temp-buffer
+            (insert (format "%s" data))
+            (write-region (point-min) (point-max) file-path))))))
+
   (defun pdf-view-read-dumped (file-path)
     (when (file-readable-p file-path)
       (with-temp-buffer
         (insert-file-contents file-path)
         (when (> (length (buffer-string)) 0)
           (read (buffer-string))))))
+
+  (defun pdf-view-find-last-page ()
+    (let* ((pdf-file-name (pdf-view-buffer-file-name))
+           (file-path (concat user-emacs-directory
+                              pdf-view-dump-file-name))
+           (data (pdf-view-read-dumped file-path)))
+      (cdr (cl-assoc pdf-file-name data :test #'string=))))
+
   (defun pdf-view-restore-last-page ()
     (interactive)
-    (let* ((file-path (concat user-emacs-directory
-                              pdf-view-dump-file-name))
-           (data (pdf-view-read-dumped file-path))
-           (pdf-file-name (pdf-view-buffer-file-name))
-           (last-page (cdr (cl-assoc pdf-file-name data
-                                     :test #'string=))))
-      (when last-page
-        (pdf-view-goto-page last-page))))
-  (add-hook 'pdf-view-change-page-hook 'pdf-view-dump-last-page)
+    (let ((last-page (pdf-view-find-last-page)))
+      (if (and last-page (y-or-n-p "Restore previous page? "))
+          (pdf-view-goto-page last-page)
+        (error "Saved page data not found"))))
+
+  (defun pdf-view-restore-or-dump-page ()
+    (interactive)
+    (if (= 1 (pdf-view-current-page))
+        (pdf-view-restore-last-page)
+      (pdf-view-dump-last-page)))
+
+  (add-hook 'pdf-view-after-change-page-hook 'pdf-view-restore-or-dump-page)
   (evil-set-initial-state 'pdf-view-mode 'normal)
   (evil-define-key 'normal pdf-view-mode-map
     "g" 'pdf-view-goto-page
