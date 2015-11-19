@@ -37,6 +37,8 @@
 (use-package ess-site
   :mode (("\\.[rR]\\'" . R-mode))
   :init
+  (setq ess-history-file nil)
+  (setq inferior-R-args "--no-restore --no-save")
   (add-hook 'ess-mode-hook 'linum-mode)
   (add-hook 'ess-mode-hook 'smartparens-mode)
   (add-hook 'inferior-ess-mode-hook 'smartparens-mode)
