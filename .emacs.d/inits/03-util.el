@@ -75,6 +75,7 @@
   (setq popwin:popup-window-height 0.3)
   (add-hook 'after-init-hook #'(lambda () (popwin-mode t)))
   :config
+  (push '(twittering-mode :stick t) popwin:special-display-config)
   (push '("*R*" :tail t :noselect t :stick t) popwin:special-display-config)
   (push '(comint-mode :tail t :noselect t :stick t) popwin:special-display-config)
   (push '("*ensime-inferior-scala*" :tail t :noselect t :stick t) popwin:special-display-config)
