@@ -32,10 +32,15 @@
 
 (use-package scala-mode2
   :mode (("\\.scala\\'" . scala-mode)
-         ("\\.sbt\\'" . scala-mode)))
+         ("\\.sbt\\'" . scala-mode))
+  :init
+  (add-hook 'scala-mode-hook
+            #'(lambda ()
+                (setq-local helm-dash-docsets '("Scala")))))
 (use-package ensime
   :commands (ensime-scala-mode-hook)
   :init
+  (setq ensime-sbt-perform-on-save nil)
   (setq ensime-completion-style 'auto-complete)
   (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 
@@ -49,23 +54,35 @@
                             (ensime-print-type-at-point))))))
     (eldoc-mode 1))
   (add-hook 'ensime-mode-hook 'scala/enable-eldoc)
-
-  (defun my-ensime-ac-set-up ()
-    (setq ac-auto-start nil
-          ac-sources '(ac-source-ensime-completions
-                       ac-source-words-in-same-mode-buffers
-                       ac-source-words-in-buffer)
-          ac-use-comphist t
-          ac-dwim t))
   (add-hook 'ensime-inf-mode-hook 'auto-complete-mode)
-  (add-hook 'ensime-mode-hook 'my-ensime-ac-set-up)
-
+  (add-hook 'ensime-mode-hook
+            #'(lambda ()
+                (setq ac-auto-start nil
+                      ac-sources '(ac-source-ensime-completions
+                                   ac-source-words-in-same-mode-buffers
+                                   ac-source-words-in-buffer)
+                      ac-use-comphist t
+                      ac-dwim t)))
   ;; (add-hook 'ensime-inf-mode-hook 'smartparens-mode)
   :config
+  (defun ensime-inf-eval-region-with-paste (start end)
+    (interactive "r")
+    (ensime-inf-assert-running)
+    (comint-send-string ensime-inf-buffer-name ":paste\n")
+    (comint-send-region ensime-inf-buffer-name start end)
+    (comint-send-string ensime-inf-buffer-name "\n")
+    (with-current-buffer ensime-inf-buffer-name
+      (comint-send-eof)))
+
+  (defun ensime-inf-eval-buffer-with-paste ()
+    (interactive)
+    (ensime-inf-eval-region-with-paste (point-min) (point-max)))
+
   (evil-define-key 'normal ensime-mode-map
     ",e" 'ensime
     ",R" 'ensime-reload-open-files
     ",I" 'ensime-import-type-at-point
+    ",f" 'ensime-format-source
 
     ",rr" 'ensime-refactor-rename
     ",ro" 'ensime-refactor-organize-imports
@@ -73,28 +90,30 @@
     ",rm" 'ensime-refactor-extract-method
     ",ri" 'ensime-refactor-inline-local
 
-    ",cg" 'ensime-config-gen
     ",ht" 'ensime-inspect-type-at-point
     ",hp" 'ensime-inspect-package-at-point
-    ",hh" 'ensime-show-uses-of-symbol-at-point
+    ",hu" 'ensime-show-uses-of-symbol-at-point
+    ",hh" 'ensime-show-doc-for-symbol-at-point
 
     ",ss" 'ensime-sbt-switch
     ",sc" 'ensime-sbt-do-compile
     ",sC" 'ensime-sbt-do-clean
-    ",sg" 'ensime-sbt-do-gen-ensime
     ",st" 'ensime-sbt-do-test-dwim
     ",sp" 'ensime-sbt-do-package
     ",sr" 'ensime-sbt-do-run
 
     ",is" 'ensime-inf-switch
     ",il" 'ensime-inf-load-file
-    ",ieb" 'ensime-inf-eval-buffer
+    ",ieb" 'ensime-inf-eval-buffer-with-paste
     ",ied" 'ensime-inf-eval-definition
+
+    ",tc" 'ensime-typecheck-current-file
+    ",tC" 'ensime-typecheck-all
 
     ",gt" 'ensime-goto-test
     ",gi" 'ensime-goto-impl)
   (evil-define-key 'visual ensime-mode-map
-    ",ier" 'ensime-inf-eval-region)
+    ",ier" 'ensime-inf-eval-region-with-paste)
   (evil-define-key 'insert ensime-mode-map
     "." 'nil))
 

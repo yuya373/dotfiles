@@ -48,20 +48,3 @@
 
 (provide 'cocoa-emacs-config)
 ;;; cocoa-emacs-config.el ends here
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

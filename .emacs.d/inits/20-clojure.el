@@ -30,10 +30,10 @@
 (use-package clojure-mode
   :mode (("\\.clj\\'" . clojure-mode))
   :init
-  (defun my-clojure-mode-hook ()
-    (setq-local helm-dash-docsets '("Clojure"))
-    (cider-mode 1))
-  (add-hook 'clojure-mode-hook #'my-clojure-mode-hook)
+  (add-hook 'clojure-mode-hook
+            #'(lambda ()
+                (setq-local helm-dash-docsets '("Clojure"))
+                (cider-mode 1)))
   :config
   (put-clojure-indent 'do 0)
   (put-clojure-indent 'my-ns/do 1)
@@ -101,17 +101,10 @@
     ",tr" 'cider-test-rerun-tests
     ",tv" 'cider-test-show-report))
 
-;; can not connect with Melpa
-;; Error (el-get): while installing flycheck-clojure: http://melpa.org/packages/flycheck-20151014.1156.tar: Not found
 (el-get-bundle flycheck-clojure)
-(el-get-bundle clojure-emacs/squiggly-clojure
-  :name flycheck-clojure)
 (use-package flycheck-clojure
   :commands (flycheck-clojure-setup)
   :init
-  (add-to-list 'load-path
-               (locate-user-emacs-file
-                "el-get/flycheck-clojure/elisp/flycheck-clojure/"))
   (add-hook 'clojure-mode-hook 'flycheck-clojure-setup))
 
 (provide '20-clojure)

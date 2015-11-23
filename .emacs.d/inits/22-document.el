@@ -99,6 +99,8 @@
     "o" 'pdf-outline
     "b" 'pdf-view-position-to-register
     "B" 'pdf-view-jump-to-register
+    ",vd" 'pdf-view-dark-minor-mode
+    ",vm" 'pdf-view-midnight-minor-mode
     ",r" 'pdf-view-restore-last-page
     ",s" 'pdf-view-dump-last-page)
   (defun mcc-pdf-view-save ()

@@ -78,6 +78,7 @@
   (push '(twittering-mode :stick t) popwin:special-display-config)
   (push '("*R*" :tail t :noselect t :stick t) popwin:special-display-config)
   (push '(comint-mode :tail t :noselect t :stick t) popwin:special-display-config)
+  (push '(ensime-inspector-mode) popwin:special-display-config)
   (push '("*ensime-inferior-scala*" :tail t :noselect t :stick t) popwin:special-display-config)
   (push '(sbt-mode :tail t :noselect t) popwin:special-display-config)
   (push '("*ensime-update*" :tail t) popwin:special-display-config)
@@ -210,10 +211,17 @@
   (setq auto-save-list-file-prefix nil)
   (setq create-lockfiles nil)
   (setq auto-save-buffers-enhanced-interval 0.5)
-  (setq auto-save-buffers-enhanced-quiet-save-p t)
+  (setq auto-save-buffers-enhanced-quiet-save-p nil)
   :config
+  (defun auto-save-buffers-enhanced-save-buffers-if-normal-state ()
+    (if (eq evil-state 'normal)
+        (auto-save-buffers-enhanced-save-buffers)))
+  (defun auto-save-buffers-enhanced (flag)
+    (when flag
+      (run-with-idle-timer
+       auto-save-buffers-enhanced-interval t
+       'auto-save-buffers-enhanced-save-buffers-if-normal-state)))
   (auto-save-buffers-enhanced t))
-
 (use-package server
   :commands (server-start)
   :config
