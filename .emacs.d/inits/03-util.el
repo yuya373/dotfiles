@@ -211,7 +211,7 @@
   (setq auto-save-list-file-prefix nil)
   (setq create-lockfiles nil)
   (setq auto-save-buffers-enhanced-interval 0.5)
-  (setq auto-save-buffers-enhanced-quiet-save-p nil)
+  (setq auto-save-buffers-enhanced-quiet-save-p t)
   :config
   (defun auto-save-buffers-enhanced-save-buffers-if-normal-state ()
     (if (eq evil-state 'normal)
