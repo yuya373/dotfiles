@@ -24,6 +24,9 @@
 
 ;;; Code:
 
+;; (setq gc-cons-threshold (* 128 1024 1024))
+(setq gc-cons-threshold (* 256 1024 1024))
+
 (setq split-width-threshold 110)
 (menu-bar-mode -1)
 
@@ -35,7 +38,6 @@
 (global-set-key "\C-m" 'newline-and-indent)
 (setq large-file-warning-threshold nil)
 (fset 'yes-or-no-p 'y-or-n-p)
-(setq gc-cons-threshold (* 128 1024 1024))
 (set-language-environment "Japanese")
 (prefer-coding-system 'utf-8)
 (setq require-final-newline t)
