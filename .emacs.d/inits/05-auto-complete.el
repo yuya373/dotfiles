@@ -50,6 +50,8 @@
           ac-use-comphist t
           ac-fuzzy-enable t
           ac-use-menu-map t
+          ac-use-quick-help t
+          ac-quick-help-prefer-pos-tip nil
           ac-dwim t)
     (setq-default ac-sources '(ac-source-filename
                                ac-source-dictionary

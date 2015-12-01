@@ -29,9 +29,8 @@
   (el-get-bundle powerline)
   (el-get-bundle TheBB/spaceline)
   (require 'spaceline)
-  ;; (el-get-bundle pdf-tools)
-  ;; (require 'pdf-tools)
-  )
+  (el-get-bundle pdf-tools)
+  (require 'pdf-tools))
 
 (el-get-bundle material-theme)
 (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/material-theme")
