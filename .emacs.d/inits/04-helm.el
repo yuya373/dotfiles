@@ -237,6 +237,7 @@
   (define-key helm-map (kbd "C-k") 'helm-previous-source)
   (define-key helm-map (kbd "C-j") 'helm-next-source)
   (define-key helm-map (kbd "C-h") 'delete-backward-char)
+  (define-key helm-map (kbd "C-w") 'backward-kill-word)
   (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
 
   (define-key helm-comp-read-map (kbd "C-v") 'helm-ace-vsplit-ff)
@@ -264,6 +265,7 @@
   (define-key helm-read-file-map (kbd "C-o") 'helm-ace-ff)
   (define-key helm-read-file-map (kbd "C-r") 'helm-ff-run-rename-file)
   (define-key helm-read-file-map (kbd "C-h") 'delete-backward-char)
+  (define-key helm-read-file-map (kbd "C-w") 'backward-kill-word)
   (define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
 
   (define-key helm-generic-files-map (kbd "C-s") 'helm-ace-split-ff)
@@ -271,6 +273,7 @@
   (define-key helm-generic-files-map (kbd "C-o") 'helm-ace-ff)
   (define-key helm-generic-files-map (kbd "C-r") 'helm-ff-run-rename-file)
   (define-key helm-generic-files-map (kbd "C-h") 'delete-backward-char)
+  (define-key helm-generic-files-map (kbd "C-w") 'backward-kill-word)
   (define-key helm-generic-files-map (kbd "TAB") 'helm-execute-persistent-action)
 
   (with-eval-after-load "helm-ls-git"

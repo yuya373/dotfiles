@@ -33,7 +33,7 @@
   ;;                   (font-spec :family "Ricty for Powerline" :size 17)
   ;;                   nil)
   ;; (add-to-list 'default-frame-alist '(font . "fontset-ricty"))
-  (add-to-list 'default-frame-alist '(font . "Ricty for Powerline-17"))
+  (add-to-list 'default-frame-alist '(font . "Ricty for Powerline-15"))
   ;; 警告音の代わりに画面フラッシュ
   ;; (setq visible-bell t)
   ;; 警告音もフラッシュも全て無効(警告音が完全に鳴らなくなるので注意)
