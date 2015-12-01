@@ -27,6 +27,10 @@
 (eval-when-compile
   (require 'evil))
 
+(el-get-bundle pos-tip
+  :type github
+  :pkgname "pitkali/pos-tip"
+  :name pos-tip)
 (el-get-bundle auto-complete)
 (el-get-bundle ac-emoji)
 (use-package auto-complete-config
@@ -38,6 +42,7 @@
   ;;           'set-auto-complete-as-completion-at-point-function)
   (add-hook 'evil-mode-hook 'ac-config-default)
   :config
+  (use-package pos-tip)
   (use-package auto-complete
     :init
     (setq ac-auto-start 3
@@ -51,7 +56,7 @@
           ac-fuzzy-enable t
           ac-use-menu-map t
           ac-use-quick-help t
-          ac-quick-help-prefer-pos-tip nil
+          ac-quick-help-prefer-pos-tip t
           ac-dwim t)
     (setq-default ac-sources '(ac-source-filename
                                ac-source-dictionary
