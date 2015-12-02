@@ -151,5 +151,12 @@
   :init
   (add-hook 'adoc-mode-hook #'(lambda () (buffer-face-mode t))))
 
+(el-get-bundle csv-mode)
+(use-package csv-mode
+  :mode (("\\.csv\\'" . csv-mode))
+  :config
+  (evil-define-key 'normal csv-mode-map
+    ",a" 'csv-align-fields))
+
 (provide '22-document)
 ;;; 22-document.el ends here

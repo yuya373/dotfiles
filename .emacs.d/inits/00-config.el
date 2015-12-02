@@ -25,7 +25,7 @@
 ;;; Code:
 
 ;; (setq gc-cons-threshold (* 128 1024 1024))
-(setq gc-cons-threshold (* 256 1024 1024))
+(setq gc-cons-threshold (* 512 1024 1024))
 
 (setq split-width-threshold 110)
 (menu-bar-mode -1)
@@ -42,6 +42,7 @@
 (prefer-coding-system 'utf-8)
 (setq require-final-newline t)
 (setq ad-redefinition-action 'accept)
+(setq recentf-max-saved-items 1000)
 
 ;; tab
 (setq tab-always-indent t)

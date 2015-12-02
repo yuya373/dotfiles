@@ -26,7 +26,6 @@
 
 ;; markdown
 (el-get-bundle markdown-mode)
-(el-get-bundle markdown-toc)
 (use-package markdown-mode
   :mode (("\\.markdown\\'" . gfm-mode)
          ("\\.md\\'" . gfm-mode)

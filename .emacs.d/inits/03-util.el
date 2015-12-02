@@ -191,13 +191,6 @@
     ",p"  'restclient-jump-prev
     ",m"  'restclient-mark-current))
 
-(el-get-bundle csv-mode)
-(use-package csv-mode
-  :mode (("\\.csv\\'" . csv-mode))
-  :config
-  (evil-define-key 'normal csv-mode-map
-    ",a" 'csv-align-fields))
-
 ;; esup
 (el-get-bundle esup)
 (use-package esup
