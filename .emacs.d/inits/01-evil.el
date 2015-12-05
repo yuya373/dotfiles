@@ -231,91 +231,93 @@
   (use-package evil-org)
   ;; describe
   (evil-leader/set-key
-    "eha" 'helm-apropos
-    "ehf" 'describe-function
-    "ehv" 'describe-variable
-    "ehs" 'describe-syntax
-    "ehp" 'describe-package
-    "ehm" 'describe-mode
-    "ehb" 'describe-bindings
-    "di" 'helm-dash-install-docset
-    "dd" 'helm-dash
-    "da" 'helm-dash-at-point
-    "gf" 'magit-fetch-popup
-    "gb" 'magit-blame-popup
-    "gg" 'magit-status
-    "gu" 'git-gutter:update-all-windows
-    "gv" 'git-gutter:popup-hunk
-    "gn" 'git-gutter:next-hunk
-    "gp" 'git-gutter:previous-hunk
-    "gs" 'git-gutter:stage-hunk
-    "gr" 'git-gutter:revert-hunk
-    "gm" 'git-messenger:popup-message
-    "gt" 'git-timemachine
-    "ps" 'projectile-switch-project
-    "pk" 'projectile-invalidate-cache
-    "tG" 'projectile-regenerate-tags
-    "tt" 'helm-etags-select
-    "ta" 'google-translate-at-point
-    "tq" 'google-translate-query-translate
-    "tQ" 'google-translate-query-translate-reverse
-    "fd" 'helm-projectile-find-dir
-    "fp" 'helm-projectile-find-file
-    "fc" 'helm-projectile-find-file-dwim
+    ":"  'helm-M-x
+    "<SPC>" 'avy-goto-word-1
+    "aa" 'helm-do-ag
+    "ab" 'helm-do-ag-buffers
+    "ap" 'helm-projectile-ag
+    "bb" 'helm-buffers-list
+    "bb" 'helm-mini
+    "bf" 'popwin:find-file
     "bk" 'projectile-kill-buffers
-    "bw" 'projectile-switch-to-buffer-other-window
     "bl" 'popwin:popup-last-buffer
     "bp" 'popwin:pop-to-buffer
-    ;; "bn" 'switch-to-next-buffer
-    ;; "bp" 'switch-to-prev-buffer
+    "bw" 'projectile-switch-to-buffer-other-window
+    "da" 'helm-dash-at-point
+    "dd" 'helm-dash
+    "di" 'helm-dash-install-docset
+    "eha" 'helm-apropos
+    "ehb" 'describe-bindings
+    "ehf" 'describe-function
+    "ehm" 'describe-mode
+    "ehp" 'describe-package
+    "ehs" 'describe-syntax
+    "ehv" 'describe-variable
     "el" 'flycheck-list-errors
     "en" 'flycheck-next-error
     "ep" 'flycheck-previous-error
+    "fc" 'helm-find-file-at
+    "fc" 'helm-projectile-find-file-dwim
+    "fd" 'helm-projectile-find-dir
+    "ff" 'helm-find-files
+    "fp" 'helm-browse-project
+    "fp" 'helm-projectile-find-file
+    "fr" 'helm-recentf
+    "gb" 'magit-blame-popup
+    "gf" 'magit-fetch-popup
+    "gg" 'magit-status
+    "gm" 'git-messenger:popup-message
+    "gn" 'git-gutter:next-hunk
+    "gp" 'git-gutter:previous-hunk
+    "gr" 'git-gutter:revert-hunk
+    "gs" 'git-gutter:stage-hunk
+    "gt" 'git-timemachine
+    "gu" 'git-gutter:update-all-windows
+    "gv" 'git-gutter:popup-hunk
+    "hgc" 'helm-open-github-from-commit
+    "hgf" 'helm-open-github-from-file
+    "hgi" 'helm-open-github-from-issues
+    "hgp" 'helm-open-github-from-pull-requests
+    "hl" 'helm-resume
+    "ho" 'helm-semantic-or-imenu
+    "hp" 'helm-show-kill-ring
+    "ig" 'indent-guide-mode
+    "l" 'toggle-folding
+    "mc" 'slack-channel-select
+    "mg" 'slack-group-select
+    "mi" 'slack-im-select
+    "mk" 'slack-ws-close
+    "ml" 'open-junk-dir
+    "mm" 'slack-message-send
+    "mn" 'open-junk-file
+    "ms" 'slack-start
+    "muc" 'slack-channel-list-update
+    "mug" 'slack-group-list-update
+    "mui" 'slack-im-list-update
+    "pk" 'projectile-invalidate-cache
+    "ps" 'projectile-switch-project
+    "qR" 'quickrun-region
+    "qa" 'quickrun-with-arg
+    "qr" 'quickrun
+    "qs" 'quickrun-shell
+    "r" 'create-restclient-buffer
     "s" 'shell-pop
-    "bf" 'popwin:find-file
-    "<SPC>" 'avy-goto-word-1
+    "tG" 'projectile-regenerate-tags
+    "tQ" 'google-translate-query-translate-reverse
+    "ta" 'google-translate-at-point
+    "tq" 'google-translate-query-translate
+    "tt" 'helm-etags-select
+    "tw" 'twit
+    "uv" 'undo-tree-visualize
     "wb" 'balance-windows
+    "wc" 'whitespace-cleanup
     "wg" 'golden-ratio-mode
     "wm" 'toggle-window-maximized
     "wt" 'toggle-frame-alpha
     "ww" 'ace-window
-    "wc" 'whitespace-cleanup
-    "l" 'toggle-folding
-    "uv" 'undo-tree-visualize
-    "ap" 'helm-projectile-ag
-    "aa" 'helm-do-ag
-    "ab" 'helm-do-ag-buffers
-    ":"  'helm-M-x
-    "bb" 'helm-buffers-list
-    "fc" 'helm-find-file-at
-    "fr" 'helm-recentf
-    "fp" 'helm-browse-project
-    "ff" 'helm-find-files
-    "hl" 'helm-resume
-    "bb" 'helm-mini
-    "ho" 'helm-semantic-or-imenu
-    "hp" 'helm-show-kill-ring
-    "ig" 'indent-guide-mode
-    "hgf" 'helm-open-github-from-file
-    "hgc" 'helm-open-github-from-commit
-    "hgi" 'helm-open-github-from-issues
-    "hgp" 'helm-open-github-from-pull-requests
-    "r" 'create-restclient-buffer
-    "ml" 'open-junk-dir
-    "mn" 'open-junk-file
-    "ms" 'slack-start
-    "mk" 'slack-ws-close
-    "mm" 'slack-message-send
-    "mg" 'slack-group-select
-    "mi" 'slack-im-select
-    "mc" 'slack-channel-select
-    "mug" 'slack-group-list-update
-    "mui" 'slack-im-list-update
-    "muc" 'slack-channel-list-update
-    "qr" 'quickrun
-    "qR" 'quickrun-region
-    "qa" 'quickrun-with-arg
-    "qs" 'quickrun-shell))
+    ;; "bn" 'switch-to-next-buffer
+    ;; "bp" 'switch-to-prev-buffer
+    ))
 
 (provide '01-evil)
 ;;; 01-evil.el ends here
