@@ -94,6 +94,7 @@
   (push '(cider-repl-mode :tail t :stick t) popwin:special-display-config)
   (push '("*Backtrace*") popwin:special-display-config)
   (push '("*Messages*") popwin:special-display-config)
+  (push '(slack-edit-message-mode) popwin:special-display-config)
   (push '(slack-mode :height 0.25 :noselect t :stick t :tail t :regexp t)
         popwin:special-display-config)
   (push '("*Bundler*" :noselect t) popwin:special-display-config)
