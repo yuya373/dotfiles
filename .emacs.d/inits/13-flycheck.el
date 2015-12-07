@@ -29,10 +29,10 @@
 
 (use-package flycheck
   :diminish flycheck-mode
-  :commands (global-flycheck-mode)
+  :commands (flycheck-mode)
   :init
   (setq flycheck-emacs-lisp-load-path 'inherit)
-  (add-hook 'after-init-hook 'global-flycheck-mode))
+  (add-hook 'prog-mode-hook #'(lambda () (flycheck-mode t))))
 
 (use-package flycheck-tip
   :commands (flycheck-tip-display-current-line-error-message)
