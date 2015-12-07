@@ -75,6 +75,7 @@
   (setq popwin:popup-window-height 0.3)
   (add-hook 'after-init-hook #'(lambda () (popwin-mode t)))
   :config
+  (push '("^\\*git-gutter:.*\\*$") popwin:special-display-config)
   (push '(twittering-mode :stick t) popwin:special-display-config)
   (push '("*R*" :tail t :noselect t :stick t) popwin:special-display-config)
   (push '(comint-mode :tail t :noselect t :stick t) popwin:special-display-config)
@@ -84,8 +85,7 @@
   (push '("*ensime-update*" :tail t) popwin:special-display-config)
   (push '("*HTTP Response*" :noselect t :stick t) popwin:special-display-config)
   (push '("*quickrun*" :tail t :stick t) popwin:special-display-config)
-  (push '(inferior-python-mode :tail t :stick t)
-        popwin:special-display-config)
+  (push '(inferior-python-mode :tail t :stick t) popwin:special-display-config)
   (push '(cider-inspector-mode) popwin:special-display-config)
   (push '(cider-popup-buffer-mode) popwin:special-display-config)
   (push '("*cider grimoire*") popwin:special-display-config)
