@@ -226,6 +226,22 @@
     (interactive)
     (let ((junk-dir "~/Dropbox/junk/"))
       (helm-find-files-1 (expand-file-name junk-dir))))
+  (defun timer (time msg &rest moremsg)
+    (interactive
+     (list (read-string "いつ? ")
+           (read-string "メッセージ: ")))
+    (run-at-time
+     time nil
+     #'(lambda (arg)
+         (message "＼時間です／")
+         (ding)
+         (sleep-for 1)
+         (animate-sequence arg 0)
+         (goto-char (point-min))
+         (insert (format-time-string "%H:%M "))
+         (insert-button "[閉じる]" 'action #'(lambda (_arg) (kill-buffer))))
+     (cons msg moremsg))
+    (message "タイマー開始しました"))
   :config
   (evil-leader/set-leader "<SPC>")
   (use-package evil-org)
@@ -306,6 +322,7 @@
     "tQ" 'google-translate-query-translate-reverse
     "ta" 'google-translate-at-point
     "tq" 'google-translate-query-translate
+    "ts" 'timer
     "tt" 'helm-etags-select
     "tw" 'twit
     "uv" 'undo-tree-visualize

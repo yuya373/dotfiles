@@ -27,8 +27,65 @@
 (eval-when-compile
   (require 'evil))
 
+(el-get-bundle company)
 (el-get-bundle scala-mode2)
 (el-get-bundle ensime)
+
+(use-package company
+  :commands (company-mode)
+  :init
+  (setq company-idle-delay 0) ; デフォルトは0.5
+  (setq company-minimum-prefix-length 2) ; デフォルトは4
+  (setq company-selection-wrap-around t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
+  (setq company-auto-complete nil)
+  :config
+  (defun company--insert-candidate2 (candidate)
+    (when (> (length candidate) 0)
+      (setq candidate (substring-no-properties candidate))
+      (if (eq (company-call-backend 'ignore-case) 'keep-prefix)
+          (insert (company-strip-prefix candidate))
+        (if (equal company-prefix candidate)
+            (company-select-next)
+          (delete-region (- (point) (length company-prefix)) (point))
+          (insert candidate))
+        )))
+
+  (defun company-complete-common2 ()
+    (interactive)
+    (when (company-manual-begin)
+      (if (and (not (cdr company-candidates))
+               (equal company-common (car company-candidates)))
+          (company-complete-selection)
+        (company--insert-candidate2 company-common))))
+
+  (define-key company-active-map [tab] 'company-complete-common2)
+  (define-key company-active-map [backtab] 'company-select-previous) ; おまけ
+
+  (define-key company-active-map (kbd "C-w") 'backward-kill-word)
+  (define-key company-active-map (kbd "C-h") 'delete-backward-char)
+
+  ;; C-n, C-pで補完候補を次/前の候補を選択
+  (define-key company-active-map (kbd "C-n") 'company-select-next)
+  (define-key company-active-map (kbd "C-p") 'company-select-previous)
+  (define-key company-search-map (kbd "C-n") 'company-select-next)
+  (define-key company-search-map (kbd "C-p") 'company-select-previous)
+
+  ;; 各種メジャーモードでも C-M-iで company-modeの補完を使う
+  (define-key emacs-lisp-mode-map (kbd "C-M-i") 'company-complete)
+  (set-face-attribute 'company-tooltip nil
+                      :foreground "black" :background "lightgrey")
+  (set-face-attribute 'company-tooltip-common nil
+                      :foreground "black" :background "lightgrey")
+  (set-face-attribute 'company-tooltip-common-selection nil
+                      :foreground "white" :background "steelblue")
+  (set-face-attribute 'company-tooltip-selection nil
+                      :foreground "black" :background "steelblue")
+  (set-face-attribute 'company-preview-common nil
+                      :background nil :foreground "lightgrey" :underline t)
+  (set-face-attribute 'company-scrollbar-fg nil
+                      :background "orange")
+  (set-face-attribute 'company-scrollbar-bg nil
+                      :background "gray40"))
 
 (use-package scala-mode2
   :mode (("\\.scala\\'" . scala-mode)
@@ -41,7 +98,8 @@
   :commands (ensime-scala-mode-hook)
   :init
   (setq ensime-sbt-perform-on-save nil)
-  (setq ensime-completion-style 'auto-complete)
+  ;; (setq ensime-completion-style 'auto-complete)
+  (setq ensime-completion-style 'company)
   (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 
   (defun scala/enable-eldoc ()
@@ -57,12 +115,16 @@
   (add-hook 'ensime-inf-mode-hook 'auto-complete-mode)
   (add-hook 'ensime-mode-hook
             #'(lambda ()
-                (setq ac-auto-start nil
-                      ac-sources '(ac-source-ensime-completions
-                                   ac-source-words-in-same-mode-buffers
-                                   ac-source-words-in-buffer)
-                      ac-use-comphist t
-                      ac-dwim t)))
+                ;; (setq ac-auto-start nil
+                ;;       ac-sources '(ac-source-ensime-completions
+                ;;                    ac-source-words-in-same-mode-buffers
+                ;;                    ac-source-words-in-buffer)
+                ;;       ac-use-comphist t
+                ;;       ac-dwim t)
+                (auto-complete-mode -1)
+                (company-mode)
+                (kill-local-variable 'company-backends)
+                (add-to-list 'company-backends 'ensime-company)))
   ;; (add-hook 'ensime-inf-mode-hook 'smartparens-mode)
   :config
   (defun ensime-inf-eval-region-with-paste (start end)
