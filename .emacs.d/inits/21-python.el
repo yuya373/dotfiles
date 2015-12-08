@@ -24,6 +24,9 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (require 'evil))
+
 (use-package python-mode
   :mode (("\\.py\\'" . python-mode))
   :init
