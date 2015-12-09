@@ -1,5 +1,6 @@
 (setq el-get-lock-package-versions
-      '((circe :checksum "40e7db28672fbe3aff68bd765f063ab18da2ba95")
+      '((alert :checksum "dfb003476aeb26d08782c17257f3a81934bcf6ce")
+        (circe :checksum "40e7db28672fbe3aff68bd765f063ab18da2ba95")
         (pos-tip :checksum "051e08fec5cf30b7574bdf439f79fef7d42d689d")
         (ddskk :checksum "2120520aa0caf31b0b5bc8626fc3cb75dc342509")
         (adoc-mode :checksum "b6d54d9007b97f2553c238e0c36586079b666f4f")
