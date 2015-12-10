@@ -113,6 +113,7 @@
     (eldoc-mode 1))
   (add-hook 'ensime-mode-hook 'scala/enable-eldoc)
   (add-hook 'ensime-inf-mode-hook 'auto-complete-mode)
+  (add-hook 'ensime-inf-mode-hook 'smartparens-mode)
   (add-hook 'ensime-mode-hook
             #'(lambda ()
                 ;; (setq ac-auto-start nil
@@ -125,7 +126,6 @@
                 (company-mode)
                 (kill-local-variable 'company-backends)
                 (add-to-list 'company-backends 'ensime-company)))
-  ;; (add-hook 'ensime-inf-mode-hook 'smartparens-mode)
   :config
   (defun ensime-inf-eval-region-with-paste (start end)
     (interactive "r")

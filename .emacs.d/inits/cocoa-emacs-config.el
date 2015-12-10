@@ -25,7 +25,14 @@
 ;;; Code:
 (when window-system
   ;; Ricty フォントの利用
+(let ((font-size 15))
+  (create-fontset-from-ascii-font
+   (format "Ricty-%d:weight=normal:slant=normal" font-size) nil "ricty")
 
+  (set-fontset-font "fontset-ricty" 'unicode
+                    (font-spec :family "Ricty" :size font-size) nil 'append))
+
+(add-to-list 'default-frame-alist '(font . "fontset-ricty"))
   ;; (create-fontset-from-ascii-font "Ricty for Powerline-17:weight=normal:slant=normal" nil "ricty")
   ;; (create-fontset-from-ascii-font "Ricty for Powerline" nil "ricty")
   ;; (set-fontset-font "fontset-ricty"
@@ -33,7 +40,7 @@
   ;;                   (font-spec :family "Ricty for Powerline" :size 17)
   ;;                   nil)
   ;; (add-to-list 'default-frame-alist '(font . "fontset-ricty"))
-  (add-to-list 'default-frame-alist '(font . "Ricty for Powerline-15"))
+  ;; (add-to-list 'default-frame-alist '(font . "Ricty for Powerline-15"))
   ;; 警告音の代わりに画面フラッシュ
   ;; (setq visible-bell t)
   ;; 警告音もフラッシュも全て無効(警告音が完全に鳴らなくなるので注意)

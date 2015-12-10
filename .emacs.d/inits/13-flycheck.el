@@ -25,7 +25,9 @@
 ;;; Code:
 
 (el-get-bundle flycheck)
-(el-get-bundle flycheck-tip)
+(el-get-bundle flycheck-pos-tip)
+(el-get-bundle purcell/flycheck-package
+  :name flycheck-package)
 
 (use-package flycheck
   :diminish flycheck-mode
@@ -34,11 +36,19 @@
   (setq flycheck-emacs-lisp-load-path 'inherit)
   (add-hook 'prog-mode-hook #'(lambda () (flycheck-mode t))))
 
-(use-package flycheck-tip
-  :commands (flycheck-tip-display-current-line-error-message)
+(use-package flycheck-pos-tip
+  :commands (flycheck-pos-tip-mode)
   :init
-  (setq flycheck-tip-avoid-show-func nil)
-  (setq flycheck-display-errors-function #'flycheck-tip-display-current-line-error-message))
+  (add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode))
+
+(use-package flycheck-package
+  :commands (flycheck-package-setup))
+
+;; (use-package flycheck-tip
+;;   :commands (flycheck-tip-display-current-line-error-message)
+;;   :init
+;;   (setq flycheck-tip-avoid-show-func nil)
+;;   (setq flycheck-display-errors-function #'flycheck-tip-display-current-line-error-message))
 
 (provide '13-flycheck)
 ;;; 13-flycheck.el ends here
