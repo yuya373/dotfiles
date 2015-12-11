@@ -25,24 +25,13 @@
 ;;; Code:
 
 (eval-when-compile
-  (el-get-bundle auto-complete)
-  (require 'evil)
-  (require 'auto-complete))
+  (require 'evil))
 
 ;; shell
 (use-package eshell
   :commands (eshell)
   :config
-  (use-package pcomplete)
-  (ac-define-source pcomplete
-    '((candidates . pcomplete-completions)))
   (defun my-eshell-mode-hook ()
-    (setq ac-sources
-          '(ac-source-pcomplete
-            ac-source-filename
-            ac-source-files-in-current-dir
-            ac-source-words-in-buffer
-            ac-source-dictionary))
     (evil-define-key 'insert eshell-mode-map (kbd "C-p") 'helm-eshell-history))
   (add-hook 'eshell-mode-hook 'my-eshell-mode-hook)
   (setq eshell-highlight-prompt t)

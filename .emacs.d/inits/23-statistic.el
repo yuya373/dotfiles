@@ -42,8 +42,8 @@
   (add-hook 'ess-mode-hook 'linum-mode)
   (add-hook 'ess-mode-hook 'smartparens-mode)
   (add-hook 'inferior-ess-mode-hook 'smartparens-mode)
-  (setq ess-use-auto-complete t
-        ess-use-eldoc t
+  (setq ess-use-eldoc t
+        ess-use-company t
         ess-use-ido nil
         ess-ask-for-ess-directory nil)
   :config

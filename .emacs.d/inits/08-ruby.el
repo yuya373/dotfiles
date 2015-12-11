@@ -57,10 +57,11 @@
   :init
   (add-hook 'enh-ruby-mode-hook 'robe-mode)
   :config
+  (with-eval-after-load "company"
+    (add-to-list 'company-backends 'company-robe))
   (defun enable-robe-server ()
     (interactive)
-    (robe-start)
-    (ac-robe-setup))
+    (robe-start))
   (evil-define-key 'normal robe-mode-map (kbd ",rs") 'enable-robe-server)
   (evil-define-key 'normal robe-mode-map (kbd ",rh") 'robe-doc)
   (evil-define-key 'normal robe-mode-map (kbd ",ra") 'robe-ask)
@@ -77,7 +78,6 @@
   (setq enh-ruby-deep-indent-paren nil
         enh-ruby-hanging-paren-deep-indent-level 2)
   (setq enh-ruby-add-encoding-comment-on-save nil)
-  (add-hook 'enh-ruby-mode-hook 'auto-complete-mode)
   (add-hook 'enh-ruby-mode-hook 'smartparens-mode)
   :config
   (use-package bundler

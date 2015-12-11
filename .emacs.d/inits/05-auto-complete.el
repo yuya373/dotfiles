@@ -27,58 +27,92 @@
 (eval-when-compile
   (require 'evil))
 
+(el-get-bundle company)
+(el-get-bundle company-quickhelp)
+(el-get-bundle company-emoji)
+
+(use-package company-quickhelp
+  :commands (company-quickhelp-mode)
+  :init
+  (add-hook 'company-mode-hook '(lambda () (company-quickhelp-mode t))))
+
+(use-package company
+  :commands (company-mode global-company-mode)
+  :init
+  (setq company-idle-delay 0) ; デフォルトは0.5
+  (setq company-minimum-prefix-length 2) ; デフォルトは4
+  (setq company-selection-wrap-around t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
+  (setq company-auto-complete t)
+  (setq company-tooltip-align-annotations t)
+  (setq company-transformers '(company-sort-by-occurrence company-sort-by-backend-importance))
+  (add-hook 'after-init-hook 'global-company-mode)
+  :config
+  (use-package company-emoji
+    :config
+    (add-to-list 'company-backends 'company-emoji))
+
+  (defun company--insert-candidate2 (candidate)
+    (when (> (length candidate) 0)
+      (setq candidate (substring-no-properties candidate))
+      (if (eq (company-call-backend 'ignore-case) 'keep-prefix)
+          (insert (company-strip-prefix candidate))
+        (if (equal company-prefix candidate)
+            (company-select-next)
+          (delete-region (- (point) (length company-prefix)) (point))
+          (insert candidate))
+        )))
+
+  (defun company-complete-common2 ()
+    (interactive)
+    (when (company-manual-begin)
+      (if (and (not (cdr company-candidates))
+               (equal company-common (car company-candidates)))
+          (company-complete-selection)
+        (company--insert-candidate2 company-common))))
+
+  (evil-define-key 'insert company-active-map
+    (kbd "C-n") 'company-select-next
+    (kbd "C-p") 'company-select-previous)
+  (evil-define-key 'insert company-search-map
+    (kbd "C-n") 'company-select-next
+    (kbd "C-p") 'company-select-previous)
+
+  (define-key company-active-map [tab] 'company-complete-common2)
+  (define-key company-active-map [backtab] 'company-select-previous) ; おまけ
+
+  (define-key company-active-map (kbd "C-w") 'backward-kill-word)
+  (define-key company-active-map (kbd "C-h") 'delete-backward-char)
+
+  ;; C-n, C-pで補完候補を次/前の候補を選択
+  (define-key company-active-map (kbd "C-n") 'company-select-next)
+  (define-key company-active-map (kbd "C-p") 'company-select-previous)
+  (define-key company-search-map (kbd "C-n") 'company-select-next)
+  (define-key company-search-map (kbd "C-p") 'company-select-previous)
+
+  ;; 各種メジャーモードでも C-M-iで company-modeの補完を使う
+  (define-key emacs-lisp-mode-map (kbd "C-M-i") 'company-complete)
+  (set-face-attribute 'company-tooltip nil
+                      :foreground "black" :background "lightgrey")
+  (set-face-attribute 'company-tooltip-common nil
+                      :foreground "black" :background "lightgrey")
+  (set-face-attribute 'company-tooltip-common-selection nil
+                      :foreground "white" :background "steelblue")
+  (set-face-attribute 'company-tooltip-selection nil
+                      :foreground "black" :background "steelblue")
+  (set-face-attribute 'company-preview-common nil
+                      :background nil :foreground "lightgrey" :underline t)
+  (set-face-attribute 'company-scrollbar-fg nil
+                      :background "orange")
+  (set-face-attribute 'company-scrollbar-bg nil
+                      :background "gray40"))
+
 (el-get-bundle pos-tip
   :type github
   :pkgname "pitkali/pos-tip"
   :name pos-tip)
-(el-get-bundle auto-complete)
-(el-get-bundle ac-emoji)
-(use-package auto-complete-config
-  :commands (ac-config-default)
-  :init
-  ;; (defun set-auto-complete-as-completion-at-point-function ()
-  ;;   (setq completion-at-point-functions '(auto-complete)))
-  ;; (add-hook 'auto-complete-mode-hook
-  ;;           'set-auto-complete-as-completion-at-point-function)
-  (add-hook 'evil-mode-hook 'ac-config-default)
-  :config
-  (use-package pos-tip)
-  (use-package auto-complete
-    :init
-    (setq ac-auto-start 3
-          ac-delay 0.2
-          ac-auto-show-menu t
-          ac-max-width 0.4
-          ac-quick-help-delay 0.5
-          ac-quick-help-prefer-pos-tip nil
-          ac-use-fuzzy t
-          ac-use-comphist t
-          ac-fuzzy-enable t
-          ac-use-menu-map t
-          ac-use-quick-help t
-          ac-quick-help-prefer-pos-tip t
-          ac-dwim t)
-    (setq-default ac-sources '(ac-source-filename
-                               ac-source-dictionary
-                               ac-source-words-in-same-mode-buffers))
-    (add-hook 'emacs-lisp-mode-hook (lambda () (add-to-list 'ac-sources 'ac-source-symbols)))
-    :config
-    (setq ac-modes (append ac-modes '(git-commit-mode
-                                      gfm-mode
-                                      markdown-mode
-                                      eshell-mode
-                                      enh-ruby-mode)))
-    (evil-define-key 'insert ac-menu-map (kbd "C-n") 'ac-next)
-    (evil-define-key 'insert ac-menu-map (kbd "C-p") 'ac-previous)
-    (evil-define-key 'insert ac-menu-map (kbd "<S-tab>") 'ac-previous)
-    (ac-set-trigger-key "TAB")
-    (use-package ac-emoji
-      :commands (ac-emoji-setup)
-      :init
-      (add-hook 'slack-mode-hook 'ac-emoji-setup)
-      (add-hook 'git-commit-mode-hook 'ac-emoji-setup)
-      (add-hook 'gfm-mode-hook 'ac-emoji-setup)
-      (add-hook 'markdown-mode-hook 'ac-emoji-setup))))
+
+;; (use-package pos-tip
+;;   :commands (pos-tip-show))
 
 (provide '05-auto-complete)
 ;;; 05-auto-complete.el ends here

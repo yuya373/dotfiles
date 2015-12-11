@@ -1,5 +1,9 @@
 (setq el-get-lock-package-versions
-      '((el-get-lock :checksum "046ffb568c6964ea30813338234aea2d60a5c632")
+      '((company-emoji :checksum "c3665bf150c43a1c9830e817cf6de950be8c0fde")
+        (company-quickhelp :checksum "05e0ee9b854f90ff2b007b3e19446a02513f43dc")
+        (auto-compile :checksum "90eddfb63bd2b58be8a3fe9400b67ea45f67bb29")
+        (packed :checksum "9d77e39c9df29c6224302cb7973b2de7e05f8bd7")
+        (el-get-lock :checksum "046ffb568c6964ea30813338234aea2d60a5c632")
         (alert :checksum "dfb003476aeb26d08782c17257f3a81934bcf6ce")
         (circe :checksum "40e7db28672fbe3aff68bd765f063ab18da2ba95")
         (pos-tip :checksum "051e08fec5cf30b7574bdf439f79fef7d42d689d")

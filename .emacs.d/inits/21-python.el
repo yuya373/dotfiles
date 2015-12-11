@@ -36,7 +36,6 @@
                 (setq python-indent-offset 4)))
   (add-hook 'python-mode-hook #'set-python-helm-dash)
   (add-hook 'inferior-python-mode-hook #'(lambda ()
-                                           (auto-complete-mode)
                                            (smartparens-mode)
                                            (setq-local helm-dash-docsets '("Python 2")))))
 (el-get-bundle jedi)

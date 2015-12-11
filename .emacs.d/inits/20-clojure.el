@@ -45,20 +45,8 @@
   :commands (cider-mode)
   :init
   (setq cider-stacktrace-fill-column 80)
-  (add-hook 'cider-mode-hook #'(lambda () (eldoc-mode 1))))
-
-(el-get-bundle ac-cider)
-(use-package ac-cider
-  :commands (ac-cider-setup ac-flyspell-workaround)
-  :init
-  (add-hook 'cider-mode-hook 'ac-flyspell-workaround)
-  (add-hook 'cider-mode-hook 'ac-cider-setup)
-  (add-hook 'cider-repl-mode-hook 'ac-cider-setup)
+  (add-hook 'cider-mode-hook #'(lambda () (eldoc-mode 1)))
   :config
-  (eval-after-load "auto-complete"
-    '(progn
-       (add-to-list 'ac-modes 'cider-mode)
-       (add-to-list 'ac-modes 'cider-repl-mode)))
   (evil-define-key 'normal cider-stacktrace-mode-map
     "q" 'cider-popup-buffer-quit-function)
   (evil-define-key 'normal cider-inspector-mode-map
