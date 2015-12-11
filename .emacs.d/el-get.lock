@@ -1,5 +1,6 @@
 (setq el-get-lock-package-versions
-      '((alert :checksum "dfb003476aeb26d08782c17257f3a81934bcf6ce")
+      '((el-get-lock :checksum "046ffb568c6964ea30813338234aea2d60a5c632")
+        (alert :checksum "dfb003476aeb26d08782c17257f3a81934bcf6ce")
         (circe :checksum "40e7db28672fbe3aff68bd765f063ab18da2ba95")
         (pos-tip :checksum "051e08fec5cf30b7574bdf439f79fef7d42d689d")
         (ddskk :checksum "2120520aa0caf31b0b5bc8626fc3cb75dc342509")
@@ -31,7 +32,7 @@
         (spinner :checksum "8d8c459d7757cf5774f11be9147d7a54f5f9bbd7")
         (seq :checksum "87881cebde77f9ccbe9b53ba08a7e38ae8c290f1")
         (clojure-mode :checksum "afca061844753feca7f8639a898702875903c9f7")
-        (ensime :checksum "3553b5e5da85a72fb7890281cbb40dae0aaf71c7")
+        (ensime :checksum "dc203a1fd52e05dee4462eb7b9cfb2ea28b833ca")
         (yasnippet :checksum "1cf723a408800b489a5f74bd14219a74b665a7f3")
         (sbt-mode :checksum "0ead2dc784a7b1dee107eda6a51d112dad46ff4d")
         (scala-mode2 :checksum "360b5ba27aeca69e72109515b6c40b2f7972cc8f")
