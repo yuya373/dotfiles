@@ -81,7 +81,7 @@
   (push '(comint-mode :tail t :noselect t :stick t) popwin:special-display-config)
   (push '(ensime-inspector-mode) popwin:special-display-config)
   (push '("*ensime-inferior-scala*" :tail t :noselect t :stick t) popwin:special-display-config)
-  (push '(sbt-mode :tail t :noselect t) popwin:special-display-config)
+  (push '(sbt-mode :stick t :tail t :noselect t) popwin:special-display-config)
   (push '("*ensime-update*" :tail t) popwin:special-display-config)
   (push '("*HTTP Response*" :noselect t :stick t) popwin:special-display-config)
   (push '("*quickrun*" :tail t :stick t) popwin:special-display-config)

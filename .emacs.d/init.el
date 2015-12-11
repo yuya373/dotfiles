@@ -9,6 +9,8 @@
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
 ;; (package-initialize)
+(setq gc-cons-threshold (* 128 1024 1024))
+(setq garbage-collection-messages t)
 
 (when load-file-name
   (setq user-emacs-directory (file-name-directory load-file-name)))

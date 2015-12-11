@@ -24,10 +24,6 @@
 
 ;;; Code:
 
-;; (setq gc-cons-threshold (* 128 1024 1024))
-(setq gc-cons-threshold (* 512 1024 1024))
-(setq garbage-collection-messages t)
-
 (setq split-width-threshold 110)
 (menu-bar-mode -1)
 

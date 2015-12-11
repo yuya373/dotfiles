@@ -43,7 +43,6 @@
     (interactive)
     (let ((current-page (pdf-view-current-page)))
       (when (and current-page (< 1 current-page))
-        (message "pdf-view-dump-last-page: %s" current-page)
         (let* ((file-path (concat user-emacs-directory
                                   pdf-view-dump-file-name))
                (pdf-file-name (pdf-view-buffer-file-name))
@@ -115,10 +114,7 @@
   (defun mcc-pdf-view-restore ()
     (cl-loop for win in (window-list)
              do (with-selected-window win
-                  (message "%s" major-mode)
                   (when (eql major-mode 'pdf-view-mode)
-                    (message "restore page: %s"
-                             pdf-view-last-visited-page)
                     (setf (pdf-view-current-page win)
                           pdf-view-last-visited-page)
                     (setq pdf-view-display-size

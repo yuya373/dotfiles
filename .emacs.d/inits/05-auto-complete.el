@@ -42,7 +42,7 @@
   (setq company-idle-delay 0) ; デフォルトは0.5
   (setq company-minimum-prefix-length 2) ; デフォルトは4
   (setq company-selection-wrap-around t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
-  (setq company-auto-complete t)
+  (setq company-auto-complete nil)
   (setq company-tooltip-align-annotations t)
   (setq company-transformers '(company-sort-by-occurrence company-sort-by-backend-importance))
   (add-hook 'after-init-hook 'global-company-mode)
@@ -70,12 +70,13 @@
           (company-complete-selection)
         (company--insert-candidate2 company-common))))
 
-  (evil-define-key 'insert company-active-map
-    (kbd "C-n") 'company-select-next
-    (kbd "C-p") 'company-select-previous)
-  (evil-define-key 'insert company-search-map
-    (kbd "C-n") 'company-select-next
-    (kbd "C-p") 'company-select-previous)
+  (with-eval-after-load "evil"
+    (evil-define-key 'insert company-active-map
+      (kbd "C-n") 'company-select-next
+      (kbd "C-p") 'company-select-previous)
+    (evil-define-key 'insert company-search-map
+      (kbd "C-n") 'company-select-next
+      (kbd "C-p") 'company-select-previous))
 
   (define-key company-active-map [tab] 'company-complete-common2)
   (define-key company-active-map [backtab] 'company-select-previous) ; おまけ

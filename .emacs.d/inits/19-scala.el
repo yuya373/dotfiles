@@ -54,8 +54,8 @@
                         (or (and err (not (string= err "")) err)
                             (ensime-print-type-at-point))))))
     (eldoc-mode 1))
-  (add-hook 'ensime-mode-hook 'scala/enable-eldoc)
-  (add-hook 'ensime-inf-mode-hook 'company-mode)
+  ;; (add-hook 'ensime-mode-hook 'scala/enable-eldoc)
+  (add-hook 'ensime-inf-mode-hook '(lambda () (company-mode -1)))
   (add-hook 'ensime-inf-mode-hook 'smartparens-mode)
   (add-hook 'ensime-mode-hook
             #'(lambda ()
@@ -69,6 +69,7 @@
     (comint-send-string ensime-inf-buffer-name ":paste\n")
     (comint-send-region ensime-inf-buffer-name start end)
     (comint-send-string ensime-inf-buffer-name "\n")
+    (sleep-for 0.2)
     (with-current-buffer ensime-inf-buffer-name
       (comint-send-eof)))
 
