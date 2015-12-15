@@ -238,5 +238,11 @@
   (use-package skk-cursor)
   (use-package skk-study))
 
+(el-get-bundle emojify)
+(use-package emojify
+  :commands (global-emojify-mode)
+  :init
+  (add-hook 'after-init-hook 'global-emojify-mode))
+
 (provide '03-util)
 ;;; 03-util.el ends here

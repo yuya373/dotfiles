@@ -36,6 +36,17 @@
   :init
   (add-hook 'company-mode-hook '(lambda () (company-quickhelp-mode t))))
 
+(use-package company-emoji
+  :commands (company-emoji)
+  :init
+  (defun add-company-emoji ()
+    (make-local-variable 'company-backends)
+    (add-to-list 'company-backends 'company-emoji))
+  ;; (add-hook 'gfm-mode-hook #'add-company-emoji)
+  (add-hook 'slack-mode-hook #'add-company-emoji)
+  (add-hook 'git-commit-mode-hook #'add-company-emoji)
+  (add-hook 'markdown-mode-hook #'add-company-emoji))
+
 (use-package company
   :commands (company-mode global-company-mode)
   :init
@@ -47,10 +58,6 @@
   (setq company-transformers '(company-sort-by-occurrence company-sort-by-backend-importance))
   (add-hook 'after-init-hook 'global-company-mode)
   :config
-  (use-package company-emoji
-    :config
-    (add-to-list 'company-backends 'company-emoji))
-
   (defun company--insert-candidate2 (candidate)
     (when (> (length candidate) 0)
       (setq candidate (substring-no-properties candidate))
