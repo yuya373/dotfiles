@@ -40,7 +40,9 @@
 
 (el-get-bundle json-mode)
 (use-package json-mode
-  :mode (("\\.json\\'" . json-mode)))
+  :mode (("\\.json\\'" . json-mode))
+  :init
+  (setq json-reformat:indent-width 2))
 
 (use-package eww
   :commands (eww)
