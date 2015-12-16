@@ -55,6 +55,7 @@ alias gap="git add -p"
 alias gp="git pull"
 alias gcm="git commit"
 alias gpu="git push"
+alias gd="git diff"
 
 # Emacs
 alias ec="emacsclient -n"
