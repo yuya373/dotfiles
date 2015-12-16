@@ -46,6 +46,15 @@ alias gistory="gitit history"
 alias prs="gitit pulls"
 alias myprs="gitit pulls author:yuya373" #put your name here
 
+#Git
+alias gs="git status"
+alias gc="git chechout"
+alias gcb="git checkout -b"
+alias ga="git add"
+alias gap="git add -p"
+alias gp="git pull"
+alias gcm="git commit"
+
 #keybind
 bindkey -v
 bindkey -v '^Y' push-line
