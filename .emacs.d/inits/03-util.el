@@ -216,6 +216,7 @@
        auto-save-buffers-enhanced-interval t
        'auto-save-buffers-enhanced-save-buffers-if-normal-state)))
   (auto-save-buffers-enhanced t))
+
 (use-package server
   :commands (server-start server-running-p)
   :config
