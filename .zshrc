@@ -48,7 +48,7 @@ alias myprs="gitit pulls author:yuya373" #put your name here
 
 # Git
 alias gs="git status"
-alias gc="git chechout"
+alias gc="git checkout"
 alias gcb="git checkout -b"
 alias ga="git add"
 alias gap="git add -p"
