@@ -38,7 +38,7 @@ source ~/dotfiles/git-it-on.zsh/git-it-on.plugin.zsh
 alias disablekeyboard="sudo kextunload /System/Library/Extensions/AppleUSBTopCase.kext/Contents/PlugIns/AppleUSBTCKeyboard.kext/"
 alias enablekeyboard="sudo kextload /System/Library/Extensions/AppleUSBTopCase.kext/Contents/PlugIns/AppleUSBTCKeyboard.kext/"
 
-#Gitit Aliases
+# Gitit Aliases
 alias compare="gitit compare"
 alias commits="gitit commits"
 alias branch="gitit branch"
@@ -46,7 +46,7 @@ alias gistory="gitit history"
 alias prs="gitit pulls"
 alias myprs="gitit pulls author:yuya373" #put your name here
 
-#Git
+# Git
 alias gs="git status"
 alias gc="git chechout"
 alias gcb="git checkout -b"
@@ -54,8 +54,12 @@ alias ga="git add"
 alias gap="git add -p"
 alias gp="git pull"
 alias gcm="git commit"
+alias gpu="git push"
 
-#keybind
+# Emacs
+alias ec="emacsclient -n"
+
+# keybind
 bindkey -v
 bindkey -v '^Y' push-line
 bindkey -v '^J' vi-cmd-mode

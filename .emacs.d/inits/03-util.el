@@ -217,7 +217,7 @@
        'auto-save-buffers-enhanced-save-buffers-if-normal-state)))
   (auto-save-buffers-enhanced t))
 (use-package server
-  :commands (server-start)
+  :commands (server-start server-running-p)
   :config
   (defun start-server ()
     (unless (server-running-p)
