@@ -75,6 +75,8 @@
   (setq popwin:popup-window-height 0.3)
   (add-hook 'after-init-hook #'(lambda () (popwin-mode t)))
   :config
+  (push '("*projectile-rails-compilation*" :noselect t :tail t :stick t) popwin:special-display-config)
+  (push '("*projectile-rails-generate*" :noselect t :tail t :stick t) popwin:special-display-config)
   (push '("^\\*git-gutter:.*\\*$") popwin:special-display-config)
   (push '(twittering-mode :stick t) popwin:special-display-config)
   (push '("*R*" :tail t :noselect t :stick t) popwin:special-display-config)
@@ -174,15 +176,16 @@
 
 (el-get-bundle restclient)
 (use-package restclient
-  :commands (restclient-mode)
+  :mode (("\\.restclient\\'" . restclient-mode))
   :init
-  (setq restclient-client-buf-name "*RestClient - Client*")
-  :config
+  (setq restclient-dir "~/Dropbox/junk/")
+  (defun restclient-client-buf-name ()
+    (concat (format-time-string "%Y-%m-%d") ".restclient"))
   (defun create-restclient-buffer ()
     (interactive)
-    (let ((buf (get-buffer-create restclient-client-buf-name)))
-      (switch-to-buffer-other-window buf)
-      (with-current-buffer (restclient-mode))))
+    (let ((buf (find-file-other-window
+                (concat restclient-dir (restclient-client-buf-name)))))))
+  :config
   (evil-define-key 'normal restclient-mode-map
     ",y"  'restclient-copy-curl-command
     ",ss" 'restclient-http-send-current
@@ -233,11 +236,34 @@
                              "el-get/ddskk/etc/SKK.tut"))
   (setq define-input-method "japanese-skk")
   (add-hook 'skk-mode-hook 'skk-auto-fill-mode)
+  (global-set-key (kbd "C-x C-j") 'skk-mode)
   :config
   (use-package skk-tut)
   (use-package skk-cus)
   (use-package skk-cursor)
-  (use-package skk-study))
+  (use-package skk-study)
+;;   (defadvice update-buffer-local-cursor-color
+;;       (around evil-update-buffer-local-cursor-color-in-insert-state activate)
+;;     ;; SKKによるカーソル色変更を, 挿入ステートかつ日本語モードの場合に限定
+;;     "Allow ccc to update cursor color only when we are in insert
+;; state and in `skk-j-mode'."
+;;     (when (and (eq evil-state 'insert) (bound-and-true-p skk-j-mode))
+;;       ad-do-it))
+  (defadvice evil-ex-search-update-pattern
+      (around evil-inhibit-ex-search-update-pattern-in-skk-henkan activate)
+    ;; SKKの未確定状態(skk-henkan-mode)ではない場合だけ, 検索パターンをアップデート
+    "Inhibit search pattern update during `skk-henkan-mode'.
+This is reasonable since inserted text during `skk-henkan-mode'
+is a kind of temporary one which is not confirmed yet."
+    (unless (bound-and-true-p skk-henkan-mode)
+      ad-do-it))
+  (defadvice evil-refresh-cursor
+      (around evil-refresh-cursor-unless-skk-mode activate)
+    ;; Evilによるカーソルの変更を, 挿入ステートかつ日本語モードではない場合に限定
+    "Allow ccc to update cursor color only when we are in insert
+state and in `skk-j-mode'."
+    (unless (and (eq evil-state 'insert) (bound-and-true-p skk-j-mode))
+      ad-do-it)))
 
 (el-get-bundle emojify)
 (use-package emojify
