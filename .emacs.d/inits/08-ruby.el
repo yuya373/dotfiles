@@ -80,6 +80,7 @@
   (setq enh-ruby-add-encoding-comment-on-save nil)
   (add-hook 'enh-ruby-mode-hook 'smartparens-mode)
   :config
+  ;; (use-package ruby-end)
   (use-package bundler
     :commands (bundle-open bundle-exec bundle-check bundle-gemfile
                            bundle-update bundle-console bundle-install))
@@ -116,7 +117,11 @@
 (el-get-bundle yaml-mode)
 (use-package yaml-mode
   :mode (("\\.yml\\'" . yaml-mode)
-         ("\\.yaml\\'" . yaml-mode)))
+         ("\\.yaml\\'" . yaml-mode))
+  :init
+  (add-hook 'yaml-mode-hook 'smartparens-mode))
+
+
 
 (provide '08-ruby)
 ;;; 08-ruby.el ends here

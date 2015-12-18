@@ -299,6 +299,7 @@
     "hp" 'helm-show-kill-ring
     "ig" 'indent-guide-mode
     "l" 'toggle-folding
+    "ma" 'slack-select-rooms
     "mc" 'slack-channel-select
     "mg" 'slack-group-select
     "mi" 'slack-im-select

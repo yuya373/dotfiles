@@ -178,6 +178,7 @@
 (use-package restclient
   :mode (("\\.restclient\\'" . restclient-mode))
   :init
+  (add-hook 'restclient-mode-hook 'smartparens-mode)
   (setq restclient-dir "~/Dropbox/junk/")
   (defun restclient-client-buf-name ()
     (concat (format-time-string "%Y-%m-%d") ".restclient"))
@@ -222,7 +223,7 @@
 
 (use-package server
   :commands (server-start server-running-p)
-  :config
+  :init
   (defun start-server ()
     (unless (server-running-p)
       (server-start)))

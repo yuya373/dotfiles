@@ -51,13 +51,20 @@
   :commands (company-mode global-company-mode)
   :init
   (setq company-idle-delay 0) ; デフォルトは0.5
-  (setq company-minimum-prefix-length 2) ; デフォルトは4
+  (setq company-minimum-prefix-length 3) ; デフォルトは4
   (setq company-selection-wrap-around t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
   (setq company-auto-complete nil)
   (setq company-tooltip-align-annotations t)
   (setq company-transformers '(company-sort-by-occurrence company-sort-by-backend-importance))
   (add-hook 'after-init-hook 'global-company-mode)
   :config
+  (setq company-backends (delete 'company-bbdb company-backends))
+  (setq company-backends (delete 'company-cmake company-backends))
+  (setq company-backends (delete 'company-clang company-backends))
+  (setq company-backends (delete 'company-eclim company-backends))
+  (setq company-backends (delete 'company-oddmuse company-backends))
+  (setq company-backends (delete 'company-xcode company-backends))
+  (setq company-backends (delete 'company-capf company-backends))
   (defun company--insert-candidate2 (candidate)
     (when (> (length candidate) 0)
       (setq candidate (substring-no-properties candidate))
