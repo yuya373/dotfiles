@@ -56,6 +56,7 @@
   (setq company-auto-complete nil)
   (setq company-tooltip-align-annotations t)
   (setq company-transformers '(company-sort-by-occurrence company-sort-by-backend-importance))
+  (setq company-dabbrev-other-buffers t)
   (add-hook 'after-init-hook 'global-company-mode)
   :config
   (setq company-backends (delete 'company-bbdb company-backends))
@@ -64,7 +65,6 @@
   (setq company-backends (delete 'company-eclim company-backends))
   (setq company-backends (delete 'company-oddmuse company-backends))
   (setq company-backends (delete 'company-xcode company-backends))
-  (setq company-backends (delete 'company-capf company-backends))
   (defun company-emacs-lisp-mode ()
     (make-local-variable 'company-backends)
     (add-to-list 'company-backends 'company-capf))

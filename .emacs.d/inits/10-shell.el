@@ -42,6 +42,7 @@
   (setq eshell-save-history-on-exit t)
   (setq eshell-command-aliases-list
         '(("emacs" "find-file $1")
+          ("d" "dired .")
           ("ll" "ls -l")
           ("la" "ls -al")
           ("ppr" "find-file PULLREQ_MSG")
@@ -72,6 +73,10 @@
   (setq shell-pop-internal-mode-shell "eshell")
   (setq shell-pop-internal-mode-func (lambda () (eshell t)))
   (setq shell-pop-internal-mode-buffer "*eshell*"))
+
+(el-get-bundle term-run)
+(use-package term-run
+  :commands (term-run term-run-shell-command))
 
 
 
