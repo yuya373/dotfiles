@@ -30,13 +30,14 @@
 ;; shell
 (use-package eshell
   :commands (eshell)
+  :init
+  (defun create-eshell ()
+    (interactive)
+    (eshell t))
   :config
-  (defun my-eshell-mode-hook ()
-    (evil-define-key 'insert eshell-mode-map (kbd "C-p") 'helm-eshell-history))
-  (add-hook 'eshell-mode-hook 'my-eshell-mode-hook)
-  (setq eshell-highlight-prompt t)
+  (evil-define-key 'insert eshell-mode-map (kbd "C-p") 'helm-eshell-history)
   (setq eshell-ask-to-save-history (quote always))
-  (setq eshell-cmpl-cycle-completions nil)
+  (setq eshell-cmpl-cycle-completions t)
   (setq eshell-cmpl-ignore-case t)
   (setq eshell-save-history-on-exit t)
   (setq eshell-command-aliases-list
@@ -59,15 +60,16 @@
 (use-package eshell-prompt-extras
   :commands (epe-theme-dakrone epe-theme-lambda)
   :init
-  (setq eshell-prompt-function 'epe-theme-dakrone)
-  (add-hook 'eshell-mode-hook 'epe-theme-dakrone))
-(el-get-bundle shell-pop)
+  (setq eshell-highlight-prompt nil)
+  (setq eshell-prompt-function #'epe-theme-lambda))
+
+(el-get-bundle kyagi/shell-pop-el :branch "master")
 (use-package shell-pop
   :commands (shell-pop)
   :config
   (setq shell-pop-internal-mode "eshell")
   (setq shell-pop-internal-mode-shell "eshell")
-  (setq shell-pop-internal-mode-func (lambda nil (eshell)))
+  (setq shell-pop-internal-mode-func (lambda () (eshell t)))
   (setq shell-pop-internal-mode-buffer "*eshell*"))
 
 

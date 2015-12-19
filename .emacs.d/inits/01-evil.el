@@ -318,7 +318,7 @@
     "qr" 'quickrun
     "qs" 'quickrun-shell
     "r" 'create-restclient-buffer
-    "s" 'shell-pop
+    "s" 'create-eshell
     "tG" 'projectile-regenerate-tags
     "tQ" 'google-translate-query-translate-reverse
     "ta" 'google-translate-at-point
