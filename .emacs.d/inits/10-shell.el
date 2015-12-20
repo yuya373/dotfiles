@@ -35,7 +35,9 @@
     (interactive)
     (eshell t))
   :config
-  (evil-define-key 'insert eshell-mode-map (kbd "C-p") 'helm-eshell-history)
+  (evil-define-key 'insert eshell-mode-map
+    (kbd "C-p") 'eshell-previous-matching-input-from-input
+    (kbd "C-n") 'eshell-next-matching-input-from-input)
   (setq eshell-ask-to-save-history (quote always))
   (setq eshell-cmpl-cycle-completions t)
   (setq eshell-cmpl-ignore-case t)

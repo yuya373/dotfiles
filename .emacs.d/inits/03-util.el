@@ -276,5 +276,13 @@ state and in `skk-j-mode'."
   ;; (add-hook 'after-init-hook 'global-emojify-mode)
   )
 
+(use-package dired
+  :init
+  (setq dired-dwim-target t)
+  (setq dired-recursive-copies 'always)
+  :config
+  (with-eval-after-load "evil"
+    (evil-define-key 'normal dired-mode-map "R" 'wdired-change-to-wdired-mode)))
+
 (provide '03-util)
 ;;; 03-util.el ends here
