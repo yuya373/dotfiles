@@ -203,7 +203,6 @@
     (interactive)
     (if window-system
         (let ((current-size (frame-parameter nil 'fullscreen)))
-          (message "%s" current-size)
           (if (null current-size)
               (set-frame-parameter nil 'fullscreen 'maximized)
             (set-frame-parameter nil 'fullscreen nil)))))

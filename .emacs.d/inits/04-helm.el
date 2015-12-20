@@ -56,7 +56,8 @@
 
 (use-package helm
   :diminish helm-mode
-  :commands (helm-etags-select
+  :commands (helm-eshell-history
+             helm-etags-select
              helm-do-ag
              helm-do-ag-buffers
              helm-M-x
