@@ -268,9 +268,13 @@ state and in `skk-j-mode'."
 
 (el-get-bundle emojify)
 (use-package emojify
-  :commands (global-emojify-mode)
+  :commands (emojify-mode global-emojify-mode)
   :init
-  (add-hook 'after-init-hook 'global-emojify-mode))
+  (add-hook 'markdown-mode-hook 'emojify-mode)
+  (add-hook 'git-commit-mode-hook 'emojify-mode)
+  (add-hook 'magit-mode-hook 'emojify-mode)
+  ;; (add-hook 'after-init-hook 'global-emojify-mode)
+  )
 
 (provide '03-util)
 ;;; 03-util.el ends here
