@@ -194,7 +194,9 @@
       (kbd "m") #'evil-avy-goto-word))
   ;; line move
   (evil-swap-key evil-motion-state-map "j" "gj")
-  (evil-swap-key evil-motion-state-map "k" "gk"))
+  (evil-swap-key evil-motion-state-map "k" "gk")
+  (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
+  (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up))
 
 
 (use-package evil-leader
@@ -230,7 +232,7 @@
       (helm-find-files-1 (expand-file-name junk-dir))))
   (defun timer (time msg &rest moremsg)
     (interactive
-     (list (read-string "いつ? ")
+     (list (read-string "いつ? (sec, min, hour, HH:MM) ")
            (read-string "メッセージ: ")))
     (run-at-time
      time nil
@@ -244,12 +246,17 @@
          (insert-button "[閉じる]" 'action #'(lambda (_arg) (kill-buffer))))
      (cons msg moremsg))
     (message "タイマー開始しました"))
+  (defun all-indent ()
+    (interactive)
+    (save-excursion
+      (indent-region (point-min) (point-max))))
   :config
   (evil-leader/set-leader "<SPC>")
   (use-package evil-org)
   ;; describe
   (evil-leader/set-key
-    ":"  'helm-M-x
+    "=" 'all-indent
+    ":" 'helm-M-x
     "<SPC>" 'avy-goto-word-1
     "aa" 'helm-do-ag
     "ab" 'helm-do-ag-buffers
@@ -299,6 +306,7 @@
     "hgp" 'helm-open-github-from-pull-requests
     "hl" 'helm-resume
     "ho" 'helm-semantic-or-imenu
+    "hm" 'helm-all-mark-rings
     "hp" 'helm-show-kill-ring
     "ig" 'indent-guide-mode
     "l" 'toggle-folding

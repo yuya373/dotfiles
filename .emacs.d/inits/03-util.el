@@ -75,6 +75,8 @@
   (setq popwin:popup-window-height 0.3)
   (add-hook 'after-init-hook #'(lambda () (popwin-mode t)))
   :config
+  (push '(sql-interactive-mode :stick t :noselect t :tail t)
+        popwin:special-display-config)
   (push '(ag-mode :stick t) popwin:special-display-config)
   (push '("*projectile-rails-compilation*" :noselect t :tail t :stick t) popwin:special-display-config)
   (push '("*projectile-rails-generate*" :noselect t :tail t :stick t) popwin:special-display-config)

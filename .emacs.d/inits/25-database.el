@@ -29,79 +29,33 @@
 (el-get-bundle sql-complete)
 (el-get-bundle sql-transform)
 
-;; C-c C-c : 'sql-send-paragraph
-;; C-c C-r : 'sql-send-region
-;; C-c C-s : 'sql-send-string
-;; C-c C-b : 'sql-send-buffer
 (use-package sql
-  :commands (sql-mysql)
-  ;; :mode (("\\.sql\\'" . sql-mode))
+  :commands (sql-postgres sql-mysql)
+  :mode (("\\.sql\\'" . sql-mode))
+  :init
+  (defun mysql-buffer ()
+    (interactive)
+    (let* ((buf-name "*MySQL Editor*")
+           (buf (get-buffer-create buf-name)))
+      (with-current-buffer buf (sql-mode))
+      (switch-to-buffer-other-window buf))
+    (let ((cur-win-conf (current-window-configuration)))
+      (delete-window (get-buffer-window (sql-mysql)))
+      (set-window-configuration cur-win-conf)))
+  (setq sql-electric-stuff 'semicolon)
+  (setq sql-pop-to-buffer-after-send-region t)
+  (setq sql-indent-offset 2)
   :config
   (use-package sql-indent)
   (load-library "sql-complete")
-  (use-package sql-transform))
-
-;; (add-hook 'sql-interactive-mode-hook
-;;           #'(lambda ()
-;;               (interactive)
-;;               (set-buffer-process-coding-system 'sjis-unix 'sjis-unix )
-;;               (setq show-trailing-whitespace nil)))
-
-
-;; (sql-set-product-feature
-;;  'ms :font-lock 'sql-mode-ms-font-lock-keywords)
-
-;; (sql-get-product-feature 'mysql :sql-program)
-;; (defcustom sql-ms-program "sqlcmd"
-;;   "Command to start sqlcmd by SQL Server."
-;;   :type 'file
-;;   :group 'SQL)
-
-;; (sql-set-product-feature
-;;  'ms :sql-program 'sql-ms-program)
-;; (sql-set-product-feature
-;;  'ms :sqli-prompt-regexp "^[0-9]*>")
-;; (sql-set-product-feature
-;;  'ms :sqli-prompt-length 5)
-
-;; (defcustom sql-ms-login-params
-;;   '(user password server database)
-;;   "Login parameters to needed to connect to mssql."
-;;   :type '(repeat (choice
-;;                   (const user)
-;;                   (const password)
-;;                   (const server)
-;;                   (const database)))
-;;   :group 'SQL)
-
-;; (defcustom sql-ms-options '("-U" "-P" "-S" "-d")
-;;   "List of additional options for `sql-ms-program'."
-;;   :type '(repeat string)
-;;   :group 'SQL)
-
-;; (defun sql-connect-ms ()
-;;   "Connect ti SQL Server DB in a comint buffer."
-;;   ;; Do something with `sql-user', `sql-password',
-;;   ;; `sql-database', and `sql-server'.
-;;   (let ((f #'(lambda (op val)
-;;                (unless (string= "" val)
-;;                  (setq sql-ms-options
-;;                        (append (list op val) sql-ms-options)))))
-;;         (params `(("-U" . ,sql-user)("-P" . ,sql-password)
-;;                   ("-S" . ,sql-server)("-d" . ,sql-database))))
-;;     (dolist (pair params)
-;;       (funcall f (car pair)(cdr pair)))
-;;     (sql-connect-1 sql-ms-program sql-ms-options)))
-
-;; (sql-set-product-feature
-;;  'ms :sqli-login 'sql-ms-login-params)
-;; (sql-set-product-feature
-;;  'ms :sqli-connect 'sql-connect-ms)
-
-;; (defun run-mssql ()
-;;   "Run mssql by SQL Server as an inferior process."
-;;   (interactive)
-;;   (sql-product-interactive 'ms))
+  (use-package sql-transform)
+  (evil-define-key 'normal sql-mode-map
+    ",eb" 'sql-send-buffer
+    ",ep" 'sql-send-paragraph
+    ",es" 'sql-send-string
+    ",sb" 'sql-set-sqli-buffer)
+  (evil-define-key 'visual sql-mode-map
+    ",er" 'sql-send-region))
 
 (provide '25-database)
 ;;; 25-database.el ends here
