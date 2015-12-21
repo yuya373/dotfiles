@@ -33,7 +33,9 @@
   :init
   (defun create-eshell ()
     (interactive)
-    (eshell t))
+    (let ((eshell-buffer-name
+           (read-from-minibuffer "Eshell Buffer Name: " "*eshell*")))
+      (eshell t)))
   :config
   (evil-define-key 'insert eshell-mode-map
     (kbd "C-p") 'helm-eshell-history

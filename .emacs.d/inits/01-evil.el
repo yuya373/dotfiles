@@ -138,8 +138,8 @@
   (define-key evil-motion-state-map (kbd "C-c") 'evil-window-delete)
   (evil-set-initial-state 'comint-mode 'normal)
   (evil-define-key 'normal compilation-mode-map
-    (kbd "C-c" 'evil-window-delete)
-    (kbd "C-d" 'evil-scroll-down))
+    (kbd "C-c") 'evil-window-delete
+    (kbd "C-d") 'evil-scroll-down)
   (evil-define-key 'normal comint-mode-map
     (kbd "C-c") 'evil-window-delete
     (kbd "C-d") 'evil-scroll-down)
@@ -311,6 +311,7 @@
     "mm" 'slack-message-send
     "mn" 'open-junk-file
     "ms" 'slack-start
+    "mus" 'slack-user-stars-list
     "muc" 'slack-channel-list-update
     "mug" 'slack-group-list-update
     "mui" 'slack-im-list-update
