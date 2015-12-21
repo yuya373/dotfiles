@@ -75,6 +75,7 @@
   (setq popwin:popup-window-height 0.3)
   (add-hook 'after-init-hook #'(lambda () (popwin-mode t)))
   :config
+  (push '(ag-mode :stick t) popwin:special-display-config)
   (push '("*projectile-rails-compilation*" :noselect t :tail t :stick t) popwin:special-display-config)
   (push '("*projectile-rails-generate*" :noselect t :tail t :stick t) popwin:special-display-config)
   (push '("^\\*git-gutter:.*\\*$") popwin:special-display-config)
@@ -284,6 +285,23 @@ state and in `skk-j-mode'."
   :config
   (with-eval-after-load "evil"
     (evil-define-key 'normal dired-mode-map "R" 'wdired-change-to-wdired-mode)))
+
+(el-get-bundle ag)
+(el-get-bundle wgrep-ag)
+
+(use-package wgrep-ag
+  :commands (wgrep-ag-setup))
+(use-package ag
+  :commands (ag)
+  :init
+  (add-hook 'ag-mode-hook 'wgrep-ag-setup)
+  (setq ag-highlight-search t
+        ag-reuse-window nil
+        ag-reuse-buffers nil)
+  :config
+  (evil-set-initial-state 'ag-mode 'normal)
+  (evil-define-key 'normal ag-mode-map
+    "r" 'wgrep-change-to-wgrep-mode))
 
 (provide '03-util)
 ;;; 03-util.el ends here

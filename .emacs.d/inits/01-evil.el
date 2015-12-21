@@ -137,6 +137,9 @@
   (define-key evil-motion-state-map (kbd "C-l") 'windmove-right)
   (define-key evil-motion-state-map (kbd "C-c") 'evil-window-delete)
   (evil-set-initial-state 'comint-mode 'normal)
+  (evil-define-key 'normal compilation-mode-map
+    (kbd "C-c" 'evil-window-delete)
+    (kbd "C-d" 'evil-scroll-down))
   (evil-define-key 'normal comint-mode-map
     (kbd "C-c") 'evil-window-delete
     (kbd "C-d") 'evil-scroll-down)
@@ -251,6 +254,7 @@
     "aa" 'helm-do-ag
     "ab" 'helm-do-ag-buffers
     "ap" 'helm-projectile-ag
+    "ag" 'ag
     "bb" 'helm-buffers-list
     "bb" 'helm-mini
     "bf" 'popwin:find-file

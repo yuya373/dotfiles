@@ -1,5 +1,6 @@
 (setq el-get-lock-package-versions
-      '((shell-pop-el :checksum "4531d234ca471ed80458252cba0ed005a0720b27")
+      '((ag :checksum "cd8931997989c5401a153e028bac4bd14ca27f6e")
+        (shell-pop-el :checksum "4531d234ca471ed80458252cba0ed005a0720b27")
         (flycheck-package :checksum "ff93e8986a1021daf542c441c1fd50436ee83cba")
         (company-emoji :checksum "c3665bf150c43a1c9830e817cf6de950be8c0fde")
         (company-quickhelp :checksum "05e0ee9b854f90ff2b007b3e19446a02513f43dc")
