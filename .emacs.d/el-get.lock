@@ -1,5 +1,9 @@
 (setq el-get-lock-package-versions
-      '((ag :checksum "cd8931997989c5401a153e028bac4bd14ca27f6e")
+      '((sql-transform :checksum "641f276b4b63edb0a1563afcf8fb5103627ce3a7")
+        (sql-complete :checksum "2eb533dd045d415d3b4c6822dbd02c2bf3695e95")
+        (sql-indent :checksum "7d5641dd68135e7070f5026c44e518266c663434")
+        (sql :checksum "0d8873ec0732cd0c942f9626fa516daa70057643")
+        (ag :checksum "cd8931997989c5401a153e028bac4bd14ca27f6e")
         (shell-pop-el :checksum "4531d234ca471ed80458252cba0ed005a0720b27")
         (flycheck-package :checksum "ff93e8986a1021daf542c441c1fd50436ee83cba")
         (company-emoji :checksum "c3665bf150c43a1c9830e817cf6de950be8c0fde")
