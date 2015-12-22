@@ -1,5 +1,5 @@
 [core]
-  editor = "emacsclient -c" --alternate-editor emacs
+  editor = "emacsclient -c --alternate-editor emacs"
   pager = less
   quotepath = false
 [include]
