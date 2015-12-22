@@ -47,8 +47,8 @@
   (setq eshell-command-aliases-list
         '(("emacs" "find-file $1")
           ("d" "dired .")
-          ("ll" "ls -l")
-          ("la" "ls -al")
+          ("ll" "ls -l $*")
+          ("la" "ls -al $*")
           ("ppr" "find-file PULLREQ_MSG")
           ("pr" "hub pull-request -b $1 -F PULLREQ_MSG && kill-buffer PULLREQ_MSG && rm PULLREQ_MSG")
           ("b" "bundle exec $*")

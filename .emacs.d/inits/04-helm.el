@@ -102,6 +102,7 @@
         helm-echo-input-in-header-line t)
   :config
   (use-package helm-config)
+  (use-package helm-eshell)
   (defun make-helm-git-source ()
     (unless (helm-ls-git-not-inside-git-repo)
       (setq helm-source-ls-git

@@ -116,7 +116,7 @@
 (use-package autorevert
   :commands (global-auto-revert-mode)
   :init
-  (setq auto-revert-interval 1)
+  (setq auto-revert-interval 0.1)
   (add-hook 'after-init-hook #'(lambda () (global-auto-revert-mode 1))))
 
 (provide '00-config)

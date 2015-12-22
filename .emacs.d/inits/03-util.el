@@ -303,5 +303,11 @@ state and in `skk-j-mode'."
   (evil-define-key 'normal ag-mode-map
     "r" 'wgrep-change-to-wgrep-mode))
 
+(el-get-bundle log4j-mode)
+(use-package log4j-mode
+  :mode (("\\.log?\\'" . log4j-mode))
+  :init
+  (add-hook 'log4j-mode-hook 'read-only-mode))
+
 (provide '03-util)
 ;;; 03-util.el ends here

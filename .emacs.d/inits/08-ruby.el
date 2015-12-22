@@ -56,9 +56,11 @@
   :commands (robe-mode robe-start)
   :init
   (add-hook 'enh-ruby-mode-hook 'robe-mode)
+  (defun my-company-robe ()
+    (make-local-variable 'company-backends)
+    (add-to-list- 'company-backends 'company-robe))
+  (add-hook 'robe-mode-hook 'my-company-robe)
   :config
-  (with-eval-after-load "company"
-    (add-to-list 'company-backends 'company-robe))
   (defun enable-robe-server ()
     (interactive)
     (robe-start))

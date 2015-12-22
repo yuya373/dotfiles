@@ -65,6 +65,7 @@
   (setq company-backends (delete 'company-eclim company-backends))
   (setq company-backends (delete 'company-oddmuse company-backends))
   (setq company-backends (delete 'company-xcode company-backends))
+  (setq company-backends (delete 'company-capf company-backends))
   (defun company-emacs-lisp-mode ()
     (make-local-variable 'company-backends)
     (add-to-list 'company-backends 'company-capf))
