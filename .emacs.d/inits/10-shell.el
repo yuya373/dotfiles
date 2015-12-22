@@ -37,9 +37,11 @@
            (read-from-minibuffer "Eshell Buffer Name: " "*eshell*")))
       (eshell t)))
   :config
-  (evil-define-key 'insert eshell-mode-map
-    (kbd "C-p") 'helm-eshell-history
-    (kbd "C-n") 'eshell-next-matching-input-from-input)
+  (defun eshell-bind-keymap ()
+    (evil-define-key 'insert eshell-mode-map
+      (kbd "C-p") 'helm-eshell-history
+      (kbd "C-n") 'eshell-next-matching-input-from-input))
+  (add-hook 'eshell-mode-hook #'eshell-bind-keymap)
   (setq eshell-ask-to-save-history (quote always))
   (setq eshell-cmpl-cycle-completions t)
   (setq eshell-cmpl-ignore-case t)

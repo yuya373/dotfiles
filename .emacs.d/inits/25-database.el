@@ -38,13 +38,35 @@
   :init
   (defun mysql-buffer ()
     (interactive)
+    (mysql-get-interactive-buffer)
+    (mysql-run-with-hidden-buffer))
+
+  (defun mysql-ssh-buffer ()
+    (interactive)
+    (mysql-get-interactive-buffer)
+    (mysql-run-with-hidden-buffer t))
+
+  (defun mysql-get-interactive-buffer ()
     (let* ((buf-name "*MySQL Editor*")
            (buf (get-buffer-create buf-name)))
       (with-current-buffer buf (sql-mode))
-      (switch-to-buffer-other-window buf))
+      (switch-to-buffer-other-window buf)))
+
+  (defun mysql-with-ssh ()
+    (let* ((host (read-from-minibuffer "SSH Host: "))
+           (default-directory (concat "/ssh:" host ":")))
+      (mysql-run-with-hidden-buffer)))
+
+  (defun mysql-run-with-hidden-buffer (&optional ssh)
     (let ((cur-win-conf (current-window-configuration)))
-      (delete-window (get-buffer-window (sql-mysql)))
+      (delete-window
+
+       (get-buffer-window
+        (if ssh
+            (mysql-with-ssh)
+          (sql-mysql))))
       (set-window-configuration cur-win-conf)))
+
   (setq sql-electric-stuff 'semicolon)
   (setq sql-pop-to-buffer-after-send-region t)
   (setq sql-indent-offset 2)

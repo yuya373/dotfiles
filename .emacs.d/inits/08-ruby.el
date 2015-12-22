@@ -58,7 +58,7 @@
   (add-hook 'enh-ruby-mode-hook 'robe-mode)
   (defun my-company-robe ()
     (make-local-variable 'company-backends)
-    (add-to-list- 'company-backends 'company-robe))
+    (add-to-list 'company-backends 'company-robe))
   (add-hook 'robe-mode-hook 'my-company-robe)
   :config
   (defun enable-robe-server ()
