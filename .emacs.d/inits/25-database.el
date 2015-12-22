@@ -24,10 +24,13 @@
 
 ;;; Code:
 
-(el-get-bundle sql)
-(el-get-bundle sql-indent)
-(el-get-bundle sql-complete)
-(el-get-bundle sql-transform)
+(eval-when-compile
+  (require 'evil))
+
+;; (el-get-bundle sql)
+(el-get-bundle emacswiki:sql-indent)
+(el-get-bundle emacswiki:sql-complete)
+(el-get-bundle emacswiki:sql-transform)
 
 (use-package sql
   :commands (sql-postgres sql-mysql)
@@ -46,6 +49,7 @@
   (setq sql-pop-to-buffer-after-send-region t)
   (setq sql-indent-offset 2)
   :config
+  (sql-set-product 'mysql)
   (use-package sql-indent)
   (load-library "sql-complete")
   (use-package sql-transform)

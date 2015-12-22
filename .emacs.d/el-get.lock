@@ -22,7 +22,7 @@
         (use-package :checksum "77a77c8b03044f0279e00cadd6a6d1a7ae97b016")
         (diminish :checksum "73669b69e5f9a0c9261c5b53624329d0e24d1ed8")
         (init-loader :checksum "1f28a0b801cbb08aa9b47fd15ceab243a2bc064c")
-        (el-get :checksum "30cfde00d48be88bf6831067cfaf364039df5722")
+        (el-get :checksum "56d72507c1af03d1c719dcac62a0c365857cc10e")
         (magit :checksum "758b0ce74f70c89a1fc482e8d526ce45451c37ac")
         (haskell-mode :checksum "be83c8a383f464b80b68fe90fc2c3523c352b5b6")
         (pdf-tools :checksum "0107f80dcf268d08ac075b01729820062c0fbd67")
