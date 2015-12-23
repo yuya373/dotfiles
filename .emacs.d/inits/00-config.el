@@ -92,7 +92,7 @@
                            trailing
                            tabs
                            spaces
-                           ;; empty
+                           empty
                            newline
                            newline-mark
                            space-mark
