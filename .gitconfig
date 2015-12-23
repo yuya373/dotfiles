@@ -30,3 +30,5 @@
   tool = vimdiff
 [gc]
   auto = 1
+[diff]
+  algorithm = histogram
