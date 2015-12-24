@@ -28,12 +28,12 @@
 (use-package js2-mode
   :mode (("\\.js\\'" . js2-mode)))
 
-;; (el-get-bundle coffee-mode)
-;; (use-package coffee-mode
-;;   :mode (("\\.coffee\\'" . coffee-mode))
-;;   :init
-;;   (add-hook 'coffee-mode-hook '(lambda () ((set (make-local-variable 'tab-width) 2)
-;;                                            (set (make-local-variable 'coffee-tab-width)2)))))
+(el-get-bundle coffee-mode)
+(use-package coffee-mode
+  :mode (("\\.coffee\\'" . coffee-mode))
+  :init
+  (setq coffee-tab-width 2)
+  (setq coffee-indent-tabs-mode nil))
 
 (provide '18-javascript)
 ;;; 18-javascript.el ends here
