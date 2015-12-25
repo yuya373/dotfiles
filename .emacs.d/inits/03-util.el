@@ -293,6 +293,7 @@ state and in `skk-j-mode'."
 
 (use-package wgrep-ag
   :commands (wgrep-ag-setup))
+
 (use-package ag
   :commands (ag)
   :init
@@ -303,7 +304,9 @@ state and in `skk-j-mode'."
   :config
   (evil-set-initial-state 'ag-mode 'normal)
   (evil-define-key 'normal ag-mode-map
-    "r" 'wgrep-change-to-wgrep-mode))
+    ",k" 'wgrep-exit
+    ",s" 'wgrep-finish-edit
+    ",r" 'wgrep-change-to-wgrep-mode))
 
 (el-get-bundle log4j-mode)
 (use-package log4j-mode
