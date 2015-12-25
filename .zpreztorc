@@ -24,22 +24,22 @@ zstyle ':prezto:*:*' color 'yes'
 # Set the Prezto modules to load (browse modules).
 # The order matters.
 zstyle ':prezto:load' pmodule \
-         'environment' \
-         'terminal' \
-         'editor' \
-         'history' \
-         'directory' \
-         'spectrum' \
-         'utility' \
-         'completion' \
-         'prompt'
+  'environment' \
+  'terminal' \
+  'editor' \
+  'history' \
+  'directory' \
+  'spectrum' \
+  'utility' \
+  'completion' \
+  'prompt'
 
 #
 # Editor
 #
 
 # Set the key mapping style to 'emacs' or 'vi'.
-         zstyle ':prezto:module:editor' key-bindings 'vi'
+zstyle ':prezto:module:editor' key-bindings 'vi'
 
 # Auto convert .... to ../..
 # zstyle ':prezto:module:editor' dot-expansion 'yes'
@@ -85,9 +85,7 @@ zstyle ':prezto:load' pmodule \
 # Set the prompt theme to load.
 # Setting it to 'random' loads a random theme.
 # Auto set to 'off' on dumb terminals.
-
 zstyle ':prezto:module:prompt' theme 'pure'
-
 
 #
 # Ruby
@@ -154,3 +152,6 @@ zstyle ':prezto:module:prompt' theme 'pure'
 
 # Auto start a session when Zsh is launched in a SSH connection.
 # zstyle ':prezto:module:tmux:auto-start' remote 'yes'
+
+# Integrate with iTerm2.
+zstyle ':prezto:module:tmux:iterm' integrate 'yes'
