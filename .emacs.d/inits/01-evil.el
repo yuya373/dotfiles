@@ -311,18 +311,23 @@
     "ig" 'indent-guide-mode
     "l" 'toggle-folding
     "ma" 'slack-select-rooms
-    "mc" 'slack-channel-select
-    "mg" 'slack-group-select
-    "mi" 'slack-im-select
+    "mcs" 'slack-channel-select
+    "mcc" 'slack-create-channel
+    "mcu" 'slack-channel-list-update
+    "mci" 'slack-channel-invite
+    "mcr" 'slack-channel-rename
+    "mgs" 'slack-group-select
+    "mgc" 'slack-create-group
+    "mgi" 'slack-group-invite
+    "mgu" 'slack-group-list-update
+    "mgr" 'slack-group-rename
+    "mis" 'slack-im-select
+    "miu" 'slack-im-list-update
+    "mus" 'slack-user-stars-list
     "mk" 'slack-ws-close
     "ml" 'open-junk-dir
-    "mm" 'slack-message-send
     "mn" 'open-junk-file
     "ms" 'slack-start
-    "mus" 'slack-user-stars-list
-    "muc" 'slack-channel-list-update
-    "mug" 'slack-group-list-update
-    "mui" 'slack-im-list-update
     "pk" 'projectile-invalidate-cache
     "ps" 'projectile-switch-project
     "qR" 'quickrun-region
