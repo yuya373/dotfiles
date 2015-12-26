@@ -16,3 +16,6 @@
 [submodule "git-it-on.zsh"]
 	path = git-it-on.zsh
 	url = https://github.com/peterhurford/git-it-on.zsh
+[submodule "zsh-vimode-visual"]
+	path = zsh-vimode-visual
+	url = git@github.com:b4b4r07/zsh-vimode-visual.git

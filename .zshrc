@@ -58,7 +58,7 @@ alias gpu="git push"
 alias gd="git diff"
 
 # Emacs
-alias ec="emacsclient -n"
+alias ec="emacsclient -n --alternate-editor emacs"
 
 # keybind
 bindkey -v
@@ -78,9 +78,35 @@ bindkey '^@' peco-cdr
 bindkey '^v' peco-find-file
 bindkey '^o' dev_pcd
 
-#opp.zsh
-source ~/dotfiles/opp.zsh/opp.zsh
-source ~/dotfiles/opp.zsh/opp/*.zsh
+# text object
+autoload -U select-quoted
+zle -N select-quoted
+for m in visual viopp; do
+  for c in {a,i}{\',\",\`}; do
+    bindkey -M $m $c select-quoted
+  done
+done
+
+autoload -U select-bracketed
+zle -N select-bracketed
+for m in visual viopp; do
+  for c in {a,i}${(s..)^:-'()[]{}<>bB'}; do
+    bindkey -M $m $c select-bracketed
+  done
+done
+
+autoload -Uz surround
+zle -N delete-surround surround
+zle -N change-surround surround
+zle -N add-surround surround
+bindkey -a cs change-surround
+bindkey -a ds delete-surround
+bindkey -a ys add-surround
+bindkey -M visual S add-surround
+
+# visual mode
+source ~/dotfiles/zsh-vimode-visual/zsh-vimode-visual.sh
+bindkey -M vicmd 'v'  vi-visual-mode
 
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets cursor line)
 source ~/dotfiles/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
