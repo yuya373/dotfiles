@@ -316,11 +316,18 @@
     "mcu" 'slack-channel-list-update
     "mci" 'slack-channel-invite
     "mcr" 'slack-channel-rename
+    "mcj" 'slack-channel-join
+    "mcl" 'slack-channel-leave
+    "mca" 'slack-channel-archive
+    "mcA" 'slack-channel-unarchive
+    "mga" 'slack-group-archive
+    "mgA" 'slack-group-unarchive
     "mgs" 'slack-group-select
     "mgc" 'slack-create-group
     "mgi" 'slack-group-invite
     "mgu" 'slack-group-list-update
     "mgr" 'slack-group-rename
+    "mgl" 'slack-group-leave
     "mis" 'slack-im-select
     "miu" 'slack-im-list-update
     "mus" 'slack-user-stars-list
