@@ -58,7 +58,7 @@ alias gpu="git push"
 alias gd="git diff"
 
 # Emacs
-alias ec="emacsclient -n --alternate-editor emacs"
+alias e="emacsclient -c -n --alternate-editor=emacs"
 
 # keybind
 bindkey -v
@@ -66,17 +66,18 @@ bindkey -v '^Y' push-line
 bindkey -v '^J' vi-cmd-mode
 
 
+# normal mode keybinding
 bindkey -a 'H' run-help
-bindkey -a '^r' peco-select-history
 bindkey -a '^@' peco-cdr
-bindkey -a '^o' dev_pcd
+bindkey -a '^o' fd
+bindkey -a '^p' fdr
+
 
 # from .zshfunc
 bindkey '^m' do_enter
-bindkey '^r' peco-select-history
 bindkey '^@' peco-cdr
-bindkey '^v' peco-find-file
-bindkey '^o' dev_pcd
+bindkey '^o' fd
+bindkey '^p' fdr
 
 # text object
 autoload -U select-quoted
@@ -107,6 +108,10 @@ bindkey -M visual S add-surround
 # visual mode
 source ~/dotfiles/zsh-vimode-visual/zsh-vimode-visual.sh
 bindkey -M vicmd 'v'  vi-visual-mode
+
+# fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets cursor line)
 source ~/dotfiles/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

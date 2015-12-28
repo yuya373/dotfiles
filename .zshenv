@@ -33,6 +33,7 @@ if [ -d /usr/local/opt/coreutils/libexec/gnubin ] ; then
 fi
 
 export EDITOR='vim'
+export EDITOR='emacsclient -n -a emacs'
 export SYS_NOTIFIER=`which terminal-notifier`
 export HOMEBREW_CASK_OPTS='--appdir=/Applications'
 export LANG=ja_JP.utf8

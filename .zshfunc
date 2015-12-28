@@ -1,164 +1,252 @@
 function gim() {
-vim `git ls-files | peco`
+    vim `git ls-files | peco`
 }
 
 function cdgem() {
-local gem_name=$(bundle list | sed -e 's/^ *\* *//g' | peco | cut -d \  -f 1)
-if [ -n "$gem_name" ]; then
-  local gem_dir=$(bundle show ${gem_name})
-  echo "cd to ${gem_dir}"
-  cd ${gem_dir}
-fi
+    local gem_name=$(bundle list | sed -e 's/^ *\* *//g' | peco | cut -d \  -f 1)
+    if [ -n "$gem_name" ]; then
+        local gem_dir=$(bundle show ${gem_name})
+        echo "cd to ${gem_dir}"
+        cd ${gem_dir}
+    fi
 }
 
 function pcd() {
-local base="$1"
-if [ ! -z "$1" ] ; then
-  cd
-fi
-local dir="$( find . -maxdepth 1 -type d | sed -e 's;\./;;' | peco )"
-if [ ! -z "$dir" ] ; then
-  cd "$dir"
-fi
+    local base="$1"
+    if [ ! -z "$1" ] ; then
+        cd
+    fi
+    local dir="$( find . -maxdepth 1 -type d | sed -e 's;\./;;' | peco )"
+    if [ ! -z "$dir" ] ; then
+        cd "$dir"
+    fi
 }
 
 function dev_pcd()
 {
-  cd ~/dev
-  pcd
-  my_reset_prompt
+    cd ~/dev
+    pcd
+    my_reset_prompt
 }
 zle -N dev_pcd
 
 function peco-select-history() {
-local tac
-if which tac > /dev/null; then
-  tac="tac"
-else
-  tac="tail -r"
-fi
-BUFFER=$(\history -n 1 | \
-  eval $tac | \
-  peco --query "$LBUFFER")
-CURSOR=$#BUFFER
-zle clear-screen
+    local tac
+    if which tac > /dev/null; then
+        tac="tac"
+    else
+        tac="tail -r"
+    fi
+    BUFFER=$(\history -n 1 | \
+                    eval $tac | \
+                    peco --query "$LBUFFER")
+    CURSOR=$#BUFFER
+    zle clear-screen
 }
 zle -N peco-select-history
 
 
 function peco-cdr () {
-local selected_dir=$(cdr -l | awk '{ print $2 }' | peco)
-if [ -n "$selected_dir" ]; then
-  BUFFER="cd ${selected_dir}"
-  zle accept-line
-fi
-zle clear-screen
+    local selected_dir=$(cdr -l | awk '{ print $2 }' | peco)
+    if [ -n "$selected_dir" ]; then
+        BUFFER="cd ${selected_dir}"
+        zle accept-line
+    fi
+    zle clear-screen
 }
 zle -N peco-cdr
 
 
 function peco-find-file () {
-ls | peco | xargs vim -nw
-zle clear-screen
+    ls | peco | xargs vim -nw
+    zle clear-screen
 }
 zle -N peco-find-file
 
 ls_abbrev() {
-  if [[ ! -r $PWD ]]; then
-    return
-  fi
-  # -a : Do not ignore entries starting with ..
-  # -C : Force multi-column output.
-  # -F : Append indicator (one of */=>@|) to entries.
-  local cmd_ls='ls'
-  local -a opt_ls
-  opt_ls=('-aCF' '--color=always')
-  case "${OSTYPE}" in
-    freebsd*|darwin*)
-      if type gls > /dev/null 2>&1; then
-        cmd_ls='gls'
-      else
-        # -G : Enable colorized output.
-        opt_ls=('-aCFG')
-      fi
-      ;;
-  esac
+    if [[ ! -r $PWD ]]; then
+        return
+    fi
+    # -a : Do not ignore entries starting with ..
+    # -C : Force multi-column output.
+    # -F : Append indicator (one of */=>@|) to entries.
+    local cmd_ls='ls'
+    local -a opt_ls
+    opt_ls=('-aCF' '--color=always')
+    case "${OSTYPE}" in
+        freebsd*|darwin*)
+            if type gls > /dev/null 2>&1; then
+                cmd_ls='gls'
+            else
+                # -G : Enable colorized output.
+                opt_ls=('-aCFG')
+            fi
+            ;;
+    esac
 
-  local ls_result
-  ls_result=$(CLICOLOR_FORCE=1 COLUMNS=$COLUMNS command $cmd_ls ${opt_ls[@]} | sed $'/^\e\[[0-9;]*m$/d')
+    local ls_result
+    ls_result=$(CLICOLOR_FORCE=1 COLUMNS=$COLUMNS command $cmd_ls ${opt_ls[@]} | sed $'/^\e\[[0-9;]*m$/d')
 
-  local ls_lines=$(echo "$ls_result" | wc -l | tr -d ' ')
+    local ls_lines=$(echo "$ls_result" | wc -l | tr -d ' ')
 
-  if [ $ls_lines -gt 10 ]; then
-    echo "$ls_result" | head -n 5
-    echo '...'
-    echo "$ls_result" | tail -n 5
-    echo "$(command ls -1 -A | wc -l | tr -d ' ') files exist"
-  else
-    echo "$ls_result"
-  fi
+    if [ $ls_lines -gt 10 ]; then
+        echo "$ls_result" | head -n 5
+        echo '...'
+        echo "$ls_result" | tail -n 5
+        echo "$(command ls -1 -A | wc -l | tr -d ' ') files exist"
+    else
+        echo "$ls_result"
+    fi
 }
 
 function do_enter() {
-if [ -n "$BUFFER" ]; then
-  zle accept-line
-  return 0
-fi
-echo
-echo -e "\e[0;33m--- ls ---\e[0m"
-# ls -aCFG
-ls_abbrev
-if [ "$(git rev-parse --is-inside-work-tree 2> /dev/null)" = 'true' ]; then
-  echo
-  echo -e "\e[0;33m--- git status ---\e[0m"
-  git status -sb
-  echo
-fi
-echo
-echo -e "\e[0;33m--- end ---\e[0m"
-my_reset_prompt
-return 0
+    if [ -n "$BUFFER" ]; then
+        zle accept-line
+        return 0
+    fi
+    echo
+    echo -e "\e[0;33m--- ls ---\e[0m"
+    # ls -aCFG
+    ls_abbrev
+    if [ "$(git rev-parse --is-inside-work-tree 2> /dev/null)" = 'true' ]; then
+        echo
+        echo -e "\e[0;33m--- git status ---\e[0m"
+        git status -sb
+        echo
+    fi
+    echo
+    echo -e "\e[0;33m--- end ---\e[0m"
+    my_reset_prompt
+    return 0
 }
 zle -N do_enter
 
 function tmux_window_name()
 {
-  [[ -n "$vcs_info_msg_1_" ]] && tmux rename-window $vcs_info_msg_1_
-  if [ -n "$vcs_info_msg_1_" ]; then
-    tmux rename-window $vcs_info_msg_1_
-  else
-    tmux rename-window ${PWD:t}
-  fi
+    [[ -n "$vcs_info_msg_1_" ]] && tmux rename-window $vcs_info_msg_1_
+    if [ -n "$vcs_info_msg_1_" ]; then
+        tmux rename-window $vcs_info_msg_1_
+    else
+        tmux rename-window ${PWD:t}
+    fi
 }
 if [ -n "$TMUX" ]; then
-  add-zsh-hook precmd tmux_window_name
+    add-zsh-hook precmd tmux_window_name
 fi
 
 function my_reset_prompt()
 {
-  if type precmd > /dev/null 2>&1; then
-    precmd
-  fi
-  local precmd_func
-  for precmd_func in $precmd_functions; do
-    $precmd_func
-  done
-  zle reset-prompt
+    if type precmd > /dev/null 2>&1; then
+        precmd
+    fi
+    local precmd_func
+    for precmd_func in $precmd_functions; do
+        $precmd_func
+    done
+    zle reset-prompt
 }
 
 function brew-file-brew()
 {
-  brew-file-install()
-  {
-    brew-file brew install $*
-  }
-  case "$1" in
-    install | i)
-      echo "Brew-file update Brewfile"
-      shift
-      brew-file-install $*
-      ;;
-    *)
-      brew $*
-  esac
+    brew-file-install()
+    {
+        brew-file brew install $*
+    }
+    case "$1" in
+        install | i)
+            echo "Brew-file update Brewfile"
+            shift
+            brew-file-install $*
+            ;;
+        *)
+            brew $*
+    esac
 }
+
+# fe [FUZZY PATTERN] - Open the selected file with the default editor
+#   - Bypass fuzzy finder if there's only one match (--select-1)
+#   - Exit if there's no match (--exit-0)
+# fe() {
+#     IFS='
+# '
+#     local declare files=($(fzf-tmux --query="$1" --select-1 --exit-0))
+#     if [ -n "$files" ]; then
+#         ${=EDITOR} "${files[@]}"
+#     fi
+#     unset IFS
+# }
+
+# Modified version where you can press
+#   - CTRL-O to open with `open` command,
+#   - CTRL-E or Enter key to open with the $EDITOR
+fo() {
+    local out file key
+    out=$(fzf-tmux --query="$1" --exit-0 --expect=ctrl-o,ctrl-e)
+    key=$(head -1 <<< "$out")
+    file=$(head -2 <<< "$out" | tail -1)
+    if [ -n "$file" ]; then
+        [ "$key" = ctrl-o ] && open "$file" || ${=EDITOR} "$file"
+    fi
+}
+
+# fd - cd to selected directory
+fd() {
+  local dir
+  dir=$(find ${1:-.} -path '*/\.*' -prune \
+                  -o -type d -print 2> /dev/null | fzf +m) && cd "$dir"
+}
+zle -N fd
+
+# fda - including hidden directories
+fda() {
+    local dir
+    dir=$(find ${1:-.} -type d 2> /dev/null | fzf +m) && cd "$dir"
+}
+
+fdr() {
+    local declare dirs=()
+    get_parent_dirs() {
+        if [[ -d "${1}" ]]; then dirs+=("$1"); else return; fi
+        if [[ "${1}" == '/' ]]; then
+            for _dir in "${dirs[@]}"; do echo $_dir; done
+        else
+            get_parent_dirs $(dirname "$1")
+        fi
+    }
+    local DIR=$(get_parent_dirs $(realpath "${1:-$(pwd)}") | fzf-tmux --tac)
+    cd "$DIR"
+}
+zle -N fdr
+
+# fs [FUZZY PATTERN] - Select selected tmux session
+#   - Bypass fuzzy finder if there's only one match (--select-1)
+#   - Exit if there's no match (--exit-0)
+fs() {
+    local session
+    session=$(tmux list-sessions -F "#{session_name}" | \
+                     fzf --query="$1" --select-1 --exit-0) &&
+        tmux switch-client -t "$session"
+}
+
+# ftpane - switch pane (@george-b)
+ftpane() {
+    local panes current_window current_pane target target_window target_pane
+    panes=$(tmux list-panes -s -F '#I:#P - #{pane_current_path} #{pane_current_command}')
+    current_pane=$(tmux display-message -p '#I:#P')
+    current_window=$(tmux display-message -p '#I')
+
+    target=$(echo "$panes" | grep -v "$current_pane" | fzf +m --reverse) || return
+
+    target_window=$(echo $target | awk 'BEGIN{FS=":|-"} {print$1}')
+    target_pane=$(echo $target | awk 'BEGIN{FS=":|-"} {print$2}' | cut -c 1)
+
+    if [[ $current_window -eq $target_window ]]; then
+        tmux select-pane -t ${target_window}.${target_pane}
+    else
+        tmux select-pane -t ${target_window}.${target_pane} &&
+            tmux select-window -t $target_window
+    fi
+}
+
+# In tmux.conf
+# bind-key 0 run "tmux split-window -l 12 'bash -ci ftpane'"
