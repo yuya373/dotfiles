@@ -224,10 +224,22 @@ zle -N fdr
 #   - Exit if there's no match (--exit-0)
 fs() {
     local session
-    session=$(tmux list-sessions -F "#{session_name}" | \
-                     fzf --query="$1" --select-1 --exit-0) &&
+    session=$(tmux list-sessions | \
+                     fzf-tmux --query="$1" --select-1 --exit-0 | \
+                     awk -F: '{ print $1 }') &&
         tmux switch-client -t "$session"
+
 }
+zle -N fs
+
+ftw() {
+    local window
+    window=$(tmux list-windows | \
+                    fzf-tmux --query="$1" --select-1 --exit-0 | \
+                    awk -F: '{ print $1 }') &&
+        tmux select-window -t "$window"
+}
+zle -N ftw
 
 # ftpane - switch pane (@george-b)
 ftpane() {
@@ -261,3 +273,7 @@ fcdr() {
     fi
 }
 zle -N fcdr
+
+fps() {
+    ps aux | fzf -e
+}

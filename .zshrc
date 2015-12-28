@@ -58,12 +58,14 @@ alias gpu="git push"
 alias gd="git diff"
 
 # Emacs
-alias e="emacsclient -c -n --alternate-editor=emacs"
+alias e="emacsclient -n"
 
 # keybind
 bindkey -v
 bindkey -v '^Y' push-line
 bindkey -v '^J' vi-cmd-mode
+bindkey -v '^l^w' ftw
+bindkey -v '^l^s' fs
 
 
 # normal mode keybinding
@@ -71,6 +73,8 @@ bindkey -a 'H' run-help
 bindkey -a '^@' fcdr
 bindkey -a '^o' fd
 bindkey -a '^p' fdr
+bindkey -a '^l^w' ftw
+bindkey -a '^l^s' fs
 
 
 # from .zshfunc
@@ -78,6 +82,8 @@ bindkey '^m' do_enter
 bindkey '^@' fcdr
 bindkey '^o' fd
 bindkey '^p' fdr
+bindkey '^l^w' ftw
+bindkey '^l^s' fs
 
 # text object
 autoload -U select-quoted
