@@ -191,9 +191,10 @@ fo() {
 
 # fd - cd to selected directory
 fd() {
-  local dir
-  dir=$(find ${1:-.} -path '*/\.*' -prune \
-                  -o -type d -print 2> /dev/null | fzf +m) && cd "$dir"
+    local dir
+    dir=$(find ${1:-.} -path '*/\.*' -prune \
+               -o -type d -print 2> /dev/null | fzf +m) && cd "$dir"
+    my_reset_prompt
 }
 zle -N fd
 
@@ -250,3 +251,13 @@ ftpane() {
 
 # In tmux.conf
 # bind-key 0 run "tmux split-window -l 12 'bash -ci ftpane'"
+
+
+fcdr() {
+    local selected_dir=$(cdr -l | awk '{ print $2 }' | fzf +m)
+    if [ -n "$selected_dir" ]; then
+        BUFFER="cd ${selected_dir}"
+        zle accept-line
+    fi
+}
+zle -N fcdr

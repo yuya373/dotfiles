@@ -68,14 +68,14 @@ bindkey -v '^J' vi-cmd-mode
 
 # normal mode keybinding
 bindkey -a 'H' run-help
-bindkey -a '^@' peco-cdr
+bindkey -a '^@' fcdr
 bindkey -a '^o' fd
 bindkey -a '^p' fdr
 
 
 # from .zshfunc
 bindkey '^m' do_enter
-bindkey '^@' peco-cdr
+bindkey '^@' fcdr
 bindkey '^o' fd
 bindkey '^p' fdr
 
