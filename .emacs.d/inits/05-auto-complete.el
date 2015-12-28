@@ -28,13 +28,7 @@
   (require 'evil))
 
 (el-get-bundle company)
-(el-get-bundle company-quickhelp)
 (el-get-bundle company-emoji)
-
-(use-package company-quickhelp
-  :commands (company-quickhelp-mode)
-  :init
-  (add-hook 'company-mode-hook '(lambda () (company-quickhelp-mode t))))
 
 (use-package company-emoji
   :commands (company-emoji)

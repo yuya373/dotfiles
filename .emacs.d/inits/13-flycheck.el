@@ -25,7 +25,6 @@
 ;;; Code:
 
 (el-get-bundle flycheck)
-(el-get-bundle flycheck-pos-tip)
 (el-get-bundle purcell/flycheck-package
   :name flycheck-package)
 
@@ -36,11 +35,6 @@
   (setq-default flycheck-disabled-checkers '(chef-foodcritic))
   (setq flycheck-emacs-lisp-load-path 'inherit)
   (add-hook 'prog-mode-hook #'(lambda () (flycheck-mode t))))
-
-(use-package flycheck-pos-tip
-  :commands (flycheck-pos-tip-mode)
-  :init
-  (add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode))
 
 (use-package flycheck-package
   :commands (flycheck-package-setup))

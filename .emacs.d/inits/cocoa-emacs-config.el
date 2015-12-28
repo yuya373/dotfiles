@@ -25,14 +25,14 @@
 ;;; Code:
 (when window-system
   ;; Ricty フォントの利用
-(let ((font-size 15))
-  (create-fontset-from-ascii-font
-   (format "Ricty-%d:weight=normal:slant=normal" font-size) nil "ricty")
+  (let ((font-size 15))
+    (create-fontset-from-ascii-font
+     (format "Ricty-%d:weight=normal:slant=normal" font-size) nil "ricty")
 
-  (set-fontset-font "fontset-ricty" 'unicode
-                    (font-spec :family "Ricty" :size font-size) nil 'append))
+    (set-fontset-font "fontset-ricty" 'unicode
+                      (font-spec :family "Ricty" :size font-size) nil 'append))
 
-(add-to-list 'default-frame-alist '(font . "fontset-ricty"))
+  (add-to-list 'default-frame-alist '(font . "fontset-ricty"))
   ;; (create-fontset-from-ascii-font "Ricty for Powerline-17:weight=normal:slant=normal" nil "ricty")
   ;; (create-fontset-from-ascii-font "Ricty for Powerline" nil "ricty")
   ;; (set-fontset-font "fontset-ricty"
@@ -50,6 +50,18 @@
   ;; (set-fontset-font
   ;;  t 'symbol
   ;;  (font-spec :family "Apple Color Emoji") nil 'prepend)
+
+  (el-get-bundle flycheck-pos-tip)
+  (use-package flycheck-pos-tip
+    :commands (flycheck-pos-tip-mode)
+    :init
+    (add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode))
+
+  (el-get-bundle company-quickhelp)
+  (use-package company-quickhelp
+    :commands (company-quickhelp-mode)
+    :init
+    (add-hook 'company-mode-hook '(lambda () (company-quickhelp-mode t))))
   )
 
 (use-package ls-lisp
