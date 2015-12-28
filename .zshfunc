@@ -192,7 +192,7 @@ fo() {
 # fd - cd to selected directory
 fd() {
     local dir
-    dir=$(find ${1:-.} -path '*/\.*' -prune -depth 3\
+    dir=$(find ${1:-.} -path '*/\.*' -prune -d 3 \
                -o -type d -print 2> /dev/null | fzf +m) && cd "$dir"
     my_reset_prompt
 }
