@@ -25,7 +25,7 @@
 ;;; Code:
 (when window-system
   ;; Ricty フォントの利用
-  (let ((font-size 15))
+  (let ((font-size 18))
     (create-fontset-from-ascii-font
      (format "Ricty-%d:weight=normal:slant=normal" font-size) nil "ricty")
 

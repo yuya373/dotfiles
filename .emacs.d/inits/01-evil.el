@@ -250,6 +250,13 @@
     (interactive)
     (save-excursion
       (indent-region (point-min) (point-max))))
+  (defun reopen-with-sudo ()
+    "Reopen current buffer-file with sudo using tramp."
+    (interactive)
+    (let ((file-name (buffer-file-name)))
+      (if file-name
+          (find-alternate-file (concat "/sudo::" file-name))
+        (error "Cannot get a file name"))))
   :config
   (evil-leader/set-leader "<SPC>")
   (use-package evil-org)
@@ -282,13 +289,11 @@
     "el" 'flycheck-list-errors
     "en" 'flycheck-next-error
     "ep" 'flycheck-previous-error
-    "fc" 'helm-find-file-at
-    "fc" 'helm-projectile-find-file-dwim
     "fd" 'helm-projectile-find-dir
     "ff" 'helm-find-files
     "fp" 'helm-browse-project
-    "fp" 'helm-projectile-find-file
     "fr" 'helm-recentf
+    "fs" 'reopen-with-sudo
     "gb" 'magit-blame-popup
     "gf" 'magit-fetch-popup
     "gg" 'magit-status

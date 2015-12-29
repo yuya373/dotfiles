@@ -59,6 +59,7 @@ alias gd="git diff"
 
 # Emacs
 alias e="emacsclient -n"
+alias ee="emacsclient -nw -a ''"
 
 # keybind
 bindkey -v
