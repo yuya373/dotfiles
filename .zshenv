@@ -32,7 +32,7 @@ if [ -d /usr/local/opt/coreutils/libexec/gnubin ] ; then
   export MANPATH=/usr/local/opt/coreutils/libexec/gnuman/:$MANPATH
 fi
 
-export EDITOR='vim'
+# export EDITOR='vim'
 export EDITOR='emacsclient -n'
 export SYS_NOTIFIER=`which terminal-notifier`
 export HOMEBREW_CASK_OPTS='--appdir=/Applications'

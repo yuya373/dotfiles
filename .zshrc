@@ -65,8 +65,8 @@ alias ee="emacsclient -nw -a ''"
 bindkey -v
 bindkey -v '^Y' push-line
 bindkey -v '^J' vi-cmd-mode
-bindkey -v '^l^w' ftw
-bindkey -v '^l^s' fs
+bindkey -v '^a^w' ftw
+bindkey -v '^a^s' fs
 
 
 # normal mode keybinding
@@ -74,8 +74,8 @@ bindkey -a 'H' run-help
 bindkey -a '^@' fcdr
 bindkey -a '^o' fd
 bindkey -a '^p' fdr
-bindkey -a '^l^w' ftw
-bindkey -a '^l^s' fs
+bindkey -a '^a^w' ftw
+bindkey -a '^a^s' fs
 
 
 # from .zshfunc
@@ -83,8 +83,8 @@ bindkey '^m' do_enter
 bindkey '^@' fcdr
 bindkey '^o' fd
 bindkey '^p' fdr
-bindkey '^l^w' ftw
-bindkey '^l^s' fs
+bindkey '^a^w' ftw
+bindkey '^a^s' fs
 
 # text object
 autoload -U select-quoted
