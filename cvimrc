@@ -14,6 +14,7 @@ map tp previousTab
 map tf firstTab
 map tl lastTab
 map b :buffer<Space>
+map <leader>b :bookmark<Space>
 imap <C-w> deleteWord
 imap <C-h> deleteChar
 iunmap <C-i>
