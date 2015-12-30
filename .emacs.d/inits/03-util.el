@@ -247,13 +247,13 @@
   (use-package skk-cus)
   (use-package skk-cursor)
   (use-package skk-study)
-;;   (defadvice update-buffer-local-cursor-color
-;;       (around evil-update-buffer-local-cursor-color-in-insert-state activate)
-;;     ;; SKKによるカーソル色変更を, 挿入ステートかつ日本語モードの場合に限定
-;;     "Allow ccc to update cursor color only when we are in insert
-;; state and in `skk-j-mode'."
-;;     (when (and (eq evil-state 'insert) (bound-and-true-p skk-j-mode))
-;;       ad-do-it))
+  ;;   (defadvice update-buffer-local-cursor-color
+  ;;       (around evil-update-buffer-local-cursor-color-in-insert-state activate)
+  ;;     ;; SKKによるカーソル色変更を, 挿入ステートかつ日本語モードの場合に限定
+  ;;     "Allow ccc to update cursor color only when we are in insert
+  ;; state and in `skk-j-mode'."
+  ;;     (when (and (eq evil-state 'insert) (bound-and-true-p skk-j-mode))
+  ;;       ad-do-it))
   (defadvice evil-ex-search-update-pattern
       (around evil-inhibit-ex-search-update-pattern-in-skk-henkan activate)
     ;; SKKの未確定状態(skk-henkan-mode)ではない場合だけ, 検索パターンをアップデート
@@ -313,6 +313,16 @@ state and in `skk-j-mode'."
   :mode (("\\.log?\\'" . log4j-mode))
   :init
   (add-hook 'log4j-mode-hook 'read-only-mode))
+
+(el-get-bundle command-log-mode)
+(use-package command-log-mode
+  :commands (global-command-log-mode)
+  :init
+  (setq command-log-mode-auto-show nil)
+  (setq clm/logging-dir "~/.emacs.d/log/")
+  (add-hook 'window-setup-hook 'global-command-log-mode)
+  (add-hook 'global-command-log-mode-hook 'clm/open-command-log-buffer)
+  (add-hook 'kill-emacs-hook 'clm/save-command-log))
 
 (provide '03-util)
 ;;; 03-util.el ends here

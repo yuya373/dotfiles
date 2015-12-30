@@ -129,6 +129,7 @@
   (defun ace-split-find-file (candidate)
     (switch-window-if-gteq-3-windows)
     (my-evil-split-window candidate))
+
   (defun helm-ace-split-ff ()
     (interactive)
     (with-helm-alive-p

@@ -257,6 +257,14 @@
       (if file-name
           (find-alternate-file (concat "/sudo::" file-name))
         (error "Cannot get a file name"))))
+  (defun dired-open-current ()
+    (interactive)
+    (let* ((file-name (buffer-file-name))
+           (splitted (split-string file-name "/")))
+      (dired
+       (mapconcat #'identity
+                  (reverse (cdr (reverse splitted)))
+                  "/"))))
   :config
   (evil-leader/set-leader "<SPC>")
   (use-package evil-org)
@@ -278,6 +286,7 @@
     "bw" 'projectile-switch-to-buffer-other-window
     "da" 'helm-dash-at-point
     "dd" 'helm-dash
+    "dc" 'dired-open-current
     "di" 'helm-dash-install-docset
     "eha" 'helm-apropos
     "ehb" 'describe-bindings
