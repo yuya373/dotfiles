@@ -33,7 +33,6 @@ if [ -d /usr/local/opt/coreutils/libexec/gnubin ] ; then
 fi
 
 # export EDITOR='vim'
-export EDITOR='emacsclient -n'
 export SYS_NOTIFIER=`which terminal-notifier`
 export HOMEBREW_CASK_OPTS='--appdir=/Applications'
 export LANG=ja_JP.utf8
@@ -49,3 +48,5 @@ if which pyenv > /dev/null; then
   PATH=/usr/local/opt/pyenv/shims:${PATH}
   export PATH
 fi
+
+export EDITOR='emacsclient -n'

@@ -3,11 +3,10 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
-export PYENV_ROOT=/usr/local/opt/pyenv
 
 # Customize to your needs...
+setopt share_history
 
 # cdr, add-zsh-hook を有効にする
 autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
@@ -120,14 +119,14 @@ bindkey -M vicmd 'v'  vi-visual-mode
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets cursor line)
-source ~/dotfiles/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets cursor line)
+# source ~/dotfiles/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-fpath=(/usr/local/share/zsh-completions $fpath)
-fpath=(~/dotfiles/.zprezto/modules/completion/external/src $fpath)
-fpath=(/usr/local/share/zsh/site-functions $fpath)
-autoload -U compinit
-compinit -C
+# fpath=(/usr/local/share/zsh-completions $fpath)
+# fpath=(~/dotfiles/.zprezto/modules/completion/external/src $fpath)
+# fpath=(/usr/local/share/zsh/site-functions $fpath)
+# autoload -U compinit
+# compinit -C
 
 # for mosh
 compdef mosh=ssh
@@ -148,38 +147,38 @@ zstyle ':chpwd:*' recent-dirs-pushd true
 
 ## tmux自動起動
 # http://d.hatena.ne.jp/tyru/20100828/run_tmux_or_screen_at_shell_startup
-is_screen_running() {
-  # tscreen also uses this varariable.
-  [ ! -z "$WINDOW" ]
-}
-is_tmux_runnning() {
-  [ ! -z "$TMUX" ]
-}
-is_screen_or_tmux_running() {
-  is_screen_running || is_tmux_runnning
-}
-shell_has_started_interactively() {
-  [ ! -z "$PS1" ]
-}
-resolve_alias() {
-  cmd="$1"
-  while \
-    whence "$cmd" >/dev/null 2>/dev/null \
-    && [ "$(whence "$cmd")" != "$cmd" ]
-do
-  cmd=$(whence "$cmd")
-done
-echo "$cmd"
-}
+# is_screen_running() {
+#   # tscreen also uses this varariable.
+#   [ ! -z "$WINDOW" ]
+# }
+# is_tmux_runnning() {
+#   [ ! -z "$TMUX" ]
+# }
+# is_screen_or_tmux_running() {
+#   is_screen_running || is_tmux_runnning
+# }
+# shell_has_started_interactively() {
+#   [ ! -z "$PS1" ]
+# }
+# resolve_alias() {
+#   cmd="$1"
+#   while \
+#     whence "$cmd" >/dev/null 2>/dev/null \
+#     && [ "$(whence "$cmd")" != "$cmd" ]
+# do
+#   cmd=$(whence "$cmd")
+# done
+# echo "$cmd"
+# }
 
-if ! is_screen_or_tmux_running && shell_has_started_interactively; then
-  for cmd in tmux; do
-    if whence $cmd >/dev/null 2>/dev/null; then
-      $(resolve_alias "$cmd")
-      break
-    fi
-  done
-fi
+# if ! is_screen_or_tmux_running && shell_has_started_interactively; then
+#   for cmd in tmux; do
+#     if whence $cmd >/dev/null 2>/dev/null; then
+#       $(resolve_alias "$cmd")
+#       break
+#     fi
+#   done
+# fi
 
 ## For cdd
 # http://blog.m4i.jp/entry/2012/01/26/064329
@@ -195,3 +194,9 @@ chpwd() {
 if (which zprof > /dev/null) ;then
   zprof | less
 fi
+
+# The next line updates PATH for the Google Cloud SDK.
+source '/Users/yuyaminami/google-cloud-sdk/path.zsh.inc'
+
+# The next line enables shell command completion for gcloud.
+source '/Users/yuyaminami/google-cloud-sdk/completion.zsh.inc'
