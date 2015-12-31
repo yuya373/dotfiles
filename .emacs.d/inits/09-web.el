@@ -42,7 +42,12 @@
 (use-package json-mode
   :mode (("\\.json\\'" . json-mode))
   :init
+  (setq js-indent-level 2)
   (setq json-reformat:indent-width 2))
+
+(el-get-bundle haml-mode)
+(use-package haml-mode
+  :mode (("\\.haml\\'" . haml-mode)))
 
 (use-package eww
   :commands (eww)

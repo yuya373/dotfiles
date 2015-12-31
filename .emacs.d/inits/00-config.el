@@ -58,9 +58,9 @@
 ;; line wrap
 (use-package visual-line-mode
   :commands (visual-line-mode)
-  :diminish visual-line-mode
   :init
-  (add-hook 'prog-mode-hook 'visual-line-mode))
+  (add-hook 'prog-mode-hook 'visual-line-mode)
+  (add-hook 'visual-line-mode-hook #'(lambda () (diminish 'visual-line-mode))))
 
 ;; auto-insert
 (use-package auto-insert-mode

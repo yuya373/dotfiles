@@ -233,52 +233,13 @@
       (server-start)))
   (add-hook 'after-init-hook 'start-server))
 
-(el-get-bundle ddskk)
-(use-package skk
-  :commands (skk-mode skk-auto-fill-mode)
-  :init
-  (setq skk-tut-file (concat user-emacs-directory
-                             "el-get/ddskk/etc/SKK.tut"))
-  (setq define-input-method "japanese-skk")
-  (add-hook 'skk-mode-hook 'skk-auto-fill-mode)
-  (global-set-key (kbd "C-x C-j") 'skk-mode)
-  :config
-  (use-package skk-tut)
-  (use-package skk-cus)
-  (use-package skk-cursor)
-  (use-package skk-study)
-  ;;   (defadvice update-buffer-local-cursor-color
-  ;;       (around evil-update-buffer-local-cursor-color-in-insert-state activate)
-  ;;     ;; SKKによるカーソル色変更を, 挿入ステートかつ日本語モードの場合に限定
-  ;;     "Allow ccc to update cursor color only when we are in insert
-  ;; state and in `skk-j-mode'."
-  ;;     (when (and (eq evil-state 'insert) (bound-and-true-p skk-j-mode))
-  ;;       ad-do-it))
-  (defadvice evil-ex-search-update-pattern
-      (around evil-inhibit-ex-search-update-pattern-in-skk-henkan activate)
-    ;; SKKの未確定状態(skk-henkan-mode)ではない場合だけ, 検索パターンをアップデート
-    "Inhibit search pattern update during `skk-henkan-mode'.
-This is reasonable since inserted text during `skk-henkan-mode'
-is a kind of temporary one which is not confirmed yet."
-    (unless (bound-and-true-p skk-henkan-mode)
-      ad-do-it))
-  (defadvice evil-refresh-cursor
-      (around evil-refresh-cursor-unless-skk-mode activate)
-    ;; Evilによるカーソルの変更を, 挿入ステートかつ日本語モードではない場合に限定
-    "Allow ccc to update cursor color only when we are in insert
-state and in `skk-j-mode'."
-    (unless (and (eq evil-state 'insert) (bound-and-true-p skk-j-mode))
-      ad-do-it)))
-
 (el-get-bundle emojify)
 (use-package emojify
   :commands (emojify-mode global-emojify-mode)
   :init
   (add-hook 'markdown-mode-hook 'emojify-mode)
   (add-hook 'git-commit-mode-hook 'emojify-mode)
-  (add-hook 'magit-mode-hook 'emojify-mode)
-  ;; (add-hook 'after-init-hook 'global-emojify-mode)
-  )
+  (add-hook 'magit-mode-hook 'emojify-mode))
 
 (use-package dired
   :init
@@ -316,13 +277,23 @@ state and in `skk-j-mode'."
 
 (el-get-bundle command-log-mode)
 (use-package command-log-mode
-  :commands (global-command-log-mode)
+  :commands (clm/open-command-log-buffer
+             global-command-log-mode)
+  :diminish command-log-mode
   :init
   (setq command-log-mode-auto-show nil)
   (setq clm/logging-dir "~/.emacs.d/log/")
   (add-hook 'window-setup-hook 'global-command-log-mode)
   (add-hook 'global-command-log-mode-hook 'clm/open-command-log-buffer)
   (add-hook 'kill-emacs-hook 'clm/save-command-log))
+
+(use-package tramp
+  :defer t
+  :config
+  (setq tramp-default-method "ssh")
+  (add-to-list 'tramp-default-proxies-alist '("\\'" "\\`root\\'" "/ssh:%h:"))
+  (add-to-list 'tramp-default-proxies-alist '("localhost\\'" "\\`root\\'" nil))
+  (add-to-list 'tramp-default-proxies-alist '("re-dash" "\\`root\\'" "/ssh:re-dash:")))
 
 (provide '03-util)
 ;;; 03-util.el ends here

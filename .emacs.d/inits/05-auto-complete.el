@@ -118,7 +118,9 @@
   (set-face-attribute 'company-scrollbar-fg nil
                       :background "orange")
   (set-face-attribute 'company-scrollbar-bg nil
-                      :background "gray40"))
+                      :background "gray40")
+  (with-eval-after-load "yasnippet"
+    (diminish 'yas-minor-mode)))
 
 (el-get-bundle pos-tip
   :type github

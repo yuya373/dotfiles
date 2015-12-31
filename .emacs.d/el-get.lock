@@ -1,5 +1,8 @@
 (setq el-get-lock-package-versions
-      '((command-log-mode :checksum "7408c0cb96709b8449f25a58a2203ed90bb5b850")
+      '((jedi-core :checksum "d87038683ba39853ca3ff2d36074d6786ae91722")
+        (company-jedi :checksum "ad49407451c7f28fe137f9c8f3a7fc89e8693a1b")
+        (haml-mode :checksum "7717db6fa4a90d618b4a5e3fef2ac1d24ce39be3")
+        (command-log-mode :checksum "7408c0cb96709b8449f25a58a2203ed90bb5b850")
         (sql-transform :checksum "641f276b4b63edb0a1563afcf8fb5103627ce3a7")
         (sql-complete :checksum "2eb533dd045d415d3b4c6822dbd02c2bf3695e95")
         (sql-indent :checksum "7d5641dd68135e7070f5026c44e518266c663434")
@@ -23,7 +26,7 @@
         (use-package :checksum "77a77c8b03044f0279e00cadd6a6d1a7ae97b016")
         (diminish :checksum "73669b69e5f9a0c9261c5b53624329d0e24d1ed8")
         (init-loader :checksum "1f28a0b801cbb08aa9b47fd15ceab243a2bc064c")
-        (el-get :checksum "56d72507c1af03d1c719dcac62a0c365857cc10e")
+        (el-get :checksum "30cfde00d48be88bf6831067cfaf364039df5722")
         (magit :checksum "758b0ce74f70c89a1fc482e8d526ce45451c37ac")
         (haskell-mode :checksum "be83c8a383f464b80b68fe90fc2c3523c352b5b6")
         (pdf-tools :checksum "0107f80dcf268d08ac075b01729820062c0fbd67")

@@ -33,22 +33,27 @@
   (add-hook 'python-mode-hook
             #'(lambda ()
                 (run-python (python-shell-parse-command))
+                (setq-local helm-dash-docsets '("Python 2"))
                 (setq python-indent-offset 4)))
-  (add-hook 'python-mode-hook #'set-python-helm-dash)
   (add-hook 'inferior-python-mode-hook #'(lambda ()
                                            (smartparens-mode)
                                            (setq-local helm-dash-docsets '("Python 2")))))
+(el-get-bundle company-jedi)
+(use-package company-jedi
+  :commands (company-jedi)
+  :init
+  (add-hook 'python-mode-hook
+            #'(lambda ()
+                (make-local-variable 'company-backends)
+                (add-to-list 'company-backends 'company-jedi))))
+
 (el-get-bundle jedi)
-(use-package jedi
+(use-package jedi-core
   :commands (jedi:setup)
   :init
-  (setq jedi:complete-on-doc t)
   (add-hook 'python-mode-hook 'jedi:setup)
-  :config
-  (evil-define-key 'normal jedi-mode-map
-    ",hh" 'jedi:show-doc
-    ",gd" 'jedi:goto-definition
-    ",js" 'jedi:stop-server))
+  (setq jedi:complete-on-dot t)
+  (setq jedi:use-shortcuts t))
 
 (el-get-bundle elpy)
 (use-package elpy
