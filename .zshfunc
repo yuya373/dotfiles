@@ -123,12 +123,7 @@ zle -N do_enter
 
 function tmux_window_name()
 {
-    [[ -n "$vcs_info_msg_1_" ]] && tmux rename-window $vcs_info_msg_1_
-    if [ -n "$vcs_info_msg_1_" ]; then
-        tmux rename-window $vcs_info_msg_1_
-    else
-        tmux rename-window ${PWD:t}
-    fi
+    tmux rename-window ${PWD:t}
 }
 if [ -n "$TMUX" ]; then
     add-zsh-hook precmd tmux_window_name
