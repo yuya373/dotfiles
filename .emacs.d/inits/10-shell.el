@@ -47,7 +47,8 @@
   (setq eshell-cmpl-ignore-case t)
   (setq eshell-save-history-on-exit t)
   (setq eshell-command-aliases-list
-        '(("emacs" "find-file $1")
+        '(("e" "emacs $1")
+          ("emacs" "find-file $1")
           ("d" "dired .")
           ("ll" "ls -l $*")
           ("la" "ls -al $*")

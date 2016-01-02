@@ -1,5 +1,8 @@
 (setq el-get-lock-package-versions
-      '((jedi-core :checksum "d87038683ba39853ca3ff2d36074d6786ae91722")
+      '((emacs-racer :checksum "637e01ba74c7ffda3c37d3bff13d870a1899fecd")
+        (rust-mode :checksum "061e6d8a3a9104570144f1eacb729e3211cb03cd")
+        (major-mode-log :checksum "36ff32dc3fd42b6d8c4561d5916aeec8dd353a63")
+        (jedi-core :checksum "d87038683ba39853ca3ff2d36074d6786ae91722")
         (company-jedi :checksum "ad49407451c7f28fe137f9c8f3a7fc89e8693a1b")
         (haml-mode :checksum "7717db6fa4a90d618b4a5e3fef2ac1d24ce39be3")
         (command-log-mode :checksum "7408c0cb96709b8449f25a58a2203ed90bb5b850")

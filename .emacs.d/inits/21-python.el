@@ -53,7 +53,11 @@
   :init
   (add-hook 'python-mode-hook 'jedi:setup)
   (setq jedi:complete-on-dot t)
-  (setq jedi:use-shortcuts t))
+  (setq jedi:use-shortcuts t)
+  :config
+  (evil-define-key 'normal jedi-mode-map
+    ",g" 'jedi:goto-definition
+    ",h" 'jedi:show-doc))
 
 (el-get-bundle elpy)
 (use-package elpy

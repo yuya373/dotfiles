@@ -156,19 +156,6 @@
                                             "*Warnings*"))
   (setq golden-ratio-auto-scale t))
 
-(el-get-bundle google-translate)
-(use-package google-translate
-  :commands (google-translate-at-point
-             google-translate-query-translate
-             google-translate-query-translate-reverse)
-  :config
-  (setq google-translate-default-source-language "en"
-        google-translate-default-target-language "ja"))
-
-(el-get-bundle syohex/emacs-codic)
-(use-package codic
-  :commands (codic codic-translate))
-
 (el-get-bundle quickrun)
 (use-package quickrun
   :commands (quickrun
@@ -247,7 +234,10 @@
   (setq dired-recursive-copies 'always)
   :config
   (with-eval-after-load "evil"
-    (evil-define-key 'normal dired-mode-map "R" 'wdired-change-to-wdired-mode)))
+    (evil-define-key 'normal dired-mode-map
+      "R" 'wdired-change-to-wdired-mode
+      "n" nil
+      "p" nil)))
 
 (el-get-bundle ag)
 (el-get-bundle wgrep-ag)
@@ -269,24 +259,6 @@
     ",s" 'wgrep-finish-edit
     ",r" 'wgrep-change-to-wgrep-mode))
 
-(el-get-bundle log4j-mode)
-(use-package log4j-mode
-  :mode (("\\.log?\\'" . log4j-mode))
-  :init
-  (add-hook 'log4j-mode-hook 'read-only-mode))
-
-(el-get-bundle command-log-mode)
-(use-package command-log-mode
-  :commands (clm/open-command-log-buffer
-             global-command-log-mode)
-  :diminish command-log-mode
-  :init
-  (setq command-log-mode-auto-show nil)
-  (setq clm/logging-dir "~/.emacs.d/log/")
-  (add-hook 'window-setup-hook 'global-command-log-mode)
-  (add-hook 'global-command-log-mode-hook 'clm/open-command-log-buffer)
-  (add-hook 'kill-emacs-hook 'clm/save-command-log))
-
 (use-package tramp
   :defer t
   :config
@@ -294,6 +266,35 @@
   (add-to-list 'tramp-default-proxies-alist '("\\'" "\\`root\\'" "/ssh:%h:"))
   (add-to-list 'tramp-default-proxies-alist '("localhost\\'" "\\`root\\'" nil))
   (add-to-list 'tramp-default-proxies-alist '("re-dash" "\\`root\\'" "/ssh:re-dash:")))
+
+(el-get-bundle ddskk)
+(use-package skk-autoloads
+  :commands (skk-mode skk-auto-fill-mode)
+  :init
+  (setq skk-tut-file (concat user-emacs-directory
+                             "el-get/ddskk/etc/SKK.tut"))
+  (setq define-input-method "japanese-skk")
+  (setq skk-egg-like-newline t)
+  (setq skk-large-jisyo (concat user-emacs-directory
+                                "SKK-JISYO.L"))
+  (defun enable-skk-when-insert ()
+    (unless (bound-and-true-p skk-mode)
+      (skk-mode 1)
+      (skk-latin-mode 1)))
+  (add-hook 'evil-insert-state-entry-hook 'enable-skk-when-insert)
+  :config
+  (defun my-skk-control ()
+    (if (bound-and-true-p skk-mode)
+        (skk-latin-mode 1)))
+  (add-hook 'evil-normal-state-entry-hook 'my-skk-control)
+  (defadvice evil-ex-search-update-pattern
+      (around evil-inhibit-ex-search-update-pattern-in-skk-henkan activate)
+    ;; SKKの未確定状態(skk-henkan-mode)ではない場合だけ, 検索パターンをアップデート
+    "Inhibit search pattern update during `skk-henkan-mode'.
+This is reasonable since inserted text during `skk-henkan-mode'
+is a kind of temporary one which is not confirmed yet."
+    (unless (bound-and-true-p skk-henkan-mode)
+      ad-do-it)))
 
 (provide '03-util)
 ;;; 03-util.el ends here
