@@ -157,6 +157,7 @@
   ;; avy
   (use-package avy
     :init
+    (setq avy-highlight-first t)
     (setq avy-all-windows nil)
     (setq avy-keys (number-sequence ?a ?z))
     :config
@@ -166,14 +167,15 @@
         (let ((pnt (point))
               (buf (current-buffer)))
           (call-interactively 'avy-goto-char-in-line)
-          (when (and (equal buf (current-buffer))
-                     (< (point) pnt))
-            (setq evil-this-type
-                  (cond
-                   ((eq evil-this-type 'exclusive)
-                    'inclusive)
-                   ((eq evil-this-type 'inclusive)
-                    'exclusive)))))))
+          ;; (when (and (equal buf (current-buffer))
+          ;;            (< (point) pnt))
+          ;;   (setq evil-this-type
+          ;;         (cond
+          ;;          ((eq evil-this-type 'exclusive)
+          ;;           'inclusive)
+          ;;          ((eq evil-this-type 'inclusive)
+          ;;           'exclusive))))
+          )))
     (evil-define-motion evil-avy-goto-word (count)
       :type inclusive
       :jump t
@@ -346,6 +348,9 @@
     "miu" 'slack-im-list-update
     "mus" 'slack-user-stars-list
     "mk" 'slack-ws-close
+    "mfl" 'slack-file-list
+    "mfu" 'slack-file-upload
+    "mfd" 'slack-file-delete
     "ml" 'open-junk-dir
     "mn" 'open-junk-file
     "ms" 'slack-start

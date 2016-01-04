@@ -101,7 +101,7 @@
   (push '("*Messages*") popwin:special-display-config)
   (push '(slack-info-mode) popwin:special-display-config)
   (push '(slack-edit-message-mode) popwin:special-display-config)
-  (push '(slack-mode :height 0.25 :noselect t :stick t :tail t :regexp t)
+  (push '(slack-mode :height 0.25 :noselect t :stick t :tail t)
         popwin:special-display-config)
   (push '("*Bundler*" :noselect t) popwin:special-display-config)
   (push '(inf-ruby-mode :stick t) popwin:special-display-config)
