@@ -34,7 +34,7 @@
   :init
   (setq-default flycheck-disabled-checkers '(chef-foodcritic))
   (setq flycheck-emacs-lisp-load-path 'inherit)
-  (add-hook 'prog-mode-hook #'(lambda () (flycheck-mode t))))
+  (add-hook 'prog-mode-hook 'flycheck-mode))
 
 (use-package flycheck-package
   :commands (flycheck-package-setup))

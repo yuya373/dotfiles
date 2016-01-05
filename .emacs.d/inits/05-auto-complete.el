@@ -45,7 +45,7 @@
   :commands (company-mode global-company-mode)
   :init
   (setq company-idle-delay 0) ; デフォルトは0.5
-  (setq company-minimum-prefix-length 3) ; デフォルトは4
+  (setq company-minimum-prefix-length 4) ; デフォルトは4
   (setq company-selection-wrap-around t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
   (setq company-auto-complete nil)
   (setq company-tooltip-align-annotations t)
@@ -83,28 +83,21 @@
           (company-complete-selection)
         (company--insert-candidate2 company-common))))
 
-  (with-eval-after-load "evil"
-    (evil-define-key 'insert company-active-map
-      (kbd "C-n") 'company-select-next
-      (kbd "C-p") 'company-select-previous)
-    (evil-define-key 'insert company-search-map
-      (kbd "C-n") 'company-select-next
-      (kbd "C-p") 'company-select-previous))
-
-  (define-key company-active-map [tab] 'company-complete-common2)
-  (define-key company-active-map [backtab] 'company-select-previous) ; おまけ
-
   (define-key company-active-map (kbd "C-w") 'backward-kill-word)
   (define-key company-active-map (kbd "C-h") 'delete-backward-char)
-
-  ;; C-n, C-pで補完候補を次/前の候補を選択
+  (define-key company-active-map [tab] 'company-complete-common2)
+  (define-key company-active-map [backtab] 'company-select-previous)
   (define-key company-active-map (kbd "C-n") 'company-select-next)
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
+  (define-key company-search-map (kbd "C-w") 'backward-kill-word)
+  (define-key company-search-map (kbd "C-h") 'delete-backward-char)
+  (define-key company-search-map [tab] 'company-complete-common2)
+  (define-key company-search-map [backtab] 'company-select-previous)
   (define-key company-search-map (kbd "C-n") 'company-select-next)
   (define-key company-search-map (kbd "C-p") 'company-select-previous)
 
-  ;; 各種メジャーモードでも C-M-iで company-modeの補完を使う
-  (define-key emacs-lisp-mode-map (kbd "C-M-i") 'company-complete)
+  (define-key company-filter-map (kbd "TAB") 'company-select-next)
+  (define-key company-filter-map (kbd "S-TAB") 'company-select-previous)
 
   (set-face-attribute 'company-tooltip nil
                       :foreground "black" :background "lightgrey")
@@ -120,6 +113,7 @@
                       :background "orange")
   (set-face-attribute 'company-scrollbar-bg nil
                       :background "gray40")
+  (diminish 'abbrev-mode)
   (with-eval-after-load "yasnippet"
     (diminish 'yas-minor-mode)))
 
