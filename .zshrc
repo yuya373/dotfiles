@@ -23,12 +23,12 @@ if [ -e ${HOME}/.zsh_aliases ]; then
 fi
 source ~/dotfiles/.zshfunc
 
-# terminal-notifier
-case "${OSTYPE}" in
-  darwin*)
-    source ~/dotfiles/zsh-notify/notify.plugin.zsh
-    ;;
-esac
+# # terminal-notifier
+# case "${OSTYPE}" in
+#   darwin*)
+#     source ~/dotfiles/zsh-notify/notify.plugin.zsh
+#     ;;
+# esac
 
 # git-it-on
 source ~/dotfiles/git-it-on.zsh/git-it-on.plugin.zsh
@@ -60,30 +60,28 @@ alias gd="git diff"
 alias e="emacsclient -n"
 alias ee="emacsclient -nw -a ''"
 
-# keybind
+# use vim binding
 bindkey -v
+
+# insert mode binding
 bindkey -v '^Y' push-line
 bindkey -v '^J' vi-cmd-mode
-bindkey -v '^a^w' ftw
-bindkey -v '^a^s' fs
+bindkey -v '^m' do_enter
+bindkey -v '^@' fcdr
+bindkey -v '^o' fd
+bindkey -v '^p' fdr
+bindkey -v '^k' fzf-cd-widget
 
-
-# normal mode keybinding
+# normal mode binding
 bindkey -a 'H' run-help
 bindkey -a '^@' fcdr
 bindkey -a '^o' fd
 bindkey -a '^p' fdr
-bindkey -a '^a^w' ftw
-bindkey -a '^a^s' fs
+bindkey -a '^k' fzf-cd-widget
+bindkey -a '^r' fzf-history-widget
 
 
 # from .zshfunc
-bindkey '^m' do_enter
-bindkey '^@' fcdr
-bindkey '^o' fd
-bindkey '^p' fdr
-bindkey '^a^w' ftw
-bindkey '^a^s' fs
 
 # text object
 autoload -U select-quoted
