@@ -263,8 +263,10 @@
   :defer t
   :config
   (setq tramp-default-method "ssh")
-  (add-to-list 'tramp-default-proxies-alist '("\\'" "\\`root\\'" "/ssh:%h:"))
-  (add-to-list 'tramp-default-proxies-alist '("localhost\\'" "\\`root\\'" nil))
+  (add-to-list 'tramp-default-proxies-alist '(nil "\\`root\\'" "/ssh:%h:"))
+  (add-to-list 'tramp-default-proxies-alist '("localhost\\'" nil, nil))
+  (add-to-list 'tramp-default-proxies-alist
+               '((regexp-quote (system-name)) nil nil))
   (add-to-list 'tramp-default-proxies-alist '("re-dash" "\\`root\\'" "/ssh:re-dash:")))
 
 (el-get-bundle ddskk)

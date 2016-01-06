@@ -51,6 +51,8 @@
   (setq company-tooltip-align-annotations t)
   (setq company-transformers '(company-sort-by-occurrence company-sort-by-backend-importance))
   (setq company-dabbrev-other-buffers t)
+  (setq company-dabbrev-ignore-case nil)
+  (setq company-dabbrev-downcase nil)
   (add-hook 'after-init-hook 'global-company-mode)
   :config
   (setq company-backends (delete 'company-bbdb company-backends))
@@ -59,7 +61,7 @@
   (setq company-backends (delete 'company-eclim company-backends))
   (setq company-backends (delete 'company-oddmuse company-backends))
   (setq company-backends (delete 'company-xcode company-backends))
-  (setq company-backends (delete 'company-capf company-backends))
+  ;; (setq company-backends (delete 'company-capf company-backends))
   (defun company-emacs-lisp-mode ()
     (make-local-variable 'company-backends)
     (add-to-list 'company-backends 'company-capf))
@@ -115,7 +117,13 @@
                       :background "gray40")
   (diminish 'abbrev-mode)
   (with-eval-after-load "yasnippet"
-    (diminish 'yas-minor-mode)))
+    (diminish 'yas-minor-mode))
+  (el-get-bundle company-restclient
+    :commands (company-restclient)
+    :init
+    (defun my-comp-restclient ()
+      (make-local-variable 'company-backends)
+      (add-to-list 'company-backends 'company-restclient))))
 
 (el-get-bundle pos-tip
   :type github

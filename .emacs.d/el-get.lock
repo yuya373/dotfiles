@@ -1,5 +1,6 @@
 (setq el-get-lock-package-versions
-      '((emacs-racer :checksum "637e01ba74c7ffda3c37d3bff13d870a1899fecd")
+      '((company-restclient :checksum "752f39490178832f6a09abd82e10d9356636350a")
+        (emacs-racer :checksum "637e01ba74c7ffda3c37d3bff13d870a1899fecd")
         (rust-mode :checksum "061e6d8a3a9104570144f1eacb729e3211cb03cd")
         (major-mode-log :checksum "36ff32dc3fd42b6d8c4561d5916aeec8dd353a63")
         (jedi-core :checksum "d87038683ba39853ca3ff2d36074d6786ae91722")
@@ -114,7 +115,7 @@
         (deferred :checksum "e9fd3691ee3666d46eb9f8bd5b697a54837c8c0b")
         (logito :checksum "824acb89d2cc18cb47281a4fbddd81ad244a2052")
         (pcache :checksum "4b090f46182fd2ed1f44905dc04acc3121bcf622")
-        (helm-gtags :checksum "68acd9a1b7e1197fd09971c54c0afc066155579e")
+        (helm-gtags :checksum "defd4aefa014d5f114c3e01958fcdd14dbae0e89")
         (helm-dash :checksum "f39b4dd06a9f9f71aa00d954dac765a4e23b5d90")
         (helm-ag :checksum "d015593c34155db60d91e6e8bb29546cf353088a")
         (helm-ls-git :checksum "8cddd84ee4361b9d21f800adbaeeacf72645ab62")
