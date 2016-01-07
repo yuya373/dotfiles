@@ -62,6 +62,7 @@
                                                 (delete-other-windows)))
   :config
   (use-package ert)
+  (use-package magit-extras)
   ;; (use-package magit-gh-pulls
   ;;   :commands (turn-on-magit-gh-pulls)
   ;;   :init

@@ -99,9 +99,9 @@
   (push '(cider-repl-mode :tail t :stick t) popwin:special-display-config)
   (push '("*Backtrace*") popwin:special-display-config)
   (push '("*Messages*") popwin:special-display-config)
-  (push '(slack-info-mode) popwin:special-display-config)
+  (push '(slack-info-mode :tail nil :noselect t :stick t) popwin:special-display-config)
   (push '(slack-edit-message-mode) popwin:special-display-config)
-  (push '(slack-mode :height 0.25 :noselect t :stick t :tail t)
+  (push '(slack-mode :tail nil :height 0.4 :noselect t :stick t )
         popwin:special-display-config)
   (push '("*Bundler*" :noselect t) popwin:special-display-config)
   (push '(inf-ruby-mode :stick t) popwin:special-display-config)
@@ -297,6 +297,11 @@ This is reasonable since inserted text during `skk-henkan-mode'
 is a kind of temporary one which is not confirmed yet."
     (unless (bound-and-true-p skk-henkan-mode)
       ad-do-it)))
+
+(use-package subword-mode
+  :commands (subword-mode)
+  :init
+  (add-hook 'scala-mode-hook 'subword-mode))
 
 (provide '03-util)
 ;;; 03-util.el ends here
