@@ -51,11 +51,11 @@
   ;;  t 'symbol
   ;;  (font-spec :family "Apple Color Emoji") nil 'prepend)
 
-  ;; (el-get-bundle flycheck-pos-tip)
-  ;; (use-package flycheck-pos-tip
-  ;;   :commands (flycheck-pos-tip-mode)
-  ;;   :init
-  ;;   (add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode))
+  (el-get-bundle flycheck-pos-tip)
+  (use-package flycheck-pos-tip
+    :commands (flycheck-pos-tip-mode)
+    :init
+    (add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode))
 
   (el-get-bundle company-quickhelp)
   (use-package company-quickhelp

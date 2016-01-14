@@ -29,6 +29,12 @@
 
 (el-get-bundle company)
 (el-get-bundle company-emoji)
+(el-get-bundle company-statistics)
+
+(use-package company-statistics
+  :commands (company-statistics-mode)
+  :init
+  (add-hook 'company-mode-hook 'company-statistics-mode))
 
 (use-package company-emoji
   :commands (company-emoji)
@@ -55,13 +61,18 @@
   (setq company-dabbrev-downcase nil)
   (add-hook 'after-init-hook 'global-company-mode)
   :config
+  (use-package company-ispell)
+  ;; (global-set-key (kbd "TAB") 'nil)
+  ;; (with-eval-after-load "evil"
+  ;;   (evil-define-key 'insert evil-insert-state-map
+  ;;     (kbd "TAB") 'company-indent-or-complete-common))
   (setq company-backends (delete 'company-bbdb company-backends))
   (setq company-backends (delete 'company-cmake company-backends))
   (setq company-backends (delete 'company-clang company-backends))
   (setq company-backends (delete 'company-eclim company-backends))
   (setq company-backends (delete 'company-oddmuse company-backends))
   (setq company-backends (delete 'company-xcode company-backends))
-  ;; (setq company-backends (delete 'company-capf company-backends))
+  (setq company-backends (delete 'company-capf company-backends))
   (defun company-emacs-lisp-mode ()
     (make-local-variable 'company-backends)
     (add-to-list 'company-backends 'company-capf))
@@ -88,18 +99,23 @@
   (define-key company-active-map (kbd "C-w") 'backward-kill-word)
   (define-key company-active-map (kbd "C-h") 'delete-backward-char)
   (define-key company-active-map [tab] 'company-complete-common2)
+  ;; (define-key company-active-map [tab] 'company-select-next)
   (define-key company-active-map [backtab] 'company-select-previous)
+  (define-key company-active-map (kbd "S-TAB") 'company-select-previous)
   (define-key company-active-map (kbd "C-n") 'company-select-next)
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
   (define-key company-search-map (kbd "C-w") 'backward-kill-word)
   (define-key company-search-map (kbd "C-h") 'delete-backward-char)
-  (define-key company-search-map [tab] 'company-complete-common2)
+  (define-key company-active-map [tab] 'company-complete-common2)
+  ;; (define-key company-search-map [tab] 'company-select-next)
   (define-key company-search-map [backtab] 'company-select-previous)
+  (define-key company-search-map (kbd "S-TAB") 'company-select-previous)
   (define-key company-search-map (kbd "C-n") 'company-select-next)
   (define-key company-search-map (kbd "C-p") 'company-select-previous)
 
-  (define-key company-filter-map (kbd "TAB") 'company-select-next)
-  (define-key company-filter-map (kbd "S-TAB") 'company-select-previous)
+  ;; (define-key company-filter-map [tab] 'company-complete-common2)
+  (define-key company-filter-map [tab] 'company-select-next)
+  (define-key company-filter-map [backtab] 'company-select-previous)
 
   (set-face-attribute 'company-tooltip nil
                       :foreground "black" :background "lightgrey")

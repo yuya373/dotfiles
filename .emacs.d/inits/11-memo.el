@@ -31,7 +31,12 @@
          ("\\.md\\'" . gfm-mode)
          ("PULLREQ_MSG" . gfm-mode))
   :init
-  (add-hook 'markdown-mode-hook '(lambda () (set (make-local-variable 'tab-width) 2))))
+  (defun my-markdown-mode-setting ()
+    (set (make-local-variable 'tab-width) 2)
+    (make-local-variable 'company-backends)
+    (add-to-list 'company-backends 'company-ispell))
+  (add-hook 'markdown-mode-hook #'my-markdown-mode-setting)
+  (add-hook 'gfm-mode-hook #'my-markdown-mode-setting))
 
 (el-get-bundle open-junk-file)
 (use-package open-junk-file

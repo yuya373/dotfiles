@@ -75,13 +75,14 @@
   (use-package evil-exchange :config (evil-exchange-install))
   (use-package evil-visualstar :config (global-evil-visualstar-mode))
   (use-package evil-surround :config (global-evil-surround-mode t))
+  (defun evilmi-customize-keybinding ()
+    (evil-define-key 'visual evil-matchit-mode-map
+      "t" 'evilmi-jump-items)
+    (evil-define-key 'normal evil-matchit-mode-map
+      "t" 'evilmi-jump-items))
   (use-package evil-matchit
     :config
     (setq evilmi-ignore-comments nil)
-    (evil-define-key 'normal evil-matchit-mode-map
-      "t" 'evilmi-jump-items)
-    (evil-define-key 'visual evil-matchit-mode-map
-      "t" 'evilmi-jump-items)
     (global-evil-matchit-mode t))
   (use-package expand-region
     :commands (er/expand-region er/contract-region))
@@ -118,7 +119,10 @@
     (interactive)
     (evil-open-below 1)
     (evil-normal-state))
+  (define-key evil-insert-state-map (kbd "C-n") nil)
+  (define-key evil-insert-state-map (kbd "C-p") nil)
   (define-key evil-normal-state-map (kbd "RET") 'open-below-esc)
+  (define-key minibuffer-local-map (kbd "C-w") 'backward-kill-word)
   ;; C-h map
   (define-key evil-insert-state-map (kbd "C-h") 'delete-backward-char)
   (define-key evil-ex-search-keymap (kbd "C-h") 'delete-backward-char)
@@ -267,6 +271,19 @@
        (mapconcat #'identity
                   (reverse (cdr (reverse splitted)))
                   "/"))))
+  (defun kill-buffers ()
+    (interactive)
+    (cl-labels
+        ((you-kill (buf)
+                   (let* ((buf-name (buffer-name buf))
+                          (first-char (substring-no-properties buf-name
+                                                               0 1)))
+                     (unless (or (string= " " first-char)
+                                 (string= "*" first-char)
+                                 (string= buf-name
+                                          (buffer-name (current-buffer))))
+                       (kill-buffer buf)))))
+      (mapc #'you-kill (buffer-list))))
   :config
   (evil-leader/set-leader "<SPC>")
   (use-package evil-org)
@@ -282,7 +299,7 @@
     "bb" 'helm-buffers-list
     "bb" 'helm-mini
     "bf" 'popwin:find-file
-    "bk" 'projectile-kill-buffers
+    "bk" 'kill-buffers
     "bl" 'popwin:popup-last-buffer
     "bp" 'popwin:pop-to-buffer
     "bw" 'projectile-switch-to-buffer-other-window
@@ -364,7 +381,7 @@
     "s" 'create-eshell
     "tG" 'projectile-regenerate-tags
     "tQ" 'google-translate-query-translate-reverse
-    "ta" 'google-translate-at-point
+    "tl" 'google-translate-smooth-translate
     "tq" 'google-translate-query-translate
     "ts" 'timer
     "tt" 'helm-etags-select

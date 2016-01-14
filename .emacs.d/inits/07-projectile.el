@@ -45,6 +45,7 @@
   (defmacro rails-find-file-current (dir re fallback)
     `(let* ((singular (projectile-rails-current-resource-name))
             (plural (pluralize-string singular))
+            (plural|singular (format "%s\\|%s" plural singular))
             (abs-current-file (buffer-file-name (current-buffer)))
             (current-file (if abs-current-file
                               (file-relative-name
@@ -98,7 +99,7 @@
   (defun find-file-current-view ()
     (interactive)
     (rails-find-file-current "app/views/"
-                             "/${plural}/\\(.+\\)$"
+                             "/\\(${plural|singular}\\)/\\(.+\\)$"
                              'projectile-rails-find-view))
   :config
   (evil-define-key 'normal projectile-rails-mode-map ",ris" 'projectile-rails-server)

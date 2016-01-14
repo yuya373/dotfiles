@@ -99,9 +99,9 @@
   (push '(cider-repl-mode :tail t :stick t) popwin:special-display-config)
   (push '("*Backtrace*") popwin:special-display-config)
   (push '("*Messages*") popwin:special-display-config)
-  (push '(slack-info-mode :tail nil :noselect t :stick t) popwin:special-display-config)
+  (push '(slack-info-mode :tail t :noselect t :stick t) popwin:special-display-config)
   (push '(slack-edit-message-mode) popwin:special-display-config)
-  (push '(slack-mode :tail nil :height 0.4 :noselect t :stick t )
+  (push '(slack-mode :tail t :height 0.4 :noselect t :stick t )
         popwin:special-display-config)
   (push '("*Bundler*" :noselect t) popwin:special-display-config)
   (push '(inf-ruby-mode :stick t) popwin:special-display-config)
@@ -262,12 +262,12 @@
 (use-package tramp
   :defer t
   :config
-  (setq tramp-default-method "ssh")
+  (setq tramp-default-method "scp")
   (add-to-list 'tramp-default-proxies-alist '(nil "\\`root\\'" "/ssh:%h:"))
   (add-to-list 'tramp-default-proxies-alist '("localhost\\'" nil, nil))
   (add-to-list 'tramp-default-proxies-alist
                '((regexp-quote (system-name)) nil nil))
-  (add-to-list 'tramp-default-proxies-alist '("re-dash" "\\`root\\'" "/ssh:re-dash:")))
+  (add-to-list 'tramp-default-proxies-alist '("redash" "\\`root\\'" "/ssh:redash:")))
 
 (el-get-bundle ddskk)
 (use-package skk-autoloads

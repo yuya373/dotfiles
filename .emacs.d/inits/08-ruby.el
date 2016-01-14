@@ -32,7 +32,7 @@
 (el-get-bundle ruby-end)
 (el-get-bundle bundler)
 (el-get-bundle rbenv)
-(el-get-bundle robe)
+(el-get-bundle robe-mode)
 (el-get-bundle inf-ruby)
 (el-get-bundle enh-ruby-mode)
 (el-get-bundle ruby-test-mode)
@@ -46,20 +46,16 @@
 (use-package inf-ruby
   :commands (inf-ruby inf-ruby-minor-mode inf-ruby-console-auto)
   :init
-  (add-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode)
-  :config
-  (evil-define-key 'normal inf-ruby-mode-map (kbd ",ric") 'inf-ruby-console-auto))
+  (add-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode))
 (use-package ac-robe
   :commands (ac-robe-setup))
 (use-package robe
   :diminish robe-mode
   :commands (robe-mode robe-start)
   :init
+  (setq robe-turn-on-eldoc nil)
+  (setq robe-highlight-capf-candidates nil)
   (add-hook 'enh-ruby-mode-hook 'robe-mode)
-  (defun my-company-robe ()
-    (make-local-variable 'company-backends)
-    (add-to-list 'company-backends 'company-robe))
-  (add-hook 'robe-mode-hook 'my-company-robe)
   :config
   (defun enable-robe-server ()
     (interactive)
@@ -75,6 +71,13 @@
          ("Schema" . enh-ruby-mode))
   :interpreter ("ruby" . enh-ruby-mode)
   :init
+  (defun my-company-ruby ()
+    (make-local-variable 'company-backends)
+    (make-local-variable 'company-idle-delay)
+    (add-to-list 'company-backends 'company-robe)
+    (remq 'company-capf company-backends)
+    (setq company-idle-delay 0.5))
+  (add-hook 'enh-ruby-mode-hook 'my-company-ruby)
   (setq tab-width 2)
   (modify-syntax-entry ?_ "w")
   (setq enh-ruby-deep-indent-paren nil
@@ -86,6 +89,13 @@
   (use-package bundler
     :commands (bundle-open bundle-exec bundle-check bundle-gemfile
                            bundle-update bundle-console bundle-install))
+  (evil-define-key 'normal enh-ruby-mode-map
+    (kbd ",el") 'ruby-send-last-sexp
+    (kbd ",ed") 'ruby-send-definition-and-go
+    (kbd ",eb") 'ruby-send-block-and-go
+    (kbd ",ric") 'inf-ruby-console-auto)
+  (evil-define-key 'visual enh-ruby-mode-map
+    (kbd ",er") 'ruby-send-region-and-go)
   (evil-define-key 'normal enh-ruby-mode-map (kbd ",be") 'bundle-exec)
   (evil-define-key 'normal enh-ruby-mode-map (kbd ",bc") 'bundle-console)
   (evil-define-key 'normal enh-ruby-mode-map (kbd ",bg") 'bundle-gemfile)

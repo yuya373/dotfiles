@@ -28,8 +28,14 @@
 (use-package google-translate
   :commands (google-translate-at-point
              google-translate-query-translate
-             google-translate-query-translate-reverse)
+             google-translate-query-translate-reverse
+             google-translate-smooth-translate)
+  :init
+  (setq google-translate-translation-directions-alist '(("en" . "ja")
+                                                        ("ja" . "en"))
+        google-translate-input-method-auto-toggling t)
   :config
+  (use-package google-translate-smooth-ui)
   (setq google-translate-default-source-language "en"
         google-translate-default-target-language "ja"))
 

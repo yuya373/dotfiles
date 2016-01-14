@@ -33,9 +33,11 @@
   :commands (pdf-tools-install)
   :mode (("\\.pdf\\'" . pdf-view-mode))
   :init
+  (setq pdf-view-resize-factor 1.1)
+  (add-hook 'pdf-view-mode-hook 'pdf-view-auto-slice-minor-mode)
   (add-hook 'pdf-view-mode-hook #'(lambda () (linum-mode -1)))
-  (add-hook 'pdf-view-mode-hook 'pdf-view-dark-minor-mode)
-  (add-hook 'pdf-view-mode-hook 'pdf-view-midnight-minor-mode)
+  ;; (add-hook 'pdf-view-mode-hook 'pdf-view-dark-minor-mode)
+  ;; (add-hook 'pdf-view-mode-hook 'pdf-view-midnight-minor-mode)
   (add-hook 'pdf-view-mode-hook #'(lambda () (blink-cursor-mode -1)))
   (setq pdf-view-dump-file-name "pdf-view-dump")
   :config
@@ -45,7 +47,10 @@
       (when (and current-page (< 1 current-page))
         (let* ((file-path (concat user-emacs-directory
                                   pdf-view-dump-file-name))
-               (pdf-file-name (pdf-view-buffer-file-name))
+               (pdf-file-name (mapconcat #'identity
+                                         (split-string
+                                          (pdf-view-buffer-file-name)
+                                          "\s") ""))
                (old-data (pdf-view-read-dumped file-path))
                (data (cons (cons pdf-file-name current-page)
                            (cl-delete-if #'(lambda (n)
@@ -64,7 +69,10 @@
           (read (buffer-string))))))
 
   (defun pdf-view-find-last-page ()
-    (let* ((pdf-file-name (pdf-view-buffer-file-name))
+    (let* ((pdf-file-name (mapconcat #'identity
+                                     (split-string
+                                      (pdf-view-buffer-file-name)
+                                      "\s") ""))
            (file-path (concat user-emacs-directory
                               pdf-view-dump-file-name))
            (data (pdf-view-read-dumped file-path)))
@@ -98,6 +106,7 @@
     "o" 'pdf-outline
     "b" 'pdf-view-position-to-register
     "B" 'pdf-view-jump-to-register
+    ",vs" 'pdf-view-auto-slice-minor-mode
     ",vd" 'pdf-view-dark-minor-mode
     ",vm" 'pdf-view-midnight-minor-mode
     ",r" 'pdf-view-restore-last-page
@@ -123,11 +132,6 @@
 
   (add-hook 'popwin:before-popup-hook #'mcc-pdf-view-save)
   (add-hook 'popwin:after-popup-hook #'mcc-pdf-view-restore)
-  ;; (add-hook 'helm-before-initialize-hook #'mcc-pdf-view-save t)
-  ;; (remove-hook 'helm-before-initialize-hook #'mcc-pdf-view-save)
-  ;; (add-hook 'helm-cleanup-hook #'mcc-pdf-view-restore t)
-  ;; (remove-hook 'helm-cleanup-hook #'mcc-pdf-view-restore)
- ; (use-package pdf-annot)
   (use-package pdf-links)
   (use-package pdf-info)
   (use-package pdf-misc)
