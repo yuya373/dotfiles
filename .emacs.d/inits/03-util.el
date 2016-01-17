@@ -228,17 +228,6 @@
   (add-hook 'git-commit-mode-hook 'emojify-mode)
   (add-hook 'magit-mode-hook 'emojify-mode))
 
-(use-package dired
-  :init
-  (setq dired-dwim-target t)
-  (setq dired-recursive-copies 'always)
-  :config
-  (with-eval-after-load "evil"
-    (evil-define-key 'normal dired-mode-map
-      "R" 'wdired-change-to-wdired-mode
-      "n" nil
-      "p" nil)))
-
 (el-get-bundle ag)
 (el-get-bundle wgrep-ag)
 
@@ -263,11 +252,12 @@
   :defer t
   :config
   (setq tramp-default-method "scp")
-  (add-to-list 'tramp-default-proxies-alist '(nil "\\`root\\'" "/ssh:%h:"))
-  (add-to-list 'tramp-default-proxies-alist '("localhost\\'" nil, nil))
-  (add-to-list 'tramp-default-proxies-alist
-               '((regexp-quote (system-name)) nil nil))
-  (add-to-list 'tramp-default-proxies-alist '("redash" "\\`root\\'" "/ssh:redash:")))
+  ;; (add-to-list 'tramp-default-proxies-alist '(nil "\\`root\\'" "/ssh:%h:"))
+  ;; (add-to-list 'tramp-default-proxies-alist '("localhost\\'" nil, nil))
+  ;; (add-to-list 'tramp-default-proxies-alist
+  ;;              '((regexp-quote (system-name)) nil nil))
+  ;; (add-to-list 'tramp-default-proxies-alist '("redash" "\\`root\\'" "/ssh:redash:"))
+  )
 
 (el-get-bundle ddskk)
 (use-package skk-autoloads
@@ -302,6 +292,33 @@ is a kind of temporary one which is not confirmed yet."
   :commands (subword-mode)
   :init
   (add-hook 'scala-mode-hook 'subword-mode))
+
+(use-package dired
+  :init
+  (setq dired-dwim-target t)
+  (setq dired-recursive-copies 'always)
+  :config
+  (with-eval-after-load "evil"
+    (evil-define-key 'normal dired-mode-map
+      "$" 'evil-end-of-line
+      "0" 'evil-digit-argument-or-evil-beginning-of-line
+      "w" 'dired-show-file-type
+      "y" 'dired-copy-filename-as-kill
+      "K" 'dired-k
+      (kbd "C-p") 'dired-up-directory
+      (kbd "C-n") 'dired-find-file
+      "r" 'dired-do-rename
+      "R" 'wdired-change-to-wdired-mode
+      "n" 'evil-ex-search-next
+      "N" 'evil-ex-search-previous)))
+
+(el-get-bundle dired-k)
+(use-package dired-k
+  :commands (dired-k dired-k-no-revert)
+  :init
+  (add-hook 'dired-after-readin-hook 'dired-k-no-revert)
+  (setq dired-k-style 'git)
+  (setq dired-k-human-readable t))
 
 (provide '03-util)
 ;;; 03-util.el ends here

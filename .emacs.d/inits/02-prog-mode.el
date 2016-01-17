@@ -19,10 +19,12 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
-
 ;;
 
 ;;; Code:
+
+(eval-when-compile
+  (require 'evil))
 
 ;; smartparens
 (el-get-bundle smartparens)
@@ -30,7 +32,21 @@
   :diminish smartparens-mode
   :commands (smartparens-mode turn-on-smartparens-mode)
   :init
-  (add-hook 'prog-mode-hook 'smartparens-mode))
+  (add-hook 'prog-mode-hook 'smartparens-mode)
+  :config
+  (evil-define-key 'normal smartparens-mode-map
+    (kbd "C-s C-f") 'sp-forward-sexp
+    (kbd "C-s C-b") 'sp-backward-sexp
+    (kbd "C-s C-w") 'sp-unwrap-sexp
+    (kbd "C-s C-p") 'sp-previous-sexp
+    (kbd "C-s C-n") 'sp-next-sexp
+    (kbd "C-s C-d") 'sp-down-sexp
+    (kbd "C-s C-u") 'sp-up-sexp
+    (kbd "C-s C-k") 'sp-kill-hybrid-sexp)
+  (define-key evil-normal-state-map (kbd "C-s") smartparens-mode-map)
+  ;; (define-key smartparens-mode-map (kbd "C-k") 'sp-kill-hybrid-sexp)
+  ;; (define-key smartparens-mode-map (kbd "C-u") 'sp-up-sexp)
+  )
 
 (el-get-bundle rainbow-delimiters)
 (use-package rainbow-delimiters
@@ -50,6 +66,13 @@
   :commands (volatile-highlights-mode)
   :init
   (add-hook 'prog-mode-hook 'volatile-highlights-mode))
+
+(el-get-bundle electric-operator)
+(use-package electric-operator
+  :commands (electric-operator-mode)
+  :init
+  (add-hook 'ess-mode-hook 'electric-operator-mode)
+  (add-hook 'python-mode-hook 'electric-operator-mode))
 
 (provide '02-prog-mode)
 ;;; 02-prog-mode.el ends here

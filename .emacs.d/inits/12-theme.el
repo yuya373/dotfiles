@@ -32,9 +32,14 @@
   (el-get-bundle pdf-tools)
   (require 'pdf-tools))
 
-(el-get-bundle material-theme)
-(add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/material-theme")
-(add-hook 'after-init-hook #'(lambda () (load-theme 'material t)))
+(el-get-bundle solarized-emacs)
+(setq solarized-high-contrast-mode-line t)
+(setq solarized-distinct-fringe-background t)
+(add-hook 'after-init-hook #'(lambda () (load-theme 'solarized-dark t)))
+
+;; (el-get-bundle material-theme)
+;; (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/material-theme")
+;; (add-hook 'after-init-hook #'(lambda () (load-theme 'material t)))
 
 (el-get-bundle powerline)
 (el-get-bundle TheBB/spaceline)
@@ -43,7 +48,7 @@
   :init
   (add-hook 'evil-mode-hook 'install-my-spaceline-theme)
   (setq powerline-height 25)
-  (setq powerline-default-separator 'wave)
+  (setq powerline-default-separator 'contour)
   (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
   (defun install-my-spaceline-theme ()
     (spaceline-install

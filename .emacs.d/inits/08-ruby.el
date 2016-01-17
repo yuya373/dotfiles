@@ -46,6 +46,7 @@
 (use-package inf-ruby
   :commands (inf-ruby inf-ruby-minor-mode inf-ruby-console-auto)
   :init
+  (add-hook 'inf-ruby-mode-hook 'smartparens-mode)
   (add-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode))
 (use-package ac-robe
   :commands (ac-robe-setup))

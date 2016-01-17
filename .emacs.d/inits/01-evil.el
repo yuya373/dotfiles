@@ -303,9 +303,9 @@
     "bl" 'popwin:popup-last-buffer
     "bp" 'popwin:pop-to-buffer
     "bw" 'projectile-switch-to-buffer-other-window
-    "da" 'helm-dash-at-point
-    "dd" 'helm-dash
-    "dc" 'dired-open-current
+    "dc" 'helm-dash-at-point
+    "da" 'helm-dash
+    "dd" 'dired-open-current
     "di" 'helm-dash-install-docset
     "eha" 'helm-apropos
     "ehb" 'describe-bindings
