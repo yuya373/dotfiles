@@ -102,7 +102,6 @@
       (kbd ",,") 'evilnc-comment-or-uncomment-lines))
   (use-package evil-jumper
     :init
-    (setq evil-jumper-auto-center t)
     :config (global-evil-jumper-mode))
   (use-package evil-args
     :commands (evil-inner-arg evil-outer-arg)

@@ -74,7 +74,9 @@
 (use-package exec-path-from-shell
   :commands (exec-path-from-shell-initialize)
   :init
-  (add-hook 'after-init-hook 'exec-path-from-shell-initialize))
+  (add-hook 'after-init-hook 'exec-path-from-shell-initialize)
+  :config
+  (exec-path-from-shell-copy-env "LANG"))
 
 (use-package hideshow
   :commands (hs-minor-mode)

@@ -82,6 +82,7 @@
   (push '("*projectile-rails-generate*" :noselect t :tail t :stick t) popwin:special-display-config)
   (push '("^\\*git-gutter:.*\\*$") popwin:special-display-config)
   (push '(twittering-mode :stick t) popwin:special-display-config)
+  (push '(ess-help-mode) popwin:special-display-config)
   (push '("*R*" :tail t :noselect t :stick t) popwin:special-display-config)
   (push '(comint-mode :tail t :noselect t :stick t) popwin:special-display-config)
   (push '(ensime-inspector-mode) popwin:special-display-config)
