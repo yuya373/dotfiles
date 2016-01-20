@@ -42,7 +42,8 @@ export SYS_NOTIFIER=`which terminal-notifier`
 export HOMEBREW_CASK_OPTS='--appdir=/Applications'
 export LANG=ja_JP.utf8
 export PAGER='less'
-export LESS='-g -n -i -M -R -S -w -X -z4'
+# export LESS='-g -n -i -M -R -S -w -X -z4'
+export LESS='-g -n -i -M -R -w -X -z4'
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
 if [ -e ${HOME}/.my_zshenv ]; then
