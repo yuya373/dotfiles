@@ -33,9 +33,16 @@
   (require 'pdf-tools))
 
 (el-get-bundle solarized-emacs)
-(setq solarized-high-contrast-mode-line t)
-(setq solarized-distinct-fringe-background t)
-(add-hook 'after-init-hook #'(lambda () (load-theme 'solarized-light t)))
+(use-package solarized
+  :defer t
+  :init
+  (setq solarized-high-contrast-mode-line t)
+  (setq solarized-distinct-fringe-background t)
+  (setq solarized-distinct-doc-face t)
+  (setq solarized-use-less-bold t)
+  ;; (setq solarized-use-more-italic t)
+  (add-hook 'after-init-hook #'(lambda () (load-theme 'solarized-dark t))))
+
 
 ;; (el-get-bundle material-theme)
 ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/material-theme")

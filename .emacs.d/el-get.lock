@@ -1,5 +1,6 @@
 (setq el-get-lock-package-versions
-      '((solarized-emacs :checksum "d518af81dbe14c4ae710115e6b7de94587436f21")
+      '((emacschrome :checksum "a0876df85e5a09d4d0b3f05b45a3694639f8e3ae")
+        (solarized-emacs :checksum "d518af81dbe14c4ae710115e6b7de94587436f21")
         (dired-k :checksum "4c5ae87f0198eaa4789a1fe85e9ef7cf5a8633e7")
         (robe-mode :checksum "af3d1a8deb7f1531b95112b955fce91d5f5d1ea6")
         (sdic-inline :checksum "1c17456b3cffe79520afdee63d39db96e86f35ff")

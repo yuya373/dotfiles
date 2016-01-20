@@ -139,23 +139,25 @@
   :commands (golden-ratio-mode)
   :diminish golden-ratio-mode
   :init
-  (setq golden-ratio-exclude-modes '("bs-mode"
-                                     "calc-mode"
-                                     "ediff-mode"
-                                     "dired-mode"
-                                     "comint-mode"
-                                     "slime-repl-mode"))
-  (setq golden-ratio-exclude-buffer-names '("*compilation*"
-                                            "*which-key*"
-                                            "*Flycheck errors*"
-                                            "slime-apropos*"
-                                            "*slime-description*"
-                                            "*slime-compilation*"
-                                            "*Proccess List*"
-                                            "*Help*"
-                                            "*LV*"
-                                            "*Warnings*"))
-  (setq golden-ratio-auto-scale t))
+  (add-hook 'after-init-hook 'golden-ratio-mode)
+  (setq golden-ratio-auto-scale t)
+  (setq golden-ratio-recenter t)
+  (setq golden-ratio-exclude-modes '(ediff-mode
+                                     comint-mode
+                                     compilation-mode
+                                     inf-ruby-mode
+                                     slime-repl-mode))
+  ;; (setq golden-ratio-exclude-buffer-names '("*compilation*"
+  ;;                                           "*Flycheck errors*"
+  ;;                                           "slime-apropos*"
+  ;;                                           "*slime-description*"
+  ;;                                           "*slime-compilation*"
+  ;;                                           "*Proccess List*"
+  ;;                                           "*LV*"
+  ;;                                           "*Warnings*"))
+
+  ;; (setq golden-ratio-auto-scale t)
+  )
 
 (el-get-bundle quickrun)
 (use-package quickrun
@@ -320,6 +322,17 @@ is a kind of temporary one which is not confirmed yet."
   (add-hook 'dired-after-readin-hook 'dired-k-no-revert)
   (setq dired-k-style 'git)
   (setq dired-k-human-readable t))
+
+(el-get-bundle emacschrome)
+(use-package edit-server
+  :commands (edit-server-start)
+  :init
+  (add-hook 'after-init-hook 'edit-server-start)
+  (setq edit-server-new-frame nil)
+  :config
+  (evil-define-key 'normal edit-server-text-mode-map
+    ",k" 'edit-server-abort
+    ",c" 'edit-server-done))
 
 (provide '03-util)
 ;;; 03-util.el ends here
