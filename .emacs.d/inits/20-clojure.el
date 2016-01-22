@@ -89,11 +89,11 @@
     ",tr" 'cider-test-rerun-tests
     ",tv" 'cider-test-show-report))
 
-(el-get-bundle flycheck-clojure)
-(use-package flycheck-clojure
-  :commands (flycheck-clojure-setup)
-  :init
-  (add-hook 'clojure-mode-hook 'flycheck-clojure-setup))
+;; (el-get-bundle flycheck-clojure)
+;; (use-package flycheck-clojure
+;;   :commands (flycheck-clojure-setup)
+;;   :init
+;;   (add-hook 'clojure-mode-hook 'flycheck-clojure-setup))
 
 (provide '20-clojure)
 ;;; 20-clojure.el ends here

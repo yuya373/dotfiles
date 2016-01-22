@@ -74,10 +74,10 @@
   :init
   (defun my-company-ruby ()
     (make-local-variable 'company-backends)
-    (make-local-variable 'company-idle-delay)
+    (make-local-variable 'company-minimum-prefix-length)
     (add-to-list 'company-backends 'company-robe)
     (remq 'company-capf company-backends)
-    (setq company-idle-delay 0.5))
+    (setq-local company-minimum-prefix-length 4))
   (add-hook 'enh-ruby-mode-hook 'my-company-ruby)
   (setq tab-width 2)
   (modify-syntax-entry ?_ "w")

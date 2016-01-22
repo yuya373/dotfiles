@@ -27,13 +27,29 @@
 (eval-when-compile
   (require 'evil))
 
+;; (el-get-bundle yasnippet)
+;; (el-get-bundle yasnippet-snippets)
 (el-get-bundle company)
 (el-get-bundle company-emoji)
 (el-get-bundle company-statistics)
 
+;; (use-package yasnippet
+;;   :commands (yas-global-mode)
+;;   :init
+;;   (add-hook 'after-init-hook 'yas-global-mode)
+;;   :config
+;;   (use-package yasnippet-snippets
+;;     :config
+;;     (add-to-list 'yas-snippet-dirs
+;;                  (expand-file-name
+;;                   (concat user-emacs-directory
+;;                           "el-get/yasnippet-snippets")))))
+
 (use-package company-statistics
   :commands (company-statistics-mode)
   :init
+  (setq company-statistics-auto-save t)
+  (setq company-statistics-auto-restore t)
   (add-hook 'company-mode-hook 'company-statistics-mode))
 
 (use-package company-emoji
@@ -50,8 +66,8 @@
 (use-package company
   :commands (company-mode global-company-mode)
   :init
-  (setq company-idle-delay 0) ; デフォルトは0.5
-  (setq company-minimum-prefix-length 4) ; デフォルトは4
+  (setq company-idle-delay 0.5) ; デフォルトは0.5
+  (setq company-minimum-prefix-length 2) ; デフォルトは4
   (setq company-selection-wrap-around t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
   (setq company-auto-complete nil)
   (setq company-tooltip-align-annotations t)
@@ -61,6 +77,9 @@
   (setq company-dabbrev-downcase nil)
   (add-hook 'after-init-hook 'global-company-mode)
   :config
+  ;; (use-package company-yasnippet
+  ;;   :config
+  ;;   (add-to-list 'company-backends 'company-yasnippet))
   (use-package company-ispell)
   ;; (global-set-key (kbd "TAB") 'nil)
   ;; (with-eval-after-load "evil"
@@ -72,7 +91,7 @@
   (setq company-backends (delete 'company-eclim company-backends))
   (setq company-backends (delete 'company-oddmuse company-backends))
   (setq company-backends (delete 'company-xcode company-backends))
-  (setq company-backends (delete 'company-capf company-backends))
+  ;; (setq company-backends (delete 'company-capf company-backends))
   (defun company-emacs-lisp-mode ()
     (make-local-variable 'company-backends)
     (add-to-list 'company-backends 'company-capf))
@@ -131,23 +150,47 @@
                       :background "orange")
   (set-face-attribute 'company-scrollbar-bg nil
                       :background "gray40")
-  (diminish 'abbrev-mode)
-  (with-eval-after-load "yasnippet"
-    (diminish 'yas-minor-mode))
-  (el-get-bundle company-restclient
-    :commands (company-restclient)
-    :init
-    (defun my-comp-restclient ()
-      (make-local-variable 'company-backends)
-      (add-to-list 'company-backends 'company-restclient))))
+  (diminish 'abbrev-mode))
+
+(el-get-bundle know-your-http-well)
+(use-package know-your-http-well
+  :defer t
+  :init
+  (add-to-list 'load-path
+               (expand-file-name
+                (concat user-emacs-directory
+                        "el-get/know-your-http-well/emacs"))))
+(el-get-bundle company-restclient)
+(use-package company-restclient
+  :commands (company-restclient)
+  :init
+  (defun my-comp-restclient ()
+    (make-local-variable 'company-backends)
+    (add-to-list 'company-backends 'company-restclient))
+  (add-hook 'restclient-mode-hook 'my-comp-restclient))
+
 
 (el-get-bundle pos-tip
   :type github
   :pkgname "pitkali/pos-tip"
   :name pos-tip)
 
-;; (use-package pos-tip
-;;   :commands (pos-tip-show))
+(el-get-bundle ycmd)
+(use-package ycmd
+  :commands (global-ycmd-mode)
+  :init
+  (add-hook 'company-mode-hook 'global-ycmd-mode)
+  (setq ycmd-server-command '("python" "/Users/yuyaminami/dev/ycmd/ycmd"))
+  )
+
+;; (global-ycmd-mode -1)
+
+(el-get-bundle company-ycmd)
+(use-package company-ycmd
+  :commands (company-ycmd-setup)
+  :init
+  (add-hook 'global-ycmd-mode-hook 'company-ycmd-setup))
+
 
 (provide '05-auto-complete)
 ;;; 05-auto-complete.el ends here

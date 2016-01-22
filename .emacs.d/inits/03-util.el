@@ -327,12 +327,17 @@ is a kind of temporary one which is not confirmed yet."
 (use-package edit-server
   :commands (edit-server-start)
   :init
-  (add-hook 'after-init-hook 'edit-server-start)
+  (add-hook 'evil-mode-hook 'edit-server-start)
   (setq edit-server-new-frame nil)
   :config
   (evil-define-key 'normal edit-server-text-mode-map
     ",k" 'edit-server-abort
     ",c" 'edit-server-done))
+
+(use-package autorevert
+  :commands (global-auto-revert-mode)
+  :init
+  (add-hook 'after-init-hook 'global-auto-revert-mode))
 
 (provide '03-util)
 ;;; 03-util.el ends here

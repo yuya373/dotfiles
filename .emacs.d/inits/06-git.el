@@ -68,6 +68,7 @@
     ;; return buffer's window
     (get-buffer-window buffer))
 
+  ;; (setq magit-display-buffer-function #'magit-display-buffer-traditional)
   (setq magit-display-buffer-function
         (lambda (buffer)
           (if magit-display-buffer-noselect
@@ -80,7 +81,16 @@
   (use-package ert)
   (use-package magit-extras)
   (use-package git-rebase)
-  (use-package evil-magit)
+  (use-package evil-magit
+    :config
+    (evil-magit-define-key evil-magit-state 'git-rebase-mode-map
+                           (kbd "C-k") 'git-rebase-move-line-up)
+    (evil-magit-define-key evil-magit-state 'git-rebase-mode-map
+                           (kbd "C-j") 'git-rebase-move-line-down)
+    (evil-magit-define-key evil-magit-state 'git-rebase-mode-map
+                           (kbd ",c") 'with-editor-finish)
+    (evil-magit-define-key evil-magit-state 'git-rebase-mode-map
+                           (kbd ",k") 'with-editor-cancel))
   ;; (use-package magit-gh-pulls
   ;;   :commands (turn-on-magit-gh-pulls)
   ;;   :init
