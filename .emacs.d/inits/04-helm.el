@@ -94,6 +94,7 @@
         helm-display-header-line t
         helm-split-window-in-side-p nil
         helm-always-two-windows t
+        helm-autoresize-max-height 40
         helm-autoresize-mode t
         helm-ff-file-name-history-use-recentf t
         helm-exit-idle-delay 0

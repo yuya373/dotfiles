@@ -72,11 +72,12 @@
 
 (el-get-bundle exec-path-from-shell)
 (use-package exec-path-from-shell
-  :commands (exec-path-from-shell-initialize)
-  :init
-  (add-hook 'after-init-hook 'exec-path-from-shell-initialize)
+  ;; :commands (exec-path-from-shell-initialize)
+  ;; :init
+  ;; (add-hook 'after-init-hook 'exec-path-from-shell-initialize)
   :config
-  (exec-path-from-shell-copy-env "LANG"))
+  (exec-path-from-shell-copy-env "LANG")
+  (exec-path-from-shell-initialize))
 
 (use-package hideshow
   :commands (hs-minor-mode)
@@ -119,7 +120,7 @@
   :commands (global-auto-revert-mode)
   :init
   (setq auto-revert-interval 0.1)
-  (add-hook 'after-init-hook #'(lambda () (global-auto-revert-mode 1))))
+  (add-hook 'after-init-hook #'global-auto-revert-mode))
 
 (provide '00-config)
 ;;; 00-config.el ends here

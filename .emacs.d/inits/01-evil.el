@@ -67,6 +67,40 @@
           (def2 (lookup-key map key2)))
       (define-key map key1 def2)
       (define-key map key2 def1)))
+  (defun window-resizer ()
+    "Control window size and position."
+    (interactive)
+    (let ((window-obj (selected-window))
+          (current-width (window-width))
+          (current-height (window-height))
+          (dx (if (= (nth 0 (window-edges)) 0) 1
+                -1))
+          (dy (if (= (nth 1 (window-edges)) 0) 1
+                -1))
+          action c)
+      (catch 'end-flag
+        (while t
+          (setq action
+                (read-key-sequence-vector (format "size[%dx%d]"
+                                                  (window-width)
+                                                  (window-height))))
+          (setq c (aref action 0))
+          (cond ((= c ?l)
+                 (enlarge-window-horizontally dx))
+                ((= c ?h)
+                 (shrink-window-horizontally dx))
+                ((= c ?j)
+                 (enlarge-window dy))
+                ((= c ?k)
+                 (shrink-window dy))
+                ;; otherwise
+                (t
+                 (let ((last-command-char (aref action 0))
+                       (command (key-binding action)))
+                   (when command
+                     (call-interactively command)))
+                 (message "Quit")
+                 (throw 'end-flag t)))))))
   :config
   (add-hook 'evil-normal-state-exit-hook 'evil-ex-nohighlight)
   (use-package evil-anzu)
@@ -128,6 +162,7 @@
   (define-key evil-ex-completion-map (kbd "C-h") 'delete-backward-char)
   (define-key minibuffer-local-map (kbd "C-h") 'delete-backward-char)
   ;; window move
+  (define-key evil-normal-state-map (kbd "C-w r") 'window-resizer)
   (define-key evil-normal-state-map (kbd "C-k") 'windmove-up)
   (define-key evil-normal-state-map (kbd "C-j") 'windmove-down)
   (define-key evil-normal-state-map (kbd "C-h") 'windmove-left)

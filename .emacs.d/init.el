@@ -58,5 +58,8 @@
   (setq init-loader-show-log-after-init 'error-only)
   (setq init-loader-byte-compile t))
 (init-loader-load)
-(add-hook 'window-setup-hook #'(lambda ()
-                                 (set-frame-parameter nil 'fullscreen 'maximized)))
+(add-hook 'window-setup-hook
+          #'(lambda ()
+              (set-frame-parameter nil
+                                   'fullscreen 'maximized))
+          t)

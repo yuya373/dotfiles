@@ -37,8 +37,8 @@
   :config
   (put-clojure-indent 'do 0)
   (put-clojure-indent 'my-ns/do 1)
-  (define-clojure-indent (-> 1))
-  (define-clojure-indent (->> 1)))
+  (put-clojure-indent '-> 1)
+  (put-clojure-indent '->> 1))
 
 (el-get-bundle cider)
 (use-package cider

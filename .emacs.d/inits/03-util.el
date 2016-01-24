@@ -75,6 +75,7 @@
   (setq popwin:popup-window-height 0.3)
   (add-hook 'after-init-hook #'(lambda () (popwin-mode t)))
   :config
+  (push '(bq-mode :stick t :tail t :noselect t) popwin:special-display-config)
   (push '(sql-interactive-mode :stick t :noselect t :tail t)
         popwin:special-display-config)
   (push '(ag-mode :stick t) popwin:special-display-config)
@@ -142,7 +143,9 @@
   (add-hook 'after-init-hook 'golden-ratio-mode)
   (setq golden-ratio-auto-scale t)
   (setq golden-ratio-recenter t)
-  (setq golden-ratio-exclude-modes '(ediff-mode
+  (setq golden-ratio-exclude-modes '(eww-mode
+                                     pdf-view-mode
+                                     ediff-mode
                                      comint-mode
                                      compilation-mode
                                      inf-ruby-mode
@@ -269,15 +272,39 @@
   (setq skk-tut-file (concat user-emacs-directory
                              "el-get/ddskk/etc/SKK.tut"))
   (setq define-input-method "japanese-skk")
-  (setq skk-egg-like-newline t)
-  (setq skk-large-jisyo (concat user-emacs-directory
-                                "SKK-JISYO.L"))
+
+  (setq skk-egg-like-newline t
+        skk-auto-insert-paren t
+        skk-show-annotation t
+        skk-annotation-show-wikipedia-url t
+        skk-use-look t)
+  (setq skk-show-tooltip nil
+        skk-show-inline nil
+        skk-show-candidates-always-pop-to-buffer nil)
+  (setq skk-dcomp-activate t
+        skk-dcomp-multiple-activate t
+        skk-dcomp-multiple-rows 20)
+  (setq skk-comp-use-prefix t
+        skk-comp-circulate t)
+
+  ;;skk-server AquaSKK
+  (setq skk-server-portnum 1178
+        skk-server-host "localhost")
+
+  ;; (setq skk-large-jisyo (concat user-emacs-directory
+  ;;                               "SKK-JISYO.L"))
+  (setq skk-jisyo-code 'utf-8
+        skk-jisyo "~/.skk-jisyo")
+
+  (setq skk-japanese-message-and-error t
+        skk-show-japanese-menu t)
   (defun enable-skk-when-insert ()
     (unless (bound-and-true-p skk-mode)
       (skk-mode 1)
       (skk-latin-mode 1)))
   (add-hook 'evil-insert-state-entry-hook 'enable-skk-when-insert)
   :config
+  (use-package skk-hint)
   (defun my-skk-control ()
     (if (bound-and-true-p skk-mode)
         (skk-latin-mode 1)))
@@ -289,7 +316,9 @@
 This is reasonable since inserted text during `skk-henkan-mode'
 is a kind of temporary one which is not confirmed yet."
     (unless (bound-and-true-p skk-henkan-mode)
-      ad-do-it)))
+      ad-do-it))
+  (evil-define-key 'insert skk-j-mode-map
+    (kbd "C-h") 'skk-delete-backward-char))
 
 (use-package subword-mode
   :commands (subword-mode)
@@ -333,11 +362,6 @@ is a kind of temporary one which is not confirmed yet."
   (evil-define-key 'normal edit-server-text-mode-map
     ",k" 'edit-server-abort
     ",c" 'edit-server-done))
-
-(use-package autorevert
-  :commands (global-auto-revert-mode)
-  :init
-  (add-hook 'after-init-hook 'global-auto-revert-mode))
 
 (provide '03-util)
 ;;; 03-util.el ends here

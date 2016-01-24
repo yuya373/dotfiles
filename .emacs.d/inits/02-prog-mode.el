@@ -34,19 +34,17 @@
   :init
   (add-hook 'prog-mode-hook 'smartparens-mode)
   :config
-  (evil-define-key 'normal smartparens-mode-map
-    (kbd "C-s C-f") 'sp-forward-sexp
-    (kbd "C-s C-b") 'sp-backward-sexp
-    (kbd "C-s C-w") 'sp-unwrap-sexp
-    (kbd "C-s C-p") 'sp-previous-sexp
-    (kbd "C-s C-n") 'sp-next-sexp
-    (kbd "C-s C-d") 'sp-down-sexp
-    (kbd "C-s C-u") 'sp-up-sexp
-    (kbd "C-s C-k") 'sp-kill-hybrid-sexp)
-  (define-key evil-normal-state-map (kbd "C-s") smartparens-mode-map)
-  ;; (define-key smartparens-mode-map (kbd "C-k") 'sp-kill-hybrid-sexp)
-  ;; (define-key smartparens-mode-map (kbd "C-u") 'sp-up-sexp)
-  )
+  (with-eval-after-load "evil"
+    (evil-define-key 'normal smartparens-mode-map
+      (kbd "C-s C-f") 'sp-forward-sexp
+      (kbd "C-s C-b") 'sp-backward-sexp
+      (kbd "C-s C-w") 'sp-unwrap-sexp
+      (kbd "C-s C-p") 'sp-previous-sexp
+      (kbd "C-s C-n") 'sp-next-sexp
+      (kbd "C-s C-d") 'sp-down-sexp
+      (kbd "C-s C-u") 'sp-up-sexp
+      (kbd "C-s C-k") 'sp-kill-hybrid-sexp)
+    (define-key evil-normal-state-map (kbd "C-s") smartparens-mode-map)))
 
 (el-get-bundle rainbow-delimiters)
 (use-package rainbow-delimiters
