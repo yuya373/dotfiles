@@ -59,6 +59,8 @@ alias gd="git diff"
 # Emacs
 alias e="emacsclient -n"
 alias ee="emacsclient -nw -a ''"
+alias build_emacs="git checkout emacs-25; git pull; make maintainer-clean; make clean; ./autogen.sh; ./configure --with-ns --without-x --with-gnutls --with-imagemagick --with-xml2 --with-rsvg --disable-ns-self-contained; make -j2; make install;
+"
 
 # use vim binding
 bindkey -v
