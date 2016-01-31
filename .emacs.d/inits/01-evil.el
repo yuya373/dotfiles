@@ -163,10 +163,10 @@
   (define-key minibuffer-local-map (kbd "C-h") 'delete-backward-char)
   ;; window move
   (define-key evil-normal-state-map (kbd "C-w r") 'window-resizer)
-  (define-key evil-normal-state-map (kbd "C-k") 'windmove-up)
-  (define-key evil-normal-state-map (kbd "C-j") 'windmove-down)
-  (define-key evil-normal-state-map (kbd "C-h") 'windmove-left)
-  (define-key evil-normal-state-map (kbd "C-l") 'windmove-right)
+  (define-key evil-normal-state-map (kbd "C-k") 'evil-window-up)
+  (define-key evil-normal-state-map (kbd "C-j") 'evil-window-down)
+  (define-key evil-normal-state-map (kbd "C-h") 'evil-window-left)
+  (define-key evil-normal-state-map (kbd "C-l") 'evil-window-right)
   (define-key evil-normal-state-map (kbd "C-c") 'evil-window-delete)
 
   (define-key evil-motion-state-map (kbd "C-k") 'windmove-up)
@@ -183,6 +183,11 @@
     (kbd "C-d") 'evil-scroll-down)
   ;; elisp
   (evil-define-key 'normal emacs-lisp-mode-map
+    ",c" 'byte-compile-file
+    ",es" 'eval-sexp
+    ",eb" 'eval-buffer
+    ",ef" 'eval-defun)
+  (evil-define-key 'normal lisp-interaction-mode-map
     ",c" 'byte-compile-file
     ",es" 'eval-sexp
     ",eb" 'eval-buffer
@@ -261,10 +266,8 @@
   (defun toggle-folding ()
     (interactive)
     (set-selective-display
-     (unless selective-display
-       4
-       ;; (1+ (current-column))
-       ))
+     (unless selective-display (1+ (current-column))))
+
     (recenter))
   (defun open-junk-dir ()
     (interactive)
@@ -310,12 +313,16 @@
     (cl-labels
         ((you-kill (buf)
                    (let* ((buf-name (buffer-name buf))
+                          (window-buffers (mapcar #'window-buffer (window-list)))
+                          (window-buffer-names (mapcar #'buffer-name window-buffers))
                           (first-char (substring-no-properties buf-name
                                                                0 1)))
                      (unless (or (string= " " first-char)
                                  (string= "*" first-char)
                                  (string= buf-name
-                                          (buffer-name (current-buffer))))
+                                          (buffer-name (current-buffer)))
+                                 (cl-find-if #'(lambda (bn) (string= bn buf-name))
+                                             window-buffer-names))
                        (kill-buffer buf)))))
       (mapc #'you-kill (buffer-list))))
   :config

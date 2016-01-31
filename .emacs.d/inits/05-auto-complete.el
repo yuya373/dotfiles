@@ -59,6 +59,7 @@
     (make-local-variable 'company-backends)
     (add-to-list 'company-backends 'company-emoji))
   ;; (add-hook 'gfm-mode-hook #'add-company-emoji)
+  (add-hook 'slack-edit-message-mode-hook #'add-company-emoji)
   (add-hook 'slack-mode-hook #'add-company-emoji)
   (add-hook 'git-commit-mode-hook #'add-company-emoji)
   (add-hook 'markdown-mode-hook #'add-company-emoji))
@@ -175,21 +176,21 @@
   :pkgname "pitkali/pos-tip"
   :name pos-tip)
 
-(el-get-bundle ycmd)
-(use-package ycmd
-  :commands (global-ycmd-mode)
-  :init
-  (add-hook 'company-mode-hook 'global-ycmd-mode)
-  (setq ycmd-server-command '("python" "/Users/yuyaminami/dev/ycmd/ycmd"))
-  )
+;; (el-get-bundle ycmd)
+;; (use-package ycmd
+;;   :commands (global-ycmd-mode)
+;;   :init
+;;   (add-hook 'company-mode-hook 'global-ycmd-mode)
+;;   (setq ycmd-server-command '("python" "/Users/yuyaminami/dev/ycmd/ycmd"))
+;;   )
 
-;; (global-ycmd-mode -1)
+;; ;; (global-ycmd-mode -1)
 
-(el-get-bundle company-ycmd)
-(use-package company-ycmd
-  :commands (company-ycmd-setup)
-  :init
-  (add-hook 'global-ycmd-mode-hook 'company-ycmd-setup))
+;; (el-get-bundle company-ycmd)
+;; (use-package company-ycmd
+;;   :commands (company-ycmd-setup)
+;;   :init
+;;   (add-hook 'global-ycmd-mode-hook 'company-ycmd-setup))
 
 
 (provide '05-auto-complete)

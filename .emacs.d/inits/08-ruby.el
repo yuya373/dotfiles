@@ -75,7 +75,7 @@
   (defun my-company-ruby ()
     (make-local-variable 'company-backends)
     (make-local-variable 'company-minimum-prefix-length)
-    (add-to-list 'company-backends 'company-robe)
+    (add-to-list 'company-backends '(company-robe company-dabbrev))
     (remq 'company-capf company-backends)
     (setq-local company-minimum-prefix-length 4))
   (add-hook 'enh-ruby-mode-hook 'my-company-ruby)
@@ -102,7 +102,11 @@
   (evil-define-key 'normal enh-ruby-mode-map (kbd ",bg") 'bundle-gemfile)
   (evil-define-key 'normal enh-ruby-mode-map (kbd ",bu") 'bundle-update)
   (evil-define-key 'normal enh-ruby-mode-map (kbd ",bi") 'bundle-install)
-  (evil-define-key 'normal enh-ruby-mode-map (kbd ",bo") 'bundle-open))
+  (evil-define-key 'normal enh-ruby-mode-map (kbd ",bo") 'bundle-open)
+  (modify-syntax-entry ?@ "_" enh-ruby-mode-syntax-table)
+  (modify-syntax-entry ?: "_" enh-ruby-mode-syntax-table)
+  (modify-syntax-entry ?! "_" enh-ruby-mode-syntax-table)
+  (modify-syntax-entry ?_ "w" enh-ruby-mode-syntax-table))
 
 (use-package ruby-test-mode
   :diminish ruby-test-mode

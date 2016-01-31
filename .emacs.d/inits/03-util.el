@@ -75,7 +75,6 @@
   (setq popwin:popup-window-height 0.3)
   (add-hook 'after-init-hook #'(lambda () (popwin-mode t)))
   :config
-  (push '(bq-mode :stick t :tail t :noselect t) popwin:special-display-config)
   (push '(sql-interactive-mode :stick t :noselect t :tail t)
         popwin:special-display-config)
   (push '(ag-mode :stick t) popwin:special-display-config)
@@ -230,9 +229,19 @@
 (use-package emojify
   :commands (emojify-mode global-emojify-mode)
   :init
-  (add-hook 'markdown-mode-hook 'emojify-mode)
-  (add-hook 'git-commit-mode-hook 'emojify-mode)
-  (add-hook 'magit-mode-hook 'emojify-mode))
+  ;; (add-hook 'markdown-mode-hook 'emojify-mode)
+  ;; (add-hook 'git-commit-mode-hook 'emojify-mode)
+  ;; (add-hook 'magit-mode-hook 'emojify-mode)
+  )
+
+(el-get-bundle syl20bnr/emacs-emoji-cheat-sheet-plus
+  :name emoji-cheat-sheet-plus)
+(use-package emoji-cheat-sheet-plus
+  :commands (emoji-cheat-sheet-plus-display-mode
+             emoji-cheat-sheet-plus-insert)
+  :init
+  ;; (add-hook 'after-init-hook 'emoji-cheat-sheet-plus-display-mode)
+  )
 
 (el-get-bundle ag)
 (el-get-bundle wgrep-ag)
@@ -293,8 +302,7 @@
 
   ;; (setq skk-large-jisyo (concat user-emacs-directory
   ;;                               "SKK-JISYO.L"))
-  (setq skk-jisyo-code 'utf-8
-        skk-jisyo "~/.skk-jisyo")
+  (setq skk-jisyo "~/.skk-jisyo")
 
   (setq skk-japanese-message-and-error t
         skk-show-japanese-menu t)
@@ -362,6 +370,13 @@ is a kind of temporary one which is not confirmed yet."
   (evil-define-key 'normal edit-server-text-mode-map
     ",k" 'edit-server-abort
     ",c" 'edit-server-done))
+
+(el-get-bundle auto-mark)
+(use-package auto-mark
+  :commands (auto-mark-mode)
+  :init
+  (add-hook 'after-init-hook 'auto-mark-mode)
+  (setq auto-mark-command-class-alist '((goto-line . jump))))
 
 (provide '03-util)
 ;;; 03-util.el ends here

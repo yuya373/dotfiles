@@ -39,6 +39,7 @@
 (use-package ace-window
   :commands (ace-window aw-select aw-switch-to-window)
   :init
+  (setq aw-dispatch-always t)
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
 ;; helm
@@ -114,7 +115,7 @@
     (setq helm-ag-insert-at-point 'symbol))
   (helm-mode +1)
   (defun switch-window-if-gteq-3-windows ()
-    (if (>= (length (window-list)) 3)
+    (if (>= (1+ (length (window-list))) 3)
         (aw-switch-to-window (aw-select "Ace - Window"))))
 
   (defun my-evil-vsplit-window (file-name)

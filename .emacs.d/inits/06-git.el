@@ -39,14 +39,13 @@
 (use-package git-timemachine
   :commands (git-timemachine)
   :config
-  (evil-set-initial-state 'git-timemachine-mode 'motion)
-  (evil-define-key 'motion git-timemachine-mode-map
-    "p" 'git-timemachine-show-previous-revision
-    "n" 'git-timemachine-show-next-revision
-    "g" 'git-timemachine-show-nth-revision
-    "q" 'git-timemachine-quit
-    "w" 'git-timemachine-kill-abbreviated-revision
-    "W" 'git-timemachine-kill-revision))
+  (evil-define-key 'normal git-timemachine-mode-map
+    ",p" 'git-timemachine-show-previous-revision
+    ",n" 'git-timemachine-show-next-revision
+    ",g" 'git-timemachine-show-nth-revision
+    ",q" 'git-timemachine-quit
+    ",w" 'git-timemachine-kill-abbreviated-revision
+    ",W" 'git-timemachine-kill-revision))
 
 (use-package git-messenger
   :commands (git-messenger:popup-message))

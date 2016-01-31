@@ -49,7 +49,9 @@
   (defun mysql-get-interactive-buffer ()
     (let* ((buf-name "*MySQL Editor*")
            (buf (get-buffer-create buf-name)))
-      (with-current-buffer buf (sql-mode))
+      (with-current-buffer buf
+        (sql-mode t)
+        (sql-set-product 'mysql))
       (switch-to-buffer-other-window buf)))
 
   (defun mysql-with-ssh ()
@@ -71,7 +73,6 @@
   (setq sql-pop-to-buffer-after-send-region t)
   (setq sql-indent-offset 2)
   :config
-  (sql-set-product 'mysql)
   (use-package sql-indent)
   (load-library "sql-complete")
   (use-package sql-transform)
