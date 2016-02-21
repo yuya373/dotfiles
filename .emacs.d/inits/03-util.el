@@ -75,6 +75,7 @@
   (setq popwin:popup-window-height 0.3)
   (add-hook 'after-init-hook #'(lambda () (popwin-mode t)))
   :config
+  (push '(prodigy-mode :stick t) popwin:special-display-config)
   (push '(sql-interactive-mode :stick t :noselect t :tail t)
         popwin:special-display-config)
   (push '(ag-mode :stick t) popwin:special-display-config)
@@ -134,32 +135,40 @@
   (setq indent-guide-recursive t)
   (add-hook 'lisp-mode-hook 'indent-guide-mode))
 
-(el-get-bundle golden-ratio)
-(use-package golden-ratio
-  :commands (golden-ratio-mode)
-  :diminish golden-ratio-mode
-  :init
-  (add-hook 'after-init-hook 'golden-ratio-mode)
-  (setq golden-ratio-auto-scale t)
-  (setq golden-ratio-recenter t)
-  (setq golden-ratio-exclude-modes '(eww-mode
-                                     pdf-view-mode
-                                     ediff-mode
-                                     comint-mode
-                                     compilation-mode
-                                     inf-ruby-mode
-                                     slime-repl-mode))
-  ;; (setq golden-ratio-exclude-buffer-names '("*compilation*"
-  ;;                                           "*Flycheck errors*"
-  ;;                                           "slime-apropos*"
-  ;;                                           "*slime-description*"
-  ;;                                           "*slime-compilation*"
-  ;;                                           "*Proccess List*"
-  ;;                                           "*LV*"
-  ;;                                           "*Warnings*"))
+;; (el-get-bundle golden-ratio)
+;; (use-package golden-ratio
+;;   :commands (golden-ratio-mode)
+;;   :diminish golden-ratio-mode
+;;   :init
+;;   (add-hook 'after-init-hook 'golden-ratio-mode)
+;;   (setq golden-ratio-extra-commands '(windmove-up
+;;                                       windmove-down
+;;                                       windmove-left
+;;                                       windmove-right
+;;                                       evil-window-up
+;;                                       evil-window-down
+;;                                       evil-window-left
+;;                                       evil-window-right))
+;;   (setq golden-ratio-auto-scale t)
+;;   (setq golden-ratio-recenter t)
+;;   (setq golden-ratio-exclude-modes '(eww-mode
+;;                                      pdf-view-mode
+;;                                      ediff-mode
+;;                                      comint-mode
+;;                                      compilation-mode
+;;                                      inf-ruby-mode
+;;                                      slime-repl-mode))
+;;   ;; (setq golden-ratio-exclude-buffer-names '("*compilation*"
+;;   ;;                                           "*Flycheck errors*"
+;;   ;;                                           "slime-apropos*"
+;;   ;;                                           "*slime-description*"
+;;   ;;                                           "*slime-compilation*"
+;;   ;;                                           "*Proccess List*"
+;;   ;;                                           "*LV*"
+;;   ;;                                           "*Warnings*"))
 
-  ;; (setq golden-ratio-auto-scale t)
-  )
+;;   ;; (setq golden-ratio-auto-scale t)
+;;   )
 
 (el-get-bundle quickrun)
 (use-package quickrun
@@ -259,6 +268,7 @@
   :config
   (evil-set-initial-state 'ag-mode 'normal)
   (evil-define-key 'normal ag-mode-map
+    "k" 'evil-previous-visual-line
     ",k" 'wgrep-exit
     ",s" 'wgrep-finish-edit
     ",r" 'wgrep-change-to-wgrep-mode))
@@ -278,6 +288,7 @@
 (use-package skk-autoloads
   :commands (skk-mode skk-auto-fill-mode)
   :init
+  (setq skk-echo t)
   (setq skk-tut-file (concat user-emacs-directory
                              "el-get/ddskk/etc/SKK.tut"))
   (setq define-input-method "japanese-skk")
@@ -289,7 +300,8 @@
         skk-use-look t)
   (setq skk-show-tooltip nil
         skk-show-inline nil
-        skk-show-candidates-always-pop-to-buffer nil)
+        skk-show-candidates-always-pop-to-buffer nil
+        skk-show-mode-show nil)
   (setq skk-dcomp-activate t
         skk-dcomp-multiple-activate t
         skk-dcomp-multiple-rows 20)
@@ -311,8 +323,12 @@
       (skk-mode 1)
       (skk-latin-mode 1)))
   (add-hook 'evil-insert-state-entry-hook 'enable-skk-when-insert)
+  (add-hook 'skk-mode-hook #'(lambda ()
+                               (define-key skk-j-mode-map (kbd "C-h") 'skk-delete-backward-char)
+                               (evil-make-intercept-map skk-j-mode-map 'insert )))
   :config
   (use-package skk-hint)
+
   (defun my-skk-control ()
     (if (bound-and-true-p skk-mode)
         (skk-latin-mode 1)))
@@ -324,9 +340,7 @@
 This is reasonable since inserted text during `skk-henkan-mode'
 is a kind of temporary one which is not confirmed yet."
     (unless (bound-and-true-p skk-henkan-mode)
-      ad-do-it))
-  (evil-define-key 'insert skk-j-mode-map
-    (kbd "C-h") 'skk-delete-backward-char))
+      ad-do-it)))
 
 (use-package subword-mode
   :commands (subword-mode)
@@ -378,5 +392,57 @@ is a kind of temporary one which is not confirmed yet."
   (add-hook 'after-init-hook 'auto-mark-mode)
   (setq auto-mark-command-class-alist '((goto-line . jump))))
 
+(el-get-bundle prodigy)
+(use-package prodigy
+  :commands (prodigy)
+  :config
+  (evil-define-key 'normal prodigy-mode-map
+    "s" 'prodigy-start
+    "S" 'prodigy-stop
+    "r" 'prodigy-restart
+    "v" 'prodigy-display-process
+    "o" 'prodigy-browse)
+  (prodigy-define-tag
+   :name 'rails
+   :on-output (lambda (&rest args)
+                (let ((output (plist-get args :output))
+                      (service (plist-get args :service)))
+                  (when (or (s-matches? "Listening on 0\.0\.0\.0:[0-9]+, CTRL\\+C to stop" output)
+                            (s-matches? "Ctrl-C to shutdown server" output))
+                    (prodigy-set-status service 'ready)))))
+
+  (prodigy-define-service
+   :name "IB server"
+   :command "bundle"
+   :args '("exec" "rails" "server" "--port=3000")
+   :cwd "/Users/yuyaminami/dev/instabase"
+   :url "http://localhost:3000"
+   :tags '(rails))
+  (prodigy-define-service
+   :name "IB migrateion"
+   :command "bundle"
+   :args '("exec" "rake" "db:migrate")
+   :cwd "/Users/yuyaminami/dev/instabase"
+   :tags '(rails))
+  (prodigy-define-service
+   :name "IB rollback"
+   :command "bundle"
+   :args '("exec" "rake" "db:rollback")
+   :cwd "/Users/yuyaminami/dev/instabase"
+   :tags '(rails))
+  )
+
+(el-get-bundle persp-mode
+  :type github
+  :pkgname "Bad-ptr/persp-mode.el")
+;; (use-package persp-mode
+;;     :commands (persp-mode)
+;;     :init
+;;     ;; (add-hook 'after-init-hook 'persp-mode)
+;;     ;; (add-hook 'evil-mode-hook 'persp-mode)
+;;     ;; (setq persp-nil-name "Emacs")
+;;     )
+
 (provide '03-util)
 ;;; 03-util.el ends here
+

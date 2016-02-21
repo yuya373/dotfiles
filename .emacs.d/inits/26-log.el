@@ -39,8 +39,10 @@
   (setq command-log-mode-auto-show nil)
   (setq clm/logging-dir "~/.emacs.d/log/")
   (add-hook 'window-setup-hook 'global-command-log-mode)
-  (add-hook 'global-command-log-mode-hook 'clm/open-command-log-buffer)
-  (add-hook 'kill-emacs-hook 'clm/save-command-log))
+  ;; (add-hook 'global-command-log-mode-hook 'clm/open-command-log-buffer)
+  ;; (add-hook 'kill-emacs-hook 'clm/save-command-log)
+  ;; (remove-hook 'kill-emacs-hook 'clm/save-command-log)
+  )
 
 (el-get-bundle yuya373/major-mode-log)
 (add-to-list 'load-path (concat user-emacs-directory
@@ -48,7 +50,8 @@
 (use-package major-mode-log
   :commands (global-major-mode-log-mode)
   :init
-  (add-hook 'after-init-hook 'global-major-mode-log-mode))
+  ;; (add-hook 'after-init-hook 'global-major-mode-log-mode)
+  )
 
 (provide '26-log)
 ;;; 26-log.el ends here

@@ -25,6 +25,7 @@
 ;;; Code:
 
 (el-get-bundle flycheck)
+(el-get-bundle alexmurray/evil-flycheck)
 (el-get-bundle purcell/flycheck-package
   :name flycheck-package)
 
@@ -34,7 +35,11 @@
   :init
   (setq-default flycheck-disabled-checkers '(chef-foodcritic))
   (setq flycheck-emacs-lisp-load-path 'inherit)
-  (add-hook 'prog-mode-hook 'flycheck-mode))
+  (add-hook 'prog-mode-hook 'flycheck-mode)
+  :config
+  (use-package evil-flycheck
+    :config
+    (setq flycheck-check-syntax-automatically '(evil-normal-state))))
 
 (use-package flycheck-package
   :commands (flycheck-package-setup))

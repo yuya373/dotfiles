@@ -30,34 +30,43 @@
 (use-package python-mode
   :mode (("\\.py\\'" . python-mode))
   :init
-  (add-hook 'python-mode-hook
-            #'(lambda ()
-                (run-python (python-shell-parse-command))
-                (setq-local helm-dash-docsets '("Python 2"))
-                (setq python-indent-offset 4)))
-  (add-hook 'inferior-python-mode-hook #'(lambda ()
-                                           (smartparens-mode)
-                                           (setq-local helm-dash-docsets '("Python 2")))))
-(el-get-bundle company-jedi)
-(use-package company-jedi
-  :commands (company-jedi)
-  :init
-  (add-hook 'python-mode-hook
-            #'(lambda ()
-                (make-local-variable 'company-backends)
-                (add-to-list 'company-backends 'company-jedi))))
+  (defun my-python-mode-hook ()
+    (run-python (python-shell-parse-command))
+    (setq-local helm-dash-docsets '("Python 2"))
+    (setq python-indent-offset 4))
+  (defun my-inf-python-mode-hook ()
 
-(el-get-bundle jedi)
-(use-package jedi-core
-  :commands (jedi:setup)
-  :init
-  (add-hook 'python-mode-hook 'jedi:setup)
-  (setq jedi:complete-on-dot t)
-  (setq jedi:use-shortcuts t)
+    (smartparens-mode)
+    (setq-local helm-dash-docsets '("Python 2"))
+    )
+  (add-hook 'python-mode-hook #'my-python-mode-hook)
+  (add-hook 'inferior-python-mode-hook #'my-inf-python-mode-hook)
   :config
-  (evil-define-key 'normal jedi-mode-map
-    ",g" 'jedi:goto-definition
-    ",h" 'jedi:show-doc))
+  (evil-define-key 'normal python-mode-map
+    ",ef" 'python-shell-send-defun
+    ",eb" 'python-shell-send-buffer)
+  (evil-define-key 'visual python-mode-map
+    ",er" 'python-shell-send-region))
+;; (el-get-bundle company-jedi)
+;; (use-package company-jedi
+;;   :commands (company-jedi)
+;;   :init
+;;   (add-hook 'python-mode-hook
+;;             #'(lambda ()
+;;                 (make-local-variable 'company-backends)
+;;                 (add-to-list 'company-backends 'company-jedi))))
+
+;; (el-get-bundle jedi)
+;; (use-package jedi-core
+;;   :commands (jedi:setup)
+;;   :init
+;;   (add-hook 'python-mode-hook 'jedi:setup)
+;;   (setq jedi:complete-on-dot t)
+;;   (setq jedi:use-shortcuts t)
+;;   :config
+;;   (evil-define-key 'normal jedi-mode-map
+;;     ",g" 'jedi:goto-definition
+;;     ",h" 'jedi:show-doc))
 
 (el-get-bundle elpy)
 (use-package elpy
@@ -66,8 +75,10 @@
   (setq elpy-modules '(elpy-module-sane-defaults
                        elpy-module-eldoc
                        elpy-module-highlight-indentation
-                       elpy-module-pyvenv))
-  (add-hook 'python-mode-hook 'elpy-enable))
+                       elpy-module-pyvenv
+                       elpy-module-company))
+  (add-hook 'python-mode-hook 'elpy-enable)
+  (add-hook 'python-mode-hook 'elpy-mode))
 
 (provide '21-python)
 ;;; 21-python.el ends here

@@ -48,6 +48,13 @@
 ;; symboliclink
 (setq vc-follow-symlinks t)
 
+;; woman
+(setq woman-imenu-generic-expression
+      '((nil "^\\(   \\)?\\([ぁ-んァ-ヴー一-龠ａ-ｚＡ-Ｚ０-９a-zA-Z0-9]+\\)" 2)))
+(setq woman-use-own-frame nil)
+(setq woman-manpath '("/usr/local/share/man/ja_JP.UTF-8/"
+                      "/usr/local/opt/coreutils/libexec/gnuman/"))
+
 ;; linum
 (use-package linum-mode
   :commands (linum-mode)
@@ -76,8 +83,11 @@
   ;; :init
   ;; (add-hook 'after-init-hook 'exec-path-from-shell-initialize)
   :config
+  (exec-path-from-shell-initialize)
   (exec-path-from-shell-copy-env "LANG")
-  (exec-path-from-shell-initialize))
+  ;; (exec-path-from-shell-copy-env "JAVA_HOME")
+  ;; (exec-path-from-shell-copy-env "PATH")
+  )
 
 (use-package hideshow
   :commands (hs-minor-mode)
@@ -121,6 +131,8 @@
   :init
   (setq auto-revert-interval 0.1)
   (add-hook 'after-init-hook #'global-auto-revert-mode))
+
+(use-package generic-x)
 
 (provide '00-config)
 ;;; 00-config.el ends here

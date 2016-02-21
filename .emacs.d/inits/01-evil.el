@@ -43,6 +43,7 @@
 (el-get-bundle evil-exchange)
 (el-get-bundle evil-org-mode)
 (el-get-bundle avy)
+(el-get-bundle elscreen)
 
 (eval-when-compile
   (el-get-bundle evil)
@@ -136,7 +137,38 @@
       (kbd ",,") 'evilnc-comment-or-uncomment-lines))
   (use-package evil-jumper
     :init
-    :config (global-evil-jumper-mode))
+    :config (global-evil-jumper-mode)
+    ;; (use-package elscreen
+    ;;   :commands (elscreen-start)
+    ;;   :init
+    ;;   ;; (add-hook ' 'elscreen-start)
+    ;;   (setq elscreen-default-buffer-name "*Messages*")
+
+    ;;   (defvar evil-elscreen-jumps (make-hash-table))
+    ;;   (defun evil-elscreen-set-current ()
+    ;;     (let* ((screen (elscreen-get-current-screen))
+    ;;            (screen-jumps (gethash screen evil-elscreen-jumps)))
+    ;;       (message "evil-elscreen-set-current !!!!")
+    ;;       (message "evil-elscreen-jumps: %s" evil-elscreen-jumps)
+    ;;       (message "eegj:screen: %s" screen)
+    ;;       (message "eegj:screen-jumps: %s" screen-jumps)
+    ;;       (message "evil-jumper--window-jumps: %s" evil-jumper--window-jumps)
+    ;;       (unless screen-jumps
+    ;;         (setq screen-jumps (make-hash-table)))
+    ;;       (setq evil-jumper--window-jumps screen-jumps)
+    ;;       (puthash screen screen-jumps evil-elscreen-jumps)
+    ;;       ))
+    ;;   (defun evil-elscreen-set-jump ()
+    ;;     (let ((screen (elscreen-get-current-screen))
+    ;;           (jumps evil-jumper--window-jumps))
+    ;;       (message "evil-elscreen-set-jump !!!!")
+    ;;       (message "eesj:screen: %s" screen)
+    ;;       (message "eesj:jumps: %s" jumps)
+    ;;       (puthash screen jumps evil-elscreen-jumps)))
+
+    ;;   ;; (add-hook 'elscreen-create-hook 'evil-elscreen-set-jump)
+    ;;   (add-hook 'elscreen-goto-hook 'evil-elscreen-set-current))
+    )
   (use-package evil-args
     :commands (evil-inner-arg evil-outer-arg)
     :init
@@ -155,12 +187,25 @@
   (define-key evil-insert-state-map (kbd "C-n") nil)
   (define-key evil-insert-state-map (kbd "C-p") nil)
   (define-key evil-normal-state-map (kbd "RET") 'open-below-esc)
+  (define-key evil-normal-state-map (kbd "m") 'set-mark-command)
   (define-key minibuffer-local-map (kbd "C-w") 'backward-kill-word)
+  ;; isearch map
+  (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
   ;; C-h map
+  (defun evil-skk-delete-backward-char ()
+    (interactive)
+    ;; (call-interactively #'delete-backward-char)
+    (if (bound-and-true-p skk-j-mode)
+        (progn
+          (call-interactively #'skk-delete-backward-char))
+
+      (call-interactively #'delete-backward-char)
+      )
+    )
   (define-key evil-insert-state-map (kbd "C-h") 'delete-backward-char)
-  (define-key evil-ex-search-keymap (kbd "C-h") 'delete-backward-char)
-  (define-key evil-ex-completion-map (kbd "C-h") 'delete-backward-char)
-  (define-key minibuffer-local-map (kbd "C-h") 'delete-backward-char)
+  (define-key evil-ex-search-keymap (kbd "C-h") 'evil-skk-delete-backward-char)
+  (define-key evil-ex-completion-map (kbd "C-h") 'evil-skk-delete-backward-char)
+  (define-key minibuffer-local-map (kbd "C-h") 'evil-skk-delete-backward-char)
   ;; window move
   (define-key evil-normal-state-map (kbd "C-w r") 'window-resizer)
   (define-key evil-normal-state-map (kbd "C-k") 'evil-window-up)
@@ -200,6 +245,7 @@
   ;; avy
   (use-package avy
     :init
+    (setq avy-background t)
     (setq avy-highlight-first t)
     (setq avy-all-windows nil)
     (setq avy-keys (number-sequence ?a ?z))
@@ -412,8 +458,21 @@
     "ml" 'open-junk-dir
     "mn" 'open-junk-file
     "ms" 'slack-start
+    "mt" 'slack-change-current-team
+    ;; "pn" 'persp-next
+    ;; "pp" 'persp-prev
+    ;; "pS" 'persp-switch
+    ;; "pbr" 'persp-remove-buffer
+    ;; "pbk" 'persp-kill-buffer
+    ;; "pbi" 'persp-import-buffers
+    ;; "pba" 'persp-add-buffer
+    ;; "pl" 'persp-load-state-from-file
+    ;; "pk" 'persp-kill
+    ;; "pr" 'persp-rename
+    ;; "pN" 'persp-add-new
     "pk" 'projectile-invalidate-cache
     "ps" 'projectile-switch-project
+    "pd" 'prodigy
     "qR" 'quickrun-region
     "qa" 'quickrun-with-arg
     "qr" 'quickrun
@@ -425,7 +484,11 @@
     "tl" 'google-translate-smooth-translate
     "tq" 'google-translate-query-translate
     "ts" 'timer
-    "tt" 'helm-etags-select
+    "tt" 'elscreen-create
+    "tn" 'elscreen-next
+    "tp" 'elscreen-previous
+    "tk" 'elscreen-kill
+    "tK" 'elscreen-kill-screen-and-buffers
     "tw" 'twit
     "uv" 'undo-tree-visualize
     "wb" 'balance-windows

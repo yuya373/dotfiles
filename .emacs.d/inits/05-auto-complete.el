@@ -50,7 +50,11 @@
   :init
   (setq company-statistics-auto-save t)
   (setq company-statistics-auto-restore t)
-  (add-hook 'company-mode-hook 'company-statistics-mode))
+  (add-hook 'company-mode-hook 'company-statistics-mode)
+  :config
+  (setq company-transformers '(company-sort-by-statistics
+                               company-sort-by-occurrence
+                               company-sort-by-backend-importance)))
 
 (use-package company-emoji
   :commands (company-emoji)

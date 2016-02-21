@@ -34,7 +34,7 @@
   :mode (("\\.pdf\\'" . pdf-view-mode))
   :init
   (setq pdf-view-resize-factor 1.1)
-  (add-hook 'pdf-view-mode-hook 'pdf-view-auto-slice-minor-mode)
+  ;; (add-hook 'pdf-view-mode-hook 'pdf-view-auto-slice-minor-mode)
   (add-hook 'pdf-view-mode-hook #'(lambda () (linum-mode -1)))
   ;; (add-hook 'pdf-view-mode-hook 'pdf-view-dark-minor-mode)
   ;; (add-hook 'pdf-view-mode-hook 'pdf-view-midnight-minor-mode)

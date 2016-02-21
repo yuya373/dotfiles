@@ -27,7 +27,7 @@
 (eval-when-compile
   (require 'evil))
 
-;; (el-get-bundle sql)
+(el-get-bundle sql)
 (el-get-bundle emacswiki:sql-indent)
 (el-get-bundle emacswiki:sql-complete)
 (el-get-bundle emacswiki:sql-transform)
@@ -41,6 +41,12 @@
     (mysql-get-interactive-buffer)
     (mysql-run-with-hidden-buffer))
 
+  (defun psql-buffer ()
+    (interactive)
+    (psql-get-interactive-buffer)
+    (psql-run-with-hidden-buffer)
+    )
+
   (defun mysql-ssh-buffer ()
     (interactive)
     (mysql-get-interactive-buffer)
@@ -50,9 +56,18 @@
     (let* ((buf-name "*MySQL Editor*")
            (buf (get-buffer-create buf-name)))
       (with-current-buffer buf
-        (sql-mode t)
+        (sql-mode)
         (sql-set-product 'mysql))
       (switch-to-buffer-other-window buf)))
+
+  (defun psql-get-interactive-buffer ()
+    (let* ((buf-name "*Postgres Editor*")
+           (buf (get-buffer-create buf-name)))
+      (with-current-buffer buf
+        (sql-mode)
+        (sql-set-product 'postgres))
+      (switch-to-buffer-other-window buf)
+      buf))
 
   (defun mysql-with-ssh ()
     (let* ((host (read-from-minibuffer "SSH Host: "))
@@ -67,6 +82,13 @@
         (if ssh
             (mysql-with-ssh)
           (sql-mysql))))
+      (set-window-configuration cur-win-conf)))
+
+  (defun psql-run-with-hidden-buffer ()
+    (let ((cur-win-conf (current-window-configuration)))
+      (delete-window
+       (get-buffer-window
+        (sql-postgres)))
       (set-window-configuration cur-win-conf)))
 
   (setq sql-electric-stuff 'semicolon)

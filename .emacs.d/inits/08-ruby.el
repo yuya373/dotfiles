@@ -79,14 +79,22 @@
     (remq 'company-capf company-backends)
     (setq-local company-minimum-prefix-length 4))
   (add-hook 'enh-ruby-mode-hook 'my-company-ruby)
+  (add-hook 'inf-ruby-mode-hook 'my-company-ruby)
   (setq tab-width 2)
   (modify-syntax-entry ?_ "w")
   (setq enh-ruby-deep-indent-paren nil
         enh-ruby-hanging-paren-deep-indent-level 2)
   (setq enh-ruby-add-encoding-comment-on-save nil)
+  ;; (setq ruby-insert-encoding-magic-comment nil)
+  ;; (setq ruby-align-chained-calls nil)
+  ;; (setq ruby-deep-indent-paren-style t)
   (add-hook 'enh-ruby-mode-hook 'smartparens-mode)
   :config
   ;; (use-package ruby-end)
+  (modify-syntax-entry ?@ "_" enh-ruby-mode-syntax-table)
+  (modify-syntax-entry ?: "_" enh-ruby-mode-syntax-table)
+  (modify-syntax-entry ?! "_" enh-ruby-mode-syntax-table)
+  (modify-syntax-entry ?_ "w" enh-ruby-mode-syntax-table)
   (use-package bundler
     :commands (bundle-open bundle-exec bundle-check bundle-gemfile
                            bundle-update bundle-console bundle-install))
@@ -102,11 +110,7 @@
   (evil-define-key 'normal enh-ruby-mode-map (kbd ",bg") 'bundle-gemfile)
   (evil-define-key 'normal enh-ruby-mode-map (kbd ",bu") 'bundle-update)
   (evil-define-key 'normal enh-ruby-mode-map (kbd ",bi") 'bundle-install)
-  (evil-define-key 'normal enh-ruby-mode-map (kbd ",bo") 'bundle-open)
-  (modify-syntax-entry ?@ "_" enh-ruby-mode-syntax-table)
-  (modify-syntax-entry ?: "_" enh-ruby-mode-syntax-table)
-  (modify-syntax-entry ?! "_" enh-ruby-mode-syntax-table)
-  (modify-syntax-entry ?_ "w" enh-ruby-mode-syntax-table))
+  (evil-define-key 'normal enh-ruby-mode-map (kbd ",bo") 'bundle-open))
 
 (use-package ruby-test-mode
   :diminish ruby-test-mode

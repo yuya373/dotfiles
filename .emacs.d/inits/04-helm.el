@@ -205,7 +205,6 @@
       (helm-exit-and-execute-action 'ace-vsplit-switch-to-buffer)))
 
   (defun ace-helm-find-file (candidate)
-    (popwin:close-popup-window)
     (if (one-window-p)
         (find-file-other-window (expand-file-name candidate))
       (let ((buf (find-file-noselect (expand-file-name candidate)))
@@ -234,9 +233,14 @@
       (helm-exit-and-execute-action 'ace-helm-switch-to-buffer)))
 
   (with-eval-after-load "evil"
+    (define-key evil-motion-state-map
+      (kbd "C-b") 'helm-mini)
     (define-key evil-normal-state-map
       (kbd "C-b") 'helm-mini))
 
+  (define-key helm-map (kbd "C-v") 'helm-ace-vsplit-ff)
+  (define-key helm-map (kbd "C-s") 'helm-ace-split-ff)
+  (define-key helm-map (kbd "C-o") 'helm-ace-ff)
   (define-key helm-map (kbd "C-,") 'helm-toggle-visible-mark)
   (define-key helm-map (kbd "C-a") 'helm-select-action)
   (define-key helm-map (kbd "C-k") 'helm-previous-source)
