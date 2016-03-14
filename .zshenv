@@ -19,6 +19,7 @@ fi
 if [ -e /usr/local/opt/go ]; then
     export GOROOT=/usr/local/opt/go/libexec
     export PATH=$PATH:/usr/local/opt/go/libexec/bin:${HOME}/go/bin
+    export GOPATH=$HOME/go
 fi
 
 if [ -d ${HOME}/.rbenv ] ; then
@@ -56,3 +57,7 @@ if which pyenv > /dev/null; then
 fi
 
 export EDITOR='emacsclient -n'
+export JAVA_HOME=`/usr/libexec/java_home`
+export PATH=$PATH:$JAVA_HOME/bin
+export MANPATH=/usr/local/share/man/ja_JP.UTF-8:$MANPATH
+

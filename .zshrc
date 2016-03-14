@@ -59,8 +59,8 @@ alias gd="git diff"
 # Emacs
 alias e="emacsclient -n"
 alias ee="emacsclient -nw -a ''"
-alias build_emacs="git checkout emacs-25; git pull; make maintainer-clean; make clean; ./autogen.sh; ./configure --with-ns --without-x --with-gnutls --with-imagemagick --with-xml2 --with-rsvg --disable-ns-self-contained --with-modules --with-xwidgets; make -j2; make install;
-"
+alias build_emacs="git checkout master; git pull; make maintainer-clean; make clean; ./autogen.sh; ./configure --with-ns --without-x --with-gnutls --with-imagemagick --with-xml2 --with-rsvg --disable-ns-self-contained --with-modules --with-xwidgets; make -j2; make install;"
+alias build_emacs25="git checkout emacs-25; git pull; make maintainer-clean; make clean; ./autogen.sh; ./configure --with-ns --without-x --with-gnutls --with-imagemagick --with-xml2 --with-rsvg --disable-ns-self-contained --with-modules --with-xwidgets; make -j2; make install;"
 
 # use vim binding
 bindkey -v
@@ -130,6 +130,7 @@ bindkey -M vicmd 'v'  vi-visual-mode
 
 # for mosh
 compdef mosh=ssh
+compdef sshrc=ssh
 
 setopt nonomatch
 alias du-cwd='du -mc -d 1 | sort -g'
