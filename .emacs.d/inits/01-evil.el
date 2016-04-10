@@ -43,7 +43,6 @@
 (el-get-bundle evil-exchange)
 (el-get-bundle evil-org-mode)
 (el-get-bundle avy)
-(el-get-bundle elscreen)
 
 (eval-when-compile
   (el-get-bundle evil)
@@ -55,12 +54,14 @@
   :init
   ;; DO NOT LOAD evil plugin before here
   (setq evil-fold-level 4
-        evil-search-module 'evil-search
+        evil-search-module 'isearch
         evil-esc-delay 0
         evil-want-C-i-jump t
         evil-want-C-u-scroll t
+        evil-want-C-d-scroll t
         evil-shift-width 2
-        evil-cross-lines t)
+        evil-cross-lines t
+        evil-want-fine-undo t)
   (defun evil-swap-key (map key1 key2)
     ;; MAP中のKEY1とKEY2を入れ替え
     "Swap KEY1 and KEY2 in MAP."
@@ -112,9 +113,9 @@
   (use-package evil-surround :config (global-evil-surround-mode t))
   (defun evilmi-customize-keybinding ()
     (evil-define-key 'visual evil-matchit-mode-map
-      "t" 'evilmi-jump-items)
+      "%" 'evilmi-jump-items)
     (evil-define-key 'normal evil-matchit-mode-map
-      "t" 'evilmi-jump-items))
+      "%" 'evilmi-jump-items))
   (use-package evil-matchit
     :config
     (setq evilmi-ignore-comments nil)
@@ -136,39 +137,8 @@
     (define-key evil-visual-state-map
       (kbd ",,") 'evilnc-comment-or-uncomment-lines))
   (use-package evil-jumper
-    :init
-    :config (global-evil-jumper-mode)
-    ;; (use-package elscreen
-    ;;   :commands (elscreen-start)
-    ;;   :init
-    ;;   ;; (add-hook ' 'elscreen-start)
-    ;;   (setq elscreen-default-buffer-name "*Messages*")
-
-    ;;   (defvar evil-elscreen-jumps (make-hash-table))
-    ;;   (defun evil-elscreen-set-current ()
-    ;;     (let* ((screen (elscreen-get-current-screen))
-    ;;            (screen-jumps (gethash screen evil-elscreen-jumps)))
-    ;;       (message "evil-elscreen-set-current !!!!")
-    ;;       (message "evil-elscreen-jumps: %s" evil-elscreen-jumps)
-    ;;       (message "eegj:screen: %s" screen)
-    ;;       (message "eegj:screen-jumps: %s" screen-jumps)
-    ;;       (message "evil-jumper--window-jumps: %s" evil-jumper--window-jumps)
-    ;;       (unless screen-jumps
-    ;;         (setq screen-jumps (make-hash-table)))
-    ;;       (setq evil-jumper--window-jumps screen-jumps)
-    ;;       (puthash screen screen-jumps evil-elscreen-jumps)
-    ;;       ))
-    ;;   (defun evil-elscreen-set-jump ()
-    ;;     (let ((screen (elscreen-get-current-screen))
-    ;;           (jumps evil-jumper--window-jumps))
-    ;;       (message "evil-elscreen-set-jump !!!!")
-    ;;       (message "eesj:screen: %s" screen)
-    ;;       (message "eesj:jumps: %s" jumps)
-    ;;       (puthash screen jumps evil-elscreen-jumps)))
-
-    ;;   ;; (add-hook 'elscreen-create-hook 'evil-elscreen-set-jump)
-    ;;   (add-hook 'elscreen-goto-hook 'evil-elscreen-set-current))
-    )
+    :config
+    (global-evil-jumper-mode))
   (use-package evil-args
     :commands (evil-inner-arg evil-outer-arg)
     :init
@@ -227,8 +197,14 @@
     (kbd "C-c") 'evil-window-delete
     (kbd "C-d") 'evil-scroll-down)
   ;; elisp
+
+  (defun byte-compile-directory (directory)
+    (interactive "DByte compile directory: ")
+    (byte-recompile-directory directory 0 t))
+
   (evil-define-key 'normal emacs-lisp-mode-map
-    ",c" 'byte-compile-file
+    ",cf" 'byte-compile-file
+    ",cd" 'byte-compile-directory
     ",es" 'eval-sexp
     ",eb" 'eval-buffer
     ",ef" 'eval-defun)
@@ -284,10 +260,16 @@
     (define-key evil-visual-state-map
       (kbd "m") #'evil-avy-goto-word))
   ;; line move
-  (evil-swap-key evil-motion-state-map "j" "gj")
-  (evil-swap-key evil-motion-state-map "k" "gk")
-  (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
-  (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up))
+  ;; (evil-swap-key evil-motion-state-map "j" "gj")
+  ;; (evil-swap-key evil-motion-state-map "k" "gk")
+  (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
+  (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
+  ;; (define-key evil-motion-state-map (kbd "j") 'evil-next-visual-line)
+  ;; (define-key evil-motion-state-map (kbd "k") 'evil-previous-visual-line)
+  (define-key evil-motion-state-map (kbd "C-u") 'evil-scroll-up)
+  ;; (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
+  ;; (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
+  )
 
 
 (use-package evil-leader
@@ -373,16 +355,22 @@
       (mapc #'you-kill (buffer-list))))
   :config
   (evil-leader/set-leader "<SPC>")
-  (use-package evil-org)
-  ;; describe
+  (use-package evil-org
+    :init
+    (setq org-src-fontify-natively t)
+    :config
+    (evil-define-key 'normal evil-org-mode-map
+      ;; ",tc" 'org-toggle-checkbox
+      "t" nil
+      ",t" 'org-todo))
   (evil-leader/set-key
     "=" 'all-indent
     ":" 'helm-M-x
     "<SPC>" 'avy-goto-word-1
     "aa" 'helm-do-ag
     "ab" 'helm-do-ag-buffers
-    "ap" 'helm-projectile-ag
     "ag" 'ag
+    "ap" 'helm-projectile-ag
     "bb" 'helm-buffers-list
     "bb" 'helm-mini
     "bf" 'popwin:find-file
@@ -390,8 +378,8 @@
     "bl" 'popwin:popup-last-buffer
     "bp" 'popwin:pop-to-buffer
     "bw" 'projectile-switch-to-buffer-other-window
-    "dc" 'helm-dash-at-point
     "da" 'helm-dash
+    "dc" 'helm-dash-at-point
     "dd" 'dired-open-current
     "di" 'helm-dash-install-docset
     "eha" 'helm-apropos
@@ -425,54 +413,48 @@
     "hgi" 'helm-open-github-from-issues
     "hgp" 'helm-open-github-from-pull-requests
     "hl" 'helm-resume
-    "ho" 'helm-semantic-or-imenu
     "hm" 'helm-all-mark-rings
+    "ho" 'helm-semantic-or-imenu
     "hp" 'helm-show-kill-ring
     "ig" 'indent-guide-mode
     "l" 'toggle-folding
     "ma" 'slack-select-rooms
-    "mcs" 'slack-channel-select
+    "mcA" 'slack-channel-unarchive
+    "mca" 'slack-channel-archive
     "mcc" 'slack-create-channel
-    "mcu" 'slack-channel-list-update
     "mci" 'slack-channel-invite
-    "mcr" 'slack-channel-rename
     "mcj" 'slack-channel-join
     "mcl" 'slack-channel-leave
-    "mca" 'slack-channel-archive
-    "mcA" 'slack-channel-unarchive
-    "mga" 'slack-group-archive
-    "mgA" 'slack-group-unarchive
-    "mgs" 'slack-group-select
-    "mgc" 'slack-create-group
-    "mgi" 'slack-group-invite
-    "mgu" 'slack-group-list-update
-    "mgr" 'slack-group-rename
-    "mgl" 'slack-group-leave
-    "mis" 'slack-im-select
-    "miu" 'slack-im-list-update
-    "mus" 'slack-user-stars-list
-    "mk" 'slack-ws-close
+    "mcr" 'slack-channel-rename
+    "mcs" 'slack-channel-select
+    "mcu" 'slack-channel-list-update
+    "mfd" 'slack-file-delete
     "mfl" 'slack-file-list
     "mfu" 'slack-file-upload
-    "mfd" 'slack-file-delete
+    "mgA" 'slack-group-unarchive
+    "mga" 'slack-group-archive
+    "mgc" 'slack-create-group
+    "mgi" 'slack-group-invite
+    "mgl" 'slack-group-leave
+    "mgr" 'slack-group-rename
+    "mgs" 'slack-group-select
+    "mgu" 'slack-group-list-update
+    "mic" 'slack-im-close
+    "mio" 'slack-im-open
+    "mis" 'slack-im-select
+    "miu" 'slack-im-list-update
+    "mk" 'slack-ws-close
     "ml" 'open-junk-dir
+    "mm" 'slack-start
     "mn" 'open-junk-file
-    "ms" 'slack-start
+    "msf" 'slack-search-from-files
+    "msm" 'slack-search-from-messages
+    "mss" 'slack-search-select
     "mt" 'slack-change-current-team
-    ;; "pn" 'persp-next
-    ;; "pp" 'persp-prev
-    ;; "pS" 'persp-switch
-    ;; "pbr" 'persp-remove-buffer
-    ;; "pbk" 'persp-kill-buffer
-    ;; "pbi" 'persp-import-buffers
-    ;; "pba" 'persp-add-buffer
-    ;; "pl" 'persp-load-state-from-file
-    ;; "pk" 'persp-kill
-    ;; "pr" 'persp-rename
-    ;; "pN" 'persp-add-new
+    "mus" 'slack-user-stars-list
+    "pd" 'prodigy
     "pk" 'projectile-invalidate-cache
     "ps" 'projectile-switch-project
-    "pd" 'prodigy
     "qR" 'quickrun-region
     "qa" 'quickrun-with-arg
     "qr" 'quickrun
@@ -484,11 +466,6 @@
     "tl" 'google-translate-smooth-translate
     "tq" 'google-translate-query-translate
     "ts" 'timer
-    "tt" 'elscreen-create
-    "tn" 'elscreen-next
-    "tp" 'elscreen-previous
-    "tk" 'elscreen-kill
-    "tK" 'elscreen-kill-screen-and-buffers
     "tw" 'twit
     "uv" 'undo-tree-visualize
     "wb" 'balance-windows
@@ -497,6 +474,17 @@
     "wm" 'toggle-window-maximized
     "wt" 'toggle-frame-alpha
     "ww" 'ace-window
+    ;; "pN" 'persp-add-new
+    ;; "pS" 'persp-switch
+    ;; "pba" 'persp-add-buffer
+    ;; "pbi" 'persp-import-buffers
+    ;; "pbk" 'persp-kill-buffer
+    ;; "pbr" 'persp-remove-buffer
+    ;; "pk" 'persp-kill
+    ;; "pl" 'persp-load-state-from-file
+    ;; "pn" 'persp-next
+    ;; "pp" 'persp-prev
+    ;; "pr" 'persp-rename
     ;; "bn" 'switch-to-next-buffer
     ;; "bp" 'switch-to-prev-buffer
     ))

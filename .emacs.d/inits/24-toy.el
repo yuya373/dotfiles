@@ -55,6 +55,8 @@
     ",mr" 'twittering-retweet
     ",mn" 'twittering-update-status-interactive
     ",md" 'twittering-direct-message
+    ",mf" 'twittering-favorite
+    ",mF" 'twittering-unfavorite
     ",ta" 'twittering-toggle-activate-buffer
     ",ti" 'twittering-icon-mode
     ",ts" 'twittering-scroll-mode

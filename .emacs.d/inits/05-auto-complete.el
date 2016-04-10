@@ -59,6 +59,7 @@
 (use-package company-emoji
   :commands (company-emoji)
   :init
+  (setq company-emoji-insert-unicode nil)
   (defun add-company-emoji ()
     (make-local-variable 'company-backends)
     (add-to-list 'company-backends 'company-emoji))

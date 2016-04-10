@@ -76,6 +76,10 @@
               ;; fullscreen
               (magit-display-buffer-traditional buffer)
             (display-buffer buffer '(display-buffer-full-screen)))))
+  (defun my-git-commit-mode ()
+    (make-local-variable 'company-backends)
+    (add-to-list 'company-backends 'company-ispell))
+  (add-hook 'git-commit-mode-hook 'my-git-commit-mode)
   :config
   (use-package ert)
   (use-package magit-extras)

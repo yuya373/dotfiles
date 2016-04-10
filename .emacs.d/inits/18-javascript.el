@@ -26,7 +26,13 @@
 
 (el-get-bundle js2-mode)
 (use-package js2-mode
-  :mode (("\\.js\\'" . js2-mode)))
+  :mode (("\\.js\\'" . js2-mode)
+         ("\\.jsx\\'" . js2-jsx-mode))
+  :init
+  (setq js2-highlight-level 3)
+  :config
+  (use-package js2-imenu-extras)
+  (add-hook 'js2-mode-hook 'js2-imenu-extras-mode))
 
 (el-get-bundle coffee-mode)
 (use-package coffee-mode
@@ -34,6 +40,23 @@
   :init
   (setq coffee-tab-width 2)
   (setq coffee-indent-tabs-mode nil))
+
+(el-get-bundle tern)
+(el-get-bundle company-tern)
+(use-package tern
+  :commands (tern-mode)
+  :init
+  (add-hook 'js2-mode-hook 'tern-mode)
+  :config
+  (add-to-list 'tern-command "--no-port-file" t))
+(use-package company-tern
+  :commands (company-tern)
+  :init
+  (defun enable-company-tern ()
+    (make-local-variable 'company-backends)
+    (add-to-list 'company-backends '(company-tern company-dabbrev-code)))
+  (add-hook 'js2-mode-hook 'enable-company-tern)
+  (add-hook 'js2-mode-hook 'enable-company-tern))
 
 (provide '18-javascript)
 ;;; 18-javascript.el ends here

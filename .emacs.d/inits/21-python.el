@@ -27,6 +27,15 @@
 (eval-when-compile
   (require 'evil))
 
+(el-get-bundle virtualenvwrapper)
+(use-package virtualenvwrapper
+  :commands (venv-workon)
+  :init
+  (setq venv-location '("~/dev/BuildingMachineLearningSystemsWithPython"))
+  :config
+  (venv-initialize-eshell)
+  (venv-initialize-interactive-shells))
+
 (use-package python-mode
   :mode (("\\.py\\'" . python-mode))
   :init
@@ -70,7 +79,7 @@
 
 (el-get-bundle elpy)
 (use-package elpy
-  :commands (elpy-enable)
+  :commands (elpy-mode elpy-enable)
   :init
   (setq elpy-modules '(elpy-module-sane-defaults
                        elpy-module-eldoc

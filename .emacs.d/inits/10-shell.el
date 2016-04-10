@@ -37,6 +37,22 @@
            (read-from-minibuffer "Eshell Buffer Name: " "*eshell*")))
       (eshell t)))
   :config
+  (defvar my-ansi-escape-re
+    (rx (or ?\233 (and ?\e ?\[))
+        (zero-or-more (char (?0 . ?\?)))
+        (zero-or-more (char ?\s ?- ?\/))
+        (char (?@ . ?~))))
+
+  (defun my-nuke-ansi-escapes (beg end)
+    (save-excursion
+      (goto-char beg)
+      (while (re-search-forward my-ansi-escape-re end t)
+        (replace-match ""))))
+
+  (defun my-eshell-nuke-ansi-escapes ()
+    (my-nuke-ansi-escapes eshell-last-output-start eshell-last-output-end))
+
+  (add-hook 'eshell-output-filter-functions 'my-eshell-nuke-ansi-escapes t)
   (defun eshell-bind-keymap ()
     (evil-define-key 'insert eshell-mode-map
       (kbd "C-p") 'helm-eshell-history
@@ -70,7 +86,8 @@
   :commands (epe-theme-dakrone epe-theme-lambda)
   :init
   (setq eshell-highlight-prompt nil)
-  (setq eshell-prompt-function #'epe-theme-lambda))
+  ;; (setq eshell-prompt-function #'epe-theme-lambda)
+  )
 
 (el-get-bundle kyagi/shell-pop-el :branch "master")
 (use-package shell-pop

@@ -27,9 +27,7 @@
 (eval-when-compile
   (require 'evil))
 
-(setq ruby-insert-encoding-magic-comment nil)
-
-(el-get-bundle ruby-end)
+;; (el-get-bundle ruby-end)
 (el-get-bundle bundler)
 (el-get-bundle rbenv)
 (el-get-bundle robe-mode)
@@ -41,63 +39,71 @@
   :commands (global-rbenv-mode rbenv-use-global rbenv-use-corresponding)
   :init
   (setq rbenv-show-active-ruby-in-modeline nil)
+  (setq rbenv-executable "/usr/local/Cellar/rbenv/HEAD/bin/rbenv")
   (add-hook 'enh-ruby-mode-hook 'global-rbenv-mode)
-  (add-hook 'enh-ruby-mode-hook (lambda () (rbenv-use-corresponding))))
+  (add-hook 'enh-ruby-mode-hook 'rbenv-use-global)
+  ;; (add-hook 'enh-ruby-mode-hook (lambda () (rbenv-use-corresponding)))
+  )
 (use-package inf-ruby
   :commands (inf-ruby inf-ruby-minor-mode inf-ruby-console-auto)
   :init
   (add-hook 'inf-ruby-mode-hook 'smartparens-mode)
   (add-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode))
-(use-package ac-robe
-  :commands (ac-robe-setup))
 (use-package robe
   :diminish robe-mode
   :commands (robe-mode robe-start)
   :init
-  (setq robe-turn-on-eldoc nil)
-  (setq robe-highlight-capf-candidates nil)
+  (setq robe-highlight-capf-candidates t)
   (add-hook 'enh-ruby-mode-hook 'robe-mode)
   :config
-  (defun enable-robe-server ()
-    (interactive)
-    (robe-start))
-  (evil-define-key 'normal robe-mode-map (kbd ",rs") 'enable-robe-server)
+  (evil-define-key 'normal robe-mode-map (kbd ",rs") 'robe-start)
   (evil-define-key 'normal robe-mode-map (kbd ",rh") 'robe-doc)
   (evil-define-key 'normal robe-mode-map (kbd ",ra") 'robe-ask)
   (evil-define-key 'normal robe-mode-map (kbd ",rj") 'robe-jump)
   (evil-define-key 'normal robe-mode-map (kbd ",rR") 'robe-rails-refresh))
+(use-package bundler
+  :commands (bundle-open bundle-exec bundle-check bundle-gemfile
+                         bundle-update bundle-console bundle-install)
+  :config
+  (evil-define-key 'normal projectile-rails-mode-map
+    (kbd ",be") 'bundle-exec
+    (kbd ",bc") 'bundle-console
+    (kbd ",bg") 'bundle-gemfile
+    (kbd ",bu") 'bundle-update
+    (kbd ",bi") 'bundle-install
+    (kbd ",bo") 'bundle-open))
 (use-package enh-ruby-mode
   :mode (("\\(Rake\\|Thor\\|Guard\\|Gem\\|Cap\\|Vagrant\\|Berks\\|Pod\\|Puppet\\)file\\'" . enh-ruby-mode)
-         ("\\.\\(rb\\|rabl\\|ru\\|builder\\|rake\\|thor\\|gemspec\\|jbuilder\\|schema\\|cap\\)\\'" . enh-ruby-mode)
-         ("Schema" . enh-ruby-mode))
-  :interpreter ("ruby" . enh-ruby-mode)
+         ("\\.\\(rb\\|rabl\\|ru\\|builder\\|rake\\|thor\\|gemspec\\|jbuilder\\|schema\\|cap\\)\\'" . enh-ruby-mode))
   :init
   (defun my-company-ruby ()
-    (make-local-variable 'company-backends)
     (make-local-variable 'company-minimum-prefix-length)
-    (add-to-list 'company-backends '(company-robe company-dabbrev))
-    (remq 'company-capf company-backends)
-    (setq-local company-minimum-prefix-length 4))
+    (setq company-minimum-prefix-length 4)
+    (make-local-variable 'company-backends)
+    (add-to-list 'company-backends '(company-robe company-dabbrev-code))
+    ;; (setq company-backends (remq 'company-capf company-backends))
+    )
   (add-hook 'enh-ruby-mode-hook 'my-company-ruby)
   (add-hook 'inf-ruby-mode-hook 'my-company-ruby)
   (setq tab-width 2)
-  (modify-syntax-entry ?_ "w")
-  (setq enh-ruby-deep-indent-paren nil
-        enh-ruby-hanging-paren-deep-indent-level 2)
-  (setq enh-ruby-add-encoding-comment-on-save nil)
+  ;; (modify-syntax-entry ?_ "w")
+  (setq
+   ;; enh-ruby-deep-indent-paren t
+   ;; enh-ruby-hanging-paren-deep-indent-level 2
+   enh-ruby-add-encoding-comment-on-save nil
+   enh-ruby-bounce-deep-indent nil
+   ;; enh-ruby-deep-arglist t
+   )
   ;; (setq ruby-insert-encoding-magic-comment nil)
+  ;; (setq ruby-deep-indent-paren-style nil)
   ;; (setq ruby-align-chained-calls nil)
-  ;; (setq ruby-deep-indent-paren-style t)
-  (add-hook 'enh-ruby-mode-hook 'smartparens-mode)
   :config
   ;; (use-package ruby-end)
   (modify-syntax-entry ?@ "_" enh-ruby-mode-syntax-table)
   (modify-syntax-entry ?: "_" enh-ruby-mode-syntax-table)
   (modify-syntax-entry ?! "_" enh-ruby-mode-syntax-table)
   (modify-syntax-entry ?_ "w" enh-ruby-mode-syntax-table)
-  (use-package bundler
-    :commands (bundle-open bundle-exec bundle-check bundle-gemfile
-                           bundle-update bundle-console bundle-install))
+
   (evil-define-key 'normal enh-ruby-mode-map
     (kbd ",el") 'ruby-send-last-sexp
     (kbd ",ed") 'ruby-send-definition-and-go
@@ -105,12 +111,14 @@
     (kbd ",ric") 'inf-ruby-console-auto)
   (evil-define-key 'visual enh-ruby-mode-map
     (kbd ",er") 'ruby-send-region-and-go)
-  (evil-define-key 'normal enh-ruby-mode-map (kbd ",be") 'bundle-exec)
-  (evil-define-key 'normal enh-ruby-mode-map (kbd ",bc") 'bundle-console)
-  (evil-define-key 'normal enh-ruby-mode-map (kbd ",bg") 'bundle-gemfile)
-  (evil-define-key 'normal enh-ruby-mode-map (kbd ",bu") 'bundle-update)
-  (evil-define-key 'normal enh-ruby-mode-map (kbd ",bi") 'bundle-install)
-  (evil-define-key 'normal enh-ruby-mode-map (kbd ",bo") 'bundle-open))
+  (evil-define-key 'normal enh-ruby-mode-map
+    (kbd ",be") 'bundle-exec
+    (kbd ",bc") 'bundle-console
+    (kbd ",bg") 'bundle-gemfile
+    (kbd ",bu") 'bundle-update
+    (kbd ",bi") 'bundle-install
+    (kbd ",bo") 'bundle-open)
+  )
 
 (use-package ruby-test-mode
   :diminish ruby-test-mode

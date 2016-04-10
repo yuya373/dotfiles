@@ -101,8 +101,8 @@
   (push '(cider-repl-mode :tail t :stick t) popwin:special-display-config)
   (push '("*Backtrace*") popwin:special-display-config)
   (push '("*Messages*") popwin:special-display-config)
-  (push '(slack-info-mode :tail t :noselect t :stick t) popwin:special-display-config)
-  (push '(slack-edit-message-mode) popwin:special-display-config)
+  (push '(slack-info-mode :tail t :stick t) popwin:special-display-config)
+  (push '(slack-edit-message-mode :stick t) popwin:special-display-config)
   (push '(slack-mode :tail t :height 0.4 :noselect t :stick t )
         popwin:special-display-config)
   (push '("*Bundler*" :noselect t) popwin:special-display-config)
@@ -323,12 +323,13 @@
       (skk-mode 1)
       (skk-latin-mode 1)))
   (add-hook 'evil-insert-state-entry-hook 'enable-skk-when-insert)
-  (add-hook 'skk-mode-hook #'(lambda ()
-                               (define-key skk-j-mode-map (kbd "C-h") 'skk-delete-backward-char)
-                               (evil-make-intercept-map skk-j-mode-map 'insert )))
+  ;; (add-hook 'skk-mode-hook #'(lambda ()
+  ;;                              ;; (define-key skk-j-mode-map (kbd "C-h") 'skk-delete-backward-char)
+  ;;                              (evil-make-intercept-map skk-j-mode-map 'insert )))
   :config
   (use-package skk-hint)
-
+  ;; (define-key skk-j-mode-map (kbd "C-h") 'skk-delete-backward-char)
+  ;; (evil-make-intercept-map skk-j-mode-map 'insert)
   (defun my-skk-control ()
     (if (bound-and-true-p skk-mode)
         (skk-latin-mode 1)))
@@ -432,17 +433,26 @@ is a kind of temporary one which is not confirmed yet."
    :tags '(rails))
   )
 
-(el-get-bundle persp-mode
-  :type github
-  :pkgname "Bad-ptr/persp-mode.el")
-;; (use-package persp-mode
-;;     :commands (persp-mode)
-;;     :init
-;;     ;; (add-hook 'after-init-hook 'persp-mode)
-;;     ;; (add-hook 'evil-mode-hook 'persp-mode)
-;;     ;; (setq persp-nil-name "Emacs")
-;;     )
+(el-get-bundle pomodoro)
+(use-package pomodoro
+  :commands (pomodoro:start)
+  :init
+  (setq pomodoro:work-time 25
+        pomodoro:rest-time 5
+        pomodoro:long-rest-time 30)
+  (defun my-pomodoro-notify (msg)
+    (alert msg
+           :title "Pomodoro"
+           :category 'pomodoro))
+  (add-hook 'pomodoro:finish-work-hook
+            #'(lambda () (my-pomodoro-notify "Work is Finish")))
+  (add-hook 'pomodoro:finish-rest-hook
+            #'(lambda () (my-pomodoro-notify "Break time is Finish")))
+  (add-hook 'pomodoro:long-rest-hook
+            #'(lambda () (my-pomodoro-notify "Long Break time now"))))
+
 
 (provide '03-util)
 ;;; 03-util.el ends here
+
 

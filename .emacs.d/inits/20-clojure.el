@@ -34,6 +34,7 @@
             #'(lambda ()
                 (setq-local helm-dash-docsets '("Clojure"))
                 (cider-mode 1)))
+  (setq clojure-align-forms-automatically t)
   :config
   (put-clojure-indent 'do 0)
   (put-clojure-indent 'my-ns/do 1)
@@ -44,9 +45,16 @@
 (use-package cider
   :commands (cider-mode)
   :init
-  (setq cider-stacktrace-fill-column 80)
+  (setq cider-stacktrace-fill-column 80
+        nrepl-log-messages t
+        cider-repl-display-in-current-window t
+        cider-repl-use-clojure-font-lock t
+        cider-prompt-save-file-on-load 'always-save
+        cider-font-lock-dynamically '(macro core function var)
+        cider-overlays-use-font-lock t)
   (add-hook 'cider-mode-hook #'(lambda () (eldoc-mode 1)))
   :config
+  (cider-repl-toggle-pretty-printing)
   (evil-define-key 'normal cider-stacktrace-mode-map
     "q" 'cider-popup-buffer-quit-function)
   (evil-define-key 'normal cider-inspector-mode-map

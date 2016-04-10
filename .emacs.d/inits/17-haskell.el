@@ -24,27 +24,27 @@
 
 ;;; Code:
 
-(el-get-bundle haskell-mode)
-(use-package haskell-mode
-  :mode (("\\.hs\\'" . haskell-mode)
-         ("\\.lhs\\'" . literate-haskell-mode))
-  :init
-  (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-  (add-hook 'haskell-mode-hook 'font-lock-mode)
-  (add-hook 'haskell-mode-hook 'inf-haskell-mode))
-(use-package haskell-cabel-mode
-  :mode (("\\.cabal\\'" . haskell-cabel-mode)))
-(use-package haskell-indentation-mode
-  :commands (haskell-indentation-mode)
-  :init
-  (add-hook 'haskell-mode-hook 'haskell-indentation-mode))
-(el-get-bundle ghc-mod)
-(use-package ghc
-  :commands (ghc-init)
-  :init
-  (add-hook 'haskell-mode-hook '(lambda () (ghc-init)))
-  :config
-  (add-to-list 'ac-sources 'ac-source-ghc-mod))
-
-(provide '17-haskell)
+; (el-get-bundle haskell-mode)
+; (use-package haskell-mode
+;   :mode (("\\.hs\\'" . haskell-mode)
+;          ("\\.lhs\\'" . literate-haskell-mode))
+;   :init
+;   (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+;   (add-hook 'haskell-mode-hook 'font-lock-mode)
+;   (add-hook 'haskell-mode-hook 'inf-haskell-mode))
+; (use-package haskell-cabel-mode
+;   :mode (("\\.cabal\\'" . haskell-cabel-mode)))
+; (use-package haskell-indentation-mode
+;   :commands (haskell-indentation-mode)
+;   :init
+;   (add-hook 'haskell-mode-hook 'haskell-indentation-mode))
+; (el-get-bundle ghc-mod)
+; (use-package ghc
+;   :commands (ghc-init)
+;   :init
+;   (add-hook 'haskell-mode-hook '(lambda () (ghc-init)))
+;   :config
+;   (add-to-list 'ac-sources 'ac-source-ghc-mod))
+;
+; (provide '17-haskell)
 ;;; 17-haskell.el ends here

@@ -46,6 +46,7 @@
 (el-get-bundle helm)
 (el-get-bundle helm-ls-git)
 (el-get-bundle helm-ag)
+(el-get-bundle migemo)
 
 (use-package helm-ls-git
   :commands (helm-ls-git-ls
@@ -70,7 +71,10 @@
              helm-resume
              helm-mini
              helm-semantic-or-imenu
-             helm-show-kill-ring)
+             helm-show-kill-ring
+             helm-all-mark-rings
+             helm-semantic-or-imenu
+             helm-elscreen)
   :init
   (setq helm-mini-default-sources '(helm-source-buffers-list
                                     helm-source-recentf
@@ -105,6 +109,17 @@
   :config
   (use-package helm-config)
   (use-package helm-eshell)
+  (use-package migemo
+    :init
+    (setq migemo-command "cmigemo")
+    (setq migemo-options '("-q" "--emacs"))
+    (setq migemo-coding-system 'utf-8-unix)
+    (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")
+    :config
+    (migemo-init))
+
+  (helm-migemo-mode t)
+  (diminish 'helm-migemo-mode)
   (defun make-helm-git-source ()
     (unless (helm-ls-git-not-inside-git-repo)
       (setq helm-source-ls-git
@@ -232,12 +247,23 @@
     (with-helm-alive-p
       (helm-exit-and-execute-action 'ace-helm-switch-to-buffer)))
 
+  (defun my-helm-elscreen ()
+    (interactive)
+    (with-helm-alive-p
+      (helm-exit-and-execute-action
+       #'(lambda (c) (if (or (listp c)
+                             (and (not (listp c))
+                                  (get-buffer c)))
+                         (helm-find-buffer-on-elscreen c)
+                       (helm-elscreen-find-file c))))))
+
   (with-eval-after-load "evil"
     (define-key evil-motion-state-map
       (kbd "C-b") 'helm-mini)
     (define-key evil-normal-state-map
       (kbd "C-b") 'helm-mini))
 
+  (define-key helm-map (kbd "C-e") 'my-helm-elscreen)
   (define-key helm-map (kbd "C-v") 'helm-ace-vsplit-ff)
   (define-key helm-map (kbd "C-s") 'helm-ace-split-ff)
   (define-key helm-map (kbd "C-o") 'helm-ace-ff)
@@ -249,16 +275,20 @@
   (define-key helm-map (kbd "C-w") 'backward-kill-word)
   (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
 
+
+  (define-key helm-comp-read-map (kbd "C-e") 'my-helm-elscreen)
   (define-key helm-comp-read-map (kbd "C-v") 'helm-ace-vsplit-ff)
   (define-key helm-comp-read-map (kbd "C-s") 'helm-ace-split-ff)
   (define-key helm-comp-read-map (kbd "C-o") 'helm-ace-ff)
 
+  (define-key helm-buffer-map (kbd "C-e") 'my-helm-elscreen)
   (define-key helm-buffer-map (kbd "C-s") 'helm-ace-split-sb)
   (define-key helm-buffer-map (kbd "C-v") 'helm-ace-vsplit-sb)
   (define-key helm-buffer-map (kbd "C-d") 'helm-buffer-run-kill-buffers)
   (define-key helm-buffer-map (kbd "C-o") 'helm-ace-sb)
   (define-key helm-buffer-map (kbd "C-g") 'helm-keyboard-quit)
 
+  (define-key helm-find-files-map (kbd "C-e") 'my-helm-elscreen)
   (define-key helm-find-files-map (kbd "C-s") 'helm-ace-split-ff)
   (define-key helm-find-files-map (kbd "C-v") 'helm-ace-vsplit-ff)
   (define-key helm-find-files-map (kbd "C-t") 'helm-ff-run-etags)
@@ -268,6 +298,7 @@
   (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
   (define-key helm-find-files-map (kbd "C-d") 'helm-ff-run-delete-file)
 
+  (define-key helm-read-file-map (kbd "C-e") 'my-helm-elscreen)
   (define-key helm-read-file-map (kbd "C-s") 'helm-ace-split-ff)
   (define-key helm-read-file-map (kbd "C-v") 'helm-ace-vsplit-ff)
   (define-key helm-read-file-map (kbd "C-t") 'helm-ff-run-etags)
@@ -277,6 +308,7 @@
   (define-key helm-read-file-map (kbd "C-w") 'backward-kill-word)
   (define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
 
+  (define-key helm-generic-files-map (kbd "C-e") 'my-helm-elscreen)
   (define-key helm-generic-files-map (kbd "C-s") 'helm-ace-split-ff)
   (define-key helm-generic-files-map (kbd "C-v") 'helm-ace-vsplit-ff)
   (define-key helm-generic-files-map (kbd "C-o") 'helm-ace-ff)
@@ -286,10 +318,12 @@
   (define-key helm-generic-files-map (kbd "TAB") 'helm-execute-persistent-action)
 
   (with-eval-after-load "helm-ls-git"
+    (define-key helm-ls-git-map (kbd "C-e") 'my-helm-elscreen)
     (define-key helm-ls-git-map (kbd "C-s") 'helm-ace-split-ff)
     (define-key helm-ls-git-map (kbd "C-v") 'helm-ace-vsplit-ff)
     (define-key helm-ls-git-map (kbd "C-o") 'helm-ace-ff))
 
+  (define-key helm-ag-map (kbd "C-e") 'my-helm-elscreen)
   (define-key helm-ag-map (kbd "C-s") 'helm-ace-split-ag)
   (define-key helm-ag-map (kbd "C-v") 'helm-ace-vsplit-ag)
   (define-key helm-ag-map (kbd "C-o") 'helm-ag--run-other-window-action))

@@ -37,6 +37,8 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 (set-language-environment "Japanese")
 (prefer-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
 (setq require-final-newline t)
 (setq ad-redefinition-action 'accept)
 (setq recentf-max-saved-items 1000)
@@ -66,6 +68,7 @@
 (use-package visual-line-mode
   :commands (visual-line-mode)
   :init
+  (add-hook 'org-mode-hook 'visual-line-mode)
   (add-hook 'prog-mode-hook 'visual-line-mode)
   (add-hook 'visual-line-mode-hook #'(lambda () (diminish 'visual-line-mode))))
 
@@ -80,13 +83,12 @@
 (el-get-bundle exec-path-from-shell)
 (use-package exec-path-from-shell
   ;; :commands (exec-path-from-shell-initialize)
-  ;; :init
-  ;; (add-hook 'after-init-hook 'exec-path-from-shell-initialize)
+  :init
+  ;; (add-hook 'before-init-hook 'exec-path-from-shell-initialize)
+  (setq exec-path-from-shell-arguments '("-l" "-i"))
+  (setq exec-path-from-shell-variables '("PATH" "MANPATH" "LANG" "JAVA_HOME"))
   :config
   (exec-path-from-shell-initialize)
-  (exec-path-from-shell-copy-env "LANG")
-  ;; (exec-path-from-shell-copy-env "JAVA_HOME")
-  ;; (exec-path-from-shell-copy-env "PATH")
   )
 
 (use-package hideshow
