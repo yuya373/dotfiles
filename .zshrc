@@ -13,6 +13,9 @@ autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
 autoload -Uz run-help
 autoload -Uz run-help-git
 
+# autoload predict-on
+# predict-on
+
 #for brew-file
 if [ -f $(brew --prefix)/etc/brew-wrap ];then
   source $(brew --prefix)/etc/brew-wrap
@@ -72,7 +75,11 @@ bindkey -v '^m' do_enter
 bindkey -v '^@' fcdr
 bindkey -v '^o' fd
 bindkey -v '^p' fdr
-bindkey -v '^k' fzf-cd-widget
+bindkey -v '^k' kill-line
+bindkey -v '^e' end-of-line
+bindkey -v '^f' forward-word
+bindkey -v '^b' backward-word
+
 
 # normal mode binding
 bindkey -a 'H' run-help
