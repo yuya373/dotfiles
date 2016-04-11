@@ -30,6 +30,11 @@
          ("\\.jsx\\'" . js2-jsx-mode))
   :init
   (setq js2-highlight-level 3)
+  (setq js2-include-browser-externs nil)
+  (setq js2-mode-show-parse-errors nil)
+  (setq js2-mode-show-strict-warnings nil)
+  (setq js2-highlight-external-variables nil)
+  (setq js2-include-jslint-globals nil)
   :config
   (use-package js2-imenu-extras)
   (add-hook 'js2-mode-hook 'js2-imenu-extras-mode))
@@ -54,7 +59,7 @@
   :init
   (defun enable-company-tern ()
     (make-local-variable 'company-backends)
-    (add-to-list 'company-backends '(company-tern company-dabbrev-code)))
+    (add-to-list 'company-backends '(company-tern :with company-dabbrev-code)))
   (add-hook 'js2-mode-hook 'enable-company-tern)
   (add-hook 'js2-mode-hook 'enable-company-tern))
 

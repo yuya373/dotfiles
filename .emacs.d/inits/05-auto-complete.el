@@ -53,8 +53,8 @@
   (add-hook 'company-mode-hook 'company-statistics-mode)
   :config
   (setq company-transformers '(company-sort-by-statistics
-                               company-sort-by-occurrence
-                               company-sort-by-backend-importance)))
+                               company-sort-by-backend-importance
+                               company-sort-by-occurrence)))
 
 (use-package company-emoji
   :commands (company-emoji)
@@ -86,11 +86,21 @@
   ;; (use-package company-yasnippet
   ;;   :config
   ;;   (add-to-list 'company-backends 'company-yasnippet))
-  (use-package company-ispell)
+  (use-package company-ispell
+    :init
+    (defun add-company-ispell ()
+      (make-local-variable 'company-backends)
+      (add-to-list 'company-backends 'company-ispell))
+    (add-hook 'slack-edit-message-mode-hook #'add-company-ispell)
+    (add-hook 'gfm-mode-hook #'add-company-ispell)
+    (add-hook 'markdown-mode-hook #'add-company-ispell)
+    (add-hook 'org-mode-hook #'add-company-ispell)
+    (add-hook 'git-commit-mode-hook #'add-company-ispell))
   ;; (global-set-key (kbd "TAB") 'nil)
   ;; (with-eval-after-load "evil"
   ;;   (evil-define-key 'insert evil-insert-state-map
   ;;     (kbd "TAB") 'company-indent-or-complete-common))
+
   (setq company-backends (delete 'company-bbdb company-backends))
   (setq company-backends (delete 'company-cmake company-backends))
   (setq company-backends (delete 'company-clang company-backends))

@@ -33,7 +33,9 @@
   :diminish flycheck-mode
   :commands (flycheck-mode)
   :init
-  (setq-default flycheck-disabled-checkers '(chef-foodcritic))
+  (setq-default flycheck-disabled-checkers '(chef-foodcritic
+                                             javascript-jshint
+                                             javascript-jscs))
   (setq flycheck-emacs-lisp-load-path 'inherit)
   (add-hook 'prog-mode-hook 'flycheck-mode)
   :config

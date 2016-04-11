@@ -77,7 +77,7 @@
 (use-package projectile-rails
   :commands (projectile-rails-on)
   :init
-  (add-hook 'projectile-global-mode-hook 'projectile-rails-on)
+  (add-hook 'enh-ruby-mode-hook 'projectile-rails-on)
   (defun set-projectile-rails-tags-command ()
     (interactive)
     (when (projectile-rails-root)
