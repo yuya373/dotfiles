@@ -60,4 +60,4 @@ export EDITOR='emacsclient -n'
 export JAVA_HOME=`/usr/libexec/java_home`
 export PATH=$PATH:$JAVA_HOME/bin
 export MANPATH=/usr/local/share/man/ja_JP.UTF-8:$MANPATH
-
+export HOMEBREW_NO_ANALYTICS=1
