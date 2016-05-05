@@ -49,5 +49,8 @@ if [[ ! -d ~/.emacs.d ]]; then
 fi
 ln -sf ~/dotfiles/.emacs.d/init.el ~/.emacs.d/init.el
 
+# eslint
+ln -sf ~/dotfiles/.eslintrc  ~/.eslintrc
+
 echo "Finished"
 
