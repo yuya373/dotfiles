@@ -175,11 +175,12 @@
 
 (use-package git-gutter
   :diminish git-gutter-mode
-  :commands (git-gutter-mode)
+  :commands (global-git-gutter-mode)
   :init
-  (add-hook 'projectile-mode-hook 'git-gutter-mode)
-  (setq git-gutter:update-interval 2)
+  (add-hook 'after-init-hook 'global-git-gutter-mode)
   :config
+  (setq git-gutter:update-interval 2)
+  (add-to-list 'git-gutter:update-commands 'evil-normal-state)
   (setq git-gutter:modified-sign "**"
         git-gutter:added-sign    "++"
         git-gutter:deleted-sign  "--")

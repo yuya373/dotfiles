@@ -59,7 +59,9 @@
   (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
   (defun install-my-spaceline-theme ()
     (spaceline-install
-     '((evil-state
+     '((pomodoro
+        :when active)
+       (evil-state
         :face highlight-face)
        ;; ((workspace-number window-number)
        ;;  :fallback evil-state
@@ -90,6 +92,11 @@
        (rbenv :when active)
        hud)))
   :config
+  (spaceline-define-segment pomodoro
+    "pomodoro.el"
+    (pomodoro:propertize-mode-line)
+    :when (and (bound-and-true-p pomodoro:mode-line)
+               (< 0 (length pomodoro:mode-line))))
   (spaceline-define-segment rbenv
     "ruby version used in rbenv"
     (rbenv--update-mode-line)

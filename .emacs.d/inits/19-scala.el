@@ -43,6 +43,7 @@
   :init
   (setq ensime-sbt-perform-on-save nil)
   (setq ensime-completion-style 'company)
+  (setq ensime-sem-high-enabled-p t)
   (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 
   (defun ensime-eldoc-info ()
@@ -59,6 +60,7 @@
   (defun ensime-inf-company ()
     (make-local-variable 'company-backends)
     (setq company-backends (remove 'ensime-company company-backends)))
+
   (add-hook 'ensime-inf-mode-hook #'(lambda ()
                                      (ensime-inf-company)
                                      (company-mode t)))
@@ -70,7 +72,9 @@
             #'(lambda ()
                 (company-mode)
                 (kill-local-variable 'company-backends)
-                (add-to-list 'company-backends 'ensime-company)))
+                (make-local-variable 'company-backends)
+                (add-to-list 'company-backends
+                             '(ensime-company :with company-dabbrev-code))))
   :config
   (defun ensime-inf-eval-region-with-paste (start end)
     (interactive "r")

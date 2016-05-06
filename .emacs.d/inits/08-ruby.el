@@ -77,6 +77,7 @@
          ("\\.\\(rb\\|rabl\\|ru\\|builder\\|rake\\|thor\\|gemspec\\|jbuilder\\|schema\\|cap\\)\\'" . enh-ruby-mode))
   :init
   (defun my-company-ruby ()
+    (setq-default tab-width 2)
     (make-local-variable 'company-minimum-prefix-length)
     (setq company-minimum-prefix-length 4)
     (make-local-variable 'company-backends)
@@ -85,13 +86,10 @@
     )
   (add-hook 'enh-ruby-mode-hook 'my-company-ruby)
   (add-hook 'inf-ruby-mode-hook 'my-company-ruby)
-  (setq tab-width 2)
   ;; (modify-syntax-entry ?_ "w")
   (setq
-   ;; enh-ruby-deep-indent-paren t
-   ;; enh-ruby-hanging-paren-deep-indent-level 2
    enh-ruby-add-encoding-comment-on-save nil
-   enh-ruby-bounce-deep-indent nil
+   enh-ruby-deep-indent-paren nil
    ;; enh-ruby-deep-arglist t
    )
   ;; (setq ruby-insert-encoding-magic-comment nil)

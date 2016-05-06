@@ -28,11 +28,11 @@
 (use-package rust-mode
   :mode (("\\.rs\\'" . rust-mode)))
 
-(el-get-bundle racer-rust/emacs-racer)
+(el-get-bundle rust-racer)
 (use-package racer
   :commands (racer-mode)
   :init
-  (setq racer-rust-src-path (expand-file-name "~/rustc-1.5.0/src"))
+  ;; (setq racer-rust-src-path (expand-file-name "~/rustc-1.5.0/src"))
   (add-hook 'rust-mode-hook 'racer-mode)
   (add-hook 'racer-mode-hook 'eldoc-mode))
 
@@ -42,7 +42,8 @@
   :init
   (defun my-company-racer ()
     (make-local-variable 'company-backends)
-    (add-to-list 'company-backends 'company-racer))
+    (add-to-list 'company-backends
+                 '(company-racer :with company-dabbrev-code)))
   (add-hook 'racer-mode-hook 'my-company-racer))
 
 (provide '28-rust)

@@ -62,6 +62,9 @@
   (setq eww-search-prefix "https://www.google.co.jp/search?q=")
   ;; (setq url-user-agent "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12A366 Safari/600.1.4")
   :config
+  (defun url-http-user-agent-string ()
+    (format "User-Agent: %s\r\n"
+            "Mozilla/5.0 (iPhone; CPU iPhone OS 9_0_2 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13A452 Safari/601.1"))
   (evil-define-key 'normal eww-history-mode-map "o" 'eww-history-browse)
   (evil-define-key 'normal eww-history-mode-map "q" 'quit-window)
   (evil-define-key 'normal eww-bookmark-mode-map "o" 'eww-bookmark-browse)

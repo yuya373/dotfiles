@@ -172,10 +172,12 @@
       (call-interactively #'delete-backward-char)
       )
     )
+
+  (define-key global-map (kbd "C-h") 'delete-backward-char)
   (define-key evil-insert-state-map (kbd "C-h") 'delete-backward-char)
-  (define-key evil-ex-search-keymap (kbd "C-h") 'evil-skk-delete-backward-char)
-  (define-key evil-ex-completion-map (kbd "C-h") 'evil-skk-delete-backward-char)
-  (define-key minibuffer-local-map (kbd "C-h") 'evil-skk-delete-backward-char)
+  (define-key evil-ex-search-keymap (kbd "C-h") 'delete-backward-char)
+  (define-key evil-ex-completion-map (kbd "C-h") 'delete-backward-char)
+  (define-key minibuffer-local-map (kbd "C-h") 'delete-backward-char)
   ;; window move
   (define-key evil-normal-state-map (kbd "C-w r") 'window-resizer)
   (define-key evil-normal-state-map (kbd "C-k") 'evil-window-up)

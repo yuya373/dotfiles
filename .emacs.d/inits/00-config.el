@@ -35,10 +35,17 @@
 (global-set-key "\C-m" 'newline-and-indent)
 (setq large-file-warning-threshold nil)
 (fset 'yes-or-no-p 'y-or-n-p)
+
+;; encoding
 (set-language-environment "Japanese")
-(prefer-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
+(setq locale-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
+(unless (eq system-type 'windows-nt)
+  (set-selection-coding-system 'utf-8))
+(prefer-coding-system 'utf-8)
+
 (setq require-final-newline t)
 (setq ad-redefinition-action 'accept)
 (setq recentf-max-saved-items 1000)
@@ -131,7 +138,8 @@
 (use-package autorevert
   :commands (global-auto-revert-mode)
   :init
-  (setq auto-revert-interval 0.1)
+  ;; (setq auto-revert-check-vc-info t)
+  (setq auto-revert-interval 5)
   (add-hook 'after-init-hook #'global-auto-revert-mode))
 
 (use-package generic-x)

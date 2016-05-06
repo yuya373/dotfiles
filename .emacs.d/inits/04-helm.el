@@ -257,11 +257,17 @@
                          (helm-find-buffer-on-elscreen c)
                        (helm-elscreen-find-file c))))))
 
+  (defun helm-mini-or-persp ()
+    (interactive)
+    (if persp-mode
+        (persp-helm-mini)
+      (helm-mini)))
+
   (with-eval-after-load "evil"
     (define-key evil-motion-state-map
-      (kbd "C-b") 'helm-mini)
+      (kbd "C-b") 'helm-mini-or-persp)
     (define-key evil-normal-state-map
-      (kbd "C-b") 'helm-mini))
+      (kbd "C-b") 'helm-mini-or-persp))
 
   (define-key helm-map (kbd "C-e") 'my-helm-elscreen)
   (define-key helm-map (kbd "C-v") 'helm-ace-vsplit-ff)

@@ -40,6 +40,7 @@
   (setq which-key-side-window-max-height 0.50)
   (add-hook 'after-init-hook 'which-key-mode)
   :config
+  (which-key-setup-minibuffer)
   ;; (which-key-add-key-based-replacements "SPC r" " Rest")
   (which-key-add-key-based-replacements "SPC a" " Ag")
   (which-key-add-key-based-replacements "SPC d" " Dash")
@@ -73,7 +74,7 @@
   (setq popwin:adjust-other-windows t)
   (setq popwin:popup-window-position 'bottom)
   (setq popwin:popup-window-height 0.3)
-  (add-hook 'after-init-hook #'(lambda () (popwin-mode t)))
+  ;; (add-hook 'after-init-hook #'(lambda () (popwin-mode t)))
   :config
   (push '(prodigy-mode :stick t) popwin:special-display-config)
   (push '(sql-interactive-mode :stick t :noselect t :tail t)
@@ -288,6 +289,7 @@
 (use-package skk-autoloads
   :commands (skk-mode skk-auto-fill-mode)
   :init
+
   (setq skk-echo t)
   (setq skk-tut-file (concat user-emacs-directory
                              "el-get/ddskk/etc/SKK.tut"))
@@ -297,7 +299,8 @@
         skk-auto-insert-paren t
         skk-show-annotation t
         skk-annotation-show-wikipedia-url t
-        skk-use-look t)
+        skk-use-look t
+        skk-save-jisyo-instantly t)
   (setq skk-show-tooltip nil
         skk-show-inline nil
         skk-show-candidates-always-pop-to-buffer nil
@@ -307,11 +310,13 @@
         skk-dcomp-multiple-rows 20)
   (setq skk-comp-use-prefix t
         skk-comp-circulate t)
+  (setq skk-sticky-key ";")
+  (setq skk-previous-candidate-keys (list "x" "\C-p"))
 
-  ;;skk-server AquaSKK
+  ;; skk-server AquaSKK
   (setq skk-server-portnum 1178
-        skk-server-host "localhost")
-
+        skk-server-host "localhost"
+        skk-server-report-response t)
   ;; (setq skk-large-jisyo (concat user-emacs-directory
   ;;                               "SKK-JISYO.L"))
   (setq skk-jisyo "~/.skk-jisyo")
@@ -328,8 +333,15 @@
   ;;                              (evil-make-intercept-map skk-j-mode-map 'insert )))
   :config
   (use-package skk-hint)
+  ;; (use-package skk-study)
   ;; (define-key skk-j-mode-map (kbd "C-h") 'skk-delete-backward-char)
   ;; (evil-make-intercept-map skk-j-mode-map 'insert)
+  ;; @@ server completion
+  (add-to-list 'skk-search-prog-list
+               '(skk-server-completion-search) t)
+  (add-to-list 'skk-completion-prog-list
+               '(skk-comp-by-server-completion) t)
+
   (defun my-skk-control ()
     (if (bound-and-true-p skk-mode)
         (skk-latin-mode 1)))
@@ -437,9 +449,26 @@ is a kind of temporary one which is not confirmed yet."
 (use-package pomodoro
   :commands (pomodoro:start)
   :init
-  (setq pomodoro:work-time 25
+
+  (setq pomodoro:set-mode-line-p t
+        pomodoro:mode-line-work-sign "働 "
+        pomodoro:mode-line-rest-sign "休 "
+        pomodoro:mode-line-long-rest-sign "長休 "
+        pomodoro:work-time 25
         pomodoro:rest-time 5
-        pomodoro:long-rest-time 30)
+        pomodoro:long-rest-time 25
+        pomodoro:iteration-for-long-rest 3
+        pomodoro:mode-line-time-display t
+        pomodoro:file nil
+        pomodoro:myfile (lambda ()
+                          (format-time-string "~/Dropbox/junk/%Y-%m-%d.org")))
+
+  (defun pomodoro:find-rest-buffer ()
+    (when (functionp pomodoro:myfile)
+      (find-file (funcall pomodoro:myfile))))
+  (add-hook 'pomodoro:finish-work-hook #'pomodoro:find-rest-buffer)
+  (add-hook 'pomodoro:long-rest-hook #'pomodoro:find-rest-buffer)
+
   (defun my-pomodoro-notify (msg)
     (alert msg
            :title "Pomodoro"

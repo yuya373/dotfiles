@@ -59,9 +59,11 @@
   :init
   (defun enable-company-tern ()
     (make-local-variable 'company-backends)
-    (add-to-list 'company-backends '(company-tern :with company-dabbrev-code)))
+    (make-local-variable 'company-idle-delay)
+    (add-to-list 'company-backends '(company-tern :with company-dabbrev-code))
+    (setq company-idle-delay 0))
   (add-hook 'js2-mode-hook 'enable-company-tern)
-  (add-hook 'js2-mode-hook 'enable-company-tern))
+  (add-hook 'js2-jsx-mode-hook 'enable-company-tern))
 
 (provide '18-javascript)
 ;;; 18-javascript.el ends here

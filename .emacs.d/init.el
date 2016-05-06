@@ -64,6 +64,102 @@
               (set-frame-parameter nil
                                    'fullscreen 'maximized))
           t)
+
+(el-get-bundle persp-mode)
+(use-package persp-mode
+  :no-require t
+  :commands (persp-mode)
+  :init
+  (add-hook 'evil-mode-hook 'persp-mode)
+  ;; (add-hook 'evil-mode-hook 'persp-mode)
+  (setq persp-nil-name "Emacs")
+  (setq persp-auto-save-opt 2)
+  (setq persp-when-kill-switch-to-buffer-in-perspective nil)
+  ;; (setq persp-auto-resume-time 0)
+  :config
+  (require 'helm)
+  ;; (defvar after-switch-to-buffer-functions nil)
+  ;; (defvar after-display-buffer-functions nil)
+  ;; (add-hook 'after-switch-to-buffer-functions
+  ;;           #'(lambda (bn) ))
+  ;; (if (fboundp 'advice-add)
+  ;;     ;;Modern way
+  ;;     (setq py-persp-major-mode '(slack-mode slack-info-mode slack-edit))
+  ;;     (progn
+  ;;       (defun after-switch-to-buffer-adv (buffer-or-name &rest r)
+  ;;         (when (and persp-mode
+  ;;                    (not persp-temporarily-display-buffer))
+  ;;           (with-current-buffer buffer-or-name
+  ;;             (if (memq major-mode my-persp-major-mode)
+  ;;                 (persp-add-buffer buffer-or-name)))))
+  ;;       (defun after-display-buffer-adv (&rest r)
+  ;;         (apply #'run-hook-with-args 'after-display-buffer-functions r))
+  ;;       ;; (advice-add #'switch-to-buffer :after #'after-switch-to-buffer-adv)
+  ;;       ;; (advice-add #'display-buffer   :after #'after-display-buffer-adv)
+  ;;       (advice-remove #'switch-to-buffer #'after-switch-to-buffer-adv)
+  ;;       (advice-remove #'display-buffer #'after-display-buffer-adv)
+  ;;       ))
+
+  (defun persp-helm-mini ()
+    (interactive)
+    (with-persp-buffer-list ()
+                            (helm-mini)))
+  (defun helm-perspectives-source ()
+    (helm-build-in-buffer-source
+        (concat "Current Perspective: " (safe-persp-name (get-frame-persp)))
+      :data (persp-names)
+      :fuzzy-match t
+      :action
+      '(("Switch to perspective" . persp-switch)
+        ("Close perspective(s)" . (lambda (candidate)
+                                    (mapcar
+                                     'persp-kill-without-buffers
+                                     (helm-marked-candidates))))
+        ("Kill perspective(s)" . (lambda (candidate)
+                                   (mapcar 'persp-kill
+                                           (helm-marked-candidates)))))))
+
+  (defun helm-perspectives ()
+    "Control Panel for perspectives. Has many actions.
+If match is found
+f1: (default) Select perspective
+f2: Close Perspective(s) <- mark with C-SPC to close more than one-window
+f3: Kill Perspective(s)
+If match is not found
+<enter> Creates perspective
+Closing doesn't kill buffers inside the perspective while killing
+perspectives does."
+    (interactive)
+    (helm
+     :buffer "*Helm Perspectives*"
+     :sources
+     `(,(helm-perspectives-source)
+       ,(helm-build-dummy-source "Create new perspective"
+          :requires-pattern t
+          :action
+          '(("Create new perspective" .
+             (lambda (name)
+               (let ((persp-reset-windows-on-nil-window-conf t))
+                 (persp-switch name)
+                 (switch-to-buffer "*GNU Emacs*")))))))))
+
+  (define-key evil-normal-state-map (kbd "tt") 'helm-perspectives)
+  (define-key evil-normal-state-map (kbd "tR") 'persp-rename)
+  (define-key evil-normal-state-map (kbd "tn") 'persp-next)
+  (define-key evil-normal-state-map (kbd "tp") 'persp-prev)
+  (define-key evil-normal-state-map (kbd "tk") 'persp-kill)
+  (define-key evil-normal-state-map (kbd "ti") 'persp-import-buffers)
+  (define-key evil-normal-state-map (kbd "ta") 'persp-add-buffer)
+  (define-key evil-normal-state-map (kbd "tr") 'persp-remove-buffer)
+  (define-key evil-normal-state-map (kbd "tw") 'persp-save-state-to-file)
+  (define-key evil-normal-state-map (kbd "tl") 'persp-load-state-from-file)
+  (define-key evil-normal-state-map (kbd "tb") 'persp-helm-mini)
+  ;; (define-key evil-normal-state-map (kbd "\C-b") 'persp-helm-mini)
+  ;; (define-key evil-normal-state-map (kbd "\C-B") 'helm-mini)
+  )
+
+
+
 ;; (global-evil-leader-mode)
 ;; (evil-mode t)
 (custom-set-variables

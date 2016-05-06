@@ -23,76 +23,11 @@
 ;;
 
 ;;; Code:
-
-(el-get-bundle Bad-ptr/persp-mode.el)
-(use-package persp-mode
-  :commands (persp-mode)
-  :init
-  (add-hook 'after-init-hook 'persp-mode)
-  ;; (add-hook 'evil-mode-hook 'persp-mode)
-  (setq persp-nil-name "Emacs")
-  (setq persp-auto-save-opt 2)
-  (setq persp-when-kill-switch-to-buffer-in-perspective nil)
-  ;; (setq persp-auto-resume-time 0)
-  :config
-  (require 'helm)
-  (defun persp-helm-mini ()
-    (interactive)
-    (with-persp-buffer-list ()
-                            (helm-mini)))
-  (defun helm-perspectives-source ()
-    (helm-build-in-buffer-source
-        (concat "Current Perspective: " (safe-persp-name (get-frame-persp)))
-      :data (persp-names)
-      :fuzzy-match t
-      :action
-      '(("Switch to perspective" . persp-switch)
-        ("Close perspective(s)" . (lambda (candidate)
-                                    (mapcar
-                                     'persp-kill-without-buffers
-                                     (helm-marked-candidates))))
-        ("Kill perspective(s)" . (lambda (candidate)
-                                   (mapcar 'persp-kill
-                                           (helm-marked-candidates)))))))
-
-  (defun helm-perspectives ()
-    "Control Panel for perspectives. Has many actions.
-If match is found
-f1: (default) Select perspective
-f2: Close Perspective(s) <- mark with C-SPC to close more than one-window
-f3: Kill Perspective(s)
-If match is not found
-<enter> Creates perspective
-Closing doesn't kill buffers inside the perspective while killing
-perspectives does."
-    (interactive)
-    (helm
-     :buffer "*Helm Perspectives*"
-     :sources
-     `(,(helm-perspectives-source)
-       ,(helm-build-dummy-source "Create new perspective"
-          :requires-pattern t
-          :action
-          '(("Create new perspective" .
-             (lambda (name)
-               (let ((persp-reset-windows-on-nil-window-conf t))
-                 (persp-switch name)
-                 (switch-to-buffer "*GNU Emacs*")))))))))
-  (define-key evil-normal-state-map (kbd "tt") 'helm-perspectives)
-  (define-key evil-normal-state-map (kbd "tR") 'persp-rename)
-  (define-key evil-normal-state-map (kbd "tn") 'persp-next)
-  (define-key evil-normal-state-map (kbd "tp") 'persp-prev)
-  (define-key evil-normal-state-map (kbd "tk") 'persp-kill)
-  (define-key evil-normal-state-map (kbd "ti") 'persp-import-buffers)
-  (define-key evil-normal-state-map (kbd "ta") 'persp-add-buffer)
-  (define-key evil-normal-state-map (kbd "tr") 'persp-remove-buffer)
-  (define-key evil-normal-state-map (kbd "tw") 'persp-save-state-to-file)
-  (define-key evil-normal-state-map (kbd "tl") 'persp-load-state-from-file)
-  (define-key evil-normal-state-map (kbd "tb") 'persp-helm-mini)
-  (define-key evil-normal-state-map (kbd "\C-b") 'persp-helm-mini)
-  )
-
-
+(eval-when-compile
+  (el-get-bundle evil)
+  (el-get-bundle helm)
+  (require 'evil)
+  (require 'helm))
 
 (provide '29-persp-config)
 ;;; 29-persp-config.el ends here
