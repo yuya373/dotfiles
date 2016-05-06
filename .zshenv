@@ -3,6 +3,8 @@
 #for prezto
 # Ensure that a non-login, non-interactive shell has a defined environment.
 
+export PATH=/usr/local/bin:${PATH}
+
 if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
     source "${ZDOTDIR:-$HOME}/.zprofile"
 fi
@@ -41,7 +43,6 @@ fi
 # export EDITOR='vim'
 export SYS_NOTIFIER=`which terminal-notifier`
 export HOMEBREW_CASK_OPTS='--appdir=/Applications'
-export LANG=ja_JP.utf8
 export PAGER='less'
 # export LESS='-g -n -i -M -R -S -w -X -z4'
 export LESS='-g -n -i -M -R -w -X -z4'
@@ -61,3 +62,5 @@ export JAVA_HOME=`/usr/libexec/java_home`
 export PATH=$PATH:$JAVA_HOME/bin
 export MANPATH=/usr/local/share/man/ja_JP.UTF-8:$MANPATH
 export HOMEBREW_NO_ANALYTICS=1
+export LANG="ja_JP.UTF-8"
+export PATH=$HOME/.nodebrew/current/bin:$PATH
