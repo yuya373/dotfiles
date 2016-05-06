@@ -92,7 +92,7 @@
   ;; :commands (exec-path-from-shell-initialize)
   :init
   ;; (add-hook 'before-init-hook 'exec-path-from-shell-initialize)
-  (setq exec-path-from-shell-arguments '("-l" "-i"))
+  (setq exec-path-from-shell-arguments '("-l"))
   (setq exec-path-from-shell-variables '("PATH" "MANPATH" "LANG" "JAVA_HOME"))
   :config
   (exec-path-from-shell-initialize)

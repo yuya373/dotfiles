@@ -46,7 +46,6 @@
   (setq coffee-tab-width 2)
   (setq coffee-indent-tabs-mode nil))
 
-(el-get-bundle tern)
 (el-get-bundle company-tern)
 (use-package tern
   :commands (tern-mode)

@@ -1,3 +1,11 @@
 *.elc
 .DS_Store
 99-private.el
+/.emacs.d/abbrev_defs
+/.emacs.d/company-statistics-cache.el
+/.emacs.d/el-get/*
+/.emacs.d/elpa/*
+/.emacs.d/eshell/*
+/.emacs.d/persp-confs/*
+/.emacs.d/projectile-bookmarks.eld
+/.emacs.d/recentf
