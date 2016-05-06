@@ -4,9 +4,6 @@
 [submodule "opp.zsh"]
 	path = opp.zsh
 	url = https://github.com/hchbaw/opp.zsh.git
-[submodule ".zprezto"]
-	path = .zprezto
-	url = https://github.com/yuya373/prezto.git
 [submodule "zsh-notify"]
 	path = zsh-notify
 	url = https://github.com/marzocchi/zsh-notify
