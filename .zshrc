@@ -7,7 +7,7 @@
 if [ ! -d ${HOME}/.zfunctions ]; then
     mkdir -p ~/.zfunctions
 fi
-fpath=( "$HOME/.zfunctions" $fpath )
+fpath=("$HOME/.zfunctions" $fpath)
 
 # coreutils
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
@@ -34,9 +34,14 @@ zplug "b4b4r07/dotfiles", use:bin/tmuxx, as:command
 zplug "b4b4r07/enhancd", use:enhancd.sh
 zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
 zplug "junegunn/fzf", as:command, use:bin/fzf-tmux
-zplug "junegunn/fzf", use:shell/completion.zsh
-zplug "junegunn/fzf", use:shell/key-bindings.zsh
+zplug "junegunn/fzf", use:"shell/*.zsh"
 zplug "marzocchi/zsh-notify"
+zplug "sorin-ionescu/prezto", \
+      use:"modules/{completion,directory,history,rsync}/*.zsh"
+zplug "sorin-ionescu/prezto", \
+      as:command, \
+      use:"modules/archive/functions/*"
+zplug "zsh-users/zsh-autosuggestions"
 
 # Install plugins if there are plugins that have not been installed
 if ! zplug check --verbose; then
@@ -53,6 +58,14 @@ ln -sf "$ZPLUG_HOME/repos/sindresorhus/pure/async.zsh" "$HOME/.zfunctions/async"
 # Then, source plugins and add commands to $PATH
 zplug load --verbose
 
+# autosuggestions
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=105'
+
+# clear fzf binding
+bindkey -r '^T'
+export FZF_COMPLETION_TRIGGER='--'
+export FZF_COMPLETION_OPTS='+c -x'
+
 # dircolors
 eval `dircolors $ZPLUG_HOME/repos/seebi/dircolors-solarized/dircolors.256dark`
 if [ -n "$LS_COLORS" ]; then
@@ -66,7 +79,7 @@ source ~/dotfiles/.zprompt
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
 # Customize to your needs...
-setopt share_history
+setopt NO_BEEP
 
 # cdr, add-zsh-hook を有効にする
 autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
@@ -236,4 +249,5 @@ source '/Users/yuyaminami/google-cloud-sdk/path.zsh.inc'
 # The next line enables shell command completion for gcloud.
 source '/Users/yuyaminami/google-cloud-sdk/completion.zsh.inc'
 
-tmuxx
+# tmuxx
+alias show-colors='for c in {000..255}; do echo -n "\e[38;5;${c}m $c" ; [ $(($c%16)) -eq 15 ] && echo;done;echo'
