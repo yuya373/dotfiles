@@ -1,8 +1,67 @@
 # Source Prezto.
-if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+# if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+#   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+# fi
+
+# functions
+if [ ! -d ${HOME}/.zfunctions ]; then
+    mkdir -p ~/.zfunctions
+fi
+fpath=( "$HOME/.zfunctions" $fpath )
+
+# coreutils
+export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+
+alias ls="ls -h --color"
+alias ll="ls -l"
+alias la="ls -al"
+
+# zplug
+source $ZPLUG_HOME/init.zsh
+
+zplug "zsh-users/zsh-syntax-highlighting", nice:10
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
+
+zplug "zsh-users/zsh-history-substring-search", nice:11
+zplug "sharat87/zsh-vim-mode"
+zplug "sindresorhus/pure", use:"*.zsh"
+zplug "seebi/dircolors-solarized"
+zplug "m4i/cdd", use:"cdd", nice:10
+zplug "zsh-users/zsh-completions"
+zplug "b4b4r07/dotfiles", use:etc/lib/vital.sh, hook-load:"export DOTPATH=$ZPLUG_HOME/repos/b4b4r07/dotfiles"
+zplug "b4b4r07/dotfiles", use:bin/tmuxx, as:command
+zplug "b4b4r07/enhancd", use:enhancd.sh
+zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
+zplug "junegunn/fzf", as:command, use:bin/fzf-tmux
+zplug "junegunn/fzf", use:shell/completion.zsh
+zplug "junegunn/fzf", use:shell/key-bindings.zsh
+
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
 fi
 
+# pure
+ln -sf "$ZPLUG_HOME/repos/sindresorhus/pure/pure.zsh" "$HOME/.zfunctions/prompt_pure_setup"
+ln -sf "$ZPLUG_HOME/repos/sindresorhus/pure/async.zsh" "$HOME/.zfunctions/async"
+
+# Then, source plugins and add commands to $PATH
+zplug load --verbose
+
+# dircolors
+eval `dircolors $ZPLUG_HOME/repos/seebi/dircolors-solarized/dircolors.256dark`
+if [ -n "$LS_COLORS" ]; then
+    zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+fi
+
+# prompt
+source ~/dotfiles/.zprompt
+
+# pyenv
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
 # Customize to your needs...
@@ -13,16 +72,13 @@ autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
 autoload -Uz run-help
 autoload -Uz run-help-git
 
-# autoload predict-on
-# predict-on
-
 #for brew-file
 if [ -f $(brew --prefix)/etc/brew-wrap ];then
-  source $(brew --prefix)/etc/brew-wrap
+    source $(brew --prefix)/etc/brew-wrap
 fi
 
 if [ -e ${HOME}/.zsh_aliases ]; then
-  source ~/.zsh_aliases
+    source ~/.zsh_aliases
 fi
 source ~/dotfiles/.zshfunc
 
@@ -33,20 +89,9 @@ source ~/dotfiles/.zshfunc
 #     ;;
 # esac
 
-# git-it-on
-source ~/dotfiles/git-it-on.zsh/git-it-on.plugin.zsh
-
 # disable keyboard
 alias disablekeyboard="sudo kextunload /System/Library/Extensions/AppleUSBTopCase.kext/Contents/PlugIns/AppleUSBTCKeyboard.kext/"
 alias enablekeyboard="sudo kextload /System/Library/Extensions/AppleUSBTopCase.kext/Contents/PlugIns/AppleUSBTCKeyboard.kext/"
-
-# Gitit Aliases
-alias compare="gitit compare"
-alias commits="gitit commits"
-alias branch="gitit branch"
-alias gistory="gitit history"
-alias prs="gitit pulls"
-alias myprs="gitit pulls author:yuya373" #put your name here
 
 # Git
 alias gs="git status"
@@ -69,71 +114,58 @@ alias build_emacs25="git checkout emacs-25; git pull; make maintainer-clean; mak
 bindkey -v
 
 # insert mode binding
-bindkey -v '^Y' push-line
-bindkey -v '^J' vi-cmd-mode
-bindkey -v '^m' do_enter
-bindkey -v '^@' fcdr
-bindkey -v '^o' fd
-bindkey -v '^p' fdr
-bindkey -v '^k' kill-line
-bindkey -v '^e' end-of-line
-bindkey -v '^f' forward-word
-bindkey -v '^b' backward-word
-
+bindkey -M viins '^y' push-line
+bindkey -M viins '^j' vi-cmd-mode
+bindkey -M viins '^m' do_enter
+bindkey -M viins '^o' fcdr
+# bindkey -M viins '^o' fd
+bindkey -M viins '^p' fdr
+bindkey -M viins '^k' kill-line
+bindkey -M viins '^e' end-of-line
+bindkey -M viins '^f' forward-word
+bindkey -M viins '^b' backward-word
+bindkey -M viins '^r' fzf-history-widget
 
 # normal mode binding
-bindkey -a 'H' run-help
-bindkey -a '^@' fcdr
-bindkey -a '^o' fd
-bindkey -a '^p' fdr
-bindkey -a '^k' fzf-cd-widget
-bindkey -a '^r' fzf-history-widget
-
-
-# from .zshfunc
+bindkey -M vicmd 'H' run-help
+bindkey -M vicmd '^o' fcdr
+# bindkey -M vicmd '^o' fd
+bindkey -M vicmd '^p' fdr
+bindkey -M vicmd '^k' fzf-cd-widget
+bindkey -M vicmd '^r' fzf-history-widget
 
 # text object
-autoload -U select-quoted
+autoload -Uz select-quoted
 zle -N select-quoted
 for m in visual viopp; do
-  for c in {a,i}{\',\",\`}; do
-    bindkey -M $m $c select-quoted
-  done
+    for c in {a,i}{\',\",\`}; do
+        bindkey -M $m $c select-quoted
+    done
 done
 
 autoload -U select-bracketed
 zle -N select-bracketed
 for m in visual viopp; do
-  for c in {a,i}${(s..)^:-'()[]{}<>bB'}; do
-    bindkey -M $m $c select-bracketed
-  done
+    for c in {a,i}${(s..)^:-'()[]{}<>bB'}; do
+        bindkey -M $m $c select-bracketed
+    done
 done
 
 autoload -Uz surround
 zle -N delete-surround surround
 zle -N change-surround surround
 zle -N add-surround surround
-bindkey -a cs change-surround
-bindkey -a ds delete-surround
-bindkey -a ys add-surround
+bindkey -M vicmd cs change-surround
+bindkey -M vicmd ds delete-surround
+bindkey -M vicmd ys add-surround
 bindkey -M visual S add-surround
 
 # visual mode
 source ~/dotfiles/zsh-vimode-visual/zsh-vimode-visual.sh
 bindkey -M vicmd 'v'  vi-visual-mode
 
-# fzf
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-
-# ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets cursor line)
-# source ~/dotfiles/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# fpath=(/usr/local/share/zsh-completions $fpath)
-# fpath=(~/dotfiles/.zprezto/modules/completion/external/src $fpath)
-# fpath=(/usr/local/share/zsh/site-functions $fpath)
-# autoload -U compinit
-# compinit -C
+# # fzf
+# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # for mosh
 compdef mosh=ssh
@@ -188,19 +220,13 @@ zstyle ':chpwd:*' recent-dirs-pushd true
 #   done
 # fi
 
-## For cdd
-# http://blog.m4i.jp/entry/2012/01/26/064329
-#
-source ~/dotfiles/cdd/cdd
-
+# cdd
 chpwd() {
-  _cdd_chpwd
+    _cdd_chpwd
 }
 
-# PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
-
 if (which zprof > /dev/null) ;then
-  zprof | less
+    zprof | less
 fi
 
 # The next line updates PATH for the Google Cloud SDK.
@@ -209,4 +235,4 @@ source '/Users/yuyaminami/google-cloud-sdk/path.zsh.inc'
 # The next line enables shell command completion for gcloud.
 source '/Users/yuyaminami/google-cloud-sdk/completion.zsh.inc'
 
-alias ls="ls -G"
+tmuxx

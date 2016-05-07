@@ -1,13 +1,14 @@
 # zmodload zsh/zprof && zprof
 
-#for prezto
 # Ensure that a non-login, non-interactive shell has a defined environment.
+
+export ZPLUG_HOME=/usr/local/opt/zplug
 
 export PATH=/usr/local/bin:${PATH}
 
-if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
-    source "${ZDOTDIR:-$HOME}/.zprofile"
-fi
+# if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
+#     source "${ZDOTDIR:-$HOME}/.zprofile"
+# fi
 
 if [ -e ${HOME}/.cargo/bin ]; then
     export PATH=${HOME}/.cargo/bin:${PATH}
@@ -19,7 +20,9 @@ if [ -e ${HOME}/.cabal/bin ]; then
 fi
 
 if [ -e /usr/local/opt/go ]; then
-    export GOROOT=/usr/local/opt/go/libexec
+    if [ ! -d $HOME/go ]; then
+        mkdir -p $HOME/go
+    fi
     export PATH=$PATH:/usr/local/opt/go/libexec/bin:${HOME}/go/bin
     export GOPATH=$HOME/go
 fi
@@ -64,3 +67,6 @@ export MANPATH=/usr/local/share/man/ja_JP.UTF-8:$MANPATH
 export HOMEBREW_NO_ANALYTICS=1
 export LANG="ja_JP.UTF-8"
 export PATH=$HOME/.nodebrew/current/bin:$PATH
+
+# autoload -Uz compinit
+# compinit
