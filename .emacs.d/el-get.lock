@@ -1,5 +1,6 @@
 (setq el-get-lock-package-versions
-      '((ess :checksum "22d1a7fe3dff8eeb55a9d41db06eb1a42142eaf4")
+      '((tern :checksum "32499af2fab5199fde221137a0a4df19af2cb8d3")
+        (ess :checksum "22d1a7fe3dff8eeb55a9d41db06eb1a42142eaf4")
         (company-tern :checksum "87752b771447dd01c940ee03d96d21e4acaff777")
         (rust-racer :checksum "02abbd6c74f59b42c8b9cbe67e68e88160dc515b")
         (tablist :checksum "f13b8f048d0bde14bcf4ee4c9006fcd875b28783")

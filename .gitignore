@@ -9,3 +9,7 @@
 /.emacs.d/persp-confs/*
 /.emacs.d/projectile-bookmarks.eld
 /.emacs.d/recentf
+/.emacs.d/ensime
+/.emacs.d/emojis
+/.emacs.d/url
+/.emacs.d/private
