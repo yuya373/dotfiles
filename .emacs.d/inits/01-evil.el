@@ -155,7 +155,7 @@
     (evil-open-below 1)
     (evil-normal-state))
   (define-key evil-insert-state-map (kbd "C-n") nil)
-  (define-key evil-insert-state-map (kbd "C-p") nil)
+  (define-key evil-insert-state-map (kbd "C-p") 'helm-show-kill-ring)
   (define-key evil-normal-state-map (kbd "RET") 'open-below-esc)
   (define-key evil-normal-state-map (kbd "m") 'set-mark-command)
   (define-key minibuffer-local-map (kbd "C-w") 'backward-kill-word)
@@ -417,7 +417,7 @@
     "hl" 'helm-resume
     "hm" 'helm-all-mark-rings
     "ho" 'helm-semantic-or-imenu
-    "hp" 'helm-show-kill-ring
+    "hp" 'helm-list-emacs-process
     "ig" 'indent-guide-mode
     "l" 'toggle-folding
     "ma" 'slack-select-rooms
