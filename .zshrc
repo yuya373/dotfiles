@@ -36,6 +36,7 @@ zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
 zplug "junegunn/fzf", as:command, use:bin/fzf-tmux
 zplug "junegunn/fzf", use:shell/completion.zsh
 zplug "junegunn/fzf", use:shell/key-bindings.zsh
+zplug "marzocchi/zsh-notify"
 
 # Install plugins if there are plugins that have not been installed
 if ! zplug check --verbose; then
