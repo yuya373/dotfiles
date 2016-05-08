@@ -34,8 +34,13 @@
   (defun create-eshell ()
     (interactive)
     (let ((eshell-buffer-name
-           (read-from-minibuffer "Eshell Buffer Name: " "*eshell*")))
-      (eshell t)))
+           (read-from-minibuffer "Eshell Buffer Name: " "*eshell*"))
+          (git-root (vc-git-root
+                     (buffer-file-name (current-buffer)))))
+      (if git-root
+          (let ((default-directory git-root))
+            (eshell t))
+        (eshell t))))
   :config
   (defvar my-ansi-escape-re
     (rx (or ?\233 (and ?\e ?\[))
@@ -53,11 +58,16 @@
     (my-nuke-ansi-escapes eshell-last-output-start eshell-last-output-end))
 
   (add-hook 'eshell-output-filter-functions 'my-eshell-nuke-ansi-escapes t)
+
   (defun eshell-bind-keymap ()
     (evil-define-key 'insert eshell-mode-map
       (kbd "C-p") 'helm-eshell-history
       (kbd "C-n") 'eshell-next-matching-input-from-input))
+
   (add-hook 'eshell-mode-hook #'eshell-bind-keymap)
+
+  (add-hook 'eshell-load-hook #'ansi-color-for-comint-mode-on)
+
   (setq eshell-ask-to-save-history (quote always))
   (setq eshell-cmpl-cycle-completions t)
   (setq eshell-cmpl-ignore-case t)
@@ -92,11 +102,16 @@
 (el-get-bundle kyagi/shell-pop-el :branch "master")
 (use-package shell-pop
   :commands (shell-pop)
-  :config
+  :init
   (setq shell-pop-internal-mode "eshell")
   (setq shell-pop-internal-mode-shell "eshell")
   (setq shell-pop-internal-mode-func (lambda () (eshell t)))
-  (setq shell-pop-internal-mode-buffer "*eshell*"))
+  (setq shell-pop-internal-mode-buffer "*eshell*")
+  (setq shell-pop-in-after-hook)
+  )
+
+(message "%s"
+         (vc-git-root (buffer-file-name (current-buffer))))
 
 (el-get-bundle term-run)
 (use-package term-run
