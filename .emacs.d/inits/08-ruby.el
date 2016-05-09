@@ -44,11 +44,13 @@
   (add-hook 'enh-ruby-mode-hook 'rbenv-use-global)
   ;; (add-hook 'enh-ruby-mode-hook (lambda () (rbenv-use-corresponding)))
   )
+
 (use-package inf-ruby
   :commands (inf-ruby inf-ruby-minor-mode inf-ruby-console-auto)
   :init
   (add-hook 'inf-ruby-mode-hook 'smartparens-mode)
   (add-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode))
+
 (use-package robe
   :diminish robe-mode
   :commands (robe-mode robe-start)
@@ -61,17 +63,20 @@
   (evil-define-key 'normal robe-mode-map (kbd ",ra") 'robe-ask)
   (evil-define-key 'normal robe-mode-map (kbd ",rj") 'robe-jump)
   (evil-define-key 'normal robe-mode-map (kbd ",rR") 'robe-rails-refresh))
+
 (use-package bundler
   :commands (bundle-open bundle-exec bundle-check bundle-gemfile
                          bundle-update bundle-console bundle-install)
   :config
-  (evil-define-key 'normal projectile-rails-mode-map
-    (kbd ",be") 'bundle-exec
-    (kbd ",bc") 'bundle-console
-    (kbd ",bg") 'bundle-gemfile
-    (kbd ",bu") 'bundle-update
-    (kbd ",bi") 'bundle-install
-    (kbd ",bo") 'bundle-open))
+  (mapc #'(lambda (map) (evil-define-key 'normal map
+                          (kbd ",be") 'bundle-exec
+                          (kbd ",bc") 'bundle-console
+                          (kbd ",bg") 'bundle-gemfile
+                          (kbd ",bu") 'bundle-update
+                          (kbd ",bi") 'bundle-install
+                          (kbd ",bo") 'bundle-open))
+        '(projectile-rails-mode-map enh-ruby-mode-map)))
+
 (use-package enh-ruby-mode
   :mode (("\\(Rake\\|Thor\\|Guard\\|Gem\\|Cap\\|Vagrant\\|Berks\\|Pod\\|Puppet\\)file\\'" . enh-ruby-mode)
          ("\\.\\(rb\\|rabl\\|ru\\|builder\\|rake\\|thor\\|gemspec\\|jbuilder\\|schema\\|cap\\)\\'" . enh-ruby-mode))
@@ -81,11 +86,10 @@
     (make-local-variable 'company-minimum-prefix-length)
     (setq company-minimum-prefix-length 4)
     (make-local-variable 'company-backends)
-    (add-to-list 'company-backends '(company-robe company-dabbrev-code))
+    (add-to-list 'company-backends '(company-robe :with company-dabbrev-code))
     ;; (setq company-backends (remq 'company-capf company-backends))
     )
   (add-hook 'enh-ruby-mode-hook 'my-company-ruby)
-  (add-hook 'inf-ruby-mode-hook 'my-company-ruby)
   ;; (modify-syntax-entry ?_ "w")
   (setq
    enh-ruby-add-encoding-comment-on-save nil

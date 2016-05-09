@@ -67,7 +67,7 @@
 (use-package helm-projectile
   :commands (helm-projectile-on))
 (use-package projectile
-  :commands (projectile-global-mode)
+  :commands (projectile-mode projectile-global-mode)
   :init
   (setq projectile-enable-caching t
         projectile-completion-system 'helm)
@@ -77,7 +77,7 @@
 (use-package projectile-rails
   :commands (projectile-rails-on)
   :init
-  (add-hook 'enh-ruby-mode-hook 'projectile-rails-on)
+  (add-hook 'projectile-mode-hook #'projectile-rails-on)
   (defun set-projectile-rails-tags-command ()
     (interactive)
     (when (projectile-rails-root)
@@ -168,7 +168,8 @@
   (evil-define-key 'normal projectile-rails-mode-map ",rfv" 'find-file-in-app-views)
   (evil-define-key 'normal projectile-rails-mode-map ",rcm" 'find-file-current-model)
   (evil-define-key 'normal projectile-rails-mode-map ",rcc" 'find-file-current-controller)
-  (evil-define-key 'normal projectile-rails-mode-map ",rcv" 'find-file-current-view))
+  (evil-define-key 'normal projectile-rails-mode-map ",rcv" 'find-file-current-view)
+  )
 
 (provide '07-projectile)
 ;;; 07-projectile.el ends here
