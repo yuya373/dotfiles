@@ -1,8 +1,8 @@
 if has('vim_starting')
   set nocompatible               " Be iMproved
-  set runtimepath+=~/.vim/bundle/neobundle.vim/
-  set runtimepath+=~/dotfiles/vim/
-  runtime! /userautoloads/*.vim
+  " set runtimepath+=~/.vim/bundle/neobundle.vim/
+  " set runtimepath+=~/dotfiles/vim/
+  " runtime! /userautoloads/*.vim
 endif
 
 if getftime($HOME.'/.secret.vim') > 0
@@ -41,7 +41,8 @@ MyAutoCmd Colorscheme * highlight IdeographicSpace term=underline ctermbg=DarkGr
 MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
 
 set background=dark
-colorscheme solarized
+" colorscheme solarized
+
 
 " http://kannokanno.hatenablog.com/entry/2013/05/08/110557
 set completeopt=menuone
@@ -338,9 +339,9 @@ if executable('ag')
 endif
 
 
-MyAutoCmd BufWritePost Gemfile AlpacaTagsBundle
-MyAutoCmd BufEnter * AlpacaTagsSet
-MyAutoCmd BufWritePost * AlpacaTagsUpdate
+" MyAutoCmd BufWritePost Gemfile AlpacaTagsBundle
+" MyAutoCmd BufEnter * AlpacaTagsSet
+" MyAutoCmd BufWritePost * AlpacaTagsUpdate
 
 """"""""""Tag Jump拡張"""""""""""
 nnoremap <C-]> g<C-]>
@@ -429,10 +430,10 @@ MyAutoCmd FileType c call s:c()
 
 """"""""""context_filetype.vim"""""""""""
 
-MyAutoCmd InsertEnter * :PreciousSwitch
-MyAutoCmd InsertLeave * :PreciousReset
-MyAutoCmd User PreciousFileType IndentLinesReset
-MyAutoCmd User PreciousFileType :echo precious#context_filetype()
+" MyAutoCmd InsertEnter * :PreciousSwitch
+" MyAutoCmd InsertLeave * :PreciousReset
+" MyAutoCmd User PreciousFileType IndentLinesReset
+" MyAutoCmd User PreciousFileType :echo precious#context_filetype()
 
 
 """"""""""html5"""""""""""
