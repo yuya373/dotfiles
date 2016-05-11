@@ -192,6 +192,9 @@
   (define-key evil-motion-state-map (kbd "C-l") 'windmove-right)
   (define-key evil-motion-state-map (kbd "C-c") 'evil-window-delete)
   (evil-set-initial-state 'comint-mode 'normal)
+  (evil-define-key 'insert comint-mode-map
+    (kbd "C-p") 'comint-previous-input
+    (kbd "C-n") 'comint-next-input)
   (evil-define-key 'normal compilation-mode-map
     (kbd "C-c") 'evil-window-delete
     (kbd "C-d") 'evil-scroll-down)

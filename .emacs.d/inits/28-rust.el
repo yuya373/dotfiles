@@ -28,7 +28,7 @@
 (use-package rust-mode
   :mode (("\\.rs\\'" . rust-mode)))
 
-(el-get-bundle rust-racer)
+(el-get-bundle emacs-racer)
 (use-package racer
   :commands (racer-mode)
   :init
@@ -36,15 +36,11 @@
   (add-hook 'rust-mode-hook 'racer-mode)
   (add-hook 'racer-mode-hook 'eldoc-mode))
 
-(el-get-bundle company-racer)
-(use-package company-racer
-  :commands (company-racer)
+(el-get-bundle flycheck-rust)
+(use-package flycheck-rust
+  :commands (flycheck-rust-setup)
   :init
-  (defun my-company-racer ()
-    (make-local-variable 'company-backends)
-    (add-to-list 'company-backends
-                 '(company-racer :with company-dabbrev-code)))
-  (add-hook 'racer-mode-hook 'my-company-racer))
+  (add-hook 'flycheck-mode-hook 'flycheck-rust-setup))
 
 (provide '28-rust)
 ;;; 28-rust.el ends here

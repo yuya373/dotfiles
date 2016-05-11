@@ -95,7 +95,7 @@
         (helm-dash :checksum "f39b4dd06a9f9f71aa00d954dac765a4e23b5d90")
         (helm-gtags :checksum "defd4aefa014d5f114c3e01958fcdd14dbae0e89")
         (helm-ls-git :checksum "8cddd84ee4361b9d21f800adbaeeacf72645ab62")
-        (helm-open-github :checksum "95140bbacc66320a032d3cdd9e1c31aeb47eb83d")
+        (helm-open-github :checksum "4c5a47003b2efed1c3437e91121a77d082cf64c8")
         (highlight :checksum "944be01b443a7c479ea2f16640acac8cae591822")
         (highlight-indentation :checksum "cd6d8168ccb04c6c0394f42e9512c58f23c01689")
         (ht :checksum "84b5b4404515ed3a3f6a85aacf2723302de851a4")

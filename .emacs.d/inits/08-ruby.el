@@ -49,7 +49,11 @@
   :commands (inf-ruby inf-ruby-minor-mode inf-ruby-console-auto)
   :init
   (add-hook 'inf-ruby-mode-hook 'smartparens-mode)
-  (add-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode))
+  (add-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode)
+  (defun my-inf-ruby-mode-hook ()
+    (make-local-variable 'company-backends)
+    (setq company-backends (remq 'company-capf company-backends)))
+  (add-hook 'inf-ruby-mode-hook 'my-inf-ruby-mode-hook))
 
 (use-package robe
   :diminish robe-mode
@@ -86,7 +90,7 @@
     (make-local-variable 'company-minimum-prefix-length)
     (setq company-minimum-prefix-length 4)
     (make-local-variable 'company-backends)
-    (add-to-list 'company-backends '(company-robe :with company-dabbrev-code))
+    (add-to-list 'company-backends 'company-robe)
     ;; (setq company-backends (remq 'company-capf company-backends))
     )
   (add-hook 'enh-ruby-mode-hook 'my-company-ruby)
