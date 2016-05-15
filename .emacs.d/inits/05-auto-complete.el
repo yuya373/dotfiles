@@ -148,10 +148,6 @@
   (define-key company-search-map (kbd "C-n") 'company-select-next)
   (define-key company-search-map (kbd "C-p") 'company-select-previous)
 
-  ;; (define-key company-filter-map [tab] 'company-complete-common2)
-  (define-key company-filter-map [tab] 'company-select-next)
-  (define-key company-filter-map [backtab] 'company-select-previous)
-
   (set-face-attribute 'company-tooltip nil
                       :foreground "black" :background "lightgrey")
   (set-face-attribute 'company-tooltip-common nil

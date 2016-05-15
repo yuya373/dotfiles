@@ -23,13 +23,13 @@
 ;;
 
 ;;; Code:
-
+(el-get-bundle goto-chg)
 (el-get-bundle evil)
 (el-get-bundle evil-leader)
 (el-get-bundle anzu)
 (el-get-bundle evil-anzu)
 (el-get-bundle evil-args)
-(el-get-bundle evil-jumper)
+;; (el-get-bundle evil-jumper)
 (el-get-bundle evil-lisp-state)
 (el-get-bundle evil-matchit)
 (el-get-bundle evil-nerd-commenter)
@@ -42,6 +42,7 @@
 (el-get-bundle evil-indent-textobject)
 (el-get-bundle evil-exchange)
 (el-get-bundle evil-org-mode)
+(el-get-bundle org-bullets)
 (el-get-bundle avy)
 
 (eval-when-compile
@@ -61,7 +62,8 @@
         evil-want-C-d-scroll t
         evil-shift-width 2
         evil-cross-lines t
-        evil-want-fine-undo t)
+        evil-want-fine-undo t
+        evil-auto-balance-windows nil)
   (defun evil-swap-key (map key1 key2)
     ;; MAP中のKEY1とKEY2を入れ替え
     "Swap KEY1 and KEY2 in MAP."
@@ -104,6 +106,7 @@
                  (message "Quit")
                  (throw 'end-flag t)))))))
   :config
+  (use-package goto-chg)
   (add-hook 'evil-normal-state-exit-hook 'evil-ex-nohighlight)
   (use-package evil-anzu)
   (use-package evil-indent-textobject)
@@ -136,9 +139,9 @@
       (kbd ",,") 'evilnc-comment-or-uncomment-lines)
     (define-key evil-visual-state-map
       (kbd ",,") 'evilnc-comment-or-uncomment-lines))
-  (use-package evil-jumper
-    :config
-    (global-evil-jumper-mode))
+  ;; (use-package evil-jumper
+  ;;   :config
+  ;;   (global-evil-jumper-mode))
   (use-package evil-args
     :commands (evil-inner-arg evil-outer-arg)
     :init
@@ -155,7 +158,9 @@
     (evil-open-below 1)
     (evil-normal-state))
   (define-key evil-insert-state-map (kbd "C-n") nil)
-  (define-key evil-insert-state-map (kbd "C-p") 'helm-show-kill-ring)
+  (define-key evil-insert-state-map (kbd "C-p") nil)
+  (define-key evil-insert-state-map (kbd "C-k") 'helm-show-kill-ring)
+
   (define-key evil-normal-state-map (kbd "RET") 'open-below-esc)
   (define-key evil-normal-state-map (kbd "m") 'set-mark-command)
   (define-key minibuffer-local-map (kbd "C-w") 'backward-kill-word)
@@ -172,7 +177,18 @@
       (call-interactively #'delete-backward-char)
       )
     )
-
+  ;; C-g
+  (defun evil-keyboard-quit ()
+    "Keyboard quit and force normal state."
+    (interactive)
+    (and evil-mode (evil-force-normal-state))
+    (keyboard-quit))
+  (define-key evil-normal-state-map   (kbd "C-g") #'evil-keyboard-quit)
+  (define-key evil-motion-state-map   (kbd "C-g") #'evil-keyboard-quit)
+  (define-key evil-insert-state-map   (kbd "C-g") #'evil-keyboard-quit)
+  (define-key evil-window-map         (kbd "C-g") #'evil-keyboard-quit)
+  (define-key evil-operator-state-map (kbd "C-g") #'evil-keyboard-quit)
+  ;; C-h
   (define-key global-map (kbd "C-h") 'delete-backward-char)
   (define-key evil-insert-state-map (kbd "C-h") 'delete-backward-char)
   (define-key evil-ex-search-keymap (kbd "C-h") 'delete-backward-char)
@@ -357,16 +373,25 @@
                                  (cl-find-if #'(lambda (bn) (string= bn buf-name))
                                              window-buffer-names))
                        (kill-buffer buf)))))
-      (mapc #'you-kill (buffer-list))))
+      (let ((debug-on-error t)
+            (buf-list (if persp-mode (persp-buffer-list)
+                        (buffer-list))))
+        (mapc #'you-kill buf-list))))
   :config
   (evil-leader/set-leader "<SPC>")
   (use-package evil-org
     :init
     (setq org-src-fontify-natively t)
     :config
+    (use-package org-bullets
+      :init
+      (add-hook 'org-mode-hook 'org-bullets-mode))
+    (evil-define-key 'visual evil-org-mode-map
+      ",m" 'org-md-convert-region-to-md)
     (evil-define-key 'normal evil-org-mode-map
       ;; ",tc" 'org-toggle-checkbox
       "t" nil
+      ",m" 'org-md-export-to-markdown
       ",t" 'org-todo))
   (evil-leader/set-key
     "=" 'all-indent

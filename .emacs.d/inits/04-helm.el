@@ -233,7 +233,6 @@
     (with-helm-alive-p
       (helm-exit-and-execute-action 'ace-helm-find-file)))
   (defun ace-helm-switch-to-buffer (buffer-or-name)
-    (popwin:close-popup-window)
     (if (= (length (window-list)) 1)
         (switch-to-buffer-other-window buffer-or-name)
       (let ((buf buffer-or-name)
@@ -280,6 +279,8 @@
   (define-key helm-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-map (kbd "C-w") 'backward-kill-word)
   (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
+  (define-key helm-map (kbd "C-j") 'helm-next-line)
+  (define-key helm-map (kbd "C-k") 'helm-previous-line)
 
 
   (define-key helm-comp-read-map (kbd "C-e") 'my-helm-elscreen)

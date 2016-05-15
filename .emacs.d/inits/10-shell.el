@@ -35,6 +35,12 @@
 (use-package eshell
   :commands (eshell)
   :init
+  (setq eshell-modules-list '(eshell-alias eshell-banner eshell-basic
+                                           eshell-cmpl eshell-dirs
+                                           eshell-glob eshell-hist
+                                           eshell-ls eshell-pred
+                                           eshell-prompt eshell-script
+                                           eshell-term eshell-unix))
   (defun create-eshell ()
     (interactive)
     (let* ((eshell-buffer-name
@@ -92,12 +98,14 @@ the user activate the completion manually."
   (add-hook 'eshell-mode-hook
             'spacemacs//eshell-switch-company-frontend)
   :config
-  (require 'esh-opt)
   (require 'em-smart)
+  (require 'esh-opt)
   (setq eshell-where-to-jump 'begin
         eshell-review-quick-commands nil
         eshell-smart-space-goes-to-end t)
   (add-hook 'eshell-mode-hook 'eshell-smart-initialize)
+  (add-hook 'eshell-mode-hook #'(lambda ()
+                                  (setq-local eshell-scroll-to-bottom-on-output t)))
 
   (when (boundp 'eshell-output-filter-functions)
     (push 'eshell-truncate-buffer eshell-output-filter-functions))

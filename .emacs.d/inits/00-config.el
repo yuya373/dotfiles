@@ -24,7 +24,7 @@
 
 ;;; Code:
 
-(setq split-width-threshold 110)
+(setq split-width-threshold nil)
 (menu-bar-mode -1)
 
 ;; スクリプトを保存する時，自動的に chmod +x を行う
@@ -138,7 +138,7 @@
 (use-package autorevert
   :commands (global-auto-revert-mode)
   :init
-  ;; (setq auto-revert-check-vc-info t)
+  (setq auto-revert-check-vc-info nil)
   (setq auto-revert-interval 5)
   (add-hook 'after-init-hook #'global-auto-revert-mode))
 

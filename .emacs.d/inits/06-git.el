@@ -55,7 +55,7 @@
                           magit-fetch-popup magit-branch-popup)
   :init
   (add-hook 'magit-mode-hook '(lambda () (linum-mode -1)))
-  (setq magit-push-always-verify nil)
+  (setq magit-push-always-verify t)
   (setq magit-branch-arguments nil)
   (setq magit-restore-window-configuration t)
   (defun display-buffer-full-screen (buffer alist)
