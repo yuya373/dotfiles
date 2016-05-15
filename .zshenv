@@ -43,6 +43,11 @@ if [ -d /usr/local/opt/coreutils/libexec/gnubin ] ; then
     export MANPATH=/usr/local/opt/coreutils/libexec/gnuman/:$MANPATH
 fi
 
+if [ -d $HOME/.multirust/toolchains/stable/cargo/bin ]; then
+    export PATH=$HOME/.multirust/toolchains/stable/cargo/bin:$PATH
+fi
+
+
 # export EDITOR='vim'
 export SYS_NOTIFIER=`which terminal-notifier`
 export HOMEBREW_CASK_OPTS='--appdir=/Applications'

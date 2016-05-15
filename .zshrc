@@ -13,10 +13,6 @@ fpath=("$HOME/.zfunctions" $fpath)
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 
-alias ls="ls -h --color"
-alias ll="ls -l"
-alias la="ls -al"
-
 # zplug
 source $ZPLUG_HOME/init.zsh
 
@@ -59,11 +55,11 @@ ln -sf "$ZPLUG_HOME/repos/sindresorhus/pure/async.zsh" "$HOME/.zfunctions/async"
 zplug load --verbose
 
 # autosuggestions
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=105'
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=136'
 
 # clear fzf binding
 bindkey -r '^T'
-export FZF_COMPLETION_TRIGGER='--'
+export FZF_COMPLETION_TRIGGER='**'
 export FZF_COMPLETION_OPTS='+c -x'
 
 # dircolors
@@ -102,27 +98,6 @@ source ~/dotfiles/.zshfunc
 #     source ~/dotfiles/zsh-notify/notify.plugin.zsh
 #     ;;
 # esac
-
-# disable keyboard
-alias disablekeyboard="sudo kextunload /System/Library/Extensions/AppleUSBTopCase.kext/Contents/PlugIns/AppleUSBTCKeyboard.kext/"
-alias enablekeyboard="sudo kextload /System/Library/Extensions/AppleUSBTopCase.kext/Contents/PlugIns/AppleUSBTCKeyboard.kext/"
-
-# Git
-alias gs="git status"
-alias gc="git checkout"
-alias gcb="git checkout -b"
-alias ga="git add"
-alias gap="git add -p"
-alias gp="git pull"
-alias gcm="git commit"
-alias gpu="git push"
-alias gd="git diff"
-
-# Emacs
-alias e="emacsclient -n"
-alias ee="emacsclient -nw -a ''"
-alias build_emacs="git checkout master; git pull; make maintainer-clean; make clean; ./autogen.sh; ./configure --with-ns --without-x --with-gnutls --with-imagemagick --with-xml2 --with-rsvg --disable-ns-self-contained --with-modules --with-xwidgets; make -j2; make install;"
-alias build_emacs25="git checkout emacs-25; git pull; make maintainer-clean; make clean; ./autogen.sh; ./configure --with-ns --without-x --with-gnutls --with-imagemagick --with-xml2 --with-rsvg --disable-ns-self-contained --with-modules --with-xwidgets; make -j2; make install;"
 
 # use vim binding
 bindkey -v
@@ -186,9 +161,6 @@ compdef mosh=ssh
 compdef sshrc=ssh
 
 setopt nonomatch
-alias du-cwd='du -mc -d 1 | sort -g'
-alias reload='source ~/.zshrc'
-alias gitf='git-flow'
 
 add-zsh-hook chpwd chpwd_recent_dirs
 
@@ -249,5 +221,6 @@ source '/Users/yuyaminami/google-cloud-sdk/path.zsh.inc'
 # The next line enables shell command completion for gcloud.
 source '/Users/yuyaminami/google-cloud-sdk/completion.zsh.inc'
 
-# tmuxx
-alias show-colors='for c in {000..255}; do echo -n "\e[38;5;${c}m $c" ; [ $(($c%16)) -eq 15 ] && echo;done;echo'
+source ~/dotfiles/zsh_aliases
+
+tmuxx
