@@ -220,5 +220,7 @@ source '/Users/yuyaminami/google-cloud-sdk/path.zsh.inc'
 source '/Users/yuyaminami/google-cloud-sdk/completion.zsh.inc'
 
 source ~/dotfiles/.zsh_aliases
-
+if [ -d ${HOME}/.rbenv ] ; then
+    eval "$(rbenv init -)"
+fi
 tmuxx
