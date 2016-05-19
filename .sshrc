@@ -2,5 +2,6 @@
 
 alias ll="ls -l"
 alias la="ls -al"
+alias b="bundle exec"
 export PAGER='less'
 export LESS='-g -n -i -M -R -w -X -z4'
