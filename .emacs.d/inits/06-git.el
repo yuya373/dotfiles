@@ -94,6 +94,7 @@
                            (kbd ",c") 'with-editor-finish)
     (evil-magit-define-key evil-magit-state 'git-rebase-mode-map
                            (kbd ",k") 'with-editor-cancel))
+  (magit-auto-revert-mode)
   ;; (use-package magit-gh-pulls
   ;;   :commands (turn-on-magit-gh-pulls)
   ;;   :init

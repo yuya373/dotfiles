@@ -490,7 +490,10 @@
     "qr" 'quickrun
     "qs" 'quickrun-shell
     "r" 'create-restclient-buffer
-    "s" 'create-eshell
+    "ss" 'create-eshell
+    "sgg" 'google-this-search
+    "sgm" 'google-maps
+    "sgt" 'google-this-translate-query-or-region
     "tG" 'projectile-regenerate-tags
     "tQ" 'google-translate-query-translate-reverse
     "tl" 'google-translate-smooth-translate

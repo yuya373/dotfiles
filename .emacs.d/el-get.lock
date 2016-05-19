@@ -1,5 +1,7 @@
 (setq el-get-lock-package-versions
-      '((org-bullets :checksum "b70ac2ec805bcb626a6e39ea696354577c681b36")
+      '((shackle :checksum "730ccb2143e97ed69ae373edac34b460d45f9deb")
+        (google-this :checksum "22cff810e7ed3b3c9dae066588508864c25c6d99")
+        (org-bullets :checksum "b70ac2ec805bcb626a6e39ea696354577c681b36")
         (org-mode :checksum "1c923b9ae734304b0dc6688ee056864facb7c3b8")
         (tern :checksum "32499af2fab5199fde221137a0a4df19af2cb8d3")
         (ess :checksum "22d1a7fe3dff8eeb55a9d41db06eb1a42142eaf4")
@@ -173,7 +175,7 @@
         (volatile-highlights :checksum "fb2abc2d4d4051a9a6b7c8de2fe7564161f01f24")
         (wanderlust :checksum "e7d2216aee7d130952d31e1ac21495471d050877")
         (web-mode :checksum "9e2231c782234de9e04812c1922b44b0073bd471")
-        (websocket :checksum "49a93b2218c6044377d81099ac916877f42b722e")
+        (websocket :checksum "d407c0ad0fcf42c097d36de7a1421d2990288d21")
         (which-key :checksum "4622d18850a5fe52af07ce18001e963fe4cfd80f")
         (with-editor :checksum "b3631b8ef473a314a504321d0442b6a5ea481a99")
         (yaml-mode :checksum "a87ab367fe0015917a1940b5acd9a581b1631801")

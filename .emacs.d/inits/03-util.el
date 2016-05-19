@@ -67,67 +67,87 @@
     ", g" " Goto"
     ", t" " Test, Tags"))
 
-(el-get-bundle popwin)
-(use-package popwin
-  :commands (popwin-mode)
-  :init
-  (setq popwin:adjust-other-windows t)
-  (setq popwin:popup-window-position 'bottom)
-  (setq popwin:popup-window-height 0.3)
-  ;; (add-hook 'after-init-hook #'(lambda () (popwin-mode t)))
-  :config
-  (push '(prodigy-mode :stick t) popwin:special-display-config)
-  (push '(sql-interactive-mode :stick t :noselect t :tail t)
-        popwin:special-display-config)
-  (push '(ag-mode :stick t) popwin:special-display-config)
-  (push '("*projectile-rails-compilation*" :noselect t :tail t :stick t) popwin:special-display-config)
-  (push '("*projectile-rails-generate*" :noselect t :tail t :stick t) popwin:special-display-config)
-  (push '("^\\*git-gutter:.*\\*$") popwin:special-display-config)
-  (push '(twittering-mode :stick t) popwin:special-display-config)
-  (push '(ess-help-mode) popwin:special-display-config)
-  (push '("*R*" :tail t :noselect t :stick t) popwin:special-display-config)
-  (push '(comint-mode :tail t :noselect t :stick t) popwin:special-display-config)
-  (push '(ensime-inspector-mode) popwin:special-display-config)
-  (push '("*ensime-inferior-scala*" :tail t :noselect t :stick t) popwin:special-display-config)
-  (push '(sbt-mode :stick t :tail t :noselect t) popwin:special-display-config)
-  (push '("*ensime-update*" :tail t) popwin:special-display-config)
-  (push '("*HTTP Response*" :noselect t :stick t) popwin:special-display-config)
-  (push '("*quickrun*" :tail t :stick t) popwin:special-display-config)
-  (push '(inferior-python-mode :tail t :stick t) popwin:special-display-config)
-  (push '(cider-inspector-mode) popwin:special-display-config)
-  (push '(cider-popup-buffer-mode) popwin:special-display-config)
-  (push '("*cider grimoire*") popwin:special-display-config)
-  (push '("*cider-error*") popwin:special-display-config)
-  (push '("*cider-result*") popwin:special-display-config)
-  (push '(cider-repl-mode :tail t :stick t) popwin:special-display-config)
-  (push '("*Backtrace*") popwin:special-display-config)
-  (push '("*Messages*") popwin:special-display-config)
-  (push '(slack-info-mode :tail t :stick t) popwin:special-display-config)
-  (push '(slack-edit-message-mode :stick t) popwin:special-display-config)
-  (push '(slack-mode :tail t :height 0.4 :noselect t :stick t )
-        popwin:special-display-config)
-  (push '("*Bundler*" :noselect t) popwin:special-display-config)
-  (push '(inf-ruby-mode :stick t) popwin:special-display-config)
-  (push '("*Process List*" :noselect t) popwin:special-display-config)
-  (push '("*Warnings*" :noselect t) popwin:special-display-config)
-  (push '("*Flycheck errors*" :stick t :noselect t) popwin:special-display-config)
-  (push '("*compilation*" :stick t :tail t :noselect t)
-        popwin:special-display-config)
-  (push '("*Codic Result*" :noselect t :stick t) popwin:special-display-config)
-  (push "*slime-apropos*" popwin:special-display-config)
-  (push '("*slime-macroexpansion*" :noselect t) popwin:special-display-config)
-  (push "*slime-description*" popwin:special-display-config)
-  (push '("*slime-compilation*" :noselect t) popwin:special-display-config)
-  (push "*slime-xref*" popwin:special-display-config)
-  (push '("*inferior-lisp*" :noselect t :tail t :stick t) popwin:special-display-config)
-  (push '(sldb-mode :stick t) popwin:special-display-config)
-  (push '(slime-repl-mode :stick t :position bottom) popwin:special-display-config)
-  (push 'slime-connection-list-mode popwin:special-display-config)
-  (push '("*alchemist-eval-mode*" :noselect t :height 0.2) popwin:special-display-config)
-  (push '("*Alchemist-IEx*" :noselect t :height 0.2) popwin:special-display-config)
-  (push '("*alchemist help*" :noselect t) popwin:special-display-config)
-  (push '("*elixirc*" :noselect t) popwin:special-display-config))
+;; (el-get-bundle popwin)
+;; (use-package popwin
+;;   :commands (popwin-mode)
+;;   :init
+;;   (setq popwin:adjust-other-windows t)
+;;   (setq popwin:popup-window-position 'bottom)
+;;   (setq popwin:popup-window-height 0.3)
+;;   (add-hook 'after-init-hook #'(lambda () (popwin-mode t)))
+;;   :config
+;;   (push '(prodigy-mode :stick t) popwin:special-display-config)
+;;   (push '(sql-interactive-mode :stick t :noselect t :tail t)
+;;         popwin:special-display-config)
+;;   (push '(ag-mode :stick t) popwin:special-display-config)
+;;   (push '("*projectile-rails-compilation*" :noselect t :tail t :stick t) popwin:special-display-config)
+;;   (push '("*projectile-rails-generate*" :noselect t :tail t :stick t) popwin:special-display-config)
+;;   (push '("^\\*git-gutter:.*\\*$") popwin:special-display-config)
+;;   (push '(twittering-mode :stick t) popwin:special-display-config)
+;;   (push '(ess-help-mode) popwin:special-display-config)
+;;   (push '("*R*" :tail t :noselect t :stick t) popwin:special-display-config)
+;;   (push '(comint-mode :tail t :noselect t :stick t) popwin:special-display-config)
+;;   (push '(ensime-inspector-mode) popwin:special-display-config)
+;;   (push '("*ensime-inferior-scala*" :tail t :noselect t :stick t) popwin:special-display-config)
+;;   (push '(sbt-mode :stick t :tail t :noselect t) popwin:special-display-config)
+;;   (push '("*ensime-update*" :tail t) popwin:special-display-config)
+;;   (push '("*HTTP Response*" :noselect t :stick t) popwin:special-display-config)
+;;   (push '("*quickrun*" :tail t :stick t) popwin:special-display-config)
+;;   (push '(inferior-python-mode :tail t :stick t) popwin:special-display-config)
+;;   (push '(cider-inspector-mode) popwin:special-display-config)
+;;   (push '(cider-popup-buffer-mode) popwin:special-display-config)
+;;   (push '("*cider grimoire*") popwin:special-display-config)
+;;   (push '("*cider-error*") popwin:special-display-config)
+;;   (push '("*cider-result*") popwin:special-display-config)
+;;   (push '(cider-repl-mode :tail t :stick t) popwin:special-display-config)
+;;   (push '("*Backtrace*") popwin:special-display-config)
+;;   (push '("*Messages*") popwin:special-display-config)
+;;   (push '(slack-info-mode :tail t :stick t) popwin:special-display-config)
+;;   (push '(slack-edit-message-mode :stick t) popwin:special-display-config)
+;;   (push '(slack-mode :tail t :height 0.4 :noselect t :stick t )
+;;         popwin:special-display-config)
+;;   (push '("*Bundler*" :noselect t) popwin:special-display-config)
+;;   (push '(inf-ruby-mode :stick t) popwin:special-display-config)
+;;   (push '("*Process List*" :noselect t) popwin:special-display-config)
+;;   (push '("*Warnings*" :noselect t) popwin:special-display-config)
+;;   (push '("*Flycheck errors*" :stick t :noselect t) popwin:special-display-config)
+;;   (push '("*compilation*" :stick t :tail t :noselect t)
+;;         popwin:special-display-config)
+;;   (push '("*Codic Result*" :noselect t :stick t) popwin:special-display-config)
+;;   (push "*slime-apropos*" popwin:special-display-config)
+;;   (push '("*slime-macroexpansion*" :noselect t) popwin:special-display-config)
+;;   (push "*slime-description*" popwin:special-display-config)
+;;   (push '("*slime-compilation*" :noselect t) popwin:special-display-config)
+;;   (push "*slime-xref*" popwin:special-display-config)
+;;   (push '("*inferior-lisp*" :noselect t :tail t :stick t) popwin:special-display-config)
+;;   (push '(sldb-mode :stick t) popwin:special-display-config)
+;;   (push '(slime-repl-mode :stick t :position bottom) popwin:special-display-config)
+;;   (push 'slime-connection-list-mode popwin:special-display-config)
+;;   (push '("*alchemist-eval-mode*" :noselect t :height 0.2) popwin:special-display-config)
+;;   (push '("*Alchemist-IEx*" :noselect t :height 0.2) popwin:special-display-config)
+;;   (push '("*alchemist help*" :noselect t) popwin:special-display-config)
+;;   (push '("*elixirc*" :noselect t) popwin:special-display-config))
 
+(el-get-bundle shackle)
+(use-package shackle
+  :commands (shackle-mode)
+  :init
+  (defun shackle-full-screen (buffer alist plist)
+       (display-buffer-full-screen buffer alist))
+  (setq shackle-default-rule '(:same t :inhibit-window-quit t))
+  (setq shackle-default-alignment 'below)
+  (setq shackle-rules
+        '(("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
+          ("COMMIT_EDITMSG" :regexp t :custom shackle-full-screen)
+          ("\\`\\*magit-.*?:.*?[^\\*]\\'" :regexp t :align 'right :size 0.5)
+          ("\\`\\*magit:.*?[^\\*]\\'" :regexp t :custom shackle-full-screen)
+          ("\\`\\*magit.*?\\*\\'" :regexp t :align t :size 0.4)
+          ))
+  (add-hook 'after-init-hook 'shackle-mode))
+
+
+(message "%s" (string-match "\\`\\*magit-.*?:.*?[^\\*]\\'" "*magit-diff: hoge"))
+(message "%s" (string-match "\\`\\*magit.*?\\*\\'" "*magit: hoge"))
 (el-get-bundle indent-guide)
 (use-package indent-guide
   :diminish indent-guide-mode
@@ -257,7 +277,11 @@
 (el-get-bundle wgrep-ag)
 
 (use-package wgrep-ag
-  :commands (wgrep-ag-setup))
+  :commands (wgrep-ag-setup)
+  :config
+  (evil-define-key 'normal wgrep-mode-map
+    ",k" 'wgrep-exit
+    ",s" 'wgrep-finish-edit))
 
 (use-package ag
   :commands (ag)
@@ -270,8 +294,6 @@
   (evil-set-initial-state 'ag-mode 'normal)
   (evil-define-key 'normal ag-mode-map
     "k" 'evil-previous-visual-line
-    ",k" 'wgrep-exit
-    ",s" 'wgrep-finish-edit
     ",r" 'wgrep-change-to-wgrep-mode))
 
 (use-package tramp
@@ -480,6 +502,11 @@ is a kind of temporary one which is not confirmed yet."
   (add-hook 'pomodoro:long-rest-hook
             #'(lambda () (my-pomodoro-notify "Long Break time now"))))
 
+
+(el-get-bundle google-this)
+(use-package google-this
+  :commands (google-this google-this-search google-this-region
+                         google-maps google-this-translate-query-or-region))
 
 (provide '03-util)
 ;;; 03-util.el ends here
