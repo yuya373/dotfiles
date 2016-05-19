@@ -184,6 +184,7 @@
   (defun ace-vsplit-find-file (candidate)
     (switch-window-if-gteq-3-windows)
     (my-evil-vsplit-window candidate))
+
   (defun helm-ace-vsplit-ff ()
     (interactive)
     (with-helm-alive-p

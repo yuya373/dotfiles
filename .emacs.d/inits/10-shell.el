@@ -97,6 +97,8 @@ the user activate the completion manually."
     (setq-local company-frontends '(company-preview-frontend)))
   (add-hook 'eshell-mode-hook
             'spacemacs//eshell-switch-company-frontend)
+
+  (add-hook 'eshell-mode-hook 'smartparens-mode)
   :config
   (require 'em-smart)
   (require 'esh-opt)
@@ -131,7 +133,13 @@ the user activate the completion manually."
 
   (add-hook 'eshell-output-filter-functions 'my-eshell-nuke-ansi-escapes t)
 
+  (defun eshell-exit ()
+    (interactive)
+    (kill-buffer (current-buffer)))
+
   (defun eshell-bind-keymap ()
+    (evil-define-key 'normal eshell-mode-map
+      (kbd "C-c") 'eshell-exit)
     (evil-define-key 'insert eshell-mode-map
       (kbd "C-p") 'helm-eshell-history
       (kbd "C-n") 'eshell-next-matching-input-from-input))

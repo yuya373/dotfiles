@@ -63,7 +63,7 @@
         evil-shift-width 2
         evil-cross-lines t
         evil-want-fine-undo t
-        evil-auto-balance-windows nil)
+        evil-auto-balance-windows t)
   (defun evil-swap-key (map key1 key2)
     ;; MAP中のKEY1とKEY2を入れ替え
     "Swap KEY1 and KEY2 in MAP."

@@ -53,7 +53,16 @@
   (defun my-inf-ruby-mode-hook ()
     (make-local-variable 'company-backends)
     (setq company-backends (remq 'company-capf company-backends)))
-  (add-hook 'inf-ruby-mode-hook 'my-inf-ruby-mode-hook))
+  (add-hook 'inf-ruby-mode-hook 'my-inf-ruby-mode-hook)
+  :config
+  (evil-define-key 'normal inf-ruby-minor-mode-map
+    ",rr" 'ruby-switch-to-inf
+    ",eb" 'ruby-send-block-and-go
+    ",ed" 'ruby-send-definition-and-go
+    ",el" 'ruby-load-file
+    ",ee" 'ruby-send-last-sexp)
+  (evil-define-key 'visual inf-ruby-minor-mode-map
+    ",er" 'ruby-send-region-and-go))
 
 (use-package robe
   :diminish robe-mode

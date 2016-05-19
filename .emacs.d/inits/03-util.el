@@ -40,7 +40,6 @@
   (setq which-key-side-window-max-height 0.50)
   (add-hook 'after-init-hook 'which-key-mode)
   :config
-  (which-key-setup-minibuffer)
   ;; (which-key-add-key-based-replacements "SPC r" " Rest")
   (which-key-add-key-based-replacements "SPC a" " Ag")
   (which-key-add-key-based-replacements "SPC d" " Dash")
@@ -133,7 +132,7 @@
   :commands (shackle-mode)
   :init
   (defun shackle-full-screen (buffer alist plist)
-       (display-buffer-full-screen buffer alist))
+    (display-buffer-full-screen buffer alist))
   (setq shackle-default-rule '(:same t :inhibit-window-quit t))
   (setq shackle-default-alignment 'below)
   (setq shackle-rules
@@ -142,12 +141,12 @@
           ("\\`\\*magit-.*?:.*?[^\\*]\\'" :regexp t :align 'right :size 0.5)
           ("\\`\\*magit:.*?[^\\*]\\'" :regexp t :custom shackle-full-screen)
           ("\\`\\*magit.*?\\*\\'" :regexp t :align t :size 0.4)
+          (inf-ruby-mode :popup t :align t :size 0.4)
+          ("\\`\\*projectile-rails.*?\\*\\'"
+           :regexp t :popup t :select nil :align t :size 0.4)
           ))
   (add-hook 'after-init-hook 'shackle-mode))
 
-
-(message "%s" (string-match "\\`\\*magit-.*?:.*?[^\\*]\\'" "*magit-diff: hoge"))
-(message "%s" (string-match "\\`\\*magit.*?\\*\\'" "*magit: hoge"))
 (el-get-bundle indent-guide)
 (use-package indent-guide
   :diminish indent-guide-mode
