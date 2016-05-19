@@ -28,14 +28,12 @@ if [ -e /usr/local/opt/go ]; then
 fi
 
 if [ -d ${HOME}/.rbenv ] ; then
-    PATH=${HOME}/.rbenv/bin:${PATH}
-    export PATH
+    export PATH=${HOME}/.rbenv/bin:${PATH}
     eval "$(rbenv init -)"
 fi
 
 if [ -d ${HOME}/.roswell ]; then
-    PATH=${HOME}/.roswell/bin:${PATH}
-    export PATH
+    export PATH=${HOME}/.roswell/bin:${PATH}
 fi
 
 if [ -d /usr/local/opt/coreutils/libexec/gnubin ] ; then
@@ -72,6 +70,3 @@ export MANPATH=/usr/local/share/man/ja_JP.UTF-8:$MANPATH
 export HOMEBREW_NO_ANALYTICS=1
 export LANG="ja_JP.UTF-8"
 export PATH=$HOME/.nodebrew/current/bin:$PATH
-
-# autoload -Uz compinit
-# compinit

@@ -106,9 +106,8 @@ bindkey -v
 bindkey -M viins '^y' push-line
 bindkey -M viins '^j' vi-cmd-mode
 bindkey -M viins '^m' do_enter
-bindkey -M viins '^o' fcdr
+# bindkey -M viins '^o' fcdr
 # bindkey -M viins '^o' fd
-bindkey -M viins '^p' fdr
 bindkey -M viins '^k' kill-line
 bindkey -M viins '^e' end-of-line
 bindkey -M viins '^f' forward-word
@@ -117,10 +116,9 @@ bindkey -M viins '^r' fzf-history-widget
 
 # normal mode binding
 bindkey -M vicmd 'H' run-help
-bindkey -M vicmd '^o' fcdr
+# bindkey -M vicmd '^o' fcdr
 # bindkey -M vicmd '^o' fd
-bindkey -M vicmd '^p' fdr
-bindkey -M vicmd '^k' fzf-cd-widget
+# bindkey -M vicmd '^k' fzf-cd-widget
 bindkey -M vicmd '^r' fzf-history-widget
 
 # text object
