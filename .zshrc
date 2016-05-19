@@ -221,6 +221,6 @@ source '/Users/yuyaminami/google-cloud-sdk/path.zsh.inc'
 # The next line enables shell command completion for gcloud.
 source '/Users/yuyaminami/google-cloud-sdk/completion.zsh.inc'
 
-source ~/dotfiles/zsh_aliases
+source ~/dotfiles/.zsh_aliases
 
 tmuxx
