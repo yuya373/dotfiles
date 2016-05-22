@@ -29,7 +29,7 @@
 
 ;; (el-get-bundle yasnippet)
 ;; (el-get-bundle yasnippet-snippets)
-(el-get-bundle company)
+(el-get-bundle company-mode)
 (el-get-bundle company-emoji)
 (el-get-bundle company-statistics)
 

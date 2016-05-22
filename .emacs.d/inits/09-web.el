@@ -36,7 +36,12 @@
 
 (el-get-bundle scss-mode)
 (use-package scss-mode
-  :mode (("\\.scss\\'" . scss-mode)))
+  :mode (("\\.scss\\'" . scss-mode))
+  :init
+  (defun scss-mode-setup ()
+    (setq-local css-indent-offset 2)
+    (setq-local scss-compile-at-save nil))
+  (add-hook 'scss-mode-hook #'scss-mode-setup))
 
 (el-get-bundle json-mode)
 (use-package json-mode
@@ -65,19 +70,40 @@
   (defun url-http-user-agent-string ()
     (format "User-Agent: %s\r\n"
             "Mozilla/5.0 (iPhone; CPU iPhone OS 9_0_2 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13A452 Safari/601.1"))
-  (evil-define-key 'normal eww-history-mode-map "o" 'eww-history-browse)
-  (evil-define-key 'normal eww-history-mode-map "q" 'quit-window)
-  (evil-define-key 'normal eww-bookmark-mode-map "o" 'eww-bookmark-browse)
-  (evil-define-key 'normal eww-bookmark-mode-map "d" 'eww-bookmark-kill)
-  (evil-define-key 'normal eww-bookmark-mode-map "q" 'quit-window)
-  (evil-define-key 'normal eww-mode-map "r" 'eww-reload)
-  (evil-define-key 'normal eww-mode-map "H" 'eww-back-url)
-  (evil-define-key 'normal eww-mode-map "L" 'eww-forward-url)
-  (evil-define-key 'normal eww-mode-map ",o" 'eww-browse-with-external-browser)
-  (evil-define-key 'normal eww-mode-map ",B" 'eww-list-bookmarks)
-  (evil-define-key 'normal eww-mode-map ",b" 'eww-add-bookmark)
-  (evil-define-key 'normal eww-mode-map ",@" 'eww-list-histories)
-  (evil-define-key 'normal eww-mode-map "q" 'quit-window))
+  (evil-define-key 'normal eww-link-keymap
+    "w" 'evil-forward-word
+    "\C-m" 'eww-follow-link
+    ",y" 'shr-copy-url)
+  (evil-define-key 'normal eww-history-mode-map
+    "\C-m" 'eww-history-browse
+    "q" 'quit-window)
+  (evil-define-key 'normal eww-bookmark-mode-map
+    "\C-k" nil
+    "\C-y" nil
+    "\C-m" 'eww-bookmark-browse
+    ",k" 'eww-bookmark-kill
+    ",y" 'eww-bookmark-yank
+    "q" 'quit-window)
+  (evil-define-key 'normal eww-mode-map
+    "w" nil
+    "g" nil
+    "t" nil
+    "n" nil
+    "p" nil
+    "d" nil
+    "r" 'eww-reload
+    "H" 'eww-back-url
+    "L" 'eww-forward-url
+    ",c" 'url-cookie-list
+    ",d" 'eww-download
+    ",ln" 'eww-next-url
+    ",lp" 'eww-previous-url
+    ",y" 'eww-copy-page-url
+    ",o" 'eww-browse-with-external-browser
+    ",B" 'eww-list-bookmarks
+    ",b" 'eww-add-bookmark
+    ",h" 'eww-list-histories
+    "q" 'quit-window))
 
 (provide '09-web)
 ;;; 09-web.el ends here

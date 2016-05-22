@@ -35,6 +35,7 @@
 (use-package eshell
   :commands (eshell)
   :init
+  (setq eshell-scroll-to-bottom-on-output t)
   (setq eshell-modules-list '(eshell-alias eshell-banner eshell-basic
                                            eshell-cmpl eshell-dirs
                                            eshell-glob eshell-hist
@@ -44,7 +45,9 @@
   (defun create-eshell ()
     (interactive)
     (let* ((eshell-buffer-name
-            (read-from-minibuffer "Eshell Buffer Name: " "*eshell*"))
+            "*eshell*"
+            ;; (read-from-minibuffer "Eshell Buffer Name: " "*eshell*")
+            )
            (file-name (buffer-file-name (current-buffer)))
            (git-root (and file-name (vc-git-root file-name))))
       (if git-root
@@ -116,22 +119,22 @@ the user activate the completion manually."
   (mapc (lambda (x) (push x eshell-visual-commands))
         '("el" "elinks" "htop" "less" "ssh" "tmux" "top"))
 
-  (defvar my-ansi-escape-re
-    (rx (or ?\233 (and ?\e ?\[))
-        (zero-or-more (char (?0 . ?\?)))
-        (zero-or-more (char ?\s ?- ?\/))
-        (char (?@ . ?~))))
+  ;; (defvar my-ansi-escape-re
+  ;;   (rx (or ?\233 (and ?\e ?\[))
+  ;;       (zero-or-more (char (?0 . ?\?)))
+  ;;       (zero-or-more (char ?\s ?- ?\/))
+  ;;       (char (?@ . ?~))))
 
-  (defun my-nuke-ansi-escapes (beg end)
-    (save-excursion
-      (goto-char beg)
-      (while (re-search-forward my-ansi-escape-re end t)
-        (replace-match ""))))
+  ;; (defun my-nuke-ansi-escapes (beg end)
+  ;;   (save-excursion
+  ;;     (goto-char beg)
+  ;;     (while (re-search-forward my-ansi-escape-re end t)
+  ;;       (replace-match ""))))
 
-  (defun my-eshell-nuke-ansi-escapes ()
-    (my-nuke-ansi-escapes eshell-last-output-start eshell-last-output-end))
+  ;; (defun my-eshell-nuke-ansi-escapes ()
+  ;;   (my-nuke-ansi-escapes eshell-last-output-start eshell-last-output-end))
 
-  (add-hook 'eshell-output-filter-functions 'my-eshell-nuke-ansi-escapes t)
+  ;; (add-hook 'eshell-output-filter-functions 'my-eshell-nuke-ansi-escapes t)
 
   (defun eshell-exit ()
     (interactive)

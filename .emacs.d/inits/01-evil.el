@@ -44,6 +44,9 @@
 (el-get-bundle evil-org-mode)
 (el-get-bundle org-bullets)
 (el-get-bundle avy)
+(el-get-bundle avy-migemo)
+(el-get-bundle ace-link)
+(el-get-bundle migemo)
 
 (eval-when-compile
   (el-get-bundle evil)
@@ -105,6 +108,7 @@
                      (call-interactively command)))
                  (message "Quit")
                  (throw 'end-flag t)))))))
+  (setq evil-overriding-maps nil)
   :config
   (use-package goto-chg)
   (add-hook 'evil-normal-state-exit-hook 'evil-ex-nohighlight)
@@ -245,14 +249,15 @@
     (setq avy-background t)
     (setq avy-highlight-first t)
     (setq avy-all-windows nil)
-    (setq avy-keys (number-sequence ?a ?z))
+    ;; (setq avy-keys (number-sequence ?a ?z))
+    (setq avy-keys (list ?a ?s ?d ?f ?g ?h ?j ?k ?l))
     :config
     (evil-define-motion evil-avy-goto-char-in-line (count)
       :type inclusive
       (evil-without-repeat
         (let ((pnt (point))
               (buf (current-buffer)))
-          (call-interactively 'avy-goto-char-in-line)
+          (call-interactively 'avy-migemo-goto-char-in-line)
           ;; (when (and (equal buf (current-buffer))
           ;;            (< (point) pnt))
           ;;   (setq evil-this-type
@@ -268,7 +273,7 @@
       :repeat abort
       (evil-without-repeat
         (evil-enclose-avy-for-motion
-          (call-interactively 'avy-goto-word-1))))
+          (call-interactively 'avy-migemo-goto-word-1))))
     (define-key evil-normal-state-map "s" 'avy-goto-char-2)
     (define-key evil-operator-state-map
       (kbd "f") #'evil-avy-goto-char-in-line)
@@ -279,7 +284,23 @@
     (define-key evil-operator-state-map
       (kbd "m") #'evil-avy-goto-word)
     (define-key evil-visual-state-map
-      (kbd "m") #'evil-avy-goto-word))
+      (kbd "m") #'evil-avy-goto-word)
+    (use-package migemo)
+    (use-package avy-migemo)
+    (avy-migemo-mode t)
+    (use-package ace-link
+      :config
+      (defun exec-ace-link ()
+        (interactive)
+        (let ((mm major-mode))
+          (cond
+           ((string= mm "eww-mode") (ace-link-eww))
+           ((string= mm "org-mode") (ace-link-org))
+           ((string= mm "help-mode") (ace-link-help))
+           ((string= mm "woman-mode") (ace-link-woman))
+           ((string= mm "info-mode") (ace-link-info))
+           ((string= mm "compilation-mode") (ace-link-compilation))
+           (t (message "No ace-link function in %s" mm)))))))
   ;; line move
   ;; (evil-swap-key evil-motion-state-map "j" "gj")
   ;; (evil-swap-key evil-motion-state-map "k" "gk")
@@ -396,7 +417,7 @@
   (evil-leader/set-key
     "=" 'all-indent
     ":" 'helm-M-x
-    "<SPC>" 'avy-goto-word-1
+    "<SPC>" 'avy-migemo-goto-word-1
     "aa" 'helm-do-ag
     "ab" 'helm-do-ag-buffers
     "ag" 'ag
@@ -447,6 +468,9 @@
     "ho" 'helm-semantic-or-imenu
     "hp" 'helm-list-emacs-process
     "ig" 'indent-guide-mode
+    "jl" 'avy-goto-line
+    "jc" 'avy-migemo-goto-char
+    "ju" 'exec-ace-link
     "l" 'toggle-folding
     "ma" 'slack-select-rooms
     "mcA" 'slack-channel-unarchive

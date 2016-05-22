@@ -84,6 +84,7 @@
   (use-package ert)
   (use-package magit-extras)
   (use-package git-rebase)
+  (use-package magit-submodule)
   (use-package evil-magit
     :config
     (evil-magit-define-key evil-magit-state 'git-rebase-mode-map
@@ -180,7 +181,9 @@
   :init
   (add-hook 'after-init-hook 'global-git-gutter-mode)
   :config
-  (setq git-gutter:update-interval 2)
+  (setq git-gutter:update-interval 2
+        git-gutter:visual-line nil
+        git-gutter:hide-gutter nil)
   (add-to-list 'git-gutter:update-commands 'evil-normal-state)
   (setq git-gutter:modified-sign "**"
         git-gutter:added-sign    "++"
@@ -188,7 +191,8 @@
   (set-face-foreground 'git-gutter:modified "#eee8d5")
   (set-face-foreground 'git-gutter:added "#859900")
   (set-face-foreground 'git-gutter:deleted "#dc322f")
-  (git-gutter:linum-setup))
+  (git-gutter:linum-setup)
+  )
 
 (provide '06-git)
 ;;; 06-git.el ends here

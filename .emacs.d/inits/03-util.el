@@ -127,26 +127,6 @@
 ;;   (push '("*alchemist help*" :noselect t) popwin:special-display-config)
 ;;   (push '("*elixirc*" :noselect t) popwin:special-display-config))
 
-(el-get-bundle shackle)
-(use-package shackle
-  :commands (shackle-mode)
-  :init
-  (defun shackle-full-screen (buffer alist plist)
-    (display-buffer-full-screen buffer alist))
-  (setq shackle-default-rule '(:same t :inhibit-window-quit t))
-  (setq shackle-default-alignment 'below)
-  (setq shackle-rules
-        '(("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
-          ("COMMIT_EDITMSG" :regexp t :custom shackle-full-screen)
-          ("\\`\\*magit-.*?:.*?[^\\*]\\'" :regexp t :align 'right :size 0.5)
-          ("\\`\\*magit:.*?[^\\*]\\'" :regexp t :custom shackle-full-screen)
-          ("\\`\\*magit.*?\\*\\'" :regexp t :align t :size 0.4)
-          (inf-ruby-mode :popup t :align t :size 0.4)
-          ("\\`\\*projectile-rails.*?\\*\\'"
-           :regexp t :popup t :select nil :align t :size 0.4)
-          ))
-  (add-hook 'after-init-hook 'shackle-mode))
-
 (el-get-bundle indent-guide)
 (use-package indent-guide
   :diminish indent-guide-mode
@@ -328,7 +308,8 @@
         skk-show-mode-show nil)
   (setq skk-dcomp-activate t
         skk-dcomp-multiple-activate t
-        skk-dcomp-multiple-rows 20)
+        skk-dcomp-multiple-rows 20
+        skk-previous-completion-use-backtab t)
   (setq skk-comp-use-prefix t
         skk-comp-circulate t)
   (setq skk-sticky-key ";")
@@ -362,6 +343,27 @@
                '(skk-server-completion-search) t)
   (add-to-list 'skk-completion-prog-list
                '(skk-comp-by-server-completion) t)
+  (defun my-skk-delete ()
+    (interactive)
+    (message "prefix: %s" (skk-get-prefix skk-current-rule-tree))
+    (if (bound-and-true-p skk-j-mode)
+        (cond
+         ((eq skk-henkan-mode 'active) (call-interactively #'skk-delete-backward-char))
+         ((and skk-henkan-mode
+               (>= skk-henkan-start-point (point))
+               (not (skk-get-prefix skk-current-rule-tree)))
+          (call-interactively #'skk-delete-backward-char))
+         ((and skk-henkan-mode overwrite-mode)
+          (call-interactively #'skk-delete-backward-char))
+         (t
+          (progn
+            (skk-delete-okuri-mark)
+            (if (skk-get-prefix skk-current-rule-tree)
+                (skk-erase-prefix 'clean)
+              (skk-set-marker skk-kana-start-point nil)
+              (call-interactively #'delete-backward-char)))))
+      (call-interactively #'delete-backward-char)))
+  (define-key evil-insert-state-map (kbd "C-h") #'my-skk-delete)
 
   (defun my-skk-control ()
     (if (bound-and-true-p skk-mode)
@@ -408,16 +410,16 @@ is a kind of temporary one which is not confirmed yet."
   (setq dired-k-style 'git)
   (setq dired-k-human-readable t))
 
-(el-get-bundle emacschrome)
-(use-package edit-server
-  :commands (edit-server-start)
-  :init
-  (add-hook 'evil-mode-hook 'edit-server-start)
-  (setq edit-server-new-frame nil)
-  :config
-  (evil-define-key 'normal edit-server-text-mode-map
-    ",k" 'edit-server-abort
-    ",c" 'edit-server-done))
+;; (el-get-bundle emacschrome)
+;; (use-package edit-server
+;;   :commands (edit-server-start)
+;;   :init
+;;   (add-hook 'evil-mode-hook 'edit-server-start)
+;;   (setq edit-server-new-frame nil)
+;;   :config
+;;   (evil-define-key 'normal edit-server-text-mode-map
+;;     ",k" 'edit-server-abort
+;;     ",c" 'edit-server-done))
 
 (el-get-bundle auto-mark)
 (use-package auto-mark
@@ -506,6 +508,32 @@ is a kind of temporary one which is not confirmed yet."
 (use-package google-this
   :commands (google-this google-this-search google-this-region
                          google-maps google-this-translate-query-or-region))
+
+(el-get-bundle shackle)
+(use-package shackle
+  :commands (shackle-mode)
+  :init
+  (defun shackle-full-screen (buffer alist plist)
+    (display-buffer-full-screen buffer alist))
+  (setq shackle-default-rule
+        '(:select t :align t :popup t :size 0.3 :inhibit-window-quit t))
+  (setq shackle-default-alignment 'below)
+  (display-buffer (get-buffer "*Help*"))
+  (setq shackle-rules
+        '(("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
+          ("COMMIT_EDITMSG" :regexp t :custom shackle-full-screen)
+          ("\\`\\*magit-.*?:.*?[^\\*]\\'" :regexp t :align right :size 0.5)
+          ("\\`\\*magit:.*?[^\\*]\\'" :regexp t :custom shackle-full-screen)
+          ("\\`\\*magit.*?\\*\\'" :regexp t :align t :size 0.4)
+          (inf-ruby-mode :popup t :align t :size 0.4)
+          ("\\`\\*projectile-rails.*?\\*\\'"
+           :regexp t :popup t :select nil :align t :size 0.4)
+          (slack-mode :popup t :align t :size 0.4 :select t)
+          (slack-edit-message-mode :same t :align right :size 0.5 :select t)
+          (eww-bookmark-mode :inhibit-window-quit nil)
+          (eww-history-mode :inhibit-window-quit nil)
+          ))
+  (add-hook 'after-init-hook 'shackle-mode))
 
 (provide '03-util)
 ;;; 03-util.el ends here
