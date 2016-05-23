@@ -24,7 +24,10 @@
 
 ;;; Code:
 (eval-when-compile
-  (require 'evil))
+  (require 'evil)
+  (el-get-bundle ddskk)
+  (require 'skk)
+  (require 'skk-macs))
 
 (el-get-bundle which-key)
 (use-package which-key
@@ -189,8 +192,8 @@
     (concat (format-time-string "%Y-%m-%d") ".restclient"))
   (defun create-restclient-buffer ()
     (interactive)
-    (let ((buf (find-file-other-window
-                (concat restclient-dir (restclient-client-buf-name)))))))
+    (find-file-other-window
+     (concat restclient-dir (restclient-client-buf-name))))
   :config
   (evil-define-key 'normal restclient-mode-map
     ",y"  'restclient-copy-curl-command
@@ -343,28 +346,8 @@
                '(skk-server-completion-search) t)
   (add-to-list 'skk-completion-prog-list
                '(skk-comp-by-server-completion) t)
-  (defun my-skk-delete ()
-    (interactive)
-    (message "prefix: %s" (skk-get-prefix skk-current-rule-tree))
-    (if (bound-and-true-p skk-j-mode)
-        (cond
-         ((eq skk-henkan-mode 'active) (call-interactively #'skk-delete-backward-char))
-         ((and skk-henkan-mode
-               (>= skk-henkan-start-point (point))
-               (not (skk-get-prefix skk-current-rule-tree)))
-          (call-interactively #'skk-delete-backward-char))
-         ((and skk-henkan-mode overwrite-mode)
-          (call-interactively #'skk-delete-backward-char))
-         (t
-          (progn
-            (skk-delete-okuri-mark)
-            (if (skk-get-prefix skk-current-rule-tree)
-                (skk-erase-prefix 'clean)
-              (skk-set-marker skk-kana-start-point nil)
-              (call-interactively #'delete-backward-char)))))
-      (call-interactively #'delete-backward-char)))
-  (define-key evil-insert-state-map (kbd "C-h") #'my-skk-delete)
-
+  (evil-define-key 'insert skk-j-mode-map
+    "\C-h" #'skk-delete-backward-char)
   (defun my-skk-control ()
     (if (bound-and-true-p skk-mode)
         (skk-latin-mode 1)))
@@ -385,9 +368,12 @@ is a kind of temporary one which is not confirmed yet."
 
 (use-package dired
   :init
+  (setq dired-use-ls-dired nil)
   (setq dired-dwim-target t)
   (setq dired-recursive-copies 'always)
   :config
+  (require 'ls-lisp)
+  (setq ls-lisp-use-insert-directory-program nil)
   (with-eval-after-load "evil"
     (evil-define-key 'normal dired-mode-map
       "$" 'evil-end-of-line
@@ -513,29 +499,25 @@ is a kind of temporary one which is not confirmed yet."
 (use-package shackle
   :commands (shackle-mode)
   :init
-  (defun shackle-full-screen (buffer alist plist)
+  (defun shackle-full-screen (buffer alist _plist)
     (display-buffer-full-screen buffer alist))
   (setq shackle-default-rule
         '(:select t :align t :popup t :size 0.3 :inhibit-window-quit t))
   (setq shackle-default-alignment 'below)
-  (display-buffer (get-buffer "*Help*"))
   (setq shackle-rules
         '(("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
           ("COMMIT_EDITMSG" :regexp t :custom shackle-full-screen)
           ("\\`\\*magit-.*?:.*?[^\\*]\\'" :regexp t :align right :size 0.5)
           ("\\`\\*magit:.*?[^\\*]\\'" :regexp t :custom shackle-full-screen)
           ("\\`\\*magit.*?\\*\\'" :regexp t :align t :size 0.4)
-          (inf-ruby-mode :popup t :align t :size 0.4)
+          (inf-ruby-mode :align t :size 0.4)
           ("\\`\\*projectile-rails.*?\\*\\'"
-           :regexp t :popup t :select nil :align t :size 0.4)
-          (slack-mode :popup t :align t :size 0.4 :select t)
-          (slack-edit-message-mode :same t :align right :size 0.5 :select t)
+           :regexp t :select nil :align t :size 0.4)
+          (slack-mode :align t :size 0.4 :select t)
+          (slack-edit-message-mode :align t :size 0.2 :select t :inhibit-window-quit t)
           (eww-bookmark-mode :inhibit-window-quit nil)
-          (eww-history-mode :inhibit-window-quit nil)
-          ))
+          (eww-history-mode :inhibit-window-quit nil)))
   (add-hook 'after-init-hook 'shackle-mode))
 
 (provide '03-util)
 ;;; 03-util.el ends here
-
-

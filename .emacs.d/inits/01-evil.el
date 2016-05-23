@@ -194,7 +194,7 @@
   (define-key evil-operator-state-map (kbd "C-g") #'evil-keyboard-quit)
   ;; C-h
   (define-key global-map (kbd "C-h") 'delete-backward-char)
-  (define-key evil-insert-state-map (kbd "C-h") 'delete-backward-char)
+  (define-key evil-insert-state-map (kbd "C-h") nil)
   (define-key evil-ex-search-keymap (kbd "C-h") 'delete-backward-char)
   (define-key evil-ex-completion-map (kbd "C-h") 'delete-backward-char)
   (define-key minibuffer-local-map (kbd "C-h") 'delete-backward-char)
@@ -311,6 +311,13 @@
   (define-key evil-motion-state-map (kbd "C-u") 'evil-scroll-up)
   ;; (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
   ;; (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
+  (defun my-save-if-bufferfilename (&rest args)
+    (if (buffer-file-name)
+        (progn
+          (set-buffer-modified-p t)
+          (save-buffer))))
+  (add-hook 'evil-insert-state-exit-hook #'my-save-if-bufferfilename)
+  ;; (advice-add 'evil-normal-state :after 'my-save-if-bufferfilename)
   )
 
 

@@ -35,6 +35,10 @@
 (global-set-key "\C-m" 'newline-and-indent)
 (setq large-file-warning-threshold nil)
 (fset 'yes-or-no-p 'y-or-n-p)
+(setq make-backup-files nil)
+(setq create-lockfiles nil)
+(setq auto-save-default nil)
+(setq auto-save-list-file-prefix nil)
 
 ;; encoding
 (set-language-environment "Japanese")

@@ -138,7 +138,8 @@ the user activate the completion manually."
 
   (defun eshell-exit ()
     (interactive)
-    (kill-buffer (current-buffer)))
+    (kill-buffer (current-buffer))
+    (delete-window))
 
   (defun eshell-bind-keymap ()
     (evil-define-key 'normal eshell-mode-map
@@ -159,7 +160,7 @@ the user activate the completion manually."
           ("d" "dired .")
           ("ll" "ls -l $*")
           ("la" "ls -al $*")
-          ("ppr" "find-file PULLREQ_MSG")
+          ("ppr" "find-file-other-window PULLREQ_MSG")
           ("pr" "hub pull-request -b $1 -F PULLREQ_MSG && kill-buffer PULLREQ_MSG && rm PULLREQ_MSG")
           ("b" "bundle exec $*")
           ("annot" "bundle exec annotate -p before -i")

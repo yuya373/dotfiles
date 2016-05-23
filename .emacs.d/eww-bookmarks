@@ -1,4 +1,5 @@
 ;; Auto-generated file; don't edit
-((:url "http://guide.elm-lang.org/architecture/user_input/buttons.html" :title "Buttons | An Introduction to Elm" :time "Sun May 22 00:21:57 2016")
+((:url "https://rust-lang-ja.github.io/the-rust-programming-language-ja/1.6/book/guessing-game.html" :title "数当てゲーム" :time "Sun May 22 21:14:35 2016")
+ (:url "http://guide.elm-lang.org/architecture/user_input/buttons.html" :title "Buttons | An Introduction to Elm" :time "Sun May 22 00:21:57 2016")
  (:url "http://guide.elm-lang.org/architecture/index.html" :title "The Elm Architecture | An Introduction to Elm" :time "Sat May 21 21:33:06 2016")
  (:url "http://guide.elm-lang.org/core_language.html" :title "Core Language | An Introduction to Elm" :time "Sat May 21 16:09:27 2016"))
