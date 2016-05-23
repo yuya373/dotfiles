@@ -12,7 +12,8 @@ export PATH=/usr/local/bin:${PATH}
 
 if [ -e ${HOME}/.cargo/bin ]; then
     export PATH=${HOME}/.cargo/bin:${PATH}
-    export RUST_SRC_PATH=${HOME}/rustc-1.5.0/src
+    export CARGO_HOME=${HOME}/.cargo
+    export RUST_SRC_PATH=${HOME}/rustc-1.8.0/src
 fi
 
 if [ -e ${HOME}/.cabal/bin ]; then
