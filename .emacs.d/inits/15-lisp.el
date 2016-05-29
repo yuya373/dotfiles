@@ -34,7 +34,6 @@
 (use-package slime
   :commands (slime-mode)
   :init
-  (add-hook 'slime-repl-mode-hook '(lambda () (turn-off-smartparens-mode)))
   (add-hook 'lisp-mode-hook 'slime-mode)
   (let ((hyperspec-location "/usr/local/share/doc/hyperspec/HyperSpec/"))
     (setq common-lisp-hyperspec-root hyperspec-location)

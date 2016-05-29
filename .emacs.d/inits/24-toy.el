@@ -264,9 +264,3 @@
 
 (provide '24-toy)
 ;;; 24-toy.el ends here
-
-
-
-
-
-

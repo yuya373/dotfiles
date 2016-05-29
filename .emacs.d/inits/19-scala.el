@@ -67,7 +67,6 @@
   (add-hook 'sbt-mode-hook #'(lambda ()
                                (ensime-inf-company)
                                (company-mode t)))
-  (add-hook 'ensime-inf-mode-hook 'smartparens-mode)
   (add-hook 'ensime-mode-hook
             #'(lambda ()
                 (company-mode)

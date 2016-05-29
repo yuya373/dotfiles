@@ -101,7 +101,6 @@ the user activate the completion manually."
   (add-hook 'eshell-mode-hook
             'spacemacs//eshell-switch-company-frontend)
 
-  (add-hook 'eshell-mode-hook 'smartparens-mode)
   :config
   (require 'em-smart)
   (require 'esh-opt)

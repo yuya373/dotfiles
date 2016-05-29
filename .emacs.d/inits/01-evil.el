@@ -193,11 +193,13 @@
   (define-key evil-window-map         (kbd "C-g") #'evil-keyboard-quit)
   (define-key evil-operator-state-map (kbd "C-g") #'evil-keyboard-quit)
   ;; C-h
-  (define-key global-map (kbd "C-h") 'delete-backward-char)
-  (define-key evil-insert-state-map (kbd "C-h") nil)
-  (define-key evil-ex-search-keymap (kbd "C-h") 'delete-backward-char)
-  (define-key evil-ex-completion-map (kbd "C-h") 'delete-backward-char)
-  (define-key minibuffer-local-map (kbd "C-h") 'delete-backward-char)
+  (define-key evil-normal-state-map (kbd "\C-?") 'evil-window-left)
+  (keyboard-translate ?\C-h ?\C-?)
+  ;; (define-key global-map (kbd "C-h") 'delete-backward-char)
+  ;; (define-key evil-insert-state-map (kbd "C-h") nil)
+  ;; (define-key evil-ex-search-keymap (kbd "C-h") 'delete-backward-char)
+  ;; (define-key evil-ex-completion-map (kbd "C-h") 'delete-backward-char)
+  ;; (define-key minibuffer-local-map (kbd "C-h") 'delete-backward-char)
   ;; window move
   (define-key evil-normal-state-map (kbd "C-w r") 'window-resizer)
   (define-key evil-normal-state-map (kbd "C-k") 'evil-window-up)
@@ -250,7 +252,8 @@
     (setq avy-highlight-first t)
     (setq avy-all-windows nil)
     ;; (setq avy-keys (number-sequence ?a ?z))
-    (setq avy-keys (list ?a ?s ?d ?f ?g ?h ?j ?k ?l))
+    (setq avy-keys (list ?a ?s ?d ?f ?g ?h ?j ?k ?l
+                         ?w ?e ?r ?t ?y ?u ?i ?o ?p))
     :config
     (evil-define-motion evil-avy-goto-char-in-line (count)
       :type inclusive
@@ -312,12 +315,15 @@
   ;; (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
   ;; (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
   (defun my-save-if-bufferfilename (&rest args)
+    (interactive)
     (if (buffer-file-name)
         (progn
-          (set-buffer-modified-p t)
-          (save-buffer))))
+          (evil-write nil nil nil nil t)
+          (message "Saved!"))))
   (add-hook 'evil-insert-state-exit-hook #'my-save-if-bufferfilename)
   ;; (advice-add 'evil-normal-state :after 'my-save-if-bufferfilename)
+  (define-key evil-normal-state-map (kbd "C-s") nil)
+  (define-key evil-normal-state-map (kbd "C-s") 'my-save-if-bufferfilename)
   )
 
 
@@ -407,20 +413,6 @@
         (mapc #'you-kill buf-list))))
   :config
   (evil-leader/set-leader "<SPC>")
-  (use-package evil-org
-    :init
-    (setq org-src-fontify-natively t)
-    :config
-    (use-package org-bullets
-      :init
-      (add-hook 'org-mode-hook 'org-bullets-mode))
-    (evil-define-key 'visual evil-org-mode-map
-      ",m" 'org-md-convert-region-to-md)
-    (evil-define-key 'normal evil-org-mode-map
-      ;; ",tc" 'org-toggle-checkbox
-      "t" nil
-      ",m" 'org-md-export-to-markdown
-      ",t" 'org-todo))
   (evil-leader/set-key
     "=" 'all-indent
     ":" 'helm-M-x
@@ -431,10 +423,8 @@
     "ap" 'helm-projectile-ag
     "bb" 'helm-buffers-list
     "bb" 'helm-mini
-    "bf" 'popwin:find-file
     "bk" 'kill-buffers
-    "bl" 'popwin:popup-last-buffer
-    "bp" 'popwin:pop-to-buffer
+    "br" 'browser-refresh
     "bw" 'projectile-switch-to-buffer-other-window
     "da" 'helm-dash
     "dc" 'helm-dash-at-point
@@ -521,10 +511,7 @@
     "qr" 'quickrun
     "qs" 'quickrun-shell
     "r" 'create-restclient-buffer
-    "ss" 'create-eshell
-    "sgg" 'google-this-search
-    "sgm" 'google-maps
-    "sgt" 'google-this-translate-query-or-region
+    "s" 'create-eshell
     "tG" 'projectile-regenerate-tags
     "tQ" 'google-translate-query-translate-reverse
     "tl" 'google-translate-smooth-translate

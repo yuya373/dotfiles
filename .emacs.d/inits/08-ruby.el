@@ -27,13 +27,28 @@
 (eval-when-compile
   (require 'evil))
 
-;; (el-get-bundle ruby-end)
 (el-get-bundle bundler)
 (el-get-bundle rbenv)
 (el-get-bundle robe-mode)
 (el-get-bundle inf-ruby)
 (el-get-bundle enh-ruby-mode)
 (el-get-bundle ruby-test-mode)
+(el-get-bundle ruby-block
+  :github h3poteto/ruby-block.el)
+(el-get-bundle ruby-end)
+
+(use-package ruby-end
+  :commands (ruby-end-mode)
+  :init
+  (setq ruby-end-insert-newline nil)
+  (add-hook 'enh-ruby-mode-hook 'ruby-end-mode))
+
+(use-package ruby-block
+  :commands (ruby-block-mode)
+  :diminish ruby-block-mode
+  :init
+  (setq ruby-block-highlight-toggle t)
+  (add-hook 'enh-ruby-mode-hook 'ruby-block-mode))
 
 (use-package rbenv
   :commands (global-rbenv-mode rbenv-use-global rbenv-use-corresponding)
@@ -48,7 +63,6 @@
 (use-package inf-ruby
   :commands (inf-ruby inf-ruby-minor-mode inf-ruby-console-auto)
   :init
-  (add-hook 'inf-ruby-mode-hook 'smartparens-mode)
   (add-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode)
   (defun my-inf-ruby-mode-hook ()
     (make-local-variable 'company-backends)
@@ -113,11 +127,10 @@
   ;; (setq ruby-deep-indent-paren-style nil)
   ;; (setq ruby-align-chained-calls nil)
   :config
-  ;; (use-package ruby-end)
-  (modify-syntax-entry ?@ "_" enh-ruby-mode-syntax-table)
-  (modify-syntax-entry ?: "_" enh-ruby-mode-syntax-table)
-  (modify-syntax-entry ?! "_" enh-ruby-mode-syntax-table)
-  (modify-syntax-entry ?_ "w" enh-ruby-mode-syntax-table)
+  ;; (modify-syntax-entry ?@ "_" enh-ruby-mode-syntax-table)
+  ;; (modify-syntax-entry ?: "_" enh-ruby-mode-syntax-table)
+  ;; (modify-syntax-entry ?! "_" enh-ruby-mode-syntax-table)
+  ;; (modify-syntax-entry ?_ "w" enh-ruby-mode-syntax-table)
 
   (evil-define-key 'normal enh-ruby-mode-map
     (kbd ",el") 'ruby-send-last-sexp
@@ -161,9 +174,7 @@
 (el-get-bundle yaml-mode)
 (use-package yaml-mode
   :mode (("\\.yml\\'" . yaml-mode)
-         ("\\.yaml\\'" . yaml-mode))
-  :init
-  (add-hook 'yaml-mode-hook 'smartparens-mode))
+         ("\\.yaml\\'" . yaml-mode)))
 
 
 

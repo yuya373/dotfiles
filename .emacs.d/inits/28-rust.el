@@ -31,6 +31,7 @@
 (el-get-bundle emacs-racer)
 (use-package racer
   :commands (racer-mode)
+  :diminish racer-mode
   :init
   (global-set-key (kbd "TAB") #'company-indent-or-complete-common)
   (setq racer-rust-src-path (expand-file-name "~/rustc-1.8.0/src"))
@@ -51,6 +52,7 @@
 (el-get-bundle cargo)
 (use-package cargo
   :commands (cargo-minor-mode)
+  :diminish cargo-minor-mode
   :init
   (add-hook 'rust-mode-hook 'cargo-minor-mode)
   :config

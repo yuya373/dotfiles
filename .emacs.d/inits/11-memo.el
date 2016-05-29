@@ -25,32 +25,5 @@
 ;;; Code:
 
 ;; markdown
-(el-get-bundle markdown-mode)
-(use-package markdown-mode
-  :mode (("\\.markdown\\'" . gfm-mode)
-         ("\\.md\\'" . gfm-mode)
-         ("PULLREQ_MSG" . gfm-mode))
-  :init
-  (defun my-markdown-mode-setting ()
-    (set (make-local-variable 'tab-width) 2)
-    (make-local-variable 'company-backends)
-    (add-to-list 'company-backends 'company-ispell))
-  (add-hook 'markdown-mode-hook #'my-markdown-mode-setting)
-  (add-hook 'gfm-mode-hook #'my-markdown-mode-setting))
-
-(el-get-bundle open-junk-file)
-(use-package open-junk-file
-  :commands (open-junk-file)
-  :config
-  (setq open-junk-file-format "~/Dropbox/junk/%Y-%m-%d."))
-
-(el-get-bundle org)
-(use-package org
-  :mode (("\\.org\\'" . org-mode))
-  :config
-  (setq org-src-fontify-natively t)
-  (setq org-directory "~/Dropbox/junk")
-  (setq org-agenda-files (list org-directory)))
-
 (provide '11-memo)
 ;;; 11-memo.el ends here

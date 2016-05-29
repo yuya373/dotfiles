@@ -36,7 +36,6 @@
     (add-to-list 'company-backends '(company-elm :with company-dabbrev-code)))
   (add-hook 'elm-mode-hook #'my-elm-company-setup)
   (add-hook 'elm-interactive-mode-hook #'my-elm-company-setup)
-  (add-hook 'elm-interactive-mode-hook 'smartparens-mode)
   :config
   (defun switch-to-elm-interactive ()
     (interactive)

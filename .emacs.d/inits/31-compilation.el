@@ -1,8 +1,8 @@
-;;; 29-persp-config.el ---                           -*- lexical-binding: t; -*-
+;;; 31-compilation.el ---                            -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2016  南優也
 
-;; Author: 南優也 <yuyaminami@minamiyuunari-no-MacBook-Pro.local>
+;; Author: 南優也 <yuyaminami@minamiyuuya-no-MacBook.local>
 ;; Keywords:
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -24,10 +24,24 @@
 
 ;;; Code:
 (eval-when-compile
-  (el-get-bundle evil)
-  (el-get-bundle helm)
-  (require 'evil)
-  (require 'helm))
+  (require 'evil))
 
-(provide '29-persp-config)
-;;; 29-persp-config.el ends here
+(use-package compile
+  :defer t
+  :diminish compilation-in-progress
+  :config
+  (setq compilation-scroll-output t)
+  (evil-define-key 'normal compilation-mode-map
+    "g" nil
+    "\C-c" 'evil-window-delete
+    "\C-m" 'compile-goto-error
+    ",v" 'compilation-display-error
+    ",n" 'compilation-next-error
+    ",p" 'compilation-previous-error
+    ",fn" 'compilation-next-file
+    ",fp" 'compilation-previous-file
+    ",r" 'recompile
+    ",c" 'kill-compilation))
+
+(provide '31-compilation)
+;;; 31-compilation.el ends here

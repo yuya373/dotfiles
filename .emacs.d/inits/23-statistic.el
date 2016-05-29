@@ -40,8 +40,6 @@
   (setq ess-history-file nil)
   (setq inferior-R-args "--no-restore --no-save")
   (add-hook 'ess-mode-hook 'linum-mode)
-  (add-hook 'ess-mode-hook 'smartparens-mode)
-  (add-hook 'inferior-ess-mode-hook 'smartparens-mode)
   (setq ess-use-eldoc t
         ess-use-company t
         ess-use-ido nil

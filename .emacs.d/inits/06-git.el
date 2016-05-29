@@ -58,24 +58,17 @@
   (setq magit-push-always-verify t)
   (setq magit-branch-arguments nil)
   (setq magit-restore-window-configuration t)
-  (defun display-buffer-full-screen (buffer alist)
-    (delete-other-windows)
-    ;; make sure the window isn't dedicated, otherwise
-    ;; `set-window-buffer' throws an error
-    (set-window-dedicated-p nil nil)
-    (set-window-buffer nil buffer)
-    ;; return buffer's window
-    (get-buffer-window buffer))
+
 
   ;; (setq magit-display-buffer-function #'magit-display-buffer-traditional)
-  (setq magit-display-buffer-function
-        (lambda (buffer)
-          (if magit-display-buffer-noselect
-              ;; the code that called `magit-display-buffer-function'
-              ;; expects the original window to stay alive, we can't go
-              ;; fullscreen
-              (magit-display-buffer-traditional buffer)
-            (display-buffer buffer '(display-buffer-full-screen)))))
+  ;; (setq magit-display-buffer-function
+  ;;       (lambda (buffer)
+  ;;         (if magit-display-buffer-noselect
+  ;;             ;; the code that called `magit-display-buffer-function'
+  ;;             ;; expects the original window to stay alive, we can't go
+  ;;             ;; fullscreen
+  ;;             (magit-display-buffer-traditional buffer)
+  ;;           (display-buffer buffer '(display-buffer-full-screen)))))
   (defun my-git-commit-mode ()
     (make-local-variable 'company-backends)
     (add-to-list 'company-backends 'company-ispell))
@@ -100,75 +93,6 @@
   ;;   :commands (turn-on-magit-gh-pulls)
   ;;   :init
   ;;   (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
-  ;; (evil-set-initial-state 'magit-mode 'normal)
-  ;; (evil-set-initial-state 'magit-status-mode 'insert)
-  ;; (evil-set-initial-state 'magit-diff-mode 'insert)
-  ;; (evil-set-initial-state 'magit-log-mode 'insert)
-  ;; (evil-set-initial-state 'magit-reflog-mode 'normal)
-  ;; (evil-set-initial-state 'magit-process-mode 'normal)
-  ;; (evil-set-initial-state 'magit-blame-mode 'motion)
-  ;; (evil-set-initial-state 'magit-revision-mode 'normal)
-
-  ;; (defun magit-blame-quit-and-escape ()
-  ;;   (interactive)
-  ;;   (magit-blame-quit)
-  ;;   (evil-normal-state 1))
-  ;; (define-key magit-blame-mode-map "q" 'magit-blame-quit-and-escape)
-  ;; (define-key magit-blame-mode-map "b" 'magit-blame-popup)
-  ;; (define-key magit-blame-mode-map "r" 'magit-show-commit)
-  ;; (define-key magit-blame-mode-map "s" 'magit-diff-show-or-scroll-up)
-  ;; (define-key magit-blame-mode-map "d" 'magit-diff-show-or-scroll-down)
-  ;; (define-key magit-blame-mode-map "n" 'magit-blame-next-chunk)
-  ;; (define-key magit-blame-mode-map "N" 'magit-blame-next-chunk-same-commit)
-  ;; (define-key magit-blame-mode-map "p" 'magit-blame-previous-chunk)
-  ;; (define-key magit-blame-mode-map "P" 'magit-blame-previous-chunk-same-commit)
-  ;; (define-key magit-blame-mode-map "t" 'magit-blame-toggle-headings)
-  ;; (define-key magit-blame-mode-map "y" 'magit-blame-copy-hash)
-
-  ;; (define-key magit-mode-map "\s" nil) ;space I use space as my evil-leader key
-  ;; (define-key magit-diff-mode-map "\s" nil) ;space
-  ;; (define-key magit-diff-mode-map "j" 'next-line)
-
-  ;; (define-key magit-status-mode-map "j" 'next-line) ;may be should evil-next-line
-  ;; (define-key magit-mode-map "j" 'next-line)
-  ;; (define-key magit-mode-map "k" 'previous-line)
-  ;; (define-key magit-file-section-map "K" 'magit-discard)
-  ;; (define-key magit-file-section-map "k" nil)
-  ;; (define-key magit-hunk-section-map "K" 'magit-discard)
-  ;; (define-key magit-hunk-section-map "k" nil)
-  ;; (define-key magit-unstaged-section-map "k" nil)
-  ;; (define-key magit-unstaged-section-map "K" 'magit-discard)
-  ;; (define-key magit-staged-section-map "K" 'magit-discard)
-  ;; (define-key magit-staged-section-map "k" nil)
-  ;; (define-key magit-stash-section-map "K" 'magit-stash-drop)
-  ;; (define-key magit-stash-section-map "k" nil)
-  ;; (define-key magit-stashes-section-map "K" 'magit-stash-clear)
-  ;; (define-key magit-stashes-section-map "k" nil)
-
-  ;; (define-key magit-untracked-section-map "K" 'magit-discard)
-  ;; (define-key magit-untracked-section-map "k" nil)
-
-  ;; (define-key magit-branch-section-map "K" 'magit-branch-delete)
-  ;; (define-key magit-branch-section-map "k" nil)
-
-  ;; (define-key magit-remote-section-map "K" 'magit-remote-remove)
-  ;; (define-key magit-remote-section-map "k" nil)
-
-  ;; (define-key magit-tag-section-map "k" nil)
-  ;; (define-key magit-tag-section-map "K" 'magit-tag-delete)
-
-  ;; (use-package git-rebase
-  ;;   :config
-  ;;   (define-key git-rebase-mode-map "RET" 'git-rebase-show-commit)
-  ;;   (define-key git-rebase-mode-map "x" 'git-rebase-exec)
-  ;;   (define-key git-rebase-mode-map "u" 'git-rebase-undo)
-  ;;   (define-key git-rebase-mode-map "p" 'git-rebase-pick)
-  ;;   (define-key git-rebase-mode-map "e" 'git-rebase-edit)
-  ;;   (define-key git-rebase-mode-map "f" 'git-rebase-fixup)
-  ;;   (define-key git-rebase-mode-map "s" 'git-rebase-squash)
-  ;;   (define-key git-rebase-mode-map "K" 'git-rebase-kill-line)
-  ;;   (define-key git-rebase-mode-map "k" 'git-rebase-move-line-up)
-  ;;   (define-key git-rebase-mode-map "j" 'git-rebase-move-line-down))
   )
 
 (use-package gist

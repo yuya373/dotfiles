@@ -31,7 +31,6 @@
   :mode (("\\.erb\\'" . web-mode)
          ("\\.html?\\'" . web-mode))
   :init
-  (add-hook 'web-mode-hook '(lambda () (turn-off-smartparens-mode)))
   (setq web-mode-markup-indent-offset 2))
 
 (el-get-bundle scss-mode)
@@ -70,8 +69,9 @@
   (defun url-http-user-agent-string ()
     (format "User-Agent: %s\r\n"
             "Mozilla/5.0 (iPhone; CPU iPhone OS 9_0_2 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13A452 Safari/601.1"))
+  (define-key eww-link-keymap (kbd "w") nil)
   (evil-define-key 'normal eww-link-keymap
-    "w" 'evil-forward-word
+    "w" nil
     "\C-m" 'eww-follow-link
     ",y" 'shr-copy-url)
   (evil-define-key 'normal eww-history-mode-map

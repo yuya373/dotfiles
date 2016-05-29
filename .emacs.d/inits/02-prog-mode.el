@@ -27,24 +27,51 @@
   (require 'evil))
 
 ;; smartparens
-(el-get-bundle smartparens)
-(use-package smartparens-config
-  :diminish smartparens-mode
-  :commands (smartparens-mode turn-on-smartparens-mode)
+;; (el-get-bundle smartparens)
+;; (use-package smartparens-config
+;;   :diminish smartparens-mode
+;;   :commands (smartparens-mode turn-on-smartparens-mode)
+;;   :init
+;;   (add-hook 'elm-interactive-mode-hook 'smartparens-mode)
+;;   (add-hook 'inferior-ess-mode-hook 'smartparens-mode)
+;;   (add-hook 'ess-mode-hook 'smartparens-mode)
+;;   (add-hook 'inferior-python-mode-hook 'smartparens-mode)
+;;   (add-hook 'ensime-inf-mode-hook 'smartparens-mode)
+;;   (add-hook 'eshell-mode-hook 'smartparens-mode)
+;;   (add-hook 'slime-repl-mode-hook '(lambda () (turn-off-smartparens-mode)))
+;;   (add-hook 'web-mode-hook '(lambda () (turn-off-smartparens-mode)))
+;;   (add-hook 'yaml-mode-hook 'smartparens-mode)
+;;   (add-hook 'inf-ruby-mode-hook 'smartparens-mode)
+;;   (add-hook 'restclient-mode-hook 'smartparens-mode)
+;;   (add-hook 'prog-mode-hook 'smartparens-mode)
+;;   :config
+;;   ;; (with-eval-after-load "evil"
+;;   ;;   (evil-define-key 'normal smartparens-mode-map
+;;   ;;     (kbd "C-s C-f") 'sp-forward-sexp
+;;   ;;     (kbd "C-s C-b") 'sp-backward-sexp
+;;   ;;     (kbd "C-s C-w") 'sp-unwrap-sexp
+;;   ;;     (kbd "C-s C-p") 'sp-previous-sexp
+;;   ;;     (kbd "C-s C-n") 'sp-next-sexp
+;;   ;;     (kbd "C-s C-d") 'sp-down-sexp
+;;   ;;     (kbd "C-s C-u") 'sp-up-sexp
+;;   ;;     (kbd "C-s C-k") 'sp-kill-hybrid-sexp)
+;;   ;; (define-key evil-normal-state-map (kbd "C-s") smartparens-mode-map))
+;;   )
+
+;; linum
+(use-package linum-mode
+  :commands (linum-mode)
   :init
-  (add-hook 'prog-mode-hook 'smartparens-mode)
+  (setq linum-format "%4d ")
+  (setq linum-delay t)
+  (add-hook 'prog-mode-hook 'linum-mode))
+
+(use-package elec-pair
+  :commands (electric-pair-mode)
+  :init
+  (add-hook 'after-init-hook 'electric-pair-mode)
   :config
-  (with-eval-after-load "evil"
-    (evil-define-key 'normal smartparens-mode-map
-      (kbd "C-s C-f") 'sp-forward-sexp
-      (kbd "C-s C-b") 'sp-backward-sexp
-      (kbd "C-s C-w") 'sp-unwrap-sexp
-      (kbd "C-s C-p") 'sp-previous-sexp
-      (kbd "C-s C-n") 'sp-next-sexp
-      (kbd "C-s C-d") 'sp-down-sexp
-      (kbd "C-s C-u") 'sp-up-sexp
-      (kbd "C-s C-k") 'sp-kill-hybrid-sexp)
-    (define-key evil-normal-state-map (kbd "C-s") smartparens-mode-map)))
+  (add-to-list 'electric-pair-pairs '(?| . ?|)))
 
 (el-get-bundle rainbow-delimiters)
 (use-package rainbow-delimiters
@@ -71,6 +98,15 @@
   :init
   (add-hook 'ess-mode-hook 'electric-operator-mode)
   (add-hook 'python-mode-hook 'electric-operator-mode))
+
+(el-get-bundle quickrun)
+(use-package quickrun
+  :commands (quickrun
+             quickrun-region
+             quickrun-with-arg
+             quickrun-shell)
+  :init
+  (setq quickrun-focus-p nil))
 
 (provide '02-prog-mode)
 ;;; 02-prog-mode.el ends here

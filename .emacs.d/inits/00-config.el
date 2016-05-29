@@ -68,13 +68,6 @@
 (setq woman-manpath '("/usr/local/share/man/ja_JP.UTF-8/"
                       "/usr/local/opt/coreutils/libexec/gnuman/"))
 
-;; linum
-(use-package linum-mode
-  :commands (linum-mode)
-  :init
-  (setq linum-format "%4d ")
-  (add-hook 'prog-mode-hook 'linum-mode))
-
 ;; line wrap
 (use-package visual-line-mode
   :commands (visual-line-mode)
@@ -141,12 +134,14 @@
 
 (use-package autorevert
   :commands (global-auto-revert-mode)
+  :diminish auto-revert-mode
   :init
   (setq auto-revert-check-vc-info nil)
   (setq auto-revert-interval 5)
   (add-hook 'after-init-hook #'(lambda () (global-auto-revert-mode t))))
 
 (use-package generic-x)
+
 
 (provide '00-config)
 ;;; 00-config.el ends here

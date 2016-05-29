@@ -45,7 +45,6 @@
     (setq python-indent-offset 4))
   (defun my-inf-python-mode-hook ()
 
-    (smartparens-mode)
     (setq-local helm-dash-docsets '("Python 2"))
     )
   (add-hook 'python-mode-hook #'my-python-mode-hook)

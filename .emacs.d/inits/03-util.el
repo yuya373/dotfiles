@@ -69,67 +69,6 @@
     ", g" " Goto"
     ", t" " Test, Tags"))
 
-;; (el-get-bundle popwin)
-;; (use-package popwin
-;;   :commands (popwin-mode)
-;;   :init
-;;   (setq popwin:adjust-other-windows t)
-;;   (setq popwin:popup-window-position 'bottom)
-;;   (setq popwin:popup-window-height 0.3)
-;;   (add-hook 'after-init-hook #'(lambda () (popwin-mode t)))
-;;   :config
-;;   (push '(prodigy-mode :stick t) popwin:special-display-config)
-;;   (push '(sql-interactive-mode :stick t :noselect t :tail t)
-;;         popwin:special-display-config)
-;;   (push '(ag-mode :stick t) popwin:special-display-config)
-;;   (push '("*projectile-rails-compilation*" :noselect t :tail t :stick t) popwin:special-display-config)
-;;   (push '("*projectile-rails-generate*" :noselect t :tail t :stick t) popwin:special-display-config)
-;;   (push '("^\\*git-gutter:.*\\*$") popwin:special-display-config)
-;;   (push '(twittering-mode :stick t) popwin:special-display-config)
-;;   (push '(ess-help-mode) popwin:special-display-config)
-;;   (push '("*R*" :tail t :noselect t :stick t) popwin:special-display-config)
-;;   (push '(comint-mode :tail t :noselect t :stick t) popwin:special-display-config)
-;;   (push '(ensime-inspector-mode) popwin:special-display-config)
-;;   (push '("*ensime-inferior-scala*" :tail t :noselect t :stick t) popwin:special-display-config)
-;;   (push '(sbt-mode :stick t :tail t :noselect t) popwin:special-display-config)
-;;   (push '("*ensime-update*" :tail t) popwin:special-display-config)
-;;   (push '("*HTTP Response*" :noselect t :stick t) popwin:special-display-config)
-;;   (push '("*quickrun*" :tail t :stick t) popwin:special-display-config)
-;;   (push '(inferior-python-mode :tail t :stick t) popwin:special-display-config)
-;;   (push '(cider-inspector-mode) popwin:special-display-config)
-;;   (push '(cider-popup-buffer-mode) popwin:special-display-config)
-;;   (push '("*cider grimoire*") popwin:special-display-config)
-;;   (push '("*cider-error*") popwin:special-display-config)
-;;   (push '("*cider-result*") popwin:special-display-config)
-;;   (push '(cider-repl-mode :tail t :stick t) popwin:special-display-config)
-;;   (push '("*Backtrace*") popwin:special-display-config)
-;;   (push '("*Messages*") popwin:special-display-config)
-;;   (push '(slack-info-mode :tail t :stick t) popwin:special-display-config)
-;;   (push '(slack-edit-message-mode :stick t) popwin:special-display-config)
-;;   (push '(slack-mode :tail t :height 0.4 :noselect t :stick t )
-;;         popwin:special-display-config)
-;;   (push '("*Bundler*" :noselect t) popwin:special-display-config)
-;;   (push '(inf-ruby-mode :stick t) popwin:special-display-config)
-;;   (push '("*Process List*" :noselect t) popwin:special-display-config)
-;;   (push '("*Warnings*" :noselect t) popwin:special-display-config)
-;;   (push '("*Flycheck errors*" :stick t :noselect t) popwin:special-display-config)
-;;   (push '("*compilation*" :stick t :tail t :noselect t)
-;;         popwin:special-display-config)
-;;   (push '("*Codic Result*" :noselect t :stick t) popwin:special-display-config)
-;;   (push "*slime-apropos*" popwin:special-display-config)
-;;   (push '("*slime-macroexpansion*" :noselect t) popwin:special-display-config)
-;;   (push "*slime-description*" popwin:special-display-config)
-;;   (push '("*slime-compilation*" :noselect t) popwin:special-display-config)
-;;   (push "*slime-xref*" popwin:special-display-config)
-;;   (push '("*inferior-lisp*" :noselect t :tail t :stick t) popwin:special-display-config)
-;;   (push '(sldb-mode :stick t) popwin:special-display-config)
-;;   (push '(slime-repl-mode :stick t :position bottom) popwin:special-display-config)
-;;   (push 'slime-connection-list-mode popwin:special-display-config)
-;;   (push '("*alchemist-eval-mode*" :noselect t :height 0.2) popwin:special-display-config)
-;;   (push '("*Alchemist-IEx*" :noselect t :height 0.2) popwin:special-display-config)
-;;   (push '("*alchemist help*" :noselect t) popwin:special-display-config)
-;;   (push '("*elixirc*" :noselect t) popwin:special-display-config))
-
 (el-get-bundle indent-guide)
 (use-package indent-guide
   :diminish indent-guide-mode
@@ -138,55 +77,10 @@
   (setq indent-guide-recursive t)
   (add-hook 'lisp-mode-hook 'indent-guide-mode))
 
-;; (el-get-bundle golden-ratio)
-;; (use-package golden-ratio
-;;   :commands (golden-ratio-mode)
-;;   :diminish golden-ratio-mode
-;;   :init
-;;   (add-hook 'after-init-hook 'golden-ratio-mode)
-;;   (setq golden-ratio-extra-commands '(windmove-up
-;;                                       windmove-down
-;;                                       windmove-left
-;;                                       windmove-right
-;;                                       evil-window-up
-;;                                       evil-window-down
-;;                                       evil-window-left
-;;                                       evil-window-right))
-;;   (setq golden-ratio-auto-scale t)
-;;   (setq golden-ratio-recenter t)
-;;   (setq golden-ratio-exclude-modes '(eww-mode
-;;                                      pdf-view-mode
-;;                                      ediff-mode
-;;                                      comint-mode
-;;                                      compilation-mode
-;;                                      inf-ruby-mode
-;;                                      slime-repl-mode))
-;;   ;; (setq golden-ratio-exclude-buffer-names '("*compilation*"
-;;   ;;                                           "*Flycheck errors*"
-;;   ;;                                           "slime-apropos*"
-;;   ;;                                           "*slime-description*"
-;;   ;;                                           "*slime-compilation*"
-;;   ;;                                           "*Proccess List*"
-;;   ;;                                           "*LV*"
-;;   ;;                                           "*Warnings*"))
-
-;;   ;; (setq golden-ratio-auto-scale t)
-;;   )
-
-(el-get-bundle quickrun)
-(use-package quickrun
-  :commands (quickrun
-             quickrun-region
-             quickrun-with-arg
-             quickrun-shell)
-  :init
-  (setq quickrun-focus-p nil))
-
 (el-get-bundle restclient)
 (use-package restclient
   :mode (("\\.restclient\\'" . restclient-mode))
   :init
-  (add-hook 'restclient-mode-hook 'smartparens-mode)
   (setq restclient-dir "~/Dropbox/junk/")
   (defun restclient-client-buf-name ()
     (concat (format-time-string "%Y-%m-%d") ".restclient"))
@@ -218,6 +112,8 @@
   (setq create-lockfiles nil)
   (setq auto-save-buffers-enhanced-interval 0.5)
   (setq auto-save-buffers-enhanced-quiet-save-p t)
+  (setq auto-save-buffers-enhanced-exclude-regexps
+        '("^/scp:" "^/ssh:" "/sudo:" "/multi:"))
   :config
   (defun auto-save-buffers-enhanced-save-buffers-if-normal-state ()
     (if (eq evil-state 'normal)
@@ -276,7 +172,7 @@
   (evil-set-initial-state 'ag-mode 'normal)
   (evil-define-key 'normal ag-mode-map
     "k" 'evil-previous-visual-line
-    ",r" 'wgrep-change-to-wgrep-mode))
+    ",e" 'wgrep-change-to-wgrep-mode))
 
 (use-package tramp
   :defer t
@@ -288,78 +184,6 @@
   ;;              '((regexp-quote (system-name)) nil nil))
   ;; (add-to-list 'tramp-default-proxies-alist '("redash" "\\`root\\'" "/ssh:redash:"))
   )
-
-(el-get-bundle ddskk)
-(use-package skk-autoloads
-  :commands (skk-mode skk-auto-fill-mode)
-  :init
-
-  (setq skk-echo t)
-  (setq skk-tut-file (concat user-emacs-directory
-                             "el-get/ddskk/etc/SKK.tut"))
-  (setq define-input-method "japanese-skk")
-
-  (setq skk-egg-like-newline t
-        skk-auto-insert-paren t
-        skk-show-annotation t
-        skk-annotation-show-wikipedia-url t
-        skk-use-look t
-        skk-save-jisyo-instantly t)
-  (setq skk-show-tooltip nil
-        skk-show-inline nil
-        skk-show-candidates-always-pop-to-buffer nil
-        skk-show-mode-show nil)
-  (setq skk-dcomp-activate t
-        skk-dcomp-multiple-activate t
-        skk-dcomp-multiple-rows 20
-        skk-previous-completion-use-backtab t)
-  (setq skk-comp-use-prefix t
-        skk-comp-circulate t)
-  (setq skk-sticky-key ";")
-  (setq skk-previous-candidate-keys (list "x" "\C-p"))
-
-  ;; skk-server AquaSKK
-  (setq skk-server-portnum 1178
-        skk-server-host "localhost"
-        skk-server-report-response t)
-  ;; (setq skk-large-jisyo (concat user-emacs-directory
-  ;;                               "SKK-JISYO.L"))
-  (setq skk-jisyo "~/.skk-jisyo")
-
-  (setq skk-japanese-message-and-error t
-        skk-show-japanese-menu t)
-  (defun enable-skk-when-insert ()
-    (unless (bound-and-true-p skk-mode)
-      (skk-mode 1)
-      (skk-latin-mode 1)))
-  (add-hook 'evil-insert-state-entry-hook 'enable-skk-when-insert)
-  ;; (add-hook 'skk-mode-hook #'(lambda ()
-  ;;                              ;; (define-key skk-j-mode-map (kbd "C-h") 'skk-delete-backward-char)
-  ;;                              (evil-make-intercept-map skk-j-mode-map 'insert )))
-  :config
-  (use-package skk-hint)
-  ;; (use-package skk-study)
-  ;; (define-key skk-j-mode-map (kbd "C-h") 'skk-delete-backward-char)
-  ;; (evil-make-intercept-map skk-j-mode-map 'insert)
-  ;; @@ server completion
-  (add-to-list 'skk-search-prog-list
-               '(skk-server-completion-search) t)
-  (add-to-list 'skk-completion-prog-list
-               '(skk-comp-by-server-completion) t)
-  (evil-define-key 'insert skk-j-mode-map
-    "\C-h" #'skk-delete-backward-char)
-  (defun my-skk-control ()
-    (if (bound-and-true-p skk-mode)
-        (skk-latin-mode 1)))
-  (add-hook 'evil-normal-state-entry-hook 'my-skk-control)
-  (defadvice evil-ex-search-update-pattern
-      (around evil-inhibit-ex-search-update-pattern-in-skk-henkan activate)
-    ;; SKKの未確定状態(skk-henkan-mode)ではない場合だけ, 検索パターンをアップデート
-    "Inhibit search pattern update during `skk-henkan-mode'.
-This is reasonable since inserted text during `skk-henkan-mode'
-is a kind of temporary one which is not confirmed yet."
-    (unless (bound-and-true-p skk-henkan-mode)
-      ad-do-it)))
 
 (use-package subword-mode
   :commands (subword-mode)
@@ -376,15 +200,23 @@ is a kind of temporary one which is not confirmed yet."
   (setq ls-lisp-use-insert-directory-program nil)
   (with-eval-after-load "evil"
     (evil-define-key 'normal dired-mode-map
+      "m" 'dired-mark
+      "M" 'dired-unmark
+      ",u" 'dired-unmark-all-marks
+      "g" nil
+      ",g" 'revert-buffer
       "$" 'evil-end-of-line
       "0" 'evil-digit-argument-or-evil-beginning-of-line
-      "w" 'dired-show-file-type
-      "y" 'dired-copy-filename-as-kill
-      "K" 'dired-k
+      "w" nil
+      ",w" 'dired-show-file-type
+      ",y" 'dired-copy-filename-as-kill
+      ",k" 'dired-k
+      "v" nil
+      ",v" 'dired-view-file
       (kbd "C-p") 'dired-up-directory
       (kbd "C-n") 'dired-find-file
-      "r" 'dired-do-rename
-      "R" 'wdired-change-to-wdired-mode
+      ",r" 'dired-do-rename
+      ",R" 'wdired-change-to-wdired-mode
       "n" 'evil-ex-search-next
       "N" 'evil-ex-search-previous)))
 
@@ -414,45 +246,45 @@ is a kind of temporary one which is not confirmed yet."
   (add-hook 'after-init-hook 'auto-mark-mode)
   (setq auto-mark-command-class-alist '((goto-line . jump))))
 
-(el-get-bundle prodigy)
-(use-package prodigy
-  :commands (prodigy)
-  :config
-  (evil-define-key 'normal prodigy-mode-map
-    "s" 'prodigy-start
-    "S" 'prodigy-stop
-    "r" 'prodigy-restart
-    "v" 'prodigy-display-process
-    "o" 'prodigy-browse)
-  (prodigy-define-tag
-   :name 'rails
-   :on-output (lambda (&rest args)
-                (let ((output (plist-get args :output))
-                      (service (plist-get args :service)))
-                  (when (or (s-matches? "Listening on 0\.0\.0\.0:[0-9]+, CTRL\\+C to stop" output)
-                            (s-matches? "Ctrl-C to shutdown server" output))
-                    (prodigy-set-status service 'ready)))))
+;; (el-get-bundle prodigy)
+;; (use-package prodigy
+;;   :commands (prodigy)
+;;   :config
+;;   (evil-define-key 'normal prodigy-mode-map
+;;     "s" 'prodigy-start
+;;     "S" 'prodigy-stop
+;;     "r" 'prodigy-restart
+;;     "v" 'prodigy-display-process
+;;     "o" 'prodigy-browse)
+;;   (prodigy-define-tag
+;;    :name 'rails
+;;    :on-output (lambda (&rest args)
+;;                 (let ((output (plist-get args :output))
+;;                       (service (plist-get args :service)))
+;;                   (when (or (s-matches? "Listening on 0\.0\.0\.0:[0-9]+, CTRL\\+C to stop" output)
+;;                             (s-matches? "Ctrl-C to shutdown server" output))
+;;                     (prodigy-set-status service 'ready)))))
 
-  (prodigy-define-service
-   :name "IB server"
-   :command "bundle"
-   :args '("exec" "rails" "server" "--port=3000")
-   :cwd "/Users/yuyaminami/dev/instabase"
-   :url "http://localhost:3000"
-   :tags '(rails))
-  (prodigy-define-service
-   :name "IB migrateion"
-   :command "bundle"
-   :args '("exec" "rake" "db:migrate")
-   :cwd "/Users/yuyaminami/dev/instabase"
-   :tags '(rails))
-  (prodigy-define-service
-   :name "IB rollback"
-   :command "bundle"
-   :args '("exec" "rake" "db:rollback")
-   :cwd "/Users/yuyaminami/dev/instabase"
-   :tags '(rails))
-  )
+;;   (prodigy-define-service
+;;    :name "IB server"
+;;    :command "bundle"
+;;    :args '("exec" "rails" "server" "--port=3000")
+;;    :cwd "/Users/yuyaminami/dev/instabase"
+;;    :url "http://localhost:3000"
+;;    :tags '(rails))
+;;   (prodigy-define-service
+;;    :name "IB migrateion"
+;;    :command "bundle"
+;;    :args '("exec" "rake" "db:migrate")
+;;    :cwd "/Users/yuyaminami/dev/instabase"
+;;    :tags '(rails))
+;;   (prodigy-define-service
+;;    :name "IB rollback"
+;;    :command "bundle"
+;;    :args '("exec" "rake" "db:rollback")
+;;    :cwd "/Users/yuyaminami/dev/instabase"
+;;    :tags '(rails))
+;;   )
 
 (el-get-bundle pomodoro)
 (use-package pomodoro
@@ -495,29 +327,9 @@ is a kind of temporary one which is not confirmed yet."
   :commands (google-this google-this-search google-this-region
                          google-maps google-this-translate-query-or-region))
 
-(el-get-bundle shackle)
-(use-package shackle
-  :commands (shackle-mode)
-  :init
-  (defun shackle-full-screen (buffer alist _plist)
-    (display-buffer-full-screen buffer alist))
-  (setq shackle-default-rule
-        '(:select t :align t :popup t :size 0.3 :inhibit-window-quit t))
-  (setq shackle-default-alignment 'below)
-  (setq shackle-rules
-        '(("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
-          ("COMMIT_EDITMSG" :regexp t :custom shackle-full-screen)
-          ("\\`\\*magit-.*?:.*?[^\\*]\\'" :regexp t :align right :size 0.5)
-          ("\\`\\*magit:.*?[^\\*]\\'" :regexp t :custom shackle-full-screen)
-          ("\\`\\*magit.*?\\*\\'" :regexp t :align t :size 0.4)
-          (inf-ruby-mode :align t :size 0.4)
-          ("\\`\\*projectile-rails.*?\\*\\'"
-           :regexp t :select nil :align t :size 0.4)
-          (slack-mode :align t :size 0.4 :select t)
-          (slack-edit-message-mode :align t :size 0.2 :select t :inhibit-window-quit t)
-          (eww-bookmark-mode :inhibit-window-quit nil)
-          (eww-history-mode :inhibit-window-quit nil)))
-  (add-hook 'after-init-hook 'shackle-mode))
+(el-get-bundle syohex/emacs-browser-refresh)
+(use-package browser-refresh
+  :commands (browser-refresh))
 
 (provide '03-util)
 ;;; 03-util.el ends here

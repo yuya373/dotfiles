@@ -162,6 +162,10 @@
                       :background "orange")
   (set-face-attribute 'company-scrollbar-bg nil
                       :background "gray40")
+  (set-face-attribute 'company-tooltip-annotation nil
+                      :foreground "black" :background "lightgrey")
+  (set-face-attribute 'company-tooltip-annotation-selection nil
+                      :foreground "white" :background "steelblue")
   (diminish 'abbrev-mode))
 
 (el-get-bundle know-your-http-well)
