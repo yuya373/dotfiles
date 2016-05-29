@@ -46,5 +46,8 @@ ln -sf ~/dotfiles/.eslintrc  ~/.eslintrc
 # sshrc
 ln -sf ~/dotfiles/.sshrc ~/.sshrc
 
+# gems
+ln -sf ~/dotfiles/.gemrc  ~/.gemrc
+
 echo "Finished"
 
