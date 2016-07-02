@@ -35,7 +35,7 @@
   :commands (golden-ratio-mode)
   :diminish golden-ratio-mode
   :init
-  (add-hook 'after-init-hook 'golden-ratio-mode)
+  ;; (add-hook 'after-init-hook 'golden-ratio-mode)
   (setq golden-ratio-extra-commands '(windmove-up
                                       windmove-down
                                       windmove-left
@@ -79,7 +79,7 @@
   (defun shackle-full-screen (buffer alist _plist)
     (display-buffer-full-screen buffer alist))
   (setq shackle-default-rule
-        '(:select t :align t :popup t :size 0.3 :inhibit-window-quit t))
+        '(:select t :align t :popup t :size 0.3 :inhibit-window-quit nil))
   (setq shackle-default-alignment 'below)
   (setq shackle-rules
         '(("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
@@ -91,9 +91,8 @@
           ("\\`\\*projectile-rails.*?\\*\\'"
            :regexp t :select nil :align t :size 0.4)
           (slack-mode :align t :size 0.4 :select t)
-          (slack-edit-message-mode :align t :size 0.2 :select t :inhibit-window-quit t)
-          (eww-bookmark-mode :inhibit-window-quit nil)
-          (eww-history-mode :inhibit-window-quit nil)))
+          (slack-edit-message-mode :align t :size 0.2 :select t)
+          (eww-mode :same t :inhibit-window-quit t)))
   (add-hook 'after-init-hook 'shackle-mode))
 
 (el-get-bundle Bad-ptr/persp-mode.el
@@ -109,7 +108,7 @@
   (defun persp-save-eww-buffer (buf)
     (with-current-buffer buf
       (when (string= major-mode "eww-mode")
-        `(def-eww-buffer ,default-directory ,eww-current-url ,(point)))))
+        `(def-eww-buffer ,default-directory ,(eww-current-url) ,(point)))))
 
   (defun persp-load-eww-buffer (savelist)
     (when (eq (car savelist) 'def-eww-buffer)
@@ -122,6 +121,12 @@
 
   (add-to-list 'persp-save-buffer-functions 'persp-save-eww-buffer)
   (add-to-list 'persp-load-buffer-functions 'persp-load-eww-buffer)
+
+  (defun persp-ignore-dired-buffer (b)
+    (with-current-buffer b
+      (string= major-mode "dired-mode")))
+
+  (add-to-list 'persp-filter-save-buffers-functions #'persp-ignore-dired-buffer)
 
   (defvar persp-buffer-list-ordering-index nil)
   (defun build-persp-buffer-list-ordering-index ()

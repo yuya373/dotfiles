@@ -25,6 +25,7 @@
 
 (eval-when-compile
   (require 'evil)
+  (require 'evil-leader)
   (el-get-bundle pdf-tools)
   (require 'pdf-tools))
 

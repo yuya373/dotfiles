@@ -59,9 +59,10 @@
 ;;   )
 
 ;; linum
-(use-package linum-mode
+(use-package linum
   :commands (linum-mode)
   :init
+  (setq linum-eager nil)
   (setq linum-format "%4d ")
   (setq linum-delay t)
   (add-hook 'prog-mode-hook 'linum-mode))
@@ -70,6 +71,17 @@
   :commands (electric-pair-mode)
   :init
   (add-hook 'after-init-hook 'electric-pair-mode)
+  (defun elec-remove-from-pairs (pair)
+    (if (boundp 'electric-pair-pairs)
+        (progn
+          (make-local-variable 'electric-pair-pairs)
+          (setq electric-pair-pairs
+                (cl-remove-if (lambda (p) (equal pair p))
+                              electric-pair-pairs)))))
+  (add-hook 'haskell-mode-hook
+            '(lambda () (elec-remove-from-pairs '(?| . ?|))))
+  (add-hook 'haskell-interactive-mode-hook
+            '(lambda () (elec-remove-from-pairs '(?| . ?|))))
   :config
   (add-to-list 'electric-pair-pairs '(?| . ?|)))
 

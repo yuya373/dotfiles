@@ -91,7 +91,6 @@
     (defun add-company-ispell ()
       (make-local-variable 'company-backends)
       (add-to-list 'company-backends 'company-ispell))
-    (add-hook 'slack-edit-message-mode-hook #'add-company-ispell)
     (add-hook 'gfm-mode-hook #'add-company-ispell)
     (add-hook 'markdown-mode-hook #'add-company-ispell)
     (add-hook 'org-mode-hook #'add-company-ispell)

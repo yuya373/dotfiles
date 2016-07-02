@@ -25,14 +25,17 @@
 ;;; Code:
 
 (eval-when-compile
-  (require 'evil))
+  (require 'evil)
+  (el-get-bundle fringe-helper)
+  (require 'fringe-helper))
 
 ;; git
 (el-get-bundle evil-magit)
 (el-get-bundle magit)
 (el-get-bundle magit-gh-pulls)
 (el-get-bundle gist)
-(el-get-bundle git-gutter)
+;; (el-get-bundle git-gutter)
+(el-get-bundle git-gutter-fringe+)
 (el-get-bundle git-messenger)
 (el-get-bundle git-timemachine)
 
@@ -99,24 +102,50 @@
   :commands (gist-list gist-region gist-region-private
                        gist-buffer gist-buffer-private))
 
-(use-package git-gutter
-  :diminish git-gutter-mode
-  :commands (global-git-gutter-mode)
+(use-package git-gutter+
+  :commands (global-git-gutter+-mode)
+  :diminish git-gutter+-mode
   :init
-  (add-hook 'after-init-hook 'global-git-gutter-mode)
+  (add-hook 'after-init-hook 'global-git-gutter+-mode)
   :config
-  (setq git-gutter:update-interval 2
-        git-gutter:visual-line nil
-        git-gutter:hide-gutter nil)
-  (add-to-list 'git-gutter:update-commands 'evil-normal-state)
-  (setq git-gutter:modified-sign "**"
-        git-gutter:added-sign    "++"
-        git-gutter:deleted-sign  "--")
-  (set-face-foreground 'git-gutter:modified "#eee8d5")
-  (set-face-foreground 'git-gutter:added "#859900")
-  (set-face-foreground 'git-gutter:deleted "#dc322f")
-  (git-gutter:linum-setup)
-  )
+  (use-package git-gutter-fringe+
+    :config
+    (use-package fringe-helper
+      :config
+      (fringe-helper-define 'git-gutter-fr+-added nil
+        "........"
+        "...XX..."
+        "...XX..."
+        ".XXXXXX."
+        ".XXXXXX."
+        "...XX..."
+        "...XX..."
+        "........")
+
+      (fringe-helper-define 'git-gutter-fr+-deleted nil
+        "........"
+        "........"
+        "........"
+        ".XXXXXX."
+        ".XXXXXX."
+        "........"
+        "........"
+        "........")
+
+      (fringe-helper-define 'git-gutter-fr+-modified nil
+        "........"
+        "........"
+        "..XXXX.."
+        "..XXXX.."
+        "..XXXX.."
+        "..XXXX.."
+        "..XXXX.."
+        "........"))
+    (setq-default left-fringe-width 15)
+    (setq git-gutter-fr+-side 'left-fringe)
+    (set-face-foreground 'git-gutter-fr+-modified "#eee8d5")
+    (set-face-foreground 'git-gutter-fr+-added    "#859900")
+    (set-face-foreground 'git-gutter-fr+-deleted  "#dc322f")))
 
 (provide '06-git)
 ;;; 06-git.el ends here

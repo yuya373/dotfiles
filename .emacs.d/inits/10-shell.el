@@ -118,22 +118,22 @@ the user activate the completion manually."
   (mapc (lambda (x) (push x eshell-visual-commands))
         '("el" "elinks" "htop" "less" "ssh" "tmux" "top"))
 
-  ;; (defvar my-ansi-escape-re
-  ;;   (rx (or ?\233 (and ?\e ?\[))
-  ;;       (zero-or-more (char (?0 . ?\?)))
-  ;;       (zero-or-more (char ?\s ?- ?\/))
-  ;;       (char (?@ . ?~))))
+  (defvar my-ansi-escape-re
+    (rx (or ?\233 (and ?\e ?\[))
+        (zero-or-more (char (?0 . ?\?)))
+        (zero-or-more (char ?\s ?- ?\/))
+        (char (?@ . ?~))))
 
-  ;; (defun my-nuke-ansi-escapes (beg end)
-  ;;   (save-excursion
-  ;;     (goto-char beg)
-  ;;     (while (re-search-forward my-ansi-escape-re end t)
-  ;;       (replace-match ""))))
+  (defun my-nuke-ansi-escapes (beg end)
+    (save-excursion
+      (goto-char beg)
+      (while (re-search-forward my-ansi-escape-re end t)
+        (replace-match ""))))
 
-  ;; (defun my-eshell-nuke-ansi-escapes ()
-  ;;   (my-nuke-ansi-escapes eshell-last-output-start eshell-last-output-end))
+  (defun my-eshell-nuke-ansi-escapes ()
+    (my-nuke-ansi-escapes eshell-last-output-start eshell-last-output-end))
 
-  ;; (add-hook 'eshell-output-filter-functions 'my-eshell-nuke-ansi-escapes t)
+  (add-hook 'eshell-output-filter-functions 'my-eshell-nuke-ansi-escapes t)
 
   (defun eshell-exit ()
     (interactive)
@@ -188,7 +188,6 @@ the user activate the completion manually."
   (setq shell-pop-internal-mode-shell "eshell")
   (setq shell-pop-internal-mode-func (lambda () (eshell t)))
   (setq shell-pop-internal-mode-buffer "*eshell*")
-  (setq shell-pop-in-after-hook)
   )
 
 (el-get-bundle term-run)

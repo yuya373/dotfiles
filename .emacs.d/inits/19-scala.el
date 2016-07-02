@@ -44,13 +44,26 @@
   (setq ensime-sbt-perform-on-save nil)
   (setq ensime-completion-style 'company)
   (setq ensime-sem-high-enabled-p t)
+  (setq ensime-typecheck-when-idle nil)
+  (setq ensime-use-helm t)
+  (setq ensime-tooltip-type-hints t)
+  (setq ensime-auto-generate-config t)
+  ;; (defun ensime-typecheck-lazy ()
+  ;;   (if (and (bound-and-true-p ensime-mode)
+  ;;            (bound-and-true-p ensime-buffer-connection))
+  ;;       (ensime-typecheck-current-buffer)))
+  ;; ensime typecheck ensime-source-buffer-saved-hook, so disable this
+  ;; (add-hook 'evil-insert-state-exit-hook 'ensime-typecheck-lazy)
   (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 
+  (defun ensime-print-errors-only-at-point ()
+    (let ((msg (ensime-errors-at (point))))
+      (when msg
+        (message "%s" msg))))
   (defun ensime-eldoc-info ()
     (when (ensime-connected-p)
-      (let ((e (ensime-print-errors-at-point)))
-        (or (and e (not (string= e "")) e)
-            (ensime-print-type-at-point)))))
+      (let ((e (ensime-print-errors-only-at-point)))
+        (and e (not (string= e "")) e))))
   (defun scala/enable-eldoc ()
     "Show error message or type name at point by Eldoc."
     (setq-local eldoc-documentation-function
@@ -62,8 +75,8 @@
     (setq company-backends (remove 'ensime-company company-backends)))
 
   (add-hook 'ensime-inf-mode-hook #'(lambda ()
-                                     (ensime-inf-company)
-                                     (company-mode t)))
+                                      (ensime-inf-company)
+                                      (company-mode t)))
   (add-hook 'sbt-mode-hook #'(lambda ()
                                (ensime-inf-company)
                                (company-mode t)))
@@ -91,6 +104,7 @@
 
   (evil-define-key 'normal ensime-mode-map
     ",e" 'ensime
+    ",E" 'ensime-shutdown
     ",R" 'ensime-reload-open-files
     ",I" 'ensime-import-type-at-point
     ",f" 'ensime-format-source
@@ -118,15 +132,14 @@
     ",ieb" 'ensime-inf-eval-buffer-with-paste
     ",ied" 'ensime-inf-eval-definition
 
-    ",tc" 'ensime-typecheck-current-file
+    ",tc" 'ensime-typecheck-current-buffer
     ",tC" 'ensime-typecheck-all
 
+    ",gd" 'ensime-edit-definition
     ",gt" 'ensime-goto-test
     ",gi" 'ensime-goto-impl)
   (evil-define-key 'visual ensime-mode-map
-    ",ier" 'ensime-inf-eval-region-with-paste)
-  (evil-define-key 'insert ensime-mode-map
-    "." 'nil))
+    ",ier" 'ensime-inf-eval-region-with-paste))
 
 (provide '19-scala)
 ;;; 19-scala.el ends here

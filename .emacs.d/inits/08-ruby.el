@@ -39,6 +39,7 @@
 
 (use-package ruby-end
   :commands (ruby-end-mode)
+  :diminish ruby-end-mode
   :init
   (setq ruby-end-insert-newline nil)
   (add-hook 'enh-ruby-mode-hook 'ruby-end-mode))
@@ -111,26 +112,29 @@
   (defun my-company-ruby ()
     (setq-default tab-width 2)
     (make-local-variable 'company-minimum-prefix-length)
-    (setq company-minimum-prefix-length 4)
+    (setq company-minimum-prefix-length 2)
     (make-local-variable 'company-backends)
     (add-to-list 'company-backends '(company-robe :with company-dabbrev-code))
     (setq company-backends (remq 'company-capf company-backends))
     )
   (add-hook 'enh-ruby-mode-hook 'my-company-ruby)
   ;; (modify-syntax-entry ?_ "w")
-  (setq
-   enh-ruby-add-encoding-comment-on-save nil
-   enh-ruby-deep-indent-paren nil
-   ;; enh-ruby-deep-arglist t
-   )
+  (setq enh-ruby-add-encoding-comment-on-save nil
+        enh-ruby-deep-indent-paren nil
+        ;; enh-ruby-deep-arglist t
+        enh-ruby-bounce-deep-indent nil)
   ;; (setq ruby-insert-encoding-magic-comment nil)
   ;; (setq ruby-deep-indent-paren-style nil)
   ;; (setq ruby-align-chained-calls nil)
+  (defun my-ruby-modify-syntax ()
+    (modify-syntax-entry ?$ "_" enh-ruby-mode-syntax-table)
+    (modify-syntax-entry ?@ "_" enh-ruby-mode-syntax-table)
+    (modify-syntax-entry ?: "_" enh-ruby-mode-syntax-table)
+    (modify-syntax-entry ?: "." enh-ruby-mode-syntax-table)
+    (modify-syntax-entry ?! "_" enh-ruby-mode-syntax-table)
+    (modify-syntax-entry ?_ "w" enh-ruby-mode-syntax-table))
+  (add-hook 'enh-ruby-mode-hook 'my-ruby-modify-syntax)
   :config
-  ;; (modify-syntax-entry ?@ "_" enh-ruby-mode-syntax-table)
-  ;; (modify-syntax-entry ?: "_" enh-ruby-mode-syntax-table)
-  ;; (modify-syntax-entry ?! "_" enh-ruby-mode-syntax-table)
-  ;; (modify-syntax-entry ?_ "w" enh-ruby-mode-syntax-table)
 
   (evil-define-key 'normal enh-ruby-mode-map
     (kbd ",el") 'ruby-send-last-sexp

@@ -19,7 +19,6 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
-
 ;;
 
 ;;; Code:
@@ -31,17 +30,20 @@
   :diminish compilation-in-progress
   :config
   (setq compilation-scroll-output t)
-  (evil-define-key 'normal compilation-mode-map
-    "g" nil
-    "\C-c" 'evil-window-delete
-    "\C-m" 'compile-goto-error
-    ",v" 'compilation-display-error
-    ",n" 'compilation-next-error
-    ",p" 'compilation-previous-error
-    ",fn" 'compilation-next-file
-    ",fp" 'compilation-previous-file
-    ",r" 'recompile
-    ",c" 'kill-compilation))
+  (with-eval-after-load "evil"
+    (evil-define-key 'normal compilation-mode-map
+      "g" nil
+      "\C-c" 'evil-window-delete
+      "\C-d" 'evil-scroll-down
+      "\C-c" 'evil-window-delete
+      "\C-m" 'compile-goto-error
+      ",v" 'compilation-display-error
+      ",n" 'compilation-next-error
+      ",p" 'compilation-previous-error
+      ",fn" 'compilation-next-file
+      ",fp" 'compilation-previous-file
+      ",r" 'recompile
+      ",c" 'kill-compilation)))
 
 (provide '31-compilation)
 ;;; 31-compilation.el ends here

@@ -217,10 +217,8 @@
   (evil-define-key 'insert comint-mode-map
     (kbd "C-p") 'comint-previous-input
     (kbd "C-n") 'comint-next-input)
-  (evil-define-key 'normal compilation-mode-map
-    (kbd "C-c") 'evil-window-delete
-    (kbd "C-d") 'evil-scroll-down)
   (evil-define-key 'normal comint-mode-map
+    (kbd ",c") 'comint-clear-buffer
     (kbd "C-c") 'evil-window-delete
     (kbd "C-d") 'evil-scroll-down)
   ;; elisp
@@ -449,13 +447,13 @@
     "gf" 'magit-fetch-popup
     "gg" 'magit-status
     "gm" 'git-messenger:popup-message
-    "gn" 'git-gutter:next-hunk
-    "gp" 'git-gutter:previous-hunk
-    "gr" 'git-gutter:revert-hunk
-    "gs" 'git-gutter:stage-hunk
+    "gn" 'git-gutter+-next-hunk
+    "gp" 'git-gutter+-previous-hunk
+    "gr" 'git-gutter+-revert-hunks
+    "gs" 'git-gutter+-stage-hunks
+    "gc" 'git-gutter+-commit
+    "gC" 'git-gutter+-stage-and-commit
     "gt" 'git-timemachine
-    "gu" 'git-gutter:update-all-windows
-    "gv" 'git-gutter:popup-hunk
     "hgc" 'helm-open-github-from-commit
     "hgf" 'helm-open-github-from-file
     "hgi" 'helm-open-github-from-issues

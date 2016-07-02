@@ -180,7 +180,7 @@
 
   (defun ace-split-switch-to-buffer (buffer-or-name)
     (switch-window-if-gteq-3-windows)
-    (let ((file-name (buffer-file-name buffer-or-name)))
+    (let ((file-name (ignore-errors (buffer-file-name buffer-or-name))))
       (if file-name
           (my-evil-split-window file-name)
         (let ((window (split-window (selected-window) nil 'above)))
@@ -292,13 +292,9 @@
   (define-key helm-map (kbd "C-o") 'helm-ace-ff)
   (define-key helm-map (kbd "C-,") 'helm-toggle-visible-mark)
   (define-key helm-map (kbd "C-a") 'helm-select-action)
-  (define-key helm-map (kbd "C-k") 'helm-previous-source)
-  (define-key helm-map (kbd "C-j") 'helm-next-source)
   (define-key helm-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-map (kbd "C-w") 'backward-kill-word)
   (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
-  (define-key helm-map (kbd "C-j") 'helm-next-line)
-  (define-key helm-map (kbd "C-k") 'helm-previous-line)
 
 
   (define-key helm-comp-read-map (kbd "C-e") 'my-helm-elscreen)
