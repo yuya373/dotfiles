@@ -37,11 +37,11 @@
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
 
-  (el-get-bundle flycheck-pos-tip)
-  (use-package flycheck-pos-tip
-    :commands (flycheck-pos-tip-mode)
-    :init
-    (add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode))
+  ;; (el-get-bundle flycheck-pos-tip)
+  ;; (use-package flycheck-pos-tip
+  ;;   :commands (flycheck-pos-tip-mode)
+  ;;   :init
+  ;;   (add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode))
 
   (el-get-bundle company-quickhelp)
   (use-package company-quickhelp

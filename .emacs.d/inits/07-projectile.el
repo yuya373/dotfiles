@@ -68,6 +68,7 @@
   :commands (helm-projectile-on))
 (use-package projectile
   :commands (projectile-mode projectile-global-mode)
+  :diminish projectile-mode
   :init
   (setq projectile-enable-caching t
         projectile-completion-system 'helm)

@@ -25,9 +25,7 @@
 ;;; Code:
 (eval-when-compile
   (require 'evil)
-  (el-get-bundle ddskk)
-  (require 'skk)
-  (require 'skk-macs))
+  (el-get-bundle syohex/emacs-browser-refresh))
 
 (el-get-bundle which-key)
 (use-package which-key
@@ -142,14 +140,14 @@
   ;; (add-hook 'magit-mode-hook 'emojify-mode)
   )
 
-(el-get-bundle syl20bnr/emacs-emoji-cheat-sheet-plus
-  :name emoji-cheat-sheet-plus)
-(use-package emoji-cheat-sheet-plus
-  :commands (emoji-cheat-sheet-plus-display-mode
-             emoji-cheat-sheet-plus-insert)
-  :init
-  ;; (add-hook 'after-init-hook 'emoji-cheat-sheet-plus-display-mode)
-  )
+;; (el-get-bundle syl20bnr/emacs-emoji-cheat-sheet-plus
+;;   :name emoji-cheat-sheet-plus)
+;; (use-package emoji-cheat-sheet-plus
+;;   :commands (emoji-cheat-sheet-plus-display-mode
+;;              emoji-cheat-sheet-plus-insert)
+;;   :init
+;;   ;; (add-hook 'after-init-hook 'emoji-cheat-sheet-plus-display-mode)
+;;   )
 
 (el-get-bundle ag)
 (el-get-bundle wgrep-ag)
@@ -286,50 +284,57 @@
 ;;    :tags '(rails))
 ;;   )
 
-(el-get-bundle pomodoro)
-(use-package pomodoro
-  :commands (pomodoro:start)
-  :init
+;; (el-get-bundle pomodoro)
+;; (use-package pomodoro
+;;   :commands (pomodoro:start)
+;;   :init
 
-  (setq pomodoro:set-mode-line-p t
-        pomodoro:mode-line-work-sign "働 "
-        pomodoro:mode-line-rest-sign "休 "
-        pomodoro:mode-line-long-rest-sign "長休 "
-        pomodoro:work-time 25
-        pomodoro:rest-time 5
-        pomodoro:long-rest-time 25
-        pomodoro:iteration-for-long-rest 3
-        pomodoro:mode-line-time-display t
-        pomodoro:file nil
-        pomodoro:myfile (lambda ()
-                          (format-time-string "~/Dropbox/junk/%Y-%m-%d.org")))
+;;   (setq pomodoro:set-mode-line-p t
+;;         pomodoro:mode-line-work-sign "働 "
+;;         pomodoro:mode-line-rest-sign "休 "
+;;         pomodoro:mode-line-long-rest-sign "長休 "
+;;         pomodoro:work-time 25
+;;         pomodoro:rest-time 5
+;;         pomodoro:long-rest-time 25
+;;         pomodoro:iteration-for-long-rest 3
+;;         pomodoro:mode-line-time-display t
+;;         pomodoro:file nil
+;;         pomodoro:myfile (lambda ()
+;;                           (format-time-string "~/Dropbox/junk/%Y-%m-%d.org")))
 
-  (defun pomodoro:find-rest-buffer ()
-    (when (functionp pomodoro:myfile)
-      (find-file (funcall pomodoro:myfile))))
-  (add-hook 'pomodoro:finish-work-hook #'pomodoro:find-rest-buffer)
-  (add-hook 'pomodoro:long-rest-hook #'pomodoro:find-rest-buffer)
+;;   (defun pomodoro:find-rest-buffer ()
+;;     (when (functionp pomodoro:myfile)
+;;       (find-file (funcall pomodoro:myfile))))
+;;   (add-hook 'pomodoro:finish-work-hook #'pomodoro:find-rest-buffer)
+;;   (add-hook 'pomodoro:long-rest-hook #'pomodoro:find-rest-buffer)
 
-  (defun my-pomodoro-notify (msg)
-    (alert msg
-           :title "Pomodoro"
-           :category 'pomodoro))
-  (add-hook 'pomodoro:finish-work-hook
-            #'(lambda () (my-pomodoro-notify "Work is Finish")))
-  (add-hook 'pomodoro:finish-rest-hook
-            #'(lambda () (my-pomodoro-notify "Break time is Finish")))
-  (add-hook 'pomodoro:long-rest-hook
-            #'(lambda () (my-pomodoro-notify "Long Break time now"))))
+;;   (defun my-pomodoro-notify (msg)
+;;     (alert msg
+;;            :title "Pomodoro"
+;;            :category 'pomodoro))
+;;   (add-hook 'pomodoro:finish-work-hook
+;;             #'(lambda () (my-pomodoro-notify "Work is Finish")))
+;;   (add-hook 'pomodoro:finish-rest-hook
+;;             #'(lambda () (my-pomodoro-notify "Break time is Finish")))
+;;   (add-hook 'pomodoro:long-rest-hook
+;;             #'(lambda () (my-pomodoro-notify "Long Break time now"))))
 
 
-(el-get-bundle google-this)
-(use-package google-this
-  :commands (google-this google-this-search google-this-region
-                         google-maps google-this-translate-query-or-region))
+;; (el-get-bundle google-this)
+;; (use-package google-this
+;;   :commands (google-this google-this-search google-this-region
+;;                          google-maps google-this-translate-query-or-region))
 
 (el-get-bundle syohex/emacs-browser-refresh)
 (use-package browser-refresh
-  :commands (browser-refresh))
+  :commands (browser-refresh)
+  :init
+  (setq browser-refresh-save-buffer nil)
+  (setq browser-refresh-activate nil)
+  (defun browser-refresh-and-activate ()
+    (interactive)
+    (let ((browser-refresh-activate t))
+      (browser-refresh))))
 
 (provide '03-util)
 ;;; 03-util.el ends here

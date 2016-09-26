@@ -24,55 +24,55 @@
 
 ;;; Code:
 
-(eval-when-compile
-  (require 'evil))
+;; (eval-when-compile
+;;   (require 'evil))
 
-(el-get-bundle ess)
-(add-to-list 'load-path
-             (locate-user-emacs-file "el-get/ess/lisp"))
-(el-get-bundle ess-R-data-view)
-(el-get-bundle ess-R-object-popup)
-(el-get-bundle helm-R)
+;; (el-get-bundle ess)
+;; (add-to-list 'load-path
+;;              (locate-user-emacs-file "el-get/ess/lisp"))
+;; (el-get-bundle ess-R-data-view)
+;; (el-get-bundle ess-R-object-popup)
+;; (el-get-bundle helm-R)
 
-(use-package ess-site
-  :mode (("\\.[rR]\\'" . R-mode))
-  :init
-  (setq ess-history-file nil)
-  (setq inferior-R-args "--no-restore --no-save")
-  (add-hook 'ess-mode-hook 'linum-mode)
-  (setq ess-use-eldoc t
-        ess-use-company t
-        ess-use-ido nil
-        ess-ask-for-ess-directory nil)
-  :config
-  (use-package ess-R-data-view
-    :config
-    (evil-define-key 'normal ess-mode-map
-      ",vd" 'ess-R-dv-pprint))
-  (use-package ess-R-object-popup
-    :config
-    (evil-define-key 'normal ess-mode-map
-      ",op" 'ess-R-object-popup))
+;; (use-package ess-site
+;;   :mode (("\\.[rR]\\'" . R-mode))
+;;   :init
+;;   (setq ess-history-file nil)
+;;   (setq inferior-R-args "--no-restore --no-save")
+;;   (add-hook 'ess-mode-hook 'linum-mode)
+;;   (setq ess-use-eldoc t
+;;         ess-use-company t
+;;         ess-use-ido nil
+;;         ess-ask-for-ess-directory nil)
+;;   :config
+;;   (use-package ess-R-data-view
+;;     :config
+;;     (evil-define-key 'normal ess-mode-map
+;;       ",vd" 'ess-R-dv-pprint))
+;;   (use-package ess-R-object-popup
+;;     :config
+;;     (evil-define-key 'normal ess-mode-map
+;;       ",op" 'ess-R-object-popup))
 
-  (evil-define-key 'visual ess-mode-map
-    ",er" 'ess-eval-region
-    ",eR" 'ess-eval-region-and-go)
-  (evil-define-key 'normal ess-mode-map
-    ",rs" 'R
-    ",rq" 'ess-quit
-    ",ee" 'ess-eval-region-or-function-or-paragraph-and-step
-    ",eb" 'ess-eval-buffer
-    ",eB" 'ess-eval-buffer-and-go
-    ",ef" 'ess-eval-function
-    ",eF" 'ess-eval-function-and-go
-    ",ep" 'ess-eval-paragraph
-    ",eP" 'ess-eval-paragraph-and-go
-    ",el" 'ess-eval-line
-    ",eL" 'ess-eval-line-and-go
-    ",h" 'ess-display-help-on-object
-    ",H" 'ess-display-help-apropos))
+;;   (evil-define-key 'visual ess-mode-map
+;;     ",er" 'ess-eval-region
+;;     ",eR" 'ess-eval-region-and-go)
+;;   (evil-define-key 'normal ess-mode-map
+;;     ",rs" 'R
+;;     ",rq" 'ess-quit
+;;     ",ee" 'ess-eval-region-or-function-or-paragraph-and-step
+;;     ",eb" 'ess-eval-buffer
+;;     ",eB" 'ess-eval-buffer-and-go
+;;     ",ef" 'ess-eval-function
+;;     ",eF" 'ess-eval-function-and-go
+;;     ",ep" 'ess-eval-paragraph
+;;     ",eP" 'ess-eval-paragraph-and-go
+;;     ",el" 'ess-eval-line
+;;     ",eL" 'ess-eval-line-and-go
+;;     ",h" 'ess-display-help-on-object
+;;     ",H" 'ess-display-help-apropos))
 
-;; (use-package helm-R)
+;; ;; (use-package helm-R)
 
 
 (provide '23-statistic)

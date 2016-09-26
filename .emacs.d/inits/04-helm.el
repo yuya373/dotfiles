@@ -25,7 +25,8 @@
 ;;; Code:
 
 (eval-when-compile
-  (require 'evil))
+  (require 'evil)
+  (require 'evil-leader))
 
 ;; imenu
 (use-package imenu
@@ -46,6 +47,7 @@
 (el-get-bundle helm)
 (el-get-bundle helm-ls-git)
 (el-get-bundle helm-ag)
+(el-get-bundle helm-projectile)
 (el-get-bundle migemo)
 
 (use-package helm-ls-git
@@ -351,25 +353,25 @@
   ;; (define-key helm-ag-map (kbd "C-o") 'helm-ag--run-other-window-action)
   )
 
-(el-get-bundle helm-dash)
-(use-package helm-dash
-  :commands (helm-dash-at-point helm-dash helm-dash-install-docset)
-  :init
-  (setq helm-dash-min-length 1)
-  (setq helm-dash-browser-func 'eww)
-  (setq helm-dash-docsets-path (expand-file-name "~/.docsets"))
-  (add-hook 'markdown-mode-hook
-            '(lambda () (setq-local helm-dash-docsets '("Markdown"))))
-  (add-hook 'enh-ruby-mode-hook
-            '(lambda () (setq-local helm-dash-docsets '("Ruby"))))
-  (add-hook 'projectile-rails-mode-hook
-            '(lambda () (setq-local helm-dash-docsets '("Ruby" "Ruby on Rails"))))
-  (add-hook 'emacs-lisp-mode-hook
-            '(lambda () (setq-local helm-dash-docsets '("Emacs" "Emacs Lisp"))))
-  (defun helm-lisp-mode ()
-    (setq-local helm-dash-docsets '("Common Lisp")))
-  (add-hook 'lisp-mode-hook 'helm-lisp-mode)
-  (add-hook 'slime-repl-mode-hook 'helm-lisp-mode))
+;; (el-get-bundle helm-dash)
+;; (use-package helm-dash
+;;   :commands (helm-dash-at-point helm-dash helm-dash-install-docset)
+;;   :init
+;;   (setq helm-dash-min-length 1)
+;;   (setq helm-dash-browser-func 'eww)
+;;   (setq helm-dash-docsets-path (expand-file-name "~/.docsets"))
+;;   (add-hook 'markdown-mode-hook
+;;             '(lambda () (setq-local helm-dash-docsets '("Markdown"))))
+;;   (add-hook 'enh-ruby-mode-hook
+;;             '(lambda () (setq-local helm-dash-docsets '("Ruby"))))
+;;   (add-hook 'projectile-rails-mode-hook
+;;             '(lambda () (setq-local helm-dash-docsets '("Ruby" "Ruby on Rails"))))
+;;   (add-hook 'emacs-lisp-mode-hook
+;;             '(lambda () (setq-local helm-dash-docsets '("Emacs" "Emacs Lisp"))))
+;;   (defun helm-lisp-mode ()
+;;     (setq-local helm-dash-docsets '("Common Lisp")))
+;;   (add-hook 'lisp-mode-hook 'helm-lisp-mode)
+;;   (add-hook 'slime-repl-mode-hook 'helm-lisp-mode))
 
 (el-get-bundle helm-gtags)
 (use-package helm-gtags
@@ -377,6 +379,7 @@
   :commands (helm-gtags-mode)
   :init
   (add-hook 'enh-ruby-mode-hook 'helm-gtags-mode)
+  (add-hook 'scala-mode-hook 'helm-gtags-mode)
   (setq helm-gtags-update-interval-second 60)
   (setq helm-gtags-auto-update t)
   (setq helm-gtags-preselect t)
@@ -396,17 +399,18 @@
               (message "Failed: %s" (mapconcat 'identity cmds " "))
             (set-process-sentinel proc (helm-gtags--make-gtags-sentinel 'update))
             (setq helm-gtags--last-update-time current-time))))))
+  (evil-leader/set-key-for-mode 'helm-gtags-mode
+    "tc" 'helm-gtags-create-tags
+    "tf" 'helm-gtags-select
+    "tu" 'helm-gtags-update-tags
+    "tU" 'helm-gtags-update-all-tags
+    "td" 'helm-gtags-find-tag
+    "tr" 'helm-gtags-find-rtag
+    "tn" 'helm-gtags-next-history
+    "tp" 'helm-gtags-previous-history)
   (evil-define-key 'normal helm-gtags-mode-map
     (kbd "\C-]") 'helm-gtags-find-tag-from-here
-    (kbd "\C-t") 'helm-gtags-pop-stack
-    ",tc" 'helm-gtags-create-tags
-    ",tf" 'helm-gtags-select
-    ",tu" 'helm-gtags-update-tags
-    ",tU" 'helm-gtags-update-all-tags
-    ",td" 'helm-gtags-find-tag
-    ",tr" 'helm-gtags-find-rtag
-    ",tn" 'helm-gtags-next-history
-    ",tp" 'helm-gtags-previous-history))
+    (kbd "\C-t") 'helm-gtags-pop-stack))
 
 (el-get-bundle helm-open-github)
 (use-package helm-open-github

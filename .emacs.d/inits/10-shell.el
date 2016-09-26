@@ -180,15 +180,15 @@ the user activate the completion manually."
   ;; (setq eshell-prompt-function #'epe-theme-lambda)
   )
 
-(el-get-bundle kyagi/shell-pop-el :branch "master")
-(use-package shell-pop
-  :commands (shell-pop)
-  :init
-  (setq shell-pop-internal-mode "eshell")
-  (setq shell-pop-internal-mode-shell "eshell")
-  (setq shell-pop-internal-mode-func (lambda () (eshell t)))
-  (setq shell-pop-internal-mode-buffer "*eshell*")
-  )
+;; (el-get-bundle kyagi/shell-pop-el :branch "master")
+;; (use-package shell-pop
+;;   :commands (shell-pop)
+;;   :init
+;;   (setq shell-pop-internal-mode "eshell")
+;;   (setq shell-pop-internal-mode-shell "eshell")
+;;   (setq shell-pop-internal-mode-func (lambda () (eshell t)))
+;;   (setq shell-pop-internal-mode-buffer "*eshell*")
+;;   )
 
 (el-get-bundle term-run)
 (use-package term-run

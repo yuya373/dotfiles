@@ -23,6 +23,8 @@
 ;;
 
 ;;; Code:
+(eval-when-compile
+  (require 'evil))
 
 (el-get-bundle flycheck)
 (el-get-bundle alexmurray/evil-flycheck)
@@ -38,10 +40,37 @@
                                              javascript-jscs))
   (setq flycheck-emacs-lisp-load-path 'inherit)
   (add-hook 'prog-mode-hook 'flycheck-mode)
+  (defun my/use-eslint-from-node-modules ()
+    (let* ((root (locate-dominating-file
+                  (or (buffer-file-name) default-directory)
+                  "node_modules"))
+           (eslint (and root
+                        (expand-file-name "node_modules/eslint/bin/eslint.js"
+                                          root))))
+      (when (and eslint (file-executable-p eslint))
+        (setq-local flycheck-javascript-eslint-executable eslint))))
+
+  (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
   :config
   (use-package evil-flycheck
     :config
-    (setq flycheck-check-syntax-automatically '(evil-normal-state))))
+    (setq flycheck-check-syntax-automatically '(evil-normal-state)))
+  (defconst flycheck-error-list-format
+    [("Line" 5 flycheck-error-list-entry-< :right-align t)
+     ("Col" 3 nil :right-align t)
+     ("Level" 8 flycheck-error-list-entry-level-<)
+     ("ID" 10 t)
+     ("Message (Checker)" 0 t)]
+    "Table format for the error list.")
+  (evil-define-key 'normal flycheck-error-list-mode-map
+    "RET" #'flycheck-error-list-goto-error
+    ",n" #'flycheck-error-list-next-error
+    ",p" #'flycheck-error-list-previous-error
+    ",r" #'flycheck-error-list-check-source
+    ",f" #'flycheck-error-list-set-filter
+    ",F" #'flycheck-error-list-reset-filter)
+
+  )
 
 (use-package flycheck-package
   :commands (flycheck-package-setup))

@@ -165,8 +165,13 @@
   (define-key evil-insert-state-map (kbd "C-p") nil)
   (define-key evil-insert-state-map (kbd "C-k") 'helm-show-kill-ring)
 
+  (defun set-mark-and-exit ()
+    (interactive)
+    (mark-sexp)
+    (evil-visual-state -1)
+    (evil-normal-state))
   (define-key evil-normal-state-map (kbd "RET") 'open-below-esc)
-  (define-key evil-normal-state-map (kbd "m") 'set-mark-command)
+  (define-key evil-normal-state-map (kbd "m") 'set-mark-and-exit)
   (define-key minibuffer-local-map (kbd "C-w") 'backward-kill-word)
   ;; isearch map
   (define-key isearch-mode-map (kbd "C-h") 'isearch-delete-char)
@@ -312,11 +317,17 @@
   (define-key evil-motion-state-map (kbd "C-u") 'evil-scroll-up)
   ;; (define-key evil-normal-state-map (kbd "C-u") 'evil-scroll-up)
   ;; (define-key evil-visual-state-map (kbd "C-u") 'evil-scroll-up)
+  (defvar my-saved-flag nil)
   (defun my-save-if-bufferfilename (&rest args)
     (interactive)
     (if (buffer-file-name)
         (progn
-          (evil-write nil nil nil nil t)
+
+          (message "current: %s" evil-state)
+          (message "next: %s" evil-next-state)
+
+          (set-buffer-modified-p t)
+          (save-buffer)
           (message "Saved!"))))
   (add-hook 'evil-insert-state-exit-hook #'my-save-if-bufferfilename)
   ;; (advice-add 'evil-normal-state :after 'my-save-if-bufferfilename)
@@ -350,10 +361,17 @@
      (unless selective-display (1+ (current-column))))
 
     (recenter))
+
   (defun open-junk-dir ()
     (interactive)
-    (let ((junk-dir "~/Dropbox/junk/"))
-      (helm-find-files-1 (expand-file-name junk-dir))))
+    (let* ((junk-dir "~/Dropbox/junk/")
+           (current-date (split-string (format-time-string "%Y-%m-%d") "-"))
+           (year (read-from-minibuffer "Year: " (car current-date)))
+           (month (read-from-minibuffer "Month: " (cadr current-date)))
+           (day (read-from-minibuffer "Day: " (caddr current-date))))
+      (if (and (not (eq 0 (* (length year) (length month) (length day)))))
+          (helm-find-files-1 (expand-file-name (format "%s/%s-%s-%s" junk-dir year month day)))
+        (helm-find-files-1 (expand-file-name junk-dir)))))
   (defun timer (time msg &rest moremsg)
     (interactive
      (list (read-string "いつ? (sec, min, hour, HH:MM) ")
@@ -422,11 +440,15 @@
     "bb" 'helm-buffers-list
     "bb" 'helm-mini
     "bk" 'kill-buffers
-    "br" 'browser-refresh
+    "br" nil
+    "brr" 'browser-refresh
+    "bra" 'browser-refresh-and-activate
     "bw" 'projectile-switch-to-buffer-other-window
-    "da" 'helm-dash
-    "dc" 'helm-dash-at-point
-    "dd" 'dired-open-current
+    "dd" 'osx-dictionary-search-pointer
+    "di" 'osx-dictionary-search-input
+    ;; "da" 'helm-dash
+    ;; "dc" 'helm-dash-at-point
+    ;; "dd" 'dired-open-current
     "di" 'helm-dash-install-docset
     "eha" 'helm-apropos
     "ehb" 'describe-bindings
@@ -496,12 +518,13 @@
     "ml" 'open-junk-dir
     "mm" 'slack-start
     "mn" 'open-junk-file
+    "mo" 'tracking-next-buffer
     "msf" 'slack-search-from-files
     "msm" 'slack-search-from-messages
     "mss" 'slack-search-select
     "mt" 'slack-change-current-team
     "mus" 'slack-user-stars-list
-    "pd" 'prodigy
+    ;; "pd" 'prodigy
     "pk" 'projectile-invalidate-cache
     "ps" 'projectile-switch-project
     "qR" 'quickrun-region
@@ -511,11 +534,19 @@
     "r" 'create-restclient-buffer
     "s" 'create-eshell
     "tG" 'projectile-regenerate-tags
+    "tc" 'helm-gtags-create-tags
+    "tf" 'helm-gtags-select
+    "tu" 'helm-gtags-update-tags
+    "tU" 'helm-gtags-update-all-tags
+    "td" 'helm-gtags-find-tag
+    "tr" 'helm-gtags-find-rtag
+    "tn" 'helm-gtags-next-history
+    "tp" 'helm-gtags-previous-history
     "tQ" 'google-translate-query-translate-reverse
     "tl" 'google-translate-smooth-translate
     "tq" 'google-translate-query-translate
     "ts" 'timer
-    "tw" 'twit
+    ;; "tw" 'twit
     "uv" 'undo-tree-visualize
     "wb" 'balance-windows
     "wc" 'whitespace-cleanup
@@ -536,7 +567,9 @@
     ;; "pr" 'persp-rename
     ;; "bn" 'switch-to-next-buffer
     ;; "bp" 'switch-to-prev-buffer
-    ))
+    )
+  )
+
 
 (provide '01-evil)
 ;;; 01-evil.el ends here

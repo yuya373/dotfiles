@@ -32,7 +32,7 @@
 ;; git
 (el-get-bundle evil-magit)
 (el-get-bundle magit)
-(el-get-bundle magit-gh-pulls)
+;; (el-get-bundle magit-gh-pulls)
 (el-get-bundle gist)
 ;; (el-get-bundle git-gutter)
 (el-get-bundle git-gutter-fringe+)
@@ -77,7 +77,7 @@
     (add-to-list 'company-backends 'company-ispell))
   (add-hook 'git-commit-mode-hook 'my-git-commit-mode)
   :config
-  (use-package ert)
+  ;; (use-package ert)
   (use-package magit-extras)
   (use-package git-rebase)
   (use-package magit-submodule)

@@ -71,6 +71,7 @@
 
 (use-package company
   :commands (company-mode global-company-mode)
+  ;; :diminish company-mode
   :init
   (setq company-idle-delay 0.5) ; デフォルトは0.5
   (setq company-minimum-prefix-length 2) ; デフォルトは4
@@ -81,6 +82,7 @@
   (setq company-dabbrev-other-buffers t)
   (setq company-dabbrev-ignore-case nil)
   (setq company-dabbrev-downcase nil)
+  ;; (add-to-list 'completion-styles 'initials)
   (add-hook 'after-init-hook 'global-company-mode)
   :config
   ;; (use-package company-yasnippet
@@ -147,24 +149,24 @@
   (define-key company-search-map (kbd "C-n") 'company-select-next)
   (define-key company-search-map (kbd "C-p") 'company-select-previous)
 
-  (set-face-attribute 'company-tooltip nil
-                      :foreground "black" :background "lightgrey")
-  (set-face-attribute 'company-tooltip-common nil
-                      :foreground "black" :background "lightgrey")
-  (set-face-attribute 'company-tooltip-common-selection nil
-                      :foreground "white" :background "steelblue")
-  (set-face-attribute 'company-tooltip-selection nil
-                      :foreground "black" :background "steelblue")
-  (set-face-attribute 'company-preview-common nil
-                      :background nil :foreground "lightgrey" :underline t)
-  (set-face-attribute 'company-scrollbar-fg nil
-                      :background "orange")
-  (set-face-attribute 'company-scrollbar-bg nil
-                      :background "gray40")
-  (set-face-attribute 'company-tooltip-annotation nil
-                      :foreground "black" :background "lightgrey")
-  (set-face-attribute 'company-tooltip-annotation-selection nil
-                      :foreground "white" :background "steelblue")
+  ;; (set-face-attribute 'company-tooltip nil
+  ;;                     :foreground "black" :background "lightgrey")
+  ;; (set-face-attribute 'company-tooltip-common nil
+  ;;                     :foreground "black" :background "lightgrey")
+  ;; (set-face-attribute 'company-tooltip-common-selection nil
+  ;;                     :foreground "white" :background "steelblue")
+  ;; (set-face-attribute 'company-tooltip-selection nil
+  ;;                     :foreground "black" :background "steelblue")
+  ;; (set-face-attribute 'company-preview-common nil
+  ;;                     :background nil :foreground "lightgrey" :underline t)
+  ;; (set-face-attribute 'company-scrollbar-fg nil
+  ;;                     :background "orange")
+  ;; (set-face-attribute 'company-scrollbar-bg nil
+  ;;                     :background "gray40")
+  ;; (set-face-attribute 'company-tooltip-annotation nil
+  ;;                     :foreground "black" :background "lightgrey")
+  ;; (set-face-attribute 'company-tooltip-annotation-selection nil
+  ;;                     :foreground "white" :background "steelblue")
   (diminish 'abbrev-mode))
 
 (el-get-bundle know-your-http-well)

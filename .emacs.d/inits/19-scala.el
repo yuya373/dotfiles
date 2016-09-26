@@ -25,19 +25,43 @@
 ;;; Code:
 
 
+
+
 (eval-when-compile
   (require 'evil))
 
-(el-get-bundle scala-mode2)
-(el-get-bundle ensime)
+(el-get-bundle scala-mode)
+(el-get-bundle ensime
+  :type github
+  :pkgname "ensime/ensime-emacs"
+  :checkout "2621509bc9811c103d7efc999d4722e9d4c788e9")
 
-(use-package scala-mode2
-  :mode (("\\.scala\\'" . scala-mode)
-         ("\\.sbt\\'" . scala-mode))
+(use-package scala-mode
+  :mode (("\\.scala\\'" . scala-mode))
   :init
-  (add-hook 'scala-mode-hook
-            #'(lambda ()
-                (setq-local helm-dash-docsets '("Scala")))))
+  (defun my-scala-mode-hook ()
+    (setq-local helm-dash-docsets '("Scala"))
+    ;; (setq imenu-generic-expression
+    ;;       '(("var" "\\(var +\\)\\([^(): ]+\\)" 2)
+    ;;         ("val" "\\(val +\\)\\([^(): ]+\\)" 2)
+    ;;         ("override def" "^[ \\t]*\\(override\\) +\\(def +\\)\\([^(): ]+\\)" 3)
+    ;;         ("implicit def" "^[ \\t]*\\(implicit\\) +\\(def +\\)\\([^(): ]+\\)" 3)
+    ;;         ("def" "^[ \\t]*\\(def +\\)\\([^(): ]+\\)" 2)
+    ;;         ("trait" "\\(trait +\\)\\([^(): ]+\\)" 2)
+    ;;         ("class" "^[ \\t]*\\(class +\\)\\([^(): ]+\\)" 2)
+    ;;         ("abstract class" "^[ \\t]*\\(abstract class +\\)\\([^(): ]+\\)" 2)
+    ;;         ("case class" "^[ \\t]*\\(case class +\\)\\([^(): ]+\\)" 2)
+    ;;         ("object" "\\(object +\\)\\([^(): ]+\\)" 2)))
+    )
+  (add-hook 'scala-mode-hook #'my-scala-mode-hook))
+
+(use-package sbt-mode
+  :mode (("\\.sbt\\'" . scala-mode))
+  :config
+  (evil-define-key 'normal sbt-mode-map
+    ",ss" 'sbt-start
+    ",sc" 'sbt-command))
+
 (use-package ensime
   :commands (ensime-scala-mode-hook)
   :init
@@ -47,7 +71,7 @@
   (setq ensime-typecheck-when-idle nil)
   (setq ensime-use-helm t)
   (setq ensime-tooltip-type-hints t)
-  (setq ensime-auto-generate-config t)
+  (setq ensime-auto-generate-config nil)
   ;; (defun ensime-typecheck-lazy ()
   ;;   (if (and (bound-and-true-p ensime-mode)
   ;;            (bound-and-true-p ensime-buffer-connection))
@@ -88,6 +112,15 @@
                 (add-to-list 'company-backends
                              '(ensime-company :with company-dabbrev-code))))
   :config
+  ;; (require 'ensime-expand-region)
+  (defun advice-ensime-imenu-index-function (org-func)
+    (if (ensime-connected-p)
+        (funcall org-func)
+      (funcall 'scala-imenu:create-imenu-index)))
+  (advice-add 'ensime-imenu-index-function
+              :around
+              'advice-ensime-imenu-index-function)
+
   (defun ensime-inf-eval-region-with-paste (start end)
     (interactive "r")
     (ensime-inf-assert-running)
@@ -100,7 +133,13 @@
 
   (defun ensime-inf-eval-buffer-with-paste ()
     (interactive)
-    (ensime-inf-eval-region-with-paste (point-min) (point-max)))
+    (let ((first-line (cl-first (split-string
+                                 (buffer-substring-no-properties (point-min) (point-max))
+                                 "\n"))))
+      (ensime-inf-eval-region-with-paste (if (string-match "package" first-line)
+                                             (+ (length first-line) (point-min))
+                                           (point-min))
+                                         (point-max))))
 
   (evil-define-key 'normal ensime-mode-map
     ",e" 'ensime
@@ -109,11 +148,11 @@
     ",I" 'ensime-import-type-at-point
     ",f" 'ensime-format-source
 
-    ",rr" 'ensime-refactor-rename
-    ",ro" 'ensime-refactor-organize-imports
-    ",rl" 'ensime-refactor-extract-local
-    ",rm" 'ensime-refactor-extract-method
-    ",ri" 'ensime-refactor-inline-local
+    ",rr" 'ensime-refactor-diff-rename
+    ",ro" 'ensime-refactor-diff-organize-imports
+    ",rl" 'ensime-refactor-diff-extract-local
+    ",rm" 'ensime-refactor-diff-extract-method
+    ",ri" 'ensime-refactor-diff-inline-local
 
     ",ht" 'ensime-inspect-type-at-point
     ",hp" 'ensime-inspect-package-at-point

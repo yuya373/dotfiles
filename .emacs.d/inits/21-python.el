@@ -55,26 +55,6 @@
     ",eb" 'python-shell-send-buffer)
   (evil-define-key 'visual python-mode-map
     ",er" 'python-shell-send-region))
-;; (el-get-bundle company-jedi)
-;; (use-package company-jedi
-;;   :commands (company-jedi)
-;;   :init
-;;   (add-hook 'python-mode-hook
-;;             #'(lambda ()
-;;                 (make-local-variable 'company-backends)
-;;                 (add-to-list 'company-backends 'company-jedi))))
-
-;; (el-get-bundle jedi)
-;; (use-package jedi-core
-;;   :commands (jedi:setup)
-;;   :init
-;;   (add-hook 'python-mode-hook 'jedi:setup)
-;;   (setq jedi:complete-on-dot t)
-;;   (setq jedi:use-shortcuts t)
-;;   :config
-;;   (evil-define-key 'normal jedi-mode-map
-;;     ",g" 'jedi:goto-definition
-;;     ",h" 'jedi:show-doc))
 
 (el-get-bundle elpy)
 (use-package elpy

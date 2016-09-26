@@ -30,7 +30,6 @@
   (require 'slime))
 
 (el-get-bundle slime)
-(el-get-bundle ac-slime)
 (use-package slime
   :commands (slime-mode)
   :init
@@ -81,12 +80,7 @@
   (evil-define-key 'normal slime-mode-map (kbd ",sq") 'slime-quit-lisp)
   (evil-define-key 'normal slime-mode-map (kbd ",sr") 'slime-restart-inferior-lisp)
   (evil-define-key 'normal slime-mode-map (kbd ",r") 'slime-repl)
-  (slime-setup '(slime-repl slime-fancy slime-banner slime-fuzzy slime-indentation))
-  (use-package ac-slime
-    :commands (set-up-slime-ac)
-    :init
-    (add-hook 'slime-mode-hook '(lambda () (set-up-slime-ac t)))
-    (add-hook 'slime-repl-mode-hook '(lambda () (set-up-slime-ac t)))))
+  (slime-setup '(slime-repl slime-fancy slime-banner slime-fuzzy slime-indentation)))
 
 (provide '15-lisp)
 ;;; 15-lisp.el ends here

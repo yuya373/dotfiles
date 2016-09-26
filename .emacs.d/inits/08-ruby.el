@@ -42,7 +42,8 @@
   :diminish ruby-end-mode
   :init
   (setq ruby-end-insert-newline nil)
-  (add-hook 'enh-ruby-mode-hook 'ruby-end-mode))
+  (add-hook 'enh-ruby-mode-hook 'ruby-end-mode)
+  )
 
 (use-package ruby-block
   :commands (ruby-block-mode)

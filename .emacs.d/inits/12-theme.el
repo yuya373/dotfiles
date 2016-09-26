@@ -1,5 +1,4 @@
 ;;; 12-theme.el ---                                  -*- lexical-binding: t; -*-
-
 ;; Copyright (C) 2015  南優也
 
 ;; Author: 南優也 <yuyaminami@minamiyuunari-no-MacBook-Pro.local>
@@ -26,86 +25,48 @@
 
 (eval-when-compile
   (require 'evil)
-  (el-get-bundle powerline)
-  (el-get-bundle TheBB/spaceline)
-  (require 'spaceline)
-  (el-get-bundle pdf-tools)
-  (require 'pdf-tools))
+  ;; (el-get-bundle powerline)
+  ;; (el-get-bundle TheBB/spaceline)
+  ;; (require 'spaceline)
+  ;; (el-get-bundle pdf-tools)
+  ;; (require 'pdf-tools)
+  )
 
 (el-get-bundle solarized-emacs)
 (use-package solarized
-  :defer t
+  ;; :defer t
   :init
   (setq solarized-high-contrast-mode-line t)
   (setq solarized-distinct-fringe-background t)
   (setq solarized-distinct-doc-face t)
-  (setq solarized-use-less-bold t)
+
   ;; (setq solarized-use-more-italic t)
-  (add-hook 'after-init-hook #'(lambda () (load-theme 'solarized-dark t))))
+
+  (defun load-default-theme ()
+    (load-solarized-dark))
+  (defun load-solarized-dark ()
+    (setq solarized-use-less-bold t)
+    (load-theme 'solarized-dark t)
+    (install-my-spaceline-theme)
+    (setq current-theme 'solarized-dark))
+  (defun load-solarized-light ()
+    (setq solarized-use-less-bold nil)
+    (load-theme 'solarized-light t)
+    (install-my-spaceline-theme)
+    (setq current-theme 'solarized-light))
+  (defvar current-theme)
+  (defun toggle-theme ()
+    (interactive)
+    (cl-case current-theme
+      (solarized-dark (load-solarized-light))
+      (solarized-light (load-solarized-dark))
+      (t (load-default-theme))))
+  (add-hook 'after-init-hook #'load-default-theme))
 
 
 ;; (el-get-bundle material-theme)
 ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/material-theme")
 ;; (add-hook 'after-init-hook #'(lambda () (load-theme 'material t)))
-
-(el-get-bundle powerline)
-(el-get-bundle TheBB/spaceline)
-(use-package spaceline-config
-  :commands (spaceline-define-segment spaceline-install spaceline-spacemacs-theme)
-  :init
-  (add-hook 'evil-mode-hook 'install-my-spaceline-theme)
-  (setq powerline-height 25)
-  (setq powerline-default-separator 'contour)
-  (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
-  (defun install-my-spaceline-theme ()
-    (spaceline-install
-     '((pomodoro
-        :when active)
-       (evil-state
-        :face highlight-face)
-       ;; ((workspace-number window-number)
-       ;;  :fallback evil-state
-       ;;  :separator "|"
-       ;;  :face highlight-face)
-       (buffer-modified buffer-size buffer-id remote-host)
-       (pdf :when active)
-       ((flycheck-error flycheck-warning flycheck-info)
-        :when active)
-       major-mode
-       (((minor-modes :separator spaceline-minor-modes-separator)
-         process)
-        )
-       (erc-track :when active)
-       (version-control :when active)
-       (org-pomodoro :when active)
-       (org-clock :when active)
-       nyan-cat)
-
-     `((battery :when active)
-       selection-info
-       ((buffer-encoding-abbrev
-         point-position
-         line-column)
-        :separator " | ")
-       buffer-position
-       (global :when active)
-       (rbenv :when active)
-       hud)))
-  :config
-  (spaceline-define-segment pomodoro
-    "pomodoro.el"
-    (pomodoro:propertize-mode-line)
-    :when (and (bound-and-true-p pomodoro:mode-line)
-               (< 0 (length pomodoro:mode-line))))
-  (spaceline-define-segment rbenv
-    "ruby version used in rbenv"
-    (rbenv--update-mode-line)
-    :when (bound-and-true-p global-rbenv-mode))
-  (spaceline-define-segment pdf
-    "pdf tool infomation"
-    (format "Page: %s" (pdf-view-current-page
-                        (get-buffer-window)))
-    :when (eql major-mode 'pdf-view-mode)))
 
 (provide '12-theme)
 ;;; 12-theme.el ends here

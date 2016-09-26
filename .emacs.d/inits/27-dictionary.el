@@ -23,6 +23,19 @@
 ;;
 
 ;;; Code:
+(eval-when-compile
+  (require 'evil))
+
+(el-get-bundle osx-dictionary)
+(use-package osx-dictionary
+  :commands (osx-dictionary-search-pointer osx-dictionary-search-input)
+  :config
+  (evil-define-key 'normal osx-dictionary-mode-map
+    "q" #'osx-dictionary-quit
+    "s" #'osx-dictionary-search-input
+    "o" #'osx-dictionary-open-dictionary.app
+    "r" #'osx-dictionary-read-word
+    "?" #'describe-mode))
 
 (el-get-bundle google-translate)
 (use-package google-translate
@@ -38,10 +51,6 @@
   (use-package google-translate-smooth-ui)
   (setq google-translate-default-source-language "en"
         google-translate-default-target-language "ja"))
-
-(el-get-bundle syohex/emacs-codic)
-(use-package codic
-  :commands (codic codic-translate))
 
 (provide '27-dictionary)
 ;;; 27-dictionary.el ends here

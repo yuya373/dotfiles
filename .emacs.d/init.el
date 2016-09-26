@@ -4,12 +4,14 @@
 
 ;; self hosting el-get
 
+
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
 ;; (package-initialize)
-(setq gc-cons-threshold (* 512 1024 1024))
+
+;; (setq gc-cons-threshold (* 512 1024 1024))
 (setq garbage-collection-messages t)
 
 (when load-file-name
@@ -27,6 +29,7 @@
 (setq el-get-use-autoloads nil)
 (setq el-get-is-lazy t)
 (setq el-get-notify-type 'message)
+(el-get-bundle pcre2el)
 
 ;; el-get-lock
 (el-get-bundle el-get-lock
@@ -65,14 +68,14 @@
                                    'fullscreen 'maximized))
           t)
 
-;; (global-evil-leader-mode)
-;; (evil-mode t)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(js2-basic-offset 2))
+ '(package-selected-packages
+   (quote
+    (nil flycheck-flow osx-dictionary wgrep-ag term-run queue org oauth2 log4j-mode inflections helm-R hackernews flycheck-rust flycheck-elm evil-terminal-cursor-changer evil-magit ess-R-object-popup ess-R-data-view eshell-prompt-extras elixir-mode electric-operator csv-mode avy-migemo auto-save-buffers-enhanced))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

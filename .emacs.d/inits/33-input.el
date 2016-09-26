@@ -27,7 +27,7 @@
   (require 'evil))
 
 (el-get-bundle ddskk)
-(use-package skk-autoloads
+(use-package skk
   :commands (skk-mode skk-auto-fill-mode)
   :init
   (setq skk-echo t)
@@ -35,12 +35,17 @@
                              "el-get/ddskk/etc/SKK.tut"))
   (setq define-input-method "japanese-skk")
 
+  (setq skk-jisyo "~/.skk-jisyo"
+        skk-jisyo-code 'utf-8
+        skk-share-private-jisyo t
+        skk-save-jisyo-instantly t
+        )
   (setq skk-egg-like-newline t
         skk-auto-insert-paren t
         skk-show-annotation t
         skk-annotation-show-wikipedia-url t
         skk-use-look t
-        skk-save-jisyo-instantly t)
+        )
   (setq skk-show-tooltip nil
         skk-show-inline nil
         skk-show-candidates-always-pop-to-buffer nil
@@ -60,7 +65,6 @@
         skk-server-report-response t)
   ;; (setq skk-large-jisyo (concat user-emacs-directory
   ;;                               "SKK-JISYO.L"))
-  (setq skk-jisyo "~/.skk-jisyo")
 
   (setq skk-japanese-message-and-error t
         skk-show-japanese-menu t)
@@ -75,7 +79,15 @@
   :config
   (use-package ccc)
   (use-package skk-hint)
-  ;; (use-package skk-study)
+  (use-package skk-cus)
+  (use-package skk-macs)
+  (use-package skk-cursor)
+  (use-package skk-server-completion)
+  (use-package skk-kcode)
+  (use-package skk-annotation)
+  (use-package skk-study)
+  (use-package skk-cdb)
+  (use-package skk-num)
   ;; (define-key skk-j-mode-map (kbd "C-h") 'skk-delete-backward-char)
   ;; (evil-make-intercept-map skk-j-mode-map 'insert)
   ;; @@ server completion
@@ -97,7 +109,6 @@ This is reasonable since inserted text during `skk-henkan-mode'
 is a kind of temporary one which is not confirmed yet."
     (unless (bound-and-true-p skk-henkan-mode)
       ad-do-it)))
-
 
 
 
