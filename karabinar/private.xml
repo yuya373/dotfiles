@@ -31,6 +31,13 @@
     </list>
   </item>
   <item>
+    <name>CommandR to ControlR</name>
+    <identifier>private.command_r_to_control_r</identifier>
+    <autogen>
+      --KeyToKey-- KeyCode::COMMAND_R, KeyCode::CONTROL_R, KeyCode::JIS_KANA
+    </autogen>
+  </item>
+  <item>
     <name>LeaveInsMode with EISUU</name>
     <identifier>private.app_terminal_esc_with_eisuu</identifier>
     <appdef>
