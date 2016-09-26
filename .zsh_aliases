@@ -1,3 +1,5 @@
+# -*- mode: sh -*-
+
 alias show-colors='for c in {000..255}; do echo -n "\e[38;5;${c}m $c" ; [ $(($c%16)) -eq 15 ] && echo;done;echo'
 alias ssh="sshrc"
 alias ls="ls -h --color"
@@ -22,8 +24,8 @@ alias gd="git diff"
 # Emacs
 alias e="emacsclient -n"
 alias ee="emacsclient -nw -a ''"
-alias build_emacs="git checkout master; git pull; make maintainer-clean; make clean; ./autogen.sh; ./configure --with-ns --without-x --with-gnutls --with-imagemagick --with-xml2 --with-rsvg --disable-ns-self-contained --with-modules --with-xwidgets; make -j2; make install;"
-alias build_emacs25="git checkout emacs-25; git pull; make maintainer-clean; make clean; ./autogen.sh; ./configure --with-ns --without-x --with-gnutls --with-imagemagick --with-xml2 --with-rsvg --disable-ns-self-contained --with-modules --with-xwidgets; make -j2; make install;"
+# alias build_emacs="git checkout master; git pull; make maintainer-clean; make clean; ./autogen.sh; ./configure --with-ns --without-x --with-gnutls --with-imagemagick --with-xml2 --with-rsvg --disable-ns-self-contained --with-modules --with-xwidgets; make -j2; make install;"
+# alias build_emacs25="git checkout emacs-25; git pull; make maintainer-clean; make clean; ./autogen.sh; ./configure --with-ns --without-x --with-gnutls --with-imagemagick --with-xml2 --with-rsvg --disable-ns-self-contained --with-modules --with-xwidgets; make -j2; make install;"
 
 alias du-cwd='du -mc -d 1 | sort -g'
 alias reload='source ~/.zshrc'
@@ -32,3 +34,5 @@ alias gitf='git-flow'
 
 alias b="bundle exec"
 alias bs="bundle exec spring"
+
+alias t="tmuximum"

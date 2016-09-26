@@ -19,25 +19,30 @@ source $ZPLUG_HOME/init.zsh
 zplug "zsh-users/zsh-syntax-highlighting", nice:10
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
 
-zplug "zsh-users/zsh-history-substring-search", nice:11
-zplug "sharat87/zsh-vim-mode"
+zplug "zsh-users/zsh-history-substring-search"
+# zplug "sharat87/zsh-vim-mode"
 zplug "sindresorhus/pure", use:"*.zsh"
 zplug "seebi/dircolors-solarized"
 zplug "m4i/cdd", use:"cdd", nice:10
 zplug "zsh-users/zsh-completions"
-zplug "b4b4r07/dotfiles", use:etc/lib/vital.sh, hook-load:"export DOTPATH=$ZPLUG_HOME/repos/b4b4r07/dotfiles"
+
+zplug "b4b4r07/dotfiles", use:etc/lib/vital.sh
+export DOTPATH=$ZPLUG_HOME/repos/b4b4r07/dotfiles
+
 zplug "b4b4r07/dotfiles", use:bin/tmuxx, as:command
-zplug "b4b4r07/enhancd", use:enhancd.sh
+zplug "b4b4r07/enhancd", use:init.sh
 zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
 zplug "junegunn/fzf", as:command, use:bin/fzf-tmux
 zplug "junegunn/fzf", use:"shell/*.zsh"
-zplug "marzocchi/zsh-notify"
+# zplug "marzocchi/zsh-notify"
+# zplug "t413/zsh-background-notify"
 zplug "sorin-ionescu/prezto", \
       use:"modules/{completion,directory,history,rsync}/*.zsh"
 zplug "sorin-ionescu/prezto", \
       as:command, \
       use:"modules/archive/functions/*"
 zplug "zsh-users/zsh-autosuggestions"
+zplug "arks22/tmuximum", as:command
 
 # Install plugins if there are plugins that have not been installed
 if ! zplug check --verbose; then
@@ -60,7 +65,7 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=136'
 # clear fzf binding
 bindkey -r '^T'
 export FZF_COMPLETION_TRIGGER='**'
-export FZF_COMPLETION_OPTS='+c -x'
+export FZF_COMPLETION_OPTS='+c -x --inline-info'
 
 # dircolors
 eval `dircolors $ZPLUG_HOME/repos/seebi/dircolors-solarized/dircolors.256dark`
@@ -120,6 +125,13 @@ bindkey -M vicmd 'H' run-help
 # bindkey -M vicmd '^o' fd
 # bindkey -M vicmd '^k' fzf-cd-widget
 bindkey -M vicmd '^r' fzf-history-widget
+
+tmuximumm() {
+    tmuximum
+}
+zle -N tmuximumm
+bindkey -M vicmd '^s' tmuximumm
+bindkey -M viins '^s' tmuximumm
 
 # text object
 autoload -Uz select-quoted
@@ -223,4 +235,4 @@ source ~/dotfiles/.zsh_aliases
 if [ -d ${HOME}/.rbenv ] ; then
     eval "$(rbenv init -)"
 fi
-tmuxx
+# tmuxx

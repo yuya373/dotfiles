@@ -273,6 +273,39 @@ fcdr() {
 }
 zle -N fcdr
 
-fps() {
+pf() {
     ps aux | fzf -e
+}
+
+build_emacs() {
+    echo
+    echo "------------------------------------"
+    echo
+    echo "execute: make maintainer-clean"
+    make maintainer-clean
+    echo "finished: make maintainer-clean"
+    echo
+    echo "------------------------------------"
+    echo
+    echo "execute: ./autogen.sh"
+    ./autogen.sh
+    echo "finished: ./autogen.sh"
+    echo
+    echo "------------------------------------"
+    echo
+    echo "execute: configure"
+    ./configure --with-ns --without-x --with-imagemagick --with-xml2 --with-rsvg --disable-ns-self-contained  --with-modules
+    echo "finished: configure"
+    echo
+    echo "------------------------------------"
+    echo
+    echo "execute: make bootstrap"
+    make bootstrap
+    echo "finished: make bootstrap"
+    echo
+    echo "------------------------------------"
+    echo
+    echo "execute: make install"
+    make install
+    echo "finished: make install"
 }

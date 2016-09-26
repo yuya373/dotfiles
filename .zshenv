@@ -70,3 +70,5 @@ export MANPATH=/usr/local/share/man/ja_JP.UTF-8:$MANPATH
 export HOMEBREW_NO_ANALYTICS=1
 export LANG="ja_JP.UTF-8"
 export PATH=$HOME/.nodebrew/current/bin:$PATH
+export NODE_BINARY=$HOME/.nodebrew/current/bin/node
+export PATH=$HOME/.local/bin:$PATH
