@@ -24,18 +24,15 @@ zplug "zsh-users/zsh-history-substring-search"
 zplug "sindresorhus/pure", use:"*.zsh"
 zplug "seebi/dircolors-solarized"
 zplug "m4i/cdd", use:"cdd", nice:10
-zplug "zsh-users/zsh-completions"
-
-zplug "b4b4r07/dotfiles", use:etc/lib/vital.sh
-export DOTPATH=$ZPLUG_HOME/repos/b4b4r07/dotfiles
-
+zplug "zsh-users/zsh-completions", \
+      hook-load: "fpath=("$ZPLUG_REPOS/zsh-users/zsh-completions" $fpath)"
+zplug "b4b4r07/dotfiles", use:etc/lib/vital.sh, \
+      hook-load: "export DOTPATH=$ZPLUG_HOME/repos/b4b4r07/dotfiles"
 zplug "b4b4r07/dotfiles", use:bin/tmuxx, as:command
 zplug "b4b4r07/enhancd", use:init.sh
 zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
 zplug "junegunn/fzf", as:command, use:bin/fzf-tmux
 zplug "junegunn/fzf", use:"shell/*.zsh"
-# zplug "marzocchi/zsh-notify"
-# zplug "t413/zsh-background-notify"
 zplug "sorin-ionescu/prezto", \
       use:"modules/{completion,directory,history,rsync}/*.zsh"
 zplug "sorin-ionescu/prezto", \
@@ -52,15 +49,12 @@ if ! zplug check --verbose; then
     fi
 fi
 
-# pure
-ln -sf "$ZPLUG_HOME/repos/sindresorhus/pure/pure.zsh" "$HOME/.zfunctions/prompt_pure_setup"
-ln -sf "$ZPLUG_HOME/repos/sindresorhus/pure/async.zsh" "$HOME/.zfunctions/async"
-
 # Then, source plugins and add commands to $PATH
 zplug load --verbose
 
 # autosuggestions
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=136'
+ZSH_AUTOSUGGEST_CLEAR_WIDGETS=(do_enter kill-line $ZSH_AUTOSUGGEST_CLEAR_WIDGETS)
 
 # clear fzf binding
 bindkey -r '^T'
@@ -111,9 +105,11 @@ bindkey -v
 bindkey -M viins '^y' push-line
 bindkey -M viins '^j' vi-cmd-mode
 bindkey -M viins '^m' do_enter
-# bindkey -M viins '^o' fcdr
-# bindkey -M viins '^o' fd
+bindkey -M viins '^o' fcdr
+bindkey -M viins '^n' down-line-or-history
+bindkey -M viins '^p' up-line-or-history
 bindkey -M viins '^k' kill-line
+bindkey -M viins '^a' beginning-of-line
 bindkey -M viins '^e' end-of-line
 bindkey -M viins '^f' forward-word
 bindkey -M viins '^b' backward-word
@@ -121,9 +117,9 @@ bindkey -M viins '^r' fzf-history-widget
 
 # normal mode binding
 bindkey -M vicmd 'H' run-help
-# bindkey -M vicmd '^o' fcdr
+bindkey -M vicmd '^o' fcdr
 # bindkey -M vicmd '^o' fd
-# bindkey -M vicmd '^k' fzf-cd-widget
+bindkey -M vicmd '^k' fzf-cd-widget
 bindkey -M vicmd '^r' fzf-history-widget
 
 tmuximumm() {
