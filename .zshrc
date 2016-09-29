@@ -24,7 +24,7 @@ zplug "zsh-users/zsh-completions", \
       hook-load: "fpath=("$ZPLUG_REPOS/zsh-users/zsh-completions" $fpath)"
 zplug "zsh-users/zsh-autosuggestions"
 
-# zplug "b4b4r07/enhancd", use:init.sh
+zplug "b4b4r07/enhancd", use:init.sh
 zplug "b4b4r07/zsh-vimode-visual"
 
 zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
