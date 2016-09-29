@@ -81,4 +81,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(avy-lead-face ((t (:inherit isearch :foreground "gray100"))))
+ '(avy-lead-face-0 ((t (:background "#6c71c4" :foreground "gray100"))))
+ '(avy-lead-face-1 ((t (:background "#cb4b16" :foreground "gray100"))))
+ '(avy-lead-face-2 ((t (:background "#2aa198" :foreground "gray100")))))

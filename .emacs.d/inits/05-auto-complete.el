@@ -134,7 +134,7 @@
 
   (define-key company-active-map (kbd "C-w") 'backward-kill-word)
   (define-key company-active-map (kbd "C-h") 'delete-backward-char)
-  (define-key company-active-map [tab] 'company-complete-common2)
+  (define-key company-active-map [tab] 'company-complete-common-or-cycle)
   ;; (define-key company-active-map [tab] 'company-select-next)
   (define-key company-active-map [backtab] 'company-select-previous)
   (define-key company-active-map (kbd "S-TAB") 'company-select-previous)
@@ -142,7 +142,7 @@
   (define-key company-active-map (kbd "C-p") 'company-select-previous)
   (define-key company-search-map (kbd "C-w") 'backward-kill-word)
   (define-key company-search-map (kbd "C-h") 'delete-backward-char)
-  (define-key company-active-map [tab] 'company-complete-common2)
+  ;; (define-key company-active-map [tab] 'company-complete-common2)
   ;; (define-key company-search-map [tab] 'company-select-next)
   (define-key company-search-map [backtab] 'company-select-previous)
   (define-key company-search-map (kbd "S-TAB") 'company-select-previous)

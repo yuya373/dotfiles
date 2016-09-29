@@ -1,5 +1,7 @@
 (setq el-get-lock-package-versions
-      '((ace-link :checksum "624c5ffeb98f7805768084b8a2530ea21a78cf38")
+      '((enh-ruby-mode :checksum "73d949ab1de16a4d3f368cde94dd5403c0402ab4")
+        (inf-ruby :checksum "4d820954241988b4506e067fa9fdf6d574876e2c")
+        (ace-link :checksum "624c5ffeb98f7805768084b8a2530ea21a78cf38")
         (dired-k :checksum "b12ea34303862d3fd05a9cedbc436f5a533437d0")
         (deferred :checksum "8827106c83f0fc773bc406d381ea25a29a5965e1")
         (dash :checksum "502be58722262c5b9d779848a168b0dc67ee7471")

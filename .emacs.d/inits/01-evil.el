@@ -251,8 +251,8 @@
   ;; avy
   (use-package avy
     :init
-    (setq avy-background t)
-    (setq avy-highlight-first t)
+    (setq avy-background nil)
+    (setq avy-highlight-first nil)
     (setq avy-all-windows nil)
     ;; (setq avy-keys (number-sequence ?a ?z))
     (setq avy-keys (list ?a ?s ?d ?f ?g ?h ?j ?k ?l

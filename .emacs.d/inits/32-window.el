@@ -102,7 +102,7 @@
   :init
   (add-hook 'evil-mode-hook 'persp-mode)
   :config
-  (setq persp-nil-name "Emacs")
+  (setq persp-nil-name "!!!")
   (setq persp-auto-save-opt 2)
   (setq persp-when-kill-switch-to-buffer-in-perspective nil)
   (defun persp-save-eww-buffer (buf)
