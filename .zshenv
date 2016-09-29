@@ -3,7 +3,6 @@
 # Ensure that a non-login, non-interactive shell has a defined environment.
 
 export ZPLUG_HOME=/usr/local/opt/zplug
-
 export PATH=/usr/local/bin:${PATH}
 
 # if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
@@ -34,11 +33,6 @@ fi
 
 if [ -d ${HOME}/.roswell ]; then
     export PATH=${HOME}/.roswell/bin:${PATH}
-fi
-
-if [ -d /usr/local/opt/coreutils/libexec/gnubin ] ; then
-    export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
-    export MANPATH=/usr/local/opt/coreutils/libexec/gnuman/:$MANPATH
 fi
 
 if [ -d $HOME/.multirust/toolchains/stable/cargo/bin ]; then

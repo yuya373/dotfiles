@@ -38,3 +38,6 @@ alias b="bundle exec"
 alias bs="bundle exec spring"
 
 alias t="tmuximum"
+
+alias tm="top -o mem"
+alias tp="top -o cpu"

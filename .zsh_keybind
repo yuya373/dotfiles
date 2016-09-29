@@ -11,8 +11,10 @@ bindkey -M viins '^y' push-line
 bindkey -M viins '^j' vi-cmd-mode
 bindkey -M viins '^m' do_enter
 bindkey -M viins '^o' fcdr
-bindkey -M viins '^n' down-line-or-history
-bindkey -M viins '^p' up-line-or-history
+# bindkey -M viins '^n' down-line-or-history
+# bindkey -M viins '^p' up-line-or-history
+bindkey -M viins '^n' history-substring-search-down
+bindkey -M viins '^p' history-substring-search-up
 bindkey -M viins '^k' kill-line
 bindkey -M viins '^a' beginning-of-line
 bindkey -M viins '^e' end-of-line

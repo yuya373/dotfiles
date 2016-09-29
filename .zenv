@@ -1,0 +1,54 @@
+# -*- mode: sh -*-
+
+# rbenv
+if [ -d ${HOME}/.rbenv ] ; then
+    # eval "$(rbenv init - --no-rehash)"
+    export PATH="/Users/yuyaminami/.rbenv/shims:${PATH}"
+    export RBENV_SHELL=zsh
+    source '/usr/local/Cellar/rbenv/HEAD/libexec/../completions/rbenv.zsh'
+    rbenv() {
+        local command
+        command="$1"
+        if [ "$#" -gt 0 ]; then
+            shift
+        fi
+
+        case "$command" in
+            rehash|shell)
+                eval "$(rbenv "sh-$command" "$@")";;
+            *)
+                command rbenv "$command" "$@";;
+        esac
+    }
+fi
+
+# pyenv
+if which pyenv > /dev/null; then
+    # eval "$(pyenv init - --no-rehash)"
+    export PATH="/Users/yuyaminami/.pyenv/shims:${PATH}"
+    export PYENV_SHELL=zsh
+    source '/usr/local/Cellar/pyenv/20160422/libexec/../completions/pyenv.zsh'
+    pyenv() {
+        local command
+        command="$1"
+        if [ "$#" -gt 0 ]; then
+            shift
+        fi
+
+        case "$command" in
+            rehash|shell)
+                eval "$(pyenv "sh-$command" "$@")";;
+            *)
+                command pyenv "$command" "$@";;
+        esac
+    }
+fi
+
+# coreutils
+export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+
+export FZF_COMPLETION_TRIGGER='**'
+export FZF_COMPLETION_OPTS='+c -x --inline-info'
+
+export DOTPATH=$ZPLUG_HOME/repos/b4b4r07/dotfiles
