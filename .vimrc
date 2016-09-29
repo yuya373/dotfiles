@@ -37,8 +37,8 @@ set matchpairs+={:}
 set t_Co=256
 scriptencoding utf-8
 
-MyAutoCmd Colorscheme * highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
-MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
+" MyAutoCmd Colorscheme * highlight IdeographicSpace term=underline ctermbg=DarkGreen guibg=DarkGreen
+" MyAutoCmd VimEnter,WinEnter * match IdeographicSpace /　/
 
 set background=dark
 " colorscheme solarized
