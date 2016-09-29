@@ -1,0 +1,61 @@
+# -*- mode: sh -*-
+
+# use vim binding
+bindkey -v
+
+# clear fzf binding
+bindkey -r '^T'
+
+# insert mode binding
+bindkey -M viins '^y' push-line
+bindkey -M viins '^j' vi-cmd-mode
+bindkey -M viins '^m' do_enter
+bindkey -M viins '^o' fcdr
+bindkey -M viins '^n' down-line-or-history
+bindkey -M viins '^p' up-line-or-history
+bindkey -M viins '^k' kill-line
+bindkey -M viins '^a' beginning-of-line
+bindkey -M viins '^e' end-of-line
+bindkey -M viins '^f' forward-word
+bindkey -M viins '^b' backward-word
+bindkey -M viins '^r' fzf-history-widget
+
+# normal mode binding
+bindkey -M vicmd 'H' run-help
+bindkey -M vicmd '^o' fcdr
+# bindkey -M vicmd '^o' fd
+bindkey -M vicmd '^k' fzf-cd-widget
+bindkey -M vicmd '^r' fzf-history-widget
+
+tmuximumm() {
+    tmuximum
+}
+zle -N tmuximumm
+bindkey -M vicmd '^s' tmuximumm
+bindkey -M viins '^s' tmuximumm
+
+# text object
+autoload -Uz select-quoted
+zle -N select-quoted
+for m in visual viopp; do
+    for c in {a,i}{\',\",\`}; do
+        bindkey -M $m $c select-quoted
+    done
+done
+
+autoload -U select-bracketed
+zle -N select-bracketed
+for m in visual viopp; do
+    for c in {a,i}${(s..)^:-'()[]{}<>bB'}; do
+        bindkey -M $m $c select-bracketed
+    done
+done
+
+autoload -Uz surround
+zle -N delete-surround surround
+zle -N change-surround surround
+zle -N add-surround surround
+bindkey -M vicmd cs change-surround
+bindkey -M vicmd ds delete-surround
+bindkey -M vicmd ys add-surround
+bindkey -M visual S add-surround

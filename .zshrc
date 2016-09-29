@@ -1,13 +1,12 @@
-# Source Prezto.
-# if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-#   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
-# fi
-
 # functions
 if [ ! -d ${HOME}/.zfunctions ]; then
     mkdir -p ~/.zfunctions
 fi
 fpath=("$HOME/.zfunctions" $fpath)
+
+source ~/dotfiles/.zprompt
+source ~/dotfiles/.zshfunc
+source ~/dotfiles/.zsh_keybind
 
 # coreutils
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
@@ -40,14 +39,15 @@ zplug "sorin-ionescu/prezto", \
       use:"modules/archive/functions/*"
 zplug "zsh-users/zsh-autosuggestions"
 zplug "arks22/tmuximum", as:command
+zplug "b4b4r07/zsh-vimode-visual"
 
 # Install plugins if there are plugins that have not been installed
-if ! zplug check --verbose; then
-    printf "Install? [y/N]: "
-    if read -q; then
-        echo; zplug install
-    fi
-fi
+# if ! zplug check --verbose; then
+#     printf "Install? [y/N]: "
+#     if read -q; then
+#         echo; zplug install
+#     fi
+# fi
 
 # Then, source plugins and add commands to $PATH
 zplug load --verbose
@@ -56,8 +56,6 @@ zplug load --verbose
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=136'
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS=(do_enter kill-line $ZSH_AUTOSUGGEST_CLEAR_WIDGETS)
 
-# clear fzf binding
-bindkey -r '^T'
 export FZF_COMPLETION_TRIGGER='**'
 export FZF_COMPLETION_OPTS='+c -x --inline-info'
 
@@ -66,12 +64,6 @@ eval `dircolors $ZPLUG_HOME/repos/seebi/dircolors-solarized/dircolors.256dark`
 if [ -n "$LS_COLORS" ]; then
     zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 fi
-
-# prompt
-source ~/dotfiles/.zprompt
-
-# pyenv
-if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
 # Customize to your needs...
 setopt NO_BEEP
@@ -89,82 +81,6 @@ fi
 if [ -e ${HOME}/.zsh_aliases ]; then
     source ~/.zsh_aliases
 fi
-source ~/dotfiles/.zshfunc
-
-# # terminal-notifier
-# case "${OSTYPE}" in
-#   darwin*)
-#     source ~/dotfiles/zsh-notify/notify.plugin.zsh
-#     ;;
-# esac
-
-# use vim binding
-bindkey -v
-
-# insert mode binding
-bindkey -M viins '^y' push-line
-bindkey -M viins '^j' vi-cmd-mode
-bindkey -M viins '^m' do_enter
-bindkey -M viins '^o' fcdr
-bindkey -M viins '^n' down-line-or-history
-bindkey -M viins '^p' up-line-or-history
-bindkey -M viins '^k' kill-line
-bindkey -M viins '^a' beginning-of-line
-bindkey -M viins '^e' end-of-line
-bindkey -M viins '^f' forward-word
-bindkey -M viins '^b' backward-word
-bindkey -M viins '^r' fzf-history-widget
-
-# normal mode binding
-bindkey -M vicmd 'H' run-help
-bindkey -M vicmd '^o' fcdr
-# bindkey -M vicmd '^o' fd
-bindkey -M vicmd '^k' fzf-cd-widget
-bindkey -M vicmd '^r' fzf-history-widget
-
-tmuximumm() {
-    tmuximum
-}
-zle -N tmuximumm
-bindkey -M vicmd '^s' tmuximumm
-bindkey -M viins '^s' tmuximumm
-
-# text object
-autoload -Uz select-quoted
-zle -N select-quoted
-for m in visual viopp; do
-    for c in {a,i}{\',\",\`}; do
-        bindkey -M $m $c select-quoted
-    done
-done
-
-autoload -U select-bracketed
-zle -N select-bracketed
-for m in visual viopp; do
-    for c in {a,i}${(s..)^:-'()[]{}<>bB'}; do
-        bindkey -M $m $c select-bracketed
-    done
-done
-
-autoload -Uz surround
-zle -N delete-surround surround
-zle -N change-surround surround
-zle -N add-surround surround
-bindkey -M vicmd cs change-surround
-bindkey -M vicmd ds delete-surround
-bindkey -M vicmd ys add-surround
-bindkey -M visual S add-surround
-
-# visual mode
-source ~/dotfiles/zsh-vimode-visual/zsh-vimode-visual.sh
-bindkey -M vicmd 'v'  vi-visual-mode
-
-# # fzf
-# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# for mosh
-compdef mosh=ssh
-compdef sshrc=ssh
 
 setopt nonomatch
 
@@ -177,58 +93,29 @@ zstyle ':chpwd:*' recent-dirs-default true
 zstyle ':chpwd:*' recent-dirs-file "$HOME/.cache/shell/chpwd-recent-dirs"
 zstyle ':chpwd:*' recent-dirs-pushd true
 
-## tmux自動起動
-# http://d.hatena.ne.jp/tyru/20100828/run_tmux_or_screen_at_shell_startup
-# is_screen_running() {
-#   # tscreen also uses this varariable.
-#   [ ! -z "$WINDOW" ]
-# }
-# is_tmux_runnning() {
-#   [ ! -z "$TMUX" ]
-# }
-# is_screen_or_tmux_running() {
-#   is_screen_running || is_tmux_runnning
-# }
-# shell_has_started_interactively() {
-#   [ ! -z "$PS1" ]
-# }
-# resolve_alias() {
-#   cmd="$1"
-#   while \
-#     whence "$cmd" >/dev/null 2>/dev/null \
-#     && [ "$(whence "$cmd")" != "$cmd" ]
-# do
-#   cmd=$(whence "$cmd")
-# done
-# echo "$cmd"
-# }
-
-# if ! is_screen_or_tmux_running && shell_has_started_interactively; then
-#   for cmd in tmux; do
-#     if whence $cmd >/dev/null 2>/dev/null; then
-#       $(resolve_alias "$cmd")
-#       break
-#     fi
-#   done
-# fi
 
 # cdd
 chpwd() {
     _cdd_chpwd
 }
 
-if (which zprof > /dev/null) ;then
-    zprof | less
-fi
-
 # The next line updates PATH for the Google Cloud SDK.
-source '/Users/yuyaminami/google-cloud-sdk/path.zsh.inc'
+# source '/Users/yuyaminami/google-cloud-sdk/path.zsh.inc'
 
 # The next line enables shell command completion for gcloud.
-source '/Users/yuyaminami/google-cloud-sdk/completion.zsh.inc'
+# source '/Users/yuyaminami/google-cloud-sdk/completion.zsh.inc'
 
 source ~/dotfiles/.zsh_aliases
 if [ -d ${HOME}/.rbenv ] ; then
-    eval "$(rbenv init -)"
+    eval "$(rbenv init - --no-rehash)"
+fi
+
+# pyenv
+if which pyenv > /dev/null; then
+    eval "$(pyenv init - --no-rehash)"
 fi
 # tmuxx
+
+if (which zprof > /dev/null) ;then
+    zprof | less
+fi

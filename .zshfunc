@@ -40,8 +40,8 @@ function peco-select-history() {
         tac="tail -r"
     fi
     BUFFER=$(\history -n 1 | \
-                    eval $tac | \
-                    peco --query "$LBUFFER")
+                 eval $tac | \
+                 peco --query "$LBUFFER")
     CURSOR=$#BUFFER
     zle clear-screen
 }
@@ -127,6 +127,7 @@ function tmux_window_name()
     tmux rename-window ${PWD:t}
 }
 if [ -n "$TMUX" ]; then
+    autoload -Uz add-zsh-hook
     add-zsh-hook precmd tmux_window_name
 fi
 
@@ -224,8 +225,8 @@ zle -N fdr
 fs() {
     local session
     session=$(tmux list-sessions | \
-                     fzf --query="$1" --select-1 --exit-0 | \
-                     awk -F: '{ print $1 }') &&
+                  fzf --query="$1" --select-1 --exit-0 | \
+                  awk -F: '{ print $1 }') &&
         tmux switch-client -t "$session"
 
 }
@@ -234,8 +235,8 @@ zle -N fs
 ftw() {
     local window
     window=$(tmux list-windows | \
-                    fzf --query="$1" --select-1 --exit-0 | \
-                    awk -F: '{ print $1 }') &&
+                 fzf --query="$1" --select-1 --exit-0 | \
+                 awk -F: '{ print $1 }') &&
         tmux select-window -t "$window"
 }
 zle -N ftw

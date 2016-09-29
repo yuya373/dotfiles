@@ -2,6 +2,8 @@
 
 alias show-colors='for c in {000..255}; do echo -n "\e[38;5;${c}m $c" ; [ $(($c%16)) -eq 15 ] && echo;done;echo'
 alias ssh="sshrc"
+compdef _hosts sshrc
+
 alias ls="ls -h --color"
 alias ll="ls -l"
 alias la="ls -al"
