@@ -50,5 +50,3 @@ export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 
 export FZF_COMPLETION_TRIGGER='**'
 export FZF_COMPLETION_OPTS='+c -x --inline-info'
-
-export DOTPATH=$ZPLUG_HOME/repos/b4b4r07/dotfiles
