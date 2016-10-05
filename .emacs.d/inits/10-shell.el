@@ -198,3 +198,6 @@ the user activate the completion manually."
 
 (provide '10-shell)
 ;;; 10-shell.el ends here
+
+
+
