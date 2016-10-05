@@ -280,7 +280,7 @@
       (evil-without-repeat
         (evil-enclose-avy-for-motion
           (call-interactively 'avy-migemo-goto-word-1))))
-    (define-key evil-normal-state-map "s" 'avy-goto-char-2)
+    (define-key evil-normal-state-map "s" 'avy-migemo-goto-char-2)
     (define-key evil-operator-state-map
       (kbd "f") #'evil-avy-goto-char-in-line)
     (define-key evil-normal-state-map
@@ -551,6 +551,7 @@
     "wb" 'balance-windows
     "wc" 'whitespace-cleanup
     "wg" 'golden-ratio-mode
+    "wk" 'kill-buffer-and-window
     "wm" 'toggle-window-maximized
     "wt" 'toggle-frame-alpha
     "ww" 'ace-window

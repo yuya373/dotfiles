@@ -73,6 +73,7 @@
   :commands (indent-guide-mode)
   :init
   (setq indent-guide-recursive t)
+  (setq indent-guide-delay 1)
   (add-hook 'lisp-mode-hook 'indent-guide-mode))
 
 (el-get-bundle restclient)
@@ -242,7 +243,29 @@
   :commands (auto-mark-mode)
   :init
   (add-hook 'after-init-hook 'auto-mark-mode)
-  (setq auto-mark-command-class-alist '((goto-line . jump))))
+
+  ;; A list of (COMMAND . CLASS) for classfying command to CLASS.
+
+  ;; COMMAND is a symbol you want to try to classify.
+  ;; CLASS is a symbol for detecting a border where auro-mark should push mark.
+
+  ;; There is pre-defined CLASS:
+  ;; edit      edit command
+  ;; move      point move command
+  ;; ignore    make auto-mark ignore pushing mark
+  (setq auto-mark-command-class-alist '((goto-line . jump)
+                                        (avy-goto-char . jump)
+                                        (avy-goto-char-2 . jump)
+                                        (avy-goto-line . jump)
+                                        (avy-goto-word-0 . jump)
+                                        (avy-migemo-goto-char . jump)
+                                        (avy-migemo-goto-word-1 . jump)
+                                        (avy-migemo-goto-char-in-line . jump)
+                                        (isearch-exit . jump)
+                                        (evil-search-next . jump)
+                                        (evil-search-previous . jump)
+                                        (evil-scroll-down . move)
+                                        (evil-scroll-up . move))))
 
 ;; (el-get-bundle prodigy)
 ;; (use-package prodigy
@@ -335,6 +358,10 @@
     (interactive)
     (let ((browser-refresh-activate t))
       (browser-refresh))))
+
+(el-get-bundle es-mode)
+(use-package es-mode
+  :mode (("\\.es\\'" . es-mode)))
 
 (provide '03-util)
 ;;; 03-util.el ends here
