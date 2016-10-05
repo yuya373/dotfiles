@@ -1,5 +1,8 @@
 (setq el-get-lock-package-versions
-      '((enh-ruby-mode :checksum "73d949ab1de16a4d3f368cde94dd5403c0402ab4")
+      '((js2-mode :checksum "64ec0a26673215e36f89e31d7935f99b731fd03d")
+        (es-mode :checksum "b2e4403197834c06bf47a9b72b57a65a28589fbf")
+        (spark :checksum "0bf148c3ede3b31d56fd75f347cdd0b0eae60025")
+        (enh-ruby-mode :checksum "73d949ab1de16a4d3f368cde94dd5403c0402ab4")
         (inf-ruby :checksum "4d820954241988b4506e067fa9fdf6d574876e2c")
         (ace-link :checksum "624c5ffeb98f7805768084b8a2530ea21a78cf38")
         (dired-k :checksum "b12ea34303862d3fd05a9cedbc436f5a533437d0")
