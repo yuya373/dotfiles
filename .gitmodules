@@ -19,3 +19,6 @@
 [submodule ".zprezto"]
 	path = .zprezto
 	url = git@github.com:sorin-ionescu/prezto.git
+[submodule "bitbar-plugins"]
+	path = bitbar-plugins
+	url = git@github.com:matryer/bitbar-plugins.git
