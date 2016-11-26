@@ -1,0 +1,11 @@
+#!/bin/bash
+
+while true; do
+    sudo purge
+    echo `top -l 1 | grep PhysMem`
+    time=`date "+%Y/%m/%d %H:%M:%S"`
+    echo "[$time]  purged!"
+    echo `top -l 1 | grep PhysMem`
+    sleep 180
+done
+

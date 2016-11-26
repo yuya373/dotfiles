@@ -66,3 +66,4 @@ export LANG="ja_JP.UTF-8"
 export PATH=$HOME/.nodebrew/current/bin:$PATH
 export NODE_BINARY=$HOME/.nodebrew/current/bin/node
 export PATH=$HOME/.local/bin:$PATH
+export TERM='xterm-256color'

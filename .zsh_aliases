@@ -41,3 +41,5 @@ alias t="tmuximum"
 
 alias tm="top -o mem"
 alias tp="top -o cpu"
+
+alias du-cwd="du --block-size=M --total --max-depth=1 --all | sort -g"

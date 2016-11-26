@@ -310,3 +310,8 @@ build_emacs() {
     make install
     echo "finished: make install"
 }
+
+mem() {
+    local command="$1"
+    ps aux | grep -i "$command" | awk -F' ' '{print $6, $11}'| grep -v grep | awk -F ' ' '{sum += $1} END {print sum/1000 " MB"}'
+}
