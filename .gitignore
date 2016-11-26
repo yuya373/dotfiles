@@ -14,3 +14,7 @@
 /.emacs.d/url
 /.emacs.d/private
 /.emacs.d/inits/elm-stuff
+/.emacs.d/inits/.tern-port
+/.emacs.d/network-security.data
+/.emacs.d/pdf-view-dump
+/.emacs.d/tramp
