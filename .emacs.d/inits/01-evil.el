@@ -322,13 +322,8 @@
     (interactive)
     (if (buffer-file-name)
         (progn
-
-          (message "current: %s" evil-state)
-          (message "next: %s" evil-next-state)
-
           (set-buffer-modified-p t)
-          (save-buffer)
-          (message "Saved!"))))
+          (save-buffer))))
   (add-hook 'evil-insert-state-exit-hook #'my-save-if-bufferfilename)
   ;; (advice-add 'evil-normal-state :after 'my-save-if-bufferfilename)
   (define-key evil-normal-state-map (kbd "C-s") nil)
@@ -446,6 +441,7 @@
     "bw" 'projectile-switch-to-buffer-other-window
     "dd" 'osx-dictionary-search-pointer
     "di" 'osx-dictionary-search-input
+    "dc" 'dired-open-current
     ;; "da" 'helm-dash
     ;; "dc" 'helm-dash-at-point
     ;; "dd" 'dired-open-current
@@ -469,10 +465,13 @@
     "gf" 'magit-fetch-popup
     "gg" 'magit-status
     "gm" 'git-messenger:popup-message
-    "gn" 'git-gutter+-next-hunk
-    "gp" 'git-gutter+-previous-hunk
-    "gr" 'git-gutter+-revert-hunks
-    "gs" 'git-gutter+-stage-hunks
+    "ghn" 'git-gutter+-next-hunk
+    "ghp" 'git-gutter+-previous-hunk
+    "ghr" 'git-gutter+-revert-hunks
+    "ghs" 'git-gutter+-stage-hunks
+    "gp" nil
+    "gpp" 'hub-pr-prepare-pr
+    "gps" 'hub-pr-send-pr
     "gc" 'git-gutter+-commit
     "gC" 'git-gutter+-stage-and-commit
     "gt" 'git-timemachine

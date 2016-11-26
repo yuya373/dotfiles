@@ -201,7 +201,7 @@
   (add-hook 'markdown-after-export-hook 'md-add-body-class-name)
 
   :config
-  (evil-define-key 'visual gfm-mode-map
+  (evil-define-key 'visual markdown-mode-map
     ",l" nil
     ",lr" 'markdown-insert-reference-link-dwim
     ",ll" 'markdown-insert-link
@@ -217,7 +217,7 @@
     ">" 'markdown-indent-region
     "<" 'markdown-exdent-region
     )
-  (evil-define-key 'normal gfm-mode-map
+  (evil-define-key 'normal markdown-mode-map
     ",i" nil
     ",iL" 'markdown-insert-list-item
     ",ilr" 'markdown-insert-reference-link-dwim

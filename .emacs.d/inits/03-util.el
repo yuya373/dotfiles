@@ -199,9 +199,10 @@
   (setq ls-lisp-use-insert-directory-program nil)
   (with-eval-after-load "evil"
     (evil-define-key 'normal dired-mode-map
+      "t" nil
       "m" 'dired-mark
       "M" 'dired-unmark
-      ",u" 'dired-unmark-all-marks
+      ",m" 'dired-unmark-all-marks
       "g" nil
       ",g" 'revert-buffer
       "$" 'evil-end-of-line
@@ -358,6 +359,12 @@
     (interactive)
     (let ((browser-refresh-activate t))
       (browser-refresh))))
+
+(el-get-bundle alpha22jp/atomic-chrome)
+(use-package atomic-chrome
+  :commands (atomic-chrome-start-server)
+  :init
+  (add-hook 'after-init-hook 'atomic-chrome-start-server))
 
 (el-get-bundle es-mode)
 (use-package es-mode

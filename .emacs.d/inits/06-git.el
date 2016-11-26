@@ -41,14 +41,18 @@
 
 (use-package git-timemachine
   :commands (git-timemachine)
-  :config
-  (evil-define-key 'normal git-timemachine-mode-map
-    ",p" 'git-timemachine-show-previous-revision
-    ",n" 'git-timemachine-show-next-revision
-    ",g" 'git-timemachine-show-nth-revision
-    ",q" 'git-timemachine-quit
-    ",w" 'git-timemachine-kill-abbreviated-revision
-    ",W" 'git-timemachine-kill-revision))
+  :init
+  (add-hook 'git-timemachine-mode-hook 'git-timemachine-define-keymap)
+  (defun git-timemachine-define-keymap ()
+    (interactive)
+    (evil-define-key 'normal git-timemachine-mode-map
+      ",g" nil
+      ",gp" 'git-timemachine-show-previous-revision
+      ",gn" 'git-timemachine-show-next-revision
+      ",gg" 'git-timemachine-show-nth-revision
+      ",gq" 'git-timemachine-quit
+      ",gw" 'git-timemachine-kill-abbreviated-revision
+      ",gW" 'git-timemachine-kill-revision)))
 
 (use-package git-messenger
   :commands (git-messenger:popup-message))
@@ -146,6 +150,7 @@
     (set-face-foreground 'git-gutter-fr+-modified "#eee8d5")
     (set-face-foreground 'git-gutter-fr+-added    "#859900")
     (set-face-foreground 'git-gutter-fr+-deleted  "#dc322f")))
+
 
 (provide '06-git)
 ;;; 06-git.el ends here
