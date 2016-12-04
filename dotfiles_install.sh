@@ -49,5 +49,7 @@ ln -sf ~/dotfiles/.sshrc ~/.sshrc
 # gems
 ln -sf ~/dotfiles/.gemrc  ~/.gemrc
 
+ln -sf ~/dotfiles/.pryrc  ~/.pryrc
+
 echo "Finished"
 
