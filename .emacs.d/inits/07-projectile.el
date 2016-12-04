@@ -64,21 +64,23 @@
 
 (el-get-bundle projectile)
 (el-get-bundle projectile-rails)
+(el-get-bundle helm-projectile)
 (use-package helm-projectile
   :commands (helm-projectile-on))
 (use-package projectile
-  :commands (projectile-mode projectile-global-mode)
+  :commands (projectile-mode)
   :diminish projectile-mode
   :init
   (setq projectile-enable-caching t
         projectile-completion-system 'helm)
-  (add-hook 'evil-mode-hook 'projectile-global-mode)
-  (add-hook 'projectile-global-mode-hook 'helm-projectile-on))
+  (add-hook 'evil-mode-hook 'projectile-mode)
+  (add-hook 'projectile-mode-hook 'helm-projectile-on)
+  )
 
 (use-package projectile-rails
-  :commands (projectile-rails-on)
+  :commands (projectile-rails-global-mode)
   :init
-  (add-hook 'projectile-mode-hook #'projectile-rails-on)
+  (add-hook 'projectile-mode-hook #'projectile-rails-global-mode)
   (defun set-projectile-rails-tags-command ()
     (interactive)
     (when (projectile-rails-root)
@@ -167,9 +169,9 @@
   (evil-define-key 'normal projectile-rails-mode-map ",rfm" 'find-file-in-app-models)
   (evil-define-key 'normal projectile-rails-mode-map ",rfs" 'find-file-in-app-services)
   (evil-define-key 'normal projectile-rails-mode-map ",rfv" 'find-file-in-app-views)
-  (evil-define-key 'normal projectile-rails-mode-map ",rcm" 'find-file-current-model)
-  (evil-define-key 'normal projectile-rails-mode-map ",rcc" 'find-file-current-controller)
-  (evil-define-key 'normal projectile-rails-mode-map ",rcv" 'find-file-current-view)
+  ;; (evil-define-key 'normal projectile-rails-mode-map ",rcm" 'find-file-current-model)
+  ;; (evil-define-key 'normal projectile-rails-mode-map ",rcc" 'find-file-current-controller)
+  ;; (evil-define-key 'normal projectile-rails-mode-map ",rcv" 'find-file-current-view)
   )
 
 (provide '07-projectile)

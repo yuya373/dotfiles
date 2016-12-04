@@ -47,7 +47,6 @@
 (el-get-bundle helm)
 (el-get-bundle helm-ls-git)
 (el-get-bundle helm-ag)
-(el-get-bundle helm-projectile)
 (el-get-bundle migemo)
 
 (use-package helm-ls-git
@@ -78,9 +77,11 @@
              helm-semantic-or-imenu
              helm-elscreen)
   :init
-  (setq helm-mini-default-sources '(helm-source-buffers-list
+  (setq helm-mini-default-sources '(
+                                    helm-source-buffers-list
                                     helm-source-recentf
-                                    helm-source-buffer-not-found))
+                                    helm-source-buffer-not-found
+                                    ))
   (setq helm-M-x-fuzzy-match t
         helm-apropos-fuzzy-match t
         helm-file-cache-fuzzy-match t
@@ -167,7 +168,6 @@
     (interactive)
     (with-helm-alive-p
       (helm-exit-and-execute-action 'ace-split--helm-ag)))
-
 
   (defun ace-ff--helm-ag (candidate)
     (message "%s" candidate)
@@ -351,6 +351,7 @@
   (define-key helm-ag-map (kbd "C-v") 'helm-ace-vsplit-ag)
   (define-key helm-ag-map (kbd "C-o") 'helm-ace-ff-ag)
   ;; (define-key helm-ag-map (kbd "C-o") 'helm-ag--run-other-window-action)
+
   )
 
 ;; (el-get-bundle helm-dash)

@@ -11,7 +11,7 @@
 ;; You may delete these explanatory comments.
 ;; (package-initialize)
 
-;; (setq gc-cons-threshold (* 512 1024 1024))
+(setq gc-cons-threshold (* 512 1024 1024))
 (setq garbage-collection-messages t)
 
 (when load-file-name

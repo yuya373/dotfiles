@@ -104,12 +104,10 @@ the user activate the completion manually."
   :config
   (require 'em-smart)
   (require 'esh-opt)
-  (setq eshell-where-to-jump 'begin
-        eshell-review-quick-commands nil
+  (setq eshell-where-to-jump 'end
+        eshell-review-quick-commands 'not-even-short-output
         eshell-smart-space-goes-to-end t)
   (add-hook 'eshell-mode-hook 'eshell-smart-initialize)
-  (add-hook 'eshell-mode-hook #'(lambda ()
-                                  (setq-local eshell-scroll-to-bottom-on-output t)))
 
   (when (boundp 'eshell-output-filter-functions)
     (push 'eshell-truncate-buffer eshell-output-filter-functions))

@@ -35,7 +35,7 @@
                              "el-get/ddskk/etc/SKK.tut"))
   (setq define-input-method "japanese-skk")
 
-  (setq skk-jisyo "~/.skk-jisyo"
+  (setq skk-jisyo "~/Dropbox/skk-jisyo.ddskk"
         skk-jisyo-code 'utf-8
         skk-share-private-jisyo t
         skk-save-jisyo-instantly t
@@ -58,6 +58,7 @@
         skk-comp-circulate t)
   (setq skk-sticky-key ";")
   (setq skk-previous-candidate-keys (list "x" "\C-p"))
+  (setq skk-isearch-mode-enable 'always)
 
   ;; skk-server AquaSKK
   (setq skk-server-portnum 1178

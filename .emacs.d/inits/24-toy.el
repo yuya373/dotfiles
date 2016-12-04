@@ -24,8 +24,8 @@
 
 ;;; Code:
 
-(eval-when-compile
-  (require 'evil))
+;; (eval-when-compile
+;;   (require 'evil))
 
 ;; (el-get-bundle hackernews)
 ;; (use-package hackernews

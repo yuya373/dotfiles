@@ -174,7 +174,19 @@
       (balance-windows)
       (ruby-test-toggle-implementation-and-specification)))
   (evil-define-key 'normal ruby-test-mode-map (kbd ",tv") 'ruby-test-toggle-vsplit)
-  (evil-define-key 'normal ruby-test-mode-map (kbd ",ts") 'ruby-test-toggle-split))
+  (evil-define-key 'normal ruby-test-mode-map (kbd ",ts") 'ruby-test-toggle-split)
+
+  (defun ruby-test-spec-command (filename &optional line-number)
+    (let (command options)
+      (if (file-exists-p ".zeus.sock")
+          (setq command "zeus rspec")
+        (setq command "bundle exec spring rspec"))
+      (setq options ruby-test-rspec-options)
+      (if line-number
+          (setq filename (format "%s:%s" filename line-number)))
+      (format "%s %s %s" command (mapconcat 'identity options " ") filename)))
+
+  )
 
 (el-get-bundle yaml-mode)
 (use-package yaml-mode

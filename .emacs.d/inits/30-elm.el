@@ -23,8 +23,8 @@
 ;;
 
 ;;; Code:
-(eval-when-compile
-  (require 'evil))
+;; (eval-when-compile
+;;   (require 'evil))
 
 ;; (el-get-bundle elm-mode)
 ;; (use-package elm-mode
