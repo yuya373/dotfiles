@@ -31,20 +31,30 @@ zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
 zplug "junegunn/fzf", as:command, use:bin/fzf-tmux
 zplug "junegunn/fzf", use:"shell/*.zsh"
 
-zplug "sorin-ionescu/prezto", \
-      use:"modules/{completion,directory,history,rsync}/*.zsh"
+zplug "modules/completion", from:prezto
+zplug "modules/directory", from:prezto
+zplug "modules/history", from:prezto
+zplug "modules/rsync", from:prezto
+
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+fi
+
+# Then, source plugins and add commands to $PATH
+zplug load --verbose
+
+# dircolors
+eval `dircolors $ZPLUG_HOME/repos/seebi/dircolors-solarized/dircolors.256dark`
 
 source ~/dotfiles/.zenv
 source ~/dotfiles/.zprompt
 source ~/dotfiles/.zshfunc
 source ~/dotfiles/.zsh_keybind
 source ~/dotfiles/.zsh_aliases
-
-# dircolors
-eval `dircolors $ZPLUG_HOME/repos/seebi/dircolors-solarized/dircolors.256dark`
-
-# Then, source plugins and add commands to $PATH
-zplug load --verbose
 
 # autosuggestions
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=136'
@@ -61,6 +71,10 @@ fi
 
 autoload -U promptinit; promptinit
 prompt pure
+
+# [zsh の zmv を使って簡単に複数ファイルを一括リネームする - mollifier delta blog](http://mollifier.hatenablog.com/entry/20101227/p1)
+autoload -Uz zmv
+alias zmv='noglob zmv -W'
 
 if (which zprof > /dev/null) ;then
     zprof | less

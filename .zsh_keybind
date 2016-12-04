@@ -8,7 +8,7 @@ bindkey -r '^T'
 
 # insert mode binding
 bindkey -M viins '^y' push-line
-bindkey -M viins '^j' vi-cmd-mode
+# bindkey -M viins '^j' vi-cmd-mode
 bindkey -M viins '^m' do_enter
 bindkey -M viins '^o' fcdr
 # bindkey -M viins '^n' down-line-or-history
