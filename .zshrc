@@ -36,6 +36,8 @@ zplug "modules/directory", from:prezto
 zplug "modules/history", from:prezto
 zplug "modules/rsync", from:prezto
 
+zplug "seebi/dircolors-solarized"
+
 # Install plugins if there are plugins that have not been installed
 if ! zplug check --verbose; then
     printf "Install? [y/N]: "
@@ -47,14 +49,14 @@ fi
 # Then, source plugins and add commands to $PATH
 zplug load --verbose
 
-# dircolors
-eval `dircolors $ZPLUG_HOME/repos/seebi/dircolors-solarized/dircolors.256dark`
-
 source ~/dotfiles/.zenv
 source ~/dotfiles/.zprompt
 source ~/dotfiles/.zshfunc
 source ~/dotfiles/.zsh_keybind
 source ~/dotfiles/.zsh_aliases
+
+# dircolors
+eval `dircolors $ZPLUG_HOME/repos/seebi/dircolors-solarized/dircolors.256dark`
 
 # autosuggestions
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=136'
