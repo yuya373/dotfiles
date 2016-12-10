@@ -33,7 +33,7 @@
         (scala-mode :checksum "4b492b9fa5f97521426f50c8dcfb6c0a251840ea")
         (tern :checksum "ca4056801d37521a30314391fa4f6a0ff3d2dc64")
         (rjsx-mode :checksum "20c7bd0e704dfc1c391edf78765c8b0ec4f5b3c0")
-        (js2-mode :checksum "2a796499afd95a5b9f0eb2fb338102e917f30c93")
+        (js2-mode :checksum "6f2d51bd723126f82b491b5e2515356018a48849")
         (flycheck-package :checksum "afe8a49343d90d08ee72ac6f993d424dcc39cc38")
         (evil-flycheck :checksum "1e506bfa8921f4f902736b2c63acf177af20078b")
         (flycheck :checksum "a4dfb0eb5e5d59ab41646dfda06d551b15bfdf21")

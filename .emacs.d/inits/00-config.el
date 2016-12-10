@@ -53,6 +53,8 @@
 (setq require-final-newline t)
 (setq ad-redefinition-action 'accept)
 (setq recentf-max-saved-items 1000)
+(with-eval-after-load 'recentf
+  (setq recentf-auto-save-timer (run-with-idle-timer 30 t 'recentf-save-list)))
 
 ;; tab
 (setq tab-always-indent t)

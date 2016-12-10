@@ -60,7 +60,8 @@
                                             choices)))))
        (if (eq files ())
            (funcall ,fallback)
-         (helm-find-files-1 target-dir)))))
+         (helm-find-files-1 target-dir))))
+  )
 
 (el-get-bundle projectile)
 (el-get-bundle projectile-rails)

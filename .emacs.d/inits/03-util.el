@@ -370,5 +370,14 @@
 (use-package es-mode
   :mode (("\\.es\\'" . es-mode)))
 
+
+(use-package compile
+  :init
+  (defun compile-finish-notify-alert (buffer msg)
+    ;; (message "buffer: %s" buffer)
+    ;; (message "msg: %s" msg)
+    (alert msg :title (buffer-name buffer)))
+  (add-to-list 'compilation-finish-functions 'compile-finish-notify-alert))
+
 (provide '03-util)
 ;;; 03-util.el ends here

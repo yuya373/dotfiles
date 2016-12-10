@@ -237,14 +237,16 @@
       (helm-exit-and-execute-action 'ace-vsplit-switch-to-buffer)))
 
   (defun ace-helm-find-file (candidate)
-    (if (one-window-p)
-        (find-file-other-window (expand-file-name candidate))
-      (let ((buf (find-file-noselect (expand-file-name candidate)))
-            (window (aw-select "Ace - Window")))
-        (unwind-protect
-            (progn
-              (aw-switch-to-window window)
-              (switch-to-buffer buf))))))
+    (let ((candidate (or (and (bufferp candidate) (buffer-file-name candidate))
+                         candidate)))
+      (if (one-window-p)
+          (find-file-other-window (expand-file-name candidate))
+        (let ((buf (find-file-noselect (expand-file-name candidate)))
+              (window (aw-select "Ace - Window")))
+          (unwind-protect
+              (progn
+                (aw-switch-to-window window)
+                (switch-to-buffer buf)))))))
 
   (defun helm-ace-ff ()
     (interactive)
