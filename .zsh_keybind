@@ -10,7 +10,7 @@ bindkey -r '^T'
 bindkey -M viins '^y' push-line
 # bindkey -M viins '^j' vi-cmd-mode
 bindkey -M viins '^m' do_enter
-bindkey -M viins '^o' fcdr
+bindkey -M viins '^o' fdr
 # bindkey -M viins '^n' down-line-or-history
 # bindkey -M viins '^p' up-line-or-history
 bindkey -M viins '^n' history-substring-search-down
@@ -24,6 +24,7 @@ bindkey -M viins '^b' vi-backward-word
 # bindkey -M viins '^b' backward-char
 bindkey -M viins '^r' fzf-history-widget
 bindkey -M viins '^d' delete-char
+bindkey -M viins '^i' fzf-completion
 
 # normal mode binding
 bindkey -M vicmd 'H' run-help

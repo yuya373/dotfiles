@@ -51,5 +51,11 @@ ln -sf ~/dotfiles/.gemrc  ~/.gemrc
 
 ln -sf ~/dotfiles/.pryrc  ~/.pryrc
 
+# rust
+if [[ ! -d ~/.cargo ]]; then
+    mkdir -p ~/.config
+fi
+ln -sf ~/dotfiles/.cargo/config ~/.cargo/config
+
 echo "Finished"
 

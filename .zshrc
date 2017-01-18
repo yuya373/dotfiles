@@ -9,19 +9,20 @@ fpath=("$HOME/.zfunctions" $fpath)
 # zplug
 source $ZPLUG_HOME/init.zsh
 
-zplug "zsh-users/zsh-syntax-highlighting", nice:19
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
 
 zplug "zsh-users/zsh-history-substring-search"
 zplug "sindresorhus/pure", ignore:"*.zsh", \
-      hook-load: "{
+      hook-load:"{
 ln -sf $ZPLUG_HOME/repos/sindresorhus/pure/pure.zsh $HOME/.zfunctions/prompt_pure_setup
 ln -sf $ZPLUG_HOME/repos/sindresorhus/pure/async.zsh $HOME/.zfunctions/async
 }"
 zplug "seebi/dircolors-solarized"
 
 zplug "zsh-users/zsh-completions", \
-      hook-load: "fpath=("$ZPLUG_REPOS/zsh-users/zsh-completions" $fpath)"
+      hook-load:"fpath=("$ZPLUG_REPOS/zsh-users/zsh-completions" $fpath)", \
+      ignore:"*.zsh"
 zplug "zsh-users/zsh-autosuggestions"
 
 zplug "b4b4r07/enhancd", use:init.sh
@@ -29,14 +30,14 @@ zplug "b4b4r07/zsh-vimode-visual"
 
 zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
 zplug "junegunn/fzf", as:command, use:bin/fzf-tmux
-zplug "junegunn/fzf", use:"shell/*.zsh"
+zplug "junegunn/fzf", use:"shell/*.zsh", as:plugin
 
 zplug "modules/completion", from:prezto
 zplug "modules/directory", from:prezto
 zplug "modules/history", from:prezto
 zplug "modules/rsync", from:prezto
 
-zplug "seebi/dircolors-solarized"
+zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
 
 # Install plugins if there are plugins that have not been installed
 if ! zplug check --verbose; then
@@ -81,5 +82,8 @@ alias zmv='noglob zmv -W'
 if (which zprof > /dev/null) ;then
     zprof | less
 fi
+
+# rust
+alias rust='cargo-script'
 
 source ~/dotfiles/tmux.zsh

@@ -1,0 +1,11 @@
+# -*- mode: toml -*-
+[term]
+verbose = false        # whether cargo provides verbose output
+color = 'never'         # whether cargo colorizes output
+
+[alias]
+b = "build"
+t = "test"
+r = "run"
+rr = "run --release"
+space_example = ["run", "--release", "--", "\"command list\""]

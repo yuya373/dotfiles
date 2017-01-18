@@ -36,6 +36,8 @@ alias gitf='git-flow'
 
 alias b="bundle exec"
 alias bs="bundle exec spring"
+alias bss="bs server"
+alias bst="bs status"
 
 alias t="tmuximum"
 

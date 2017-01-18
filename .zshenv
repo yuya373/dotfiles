@@ -9,12 +9,6 @@ export PATH=/usr/local/bin:${PATH}
 #     source "${ZDOTDIR:-$HOME}/.zprofile"
 # fi
 
-if [ -e ${HOME}/.cargo/bin ]; then
-    export PATH=${HOME}/.cargo/bin:${PATH}
-    export CARGO_HOME=${HOME}/.cargo
-    export RUST_SRC_PATH=${HOME}/rustc-1.8.0/src
-fi
-
 if [ -e ${HOME}/.cabal/bin ]; then
     export PATH=${HOME}/.cabal/bin:${PATH}
 fi
@@ -34,11 +28,6 @@ fi
 if [ -d ${HOME}/.roswell ]; then
     export PATH=${HOME}/.roswell/bin:${PATH}
 fi
-
-if [ -d $HOME/.multirust/toolchains/stable/cargo/bin ]; then
-    export PATH=$HOME/.multirust/toolchains/stable/cargo/bin:$PATH
-fi
-
 
 # export EDITOR='vim'
 export SYS_NOTIFIER=`which terminal-notifier`
@@ -67,3 +56,6 @@ export PATH=$HOME/.nodebrew/current/bin:$PATH
 export NODE_BINARY=$HOME/.nodebrew/current/bin/node
 export PATH=$HOME/.local/bin:$PATH
 export TERM='xterm-256color'
+export SBT_OPTS="-Xms512m -Xmx512m -XX:ReservedCodeCacheSize=128m -XX:MaxMetaspaceSize=256m"
+
+export PATH="$HOME/.cargo/bin:$PATH"
