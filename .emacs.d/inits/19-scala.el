@@ -31,10 +31,8 @@
   (require 'evil))
 
 (el-get-bundle scala-mode)
-(el-get-bundle ensime
-  :type github
-  :pkgname "ensime/ensime-emacs"
-  :checkout "2621509bc9811c103d7efc999d4722e9d4c788e9")
+(el-get-bundle ensime)
+(el-get-bundle yasnippet)
 
 (use-package scala-mode
   :mode (("\\.scala\\'" . scala-mode))
@@ -62,25 +60,32 @@
     ",ss" 'sbt-start
     ",sc" 'sbt-command))
 
+(use-package yasnippet
+  :commands (yas-minor-mode))
+
 (use-package ensime
-  :commands (ensime-scala-mode-hook)
+  :commands (ensime-mode ensime)
   :init
-  (setq ensime-sbt-perform-on-save nil)
-  (setq ensime-completion-style 'company)
-  (setq ensime-sem-high-enabled-p t)
-  (setq ensime-typecheck-when-idle nil)
-  (setq ensime-use-helm t)
-  (setq ensime-tooltip-type-hints t)
-  (setq ensime-auto-generate-config nil)
+  (add-hook 'scala-mode-hook 'ensime-mode)
+  (setq ensime-startup-notification nil
+        ensime-startup-snapshot-notification nil
+        ensime-sbt-perform-on-save nil
+        ensime-completion-style 'company
+        ensime-sem-high-enabled-p t
+        ensime-typecheck-when-idle t
+        ensime-use-helm t
+        ensime-tooltip-type-hints t
+        ensime-auto-generate-config nil
+        )
   ;; (defun ensime-typecheck-lazy ()
   ;;   (if (and (bound-and-true-p ensime-mode)
   ;;            (bound-and-true-p ensime-buffer-connection))
   ;;       (ensime-typecheck-current-buffer)))
   ;; ensime typecheck ensime-source-buffer-saved-hook, so disable this
   ;; (add-hook 'evil-insert-state-exit-hook 'ensime-typecheck-lazy)
-  (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 
   (defun ensime-print-errors-only-at-point ()
+    (interactive)
     (let ((msg (ensime-errors-at (point))))
       (when msg
         (message "%s" msg))))
@@ -104,13 +109,26 @@
   (add-hook 'sbt-mode-hook #'(lambda ()
                                (ensime-inf-company)
                                (company-mode t)))
-  (add-hook 'ensime-mode-hook
-            #'(lambda ()
-                (company-mode)
-                (kill-local-variable 'company-backends)
-                (make-local-variable 'company-backends)
-                (add-to-list 'company-backends
-                             '(ensime-company :with company-dabbrev-code))))
+  (defun ensime-company-enable ()
+    (interactive)
+    (make-local-variable 'company-backends)
+    (company-mode t)
+    (add-to-list 'company-backends
+                 '(ensime-company :with company-dabbrev))
+
+    (set (make-local-variable 'company-idle-delay) 0)
+    (set (make-local-variable 'company-minimum-prefix-length) 2)
+
+    ;; https://github.com/joaotavora/yasnippet/issues/708#issuecomment-222517433
+    (yas-minor-mode t)
+    (make-local-variable 'yas-minor-mode-map)
+    (define-key yas-minor-mode-map [(tab)] nil)
+    (define-key yas-minor-mode-map (kbd "TAB") nil)
+
+    (if (window-system)
+        (local-set-key [tab] #'ensime-company-complete-or-indent)
+      (local-set-key (kbd "TAB") #'ensime-company-complete-or-indent)))
+
   :config
   ;; (require 'ensime-expand-region)
   (defun advice-ensime-imenu-index-function (org-func)

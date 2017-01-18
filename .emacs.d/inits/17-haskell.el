@@ -102,7 +102,7 @@
 ;;   (defun my-company-ghc-init ()
 ;;     (make-local-variable 'company-backends)
 ;;     (add-to-list 'company-backends
-;;                  '(company-ghc :with company-dabbrev-code)))
+;;                  '(company-ghc :with company-dabbrev)))
 ;;   (add-hook 'haskell-mode-hook 'my-company-ghc-init))
 
 (provide '17-haskell)

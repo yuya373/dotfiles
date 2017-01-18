@@ -41,32 +41,36 @@
   (setq solarized-distinct-doc-face t)
 
   ;; (setq solarized-use-more-italic t)
-
-  (defun load-default-theme ()
-    (load-solarized-dark))
-  (defun load-solarized-dark ()
-    (setq solarized-use-less-bold t)
-    (load-theme 'solarized-dark t)
-    (install-my-spaceline-theme)
-    (setq current-theme 'solarized-dark))
-  (defun load-solarized-light ()
-    (setq solarized-use-less-bold nil)
-    (load-theme 'solarized-light t)
-    (install-my-spaceline-theme)
-    (setq current-theme 'solarized-light))
-  (defvar current-theme)
-  (defun toggle-theme ()
-    (interactive)
-    (cl-case current-theme
-      (solarized-dark (load-solarized-light))
-      (solarized-light (load-solarized-dark))
-      (t (load-default-theme))))
-  (add-hook 'after-init-hook #'load-default-theme))
+  (when window-system
+    (defun load-default-theme ()
+      (load-solarized-dark))
+    (defun load-solarized-dark ()
+      (setq solarized-use-less-bold t)
+      (load-theme 'solarized-dark t)
+      (install-my-spaceline-theme)
+      (setq current-theme 'solarized-dark))
+    (defun load-solarized-light ()
+      (setq solarized-use-less-bold nil)
+      (load-theme 'solarized-light t)
+      (install-my-spaceline-theme)
+      (setq current-theme 'solarized-light))
+    (defvar current-theme)
+    (defun toggle-theme ()
+      (interactive)
+      (cl-case current-theme
+        (solarized-dark (load-solarized-light))
+        (solarized-light (load-solarized-dark))
+        (t (load-default-theme))))
+    (add-hook 'after-init-hook #'load-default-theme))
+  )
 
 
 ;; (el-get-bundle material-theme)
-;; (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/material-theme")
-;; (add-hook 'after-init-hook #'(lambda () (load-theme 'material t)))
+;; (use-package material-theme
+;;   :init
+;;   (unless window-system
+;;     (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/material-theme")
+;;     (add-hook 'after-init-hook #'(lambda () (load-theme 'material t)))))
 
 (provide '12-theme)
 ;;; 12-theme.el ends here

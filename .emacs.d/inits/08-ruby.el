@@ -68,7 +68,8 @@
   (add-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode)
   (defun my-inf-ruby-mode-hook ()
     (make-local-variable 'company-backends)
-    (setq company-backends (remq 'company-capf company-backends)))
+    (setq company-backends (remq 'company-capf company-backends))
+    )
   (add-hook 'inf-ruby-mode-hook 'my-inf-ruby-mode-hook)
   :config
   (evil-define-key 'normal inf-ruby-minor-mode-map
@@ -86,6 +87,10 @@
   :init
   (setq robe-highlight-capf-candidates t)
   (add-hook 'enh-ruby-mode-hook 'robe-mode)
+  (defun disable-robe-eldoc ()
+    (interactive)
+    (setq-local eldoc-documentation-function nil))
+  (add-hook 'robe-mode-hook 'disable-robe-eldoc)
   :config
   (evil-define-key 'normal robe-mode-map (kbd ",rs") 'robe-start)
   (evil-define-key 'normal robe-mode-map (kbd ",rh") 'robe-doc)
@@ -111,29 +116,45 @@
          ("\\.\\(rb\\|rabl\\|ru\\|builder\\|rake\\|thor\\|gemspec\\|jbuilder\\|schema\\|cap\\)\\'" . enh-ruby-mode))
   :init
   (defun my-company-ruby ()
+    (interactive)
     (setq-default tab-width 2)
     (make-local-variable 'company-minimum-prefix-length)
     (setq company-minimum-prefix-length 2)
+    (make-local-variable 'company-idle-delay)
+    (setq company-idle-delay 0.5)
     (make-local-variable 'company-backends)
-    (add-to-list 'company-backends '(company-robe :with company-dabbrev-code))
-    (setq company-backends (remq 'company-capf company-backends))
+    ;; (add-to-list 'company-backends '(company-robe :with company-dabbrev))
+    (add-to-list 'company-backends '(company-dabbrev :with company-robe))
+    ;; (setq company-backends (remq 'company-capf company-backends))
     )
+  (setq company-idle-delay 0)
   (add-hook 'enh-ruby-mode-hook 'my-company-ruby)
-  ;; (modify-syntax-entry ?_ "w")
+  ;; (defun my-enh-setup-program ()
+  ;;   (setq enh-ruby-program rbenv-ruby-shim))
+  ;; (add-hook 'global-rbenv-mode-hook 'my-enh-setup-program)
   (setq enh-ruby-add-encoding-comment-on-save nil
         enh-ruby-deep-indent-paren nil
+        enh-ruby-program "/Users/yuyaminami/.rbenv/shims/ruby"
         ;; enh-ruby-deep-arglist t
         enh-ruby-bounce-deep-indent nil)
   ;; (setq ruby-insert-encoding-magic-comment nil)
   ;; (setq ruby-deep-indent-paren-style nil)
   ;; (setq ruby-align-chained-calls nil)
   (defun my-ruby-modify-syntax ()
-    (modify-syntax-entry ?$ "_" enh-ruby-mode-syntax-table)
-    (modify-syntax-entry ?@ "_" enh-ruby-mode-syntax-table)
-    (modify-syntax-entry ?: "_" enh-ruby-mode-syntax-table)
-    (modify-syntax-entry ?: "." enh-ruby-mode-syntax-table)
-    (modify-syntax-entry ?! "_" enh-ruby-mode-syntax-table)
-    (modify-syntax-entry ?_ "w" enh-ruby-mode-syntax-table))
+    (interactive)
+    (dolist (syntax-table (list enh-ruby-mode-syntax-table ruby-mode-syntax-table))
+      (dolist (tbl '((?$ . "_") (?@ . "_") (?: . "_") (?: . ".") (?! . "_") (?_ . "w") (?? . "w")))
+        (modify-syntax-entry (car tbl) (cdr tbl) syntax-table)))
+
+
+    ;; (modify-syntax-entry ?$ "_" enh-ruby-mode-syntax-table)
+    ;; (modify-syntax-entry ?@ "_" enh-ruby-mode-syntax-table)
+    ;; (modify-syntax-entry ?: "_" enh-ruby-mode-syntax-table)
+    ;; (modify-syntax-entry ?: "." enh-ruby-mode-syntax-table)
+    ;; (modify-syntax-entry ?! "_" enh-ruby-mode-syntax-table)
+    ;; (modify-syntax-entry ?_ "w" enh-ruby-mode-syntax-table)
+    ;; (modify-syntax-entry ?? "w" enh-ruby-mode-syntax-table)
+    )
   (add-hook 'enh-ruby-mode-hook 'my-ruby-modify-syntax)
   :config
 
@@ -157,6 +178,7 @@
   :diminish ruby-test-mode
   :commands (ruby-test-mode)
   :init
+  (setq ruby-test-default-library "spec")
   (add-hook 'enh-ruby-mode-hook 'ruby-test-mode)
   :config
   (evil-define-key 'normal ruby-test-mode-map (kbd ",tt") 'ruby-test-run-at-point)
@@ -180,7 +202,7 @@
     (let (command options)
       (if (file-exists-p ".zeus.sock")
           (setq command "zeus rspec")
-        (setq command "bundle exec spring rspec"))
+        (setq command "bundle exec spring rspec --format documentation"))
       (setq options ruby-test-rspec-options)
       (if line-number
           (setq filename (format "%s:%s" filename line-number)))

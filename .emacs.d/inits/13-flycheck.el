@@ -41,9 +41,10 @@
   (setq flycheck-emacs-lisp-load-path 'inherit)
   (add-hook 'prog-mode-hook 'flycheck-mode)
   (defun my/use-eslint-from-node-modules ()
+    (interactive)
     (let* ((root (locate-dominating-file
                   (or (buffer-file-name) default-directory)
-                  "node_modules"))
+                  ".eslintrc.js"))
            (eslint (and root
                         (expand-file-name "node_modules/eslint/bin/eslint.js"
                                           root))))

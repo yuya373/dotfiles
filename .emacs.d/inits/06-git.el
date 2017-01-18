@@ -151,6 +151,10 @@
     (set-face-foreground 'git-gutter-fr+-added    "#859900")
     (set-face-foreground 'git-gutter-fr+-deleted  "#dc322f")))
 
+(el-get-bundle git-link)
+(use-package git-link
+  :commands (git-link git-link-commit git-link-homepage))
+
 
 (provide '06-git)
 ;;; 06-git.el ends here

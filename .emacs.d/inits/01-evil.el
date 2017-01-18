@@ -110,6 +110,9 @@
                  (throw 'end-flag t)))))))
   (setq evil-overriding-maps nil)
   :config
+  (dolist (mode evil-motion-state-modes)
+    (push mode evil-normal-state-modes))
+  (setq evil-motion-state-modes nil)
   (use-package goto-chg)
   (add-hook 'evil-normal-state-exit-hook 'evil-ex-nohighlight)
   (use-package evil-anzu)
@@ -405,23 +408,26 @@
   (defun kill-buffers ()
     (interactive)
     (cl-labels
-        ((you-kill (buf)
-                   (let* ((buf-name (buffer-name buf))
-                          (window-buffers (mapcar #'window-buffer (window-list)))
-                          (window-buffer-names (mapcar #'buffer-name window-buffers))
-                          (first-char (substring-no-properties buf-name
-                                                               0 1)))
-                     (unless (or (string= " " first-char)
-                                 (string= "*" first-char)
-                                 (string= buf-name
-                                          (buffer-name (current-buffer)))
-                                 (cl-find-if #'(lambda (bn) (string= bn buf-name))
-                                             window-buffer-names))
-                       (kill-buffer buf)))))
+        ((kill (buf)
+               (let* ((buf-name (buffer-name buf))
+                      (window-buffers (mapcar #'window-buffer (window-list)))
+                      (window-buffer-names (mapcar #'buffer-name window-buffers))
+                      (first-char (substring-no-properties buf-name
+                                                           0 1)))
+                 (unless (or (string= " " first-char)
+                             (string= "*" first-char)
+                             (string= buf-name
+                                      (buffer-name (current-buffer)))
+                             (cl-find-if #'(lambda (bn) (string= bn buf-name))
+                                         window-buffer-names))
+                   (kill-buffer buf)))))
       (let ((debug-on-error t)
             (buf-list (if persp-mode (persp-buffer-list)
                         (buffer-list))))
-        (mapc #'you-kill buf-list))))
+        (mapc #'kill buf-list)
+        (and persp-mode
+             (mapc #'kill (cl-remove-if #'(lambda (buf) (not (persp-buffer-free-p buf)))
+                                        (buffer-list)))))))
   :config
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
@@ -481,6 +487,7 @@
     "hgp" 'helm-open-github-from-pull-requests
     "hl" 'helm-resume
     "hm" 'helm-all-mark-rings
+    "hi" 'helm-imenu-anywhere
     "ho" 'helm-semantic-or-imenu
     "hp" 'helm-list-emacs-process
     "ig" 'indent-guide-mode

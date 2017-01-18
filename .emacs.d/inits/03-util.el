@@ -373,11 +373,41 @@
 
 (use-package compile
   :init
+  (setq compilation-scroll-output nil)
   (defun compile-finish-notify-alert (buffer msg)
     ;; (message "buffer: %s" buffer)
     ;; (message "msg: %s" msg)
     (alert msg :title (buffer-name buffer)))
   (add-to-list 'compilation-finish-functions 'compile-finish-notify-alert))
+
+(el-get-bundle sr-speedbar)
+(use-package sr-speedbar
+  :commands (sr-speedbar-toggle)
+  :config
+  (evil-initial-state 'speedbar-mode 'normal)
+  (evil-declare-key 'normal speedbar-key-map
+    "h" 'backward-char
+    "j" 'speedbar-next
+    "k" 'speedbar-prev
+    "l" 'forward-char
+    "i" 'speedbar-item-info
+    "r" 'speedbar-refresh
+    "u" 'speedbar-up-directory
+    "o" 'speedbar-toggle-line-expansion
+    (kbd "C-h") 'evil-window-left
+    (kbd "RET") 'speedbar-edit-line))
+
+(el-get-bundle imenu-anywhere)
+
+(use-package imenu-anywhere
+  :commands (helm-imenu-anywhere))
+
+(use-package imenu
+  :defer t
+  :init
+  (setq imenu-auto-rescan t)
+  (add-hook 'imenu-after-jump-hook '(lambda ()
+                                      (recenter 10))))
 
 (provide '03-util)
 ;;; 03-util.el ends here

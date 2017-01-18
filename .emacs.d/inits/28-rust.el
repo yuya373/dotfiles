@@ -24,52 +24,57 @@
 
 ;;; Code:
 
-;; (el-get-bundle rust-mode)
-;; (use-package rust-mode
-;;   :mode (("\\.rs\\'" . rust-mode)))
+(el-get-bundle rust-mode)
+(use-package rust-mode
+  :mode (("\\.rs\\'" . rust-mode))
+  :init
+  (setq rust-format-on-save t))
 
-;; (el-get-bundle emacs-racer)
-;; (use-package racer
-;;   :commands (racer-mode)
-;;   :diminish racer-mode
-;;   :init
-;;   (global-set-key (kbd "TAB") #'company-indent-or-complete-common)
-;;   (setq racer-rust-src-path (expand-file-name "~/rustc-1.8.0/src"))
-;;   ;; (defun my-racer-setup ()
-;;   ;;   (make-local-variable 'company-backends)
-;;   ;;   (add-to-list 'company-backends
-;;   ;;                '(company-capf :with company-dabbrev-code)))
-;;   ;; (add-hook 'racer-mode-hook 'my-racer-setup)
-;;   (add-hook 'rust-mode-hook 'racer-mode)
-;;   (add-hook 'racer-mode-hook 'eldoc-mode))
+(el-get-bundle dash)
+(el-get-bundle s)
+(el-get-bundle racer-rust/emacs-racer
+  :name racer)
+(use-package racer
+  :commands (racer-mode)
+  :diminish racer-mode
+  :init
+  ;; (global-set-key (kbd "TAB") #'company-indent-or-complete-common)
+  (defun my-racer-setup ()
+    (make-local-variable 'company-backends)
+    (add-to-list 'company-backends '(company-capf :with company-dabbrev))
+    (setq-local company-minimum-prefix-length 0)
+    (setq-local company-idle-delay 0.1))
+  (add-hook 'racer-mode-hook 'my-racer-setup)
+  (add-hook 'racer-mode-hook 'eldoc-mode)
+  (add-hook 'rust-mode-hook 'racer-mode))
 
-;; (el-get-bundle flycheck-rust)
-;; (use-package flycheck-rust
-;;   :commands (flycheck-rust-setup)
-;;   :init
-;;   (add-hook 'flycheck-mode-hook 'flycheck-rust-setup))
+(el-get-bundle flycheck-rust)
+(use-package flycheck-rust
+  :commands (flycheck-rust-setup)
+  :init
+  (add-hook 'flycheck-mode-hook 'flycheck-rust-setup))
 
-;; (el-get-bundle cargo)
-;; (use-package cargo
-;;   :commands (cargo-minor-mode)
-;;   :diminish cargo-minor-mode
-;;   :init
-;;   (add-hook 'rust-mode-hook 'cargo-minor-mode)
-;;   :config
-;;   (evil-define-key 'normal cargo-minor-mode-map
-;;     ",C" 'cargo-process-clean
-;;     ",d" 'cargo-process-doc
-;;     ",b" 'cargo-process-build
-;;     ",n" 'cargo-process-new
-;;     ",i" 'cargo-process-init
-;;     ",r" 'cargo-process-run
-;;     ",s" 'cargo-process-search
-;;     ",u" 'cargo-process-update
-;;     ",B" 'cargo-process-bench))
+(el-get-bundle cargo)
+(use-package cargo
+  :commands (cargo-minor-mode)
+  :diminish cargo-minor-mode
+  :init
+  (add-hook 'rust-mode-hook 'cargo-minor-mode)
+  :config
+  (evil-define-key 'normal cargo-minor-mode-map
+    ",C" 'cargo-process-clean
+    ",d" 'cargo-process-doc
+    ",b" 'cargo-process-build
+    ",n" 'cargo-process-new
+    ",i" 'cargo-process-init
+    ",r" 'cargo-process-run
+    ",s" 'cargo-process-search
+    ",u" 'cargo-process-update
+    ",B" 'cargo-process-bench))
 
-;; (el-get-bundle toml-mode)
-;; (use-package toml-mode
-;;   :mode (("\\.toml\\'" . toml-mode)))
+(el-get-bundle toml-mode)
+(use-package toml-mode
+  :mode (("\\.toml\\'" . toml-mode)))
 
 (provide '28-rust)
 ;;; 28-rust.el ends here

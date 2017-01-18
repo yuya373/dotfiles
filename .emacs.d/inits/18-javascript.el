@@ -81,7 +81,7 @@
   (setq coffee-tab-width 2)
   (setq coffee-indent-tabs-mode nil))
 
-(el-get-bundle company-tern)
+(el-get-bundle company-tern :post-init nil)
 (use-package tern
   :commands (tern-mode)
   :init
@@ -93,7 +93,13 @@
   ;; (defun buffer-string-without-multibyte ()
   ;;   (strip-multibyte (buffer-string)))
   ;; (add-to-list 'tern-command "--no-port-file" t)
+  (evil-define-key 'normal tern-mode-keymap
+    ",gd" 'tern-find-definition
+    ",gD" 'tern-find-definition-by-name
+    ",ht" 'tern-get-type
+    ",hh" 'tern-get-docs)
   )
+
 (use-package company-tern
   :commands (company-tern)
   :init
@@ -102,8 +108,8 @@
     ;; (make-local-variable 'company-backends)
     ;; (make-local-variable 'company-idle-delay)
     ;; (setq company-backends (remq 'company-capf company-backends))
-    (add-to-list 'company-backends '(company-tern :with company-dabbrev-code))
-    ;; (add-to-list 'company-backends 'company-tern)
+    (setq company-backends (remq 'company-tern company-backends))
+    (add-to-list 'company-backends '(company-tern :with company-dabbrev))
     ;; (setq company-idle-delay 0)
     )
   (add-hook 'js2-mode-hook 'enable-company-tern)

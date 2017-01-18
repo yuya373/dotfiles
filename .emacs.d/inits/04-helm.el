@@ -28,14 +28,6 @@
   (require 'evil)
   (require 'evil-leader))
 
-;; imenu
-(use-package imenu
-  :defer t
-  :init
-  (setq imenu-auto-rescan t)
-  (add-hook 'imenu-after-jump-hook '(lambda ()
-                                      (recenter 10))))
-
 (el-get-bundle ace-window)
 (use-package ace-window
   :commands (ace-window aw-select aw-switch-to-window)
@@ -136,15 +128,56 @@
     (if (>= (1+ (length (window-list))) 3)
         (aw-switch-to-window (aw-select "Ace - Window"))))
 
-  (defun my-evil-vsplit-window (file-name)
-    (let ((evil-vsplit-window-right t)
-          (evil-auto-balance-windows t))
-      (evil-window-vsplit nil (expand-file-name file-name))))
+  (defun my-helm-normalize-candidate (candidate)
+    (cl-labels
+        ((normalize-string
+          (candidate)
+          (let ((candidates (split-string candidate ":"))
+                (default-directory (or helm-ag--default-directory
+                                       helm-ag--last-default-directory
+                                       default-directory)))
+            (expand-file-name (cl-first candidates)))))
+      (let ((file-name (or (and (stringp candidate)
+                                (normalize-string candidate))
+                           (and (consp candidate)
+                                (buffer-file-name (marker-buffer
+                                                   (cdr candidate))))
+                           (and (markerp candidate)
+                                (buffer-file-name (marker-buffer candidate)))
+                           (and (bufferp candidate)
+                                (buffer-file-name candidate)))))
+        file-name)))
 
-  (defun my-evil-split-window (file-name)
+  (defun my-handle-marker-position (candidate)
+    (let ((pos (or (markerp candidate)
+                   (and (consp candidate)
+                        (markerp (cdr candidate))
+                        (cdr candidate))
+                   (and (stringp candidate)
+                        (cl-second (split-string candidate ":"))))))
+      (when pos
+        (if (markerp candidate)
+            (with-current-buffer (current-buffer)
+              (goto-char (marker-position candidate)))
+          (progn
+            (goto-char (point-min))
+            (forward-line (1- (string-to-number pos))))))))
+
+  (defun my-evil-vsplit-window (candidate)
+    (message "candidate: %s" candidate)
+    (let ((evil-vsplit-window-right t)
+          (evil-auto-balance-windows t)
+          (file-name (my-helm-normalize-candidate candidate)))
+      (evil-window-vsplit nil (expand-file-name file-name))
+      (my-handle-marker-position candidate)))
+
+  (defun my-evil-split-window (candidate)
     (let ((evil-split-window-below nil)
-          (evil-auto-balance-windows t))
-      (evil-window-split nil (expand-file-name file-name))))
+          (evil-auto-balance-windows t)
+          (file-name (expand-file-name
+                      (my-helm-normalize-candidate candidate))))
+      (evil-window-split nil file-name)
+      (my-handle-marker-position candidate)))
 
   (defun ace-split-find-file (candidate)
     (switch-window-if-gteq-3-windows)
@@ -237,16 +270,16 @@
       (helm-exit-and-execute-action 'ace-vsplit-switch-to-buffer)))
 
   (defun ace-helm-find-file (candidate)
-    (let ((candidate (or (and (bufferp candidate) (buffer-file-name candidate))
-                         candidate)))
+    (let ((file-name (my-helm-normalize-candidate candidate)))
       (if (one-window-p)
-          (find-file-other-window (expand-file-name candidate))
-        (let ((buf (find-file-noselect (expand-file-name candidate)))
+          (find-file-other-window (expand-file-name file-name))
+        (let ((buf (find-file-noselect (expand-file-name file-name)))
               (window (aw-select "Ace - Window")))
           (unwind-protect
               (progn
                 (aw-switch-to-window window)
-                (switch-to-buffer buf)))))))
+                (switch-to-buffer buf))))))
+    (my-handle-marker-position candidate))
 
   (defun helm-ace-ff ()
     (interactive)
@@ -261,8 +294,8 @@
         (unwind-protect
             (progn
               (aw-switch-to-window window)
-
               (switch-to-buffer buf))))))
+
   (defun helm-ace-sb ()
     (interactive)
     (with-helm-alive-p
@@ -277,7 +310,18 @@
                                   (get-buffer c)))
                          (helm-find-buffer-on-elscreen c)
                        (helm-elscreen-find-file c))))))
-
+  ;; (defun helm-imenu--execute-action-at-once-p ()
+  ;;   ;; (let ((cur (helm-get-selection))
+  ;;   ;;       (mb (with-helm-current-buffer
+  ;;   ;;             (save-excursion
+  ;;   ;;               (goto-char (point-at-bol))
+  ;;   ;;               (point-marker)))))
+  ;;   ;;   (if (equal (cdr cur) mb)
+  ;;   ;;       (prog1 nil
+  ;;   ;;         (helm-set-pattern "")
+  ;;   ;;         (helm-force-update))
+  ;;   ;;     t))
+  ;;   nil)
   (defun helm-mini-or-persp ()
     (interactive)
     (if persp-mode

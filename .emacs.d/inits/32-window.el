@@ -120,9 +120,26 @@
           (bb-i (gethash (buffer-name bb) persp-buffer-list-ordering-index 1000001)))
       (< b-i bb-i)))
   :config
-  (setq persp-nil-name "!!!")
-  (setq persp-auto-save-opt 2)
-  (setq persp-when-kill-switch-to-buffer-in-perspective nil)
+  (setq persp-nil-name "####"
+        persp-autokill-buffer-on-remove t
+        persp-auto-save-opt 2
+        persp-when-kill-switch-to-buffer-in-perspective t
+        persp-kill-foreign-buffer-action 'kill
+        )
+
+  (add-to-list 'load-path (expand-file-name "~/dev/persp-tab-mode"))
+
+  (use-package persp-tab-mode
+    :config
+    (persp-tab-start))
+  ;; (add-hook 'find-file-hook 'persp-update-all-header-line t)
+  ;; (remove-hook 'find-file-hook 'persp-update-all-header-line)
+  ;; (add-hook 'kill-buffer-hook 'persp-update-all-header-line t)
+  ;; (remove-hook 'kill-buffer-hook 'persp-update-all-header-line)
+  ;; (remove-hook 'post-command-hook 'persp-update-header-line)
+  ;; (advice-remove 'persp-next 'persp-enable-update-header-line)
+  ;; (advice-remove 'persp-prev 'persp-enable-update-header-line)
+
   (defun persp-save-eww-buffer (buf)
     (with-current-buffer buf
       (when (string= major-mode "eww-mode")

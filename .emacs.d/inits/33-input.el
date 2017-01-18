@@ -74,15 +74,18 @@
       (skk-mode 1)
       (skk-latin-mode 1)))
   (add-hook 'evil-insert-state-entry-hook 'enable-skk-when-insert)
-  ;; (add-hook 'skk-mode-hook #'(lambda ()
-  ;;                              ;; (define-key skk-j-mode-map (kbd "C-h") 'skk-delete-backward-char)
-  ;;                              (evil-make-intercept-map skk-j-mode-map 'insert )))
+  ;; (add-hook 'skk-mode-hook
+  ;;           #'(lambda ()
+  ;;               (define-key skk-j-mode-map (kbd "C-h")
+  ;;                 'skk-delete-backward-char)
+  ;;               (evil-make-intercept-map skk-j-mode-map 'insert )))
   :config
   (use-package ccc)
   (use-package skk-hint)
   (use-package skk-cus)
   (use-package skk-macs)
-  (use-package skk-cursor)
+  (when window-system
+    (use-package skk-cursor))
   (use-package skk-server-completion)
   (use-package skk-kcode)
   (use-package skk-annotation)
