@@ -57,5 +57,8 @@ if [[ ! -d ~/.cargo ]]; then
 fi
 ln -sf ~/dotfiles/.cargo/config ~/.cargo/config
 
+# rubocop
+ln -sf ~/dotfiles/.rubocop.yml  ~/.rubocop.yml
+
 echo "Finished"
 
