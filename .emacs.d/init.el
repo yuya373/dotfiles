@@ -11,7 +11,7 @@
 ;; You may delete these explanatory comments.
 ;; (package-initialize)
 
-(setq gc-cons-threshold (* 512 1024 1024))
+(setq gc-cons-threshold (* 256 1024 1024))
 (setq garbage-collection-messages t)
 
 (when load-file-name
@@ -77,3 +77,11 @@
  '(avy-lead-face-0 ((t (:background "#6c71c4" :foreground "gray100"))))
  '(avy-lead-face-1 ((t (:background "#cb4b16" :foreground "gray100"))))
  '(avy-lead-face-2 ((t (:background "#2aa198" :foreground "gray100")))))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (wgrep-ag term-run org oauth2 log4j-mode inflections imenus git-link evil-magit eshell-prompt-extras electric-operator csv-mode avy-migemo auto-save-buffers-enhanced))))

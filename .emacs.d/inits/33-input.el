@@ -58,7 +58,7 @@
         skk-comp-circulate t)
   (setq skk-sticky-key ";")
   (setq skk-previous-candidate-keys (list "x" "\C-p"))
-  (setq skk-isearch-mode-enable 'always)
+  (setq skk-isearch-mode-enable nil)
 
   ;; skk-server AquaSKK
   (setq skk-server-portnum 1178
@@ -80,6 +80,7 @@
   ;;                 'skk-delete-backward-char)
   ;;               (evil-make-intercept-map skk-j-mode-map 'insert )))
   :config
+  (use-package skk-setup)
   (use-package ccc)
   (use-package skk-hint)
   (use-package skk-cus)
@@ -101,6 +102,7 @@
                '(skk-comp-by-server-completion) t)
   (evil-define-key 'insert skk-j-mode-map
     "\C-h" #'skk-delete-backward-char)
+
   (defun my-skk-control ()
     (if (bound-and-true-p skk-mode)
         (skk-latin-mode 1)))

@@ -20,6 +20,9 @@
 
 ;;; Commentary:
 
+;; Guide, Reference for Evil
+;; [noctuid/evil-guide: Draft of a guide for using emacs with evil](https://github.com/noctuid/evil-guide)
+
 ;;
 
 ;;; Code:
@@ -110,8 +113,14 @@
                  (throw 'end-flag t)))))))
   (setq evil-overriding-maps nil)
   :config
-  (dolist (mode evil-motion-state-modes)
-    (push mode evil-normal-state-modes))
+  (setq evil-normal-state-modes
+        (append
+         ;; evil-emacs-state-modes
+         evil-insert-state-modes
+         evil-normal-state-modes
+         evil-motion-state-modes))
+  ;; (setq evil-emacs-state-modes nil)
+  (setq evil-insert-state-modes nil)
   (setq evil-motion-state-modes nil)
   (use-package goto-chg)
   (add-hook 'evil-normal-state-exit-hook 'evil-ex-nohighlight)
@@ -193,13 +202,37 @@
   (defun evil-keyboard-quit ()
     "Keyboard quit and force normal state."
     (interactive)
+    (message "evil-keyboard-quit: %s" evil-mode)
     (and evil-mode (evil-force-normal-state))
     (keyboard-quit))
+  (define-key evil-read-key-map       (kbd "C-g") #'evil-keyboard-quit)
   (define-key evil-normal-state-map   (kbd "C-g") #'evil-keyboard-quit)
   (define-key evil-motion-state-map   (kbd "C-g") #'evil-keyboard-quit)
   (define-key evil-insert-state-map   (kbd "C-g") #'evil-keyboard-quit)
   (define-key evil-window-map         (kbd "C-g") #'evil-keyboard-quit)
   (define-key evil-operator-state-map (kbd "C-g") #'evil-keyboard-quit)
+  ;; [emacs - Evil Mode best practice? - Stack Overflow](http://stackoverflow.com/questions/8483182/evil-mode-best-practice/10166400#10166400)
+  ;;; esc quits
+  ;;   (defun minibuffer-keyboard-quit ()
+  ;;     "Abort recursive edit.
+  ;; In Delete Selection mode, if the mark is active, just deactivate it;
+  ;; then it takes a second \\[keyboard-quit] to abort the minibuffer."
+  ;;     (interactive)
+  ;;     (if (and delete-selection-mode transient-mark-mode mark-active)
+  ;;         (setq deactivate-mark  t)
+  ;;       (when (get-buffer "*Completions*")
+  ;;         (delete-windows-on "*Completions*"))
+  ;;       (abort-recursive-edit)))
+
+  ;;   (define-key evil-normal-state-map [escape] 'keyboard-quit)
+  ;;   (define-key evil-visual-state-map [escape] 'keyboard-quit)
+  ;;   (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+  ;;   (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+  ;;   (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+  ;;   (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+  ;;   (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+  ;;   (global-set-key [escape] 'keyboard-quit)
+
   ;; C-h
   (define-key evil-normal-state-map (kbd "\C-?") 'evil-window-left)
   (keyboard-translate ?\C-h ?\C-?)
@@ -254,15 +287,20 @@
   ;; avy
   (use-package avy
     :init
-    (setq avy-background nil)
-    (setq avy-highlight-first nil)
+    (setq avy-background t)
+    (setq avy-highlight-first t)
     (setq avy-all-windows nil)
     ;; (setq avy-keys (number-sequence ?a ?z))
     (setq avy-keys (list ?a ?s ?d ?f ?g ?h ?j ?k ?l
-                         ?w ?e ?r ?t ?y ?u ?i ?o ?p))
+                         ?q ?w ?e ?r ?t ?y ?u ?i ?o ?p
+                         ?z ?x ?c ?v ?b
+                         ?n ?m ?, ?. ??))
     :config
     (evil-define-motion evil-avy-goto-char-in-line (count)
       :type inclusive
+      :jump t
+      :repeat motion
+      :keep-visual t
       (evil-without-repeat
         (let ((pnt (point))
               (buf (current-buffer)))
@@ -279,7 +317,8 @@
     (evil-define-motion evil-avy-goto-word (count)
       :type inclusive
       :jump t
-      :repeat abort
+      :repeat motion
+      :keep-visual t
       (evil-without-repeat
         (evil-enclose-avy-for-motion
           (call-interactively 'avy-migemo-goto-word-1))))
@@ -365,8 +404,8 @@
     (let* ((junk-dir "~/Dropbox/junk/")
            (current-date (split-string (format-time-string "%Y-%m-%d") "-"))
            (year (read-from-minibuffer "Year: " (car current-date)))
-           (month (read-from-minibuffer "Month: " (cadr current-date)))
-           (day (read-from-minibuffer "Day: " (caddr current-date))))
+           (month (and (< 1 (length year)) (read-from-minibuffer "Month: " (cadr current-date))))
+           (day (and (< 1 (length month)) (read-from-minibuffer "Day: " (caddr current-date)))))
       (if (and (not (eq 0 (* (length year) (length month) (length day)))))
           (helm-find-files-1 (expand-file-name (format "%s/%s-%s-%s" junk-dir year month day)))
         (helm-find-files-1 (expand-file-name junk-dir)))))
@@ -409,25 +448,23 @@
     (interactive)
     (cl-labels
         ((kill (buf)
-               (let* ((buf-name (buffer-name buf))
-                      (window-buffers (mapcar #'window-buffer (window-list)))
-                      (window-buffer-names (mapcar #'buffer-name window-buffers))
-                      (first-char (substring-no-properties buf-name
-                                                           0 1)))
-                 (unless (or (string= " " first-char)
-                             (string= "*" first-char)
-                             (string= buf-name
-                                      (buffer-name (current-buffer)))
-                             (cl-find-if #'(lambda (bn) (string= bn buf-name))
-                                         window-buffer-names))
-                   (kill-buffer buf)))))
+               (let ((buf-name (buffer-name buf)))
+                 (when buf-name
+                   (let* ((window-buffers (mapcar #'window-buffer (window-list)))
+                          (window-buffer-names (mapcar #'buffer-name window-buffers))
+                          (first-char (substring-no-properties buf-name 0 1)))
+                     (unless (or (string= " " first-char)
+                                 (string= "*" first-char)
+                                 (string= buf-name
+                                          (buffer-name (current-buffer)))
+                                 (cl-find-if #'(lambda (bn) (string= bn buf-name))
+                                             window-buffer-names))
+                       (kill-buffer buf)))))))
       (let ((debug-on-error t)
-            (buf-list (if persp-mode (persp-buffer-list)
+            (buf-list (if perspeen-mode (perspeen-ws-struct-buffers perspeen-current-ws)
                         (buffer-list))))
-        (mapc #'kill buf-list)
-        (and persp-mode
-             (mapc #'kill (cl-remove-if #'(lambda (buf) (not (persp-buffer-free-p buf)))
-                                        (buffer-list)))))))
+        (mapc #'kill buf-list))))
+
   :config
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
@@ -462,6 +499,7 @@
     "el" 'flycheck-list-errors
     "en" 'flycheck-next-error
     "ep" 'flycheck-previous-error
+    "eb" 'flycheck-buffer
     "fd" 'helm-projectile-find-dir
     "ff" 'helm-find-files
     "fp" 'helm-browse-project
@@ -491,6 +529,7 @@
     "ho" 'helm-semantic-or-imenu
     "hp" 'helm-list-emacs-process
     "ig" 'indent-guide-mode
+    "jw" 'avy-migemo-goto-word-1
     "jl" 'avy-goto-line
     "jc" 'avy-migemo-goto-char
     "ju" 'exec-ace-link
@@ -528,7 +567,8 @@
     "msf" 'slack-search-from-files
     "msm" 'slack-search-from-messages
     "mss" 'slack-search-select
-    "mt" 'slack-change-current-team
+    "mtt" 'slack-change-current-team
+    "mts" 'slack-thread-select
     "mus" 'slack-user-stars-list
     ;; "pd" 'prodigy
     "pk" 'projectile-invalidate-cache

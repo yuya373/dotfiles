@@ -55,7 +55,16 @@
   :config
   (use-package evil-flycheck
     :config
-    (setq flycheck-check-syntax-automatically '(evil-normal-state)))
+    (setq flycheck-check-syntax-automatically
+          '(evil-normal-state
+            keyboard-quit
+            evil-delete
+            evil-delete-line
+            evil-delete-marks
+            evil-delete-char
+            evil-paste-after
+            evil-paste-before
+            )))
   (defconst flycheck-error-list-format
     [("Line" 5 flycheck-error-list-entry-< :right-align t)
      ("Col" 3 nil :right-align t)

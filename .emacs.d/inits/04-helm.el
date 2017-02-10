@@ -164,7 +164,6 @@
             (forward-line (1- (string-to-number pos))))))))
 
   (defun my-evil-vsplit-window (candidate)
-    (message "candidate: %s" candidate)
     (let ((evil-vsplit-window-right t)
           (evil-auto-balance-windows t)
           (file-name (my-helm-normalize-candidate candidate)))
@@ -205,7 +204,7 @@
   (defun ace-ff--helm-ag (candidate)
     (message "%s" candidate)
     ;; (helm-ag--find-file-action candidate 'ace-
-    ;;                            (helm-ag--search-this-file-p))
+    (ace-helm-find-file candidate)
     )
 
   (defun helm-ace-ff-ag ()
@@ -271,6 +270,7 @@
 
   (defun ace-helm-find-file (candidate)
     (let ((file-name (my-helm-normalize-candidate candidate)))
+      (message "file-name: %s\ncandidate: %s" file-name candidate)
       (if (one-window-p)
           (find-file-other-window (expand-file-name file-name))
         (let ((buf (find-file-noselect (expand-file-name file-name)))
@@ -301,15 +301,6 @@
     (with-helm-alive-p
       (helm-exit-and-execute-action 'ace-helm-switch-to-buffer)))
 
-  (defun my-helm-elscreen ()
-    (interactive)
-    (with-helm-alive-p
-      (helm-exit-and-execute-action
-       #'(lambda (c) (if (or (listp c)
-                             (and (not (listp c))
-                                  (get-buffer c)))
-                         (helm-find-buffer-on-elscreen c)
-                       (helm-elscreen-find-file c))))))
   ;; (defun helm-imenu--execute-action-at-once-p ()
   ;;   ;; (let ((cur (helm-get-selection))
   ;;   ;;       (mb (with-helm-current-buffer
@@ -322,19 +313,12 @@
   ;;   ;;         (helm-force-update))
   ;;   ;;     t))
   ;;   nil)
-  (defun helm-mini-or-persp ()
-    (interactive)
-    (if persp-mode
-        (persp-helm-mini)
-      (helm-mini)))
-
   (with-eval-after-load "evil"
     (define-key evil-motion-state-map
-      (kbd "C-b") 'helm-mini-or-persp)
+      (kbd "C-b") 'helm-mini)
     (define-key evil-normal-state-map
-      (kbd "C-b") 'helm-mini-or-persp))
+      (kbd "C-b") 'helm-mini))
 
-  (define-key helm-map (kbd "C-e") 'my-helm-elscreen)
   (define-key helm-map (kbd "C-v") 'helm-ace-vsplit-ff)
   (define-key helm-map (kbd "C-s") 'helm-ace-split-ff)
   (define-key helm-map (kbd "C-o") 'helm-ace-ff)
@@ -343,21 +327,24 @@
   (define-key helm-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-map (kbd "C-w") 'backward-kill-word)
   (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
+  (define-key helm-map [escape] 'helm-keyboard-quit)
+  (define-key helm-map (kbd "C-[") 'helm-keyboard-quit)
+  (define-key helm-map (kbd "C-j") 'helm-next-source)
+  (define-key helm-map (kbd "C-k") 'helm-previous-source)
+  (define-key helm-map (kbd "C-n") 'helm-next-line)
+  (define-key helm-map (kbd "C-p") 'helm-previous-line)
 
 
-  (define-key helm-comp-read-map (kbd "C-e") 'my-helm-elscreen)
   (define-key helm-comp-read-map (kbd "C-v") 'helm-ace-vsplit-ff)
   (define-key helm-comp-read-map (kbd "C-s") 'helm-ace-split-ff)
   (define-key helm-comp-read-map (kbd "C-o") 'helm-ace-ff)
 
-  (define-key helm-buffer-map (kbd "C-e") 'my-helm-elscreen)
   (define-key helm-buffer-map (kbd "C-s") 'helm-ace-split-sb)
   (define-key helm-buffer-map (kbd "C-v") 'helm-ace-vsplit-sb)
   (define-key helm-buffer-map (kbd "C-d") 'helm-buffer-run-kill-buffers)
   (define-key helm-buffer-map (kbd "C-o") 'helm-ace-sb)
   (define-key helm-buffer-map (kbd "C-g") 'helm-keyboard-quit)
 
-  (define-key helm-find-files-map (kbd "C-e") 'my-helm-elscreen)
   (define-key helm-find-files-map (kbd "C-s") 'helm-ace-split-ff)
   (define-key helm-find-files-map (kbd "C-v") 'helm-ace-vsplit-ff)
   (define-key helm-find-files-map (kbd "C-t") 'helm-ff-run-etags)
@@ -367,7 +354,6 @@
   (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
   (define-key helm-find-files-map (kbd "C-d") 'helm-ff-run-delete-file)
 
-  (define-key helm-read-file-map (kbd "C-e") 'my-helm-elscreen)
   (define-key helm-read-file-map (kbd "C-s") 'helm-ace-split-ff)
   (define-key helm-read-file-map (kbd "C-v") 'helm-ace-vsplit-ff)
   (define-key helm-read-file-map (kbd "C-t") 'helm-ff-run-etags)
@@ -377,7 +363,6 @@
   (define-key helm-read-file-map (kbd "C-w") 'backward-kill-word)
   (define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
 
-  (define-key helm-generic-files-map (kbd "C-e") 'my-helm-elscreen)
   (define-key helm-generic-files-map (kbd "C-s") 'helm-ace-split-ff)
   (define-key helm-generic-files-map (kbd "C-v") 'helm-ace-vsplit-ff)
   (define-key helm-generic-files-map (kbd "C-o") 'helm-ace-ff)
@@ -387,12 +372,10 @@
   (define-key helm-generic-files-map (kbd "TAB") 'helm-execute-persistent-action)
 
   (with-eval-after-load "helm-ls-git"
-    (define-key helm-ls-git-map (kbd "C-e") 'my-helm-elscreen)
     (define-key helm-ls-git-map (kbd "C-s") 'helm-ace-split-ff)
     (define-key helm-ls-git-map (kbd "C-v") 'helm-ace-vsplit-ff)
     (define-key helm-ls-git-map (kbd "C-o") 'helm-ace-ff))
 
-  (define-key helm-ag-map (kbd "C-e") 'my-helm-elscreen)
   (define-key helm-ag-map (kbd "C-s") 'helm-ace-split-ag)
   (define-key helm-ag-map (kbd "C-v") 'helm-ace-vsplit-ag)
   (define-key helm-ag-map (kbd "C-o") 'helm-ace-ff-ag)

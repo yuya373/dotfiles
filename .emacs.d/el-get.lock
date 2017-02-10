@@ -1,5 +1,7 @@
 (setq el-get-lock-package-versions
-      '((toml-mode :checksum "f6c61817b00f9c4a3cab1bae9c309e0fc45cdd06")
+      '((helm-perspeen :checksum "9f1cfd4b9a4881e089486a02eeba07c551d5d706")
+        (perspeen :checksum "8fc32cf57fe8f38bf47e8bce99058ba3cc2561ad")
+        (toml-mode :checksum "f6c61817b00f9c4a3cab1bae9c309e0fc45cdd06")
         (cargo :checksum "670b34d9bf4207680b0783c2a0ea8b1c8f914e58")
         (flycheck-rust :checksum "f8ae845d4d7a18c1873ee1edd1a4db272fde5dd3")
         (racer :checksum "dc6c62e45a6e565b56e76162e7130ff102678bf7")
@@ -128,7 +130,7 @@
         (enh-ruby-mode :checksum "5493f9fde48557d6aaaf38dd63adfdd8538496ff")
         (emacs-browser-refresh :checksum "053f2a58732df5722b8086d465cc4265837cddb4")
         (emacs-async :checksum "54977d6c596a295f7519a0da36407c3a3e055b36")
-        (el-get :checksum "4a76c7e99edf7b3660fb8360261db1eba953958b")
+        (el-get :checksum "f98bbc72303e17fe6833ece472c5f110ccd97911")
         (deferred :checksum "9b46dedcb89923de417f7557743c4c22421f5787")
         (dash :checksum "958e3fb62fd326d3743c0603b80d24ab85712c03")
         (el-get-lock :checksum "df8cfe55441695865a64b97946750b6413a40425")
