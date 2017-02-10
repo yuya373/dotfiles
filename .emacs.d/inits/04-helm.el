@@ -178,6 +178,28 @@
       (evil-window-split nil file-name)
       (my-handle-marker-position candidate)))
 
+  (defun helm-perspeen-open-with-new-tab ()
+    (interactive
+     (with-helm-alive-p
+       (helm-exit-and-execute-action
+        #'(lambda (candidate)
+            (let ((file-name
+                   (expand-file-name
+                    (my-helm-normalize-candidate candidate))))
+              (perspeen-tab-new-tab-internal
+               (find-file-noselect file-name) 0)
+              (perspeen-tab-switch-internal
+               (-  (length (perspeen-tab-get-tabs)) 1))
+              (dolist (b (mapcar #'window-buffer (window-list)))
+                (unless (string= (buffer-file-name b)
+                                 file-name)
+                  (delete-window (get-buffer-window b))))
+              (let ((buffers (mapcar #'window-buffer (window-list))))
+                (if (< 1 (length buffers))
+                    (delete-window
+                     (get-buffer-window
+                      (car (last buffers))))))))))))
+
   (defun ace-split-find-file (candidate)
     (switch-window-if-gteq-3-windows)
     (my-evil-split-window candidate))
@@ -193,6 +215,7 @@
                    default-directory)))
       (switch-window-if-gteq-3-windows)
       (my-evil-split-window (concat dir filename))))
+
   (defun ace-split--helm-ag (candidate)
     (helm-ag--find-file-action candidate 'ace-split-helm-ag
                                (helm-ag--search-this-file-p)))
@@ -319,6 +342,7 @@
     (define-key evil-normal-state-map
       (kbd "C-b") 'helm-mini))
 
+  (define-key helm-map (kbd "C-t") 'helm-perspeen-open-with-new-tab)
   (define-key helm-map (kbd "C-v") 'helm-ace-vsplit-ff)
   (define-key helm-map (kbd "C-s") 'helm-ace-split-ff)
   (define-key helm-map (kbd "C-o") 'helm-ace-ff)
