@@ -85,5 +85,6 @@ fi
 
 # rust
 alias rust='cargo-script'
+alias mc='~/dotfiles/google_chrome'
 
 source ~/dotfiles/tmux.zsh
