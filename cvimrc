@@ -1,6 +1,4 @@
-set noautofocus
-set nosmoothscroll
-
+let searchlimit = 30
 let locale = "jp"
 let mapleader = ","
 let completionengines = ["google", "amazonjp"]
@@ -8,13 +6,20 @@ let searchengine amazonjp = "https://www.amazon.co.jp/s/&field-keywords=%s"
 let searchalias g = "google"
 let searchalias a = "amazonjp"
 
+set noautofocus
+set nosmoothscroll
+set nonativelinkorder
+set noshowtabindices
+set completeonopen
+set sortlinkhints
+set cncpcompletion
+
+unmap p
 unmap a
 map <Leader>g :tabnew<Space>google<Space>
 map <Leader>a :tabnew<Space>amazonjp<Space>
-
-map M centerMatchH
-map T centerMatchT
-map B centerMatchB
+map m centerMatchH
+map F createActiveTabbedHint
 map <Leader>f createTabbedHint
 map <Leader>h createHoverHint
 map <Leader>H createUnHoverHint
@@ -28,6 +33,10 @@ map b :buffer<Space>
 map <Leader>b :bookmark<Space>
 map <Leader>r reloadTabUncached
 map <Leader>x :restore<Space>
+map R reloadTabUncached
+map y yankUrl
+map J nextTab
+map K previousTab
 
 imap <C-A> selectAll
 imap <C-a> beginningOfLine
@@ -42,3 +51,4 @@ iunmap <C-i>
 iunmap <C-p>
 iunmap <C-n>
 iunmap <C-k>
+iunmap <C-j>
