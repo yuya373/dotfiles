@@ -76,7 +76,9 @@
  '(avy-lead-face ((t (:inherit isearch :foreground "gray100"))))
  '(avy-lead-face-0 ((t (:background "#6c71c4" :foreground "gray100"))))
  '(avy-lead-face-1 ((t (:background "#cb4b16" :foreground "gray100"))))
- '(avy-lead-face-2 ((t (:background "#2aa198" :foreground "gray100")))))
+ '(avy-lead-face-2 ((t (:background "#2aa198" :foreground "gray100"))))
+ '(perspeen-tab--header-line-active ((t (:inherit mode-line :background "#eee8d5" :foreground "#657b83" :weight bold))))
+ '(perspeen-tab--powerline-inactive1 ((t (:inherit mode-line)))))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

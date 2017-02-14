@@ -179,26 +179,26 @@
       (my-handle-marker-position candidate)))
 
   (defun helm-perspeen-open-with-new-tab ()
-    (interactive
-     (with-helm-alive-p
-       (helm-exit-and-execute-action
-        #'(lambda (candidate)
-            (let ((file-name
-                   (expand-file-name
-                    (my-helm-normalize-candidate candidate))))
-              (perspeen-tab-new-tab-internal
-               (find-file-noselect file-name) 0)
-              (perspeen-tab-switch-internal
-               (-  (length (perspeen-tab-get-tabs)) 1))
-              (dolist (b (mapcar #'window-buffer (window-list)))
-                (unless (string= (buffer-file-name b)
-                                 file-name)
-                  (delete-window (get-buffer-window b))))
-              (let ((buffers (mapcar #'window-buffer (window-list))))
-                (if (< 1 (length buffers))
-                    (delete-window
-                     (get-buffer-window
-                      (car (last buffers))))))))))))
+    (interactive)
+    (with-helm-alive-p
+      (helm-exit-and-execute-action
+       #'(lambda (candidate)
+           (let ((file-name (my-helm-normalize-candidate candidate)))
+             (perspeen-tab-new-tab-internal
+              (or (and file-name (find-file-noselect (expand-file-name file-name)))
+                  candidate)
+              0)
+             (perspeen-tab-switch-internal
+              (-  (length (perspeen-tab-get-tabs)) 1))
+             (dolist (b (mapcar #'window-buffer (window-list)))
+               (unless (string= (buffer-file-name b)
+                                file-name)
+                 (delete-window (get-buffer-window b))))
+             (let ((buffers (mapcar #'window-buffer (window-list))))
+               (if (< 1 (length buffers))
+                   (delete-window
+                    (get-buffer-window
+                     (car (last buffers)))))))))))
 
   (defun ace-split-find-file (candidate)
     (switch-window-if-gteq-3-windows)
@@ -359,34 +359,39 @@
   (define-key helm-map (kbd "C-p") 'helm-previous-line)
 
 
+  (define-key helm-comp-read-map (kbd "C-t") 'helm-perspeen-open-with-new-tab)
   (define-key helm-comp-read-map (kbd "C-v") 'helm-ace-vsplit-ff)
   (define-key helm-comp-read-map (kbd "C-s") 'helm-ace-split-ff)
   (define-key helm-comp-read-map (kbd "C-o") 'helm-ace-ff)
 
+  (define-key helm-buffer-map (kbd "C-t") 'helm-perspeen-open-with-new-tab)
   (define-key helm-buffer-map (kbd "C-s") 'helm-ace-split-sb)
   (define-key helm-buffer-map (kbd "C-v") 'helm-ace-vsplit-sb)
   (define-key helm-buffer-map (kbd "C-d") 'helm-buffer-run-kill-buffers)
   (define-key helm-buffer-map (kbd "C-o") 'helm-ace-sb)
   (define-key helm-buffer-map (kbd "C-g") 'helm-keyboard-quit)
 
+  (define-key helm-find-files-map (kbd "C-t") 'helm-perspeen-open-with-new-tab)
   (define-key helm-find-files-map (kbd "C-s") 'helm-ace-split-ff)
   (define-key helm-find-files-map (kbd "C-v") 'helm-ace-vsplit-ff)
-  (define-key helm-find-files-map (kbd "C-t") 'helm-ff-run-etags)
+  ;; (define-key helm-find-files-map (kbd "C-t") 'helm-ff-run-etags)
   (define-key helm-find-files-map (kbd "C-o") 'helm-ace-ff)
   (define-key helm-find-files-map (kbd "C-r") 'helm-ff-run-rename-file)
   (define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
   (define-key helm-find-files-map (kbd "C-d") 'helm-ff-run-delete-file)
 
+  (define-key helm-read-file-map (kbd "C-t") 'helm-perspeen-open-with-new-tab)
   (define-key helm-read-file-map (kbd "C-s") 'helm-ace-split-ff)
   (define-key helm-read-file-map (kbd "C-v") 'helm-ace-vsplit-ff)
-  (define-key helm-read-file-map (kbd "C-t") 'helm-ff-run-etags)
+  ;; (define-key helm-read-file-map (kbd "C-t") 'helm-ff-run-etags)
   (define-key helm-read-file-map (kbd "C-o") 'helm-ace-ff)
   (define-key helm-read-file-map (kbd "C-r") 'helm-ff-run-rename-file)
   (define-key helm-read-file-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-read-file-map (kbd "C-w") 'backward-kill-word)
   (define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
 
+  (define-key helm-generic-files-map (kbd "C-t") 'helm-perspeen-open-with-new-tab)
   (define-key helm-generic-files-map (kbd "C-s") 'helm-ace-split-ff)
   (define-key helm-generic-files-map (kbd "C-v") 'helm-ace-vsplit-ff)
   (define-key helm-generic-files-map (kbd "C-o") 'helm-ace-ff)
@@ -396,10 +401,12 @@
   (define-key helm-generic-files-map (kbd "TAB") 'helm-execute-persistent-action)
 
   (with-eval-after-load "helm-ls-git"
+    (define-key helm-ls-git-map (kbd "C-t") 'helm-perspeen-open-with-new-tab)
     (define-key helm-ls-git-map (kbd "C-s") 'helm-ace-split-ff)
     (define-key helm-ls-git-map (kbd "C-v") 'helm-ace-vsplit-ff)
     (define-key helm-ls-git-map (kbd "C-o") 'helm-ace-ff))
 
+  (define-key helm-ag-map (kbd "C-t") 'helm-perspeen-open-with-new-tab)
   (define-key helm-ag-map (kbd "C-s") 'helm-ace-split-ag)
   (define-key helm-ag-map (kbd "C-v") 'helm-ace-vsplit-ag)
   (define-key helm-ag-map (kbd "C-o") 'helm-ace-ff-ag)
