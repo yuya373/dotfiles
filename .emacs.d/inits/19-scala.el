@@ -77,12 +77,31 @@
         ensime-tooltip-type-hints t
         ensime-auto-generate-config nil
         )
-  ;; (defun ensime-typecheck-lazy ()
-  ;;   (if (and (bound-and-true-p ensime-mode)
-  ;;            (bound-and-true-p ensime-buffer-connection))
-  ;;       (ensime-typecheck-current-buffer)))
-  ;; ensime typecheck ensime-source-buffer-saved-hook, so disable this
-  ;; (add-hook 'evil-insert-state-exit-hook 'ensime-typecheck-lazy)
+  (defun ensime-typecheck-lazy ()
+    (if (and (bound-and-true-p ensime-mode)
+             (bound-and-true-p ensime-buffer-connection))
+        (ensime-typecheck-current-buffer)))
+
+  (defun evil-ensime-typeckeck ()
+    (if (and (bound-and-true-p ensime-mode)
+             (bound-and-true-p ensime-buffer-connection)
+             (ensime-connected-p))
+        (ensime-typecheck-current-buffer)))
+  (defun evil-ensime-sem-high-refresh ()
+    (if (and (bound-and-true-p ensime-mode)
+             (bound-and-true-p ensime-buffer-connection)
+             (ensime-connected-p))
+        (ensime-sem-high-refresh-buffer)))
+
+  (defun my-ensime-configure ()
+    (remove-hook 'ensime-source-buffer-saved-hook 'ensime-typecheck-current-buffer)
+    (remove-hook 'ensime-source-buffer-saved-hook 'ensime-sem-high-refresh-hook)
+
+    (add-hook 'evil-normal-state-entry-hook 'evil-ensime-typeckeck t)
+    (add-hook 'evil-normal-state-entry-hook 'evil-ensime-sem-high-refresh t)
+    )
+  (add-hook 'ensime-mode-hook 'my-ensime-configure)
+
 
   (defun ensime-print-errors-only-at-point ()
     (interactive)

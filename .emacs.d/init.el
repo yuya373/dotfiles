@@ -54,6 +54,41 @@
 (initchart-record-execution-time-of load file)
 (initchart-record-execution-time-of require feature)
 
+(defun update-packages ()
+  (interactive)
+  (let ((packages (collect-packages)))
+    (message "Updating Packages: %s" packages)
+    (dolist (package packages)
+      (ignore-errors (el-get-update package)))))
+
+(defun collect-packages ()
+  (interactive)
+  (let ((packages))
+    (with-current-buffer (current-buffer)
+      (let ((regex "\(el-get-bundle \\(.*\\)\)"))
+        (goto-char (point-min))
+        (while (re-search-forward regex nil t)
+          (let ((name (split-string (match-string 1) "/")))
+            (if (< 1 (length name))
+                (push (cadr name) packages)
+              (push (car name) packages))))))
+    (cl-remove-duplicates packages :test #'string=)))
+
+(defun el-get-update-all (&optional no-prompt)
+  "Performs update of all installed packages."
+  (interactive)
+  (when (or no-prompt
+            (yes-or-no-p
+             "Doo you really want to update all installed packages? "))
+    (let ((el-get-elpa-do-refresh 'once)
+          errors)
+      (mapc '(lambda (p) (condition-case e
+                             (el-get-update p)
+                           (error (push e errors))))
+            (el-get-list-package-names-with-status "installed"))
+      (message "Package Updated.")
+      (message "Errors: %s" errors))))
+
 ;; init-loader
 (el-get-bundle init-loader)
 (use-package init-loader
@@ -67,6 +102,7 @@
               (set-frame-parameter nil
                                    'fullscreen 'maximized))
           t)
+
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -86,4 +122,4 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (wgrep-ag term-run org oauth2 log4j-mode inflections imenus git-link evil-magit eshell-prompt-extras electric-operator csv-mode avy-migemo auto-save-buffers-enhanced))))
+    (persp-mode nlinum wgrep-ag term-run org oauth2 log4j-mode inflections imenus git-link evil-magit eshell-prompt-extras electric-operator csv-mode avy-migemo auto-save-buffers-enhanced))))

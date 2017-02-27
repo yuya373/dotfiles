@@ -208,29 +208,29 @@
   (define-key evil-read-key-map       (kbd "C-g") #'evil-keyboard-quit)
   (define-key evil-normal-state-map   (kbd "C-g") #'evil-keyboard-quit)
   (define-key evil-motion-state-map   (kbd "C-g") #'evil-keyboard-quit)
-  (define-key evil-insert-state-map   (kbd "C-g") #'evil-keyboard-quit)
+  (define-key evil-insert-state-map   (kbd "C-g") nil)
   (define-key evil-window-map         (kbd "C-g") #'evil-keyboard-quit)
   (define-key evil-operator-state-map (kbd "C-g") #'evil-keyboard-quit)
   ;; [emacs - Evil Mode best practice? - Stack Overflow](http://stackoverflow.com/questions/8483182/evil-mode-best-practice/10166400#10166400)
   ;;; esc quits
-  ;;   (defun minibuffer-keyboard-quit ()
-  ;;     "Abort recursive edit.
-  ;; In Delete Selection mode, if the mark is active, just deactivate it;
-  ;; then it takes a second \\[keyboard-quit] to abort the minibuffer."
-  ;;     (interactive)
-  ;;     (if (and delete-selection-mode transient-mark-mode mark-active)
-  ;;         (setq deactivate-mark  t)
-  ;;       (when (get-buffer "*Completions*")
-  ;;         (delete-windows-on "*Completions*"))
-  ;;       (abort-recursive-edit)))
+  (defun minibuffer-keyboard-quit ()
+    "Abort recursive edit.
+  In Delete Selection mode, if the mark is active, just deactivate it;
+  then it takes a second \\[keyboard-quit] to abort the minibuffer."
+    (interactive)
+    (if (and delete-selection-mode transient-mark-mode mark-active)
+        (setq deactivate-mark  t)
+      (when (get-buffer "*Completions*")
+        (delete-windows-on "*Completions*"))
+      (abort-recursive-edit)))
 
   ;;   (define-key evil-normal-state-map [escape] 'keyboard-quit)
   ;;   (define-key evil-visual-state-map [escape] 'keyboard-quit)
-  ;;   (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
-  ;;   (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
-  ;;   (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
-  ;;   (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
-  ;;   (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-map (kbd "C-[") 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-ns-map (kbd "C-[") 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-completion-map (kbd "C-[") 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-must-match-map (kbd "C-[") 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-isearch-map (kbd "C-[") 'minibuffer-keyboard-quit)
   ;;   (global-set-key [escape] 'keyboard-quit)
 
   ;; C-h
@@ -452,19 +452,24 @@
                  (when buf-name
                    (let* ((window-buffers (mapcar #'window-buffer (window-list)))
                           (window-buffer-names (mapcar #'buffer-name window-buffers))
+                          (tab-buffers (mapcar #'(lambda (tab) (get tab 'current-buffer))
+                                                    (perspeen-tab-get-tabs)))
+                          (tab-buffer-names (mapcar #'buffer-name tab-buffers))
                           (first-char (substring-no-properties buf-name 0 1)))
                      (unless (or (string= " " first-char)
                                  (string= "*" first-char)
                                  (string= buf-name
                                           (buffer-name (current-buffer)))
                                  (cl-find-if #'(lambda (bn) (string= bn buf-name))
+                                             tab-buffer-names)
+                                 (cl-find-if #'(lambda (bn) (string= bn buf-name))
                                              window-buffer-names))
                        (kill-buffer buf)))))))
       (let ((debug-on-error t)
-            (buf-list (if perspeen-mode (perspeen-ws-struct-buffers perspeen-current-ws)
+            (buf-list (if perspeen-mode
+                          (perspeen-ws-struct-buffers perspeen-current-ws)
                         (buffer-list))))
         (mapc #'kill buf-list))))
-
   :config
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key

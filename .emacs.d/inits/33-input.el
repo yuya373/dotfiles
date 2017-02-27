@@ -45,6 +45,7 @@
         skk-show-annotation t
         skk-annotation-show-wikipedia-url t
         skk-use-look t
+        skk-look-recursive-search t
         )
   (setq skk-show-tooltip nil
         skk-show-inline nil
@@ -59,6 +60,8 @@
   (setq skk-sticky-key ";")
   (setq skk-previous-candidate-keys (list "x" "\C-p"))
   (setq skk-isearch-mode-enable nil)
+  (setq skk-check-okurigana-on-touroku 'auto)
+  (setq skk-use-numeric-conversion t)
 
   ;; skk-server AquaSKK
   (setq skk-server-portnum 1178
@@ -100,8 +103,6 @@
                '(skk-server-completion-search) t)
   (add-to-list 'skk-completion-prog-list
                '(skk-comp-by-server-completion) t)
-  (evil-define-key 'insert skk-j-mode-map
-    "\C-h" #'skk-delete-backward-char)
 
   (defun my-skk-control ()
     (if (bound-and-true-p skk-mode)

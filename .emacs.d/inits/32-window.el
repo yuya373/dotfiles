@@ -99,10 +99,21 @@
   :commands (perspeen-mode)
   :init
   (setq perspeen-use-tab t)
+  (setq perspeen-workspace-default-name "emacs")
   (add-hook 'evil-mode-hook 'perspeen-mode)
   :config
   (use-package helm-perspeen
     :config
+
+    (define-key helm-perspeen-workspaces-map
+      (kbd "C-d")
+      '(lambda () (interactive) (helm-exit-and-execute-action 'helm-perspeen--kill-workspace)))
+    (define-key helm-perspeen-workspaces-map
+      (kbd "C-r")
+      '(lambda () (interactive) (helm-exit-and-execute-action 'helm-perspeen--rename-workspace)))
+    (define-key helm-perspeen-tabs-map
+      (kbd "C-d")
+      '(lambda () (interactive) (helm-exit-and-execute-action 'helm-perspeen--kill-tab)))
 
     (setq helm-source-perspeen-create-tab nil)
     (setq helm-source-perspeen-create-tab

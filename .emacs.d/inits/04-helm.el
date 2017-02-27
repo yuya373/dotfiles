@@ -184,21 +184,10 @@
       (helm-exit-and-execute-action
        #'(lambda (candidate)
            (let ((file-name (my-helm-normalize-candidate candidate)))
-             (perspeen-tab-new-tab-internal
+             (helm-perspeen--switch-to-buffer-tab
               (or (and file-name (find-file-noselect (expand-file-name file-name)))
-                  candidate)
-              0)
-             (perspeen-tab-switch-internal
-              (-  (length (perspeen-tab-get-tabs)) 1))
-             (dolist (b (mapcar #'window-buffer (window-list)))
-               (unless (string= (buffer-file-name b)
-                                file-name)
-                 (delete-window (get-buffer-window b))))
-             (let ((buffers (mapcar #'window-buffer (window-list))))
-               (if (< 1 (length buffers))
-                   (delete-window
-                    (get-buffer-window
-                     (car (last buffers)))))))))))
+                  candidate))
+             (my-handle-marker-position candidate))))))
 
   (defun ace-split-find-file (candidate)
     (switch-window-if-gteq-3-windows)

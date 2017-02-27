@@ -82,13 +82,14 @@ http://www.emacswiki.org/emacs/AlignCommands"
                   (concat regexp "\\([[:space:]]*\\)")
                   1 spacing t)))
 ;; linum
-(use-package linum
-  :commands (linum-mode)
+(el-get-bundle nlinum)
+(use-package nlinum
+  :commands (nlinum-mode)
   :init
-  (setq linum-eager nil)
-  (setq linum-format "%4d ")
-  (setq linum-delay t)
-  (add-hook 'prog-mode-hook 'linum-mode))
+  (setq nlinum-eager nil)
+  (setq nlinum-format "%4d ")
+  (setq nlinum-delay t)
+  (add-hook 'prog-mode-hook 'nlinum-mode))
 
 (use-package elec-pair
   :commands (electric-pair-mode)
@@ -142,6 +143,7 @@ http://www.emacswiki.org/emacs/AlignCommands"
              quickrun-shell)
   :init
   (setq quickrun-focus-p nil))
+
 
 (provide '02-prog-mode)
 ;;; 02-prog-mode.el ends here

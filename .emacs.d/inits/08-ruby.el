@@ -37,6 +37,11 @@
   :github h3poteto/ruby-block.el)
 (el-get-bundle ruby-end)
 
+(defun my-ruby-modify-syntax (tables)
+  (dolist (syntax-table tables)
+    (dolist (tbl '((?$ . "_") (?@ . "_") (?: . "_") (?: . ".") (?! . "_") (?_ . "w") (?? . "w")))
+      (modify-syntax-entry (car tbl) (cdr tbl) syntax-table))))
+
 (use-package ruby-end
   :commands (ruby-end-mode)
   :diminish ruby-end-mode
@@ -138,22 +143,9 @@
   ;; (setq ruby-insert-encoding-magic-comment nil)
   ;; (setq ruby-deep-indent-paren-style nil)
   ;; (setq ruby-align-chained-calls nil)
-  (defun my-ruby-modify-syntax ()
-    (interactive)
-    (dolist (syntax-table (list enh-ruby-mode-syntax-table ruby-mode-syntax-table))
-      (dolist (tbl '((?$ . "_") (?@ . "_") (?: . "_") (?: . ".") (?! . "_") (?_ . "w") (?? . "w")))
-        (modify-syntax-entry (car tbl) (cdr tbl) syntax-table)))
-
-
-    ;; (modify-syntax-entry ?$ "_" enh-ruby-mode-syntax-table)
-    ;; (modify-syntax-entry ?@ "_" enh-ruby-mode-syntax-table)
-    ;; (modify-syntax-entry ?: "_" enh-ruby-mode-syntax-table)
-    ;; (modify-syntax-entry ?: "." enh-ruby-mode-syntax-table)
-    ;; (modify-syntax-entry ?! "_" enh-ruby-mode-syntax-table)
-    ;; (modify-syntax-entry ?_ "w" enh-ruby-mode-syntax-table)
-    ;; (modify-syntax-entry ?? "w" enh-ruby-mode-syntax-table)
-    )
-  (add-hook 'enh-ruby-mode-hook 'my-ruby-modify-syntax)
+  (defun my-enh-ruby-modify-syntax ()
+    (my-ruby-modify-syntax (list enh-ruby-mode-syntax-table ruby-mode-syntax-table)))
+  (add-hook 'enh-ruby-mode-hook 'my-enh-ruby-modify-syntax)
   :config
 
   (evil-define-key 'normal enh-ruby-mode-map
@@ -205,14 +197,25 @@
       (if line-number
           (setq filename (format "%s:%s" filename line-number)))
       (format "%s %s %s" command (mapconcat 'identity options " ") filename)))
-
-  )
+  (defun ruby-test-run-command (command)
+    (let ((default-directory (or (ruby-test-rails-root filename)
+                                 (ruby-test-ruby-root filename)
+                                 default-directory)))
+      (compilation-start command t))))
 
 (el-get-bundle yaml-mode)
 (use-package yaml-mode
   :mode (("\\.yml\\'" . yaml-mode)
          ("\\.yaml\\'" . yaml-mode)))
 
+(el-get-bundle haml-mode)
+(use-package haml-mode
+  :mode (("\\.haml\\'" . haml-mode))
+  :init
+  (defun my-haml-mode-modify-syntax ()
+    (interactive)
+    (my-ruby-modify-syntax (list haml-mode-syntax-table)))
+  (add-hook 'haml-mode-hook 'my-haml-mode-modify-syntax))
 
 
 (provide '08-ruby)
