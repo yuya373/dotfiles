@@ -184,9 +184,10 @@
       (helm-exit-and-execute-action
        #'(lambda (candidate)
            (let ((file-name (my-helm-normalize-candidate candidate)))
-             (helm-perspeen--switch-to-buffer-tab
+             (perspeen-tab-create-tab
               (or (and file-name (find-file-noselect (expand-file-name file-name)))
-                  candidate))
+                  candidate)
+              0)
              (my-handle-marker-position candidate))))))
 
   (defun ace-split-find-file (candidate)

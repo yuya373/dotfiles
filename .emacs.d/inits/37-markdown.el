@@ -59,6 +59,7 @@
       "<" 'markdown-exdent-region
       ",C" 'markdown-insert-gfm-code-block)
     (evil-define-key 'normal gfm-mode-map
+      (kbd "TAB") 'markdown-cycle
       ",i" nil
       ",iL" 'markdown-insert-list-item
       ",ilr" 'markdown-insert-reference-link-dwim
@@ -106,10 +107,7 @@
                                  (expand-file-name "~/.emacs.d/el-get/github-syntax-light/lib/github-light.css")
                                  ))
   (setq markdown-xhtml-header-content nil)
-
-  (defun md-add-body-class-name ()
-    (message "%s" (buffer-substring-no-properties (point-min) (point-max))))
-  (add-hook 'markdown-after-export-hook 'md-add-body-class-name)
+  (add-hook 'markdown-mode-hook 'outline-minor-mode)
   (setq markdown-body-class-name "markdown-body")
   :config
   (defun markdown-add-xhtml-header-and-footer (title)
@@ -154,5 +152,6 @@
   :commands (open-junk-file)
   :config
   (setq open-junk-file-format "~/Dropbox/junk/%Y-%m-%d."))
+
 (provide '37-markdown)
 ;;; 37-markdown.el ends here

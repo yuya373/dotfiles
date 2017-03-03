@@ -7,7 +7,7 @@
         (pcre2el :checksum "0b5b2a2c173aab3fd14aac6cf5e90ad3bf58fa7d")
         (sr-speedbar :checksum "aff15b95636c552b0e92f44c49dbe6187f3c79bb")
         (ample-regexps :checksum "c806766693827a9ca12a6a07f6294260d6ef776e")
-        (helm-perspeen :checksum "0dea81ec3d65008e595713b31d0a4b52d6bb110d")
+        (helm-perspeen :checksum "7fe2922d85608bfa9e18269fc44181428b8849ff")
         (perspeen :checksum "cca16ec338454acbad26f4d1d57a463a034bdd44")
         (toml-mode :checksum "f6c61817b00f9c4a3cab1bae9c309e0fc45cdd06")
         (cargo :checksum "25ca2fcbd6b664cc7a20b0cccca3adc19e79917a")
