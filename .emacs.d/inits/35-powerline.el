@@ -29,7 +29,7 @@
   (el-get-bundle TheBB/spaceline)
   (require 'spaceline)
   (el-get-bundle pdf-tools)
-  (require 'pdf-tools))
+  (require 'pdf-view))
 
 (el-get-bundle powerline)
 (el-get-bundle TheBB/spaceline)

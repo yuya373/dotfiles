@@ -76,6 +76,7 @@
         ensime-use-helm t
         ensime-tooltip-type-hints t
         ensime-auto-generate-config nil
+        ensime-company-case-sensitive t
         )
   (defun ensime-typecheck-lazy ()
     (if (and (bound-and-true-p ensime-mode)

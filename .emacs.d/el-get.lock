@@ -136,7 +136,7 @@
         (enh-ruby-mode :checksum "5493f9fde48557d6aaaf38dd63adfdd8538496ff")
         (emacs-browser-refresh :checksum "053f2a58732df5722b8086d465cc4265837cddb4")
         (emacs-async :checksum "54977d6c596a295f7519a0da36407c3a3e055b36")
-        (el-get :checksum "6b707565b7328d8bcb8898db1a5b9dffaa06cdf8")
+        (el-get :checksum "fd2d0b588d38bb70ad1226526165d27fca6d505a")
         (deferred :checksum "9668749635472a63e7a9282e2124325405199b79")
         (dash :checksum "98e819e407bbc35478cde30a74be15f077bd6d4b")
         (el-get-lock :checksum "df8cfe55441695865a64b97946750b6413a40425")

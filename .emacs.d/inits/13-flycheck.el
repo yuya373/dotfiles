@@ -52,6 +52,7 @@
         (setq-local flycheck-javascript-eslint-executable eslint))))
 
   (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
+  (setq flycheck-scalastylerc "~/dotfiles/scalastyle_config.xml")
   :config
   (use-package evil-flycheck
     :config
