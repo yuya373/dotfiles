@@ -1,0 +1,54 @@
+set noautofocus
+set nosmoothscroll
+set nativelinkorder
+set showtabindices
+set completeonopen
+
+let locale = "jp"
+let mapleader = ","
+let completionengines = ["google", "amazonjp"]
+let searchengine amazonjp = "https://www.amazon.co.jp/s/&field-keywords=%s"
+let searchalias g = "google"
+let searchalias a = "amazonjp"
+
+unmap a
+map <Leader>g :tabnew<Space>google<Space>
+map <Leader>a :tabnew<Space>amazonjp<Space>
+
+map M centerMatchH
+map T centerMatchT
+map B centerMatchB
+map F createActiveTabbedHint
+map <Leader>f createTabbedHint
+map <Leader>h createHoverHint
+map <Leader>H createUnHoverHint
+map tt :tabnew<Space>
+map tn nextTab
+map tp previousTab
+map tP pinTab
+map tf firstTab
+map tl lastTab
+map <Leader>b :bookmark<Space>
+map <Leader>r reloadTabUncached
+map <Leader>x :restore<Space>
+
+imap <C-A> selectAll
+imap <C-a> beginningOfLine
+imap <C-e> endOfLine
+imap <C-k> deleteToEnd
+imap <C-f> forwardWord
+imap <C-b> backwardWord
+imap <C-w> deleteWord
+imap <C-d> deleteForwardWord
+imap <C-h> deleteChar
+iunmap <C-i>
+iunmap <C-p>
+iunmap <C-n>
+iunmap <C-k>
+
+unmap p
+unmap H
+unmap L
+map b :buffer<Space>
+
+map y yankUrl
