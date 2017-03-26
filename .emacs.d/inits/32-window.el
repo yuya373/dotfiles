@@ -77,14 +77,22 @@
   (defun shackle-full-screen (buffer alist _plist)
     (display-buffer-full-screen buffer alist))
   (setq shackle-default-rule
-        '(:select t :align t :popup t :size 0.3 :inhibit-window-quit nil))
+        '(:select t ;; :align t :popup t :size 0.3 :inhibit-window-quit nil
+                  )
+        )
   (setq shackle-default-alignment 'below)
+  (setq shackle-rules nil)
   (setq shackle-rules
-        '(("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
-          ("COMMIT_EDITMSG" :regexp t :custom shackle-full-screen)
-          ("\\`\\*magit-.*?:.*?[^\\*]\\'" :regexp t :align right :size 0.5)
-          ("\\`\\*magit:.*?[^\\*]\\'" :regexp t :custom shackle-full-screen)
-          ("\\`\\*magit.*?\\*\\'" :regexp t :align t :size 0.4)
+        '(
+          ;; ("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
+          ("\\`\\*magit-.*-popup\\*\\'" :align right :size 0.5)
+          (magit-status-mode :custom shackle-full-screen)
+          (magit-log-mode :align right :size 0.5)
+          (magit-diff-mode :align right :size 0.5)
+          ;; ("COMMIT_EDITMSG" :regexp t :custom shackle-full-screen)
+          ;; ("\\`\\*magit-.*?:.*?[^\\*]\\'" :regexp t :align right :size 0.5)
+          ;; ("\\`\\*magit:.*?[^\\*]\\'" :regexp t :custom shackle-full-screen)
+          ;; ("\\`\\*magit.*?\\*\\'" :regexp t :align t :size 0.5)
           (inf-ruby-mode :align t :size 0.4)
           ("\\`\\*projectile-rails.*?\\*\\'"
            :regexp t :select nil :align t :size 0.4)
@@ -124,13 +132,27 @@
                      (lambda (candidate)
                        (perspeen-tab-create-tab) nil))))
 
+    (setq my-helm-source-perspeen-create-workspace
+          (helm-build-dummy-source
+              "Create perspeen workspace"
+            :action (helm-make-actions
+                     "Create Workspace (perspeen)"
+                     #'helm-source--perspeen-create-workspace)))
+
+    (defun helm-source--perspeen-create-workspace (candidate)
+      (perspeen-create-ws)
+      (perspeen-rename-ws candidate)
+      nil)
+
+    (advice-add 'helm-source--perspeen-create-workspace :after 'projectile-switch-project)
+
     (defun helm-perspeen ()
       "Display workspaces (perspeen.el) with helm interface."
       (interactive)
       (helm '(helm-source-perspeen-tabs
               helm-source-perspeen-workspaces
               ;; helm-source-perspeen-create-tab
-              helm-source-perspeen-create-workspace))))
+              my-helm-source-perspeen-create-workspace))))
 
   (defun my-perspeen-set-ws-root-dir (project-to-switch &optional arg)
     (perspeen-change-root-dir project-to-switch))

@@ -156,9 +156,9 @@
                    (and (stringp candidate)
                         (cl-second (split-string candidate ":"))))))
       (when pos
-        (if (markerp candidate)
+        (if (markerp pos)
             (with-current-buffer (current-buffer)
-              (goto-char (marker-position candidate)))
+              (goto-char (marker-position pos)))
           (progn
             (goto-char (point-min))
             (forward-line (1- (string-to-number pos))))))))

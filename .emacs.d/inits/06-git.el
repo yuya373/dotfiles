@@ -67,6 +67,7 @@
   (setq magit-restore-window-configuration t)
 
 
+  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
   ;; (setq magit-display-buffer-function #'magit-display-buffer-traditional)
   ;; (setq magit-display-buffer-function
   ;;       (lambda (buffer)
@@ -153,7 +154,9 @@
 
 (el-get-bundle git-link)
 (use-package git-link
-  :commands (git-link git-link-commit git-link-homepage))
+  :commands (git-link git-link-commit git-link-homepage)
+  :init
+  (setq git-link-default-branch "develop"))
 
 
 (provide '06-git)
