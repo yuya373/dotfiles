@@ -59,3 +59,4 @@ export TERM='xterm-256color'
 export SBT_OPTS="-Xms512m -Xmx512m -XX:ReservedCodeCacheSize=128m -XX:MaxMetaspaceSize=256m"
 
 export PATH="$HOME/.cargo/bin:$PATH"
+export WEBPACK_NOTIFY=true
