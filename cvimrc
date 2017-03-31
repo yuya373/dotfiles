@@ -37,6 +37,9 @@ map R reloadTabUncached
 map y yankUrl
 map J nextTab
 map K previousTab
+map M centerMatchH
+map T centerMatchT
+map B centerMatchB
 
 imap <C-A> selectAll
 imap <C-a> beginningOfLine
