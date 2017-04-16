@@ -77,18 +77,22 @@
   (defun shackle-full-screen (buffer alist _plist)
     (display-buffer-full-screen buffer alist))
   (setq shackle-default-rule
-        '(:select t ;; :align t :popup t :size 0.3 :inhibit-window-quit nil
-                  )
-        )
+        '(:select t :align t :popup t :inhibit-window-quit nil :size 0.4))
   (setq shackle-default-alignment 'below)
   (setq shackle-rules nil)
   (setq shackle-rules
         '(
           ;; ("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
+          (comint-mode :size 0.3 :select nil :align bottom :popup t :inhibit-window-quit nil)
+          ("*Backtrace*" :regexp t :popup t :size 0.3 :inhibit-window-quit t :align t)
+          (help-mode :select t :popup t :size 0.4 :inhibit-window-quit t :align t)
           ("\\`\\*magit-.*-popup\\*\\'" :align right :size 0.5)
+          (magit-revision-mode :popup nil :inhibit-window-quit nil :same t)
           (magit-status-mode :custom shackle-full-screen)
           (magit-log-mode :align right :size 0.5)
+          (magit-log-select-mode :align right :size 0.5)
           (magit-diff-mode :align right :size 0.5)
+          (magit-process-mode :align right :size 0.5)
           ;; ("COMMIT_EDITMSG" :regexp t :custom shackle-full-screen)
           ;; ("\\`\\*magit-.*?:.*?[^\\*]\\'" :regexp t :align right :size 0.5)
           ;; ("\\`\\*magit:.*?[^\\*]\\'" :regexp t :custom shackle-full-screen)
@@ -142,9 +146,14 @@
     (defun helm-source--perspeen-create-workspace (candidate)
       (perspeen-create-ws)
       (perspeen-rename-ws candidate)
+      (let ((projects (projectile-relevant-known-projects)))
+        (when projects
+          (projectile-completing-read
+           "Switch to project: " projects
+           :action (lambda (project)
+                     (projectile-switch-project-by-name project))
+           :initial-input candidate)))
       nil)
-
-    (advice-add 'helm-source--perspeen-create-workspace :after 'projectile-switch-project)
 
     (defun helm-perspeen ()
       "Display workspaces (perspeen.el) with helm interface."
