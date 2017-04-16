@@ -72,3 +72,6 @@ function extract() {
 }
 
 alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
+
+alias zombies="ps aux | grep defunct"
+alias pp="pstree -s -p"
