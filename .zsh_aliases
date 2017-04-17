@@ -49,8 +49,10 @@ alias resp_time="curl -s -w \"%{time_total}\n\" -o /dev/null"
 alias resp_time_m="curl_iphone -s -w \"%{time_total}\n\" -o /dev/null"
 alias t="tmuximum"
 
-alias tm="top -o mem"
-alias tp="top -o cpu"
+# alias tm="top -o mem"
+alias tm="top -o %MEM"
+# alias tp="top -o cpu"
+alias tp="top -o %CPU"
 
 alias du-cwd="du --block-size=M --total --max-depth=1 --all | sort -g"
 
@@ -72,3 +74,8 @@ function extract() {
 }
 
 alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
+alias chrome="chromium 2>/dev/null 1>/dev/null &"
+alias emacs="emacs &"
+alias pacman-list="pacman -Qe"
+alias pacman-zombie="pacman -Qtdq"
+alias lock="xscreensaver-command -lock"
