@@ -333,7 +333,6 @@
       (kbd "m") #'evil-avy-goto-word)
     (define-key evil-visual-state-map
       (kbd "m") #'evil-avy-goto-word)
-    (use-package migemo)
     (use-package avy-migemo)
     (avy-migemo-mode t)
     (use-package ace-link

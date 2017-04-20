@@ -228,17 +228,6 @@
   (setq dired-k-style 'git)
   (setq dired-k-human-readable t))
 
-;; (el-get-bundle emacschrome)
-;; (use-package edit-server
-;;   :commands (edit-server-start)
-;;   :init
-;;   (add-hook 'evil-mode-hook 'edit-server-start)
-;;   (setq edit-server-new-frame nil)
-;;   :config
-;;   (evil-define-key 'normal edit-server-text-mode-map
-;;     ",k" 'edit-server-abort
-;;     ",c" 'edit-server-done))
-
 (el-get-bundle auto-mark)
 (use-package auto-mark
   :commands (auto-mark-mode)

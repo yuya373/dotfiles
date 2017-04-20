@@ -61,7 +61,7 @@
   :commands (global-rbenv-mode rbenv-use-global rbenv-use-corresponding)
   :init
   (setq rbenv-show-active-ruby-in-modeline nil)
-  (setq rbenv-executable "/usr/local/Cellar/rbenv/HEAD/bin/rbenv")
+  (setq rbenv-executable "~/.rbenv/bin/rbenv")
   (add-hook 'enh-ruby-mode-hook 'global-rbenv-mode)
   (add-hook 'enh-ruby-mode-hook 'rbenv-use-global)
   ;; (add-hook 'enh-ruby-mode-hook (lambda () (rbenv-use-corresponding)))
@@ -137,7 +137,7 @@
   ;; (add-hook 'global-rbenv-mode-hook 'my-enh-setup-program)
   (setq enh-ruby-add-encoding-comment-on-save nil
         enh-ruby-deep-indent-paren nil
-        enh-ruby-program "/Users/yuyaminami/.rbenv/shims/ruby"
+        enh-ruby-program "~/.rbenv/shims/ruby"
         ;; enh-ruby-deep-arglist t
         enh-ruby-bounce-deep-indent nil)
   ;; (setq ruby-insert-encoding-magic-comment nil)

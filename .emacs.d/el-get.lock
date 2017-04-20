@@ -1,5 +1,10 @@
 (setq el-get-lock-package-versions
-      '((github-syntax-light :checksum "0a4409ccf2c79e27ab793a58f3b222fbbf845e96")
+      '((xclip :checksum "c4c4167405702b8f747f0ebd9b962ba075bdbeb8")
+        (company-ghc :checksum "ff2205c0b309467eea763521d30220e7849c75b0")
+        (ghc-mod :checksum "472db909d1b11288885de6fe36c3691be7f175ec")
+        (haskell-mode :checksum "8165d8a809c21e220a257806ebe88180cbc8694a")
+        (evil-magit :checksum "9251065b73c5023fc21d56f5b94c505cb7bee52d")
+        (github-syntax-light :checksum "0a4409ccf2c79e27ab793a58f3b222fbbf845e96")
         (primer-markdown :checksum "c9e9d7d7b1d19c589e9ed0c3d06f29d101b091fe")
         (nginx-mode :checksum "b58708d15a6659577945c0aa3a63983eebff2e67")
         (ddskk :checksum "e08b0cb6a53b4c61c18bbd5d6c4466ec9d8badcf")
