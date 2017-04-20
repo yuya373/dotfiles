@@ -1,1 +1,3 @@
 set -g @plugin 'tmux-plugins/tmux-yank'
+
+bind-key -t vi-copy y copy-pipe "xclip -selection clipboard"
