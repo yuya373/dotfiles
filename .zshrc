@@ -35,7 +35,7 @@ zplug "junegunn/fzf", use:"shell/*.zsh", as:plugin
 zplug "modules/completion", from:prezto
 zplug "modules/directory", from:prezto
 zplug "modules/history", from:prezto
-zplug "modules/rsync", from:prezto
+# zplug "modules/rsync", from:prezto
 
 zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
 
@@ -67,10 +67,19 @@ ZSH_AUTOSUGGEST_CLEAR_WIDGETS=(do_enter kill-line $ZSH_AUTOSUGGEST_CLEAR_WIDGETS
 setopt NO_BEEP
 setopt nonomatch
 
-#for brew-file
-if [ -f $(brew --prefix)/etc/brew-wrap ];then
-    source $(brew --prefix)/etc/brew-wrap
-fi
+case ${OSTYPE} in
+    darwin*)
+        # for brew-file
+        if [ -f $(brew --prefix)/etc/brew-wrap ];then
+            source $(brew --prefix)/etc/brew-wrap
+        fi
+        alias mc='~/dotfiles/google_chrome'
+        ;;
+    linux*)
+        ibus-daemon -drx
+        ;;
+esac
+
 
 autoload -U promptinit; promptinit
 prompt pure
@@ -85,6 +94,5 @@ fi
 
 # rust
 alias rust='cargo-script'
-alias mc='~/dotfiles/google_chrome'
 
 source ~/dotfiles/tmux.zsh

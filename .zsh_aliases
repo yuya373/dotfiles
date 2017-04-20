@@ -49,29 +49,42 @@ alias resp_time="curl -s -w \"%{time_total}\n\" -o /dev/null"
 alias resp_time_m="curl_iphone -s -w \"%{time_total}\n\" -o /dev/null"
 alias t="tmuximum"
 
-alias tm="top -o mem"
-alias tp="top -o cpu"
 
 alias du-cwd="du --block-size=M --total --max-depth=1 --all | sort -g"
 
 # [zshのalias -s (suffix alias)が神な件 - プログラムモグモグ](http://itchyny.hatenablog.com/entry/20130227/1361933011)
 function extract() {
-  case $1 in
-    *.tar.gz|*.tgz) tar xzvf $1;;
-    *.tar.xz) tar Jxvf $1;;
-    *.zip) unzip $1;;
-    *.lzh) lha e $1;;
-    *.tar.bz2|*.tbz) tar xjvf $1;;
-    *.tar.Z) tar zxvf $1;;
-    *.gz) gzip -d $1;;
-    *.bz2) bzip2 -dc $1;;
-    *.Z) uncompress $1;;
-    *.tar) tar xvf $1;;
-    *.arj) unarj $1;;
-  esac
+    case $1 in
+        *.tar.gz|*.tgz) tar xzvf $1;;
+        *.tar.xz) tar Jxvf $1;;
+        *.zip) unzip $1;;
+        *.lzh) lha e $1;;
+        *.tar.bz2|*.tbz) tar xjvf $1;;
+        *.tar.Z) tar zxvf $1;;
+        *.gz) gzip -d $1;;
+        *.bz2) bzip2 -dc $1;;
+        *.Z) uncompress $1;;
+        *.tar) tar xvf $1;;
+        *.arj) unarj $1;;
+    esac
 }
 
 alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
 
 alias zombies="ps aux | grep defunct"
 alias pp="pstree -s -p"
+
+
+
+case ${OSTYPE} in
+    darwin*)
+        alias tm="top -o mem"
+        alias tp="top -o cpu"
+        ;;
+    linux*)
+        alias chrome=">/dev/null 2>&1 google-chrome-stable &"
+        alias emacs="emacs &"
+        alias tm="top -o %MEM"
+        alias tp="top -o %CPU"
+        ;;
+esac
