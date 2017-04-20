@@ -1,13 +1,23 @@
 set -e
+case ${OSTYPE} in
+    darwin*)
+    ;;
+    linux*)
+        # X
+        ln -sf ~/dotfiles/.Xresources  ~/.Xresources
+        ln -sf ~/dotfiles/.Xmodmap  ~/.Xmodmap
+        ln -sf ~/dotfiles/SandS  ~/SandS
+        ;;
+esac
 
 # git
 ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
 
 # vim
-ln -sf ~/dotfiles/.vimrc ~/.vimrc
-ln -sf ~/dotfiles/.vimshrc ~/.vimshrc
-ln -sf ~/dotfiles/.gvimrc ~/.gvimrc
-ln -sf ~/dotfiles/.xvimrc ~/.xvimrc
+# ln -sf ~/dotfiles/.vimrc ~/.vimrc
+# ln -sf ~/dotfiles/.vimshrc ~/.vimshrc
+# ln -sf ~/dotfiles/.gvimrc ~/.gvimrc
+# ln -sf ~/dotfiles/.xvimrc ~/.xvimrc
 
 # zsh
 ln -sf ~/dotfiles/.zshrc ~/.zshrc
@@ -53,12 +63,15 @@ ln -sf ~/dotfiles/.pryrc  ~/.pryrc
 
 # rust
 if [[ ! -d ~/.cargo ]]; then
-    mkdir -p ~/.config
+    mkdir -p ~/.cargo
 fi
 ln -sf ~/dotfiles/.cargo/config ~/.cargo/config
 
 # rubocop
 ln -sf ~/dotfiles/.rubocop.yml  ~/.rubocop.yml
+
+# npm
+ln -sf ~/dotfiles/.npmrc ~/.npmrc
 
 echo "Finished"
 
