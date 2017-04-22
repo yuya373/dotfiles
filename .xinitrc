@@ -42,6 +42,7 @@ eval $(ssh-agent)
 $HOME/SandS
 xscreensaver -no-splash &
 xss-lock -- xscreensaver-command -lock &
+xbindkeys
 # systemctl --user start xremap
 # /usr/local/bin/xremap /home/yuya373/dotfiles/.xremap &
 
