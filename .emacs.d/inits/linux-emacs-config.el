@@ -40,9 +40,10 @@
   :init
   (add-hook 'company-mode-hook '(lambda () (company-quickhelp-mode t))))
 
-(el-get-bundle xclip)
-(use-package xclip)
-
+(use-package xclip
+  :commands (xclip-mode)
+  :init
+  (add-hook 'after-init-hook 'xclip-mode))
 
 (el-get-bundle migemo)
 (use-package migemo

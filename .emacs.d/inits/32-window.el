@@ -77,7 +77,7 @@
   (defun shackle-full-screen (buffer alist _plist)
     (display-buffer-full-screen buffer alist))
   (setq shackle-default-rule
-        '(:select t :align t :popup t :inhibit-window-quit nil :size 0.4))
+        '(:select t :align t :popup t :inhibit-window-quit nil :size 0.5))
   (setq shackle-default-alignment 'below)
   (setq shackle-rules nil)
   (setq shackle-rules
@@ -89,7 +89,7 @@
           ("\\`\\*magit-.*-popup\\*\\'" :align right :size 0.5)
           (magit-revision-mode :popup nil :inhibit-window-quit nil :same t)
           (magit-status-mode :custom shackle-full-screen)
-          (magit-log-mode :align right :size 0.5)
+          (magit-log-mode :custom shackle-full-screen)
           (magit-log-select-mode :align right :size 0.5)
           (magit-diff-mode :align right :size 0.5)
           (magit-process-mode :align right :size 0.5)

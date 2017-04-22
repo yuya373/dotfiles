@@ -36,7 +36,7 @@
   (setq define-input-method "japanese-skk")
 
   (setq skk-jisyo "~/Dropbox/skk-jisyo.ddskk"
-        skk-jisyo-code 'utf-8
+        skk-jisyo-code nil
         skk-share-private-jisyo t
         skk-save-jisyo-instantly t
         )
@@ -67,8 +67,19 @@
   (setq skk-server-portnum 1178
         skk-server-host "localhost"
         skk-server-report-response t)
-  ;; (setq skk-large-jisyo (concat user-emacs-directory
-  ;;                               "SKK-JISYO.L"))
+  (setq skk-large-jisyo "~/Dropbox/skk/dict/SKK-JISYO.L")
+  (setq skk-itaiji-jisyo "~/Dropbox/skk/dict/SKK-JISYO.itaiji")
+  ;; (setq skk-extra-jisyo-file-list '(
+  ;;                                   "~/Dropbox/skk/dict/SKK-JISYO.mazegaki"
+  ;;                                   "~/Dropbox/skk/dict/SKK-JISYO.station"
+  ;;                                   "~/Dropbox/skk/dict/SKK-JISYO.zipcode"
+  ;;                                   "~/Dropbox/skk/dict/SKK-JISYO.fullname"
+  ;;                                   "~/Dropbox/skk/dict/SKK-JISYO.geo"
+  ;;                                   "~/Dropbox/skk/dict/SKK-JISYO.jinmei"
+  ;;                                   "~/Dropbox/skk/dict/SKK-JISYO.law"
+  ;;                                   "~/Dropbox/skk/dict/SKK-JISYO.propernoun"
+  ;;                                   ))
+
 
   (setq skk-japanese-message-and-error t
         skk-show-japanese-menu t)

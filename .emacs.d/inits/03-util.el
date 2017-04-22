@@ -139,6 +139,7 @@
   ;; (add-hook 'markdown-mode-hook 'emojify-mode)
   ;; (add-hook 'git-commit-mode-hook 'emojify-mode)
   ;; (add-hook 'magit-mode-hook 'emojify-mode)
+  (setq emojify-inhibit-in-buffer-functions nil)
   )
 
 ;; (el-get-bundle syl20bnr/emacs-emoji-cheat-sheet-plus
