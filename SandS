@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# modKbd.sh
+
+# SandS configration
+
+killall xcape
+$(which xcape) -e '#65=space'
+
+# left alt keycode 64
+# right alt keycode 108
+# print src keycode 107
+# win keycode 133
+# caps lock keycode 66
