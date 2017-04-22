@@ -86,5 +86,6 @@ case ${OSTYPE} in
         alias emacs="emacs &"
         alias tm="top -o %MEM"
         alias tp="top -o %CPU"
+        alias ht="htop"
         ;;
 esac
