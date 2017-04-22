@@ -5,8 +5,11 @@ case ${OSTYPE} in
     linux*)
         # X
         ln -sf ~/dotfiles/.Xresources  ~/.Xresources
-        ln -sf ~/dotfiles/.Xmodmap  ~/.Xmodmap
         ln -sf ~/dotfiles/SandS  ~/SandS
+        ln -sf ~/dotfiles/.xbindkeysrc  ~/.xbindkeysrc
+        ln -sf ~/dotfiles/71-no-embedded-bitmaps.conf  ~/.config/fontconfig/conf.d/71-no-embedded-bitmaps.conf
+        ln -sf ~/dotfiles/70-synaptics.conf  /etc/X11/xorg.conf.d/70-synaptics.conf
+        ln -sf ~/dotfiles/10-monitor.conf  /etc/X11/xorg.conf.d/10-monitor.conf
         ;;
 esac
 
