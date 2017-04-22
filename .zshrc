@@ -75,11 +75,7 @@ case ${OSTYPE} in
         fi
         alias mc='~/dotfiles/google_chrome'
         ;;
-    linux*)
-        ibus-daemon -drx
-        ;;
 esac
-
 
 autoload -U promptinit; promptinit
 prompt pure
