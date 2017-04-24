@@ -27,7 +27,6 @@ myConfig = (ewmh $ defaultConfig) {
   , manageHook = myManageHook
   , handleEventHook = myEventHook
   , layoutHook =  myLayoutHook
-  , workspaces = map show [1..3]
   } `additionalKeys`
   [ ((mod1Mask .|. shiftMask, xK_z), spawn "xscreensaver-command -lock")
   -- , ((mod1Mask, xK_space), sendMessage $ Toggle FULL)
