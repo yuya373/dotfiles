@@ -10,6 +10,7 @@ import XMonad.Hooks.EwmhDesktops
 import XMonad.Actions.CycleWS
 import qualified XMonad.StackSet as W
 import XMonad.Actions.CycleRecentWS
+import XMonad.Util.Paste
 -- import XMonad.Config.Desktop
 
 -- baseConfig = desktopConfig
@@ -35,7 +36,7 @@ myConfig = (ewmh $ defaultConfig) {
   , ((mod1Mask, xK_Right), nextScreen)
   , ((mod1Mask, xK_Left), prevScreen)
   , ((mod1Mask .|. shiftMask, xK_c), kill)
-
+  , ((0, xK_Insert), pasteSelection)
   ]
 
 myStartupHook = do
