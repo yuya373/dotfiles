@@ -1,5 +1,5 @@
 Config {
-  font = "xft:Ricty:size=14:antialias=true:bold"
+  font = "xft:Ricty:size=14:antialias=true"
   , bgColor = "black"
   , fgColor = "#646464"
   , position = Top
