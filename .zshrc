@@ -10,7 +10,6 @@ fpath=("$HOME/.zfunctions" $fpath)
 source $ZPLUG_HOME/init.zsh
 
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
 
 zplug "zsh-users/zsh-history-substring-search"
 zplug "sindresorhus/pure", ignore:"*.zsh", \
@@ -74,6 +73,10 @@ case ${OSTYPE} in
             source $(brew --prefix)/etc/brew-wrap
         fi
         alias mc='~/dotfiles/google_chrome'
+        ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
+        ;;
+    linux*)
+        # ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
         ;;
 esac
 
