@@ -46,7 +46,6 @@ xbindkeys
 $HOME/dotfiles/start_yaskkserv.sh
 ibus-daemon -drx
 # systemctl --user start xremap
-xmodmap ~/.Xmodmap &
 /usr/local/bin/xremap /home/yuya373/dotfiles/.xremap &
 
 exec xmonad
