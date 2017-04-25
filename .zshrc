@@ -94,4 +94,6 @@ fi
 # rust
 alias rust='cargo-script'
 
+eval "$(direnv hook zsh)"
+
 source ~/dotfiles/tmux.zsh
