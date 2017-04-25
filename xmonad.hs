@@ -18,7 +18,10 @@ import XMonad.Util.Paste
 main = xmonad =<< statusBar moBar printer toggleStrutsKey myConfig
 
 moBar = "xmobar"
-printer = xmobarPP { ppCurrent = xmobarColor "#429942" "" . wrap "<" ">"}
+printer = xmobarPP {
+  ppCurrent = xmobarColor "#429942" "" . wrap "<" ">"
+  , ppOrder = \(ws:_) -> [ws]
+  }
 toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
 myConfig = (ewmh $ defaultConfig) {
   terminal = "urxvt"

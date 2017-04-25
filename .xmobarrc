@@ -8,7 +8,7 @@ Config {
 
   , sepChar = "%"
   , alignSep = "}{"
-  , template = "%StdinReader% }{ %battery% | %multicpu% | %coretemp% | %memory% | %dynnetwork% | %RJTT% | %date% "
+  , template = "%StdinReader% | %battery% | %multicpu% | %coretemp% | %memory% | %dynnetwork% }{ %RJTT% | %date% "
   , lowerOnStart = True
   , hideOnStart = False
   , allDesktops = True
