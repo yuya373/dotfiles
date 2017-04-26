@@ -10,6 +10,10 @@ case ${OSTYPE} in
         ln -sf ~/dotfiles/71-no-embedded-bitmaps.conf  ~/.config/fontconfig/conf.d/71-no-embedded-bitmaps.conf
         ln -sf ~/dotfiles/70-synaptics.conf  /etc/X11/xorg.conf.d/70-synaptics.conf
         ln -sf ~/dotfiles/10-monitor.conf  /etc/X11/xorg.conf.d/10-monitor.conf
+        if [[ ! -d ~/.config/zathura ]]; then
+            mkdir -p ~/.config/zathura
+        fi
+        ln -sf ~/dotfiles/.config/zathura/zathurarc ~/.config/zathura/zathurarc
         ;;
 esac
 
