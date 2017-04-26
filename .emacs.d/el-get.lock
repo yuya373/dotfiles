@@ -87,7 +87,7 @@
         (fringe-helper :checksum "ef4a9c023bae18ec1ddd7265f1f2d6d2e775efdd")
         (gist :checksum "62888de7f776c867a51cee4d5d55edc561e519cc")
         (tabulated-list :checksum "b547d9b728935102d1c418bc0e978c221c37f6ab")
-        (magit :checksum "b9078ee215822abe19c2f4cacb12b3e11ee413cc")
+        (magit :checksum "a34259407996c6d3b7e520ed38340017befa26ab")
         (with-editor :checksum "8ae3c7aed92842f5988671c1b3350c65c58857e0")
         (pos-tip :checksum "051e08fec5cf30b7574bdf439f79fef7d42d689d")
         (know-your-http-well :checksum "3cc5ab6d2764ab7aacb1b6e026abaccbeb6c37f2")
