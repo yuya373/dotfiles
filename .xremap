@@ -1,12 +1,12 @@
 # -*- mode: enh-ruby -*-
 
 window do
-  remap 'Alt_L', to: 'Control_L'
-  remap 'Alt_R', to: 'Control_R'
-  remap 'Super_L', to: 'Alt_L'
-  remap 'Print', to: 'Alt_R'
-  remap 'Caps_Lock', to: 'Tab'
-  remap 'space', to: 'Shift_L'
+  # remap 'Alt_L', to: 'Control_L'
+  # remap 'Alt_R', to: 'Control_R'
+  # remap 'Super_L', to: 'Alt_L'
+  # remap 'Print', to: 'Alt_R'
+  # remap 'Caps_Lock', to: 'Tab'
+  # remap 'space', to: 'Shift_L'
 end
 
 window class_not: ['urxvt', 'emacs', 'zathura'] do
