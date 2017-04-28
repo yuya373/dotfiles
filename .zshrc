@@ -10,7 +10,6 @@ fpath=("$HOME/.zfunctions" $fpath)
 source $ZPLUG_HOME/init.zsh
 
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
 
 zplug "zsh-users/zsh-history-substring-search"
 zplug "sindresorhus/pure", ignore:"*.zsh", \
@@ -35,7 +34,7 @@ zplug "junegunn/fzf", use:"shell/*.zsh", as:plugin
 zplug "modules/completion", from:prezto
 zplug "modules/directory", from:prezto
 zplug "modules/history", from:prezto
-zplug "modules/rsync", from:prezto
+# zplug "modules/rsync", from:prezto
 
 zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
 
@@ -67,10 +66,19 @@ ZSH_AUTOSUGGEST_CLEAR_WIDGETS=(do_enter kill-line $ZSH_AUTOSUGGEST_CLEAR_WIDGETS
 setopt NO_BEEP
 setopt nonomatch
 
-#for brew-file
-if [ -f $(brew --prefix)/etc/brew-wrap ];then
-    source $(brew --prefix)/etc/brew-wrap
-fi
+case ${OSTYPE} in
+    darwin*)
+        # for brew-file
+        if [ -f $(brew --prefix)/etc/brew-wrap ];then
+            source $(brew --prefix)/etc/brew-wrap
+        fi
+        alias mc='~/dotfiles/google_chrome'
+        ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
+        ;;
+    linux*)
+        # ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
+        ;;
+esac
 
 autoload -U promptinit; promptinit
 prompt pure
@@ -85,6 +93,7 @@ fi
 
 # rust
 alias rust='cargo-script'
-alias mc='~/dotfiles/google_chrome'
+
+eval "$(direnv hook zsh)"
 
 source ~/dotfiles/tmux.zsh

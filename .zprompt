@@ -1,7 +1,7 @@
 # -*- mode: sh -*-
 
 function zle-line-init zle-keymap-select {
-  PROMPT="$(my_vi_mode_prompt_info) %(?.%F{magenta}.%F{red})${PURE_PROMPT_SYMBOL:-❯}%f "
+  PROMPT="$(my_vi_mode_prompt_info) %(?.%F{magenta}.%F{red})${PURE_PROMPT_SYMBOL:->}%f "
   zle reset-prompt
 }
 

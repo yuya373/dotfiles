@@ -6,10 +6,10 @@ if patched_font_in_use; then
   TMUX_POWERLINE_SEPARATOR_RIGHT_BOLD="⮀"
   TMUX_POWERLINE_SEPARATOR_RIGHT_THIN="⮁"
 else
-  TMUX_POWERLINE_SEPARATOR_LEFT_BOLD="◀"
-  TMUX_POWERLINE_SEPARATOR_LEFT_THIN="❮"
-  TMUX_POWERLINE_SEPARATOR_RIGHT_BOLD="▶"
-  TMUX_POWERLINE_SEPARATOR_RIGHT_THIN="❯"
+  TMUX_POWERLINE_SEPARATOR_LEFT_BOLD="|"
+  TMUX_POWERLINE_SEPARATOR_LEFT_THIN="|"
+  TMUX_POWERLINE_SEPARATOR_RIGHT_BOLD="|"
+  TMUX_POWERLINE_SEPARATOR_RIGHT_THIN="|"
 fi
 
 BASE03="234"
@@ -46,8 +46,6 @@ if [ -z $TMUX_POWERLINE_LEFT_STATUS_SEGMENTS ]; then
     # "hostname 33 0" \
     #"ifstat 30 255" \
     #"ifstat_sys 30 255" \
-    "lan_ip ${BASE02} ${BLUE}" \
-    "wan_ip ${BASE02} ${BLUE}" \
     # "vcs_branch 29 88" \
     # "vcs_compare 60 255" \
     # "vcs_staged 64 255" \
@@ -58,6 +56,8 @@ fi
 
 if [ -z $TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS ]; then
   TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS=(
+    "lan_ip ${BASE02} ${BLUE}" \
+    "wan_ip ${BASE02} ${BLUE}" \
     #"earthquake 3 0" \
     "pwd ${BASE02} 211" \
     # "mailcount 9 255" \
@@ -66,12 +66,12 @@ if [ -z $TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS ]; then
     # "load 237 167" \
     #"tmux_mem_cpu_load 234 136" \
     # "battery 137 127" \
-    "weather ${BASE02} ${CYAN}" \
+    # "weather ${BASE02} ${CYAN}" \
     #"rainbarf 0 0" \
     #"xkb_layout 125 117" \
-    "date_day ${BASE02} ${YELLOW}" \
-    "date ${BASE02} ${YELLOW} ${TMUX_POWERLINE_SEPARATOR_LEFT_THIN}" \
-    "time ${BASE02} ${YELLOW} ${TMUX_POWERLINE_SEPARATOR_LEFT_THIN}" \
+    # "date_day ${BASE02} ${YELLOW}" \
+    # "date ${BASE02} ${YELLOW} ${TMUX_POWERLINE_SEPARATOR_LEFT_THIN}" \
+    # "time ${BASE02} ${YELLOW} ${TMUX_POWERLINE_SEPARATOR_LEFT_THIN}" \
     #"utc_time 235 136 ${TMUX_POWERLINE_SEPARATOR_LEFT_THIN}" \
   )
 fi

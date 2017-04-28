@@ -1,0 +1,63 @@
+Config {
+  font = "xft:Ricty:size=14:antialias=true"
+  , bgColor = "black"
+  , fgColor = "#646464"
+  , position = Top
+  , border = BottomB
+  , borderColor = "#646464"
+
+  , sepChar = "%"
+  , alignSep = "}{"
+  , template = "%StdinReader% | %battery% | %multicpu% | %coretemp% | %memory% | %dynnetwork% }{ %RJTT% | %date% "
+  , lowerOnStart = True
+  , hideOnStart = False
+  , allDesktops = True
+  , overrideRedirect = True
+  , pickBroadest = False
+  , persistent = True
+
+  , commands =
+    [ Run StdinReader
+    , Run Weather "RJTT" [ "--template", "<skyCondition> | <fc=#4682B4><tempC></fc>℃ | <fc=#4682B4><rh></fc>%"
+                         ] 3000
+    , Run DynNetwork [ "--template", "<dev>:↑ <tx>kB/s|↓ <rx>kB/s"
+                     , "--Low", "1000"
+                     , "--High", "5000"
+                     , "--low", "darkgreen"
+                     , "--normal", "darkorange"
+                     , "--high", "darkred"
+                     ] 10
+    , Run MultiCpu [ "--template", "Cpu: <total0>%|<total1>%|<total2>%|<total3>%"
+                   , "--Low", "50"
+                   , "--High", "85"
+                   , "--low", "darkgreen"
+                   , "--normal", "darkorange"
+                   , "--high", "darkred"
+                   ] 10
+    , Run CoreTemp [ "--template", "Temp: <core0>℃|<core1>℃"
+                   , "--Low", "70"
+                   , "--High", "80"
+                   , "--low", "darkgreen"
+                   , "--high", "darkred"
+                   ] 50
+    , Run Memory [ "--template", "Mem: <usedratio>%"
+                 , "--Low", "20"
+                 , "--High", "90"
+                 , "--low", "darkgreen"
+                 , "--normal", "darkorange"
+                 , "--high", "darkred"
+                 ] 10
+    , Run Battery [ "--template", "Batt: <acstatus>"
+                  , "--Low", "10"
+                  , "--High", "80"
+                  , "--low", "darkred"
+                  , "--normal", "darkorange"
+                  , "--high", "darkgreen"
+                  , "--"
+                  , "-o", "<left>% (<timeleft>)"
+                  , "-O", "<fc=#dAA520>Charging</fc>"
+                  , "-i", "<fc=#006000>Charged</fc>"
+                  ] 50
+    , Run Date "<fc=#ABABAB>%F (%a) %T</fc>" "date" 10
+    ]
+}

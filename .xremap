@@ -1,0 +1,32 @@
+# -*- mode: enh-ruby -*-
+
+window do
+  # remap 'Alt_L', to: 'Control_L'
+  # remap 'Alt_R', to: 'Control_R'
+  # remap 'Super_L', to: 'Alt_L'
+  # remap 'Print', to: 'Alt_R'
+  # remap 'Caps_Lock', to: 'Tab'
+  # remap 'space', to: 'Shift_L'
+end
+
+window class_not: ['urxvt', 'emacs', 'zathura'] do
+  remap 'C-b', to: 'Left'
+  remap 'C-f', to: 'Right'
+  remap 'C-p', to: 'Up'
+  remap 'C-n', to: 'Down'
+
+  # remap 'M-b', to: 'Ctrl-Left'
+  # remap 'M-f', to: 'Ctrl-Right'
+
+  remap 'C-a', to: 'Home'
+  remap 'C-e', to: 'End'
+
+  remap 'C-k', to: ['Shift-End', 'Ctrl-x']
+
+  remap 'C-d', to: 'Delete'
+  # remap 'M-d', to: 'Ctrl-Delete'
+
+  remap 'C-bracketleft', to: 'Escape'
+  remap 'C-h', to: 'BackSpace'
+  remap 'C-m', to: 'Return'
+end
