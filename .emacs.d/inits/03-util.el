@@ -73,7 +73,8 @@
   :commands (indent-guide-mode)
   :init
   (setq indent-guide-recursive t)
-  (setq indent-guide-delay 1)
+  (setq indent-guide-delay nil)
+  (add-hook 'emacs-lisp-mode 'indent-guide-mode)
   (add-hook 'lisp-mode-hook 'indent-guide-mode))
 
 (el-get-bundle restclient)
