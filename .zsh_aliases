@@ -49,7 +49,6 @@ alias resp_time="curl -s -w \"%{time_total}\n\" -o /dev/null"
 alias resp_time_m="curl_iphone -s -w \"%{time_total}\n\" -o /dev/null"
 alias t="tmuximum"
 
-
 alias du-cwd="du --block-size=M --total --max-depth=1 --all | sort -g"
 
 # [zshのalias -s (suffix alias)が神な件 - プログラムモグモグ](http://itchyny.hatenablog.com/entry/20130227/1361933011)
