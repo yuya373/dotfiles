@@ -31,8 +31,8 @@
   :mode (("\\.hs\\'" . haskell-mode)
          ("\\.lhs\\'" . literate-haskell-mode))
   :init
-  (add-hook 'haskell-mode-hook 'font-lock-mode)
-  (add-hook 'haskell-mode-hook 'inf-haskell-mode)
+  ;; (add-hook 'haskell-mode-hook 'font-lock-mode)
+  ;; (add-hook 'haskell-mode-hook 'inf-haskell-mode)
   (add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
   (add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
 
@@ -45,41 +45,37 @@
         haskell-interactive-mode-eval-mode 'haskell-mode
         )
   :config
-  (use-package inf-haskell
-    :diminish inf-haskell-mode)
+  ;; (use-package inf-haskell
+  ;;   :diminish inf-haskell-mode)
   (evil-define-key 'normal haskell-mode-map
     ",m" 'haskell-menu
-    ",sk" 'haskell-session-kill
-    ",scc" 'haskell-session-change
-    ",sct" 'haskell-session-change-target
-    ",sb" 'haskell-mode-stylish-buffer
-    ",If" 'haskell-mode-format-imports
-    ",Is" 'haskell-sort-imports
-    ",Ia" 'haskell-align-imports
-    ",Ij" 'haskell-navigate-imports
     ",c" 'haskell-compile
+    ",si" 'haskell-sort-imports
     ",gl" 'haskell-mode-goto-loc
-    ",ht" 'haskell-mode-show-type-at
-    ",is" 'haskell-interactive-switch
-    ",ir" 'haskell-process-restart
-    ",il" 'haskell-process-load-file
-    ",it" 'haskell-process-do-type
-    ",ii" 'haskell-process-do-info
-    ",ij" 'haskell-mode-jump-to-def-or-tag
-    ",iL" 'haskell-process-reload
-    "\C-]" 'haskell-mode-tag-find
+    ",gi" 'haskell-navigate-imports
+    ",fi" 'haskell-mode-format-imports
+    ",ai" 'haskell-align-imports
+    ;; ",ht" 'haskell-mode-show-type-at
+    ;; ",is" 'haskell-interactive-switch
+    ;; ",ir" 'haskell-process-restart
+    ;; ",il" 'haskell-process-load-file
+    ;; ",it" 'haskell-process-do-type
+    ;; ",ii" 'haskell-process-do-info
+    ;; ",ij" 'haskell-mode-jump-to-def-or-tag
+    ;; ",iL" 'haskell-process-reload
+    ;; "\C-]" 'haskell-mode-tag-find
     )
-  (evil-define-key 'insert haskell-interactive-mode-map
-    "\C-p" 'haskell-interactive-mode-history-previous
-    "\C-n" 'haskell-interactive-mode-history-next)
+  ;; (evil-define-key 'insert haskell-interactive-mode-map
+  ;;   "\C-p" 'haskell-interactive-mode-history-previous
+  ;;   "\C-n" 'haskell-interactive-mode-history-next)
   )
 
-(use-package haskell
-  :commands (interactive-haskell-mode)
-  :init
-  (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
-  :config
-  (require 'haskell-process))
+;; (use-package haskell
+;;   :commands (interactive-haskell-mode)
+;;   :init
+;;   (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+;;   :config
+;;   (require 'haskell-process))
 
 (use-package haskell-doc
   :commands (haskell-doc-mode)
@@ -92,20 +88,39 @@
   :init
   (add-hook 'haskell-mode-hook 'haskell-indentation-mode))
 
-(el-get-bundle company-ghc)
-(use-package ghc
-  :commands (ghc-init ghc-debug)
+(el-get-bundle intero)
+(use-package intero
+  :commands (intero-mode)
   :init
-  (add-hook 'haskell-mode-hook 'ghc-init))
+  (add-hook 'haskell-mode-hook 'intero-mode)
+  :config
+  (evil-define-key 'normal intero-mode-map
+    ",r" nil
+    ",rr" 'intero-repl
+    ",re" 'intero-repl-load
+    ",ht" 'intero-type-at
+    ",hi" 'intero-info
+    ",gd" 'intero-goto-definition
+    ",a" 'intero-apply-suggestions
+    ",e" 'intero-expand-splice-at-point
+    )
+  (evil-define-key 'normal intero-repl-mode-map
+    ",l" 'intero-repl-clear-buffer))
 
-(use-package company-ghc
-  :commands (company-ghc)
-  :init
-  (defun my-company-ghc-init ()
-    (make-local-variable 'company-backends)
-    (add-to-list 'company-backends
-                 '(company-ghc :with company-dabbrev)))
-  (add-hook 'haskell-mode-hook 'my-company-ghc-init))
+;; (el-get-bundle company-ghc)
+;; (use-package ghc
+;;   :commands (ghc-init ghc-debug)
+;;   :init
+;;   (add-hook 'haskell-mode-hook 'ghc-init))
+
+;; (use-package company-ghc
+;;   :commands (company-ghc)
+;;   :init
+;;   (defun my-company-ghc-init ()
+;;     (make-local-variable 'company-backends)
+;;     (add-to-list 'company-backends
+;;                  '(company-ghc :with company-dabbrev)))
+;;   (add-hook 'haskell-mode-hook 'my-company-ghc-init))
 
 (provide '17-haskell)
 ;; 17-haskell.el ends here

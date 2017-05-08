@@ -91,7 +91,7 @@
   (spaceline-define-segment pdf
     "pdf tool infomation"
     (when (eql major-mode 'pdf-view-mode)
-      (format "Page: %s" (pdf-view-current-page)))))
+      (format "Page: %s" (eval '(pdf-view-current-page))))))
 
 
 (provide '35-powerline)
