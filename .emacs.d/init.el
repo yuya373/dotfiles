@@ -122,4 +122,4 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (persp-mode nlinum wgrep-ag term-run org oauth2 log4j-mode inflections imenus git-link evil-magit eshell-prompt-extras electric-operator csv-mode avy-migemo auto-save-buffers-enhanced))))
+    (xclip persp-mode nlinum wgrep-ag term-run org oauth2 log4j-mode inflections imenus git-link evil-magit eshell-prompt-extras electric-operator csv-mode avy-migemo auto-save-buffers-enhanced))))

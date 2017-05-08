@@ -139,6 +139,7 @@
   ;; (add-hook 'markdown-mode-hook 'emojify-mode)
   ;; (add-hook 'git-commit-mode-hook 'emojify-mode)
   ;; (add-hook 'magit-mode-hook 'emojify-mode)
+  (setq emojify-inhibit-in-buffer-functions nil)
   )
 
 ;; (el-get-bundle syl20bnr/emacs-emoji-cheat-sheet-plus
@@ -227,17 +228,6 @@
   (add-hook 'dired-after-readin-hook 'dired-k-no-revert)
   (setq dired-k-style 'git)
   (setq dired-k-human-readable t))
-
-;; (el-get-bundle emacschrome)
-;; (use-package edit-server
-;;   :commands (edit-server-start)
-;;   :init
-;;   (add-hook 'evil-mode-hook 'edit-server-start)
-;;   (setq edit-server-new-frame nil)
-;;   :config
-;;   (evil-define-key 'normal edit-server-text-mode-map
-;;     ",k" 'edit-server-abort
-;;     ",c" 'edit-server-done))
 
 (el-get-bundle auto-mark)
 (use-package auto-mark

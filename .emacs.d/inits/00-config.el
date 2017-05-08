@@ -86,17 +86,6 @@
   (setq auto-insert-directory "~/dotfiles/vim/template")
   (define-auto-insert "PULLREQ_MSG" "PULLREQ_MSG"))
 
-(el-get-bundle exec-path-from-shell)
-(use-package exec-path-from-shell
-  ;; :commands (exec-path-from-shell-initialize)
-  :init
-  ;; (add-hook 'before-init-hook 'exec-path-from-shell-initialize)
-  (setq exec-path-from-shell-arguments '("-l"))
-  (setq exec-path-from-shell-variables '("PATH" "MANPATH" "LANG" "JAVA_HOME" "NODE_PATH"))
-  :config
-  (exec-path-from-shell-initialize)
-  )
-
 (use-package hideshow
   :commands (hs-minor-mode)
   :diminish hs-minor-mode

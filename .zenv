@@ -3,9 +3,9 @@
 # rbenv
 if [ -d ${HOME}/.rbenv ] ; then
     # eval "$(rbenv init - --no-rehash)"
-    export PATH="/Users/yuyaminami/.rbenv/shims:${PATH}"
+    export PATH="${HOME}/.rbenv/shims:${PATH}"
     export RBENV_SHELL=zsh
-    source '/usr/local/Cellar/rbenv/HEAD/libexec/../completions/rbenv.zsh'
+    # source '/usr/local/Cellar/rbenv/HEAD/libexec/../completions/rbenv.zsh'
     rbenv() {
         local command
         command="$1"
@@ -25,7 +25,7 @@ fi
 # pyenv
 if which pyenv > /dev/null; then
     # eval "$(pyenv init - --no-rehash)"
-    export PATH="/Users/yuyaminami/.pyenv/shims:${PATH}"
+    export PATH="${HOME}/.pyenv/shims:${PATH}"
     export PYENV_SHELL=zsh
     source '/usr/local/Cellar/pyenv/20160422/libexec/../completions/pyenv.zsh'
     pyenv() {
@@ -44,9 +44,15 @@ if which pyenv > /dev/null; then
     }
 fi
 
-# coreutils
-export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+
+case ${OSTYPE} in
+    darwin*)
+        # coreutils
+        export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+        export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+        ;;
+esac
+
 
 export FZF_COMPLETION_TRIGGER='**'
 export FZF_COMPLETION_OPTS='+c -x --inline-info'

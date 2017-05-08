@@ -1,13 +1,34 @@
 set -e
+case ${OSTYPE} in
+    darwin*)
+    ;;
+    linux*)
+        # X
+        ln -sf ~/dotfiles/.Xresources  ~/.Xresources
+        ln -sf ~/dotfiles/SandS  ~/SandS
+        ln -sf ~/dotfiles/.xbindkeysrc  ~/.xbindkeysrc
+        ln -sf ~/dotfiles/70-synaptics.conf  /etc/X11/xorg.conf.d/70-synaptics.conf
+        ln -sf ~/dotfiles/10-monitor.conf  /etc/X11/xorg.conf.d/10-monitor.conf
+        if [[ ! -d ~/.config/zathura ]]; then
+            mkdir -p ~/.config/zathura
+        fi
+        ln -sf ~/dotfiles/.config/zathura/zathurarc ~/.config/zathura/zathurarc
+        if [[ ! -d ~/.config/fontconfig/conf.d ]]; then
+            mkdir -p ~/.config/fontconfig/conf.d
+        fi
+        ln -sf ~/dotfiles/.config/fontconfig/conf.d/71-no-embedded-bitmaps.conf  ~/.config/fontconfig/conf.d/71-no-embedded-bitmaps.conf
+        ln -sf ~/dotfiles/.config/fontconfig/conf.d/72-use-twitter-color-emoji.conf ~/.config/fontconfig/conf.d/72-use-twitter-color-emoji.conf
+        ;;
+esac
 
 # git
 ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
 
 # vim
-ln -sf ~/dotfiles/.vimrc ~/.vimrc
-ln -sf ~/dotfiles/.vimshrc ~/.vimshrc
-ln -sf ~/dotfiles/.gvimrc ~/.gvimrc
-ln -sf ~/dotfiles/.xvimrc ~/.xvimrc
+# ln -sf ~/dotfiles/.vimrc ~/.vimrc
+# ln -sf ~/dotfiles/.vimshrc ~/.vimshrc
+# ln -sf ~/dotfiles/.gvimrc ~/.gvimrc
+# ln -sf ~/dotfiles/.xvimrc ~/.xvimrc
 
 # zsh
 ln -sf ~/dotfiles/.zshrc ~/.zshrc
@@ -53,12 +74,15 @@ ln -sf ~/dotfiles/.pryrc  ~/.pryrc
 
 # rust
 if [[ ! -d ~/.cargo ]]; then
-    mkdir -p ~/.config
+    mkdir -p ~/.cargo
 fi
 ln -sf ~/dotfiles/.cargo/config ~/.cargo/config
 
 # rubocop
 ln -sf ~/dotfiles/.rubocop.yml  ~/.rubocop.yml
+
+# npm
+ln -sf ~/dotfiles/.npmrc ~/.npmrc
 
 echo "Finished"
 

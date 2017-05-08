@@ -104,15 +104,6 @@
   :config
   (use-package helm-config)
   (use-package helm-eshell)
-  (use-package migemo
-    :init
-    (setq migemo-command "cmigemo")
-    (setq migemo-options '("-q" "--emacs"))
-    (setq migemo-coding-system 'utf-8-unix)
-    (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")
-    :config
-    (migemo-init))
-
   (helm-migemo-mode t)
   (diminish 'helm-migemo-mode)
   (defun make-helm-git-source ()

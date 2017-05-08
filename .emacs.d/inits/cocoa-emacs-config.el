@@ -49,16 +49,44 @@
   ;;   :init
   ;;   (add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode))
 
+
   (el-get-bundle company-quickhelp)
   (use-package company-quickhelp
     :commands (company-quickhelp-mode)
     :init
     (add-hook 'company-mode-hook '(lambda () (company-quickhelp-mode t)))))
 
+(el-get-bundle emacschrome)
+(use-package edit-server
+  :commands (edit-server-start)
+  :init
+  (add-hook 'evil-mode-hook 'edit-server-start)
+  (setq edit-server-new-frame nil)
+  :config
+  (evil-define-key 'normal edit-server-text-mode-map
+    ",k" 'edit-server-abort
+    ",c" 'edit-server-done))
+
 (use-package ls-lisp
   :defer t
   :init
   (setq ls-lisp-use-insert-directory-program nil))
+
+(el-get-bundle exec-path-from-shell)
+(use-package exec-path-from-shell
+  ;; :commands (exec-path-from-shell-initialize)
+  :init
+  ;; (add-hook 'before-init-hook 'exec-path-from-shell-initialize)
+  (setq exec-path-from-shell-arguments '("-l"))
+  (setq exec-path-from-shell-variables '("PATH" "MANPATH" "LANG" "JAVA_HOME" "NODE_PATH"))
+  :config
+  (exec-path-from-shell-initialize))
+
+(el-get-bundle migemo)
+(use-package migemo
+  :commands (migemo-init)
+  :init
+  (add-hook 'after-init-hook 'migemo-init))
 
 (provide 'cocoa-emacs-config)
 ;;; cocoa-emacs-config.el ends here

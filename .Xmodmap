@@ -1,0 +1,26 @@
+
+remove lock = Caps_Lock
+remove mod1 = Alt_L
+remove mod1 = Alt_R
+remove mod4 = Super_L
+remove control = Control_L
+
+
+keycode 66 = Tab
+keycode 64 = Control_L
+keycode 108 = Control_R
+keycode 133 = Alt_L
+keycode 107 = Alt_R
+keycode 37 = Meta_L
+
+
+
+
+add control = Control_L
+add control = Control_R
+add mod1 = Alt_L
+add mod1 = Alt_R
+add mod1 = Meta_L
+
+! key code 37
+
