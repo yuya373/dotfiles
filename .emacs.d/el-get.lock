@@ -1,5 +1,6 @@
 (setq el-get-lock-package-versions
-      '((xclip :checksum "c4c4167405702b8f747f0ebd9b962ba075bdbeb8")
+      '((helm-dash :checksum "f07a77bd6ae6d8c933753f25526cbf3b71903e77")
+        (xclip :checksum "c4c4167405702b8f747f0ebd9b962ba075bdbeb8")
         (company-ghc :checksum "ff2205c0b309467eea763521d30220e7849c75b0")
         (ghc-mod :checksum "472db909d1b11288885de6fe36c3691be7f175ec")
         (haskell-mode :checksum "8165d8a809c21e220a257806ebe88180cbc8694a")

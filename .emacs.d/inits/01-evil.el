@@ -486,13 +486,13 @@
     "brr" 'browser-refresh
     "bra" 'browser-refresh-and-activate
     "bw" 'projectile-switch-to-buffer-other-window
-    "dd" 'osx-dictionary-search-pointer
-    "di" 'osx-dictionary-search-input
+    ;; "dd" 'osx-dictionary-search-pointer
+    ;; "di" 'osx-dictionary-search-input
     "dc" 'dired-open-current
-    ;; "da" 'helm-dash
-    ;; "dc" 'helm-dash-at-point
+    "dd" 'helm-dash-at-point
+    "da" 'helm-dash
     ;; "dd" 'dired-open-current
-    "di" 'helm-dash-install-docset
+    "di" 'helm-dash-async-install-docset
     "eha" 'helm-apropos
     "ehb" 'describe-bindings
     "ehf" 'describe-function
