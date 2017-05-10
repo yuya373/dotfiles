@@ -1,3 +1,18 @@
 set -g @plugin 'tmux-plugins/tmux-yank'
 
-bind-key -t vi-copy y copy-pipe "xclip -selection clipboard"
+unbind-key -T copy-mode-vi v
+bind-key -T copy-mode-vi v send-keys -X begin-selection
+bind-key -T copy-mode-vi Escape send-keys -X clear-selection
+bind-key -T copy-mode-vi C-c send-keys -X cancel
+unbind -T copy-mode-vi Enter
+bind-key -T copy-mode-vi Enter send-keys -X cancel
+bind-key -T copy-mode-vi 'C-v' send-keys -X rectangle-toggle
+bind-key -T copy-mode-vi V send-keys -X select-line
+bind-key -T copy-mode-vi w send-keys -X next-word
+bind-key -T copy-mode-vi e send-keys -X next-word-end
+bind-key -T copy-mode-vi b send-keys -X previous-word
+bind-key -T copy-mode-vi g send-keys -X top-line
+bind-key -T copy-mode-vi G send-keys -X bottom-line
+bind-key -T copy-mode-vi / command-prompt -i -p "search down" "send -X search-forward-incremental \"%%%\""
+bind-key -T copy-mode-vi ? command-prompt -i -p "search up" "send -X search-backward-incremental \"%%%\""
+bind-key -T copy-mode-vi y send -X copy-pipe-and-cancel "xclip -selection clipboard"
