@@ -24,43 +24,79 @@
 
 ;;; Code:
 
-;; (eval-when-compile
-;;   (require 'evil))
+(eval-when-compile
+  (require 'evil))
 
 ;; (el-get-bundle hackernews)
 ;; (use-package hackernews
 ;;   :commands (hackernews))
 
-;; (el-get-bundle twittering-mode)
-;; (use-package twittering-mode
-;;   :commands (twit)
-;;   :init
-;;   (add-hook 'twittering-mode-hook #'(lambda () (twittering-icon-mode 1)))
-;;   (setq twittering-use-master-password nil
-;;         twittering-timer-interval 300)
-;;   :config
-;;   (evil-set-initial-state 'twittering-mode 'normal)
-;;   (evil-define-key 'normal twittering-mode-map
-;;     "q" 'twittering-kill-buffer
-;;     ",T" 'twittering-visit-timeline
-;;     ",tf" 'twittering-friends-timeline
-;;     ",tr" 'twittering-replies-timeline
-;;     ",tu" 'twittering-user-timeline
-;;     ",td" 'twittering-direct-messages-timeline
-;;     ",r" 'twittering-current-timeline
-;;     ",su" 'twittering-view-user-page
-;;     ",sr" 'twittering-toggle-show-replied-statuses
-;;     ",st" 'twittering-other-user-timeline
-;;     ",o" 'twittering-enter
-;;     ",mr" 'twittering-retweet
-;;     ",mn" 'twittering-update-status-interactive
-;;     ",md" 'twittering-direct-message
-;;     ",mf" 'twittering-favorite
-;;     ",mF" 'twittering-unfavorite
-;;     ",ta" 'twittering-toggle-activate-buffer
-;;     ",ti" 'twittering-icon-mode
-;;     ",ts" 'twittering-scroll-mode
-;;     ",l" 'twittering-other-user-list-interactive))
+(el-get-bundle twittering-mode)
+(use-package twittering-mode
+  :commands (twit twittering-buffer-p)
+  :init
+  (add-hook 'twittering-mode-hook #'(lambda () (twittering-icon-mode 1)
+                                      (twittering-activate-buffer)))
+  (setq twittering-use-master-password t
+        twittering-timer-interval 60
+        twittering-fill-column 80)
+  (defun twa ()
+    (interactive)
+    (let ((buf (or (cl-find-if #'(lambda (b) (twittering-buffer-p b))
+                               (buffer-list))
+                   (let ((new-buf (generate-new-buffer "*twa*")))
+                     (with-current-buffer new-buf
+                       (twit))
+                     new-buf))))
+      (display-buffer buf)))
+
+  (defun twit-another-buffer ()
+    (interactive)
+    (let ((evil-vsplit-window-right t)
+          (evil-auto-balance-windows t))
+      (evil-window-vsplit))
+    (twit))
+
+  (defun twit-get-user-name (twit)
+    (cdr (or (cl-assoc 'user-name twit)
+             (cl-assoc 'user-screen-name twit))))
+  (defun twit-get-text (twit)
+    (cdr (cl-assoc 'text twit)))
+  (defun twit-alert ()
+    (mapc #'(lambda (e)
+              (alert (twit-get-text e)
+                     :title (format "Tweet: %s" (twit-get-user-name e))))
+          (reverse twittering-rendered-new-tweets)))
+  (add-hook 'twittering-new-tweets-rendered-hook 'twit-alert)
+  :config
+
+  (defun tw-active-buffer-list ()
+    (interactive)
+    (message "%s" (twittering-get-active-buffer-list)))
+
+  (evil-set-initial-state 'twittering-mode 'normal)
+  (evil-define-key 'normal twittering-mode-map
+    "q" 'twittering-kill-buffer
+    ",T" 'twittering-visit-timeline
+    ",tf" 'twittering-friends-timeline
+    ",tr" 'twittering-replies-timeline
+    ",tu" 'twittering-user-timeline
+    ",td" 'twittering-direct-messages-timeline
+    ",r" 'twittering-current-timeline
+    ",su" 'twittering-view-user-page
+    ",sr" 'twittering-toggle-show-replied-statuses
+    ",st" 'twittering-other-user-timeline
+    ",o" 'twittering-enter
+    ",mr" 'twittering-retweet
+    ",mn" 'twittering-update-status-interactive
+    ",md" 'twittering-direct-message
+    ",mf" 'twittering-favorite
+    ",mF" 'twittering-unfavorite
+    ",ta" 'twittering-toggle-activate-buffer
+    ",ti" 'twittering-icon-mode
+    ",ts" 'twittering-scroll-mode
+    ",l" 'twittering-other-user-list-interactive
+    (kbd "RET") 'twittering-enter))
 
 ;; (el-get-bundle wanderlust)
 ;; (use-package wl

@@ -1,5 +1,10 @@
 (setq el-get-lock-package-versions
-      '((helm-dash :checksum "f07a77bd6ae6d8c933753f25526cbf3b71903e77")
+      '((wanderlust :checksum "0a324086eb9cf2d357d3c8a431e80cd45fce016a")
+        (semi :checksum "6b9c62a76f22caf1476c837ee1976eaf0eaf38e7")
+        (flim :checksum "3510d32e5820b2c22b4e9c9f29177beea42c5bfb")
+        (apel :checksum "339eb28ffae3165255a79de9b1fd362f43cd37c3")
+        (twittering-mode :checksum "63c96fb029033b1a300b90aa922e167c7c405bcb")
+        (helm-dash :checksum "f07a77bd6ae6d8c933753f25526cbf3b71903e77")
         (emacschrome :checksum "a0876df85e5a09d4d0b3f05b45a3694639f8e3ae")
         (xclip :checksum "c4c4167405702b8f747f0ebd9b962ba075bdbeb8")
         (company-ghc :checksum "ff2205c0b309467eea763521d30220e7849c75b0")

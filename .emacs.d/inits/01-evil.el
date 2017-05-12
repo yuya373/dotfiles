@@ -596,7 +596,7 @@
     "tl" 'google-translate-smooth-translate
     "tq" 'google-translate-query-translate
     "ts" 'timer
-    ;; "tw" 'twit
+    "tw" 'twit-another-buffer
     "uv" 'undo-tree-visualize
     "wb" 'balance-windows
     "wc" 'whitespace-cleanup

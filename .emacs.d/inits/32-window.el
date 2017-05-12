@@ -82,6 +82,7 @@
   (setq shackle-rules nil)
   (setq shackle-rules
         '(
+          (twittering-mode :size 0.5 :align right :select t)
           ;; ("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
           (comint-mode :size 0.3 :select nil :align bottom :popup t :inhibit-window-quit nil)
           ("*Backtrace*" :regexp t :popup t :size 0.3 :inhibit-window-quit t :align t)
