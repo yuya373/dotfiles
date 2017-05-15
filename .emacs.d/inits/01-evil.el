@@ -577,7 +577,7 @@
     "mts" 'slack-thread-select
     ;; "mus" 'slack-user-stars-list
     "oa" 'org-agenda
-    "on" 'open-junk-org-today
+    "oo" 'open-junk-org-today
     ;; "pd" 'prodigy
     "pk" 'projectile-invalidate-cache
     "ps" 'projectile-switch-project
