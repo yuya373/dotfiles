@@ -115,11 +115,3 @@
  '(avy-lead-face-2 ((t (:background "#2aa198" :foreground "gray100"))))
  '(perspeen-tab--header-line-active ((t (:inherit mode-line :background "#eee8d5" :foreground "#657b83" :weight bold))))
  '(perspeen-tab--powerline-inactive1 ((t (:inherit mode-line)))))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (intero xclip persp-mode nlinum wgrep-ag term-run org oauth2 log4j-mode inflections imenus git-link evil-magit eshell-prompt-extras electric-operator csv-mode avy-migemo auto-save-buffers-enhanced))))

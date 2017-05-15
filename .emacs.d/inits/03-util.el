@@ -65,7 +65,10 @@
     ", b" " Bundler"
     ", r" " Rails"
     ", g" " Goto"
-    ", t" " Test, Tags"))
+    ", t" " Test, Tags")
+  (which-key-add-major-mode-key-based-replacements 'org-mode
+    ", i" "Insert"
+    ", i t" " Insert Template"))
 
 (el-get-bundle indent-guide)
 (use-package indent-guide

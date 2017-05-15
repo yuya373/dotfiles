@@ -564,6 +564,7 @@
     "mis" 'slack-im-select
     "miu" 'slack-im-list-update
     "mk" 'slack-ws-close
+    "mp" 'slack-user-display-profile
     "ml" 'open-junk-dir
     "mm" 'slack-start
     "mn" 'open-junk-file
@@ -574,6 +575,8 @@
     "mtt" 'slack-change-current-team
     "mts" 'slack-thread-select
     "mus" 'slack-user-stars-list
+    "oa" 'org-agenda
+    "on" 'open-junk-org-today
     ;; "pd" 'prodigy
     "pk" 'projectile-invalidate-cache
     "ps" 'projectile-switch-project

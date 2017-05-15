@@ -147,11 +147,5 @@
             "</body>\n"
             "</html>\n")))
 
-(el-get-bundle open-junk-file)
-(use-package open-junk-file
-  :commands (open-junk-file)
-  :config
-  (setq open-junk-file-format "~/Dropbox/junk/%Y-%m-%d."))
-
 (provide '37-markdown)
 ;;; 37-markdown.el ends here

@@ -1,5 +1,8 @@
 (setq el-get-lock-package-versions
-      '((wanderlust :checksum "0a324086eb9cf2d357d3c8a431e80cd45fce016a")
+      '((evil-org-mode :checksum "61319f85979e8768c930983595caa2483c0fb319")
+        (org-bullets :checksum "b70ac2ec805bcb626a6e39ea696354577c681b36")
+        (org-mode :checksum "da68c2cc3532f3e1ce72ff5118d4460732e51d36")
+        (wanderlust :checksum "0a324086eb9cf2d357d3c8a431e80cd45fce016a")
         (semi :checksum "6b9c62a76f22caf1476c837ee1976eaf0eaf38e7")
         (flim :checksum "3510d32e5820b2c22b4e9c9f29177beea42c5bfb")
         (apel :checksum "339eb28ffae3165255a79de9b1fd362f43cd37c3")
