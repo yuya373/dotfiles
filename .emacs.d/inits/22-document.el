@@ -205,5 +205,10 @@
         (make-directory (file-name-directory file) t))
       (funcall open-junk-file-find-file-function file))))
 
+(use-package org-mobile
+  :init
+  (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
+  (setq org-mobile-inbox-for-pull "~/Dropbox/org/from-mobile.org"))
+
 (provide '22-document)
 ;;; 22-document.el ends here
