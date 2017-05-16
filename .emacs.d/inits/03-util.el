@@ -68,7 +68,11 @@
     ", t" " Test, Tags")
   (which-key-add-major-mode-key-based-replacements 'org-mode
     ", i" "Insert"
-    ", i t" " Insert Template"))
+    ", i t" " Insert Template")
+  (which-key-add-major-mode-key-based-replacements 'dired-mode
+    ", m" "Mark"
+    ", d" "Dired-Do")
+  )
 
 (el-get-bundle indent-guide)
 (use-package indent-guide
@@ -201,28 +205,39 @@
   :config
   (require 'ls-lisp)
   (setq ls-lisp-use-insert-directory-program nil)
+  (define-key dired-mode-map [override-state] nil)
+  (define-key dired-mode-map [intercept-state] nil)
   (with-eval-after-load "evil"
     (evil-define-key 'normal dired-mode-map
       "t" nil
-      "m" 'dired-mark
-      "M" 'dired-unmark
-      ",m" 'dired-unmark-all-marks
       "g" nil
-      ",g" 'revert-buffer
-      "$" 'evil-end-of-line
-      "0" 'evil-digit-argument-or-evil-beginning-of-line
       "w" nil
-      ",w" 'dired-show-file-type
+      "v" nil
+      "j" 'dired-next-line
+      "k" 'dired-previous-line
+      "h" 'dired-up-directory
+      "l" 'dired-find-file
+      ",mm" 'dired-mark
+      ",mu" 'dired-unmark
+      ",mU" 'dired-unmark-all-marks
+      ",r" 'revert-buffer
+      ",t" 'dired-show-file-type
       ",y" 'dired-copy-filename-as-kill
       ",k" 'dired-k
-      "v" nil
       ",v" 'dired-view-file
-      (kbd "C-p") 'dired-up-directory
-      (kbd "C-n") 'dired-find-file
-      ",r" 'dired-do-rename
-      ",R" 'wdired-change-to-wdired-mode
-      "n" 'evil-ex-search-next
-      "N" 'evil-ex-search-previous)))
+      ",w" 'wdired-change-to-wdired-mode
+      ",dc" 'dired-do-copy
+      ",dm" 'dired-do-chmod
+      ",do" 'dired-do-chown
+      ",dr" 'dired-do-rename
+      ",ds" 'dired-do-symlink
+      ",dt" 'dired-do-touch
+      ",dz" 'dired-do-compress
+      ",=" 'dired-diff
+      )
+    )
+
+  )
 
 (el-get-bundle dired-k)
 (use-package dired-k
