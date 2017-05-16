@@ -44,13 +44,14 @@ myConfig = (ewmh $ defaultConfig) {
 
 myStartupHook = do
   spawn "feh ~/Downloads/Xmbindings.png"
-  spawnOnce "xremap ~/dotfiles/.xremap"
 
 myManageHook = composeAll
   [ className =? "Emacs" --> doShift "1"
   , className =? "URxvt" --> doShift "2"
   , className =? "feh" --> doShift "2"
   , className =? "Google-chrome" --> doShift "3"
+  , className =? "MPlayer"        --> doFloat
+  , className =? "mplayer2"       --> doFloat
   ]
 
 myEventHook = ewmhDesktopsEventHook <+> fullscreenEventHook
