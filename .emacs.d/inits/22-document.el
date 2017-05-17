@@ -61,7 +61,16 @@
     "t" nil
     ",m" 'org-md-export-to-markdown
     ",iT" 'evil-org-insert-subtodo
-    ))
+    ",rc" 'evil-org-recompute-clocks
+    )
+  (evil-leader/set-key-for-mode 'org-mode
+    "t"  nil
+    "a"  nil
+    "c"  nil
+    "l"  nil
+    "o"  nil
+    )
+  )
 
 (use-package org
   :mode (("\\.org\\'" . org-mode))

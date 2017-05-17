@@ -25,7 +25,8 @@
 ;;; Code:
 (eval-when-compile
   (require 'evil)
-  (require 'evil-leader))
+  (require 'evil-leader)
+  (el-get-bundle pdf-tools))
 
 (el-get-bundle pdf-tools)
 (use-package pdf-tools
@@ -40,16 +41,19 @@
   (add-hook 'pdf-view-mode-hook #'(lambda () (blink-cursor-mode -1)))
   (setq pdf-view-dump-file-name "pdf-view-dump")
   :config
+
+  (defun pdf-file-name ()
+    (file-name-nondirectory (mapconcat #'identity
+                                       (split-string
+                                        (pdf-view-buffer-file-name)
+                                        "\s") "")))
   (defun pdf-view-dump-last-page ()
     (interactive)
     (let ((current-page (pdf-view-current-page)))
       (when (and current-page (< 1 current-page))
         (let* ((file-path (concat user-emacs-directory
                                   pdf-view-dump-file-name))
-               (pdf-file-name (mapconcat #'identity
-                                         (split-string
-                                          (pdf-view-buffer-file-name)
-                                          "\s") ""))
+               (pdf-file-name (pdf-file-name))
                (old-data (pdf-view-read-dumped file-path))
                (data (cons (cons pdf-file-name current-page)
                            (cl-delete-if #'(lambda (n)
@@ -68,10 +72,7 @@
           (read (buffer-string))))))
 
   (defun pdf-view-find-last-page ()
-    (let* ((pdf-file-name (mapconcat #'identity
-                                     (split-string
-                                      (pdf-view-buffer-file-name)
-                                      "\s") ""))
+    (let* ((pdf-file-name (pdf-file-name))
            (file-path (concat user-emacs-directory
                               pdf-view-dump-file-name))
            (data (pdf-view-read-dumped file-path)))

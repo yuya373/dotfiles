@@ -1,10 +1,6 @@
 ;;; init.el --- init.el
 ;;; Commentary:
 ;;; Code:
-
-;; self hosting el-get
-
-
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
@@ -29,6 +25,7 @@
 (setq el-get-use-autoloads nil)
 (setq el-get-is-lazy t)
 (setq el-get-notify-type 'message)
+(el-get-bundle org-mode)
 (el-get-bundle pcre2el)
 
 ;; el-get-lock
