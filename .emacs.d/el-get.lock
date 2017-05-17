@@ -1,7 +1,7 @@
 (setq el-get-lock-package-versions
       '((evil-org-mode :checksum "61319f85979e8768c930983595caa2483c0fb319")
         (org-bullets :checksum "b70ac2ec805bcb626a6e39ea696354577c681b36")
-        (org-mode :checksum "da68c2cc3532f3e1ce72ff5118d4460732e51d36")
+        (org-mode :checksum "865ac0952b7ee07a2b57cc72c71e4024a0111609")
         (wanderlust :checksum "0a324086eb9cf2d357d3c8a431e80cd45fce016a")
         (semi :checksum "6b9c62a76f22caf1476c837ee1976eaf0eaf38e7")
         (flim :checksum "3510d32e5820b2c22b4e9c9f29177beea42c5bfb")
@@ -52,7 +52,7 @@
         (github\.css :checksum "10ce87fe71b23216e3075d5648b8b9e56f7758e1")
         (markdown-mode :checksum "df4ac404ce92abdf1a0b78da8ef1675f1cd1f196")
         (markup-faces :checksum "98a807ed82473eb41c6a201ed7ef816d6bcd67b0")
-        (pdf-tools :checksum "3a32d2420cc40ed864215f75aae4f6d868dc1cd2")
+        (pdf-tools :checksum "f314597b2e391f6564e4f9e5cc3af0b4b53f19e9")
         (tablist :checksum "f13b8f048d0bde14bcf4ee4c9006fcd875b28783")
         (highlight-indentation :checksum "731fe2058b68b2eee8c6bc99d914d30f3de233c5")
         (find-file-in-project :checksum "08ab38b89d21f528fa7dc18f860191365852959a")
