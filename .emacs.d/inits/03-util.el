@@ -217,6 +217,7 @@
       "k" 'dired-previous-line
       "h" 'dired-up-directory
       "l" 'dired-find-file
+      "q" (lookup-key dired-mode-map "q")
       ",mm" 'dired-mark
       ",mu" 'dired-unmark
       ",mU" 'dired-unmark-all-marks
