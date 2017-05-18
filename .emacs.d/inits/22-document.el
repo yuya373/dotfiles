@@ -72,6 +72,7 @@
     )
   )
 
+(el-get-bundle ox-gfm)
 (use-package org
   :mode (("\\.org\\'" . org-mode))
   :init
@@ -81,6 +82,7 @@
   (setq org-directory "~/Dropbox/junk")
   (setq org-agenda-files (list org-directory))
   :config
+  (use-package ox-gfm)
   (defun my-org-insert-structure (key)
     (org-complete-expand-structure-template
      (point-at-bol)
@@ -113,6 +115,13 @@
     (interactive)
     (my-org-insert-structure "q"))
 
+  (evil-define-key 'visual org-mode-map
+    ",em" 'org-gfm-export-as-markdown
+    ",eM" 'org-gfm-export-to-markdown
+    ",ea" 'org-ascii-export-as-ascii
+    ",eA" 'org-ascii-export-to-ascii
+    )
+
   (evil-define-key 'normal org-mode-map
     ",t" 'org-todo
     ",p" 'org-set-property
@@ -126,6 +135,10 @@
     ",its" 'org-insert-template-src
     ",ith" 'org-insert-template-html
     ",itq" 'org-insert-template-quote
+    ",em" 'org-gfm-export-as-markdown
+    ",eM" 'org-gfm-export-to-markdown
+    ",ea" 'org-ascii-export-as-ascii
+    ",eA" 'org-ascii-export-to-ascii
     (kbd "RET") 'org-open-at-point))
 
 (use-package org-agenda
@@ -218,6 +231,7 @@
   :init
   (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
   (setq org-mobile-inbox-for-pull "~/Dropbox/org/from-mobile.org"))
+
 
 (provide '22-document)
 ;;; 22-document.el ends here
