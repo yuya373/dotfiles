@@ -36,8 +36,8 @@
   (setq pdf-view-resize-factor 1.1)
   (add-hook 'pdf-view-mode-hook 'pdf-view-auto-slice-minor-mode)
   (add-hook 'pdf-view-mode-hook #'(lambda () (linum-mode -1)))
-  (add-hook 'pdf-view-mode-hook 'pdf-view-dark-minor-mode)
-  ;; (add-hook 'pdf-view-mode-hook 'pdf-view-midnight-minor-mode)
+  ;; (add-hook 'pdf-view-mode-hook 'pdf-view-dark-minor-mode)
+  (add-hook 'pdf-view-mode-hook 'pdf-view-midnight-minor-mode)
   (add-hook 'pdf-view-mode-hook #'(lambda () (blink-cursor-mode -1)))
   (setq pdf-view-dump-file-name "pdf-view-dump")
   :config
@@ -93,6 +93,7 @@
   (add-hook 'pdf-view-after-change-page-hook 'pdf-view-restore-or-dump-page)
   (evil-set-initial-state 'pdf-view-mode 'normal)
   (evil-set-initial-state 'pdf-outline-minor-mode 'normal)
+
   (evil-define-key 'normal pdf-view-mode-map
     "g" 'pdf-view-goto-page
     "j" 'pdf-view-scroll-up-or-next-page
