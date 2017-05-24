@@ -7,7 +7,7 @@ case ${OSTYPE} in
         ln -sf ~/dotfiles/.Xresources  ~/.Xresources
         ln -sf ~/dotfiles/SandS  ~/SandS
         ln -sf ~/dotfiles/.xbindkeysrc  ~/.xbindkeysrc
-        ln -sf ~/dotfiles/70-synaptics.conf  /etc/X11/xorg.conf.d/70-synaptics.conf
+        ln -sf ~/dotfiles/30-touchpad.conf /etc/X11/xorg.conf.d/30-touchpad.conf
         ln -sf ~/dotfiles/10-monitor.conf  /etc/X11/xorg.conf.d/10-monitor.conf
         if [[ ! -d ~/.config/zathura ]]; then
             mkdir -p ~/.config/zathura
