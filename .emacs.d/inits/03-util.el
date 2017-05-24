@@ -209,6 +209,7 @@
   (define-key dired-mode-map [intercept-state] nil)
   (with-eval-after-load "evil"
     (evil-define-key 'normal dired-mode-map
+      (kbd "RET") 'dired-find-file-other-window
       "t" nil
       "g" nil
       "w" nil
@@ -234,6 +235,7 @@
       ",ds" 'dired-do-symlink
       ",dt" 'dired-do-touch
       ",dz" 'dired-do-compress
+      ",dd" 'dired-do-delete
       ",=" 'dired-diff
       )
     )

@@ -92,7 +92,7 @@
 
   (add-hook 'pdf-view-after-change-page-hook 'pdf-view-restore-or-dump-page)
   (evil-set-initial-state 'pdf-view-mode 'normal)
-  (evil-set-initial-state 'pdf-outline-minor-mode 'normal)
+  (evil-set-initial-state 'pdf-outline-buffer-mode 'normal)
 
   (evil-define-key 'normal pdf-view-mode-map
     "g" 'pdf-view-goto-page
