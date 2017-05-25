@@ -578,6 +578,7 @@
     ;; "mus" 'slack-user-stars-list
     "oa" 'org-agenda
     "oo" 'open-junk-org-today
+    "oco" 'org-clock-out
     ;; "pd" 'prodigy
     "pk" 'projectile-invalidate-cache
     "ps" 'projectile-switch-project

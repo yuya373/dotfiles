@@ -69,6 +69,9 @@
     "c"  nil
     "l"  nil
     "o"  nil
+    "oa" 'org-agenda
+    "oo" 'open-junk-org-today
+    "oco" 'org-clock-out
     )
   )
 
@@ -140,6 +143,9 @@
       ",eM" 'org-gfm-export-to-markdown
       ",ea" 'org-ascii-export-as-ascii
       ",eA" 'org-ascii-export-to-ascii
+
+      ",ci" 'org-clock-in
+      ",co" 'org-clock-out
       (kbd "RET") 'org-open-at-point)
     )
   )
@@ -236,6 +242,11 @@
   :init
   (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
   (setq org-mobile-inbox-for-pull "~/Dropbox/org/from-mobile.org"))
+
+(use-package org-clock
+  :init
+  (setq org-clock-in-switch-to-state "DOING")
+  (setq org-clock-idle-time 5))
 
 
 (provide '22-document)
