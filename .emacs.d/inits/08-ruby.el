@@ -137,14 +137,14 @@
   ;; (add-hook 'global-rbenv-mode-hook 'my-enh-setup-program)
   (setq enh-ruby-add-encoding-comment-on-save nil
         enh-ruby-deep-indent-paren nil
-        enh-ruby-program "~/.rbenv/shims/ruby"
+        ;; enh-ruby-program "~/.rbenv/shims/ruby"
         ;; enh-ruby-deep-arglist t
         enh-ruby-bounce-deep-indent nil)
-  ;; (setq ruby-insert-encoding-magic-comment nil)
-  ;; (setq ruby-deep-indent-paren-style nil)
-  ;; (setq ruby-align-chained-calls nil)
+  (setq ruby-insert-encoding-magic-comment nil)
+  (setq ruby-deep-indent-paren-style nil)
+  (setq ruby-align-chained-calls nil)
   (defun my-enh-ruby-modify-syntax ()
-    (my-ruby-modify-syntax (list enh-ruby-mode-syntax-table ruby-mode-syntax-table)))
+    (my-ruby-modify-syntax (list enh-ruby-mode-syntax-table enh-ruby-mode-syntax-table)))
   (add-hook 'enh-ruby-mode-hook 'my-enh-ruby-modify-syntax)
   :config
 

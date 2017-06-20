@@ -9,7 +9,7 @@ window do
   # remap 'space', to: 'Shift_L'
 end
 
-window class_not: ['urxvt', 'emacs', 'zathura'] do
+window class_not: ['urxvt', 'emacs', 'zathura', 'emacs-26_0_50'] do
   remap 'C-b', to: 'Left'
   remap 'C-f', to: 'Right'
   remap 'C-p', to: 'Up'

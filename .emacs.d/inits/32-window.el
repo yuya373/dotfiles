@@ -100,7 +100,7 @@
           (inf-ruby-mode :align t :size 0.4)
           ("\\`\\*projectile-rails.*?\\*\\'"
            :regexp t :select nil :align t :size 0.4)
-          (slack-mode :align t :size 0.4 :select t)
+          (slack-mode :align t :size 0.5 :select t)
           (slack-edit-message-mode :align t :size 0.2 :select t)
           (eww-mode :same t :inhibit-window-quit t)))
   (add-hook 'after-init-hook 'shackle-mode))
