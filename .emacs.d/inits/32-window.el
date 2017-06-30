@@ -81,7 +81,8 @@
   (setq shackle-default-alignment 'below)
   (setq shackle-rules nil)
   (setq shackle-rules
-        '((twittering-mode :size 0.5 :align right :select t)
+        '((pdf-outline-buffer-mode :size 0.4 :align right)
+          (twittering-mode :size 0.5 :align right :select t)
           ;; ("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
           (comint-mode :size 0.3 :select nil :align bottom :popup t :inhibit-window-quit nil)
           ("*Backtrace*" :regexp t :popup t :size 0.3 :inhibit-window-quit t :align t)
@@ -92,7 +93,7 @@
           (magit-log-mode :custom shackle-full-screen)
           (magit-log-select-mode :align right :size 0.5)
           (magit-diff-mode :align right :size 0.5)
-          (magit-process-mode :align right :size 0.5)
+          (magit-process-mode :custom shackle-full-screen)
           ;; ("COMMIT_EDITMSG" :regexp t :custom shackle-full-screen)
           ;; ("\\`\\*magit-.*?:.*?[^\\*]\\'" :regexp t :align right :size 0.5)
           ;; ("\\`\\*magit:.*?[^\\*]\\'" :regexp t :custom shackle-full-screen)
@@ -166,6 +167,18 @@
   (defun my-perspeen-set-ws-root-dir (project-to-switch &optional arg)
     (perspeen-change-root-dir project-to-switch))
   (advice-add 'projectile-switch-project-by-name :after 'my-perspeen-set-ws-root-dir)
+
+  (defun perspeen-tab-advice-after-evil-window (_)
+    (perspeen-tab--update-current-buffer))
+
+  (dolist (fun '(evil-window-up
+                 evil-window-bottom
+                 evil-window-left
+                 evil-window-right))
+    ;; (advice-remove fun 'perspeen-tab--update-current-buffer)
+    (advice-add fun :after 'perspeen-tab-advice-after-evil-window)
+    )
+  (advice-add 'evil-window-delete :after 'perspeen-tab--update-current-buffer)
 
   (define-key evil-normal-state-map "T" nil)
   (define-key evil-normal-state-map "Tt" 'perspeen-create-ws)
