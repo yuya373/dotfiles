@@ -1,5 +1,6 @@
 (setq el-get-lock-package-versions
-      '((jump :checksum "95a9559bd301ff86fa3b72b15126dc4851ce4a69")
+      '((org-mobile-sync :checksum "442bcfe93f4f2cab02e2dd2c3634fbffcda9a17d")
+        (jump :checksum "95a9559bd301ff86fa3b72b15126dc4851ce4a69")
         (yaxception :checksum "4e94cf3e0b9b5631b0e90eb4b7de597ee7185875")
         (widget-mvc :checksum "ff5a85880df7b87f9f480fe3c28438a0712b7b87")
         (log4e :checksum "34309972ad02abcebbcff6b1682731978aef030c")
@@ -119,7 +120,7 @@
         (helm-gtags :checksum "108e93d0d099ebb7b98847388f368311cf177033")
         (helm-ag :checksum "2fc02c4ead29bf0db06fd70740cc7c364cb650ac")
         (helm-ls-git :checksum "1253c7615da055a95548b4f92a8a503fe249884e")
-        (helm :checksum "8bc2f0f5952ce3887a2d1e94cb71fd533fbeb902")
+        (helm :checksum "d2a3b5c9276b80e295c6405df1e77efc1c504bf0")
         (spark :checksum "0bf148c3ede3b31d56fd75f347cdd0b0eae60025")
         (s :checksum "e61dee51474e61b777575b474459c582f3084f64")
         (ht :checksum "8b9281611c49335e97f2b644e34aa07a47dc4b2a")

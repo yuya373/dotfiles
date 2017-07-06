@@ -109,29 +109,32 @@ the user activate the completion manually."
         eshell-smart-space-goes-to-end t)
   (add-hook 'eshell-mode-hook 'eshell-smart-initialize)
 
-  (when (boundp 'eshell-output-filter-functions)
-    (push 'eshell-truncate-buffer eshell-output-filter-functions))
-
   (require 'em-term)
   (mapc (lambda (x) (push x eshell-visual-commands))
         '("el" "elinks" "htop" "less" "ssh" "tmux" "top"))
 
-  (defvar my-ansi-escape-re
-    (rx (or ?\233 (and ?\e ?\[))
-        (zero-or-more (char (?0 . ?\?)))
-        (zero-or-more (char ?\s ?- ?\/))
-        (char (?@ . ?~))))
+  (require 'ansi-color)
+  (defun eshell-handle-ansi-color ()
+    (ansi-color-apply-on-region eshell-last-output-start
+                                eshell-last-output-end))
 
-  (defun my-nuke-ansi-escapes (beg end)
-    (save-excursion
-      (goto-char beg)
-      (while (re-search-forward my-ansi-escape-re end t)
-        (replace-match ""))))
 
-  (defun my-eshell-nuke-ansi-escapes ()
-    (my-nuke-ansi-escapes eshell-last-output-start eshell-last-output-end))
+  ;; (defvar my-ansi-escape-re
+  ;;   (rx (or ?\233 (and ?\e ?\[))
+  ;;       (zero-or-more (char (?0 . ?\?)))
+  ;;       (zero-or-more (char ?\s ?- ?\/))
+  ;;       (char (?@ . ?~))))
 
-  (add-hook 'eshell-output-filter-functions 'my-eshell-nuke-ansi-escapes t)
+  ;; (defun my-nuke-ansi-escapes (beg end)
+  ;;   (save-excursion
+  ;;     (goto-char beg)
+  ;;     (while (re-search-forward my-ansi-escape-re end t)
+  ;;       (replace-match ""))))
+
+  ;; (defun my-eshell-nuke-ansi-escapes ()
+  ;;   (my-nuke-ansi-escapes eshell-last-output-start eshell-last-output-end))
+
+  ;; (add-hook 'eshell-output-filter-functions 'my-eshell-nuke-ansi-escapes t)
 
   (defun eshell-exit ()
     (interactive)
@@ -147,6 +150,9 @@ the user activate the completion manually."
 
   (add-hook 'eshell-mode-hook #'eshell-bind-keymap)
   (add-hook 'eshell-load-hook #'ansi-color-for-comint-mode-on)
+  (when (boundp 'eshell-output-filter-functions)
+    (add-to-list 'eshell-output-filter-functions 'eshell-truncate-buffer)
+    (add-to-list 'eshell-output-filter-functions 'eshell-handle-ansi-color t))
   (setq eshell-ask-to-save-history (quote always))
   (setq eshell-cmpl-cycle-completions t)
   (setq eshell-cmpl-ignore-case t)

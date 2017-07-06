@@ -81,7 +81,8 @@
   (setq shackle-default-alignment 'below)
   (setq shackle-rules nil)
   (setq shackle-rules
-        '((pdf-outline-buffer-mode :size 0.4 :align right)
+        '((org-mode :fra:align right :size 0.5)
+          (pdf-outline-buffer-mode :size 0.4 :align right)
           (twittering-mode :size 0.5 :align right :select t)
           ;; ("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
           (comint-mode :size 0.3 :select nil :align bottom :popup t :inhibit-window-quit nil)
@@ -163,7 +164,7 @@
               helm-source-perspeen-workspaces
               ;; helm-source-perspeen-create-tab
               my-helm-source-perspeen-create-workspace))))
-
+  (add-to-list 'helm-mini-default-sources 'helm-source-perspeen-tabs)
   (defun my-perspeen-set-ws-root-dir (project-to-switch &optional arg)
     (perspeen-change-root-dir project-to-switch))
   (advice-add 'projectile-switch-project-by-name :after 'my-perspeen-set-ws-root-dir)
