@@ -35,8 +35,9 @@
 
 (use-package js2-mode
   :mode (("\\.js\\'" . js2-mode)
-         ("\\.jsx\\'" . js2-jsx-mode)
-         ("\\.jsx.js\\'" . js2-jsx-mode))
+         ;; ("\\.jsx\\'" . js2-jsx-mode)
+         ;; ("\\.jsx.js\\'" . js2-jsx-mode)
+         )
   :init
   (setq js2-highlight-level 3)
   (setq js2-include-browser-externs nil)

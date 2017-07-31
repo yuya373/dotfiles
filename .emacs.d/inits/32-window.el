@@ -81,7 +81,7 @@
   (setq shackle-default-alignment 'below)
   (setq shackle-rules nil)
   (setq shackle-rules
-        '((org-mode :fra:align right :size 0.5)
+        '((org-mode :align right :size 0.5)
           (pdf-outline-buffer-mode :size 0.4 :align right)
           (twittering-mode :size 0.5 :align right :select t)
           ;; ("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
@@ -164,13 +164,17 @@
               helm-source-perspeen-workspaces
               ;; helm-source-perspeen-create-tab
               my-helm-source-perspeen-create-workspace))))
-  (add-to-list 'helm-mini-default-sources 'helm-source-perspeen-tabs)
+
   (defun my-perspeen-set-ws-root-dir (project-to-switch &optional arg)
     (perspeen-change-root-dir project-to-switch))
   (advice-add 'projectile-switch-project-by-name :after 'my-perspeen-set-ws-root-dir)
 
+  (defun perspeen-tab-advice-bofore-evil-window (_)
+    (perspeen-tab--construct-header-line))
+
   (defun perspeen-tab-advice-after-evil-window (_)
-    (perspeen-tab--update-current-buffer))
+    (perspeen-tab--update-current-buffer)
+    )
 
   (dolist (fun '(evil-window-up
                  evil-window-bottom
@@ -178,6 +182,8 @@
                  evil-window-right))
     ;; (advice-remove fun 'perspeen-tab--update-current-buffer)
     (advice-add fun :after 'perspeen-tab-advice-after-evil-window)
+    ;; (advice-add fun :before 'perspeen-tab-advice-bofore-evil-window)
+    (advice-remove fun 'perspeen-tab-advice-bofore-evil-window)
     )
   (advice-add 'evil-window-delete :after 'perspeen-tab--update-current-buffer)
 
