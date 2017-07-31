@@ -68,9 +68,6 @@ ln -sf ~/dotfiles/.sbclrc ~/.sbclrc
 # emacs
 ln -sf ~/dotfiles/.emacs.d ~/.emacs.d
 
-# eslint
-ln -sf ~/dotfiles/.eslintrc  ~/.eslintrc
-
 # sshrc
 ln -sf ~/dotfiles/.sshrc ~/.sshrc
 
