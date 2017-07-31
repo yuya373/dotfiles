@@ -1,5 +1,12 @@
 (setq el-get-lock-package-versions
-      '((request :checksum "a3d080e57eb8be606fbf39d1baff94e1b16e1fb8")
+      '((cmake-ide :checksum "7747ab37dfd678c3349d13ab8bcb9e5cff93c637")
+        (levenshtein :checksum "1750767a65edec746b5828a962559efec655166a")
+        (flycheck-irony :checksum "34940ae5ab8f4c721d9c1118ebfc3496d7e67a84")
+        (company-irony :checksum "b8001ffc4da7403172835d47bc740cfbac35364d")
+        (irony-eldoc :checksum "0df5831eaae264a25422b061eb2792aadde8b3f2")
+        (irony-mode :checksum "d47bc8d94748dbd87fed9bf92cea85e115a39031")
+        (cmake-mode :checksum "2205381391a3c02b1e87b6687cd33ffe60794468")
+        (request :checksum "a3d080e57eb8be606fbf39d1baff94e1b16e1fb8")
         (org-mobile-sync :checksum "442bcfe93f4f2cab02e2dd2c3634fbffcda9a17d")
         (jump :checksum "95a9559bd301ff86fa3b72b15126dc4851ce4a69")
         (yaxception :checksum "4e94cf3e0b9b5631b0e90eb4b7de597ee7185875")
