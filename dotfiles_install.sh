@@ -21,6 +21,10 @@ case ${OSTYPE} in
         ln -sf ~/dotfiles/.config/fontconfig/conf.d/73-sharp-font.conf  ~/.config/fontconfig/conf.d/73-sharp-font.conf
         ln -sf ~/dotfiles/.config/fontconfig/conf.d/74-japanese.conf  ~/.config/fontconfig/conf.d/74-japanese.conf
         ln -sf ~/dotfiles/.config/redshift.conf ~/.config/redshift.conf
+        if [[ ! -d ~/.docker ]]; then
+            mkdir -p ~/.docker
+        fi
+        ln -sf ~/dotfiles/.docker/config.json  ~/.docker/config.json
         ;;
 esac
 
