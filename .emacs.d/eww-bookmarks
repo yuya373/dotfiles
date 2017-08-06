@@ -1,5 +1,7 @@
 ;; Auto-generated file; don't edit
-((:url "https://rust-lang-ja.github.io/the-rust-programming-language-ja/1.6/book/guessing-game.html" :title "数当てゲーム" :time "Sun May 22 21:14:35 2016")
+((:url "http://en.cppreference.com/w/c" :title "C reference - cppreference.com" :time "Sun Aug  6 15:18:03 2017")
+ (:url "http://www.buildyourownlisp.com/chapter1_introduction" :title "Introduction • Chapter 1 • Build Your Own Lisp" :time "Sat Aug  5 12:48:21 2017")
+ (:url "https://rust-lang-ja.github.io/the-rust-programming-language-ja/1.6/book/guessing-game.html" :title "数当てゲーム" :time "Sun May 22 21:14:35 2016")
  (:url "http://guide.elm-lang.org/architecture/user_input/buttons.html" :title "Buttons | An Introduction to Elm" :time "Sun May 22 00:21:57 2016")
  (:url "http://guide.elm-lang.org/architecture/index.html" :title "The Elm Architecture | An Introduction to Elm" :time "Sat May 21 21:33:06 2016")
  (:url "http://guide.elm-lang.org/core_language.html" :title "Core Language | An Introduction to Elm" :time "Sat May 21 16:09:27 2016"))
