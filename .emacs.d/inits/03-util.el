@@ -144,10 +144,10 @@
   :commands (emojify-mode global-emojify-mode)
   :init
   ;; (add-hook 'markdown-mode-hook 'emojify-mode)
-  ;; (add-hook 'git-commit-mode-hook 'emojify-mode)
-  ;; (add-hook 'magit-mode-hook 'emojify-mode)
+  (add-hook 'git-commit-mode-hook 'emojify-mode)
+  (add-hook 'magit-mode-hook 'emojify-mode)
   (setq emojify-inhibit-in-buffer-functions nil)
-  (add-hook 'text-mode 'emojify-mode)
+  ;; (add-hook 'text-mode 'emojify-mode)
   )
 
 ;; (el-get-bundle syl20bnr/emacs-emoji-cheat-sheet-plus
