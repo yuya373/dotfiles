@@ -1,3 +1,3 @@
 #!/bin/bash
 
-/usr/local/sbin/yaskkserv --google-japanese-input=notfound-suggest-input --google-suggest ~/Dropbox/skk/dict/SKK-JISYO.*.yaskkserv
+/usr/local/sbin/yaskkserv ~/Dropbox/skk/dict/SKK-JISYO.*.yaskkserv
