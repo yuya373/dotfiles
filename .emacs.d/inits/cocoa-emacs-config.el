@@ -88,5 +88,8 @@
   :init
   (add-hook 'after-init-hook 'migemo-init))
 
+(setq woman-manpath '("/usr/local/share/man/ja_JP.UTF-8/"
+                      "/usr/local/opt/coreutils/libexec/gnuman/"))
+
 (provide 'cocoa-emacs-config)
 ;;; cocoa-emacs-config.el ends here

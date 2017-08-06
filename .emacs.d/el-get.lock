@@ -1,5 +1,6 @@
 (setq el-get-lock-package-versions
-      '((cmake-ide :checksum "7747ab37dfd678c3349d13ab8bcb9e5cff93c637")
+      '((clang-format :checksum "669b82f4adfb7750b04bbbe28aec78f3bed2e7d4")
+        (cmake-ide :checksum "7747ab37dfd678c3349d13ab8bcb9e5cff93c637")
         (levenshtein :checksum "1750767a65edec746b5828a962559efec655166a")
         (flycheck-irony :checksum "34940ae5ab8f4c721d9c1118ebfc3496d7e67a84")
         (company-irony :checksum "b8001ffc4da7403172835d47bc740cfbac35364d")

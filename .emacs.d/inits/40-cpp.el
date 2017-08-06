@@ -44,6 +44,7 @@
 (el-get-bundle company-irony)
 (el-get-bundle flycheck-irony)
 (el-get-bundle cmake-ide)
+(el-get-bundle clang-format)
 
 (use-package irony-mode
   :commands (irony-mode)
@@ -64,7 +65,19 @@
   (add-hook 'irony-mode-hook 'add-irony-to-company-backends))
 
 (use-package cmake-ide)
-
+(use-package clang-format
+  :init
+  ;; - Coding style, currently supports:
+  ;; LLVM, Google, Chromium, Mozilla, WebKit.
+  (setq clang-format-style "LLVM")
+  (defun clang-format-if-need ()
+    (interactive)
+    (let ((modes '(c-mode)))
+      (when (cl-find major-mode modes)
+        (with-current-buffer (buffer-name)
+          (clang-format-buffer)))))
+  (evil-define-key 'normal c-mode-map ",f" 'clang-format-buffer)
+  )
 
 (provide '40-cpp)
 ;;; 40-cpp.el ends here

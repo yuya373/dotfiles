@@ -52,7 +52,7 @@
 (use-package eww
   :commands (eww)
   :init
-  (setq shr-use-fonts nil)
+  (setq shr-use-fonts t)
   (defun eww-mode-hook--rename-buffer ()
     "Rename eww browser's buffer so sites open in new page."
     (rename-buffer "eww" t))

@@ -67,8 +67,6 @@
 (setq woman-imenu-generic-expression
       '((nil "^\\(   \\)?\\([ぁ-んァ-ヴー一-龠ａ-ｚＡ-Ｚ０-９a-zA-Z0-9]+\\)" 2)))
 (setq woman-use-own-frame nil)
-(setq woman-manpath '("/usr/local/share/man/ja_JP.UTF-8/"
-                      "/usr/local/opt/coreutils/libexec/gnuman/"))
 
 ;; line wrap
 (use-package visual-line-mode
