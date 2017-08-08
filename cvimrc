@@ -35,6 +35,7 @@ map <Leader>r reloadTabUncached
 map <Leader>x :restore<Space>
 map R reloadTabUncached
 map y yankUrl
+map Y yankDocumentUrl
 map J nextTab
 map K previousTab
 map M centerMatchH
