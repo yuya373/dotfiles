@@ -205,9 +205,9 @@
   :config
   (require 'ls-lisp)
   (setq ls-lisp-use-insert-directory-program nil)
-  (define-key dired-mode-map [override-state] nil)
-  (define-key dired-mode-map [intercept-state] nil)
   (with-eval-after-load "evil"
+    (define-key dired-mode-map [override-state] nil)
+    (define-key dired-mode-map [intercept-state] nil)
     (evil-define-key 'normal dired-mode-map
       (kbd "RET") 'dired-find-file-other-window
       "t" nil
@@ -222,6 +222,7 @@
       ",mm" 'dired-mark
       ",mu" 'dired-unmark
       ",mU" 'dired-unmark-all-marks
+      ",mt" 'dired-toggle-marks
       ",r" 'revert-buffer
       ",t" 'dired-show-file-type
       ",y" 'dired-copy-filename-as-kill
@@ -237,10 +238,7 @@
       ",dz" 'dired-do-compress
       ",dd" 'dired-do-delete
       ",=" 'dired-diff
-      )
-    )
-
-  )
+      )))
 
 (el-get-bundle dired-k)
 (use-package dired-k

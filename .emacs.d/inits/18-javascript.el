@@ -116,5 +116,37 @@
   (add-hook 'js2-jsx-mode-hook 'enable-company-tern)
   )
 
+(el-get-bundle flycheck-flow)
+(use-package flycheck-flow
+  :config
+  (defun my/use-flow-from-node-modules ()
+    (interactive)
+    (let* ((root (locate-dominating-file
+                  (or (buffer-file-name) default-directory)
+                  ".flowconfig"))
+           (flow (and root
+                      (expand-file-name "node_modules/flow-bin/cli.js"
+                                        root))))
+      (when (and flow (file-executable-p flow))
+        (setq-local flycheck-javascript-flow-executable flow))))
+  (add-hook 'flycheck-mode-hook 'my/use-flow-from-node-modules)
+  (flycheck-define-checker javascript-flow
+    "A JavaScript syntax and style checker using Flow.
+
+See URL `http://flowtype.org/'."
+    :command (
+              "flow"
+              "check-contents"
+              (eval flycheck-javascript-flow-args)
+              "--json"
+              "--from" "emacs"
+              "--color=never"
+              source-original)
+    :standard-input t
+    :predicate flycheck-flow--predicate
+    :error-parser flycheck-flow--parse-json
+    ;; js3-mode doesn't support jsx
+    :modes (js-mode js-jsx-mode js2-mode js2-jsx-mode js3-mode rjsx-mode)))
+
 (provide '18-javascript)
 ;;; 18-javascript.el ends here

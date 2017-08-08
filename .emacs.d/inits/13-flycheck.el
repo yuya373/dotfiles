@@ -30,6 +30,7 @@
 (el-get-bundle alexmurray/evil-flycheck)
 (el-get-bundle purcell/flycheck-package
   :name flycheck-package)
+(el-get-bundle pkg-info)
 
 (use-package flycheck
   :diminish flycheck-mode
@@ -54,6 +55,7 @@
   (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
   (setq flycheck-scalastylerc "~/dotfiles/scalastyle_config.xml")
   :config
+  (use-package pkg-info)
   (use-package evil-flycheck
     :config
     (setq flycheck-check-syntax-automatically
