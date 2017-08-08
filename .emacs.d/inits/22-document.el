@@ -248,6 +248,12 @@
   (setq org-clock-in-switch-to-state "DOING")
   (setq org-clock-idle-time 5))
 
+(el-get-bundle steckerhalter/org-mobile-sync)
+(use-package org-mobile-sync
+  :commands (org-mobile-sync-mode)
+  :init
+  (add-to-list 'after-init-hook 'org-mobile-sync-mode))
+
 
 (provide '22-document)
 ;;; 22-document.el ends here

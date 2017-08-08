@@ -8,7 +8,6 @@ fpath=("$HOME/.zfunctions" $fpath)
 
 # zplug
 source $ZPLUG_HOME/init.zsh
-
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
 zplug "zsh-users/zsh-history-substring-search"
@@ -77,6 +76,9 @@ case ${OSTYPE} in
         ;;
     linux*)
         # ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
+        PURE_PROMPT_SYMBOL="❯"
+        # PURE_GIT_DOWN_ARROW="↓"
+        # PURE_GIT_UP_ARROW="↑"
         ;;
 esac
 

@@ -13,6 +13,7 @@ case ${OSTYPE} in
         export SBT_OPTS="-Xms512m -Xmx512m -XX:ReservedCodeCacheSize=128m -XX:MaxMetaspaceSize=256m"
         ;;
     linux*)
+        export PATH=/usr/local/bin:${PATH}
         setopt no_global_rcs
         export ZPLUG_HOME=$HOME/zplug
         ;;

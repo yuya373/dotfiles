@@ -433,7 +433,8 @@
     (interactive)
     (let ((file-name (buffer-file-name)))
       (if file-name
-          (find-alternate-file (concat "/sudo::" file-name))
+          ;; (set-buffer (find-file (concat "/sudo:root@localhost:" file-name)))
+          (find-alternate-file (concat "/sudo:root@localhost:" file-name))
         (error "Cannot get a file name"))))
   (defun dired-open-current ()
     (interactive)
@@ -452,7 +453,7 @@
                    (let* ((window-buffers (mapcar #'window-buffer (window-list)))
                           (window-buffer-names (mapcar #'buffer-name window-buffers))
                           (tab-buffers (mapcar #'(lambda (tab) (get tab 'current-buffer))
-                                                    (perspeen-tab-get-tabs)))
+                                               (perspeen-tab-get-tabs)))
                           (tab-buffer-names (mapcar #'buffer-name tab-buffers))
                           (first-char (substring-no-properties buf-name 0 1)))
                      (unless (or (string= " " first-char)

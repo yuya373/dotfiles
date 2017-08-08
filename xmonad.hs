@@ -52,6 +52,7 @@ myManageHook = composeAll
   , className =? "Google-chrome" --> doShift "3"
   , className =? "MPlayer"        --> doFloat
   , className =? "mplayer2"       --> doFloat
+  , className =? "Wine" --> doShift "3"
   ]
 
 myEventHook = ewmhDesktopsEventHook <+> fullscreenEventHook

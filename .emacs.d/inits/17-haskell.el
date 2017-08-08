@@ -43,6 +43,7 @@
         haskell-compile-cabal-build-command "stack build"
         haskell-process-suggest-remove-import-lines t
         haskell-interactive-mode-eval-mode 'haskell-mode
+        haskell-indent-spaces 4
         )
   :config
   ;; (use-package inf-haskell
@@ -55,6 +56,7 @@
     ",gi" 'haskell-navigate-imports
     ",fi" 'haskell-mode-format-imports
     ",ai" 'haskell-align-imports
+    ",hh" 'haskell-hoogle
     ;; ",ht" 'haskell-mode-show-type-at
     ;; ",is" 'haskell-interactive-switch
     ;; ",ir" 'haskell-process-restart
@@ -121,6 +123,12 @@
 ;;     (add-to-list 'company-backends
 ;;                  '(company-ghc :with company-dabbrev)))
 ;;   (add-hook 'haskell-mode-hook 'my-company-ghc-init))
+
+(el-get-bundle shakespeare-mode)
+(use-package shakespeare-mode
+  :mode (("\\.hamlet\\'" . shakespeare-hamlet-mode)
+         ("\\.julius\\'" . shakespeare-julius-mode)
+         ("\\.lucius\\'" . shakespeare-lucius-mode)))
 
 (provide '17-haskell)
 ;; 17-haskell.el ends here

@@ -7,8 +7,8 @@ case ${OSTYPE} in
         ln -sf ~/dotfiles/.Xresources  ~/.Xresources
         ln -sf ~/dotfiles/SandS  ~/SandS
         ln -sf ~/dotfiles/.xbindkeysrc  ~/.xbindkeysrc
-        ln -sf ~/dotfiles/30-touchpad.conf /etc/X11/xorg.conf.d/30-touchpad.conf
-        ln -sf ~/dotfiles/10-monitor.conf  /etc/X11/xorg.conf.d/10-monitor.conf
+        ln -sf ~/dotfiles/etc/X11/xorg.conf.d/30-touchpad.conf /etc/X11/xorg.conf.d/30-touchpad.conf
+        ln -sf ~/dotfiles/etc/X11/xorg.conf.d/10-monitor.conf  /etc/X11/xorg.conf.d/10-monitor.conf
         if [[ ! -d ~/.config/zathura ]]; then
             mkdir -p ~/.config/zathura
         fi
@@ -17,7 +17,14 @@ case ${OSTYPE} in
             mkdir -p ~/.config/fontconfig/conf.d
         fi
         ln -sf ~/dotfiles/.config/fontconfig/conf.d/71-no-embedded-bitmaps.conf  ~/.config/fontconfig/conf.d/71-no-embedded-bitmaps.conf
-        ln -sf ~/dotfiles/.config/fontconfig/conf.d/72-use-twitter-color-emoji.conf ~/.config/fontconfig/conf.d/72-use-twitter-color-emoji.conf
+        # ln -sf ~/dotfiles/.config/fontconfig/conf.d/72-use-twitter-color-emoji.conf ~/.config/fontconfig/conf.d/72-use-twitter-color-emoji.conf
+        ln -sf ~/dotfiles/.config/fontconfig/conf.d/73-sharp-font.conf  ~/.config/fontconfig/conf.d/73-sharp-font.conf
+        ln -sf ~/dotfiles/.config/fontconfig/conf.d/74-japanese.conf  ~/.config/fontconfig/conf.d/74-japanese.conf
+        ln -sf ~/dotfiles/.config/redshift.conf ~/.config/redshift.conf
+        if [[ ! -d ~/.docker ]]; then
+            mkdir -p ~/.docker
+        fi
+        ln -sf ~/dotfiles/.docker/config.json  ~/.docker/config.json
         ;;
 esac
 
@@ -60,9 +67,6 @@ ln -sf ~/dotfiles/.sbclrc ~/.sbclrc
 
 # emacs
 ln -sf ~/dotfiles/.emacs.d ~/.emacs.d
-
-# eslint
-ln -sf ~/dotfiles/.eslintrc  ~/.eslintrc
 
 # sshrc
 ln -sf ~/dotfiles/.sshrc ~/.sshrc

@@ -5,15 +5,18 @@ URxvt*scrollTtyKeypress: true
 
 URxvt*secondaryScreen: 1
 URxvt*secondaryScroll: 0
-
 URxvt*secondaryWheel: 1
+
+URxvt*iso14755: false
+URxvt*iso14755_52: false
+
 ! ibus
 ! URxvt.inputMethod: ibus
 ! URxvt.preeditType: OverTheSpot
 
 ! Fonts
 URxvt.allow_bold:           false
-URxvt*font: xft:Ricty:size=15:antialias=true
+URxvt*font: xft:Ricty:size=15:antialias=true,xft:DejaVu Sans Mono for Powerline:size=13:antialias=true
 
 
 !-------------------------------------------------------------------------------
@@ -33,7 +36,7 @@ Xft.hintstyle:              hintslight
 ! http://pod.tst.eu/http://cvs.schmorp.de/rxvt-unicode/doc/rxvt.1.pod
 !-------------------------------------------------------------------------------
 
-URxvt.depth:                32
+URxvt.depth:                24
 URxvt.geometry:             90x30
 URxvt.transparent:          false
 URxvt.fading:               0

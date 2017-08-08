@@ -71,7 +71,7 @@
 "amixer set Master 5%-"
   XF86AudioLowerVolume
 
-"amixer set Master toggle"
+"amixer -D pulse set Master 1+ toggle"
   XF86AudioMute
 
 "xbacklight -inc 5%"
