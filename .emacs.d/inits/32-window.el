@@ -119,6 +119,21 @@
   (defun perspeen-update-mode-string ()
     (setq perspeen-modestring ""))
 
+  (defun --perspeen-switch-to-tab (org-func buffer-or-name)
+    (unless perspeen-use-tab
+      (funcall org-func buffer-or-name))
+    (let* ((bufname (or (and (stringp buffer-or-name) buffer-or-name)
+                        (buffer-name buffer-or-name)))
+           (tab (cl-find-if #'(lambda (tab)
+                                (string= (buffer-name (get tab 'current-buffer))
+                                         bufname))
+                            (perspeen-tab-get-tabs))))
+      (if tab
+          (perspeen-tab-switch-to-tab tab)
+        (funcall org-func buffer-or-name))))
+
+  (advice-add 'switch-to-buffer :around '--perspeen-switch-to-tab)
+
   (use-package helm-perspeen
     :config
 
