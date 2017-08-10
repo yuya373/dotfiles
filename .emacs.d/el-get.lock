@@ -88,15 +88,9 @@
         (flycheck-package :checksum "cb526f54f4017454e2503b340757ba15578a5aed")
         (evil-flycheck :checksum "1e506bfa8921f4f902736b2c63acf177af20078b")
         (flycheck :checksum "4d9e16c03e935e926b61cf8446e43423cd93f577")
-<<<<<<< HEAD
-        (solarized-emacs :checksum "64fa78256efdc11bbc63ec311a976aeddb4808e4")
-        (haml-mode :checksum "e232abdb908d92a1a346ee1a7671d4a3121310c5")
-        (json-mode :checksum "e8ba0c03c5c10f61b8f0b3f5d531ef1d80dec9b0")
-=======
         (solarized-emacs :checksum "8aa2ce76327dc7081b1c9a310e858fe2b854d899")
         (haml-mode :checksum "c7c96a269f9b1a0302ff81360e1b5e693d784774")
         (json-mode :checksum "39ba450ba5dcc72e317e679a0b61d8aa94383966")
->>>>>>> 2d52f2dde7a14a2d6452e6ba18f3a9b352c827a3
         (json-snatcher :checksum "c4cecc0a5051bd364373aa499c47a1bb7a5ac51c")
         (json-reformat :checksum "8eb6668ed447988aea06467ba8f42e1f2178246f")
         (scss-mode :checksum "b010d134f499c4b4ad33fe8a669a81e9a531b0b2")
