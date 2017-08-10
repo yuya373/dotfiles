@@ -97,6 +97,9 @@
     (evil-magit-define-key evil-magit-state 'git-rebase-mode-map
                            (kbd ",k") 'with-editor-cancel))
   (magit-auto-revert-mode)
+
+  (define-key magit-process-mode-map [override-state] nil)
+  (define-key magit-process-mode-map [intercept-state] nil)
   ;; (use-package magit-gh-pulls
   ;;   :commands (turn-on-magit-gh-pulls)
   ;;   :init

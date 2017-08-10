@@ -30,6 +30,7 @@
 (el-get-bundle alexmurray/evil-flycheck)
 (el-get-bundle purcell/flycheck-package
   :name flycheck-package)
+(el-get-bundle pkg-info)
 
 (use-package flycheck
   :diminish flycheck-mode
