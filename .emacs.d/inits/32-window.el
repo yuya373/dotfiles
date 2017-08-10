@@ -116,6 +116,9 @@
   (setq perspeen-workspace-default-name "emacs")
   (add-hook 'evil-mode-hook 'perspeen-mode)
   :config
+  (defun perspeen-update-mode-string ()
+    (setq perspeen-modestring ""))
+
   (use-package helm-perspeen
     :config
 

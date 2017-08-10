@@ -61,7 +61,29 @@
   (add-hook 'eww-mode-hook #'(lambda () (whitespace-mode -1)))
   (setq eww-search-prefix "https://www.google.co.jp/search?q=")
   ;; (setq url-user-agent "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12A366 Safari/600.1.4")
+  (defun eww-mode-hook--rename-buffer ()
+    "Rename eww browser's buffer so sites open in new page."
+    (interactive)
+    (rename-buffer (format "eww - %s" (plist-get eww-data :title)) t))
+  (add-hook 'eww-mode-hook 'eww-mode-hook--rename-buffer)
+  (add-hook 'eww-after-render-hook 'eww-mode-hook--rename-buffer)
   :config
+  (defvar eww-disable-colorize t)
+  (defun shr-colorize-region--disable (orig start end fg &optional bg &rest _)
+    (unless eww-disable-colorize
+      (funcall orig start end fg)))
+  (advice-add 'shr-colorize-region :around 'shr-colorize-region--disable)
+  (advice-add 'eww-colorize-region :around 'shr-colorize-region--disable)
+  (defun eww-disable-color ()
+    "eww で文字色を反映させない"
+    (interactive)
+    (setq-local eww-disable-colorize t)
+    (eww-reload))
+  (defun eww-enable-color ()
+    "eww で文字色を反映させる"
+    (interactive)
+    (setq-local eww-disable-colorize nil)
+    (eww-reload))
   (setq url-privacy-level 'paranoid)
   ;; (defun url-http-user-agent-string ()
   ;;   (format "User-Agent: %s\r\n"
@@ -81,6 +103,11 @@
     ",k" 'eww-bookmark-kill
     ",y" 'eww-bookmark-yank
     "q" 'quit-window)
+  (defun eww-copy-page-url-as-md ()
+    (interactive)
+    (kill-new (format "[%s](%s)"
+                      (plist-get eww-data :title)
+                      (plist-get eww-data :url))))
   (evil-define-key 'normal eww-mode-map
     "w" nil
     "g" nil
@@ -91,11 +118,13 @@
     "r" 'eww-reload
     "H" 'eww-back-url
     "L" 'eww-forward-url
+    ",R" 'eww-readable
     ",c" 'url-cookie-list
     ",d" 'eww-download
     ",ln" 'eww-next-url
     ",lp" 'eww-previous-url
-    ",y" 'eww-copy-page-url
+    ",yy" 'eww-copy-page-url
+    ",ym" 'eww-copy-page-url-as-md
     ",o" 'eww-browse-with-external-browser
     ",B" 'eww-list-bookmarks
     ",b" 'eww-add-bookmark

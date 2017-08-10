@@ -105,7 +105,11 @@
     (rails-find-file-current "app/views/"
                              "/\\(${plural|singular}\\)/\\(.+\\)$"
                              'projectile-rails-find-view))
+
   :config
+  (defun projectile-rails--exit-yas (_snip)
+    (yas-exit-all-snippets))
+  (advice-add 'projectile-rails--expand-snippet :after 'projectile-rails--exit-yas)
   (evil-define-key 'normal projectile-rails-mode-map ",ris" 'projectile-rails-server)
   (evil-define-key 'normal projectile-rails-mode-map ",rir" 'projectile-rails-rake)
   (evil-define-key 'normal projectile-rails-mode-map ",rig" 'projectile-rails-generate)
@@ -113,7 +117,6 @@
   (evil-define-key 'normal projectile-rails-mode-map ",gf" 'projectile-rails-goto-file-at-point)
   (evil-define-key 'normal projectile-rails-mode-map ",gm" 'projectile-rails-goto-gemfile)
   (evil-define-key 'normal projectile-rails-mode-map ",gr" 'projectile-rails-goto-routes)
-
   (rails-find-file-in "spec/"
                       "spec/controllers/"
                       "spec/factories/"
