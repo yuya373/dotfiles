@@ -119,9 +119,9 @@
   (defun perspeen-update-mode-string ()
     (setq perspeen-modestring ""))
 
-  (defun --perspeen-switch-to-tab (org-func buffer-or-name)
+  (defun helm-switch-to-buffers-around-advice (org-func buffer-or-name &optional other-window)
     (unless perspeen-use-tab
-      (funcall org-func buffer-or-name))
+      (funcall org-func buffer-or-name other-window))
     (let* ((bufname (or (and (stringp buffer-or-name) buffer-or-name)
                         (buffer-name buffer-or-name)))
            (tab (cl-find-if #'(lambda (tab)
@@ -130,9 +130,31 @@
                             (perspeen-tab-get-tabs))))
       (if tab
           (perspeen-tab-switch-to-tab tab)
-        (funcall org-func buffer-or-name))))
+        (funcall org-func buffer-or-name other-window))))
 
-  (advice-add 'switch-to-buffer :around '--perspeen-switch-to-tab)
+  (advice-add 'helm-switch-to-buffers
+              :around
+              'helm-switch-to-buffers-around-advice)
+  ;; (advice-remove 'helm-switch-to-buffers
+  ;;                'helm-switch-to-buffers-around-advice)
+
+  (defun perspeen-tab-create-tab-advice (org-func &optional buffer marker switch-to-tab)
+    (unless buffer
+      (funcall org-func buffer marker switch-to-tab))
+    (let* ((bufname (buffer-name buffer))
+           (tab (cl-find-if #'(lambda (tab)
+                                (string= (buffer-name (get tab 'current-buffer))
+                                         bufname))
+                            (perspeen-tab-get-tabs))))
+      (if tab
+          (perspeen-tab-switch-to-tab tab)
+        (funcall org-func buffer marker switch-to-tab))))
+
+  (advice-add 'perspeen-tab-create-tab
+              :around
+              'perspeen-tab-create-tab-advice)
+  ;; (advice-remove 'perspeen-tab-create-tab
+  ;;                'perspeen-tab-create-tab-advice)
 
   (use-package helm-perspeen
     :config

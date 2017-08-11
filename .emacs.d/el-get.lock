@@ -42,7 +42,7 @@
         (sr-speedbar :checksum "aff15b95636c552b0e92f44c49dbe6187f3c79bb")
         (ample-regexps :checksum "cbe91e148cac1ee8e223874dc956ed4cf607f046")
         (helm-perspeen :checksum "7fe2922d85608bfa9e18269fc44181428b8849ff")
-        (perspeen :checksum "f093cfecde0e8ce0d5e390784c228831536aef72")
+        (perspeen :checksum "d69a7bb554d6eb003b7c5c222cbdbaacc7e01df0")
         (toml-mode :checksum "f6c61817b00f9c4a3cab1bae9c309e0fc45cdd06")
         (cargo :checksum "b0487f95a7de7a1d6f03cdd05220f633977d65a2")
         (flycheck-rust :checksum "a89c0298f5e8fdcb0c33833ca1eca64632cec053")
