@@ -154,7 +154,7 @@
         (evil-args :checksum "2a88b4d19953a11227cc1e91973b92149116f44c")
         (evil-anzu :checksum "9bca6ca14d865e7e005bc02a28a09b4ae74facc9")
         (evil-leader :checksum "39f7014bcf8b36463e0c7512c638bda4bac6c2cf")
-        (evil :checksum "cecbcfbdda16653e3b5ddc7de2eab25537ec154b")
+        (evil :checksum "45712ad214b0ad2257814705d6baa3f9120574cd")
         (undo-tree :checksum "4cba00bb049cfaa2ee6821a9e347209a88a740b5")
         (goto-chg :checksum "50e58f9e6bb0b8b8e3a24ed817ff78512a770448")
         (exec-path-from-shell :checksum "5e355fbc50913d1ffe48bf86df0bcecd8b369ffb")

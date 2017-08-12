@@ -81,7 +81,10 @@
   (setq shackle-default-alignment 'below)
   (setq shackle-rules nil)
   (setq shackle-rules
-        '((org-mode :align right :size 0.5)
+        '(("\\`\\eww.*?\\'" :align right :size 0.5)
+          (eww-mode :align right :size 0.5 :select t)
+          (eww-bookmark-mode :align right :size 0.5)
+          (org-mode :align right :size 0.5)
           (pdf-outline-buffer-mode :size 0.4 :align right)
           (twittering-mode :size 0.5 :align right :select t)
           ;; ("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
@@ -100,11 +103,9 @@
           ;; ("\\`\\*magit:.*?[^\\*]\\'" :regexp t :custom shackle-full-screen)
           ;; ("\\`\\*magit.*?\\*\\'" :regexp t :align t :size 0.5)
           (inf-ruby-mode :align t :size 0.4)
-          ("\\`\\*projectile-rails.*?\\*\\'"
-           :regexp t :select nil :align t :size 0.4)
+          ("\\`\\*projectile-rails.*?\\*\\'" :regexp t :select nil :align t :size 0.4)
           (slack-mode :align t :size 0.5 :select t)
-          (slack-edit-message-mode :align t :size 0.2 :select t)
-          (eww-mode :same t :inhibit-window-quit t)))
+          (slack-edit-message-mode :align t :size 0.2 :select t)))
   (add-hook 'after-init-hook 'shackle-mode))
 
 (el-get-bundle seudut/perspeen)
