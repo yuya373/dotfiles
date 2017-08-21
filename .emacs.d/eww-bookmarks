@@ -1,5 +1,9 @@
 ;; Auto-generated file; don't edit
-((:url "http://www.buildyourownlisp.com/chapter9_s_expressions" :title "S-Expressions • Chapter 9 • Build Your Own Lisp" :time "Sat Aug 12 13:54:32 2017")
+((:url "http://www.buildyourownlisp.com/chapter13_conditionals" :title "Conditionals • Chapter 13 • Build Your Own Lisp" :time "Sat Aug 19 18:31:46 2017")
+ (:url "http://www.buildyourownlisp.com/chapter12_functions" :title "Functions • Chapter 12 • Build Your Own Lisp" :time "Mon Aug 14 14:42:15 2017")
+ (:url "http://www.buildyourownlisp.com/chapter11_variables" :title "Variables • Chapter 11 • Build Your Own Lisp" :time "Sun Aug 13 17:19:49 2017")
+ (:url "http://www.buildyourownlisp.com/chapter10_q_expressions" :title "Q-Expressions • Chapter 10 • Build Your Own Lisp" :time "Sat Aug 12 23:06:55 2017")
+ (:url "http://www.buildyourownlisp.com/chapter9_s_expressions" :title "S-Expressions • Chapter 9 • Build Your Own Lisp" :time "Sat Aug 12 13:54:32 2017")
  (:url "http://www.buildyourownlisp.com/chapter8_error_handling" :title "Error Handling • Chapter 8 • Build Your Own Lisp" :time "Fri Aug 11 20:47:20 2017")
  (:url "http://en.cppreference.com/w/c" :title "C reference - cppreference.com" :time "Sun Aug  6 15:18:03 2017")
  (:url "http://www.buildyourownlisp.com/chapter1_introduction" :title "Introduction • Chapter 1 • Build Your Own Lisp" :time "Sat Aug  5 12:48:21 2017")
