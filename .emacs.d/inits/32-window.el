@@ -76,15 +76,14 @@
     (get-buffer-window buffer))
   (defun shackle-full-screen (buffer alist _plist)
     (display-buffer-full-screen buffer alist))
-  (setq shackle-default-rule
-        '(:select t :align t :popup t :inhibit-window-quit nil :size 0.5))
+  (setq shackle-default-rule nil)
   (setq shackle-default-alignment 'below)
   (setq shackle-rules nil)
   (setq shackle-rules
-        '(("\\`\\eww.*?\\'" :align right :size 0.5)
-          (eww-mode :align right :size 0.5 :select t)
+        '((eww-mode :align right :size 0.5 :select t)
           (eww-bookmark-mode :align right :size 0.5)
           (org-mode :align right :size 0.5)
+          ("\\`\\*Org.*Export\\*\\'" :regexp t :align t :select t)
           (pdf-outline-buffer-mode :size 0.4 :align right)
           (twittering-mode :size 0.5 :align right :select t)
           ;; ("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
@@ -105,6 +104,7 @@
           (inf-ruby-mode :align t :size 0.4)
           ("\\`\\*projectile-rails.*?\\*\\'" :regexp t :select nil :align t :size 0.4)
           (slack-mode :align t :size 0.5 :select t)
+          (slack-thread-mode :align t :size 0.5 :select t)
           (slack-edit-message-mode :align t :size 0.2 :select t)))
   (add-hook 'after-init-hook 'shackle-mode))
 

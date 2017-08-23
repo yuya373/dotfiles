@@ -46,5 +46,6 @@ ibus-daemon -drx
 /usr/local/bin/xremap /home/yuya373/dotfiles/.xremap &
 xbindkeys
 sands
+redshift &
 
 exec xmonad
