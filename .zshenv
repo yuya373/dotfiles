@@ -11,6 +11,7 @@ case ${OSTYPE} in
         export HOMEBREW_NO_ANALYTICS=1
         export TERM='xterm-256color'
         export SBT_OPTS="-Xms512m -Xmx512m -XX:ReservedCodeCacheSize=128m -XX:MaxMetaspaceSize=256m"
+        export PATH="/usr/local/opt/llvm/bin:$PATH"
         ;;
     linux*)
         export PATH=/usr/local/bin:${PATH}
