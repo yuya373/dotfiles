@@ -166,7 +166,7 @@
         (epl :checksum "a5ad061d0a5eb42f66c384e55d102da7d52c96b0")
         (rust-mode :checksum "ac6a45e6091c0d542b696b6e13551be7e333264a")
         (elpy :checksum "4970cbb55767e5f31913b21fb1ae733b6479ccd0")
-        (enh-ruby-mode :checksum "71ba417baea4c4e1ac814854638cbeb4b0b383fd")
+        (enh-ruby-mode :checksum "c1462183573258edfd8134581417d3c95f1c9c4c")
         (emacs-browser-refresh :checksum "053f2a58732df5722b8086d465cc4265837cddb4")
         (emacs-async :checksum "d6222c2959caaca5c4980038756097da8a51e505")
         (el-get :checksum "4a1dde57e8a4d4c22ed279bac8253f5f16da9197")

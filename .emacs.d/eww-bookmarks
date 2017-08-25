@@ -1,5 +1,10 @@
 ;; Auto-generated file; don't edit
-((:url "http://www.buildyourownlisp.com/chapter13_conditionals" :title "Conditionals • Chapter 13 • Build Your Own Lisp" :time "Sat Aug 19 18:31:46 2017")
+((:url "http://www.buildyourownlisp.com/chapter15_standard_library" :title "Standard Library • Chapter 15 • Build Your Own Lisp" :time "Sat Aug 26 03:12:18 2017")
+ (:url "http://llvm.org/docs/tutorial/OCamlLangImpl1.html" :title "1. Kaleidoscope: Tutorial Introduction and the Lexer — LLVM 6 documentation" :time "Wed Aug 23 17:52:36 2017")
+ (:url nil :title "1. Kaleidoscope: Tutorial Introduction and the Lexer — LLVM 6 documentation" :time "Wed Aug 23 17:52:23 2017")
+ (:url "http://llvm.org/docs/tutorial/" :title "LLVM Tutorial: Table of Contents — LLVM 6 documentation" :time "Wed Aug 23 17:34:35 2017")
+ (:url "http://www.buildyourownlisp.com/chapter14_strings" :title "Strings • Chapter 14 • Build Your Own Lisp" :time "Wed Aug 23 17:33:08 2017")
+ (:url "http://www.buildyourownlisp.com/chapter13_conditionals" :title "Conditionals • Chapter 13 • Build Your Own Lisp" :time "Sat Aug 19 18:31:46 2017")
  (:url "http://www.buildyourownlisp.com/chapter12_functions" :title "Functions • Chapter 12 • Build Your Own Lisp" :time "Mon Aug 14 14:42:15 2017")
  (:url "http://www.buildyourownlisp.com/chapter11_variables" :title "Variables • Chapter 11 • Build Your Own Lisp" :time "Sun Aug 13 17:19:49 2017")
  (:url "http://www.buildyourownlisp.com/chapter10_q_expressions" :title "Q-Expressions • Chapter 10 • Build Your Own Lisp" :time "Sat Aug 12 23:06:55 2017")

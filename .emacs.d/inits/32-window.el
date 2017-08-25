@@ -80,8 +80,9 @@
   (setq shackle-default-alignment 'below)
   (setq shackle-rules nil)
   (setq shackle-rules
-        '((eww-mode :align right :size 0.5 :select t)
-          (eww-bookmark-mode :align right :size 0.5)
+        '(("\\`\\*quickrun\\*\\'" :regexp t :align t :popup t :select t :size 0.4)
+          (eww-mode :align right :size 0.5 :select t)
+          (eww-bookmark-mode :align t :size 0.5)
           (org-mode :align right :size 0.5)
           ("\\`\\*Org.*Export\\*\\'" :regexp t :align t :select t)
           (pdf-outline-buffer-mode :size 0.4 :align right)

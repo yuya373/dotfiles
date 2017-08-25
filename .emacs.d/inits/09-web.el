@@ -53,10 +53,6 @@
   :commands (eww)
   :init
   (setq shr-use-fonts t)
-  (defun eww-mode-hook--rename-buffer ()
-    "Rename eww browser's buffer so sites open in new page."
-    (rename-buffer "eww" t))
-  ;; (add-hook 'eww-mode-hook 'eww-mode-hook--rename-buffer)
   (add-hook 'eww-mode-hook #'(lambda () (linum-mode -1)))
   (add-hook 'eww-mode-hook #'(lambda () (whitespace-mode -1)))
   (setq eww-search-prefix "https://www.google.co.jp/search?q=")
@@ -129,6 +125,7 @@
     ",B" 'eww-list-bookmarks
     ",b" 'eww-add-bookmark
     ",h" 'eww-list-histories
+    ",v" 'eww-view-source
     "q" 'quit-window))
 
 (provide '09-web)
