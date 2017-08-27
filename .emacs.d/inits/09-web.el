@@ -80,6 +80,39 @@
     (interactive)
     (setq-local eww-disable-colorize nil)
     (eww-reload))
+
+  (defun eww (url)
+    "Fetch URL and render the page.
+If the input doesn't look like an URL or a domain name, the
+word(s) will be searched for via `eww-search-prefix'."
+    (interactive
+     (let* ((uris (eww-suggested-uris))
+            (prompt (concat "Enter URL or keywords"
+                            (if uris (format " (default %s)" (car uris)) "")
+                            ": ")))
+       (list (read-string prompt nil nil uris))))
+    (setq url (eww--dwim-expand-url url))
+    (let ((buffer (get-buffer-create "*eww*")))
+      (with-current-buffer buffer
+        (eww-setup-buffer)
+        (display-buffer buffer)
+        ;; Check whether the domain only uses "Highly Restricted" Unicode
+        ;; IDNA characters.  If not, transform to punycode to indicate that
+        ;; there may be funny business going on.
+        (let ((parsed (url-generic-parse-url url)))
+          (unless (puny-highly-restrictive-domain-p (url-host parsed))
+            (setf (url-host parsed) (puny-encode-domain (url-host parsed)))
+            (setq url (url-recreate-url parsed))))
+        (plist-put eww-data :url url)
+        (plist-put eww-data :title "")
+        (eww-update-header-line-format)
+        (let ((inhibit-read-only t))
+          (insert (format "Loading %s..." url))
+          (goto-char (point-min)))
+        (url-retrieve url 'eww-render (list url nil buffer)))))
+
+
+
   (setq url-privacy-level 'paranoid)
   ;; (defun url-http-user-agent-string ()
   ;;   (format "User-Agent: %s\r\n"
