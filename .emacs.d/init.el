@@ -101,7 +101,6 @@
           t)
 
 
-(desktop-save-mode t)
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

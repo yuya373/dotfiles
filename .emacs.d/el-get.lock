@@ -71,7 +71,7 @@
         (github\.css :checksum "10ce87fe71b23216e3075d5648b8b9e56f7758e1")
         (markdown-mode :checksum "e54619e9c8bec8482ce76d78671c90fb0f5311a2")
         (markup-faces :checksum "98a807ed82473eb41c6a201ed7ef816d6bcd67b0")
-        (pdf-tools :checksum "f314597b2e391f6564e4f9e5cc3af0b4b53f19e9")
+        (pdf-tools :checksum "c70520068cb316f736811e922a015347fdbcd30b")
         (tablist :checksum "c834a84efb6efa32497efe1e73160fade741b836")
         (highlight-indentation :checksum "5c7717a2224372f7113d13640515df3650388a37")
         (find-file-in-project :checksum "a6e59891973f3e40ca2e414ca66799cc686d8626")

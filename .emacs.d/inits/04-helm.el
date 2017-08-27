@@ -403,7 +403,7 @@
                                    "NodeJS" "Nginx" "MySQL" "Markdown" "JavaScript"
                                    "Java" "Haskell" "Haml" "HTML" "Emacs Lisp"
                                    "ElasticSearch" "Docker" "Common Lisp" "Bootstrap 3"
-                                   "Bash"
+                                   "Bash" "OCaml"
                                    ))
   (setq helm-dash-min-length 1)
   (setq helm-dash-browser-func 'eww)
