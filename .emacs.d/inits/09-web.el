@@ -80,6 +80,7 @@
     (interactive)
     (setq-local eww-disable-colorize nil)
     (eww-reload))
+  (defvar eww-display-buffer-function 'display-buffer)
 
   (defun eww (url)
     "Fetch URL and render the page.
@@ -95,7 +96,7 @@ word(s) will be searched for via `eww-search-prefix'."
     (let ((buffer (get-buffer-create "*eww*")))
       (with-current-buffer buffer
         (eww-setup-buffer)
-        (display-buffer buffer)
+        (funcall eww-display-buffer-function buffer)
         ;; Check whether the domain only uses "Highly Restricted" Unicode
         ;; IDNA characters.  If not, transform to punycode to indicate that
         ;; there may be funny business going on.
