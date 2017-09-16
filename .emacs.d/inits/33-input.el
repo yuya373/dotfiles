@@ -65,7 +65,7 @@
 
   ;; skk-server AquaSKK
   (setq skk-server-portnum 1178
-        skk-server-host "localhost"
+        skk-server-host "0.0.0.0"
         skk-server-report-response t)
   (setq skk-large-jisyo "~/Dropbox/skk/dict/SKK-JISYO.L")
   (setq skk-itaiji-jisyo "~/Dropbox/skk/dict/SKK-JISYO.itaiji")
