@@ -99,3 +99,6 @@ alias rust='cargo-script'
 eval "$(direnv hook zsh)"
 
 source ~/dotfiles/tmux.zsh
+
+# OPAM configuration
+. /home/yuya373/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
