@@ -28,7 +28,7 @@
 ;; You can specify the image name in the file itself by adding a line like this at the top of your Dockerfile.
 ;; ## -*- docker-image-name: "your-image-name-here" -*-
 (use-package dockerfile-mode
-  :mode (("Dockerfile\\'" . dockerfile-mode)))
+  :mode (("Dockerfile" . dockerfile-mode)))
 
 
 
