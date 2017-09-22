@@ -50,8 +50,8 @@ myManageHook = composeAll
   , className =? "URxvt" --> doShift "2"
   , className =? "feh" --> doShift "2"
   , className =? "Google-chrome" --> doShift "3"
-  , className =? "MPlayer"        --> doFloat
-  , className =? "mplayer2"       --> doFloat
+  , className =? "MPlayer"        --> doShift "3"
+  , className =? "mplayer2"       --> doShift "3"
   , className =? "Wine" --> doShift "3"
   ]
 

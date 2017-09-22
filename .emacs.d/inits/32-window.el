@@ -80,7 +80,8 @@
   (setq shackle-default-alignment 'below)
   (setq shackle-rules nil)
   (setq shackle-rules
-        '((tuareg-interactive-mode :align t :select t :size 0.4 :popup t)
+        '((flycheck-error-list-mode :align t)
+          (tuareg-interactive-mode :align t :select t :size 0.4 :popup t)
           ("\\`\\*quickrun\\*\\'" :regexp t :align t :popup t :select t :size 0.4)
           (eww-mode :align right :size 0.5 :select t :popup t)
           (eww-bookmark-mode :align t :size 0.5 :popup t)

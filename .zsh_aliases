@@ -86,7 +86,7 @@ case ${OSTYPE} in
         alias tm="top -o %MEM"
         alias tp="top -o %CPU"
         alias ht="htop"
-        alias remove_unused_packages="sudo pacman -Rns $(pacman -Qtdq)"
-        alias list_packages="pacman -Qqen"
+        # alias remove_unused_packages="sudo pacman -Rns $(pacman -Qtdq)"
+        alias list_packages="pacman -Qqe"
         ;;
 esac

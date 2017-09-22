@@ -69,7 +69,11 @@
           (register-definition-prefixes "tuareg" '("tuareg-")))
       (dolist (ext '(".cmo" ".cmx" ".cma" ".cmxa" ".cmi"
                      ".annot" ".cmt" ".cmti"))
-        (add-to-list 'completion-ignored-extensions ext))))
+        (add-to-list 'completion-ignored-extensions ext))
+      :config
+      (define-key tuareg-interactive-mode-map (kbd "C-j") nil)
+      (evil-define-key 'normal tuareg-interactive-mode-map
+        "\C-j" 'evil-window-down)))
   )
 
 
