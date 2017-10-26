@@ -151,6 +151,26 @@
 
   :config
   ;; (require 'ensime-expand-region)
+  (defun ensime-eldoc-info ()
+    "ELDoc backend for ensime."
+    ;; The response from `ensime-rpc-symbol-at-point' has the type info but,
+    ;; its sligthly different from the one obtained with `ensime-type-at-point'
+    ;; Using the underlying `ensime-rpc-get-type-at-point' to maintain consistency
+    (when (ensime-connected-p)
+      (let ((msg (pcase ensime-eldoc-hints
+                   (`error
+                    (mapconcat 'identity (ensime-errors-at (point)) "\n"))
+                   (`implicit
+                    (mapconcat 'identity (ensime-implicit-notes-at (point)) "\n"))
+                   (`type
+                    (or (ensime-eldoc-type-info) ""))
+                   (`all
+                    (format "%s\n%s\n%s"
+                            (or (ensime-eldoc-type-info) "")
+                            (mapconcat 'identity (ensime-implicit-notes-at (point)) "\n")
+                            (mapconcat 'identity (ensime-errors-at (point)) "\n"))))))
+        (when msg
+          (eldoc-message (s-trim msg))))))
   (defun advice-ensime-imenu-index-function (org-func)
     (if (ensime-connected-p)
         (funcall org-func)
@@ -192,8 +212,8 @@
     ",rm" 'ensime-refactor-diff-extract-method
     ",ri" 'ensime-refactor-diff-inline-local
 
-    ",ht" 'ensime-inspect-type-at-point
-    ",hp" 'ensime-inspect-package-at-point
+    ",ht" 'ensime-type-at-point
+    ",hT" 'ensime-type-at-point-full-name
     ",hu" 'ensime-show-uses-of-symbol-at-point
     ",hh" 'ensime-show-doc-for-symbol-at-point
 

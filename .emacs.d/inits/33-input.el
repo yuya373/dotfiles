@@ -53,7 +53,7 @@
         skk-show-mode-show nil)
   (setq skk-dcomp-activate t
         skk-dcomp-multiple-activate t
-        skk-dcomp-multiple-rows 20
+        skk-dcomp-multiple-rows 10
         skk-previous-completion-use-backtab t)
   (setq skk-comp-use-prefix t
         skk-comp-circulate t)
