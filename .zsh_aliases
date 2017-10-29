@@ -88,5 +88,6 @@ case ${OSTYPE} in
         alias ht="htop"
         # alias remove_unused_packages="sudo pacman -Rns $(pacman -Qtdq)"
         alias list_packages="pacman -Qqe"
+        alias update_packages="yaourt -Syyu --aur"
         ;;
 esac
