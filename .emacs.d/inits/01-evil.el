@@ -577,6 +577,7 @@
     "msf" 'slack-search-from-files
     "msm" 'slack-search-from-messages
     "mss" 'slack-search-select
+    "msl" 'slack-stars-list
     "mtt" 'slack-change-current-team
     "mts" 'slack-thread-select
     ;; "mus" 'slack-user-stars-list
