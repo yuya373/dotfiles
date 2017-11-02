@@ -33,7 +33,7 @@
         (xclip :checksum "c4c4167405702b8f747f0ebd9b962ba075bdbeb8")
         (company-ghc :checksum "ff2205c0b309467eea763521d30220e7849c75b0")
         (ghc-mod :checksum "472db909d1b11288885de6fe36c3691be7f175ec")
-        (haskell-mode :checksum "7eb94b5a5d9478a0da869bd26ba51d08e574d843")
+        (haskell-mode :checksum "9018ad5cac0b1b1b5e0a51586027fb0ca4076b1a")
         (evil-magit :checksum "91c96e6ffdc6e7d5e49fd9b0ffb7df8794f0f2db")
         (github-syntax-light :checksum "828ccb30b5a3a09b9b27bf52acaa90ac653d0fad")
         (primer-markdown :checksum "bed376573706185a1749a35000d8623ba0414223")

@@ -90,13 +90,25 @@
                           ("\\`\\*HTTP\sResponse\\*\\'" :regexp t)
                           (twittering-mode)
                           (inf-ruby-mode)
-                          (slack-edit-file-comment-mode :select t)
+                          ((slack-message-buffer-mode
+                            slack-search-result-buffer-mode)
+                           :select t)
+
+
+                          ((slack-edit-file-comment-buffer-mode
+                            slack-message-compose-buffer-mode
+                            slack-message-edit-buffer-mode
+                            slack-message-share-buffer-mode)
+                           :select t :size 0.3)
                           ))
                 (mapcar (lambda (l) (append l shackle-rule-right-half))
-                        '((slack-file-info-mode :select t)
-                          (slack-user-profile-mode)
-                          (slack-info-mode :select t)
-                          ("\\`\\*Slack\s-\sPinned\sItems\\*" :regexp t)))
+                        '(((slack-file-info-buffer-mode
+                            slack-file-list-buffer-mode
+                            slack-thread-message-buffer-mode
+                            slack-user-profile-buffer-mode
+                            slack-stars-buffer-mode
+                            slack-pinned-items-buffer-mode)
+                           :select t)))
 
                 '((tuareg-interactive-mode :align t :select t :size 0.4 :popup t)
                   (eww-mode :align right :size 0.5 :select t :popup t)

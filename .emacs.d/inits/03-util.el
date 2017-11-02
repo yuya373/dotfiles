@@ -419,5 +419,9 @@
   (add-hook 'imenu-after-jump-hook '(lambda ()
                                       (recenter 10))))
 
+(el-get-bundle font-lock-studio)
+(use-package font-lock-studio
+  :commands (font-lock-studio))
+
 (provide '03-util)
 ;;; 03-util.el ends here
