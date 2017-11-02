@@ -43,7 +43,7 @@ myConfig = (ewmh $ defaultConfig) {
   ]
 
 myStartupHook = do
-  spawn "feh ~/Downloads/Xmbindings.png"
+  spawnOnce "feh ~/Downloads/Xmbindings.png"
 
 myManageHook = composeAll
   [ className =? "Emacs" --> doShift "1"
