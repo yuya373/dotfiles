@@ -89,9 +89,6 @@ case ${OSTYPE} in
         ;;
 esac
 
-autoload -U promptinit; promptinit
-prompt pure
-
 # [zsh の zmv を使って簡単に複数ファイルを一括リネームする - mollifier delta blog](http://mollifier.hatenablog.com/entry/20101227/p1)
 autoload -Uz zmv
 alias zmv='noglob zmv -W'
