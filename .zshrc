@@ -36,6 +36,7 @@ zplug "modules/history", from:prezto
 # zplug "modules/rsync", from:prezto
 
 zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
+zplug "marzocchi/zsh-notify"
 
 # Install plugins if there are plugins that have not been installed
 if ! zplug check --verbose; then
@@ -53,6 +54,8 @@ source ~/dotfiles/.zprompt
 source ~/dotfiles/.zshfunc
 source ~/dotfiles/.zsh_keybind
 source ~/dotfiles/.zsh_aliases
+
+zstyle ':notify:*' command-complete-timeout 1
 
 # dircolors
 eval `dircolors $ZPLUG_HOME/repos/seebi/dircolors-solarized/dircolors.256dark`
