@@ -1,21 +1,14 @@
 typeset -U path cdpath fpath manpath
 
-if [ ! -d $HOME/.zfunctions ]; then
-    echo "creating $HOME/.zfunctions ..."
-    mkdir -p $HOME/.zfunctions
-fi
-fpath=("$HOME/.zfunctions" $fpath)
-
 # zplug
 source $ZPLUG_HOME/init.zsh
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
 zplug "zsh-users/zsh-history-substring-search"
-zplug "sindresorhus/pure", ignore:"*.zsh", \
-      hook-load:"{
-ln -sf $ZPLUG_HOME/repos/sindresorhus/pure/pure.zsh $HOME/.zfunctions/prompt_pure_setup
-ln -sf $ZPLUG_HOME/repos/sindresorhus/pure/async.zsh $HOME/.zfunctions/async
-}"
+
+zplug "mafredri/zsh-async", from:github
+zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
+
 zplug "seebi/dircolors-solarized"
 
 zplug "zsh-users/zsh-completions", \
