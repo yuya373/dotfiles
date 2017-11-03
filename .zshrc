@@ -57,6 +57,7 @@ zstyle ':prezto:module:autosuggestions:color' found 'fg=136'
 zstyle ':prezto:module:history-substring-search' color 'yes'
 zstyle ':prezto:module:history-substring-search' case-sensitive 'yes'
 zstyle ':prezto:module:tmux:auto-start' local 'yes'
+zstyle ':prezto:module:tmux:session' name 'tmux'
 zstyle ':notify:*' command-complete-timeout 1
 zstyle ':prezto:module:pacman' frontend 'yaourt'
 
