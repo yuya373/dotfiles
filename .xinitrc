@@ -44,7 +44,6 @@ export QT_IM_MODULE='uim'
 uim-xim &
 export XMODIFIERS='@im=uim'
 
-eval $(ssh-agent)
 xscreensaver -no-splash &
 xss-lock -- xscreensaver-command -lock &
 /usr/local/bin/xremap /home/yuya373/dotfiles/.xremap &
