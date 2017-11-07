@@ -76,6 +76,8 @@
     (get-buffer-window buffer))
   (defun shackle-full-screen (buffer alist _plist)
     (display-buffer-full-screen buffer alist))
+  (defun shackle-new-tab (buffer alist plist)
+    (perspeen-tab-create-tab buffer 0))
   (setq shackle-default-rule nil)
   (setq shackle-default-alignment 'below)
   (setq shackle-rules nil)
@@ -102,15 +104,15 @@
                            :select t :size 0.3)
                           ))
                 (mapcar (lambda (l) (append l shackle-rule-right-half))
-                        '(((slack-file-info-buffer-mode
-                            slack-file-list-buffer-mode
+                        '(((slack-file-list-buffer-mode
                             slack-thread-message-buffer-mode
                             slack-user-profile-buffer-mode
                             slack-stars-buffer-mode
                             slack-pinned-items-buffer-mode)
                            :select t)))
 
-                '((tuareg-interactive-mode :align t :select t :size 0.4 :popup t)
+                '((slack-file-info-buffer-mode :custom shackle-new-tab)
+                  (tuareg-interactive-mode :align t :select t :size 0.4 :popup t)
                   (eww-mode :align right :size 0.5 :select t :popup t)
                   (eww-bookmark-mode :align t :size 0.5 :popup t)
                   (org-mode :align right :size 0.5)
