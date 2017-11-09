@@ -83,7 +83,7 @@ case ${OSTYPE} in
     linux*)
 	# https://unix.stackexchange.com/questions/231316/exiting-terminal-running-nohup-my-script-you-have-running-jobs-ok-to
         alias chrome=">/dev/null 2>&1 google-chrome-stable &!"
-        alias emacs=">/dev/null 2>&1 nohup emacs &!"
+        alias emacs="emacs &"
         alias tm="top -o %MEM"
         alias tp="top -o %CPU"
         alias ht="htop"
