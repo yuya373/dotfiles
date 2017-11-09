@@ -64,8 +64,6 @@
     (make-local-variable 'company-backends)
     (add-to-list 'company-backends 'company-emoji))
   ;; (add-hook 'gfm-mode-hook #'add-company-emoji)
-  (add-hook 'slack-edit-message-mode-hook #'add-company-emoji)
-  (add-hook 'slack-mode-hook #'add-company-emoji)
   (add-hook 'git-commit-mode-hook #'add-company-emoji)
   (add-hook 'markdown-mode-hook #'add-company-emoji))
 
