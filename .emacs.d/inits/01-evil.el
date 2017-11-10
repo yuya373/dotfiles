@@ -532,6 +532,7 @@
     "hgi" 'helm-open-github-from-issues
     "hgp" 'helm-open-github-from-pull-requests
     "hl" 'helm-resume
+    "hL" '(lambda () (interactive) (helm-resume t))
     "hm" 'helm-all-mark-rings
     "hi" 'helm-imenu-anywhere
     "ho" 'helm-semantic-or-imenu
