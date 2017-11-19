@@ -41,7 +41,6 @@ fi
 
 # Then, source plugins and add commands to $PATH
 # autosuggestions
-ZSH_AUTOSUGGEST_CLEAR_WIDGETS=(do_enter kill-line $ZSH_AUTOSUGGEST_CLEAR_WIDGETS)
 zstyle ':prezto:module:autosuggestions' color 'yes'
 zstyle ':prezto:module:autosuggestions:color' found 'fg=136'
 zstyle ':prezto:module:history-substring-search' color 'yes'
@@ -53,6 +52,7 @@ zstyle ':prezto:module:pacman' frontend 'yaourt'
 
 zplug load --verbose
 
+ZSH_AUTOSUGGEST_CLEAR_WIDGETS=(do_enter kill-line $ZSH_AUTOSUGGEST_CLEAR_WIDGETS)
 
 source ~/dotfiles/.zenv
 source ~/dotfiles/.zprompt
