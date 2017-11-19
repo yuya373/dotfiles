@@ -574,7 +574,7 @@
     "ml" 'open-junk-dir
     "mm" 'slack-start
     "mn" 'open-junk-file
-    "mo" 'tracking-next-buffer
+    "mo" 'slack-log-open-event-buffer
     "msf" 'slack-search-from-files
     "msm" 'slack-search-from-messages
     "mss" 'slack-search-select

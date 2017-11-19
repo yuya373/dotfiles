@@ -25,7 +25,8 @@
 ;;; Code:
 
 (eval-when-compile
-  (require 'evil))
+  (require 'evil)
+  (require 'evil-common))
 
 (el-get-bundle bundler)
 (el-get-bundle rbenv)
@@ -36,6 +37,7 @@
 (el-get-bundle ruby-block
   :github h3poteto/ruby-block.el)
 (el-get-bundle ruby-end)
+(el-get-bundle rspec-mode)
 
 (defun my-ruby-modify-syntax (tables)
   (dolist (syntax-table tables)
@@ -164,44 +166,53 @@
     (kbd ",bo") 'bundle-open)
   )
 
-(use-package ruby-test-mode
-  :diminish ruby-test-mode
-  :commands (ruby-test-mode)
+(use-package rspec-mode
   :init
-  (setq ruby-test-default-library "spec")
-  (add-hook 'enh-ruby-mode-hook 'ruby-test-mode)
+  (setq rspec-use-docker-when-possible t)
+  (setq rspec-docker-container "app")
   :config
-  (evil-define-key 'normal ruby-test-mode-map (kbd ",tt") 'ruby-test-run-at-point)
-  (evil-define-key 'normal ruby-test-mode-map (kbd ",tb") 'ruby-test-run)
-  (defun ruby-test-toggle-vsplit ()
-    (interactive)
-    (let ((window (split-window-right)))
-      (select-window window)
-      (balance-windows)
-      (ruby-test-toggle-implementation-and-specification)))
-  (defun ruby-test-toggle-split ()
-    (interactive)
-    (let ((window (split-window (selected-window) nil 'above)))
-      (select-window window)
-      (balance-windows)
-      (ruby-test-toggle-implementation-and-specification)))
-  (evil-define-key 'normal ruby-test-mode-map (kbd ",tv") 'ruby-test-toggle-vsplit)
-  (evil-define-key 'normal ruby-test-mode-map (kbd ",ts") 'ruby-test-toggle-split)
+  (evil-define-key 'normal rspec-verifiable-mode-keymap
+    (kbd ",tt") 'rspec-verify-single
+    (kbd ",tb") 'rspec-verify))
 
-  (defun ruby-test-spec-command (filename &optional line-number)
-    (let (command options)
-      (if (file-exists-p ".zeus.sock")
-          (setq command "zeus rspec")
-        (setq command "bundle exec spring rspec --format documentation"))
-      (setq options ruby-test-rspec-options)
-      (if line-number
-          (setq filename (format "%s:%s" filename line-number)))
-      (format "%s %s %s" command (mapconcat 'identity options " ") filename)))
-  (defun ruby-test-run-command (command)
-    (let ((default-directory (or (ruby-test-rails-root filename)
-                                 (ruby-test-ruby-root filename)
-                                 default-directory)))
-      (compilation-start command t))))
+;; (use-package ruby-test-mode
+;;   :diminish ruby-test-mode
+;;   :commands (ruby-test-mode)
+;;   :init
+;;   (setq ruby-test-default-library "spec")
+;;   (add-hook 'enh-ruby-mode-hook 'ruby-test-mode)
+;;   :config
+;;   (evil-define-key 'normal ruby-test-mode-map (kbd ",tt") 'ruby-test-run-at-point)
+;;   (evil-define-key 'normal ruby-test-mode-map (kbd ",tb") 'ruby-test-run)
+;;   (defun ruby-test-toggle-vsplit ()
+;;     (interactive)
+;;     (let ((window (split-window-right)))
+;;       (select-window window)
+;;       (balance-windows)
+;;       (ruby-test-toggle-implementation-and-specification)))
+;;   (defun ruby-test-toggle-split ()
+;;     (interactive)
+;;     (let ((window (split-window (selected-window) nil 'above)))
+;;       (select-window window)
+;;       (balance-windows)
+;;       (ruby-test-toggle-implementation-and-specification)))
+;;   (evil-define-key 'normal ruby-test-mode-map (kbd ",tv") 'ruby-test-toggle-vsplit)
+;;   (evil-define-key 'normal ruby-test-mode-map (kbd ",ts") 'ruby-test-toggle-split)
+
+;;   (defun ruby-test-spec-command (filename &optional line-number)
+;;     (let (command options)
+;;       (if (file-exists-p ".zeus.sock")
+;;           (setq command "zeus rspec")
+;;         (setq command "bundle exec spring rspec --format documentation"))
+;;       (setq options ruby-test-rspec-options)
+;;       (if line-number
+;;           (setq filename (format "%s:%s" filename line-number)))
+;;       (format "%s %s %s" command (mapconcat 'identity options " ") filename)))
+;;   (defun ruby-test-run-command (command)
+;;     (let ((default-directory (or (ruby-test-rails-root filename)
+;;                                  (ruby-test-ruby-root filename)
+;;                                  default-directory)))
+;;       (compilation-start command t))))
 
 (el-get-bundle yaml-mode)
 (use-package yaml-mode

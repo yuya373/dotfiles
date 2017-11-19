@@ -238,21 +238,21 @@
         (make-directory (file-name-directory file) t))
       (funcall open-junk-file-find-file-function file))))
 
-(use-package org-mobile
-  :init
-  (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
-  (setq org-mobile-inbox-for-pull "~/Dropbox/org/from-mobile.org"))
+;; (use-package org-mobile
+;;   :init
+;;   (setq org-mobile-directory "~/Dropbox/アプリ/MobileOrg")
+;;   (setq org-mobile-inbox-for-pull "~/Dropbox/org/from-mobile.org"))
 
 (use-package org-clock
   :init
   (setq org-clock-in-switch-to-state "DOING")
   (setq org-clock-idle-time 5))
 
-(el-get-bundle steckerhalter/org-mobile-sync)
-(use-package org-mobile-sync
-  :commands (org-mobile-sync-mode)
-  :init
-  (add-to-list 'after-init-hook 'org-mobile-sync-mode))
+;; (el-get-bundle steckerhalter/org-mobile-sync)
+;; (use-package org-mobile-sync
+;;   :commands (org-mobile-sync-mode)
+;;   :init
+;;   (add-to-list 'after-init-hook 'org-mobile-sync-mode))
 
 
 (provide '22-document)
