@@ -171,9 +171,13 @@
   (setq rspec-use-docker-when-possible t)
   (setq rspec-docker-container "app")
   :config
-  (evil-define-key 'normal rspec-verifiable-mode-keymap
-    (kbd ",tt") 'rspec-verify-single
-    (kbd ",tb") 'rspec-verify))
+  (with-eval-after-load "evil"
+    (evil-define-key 'normal rspec-mode-map
+      ",tt" 'rspec-verify-single
+      ",tb" 'rspec-verify)
+    (evil-define-key 'normal rspec-verifiable-mode-map
+      ",tt" 'rspec-verify-single
+      ",tb" 'rspec-verify)))
 
 ;; (use-package ruby-test-mode
 ;;   :diminish ruby-test-mode
