@@ -41,8 +41,7 @@ openHatenaEntryInNewTab -> {{
   const {pathname, hostname, protocol} = window.location;
   const isHttps = protocol === "https:";
   const url = `http://b.hatena.ne.jp/entry/${isHttps ? "s/" : ""}${hostname}${pathname}`
-  const value = `call :tabopen ${url}<CR>`;
-  Mappings.parseLine(value);
+  window.open(url);
 }}
 
 unmap p
