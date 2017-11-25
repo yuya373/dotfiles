@@ -14,6 +14,22 @@ set completeonopen
 set sortlinkhints
 set cncpcompletion
 
+yankForMarkdown -> {{
+  const title = document.title;
+  const url = window.location.href;
+  const text = `[${title}](${url})`;
+  Status.setMessage(text,3);
+  Clipboard.copy(text);
+}}
+
+yankForOrgMode -> {{
+  const title = document.title;
+  const url = window.location.href;
+  const text = `[[${url}][${title}]]`;
+  Status.setMessage(text,3);
+  Clipboard.copy(text);
+}}
+
 unmap p
 unmap a
 map <Leader>g :tabnew<Space>google<Space>
@@ -34,8 +50,11 @@ map <Leader>b :bookmark<Space>
 map <Leader>r reloadTabUncached
 map <Leader>x :restore<Space>
 map R reloadTabUncached
-map y yankUrl
-map Y yankDocumentUrl
+unmap y
+map yy yankUrl
+map yY yankDocumentUrl
+map ym :call yankForMarkdown<CR>
+map yo :call yankForOrgMode<CR>
 map J nextTab
 map K previousTab
 map M centerMatchH
