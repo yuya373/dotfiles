@@ -57,8 +57,8 @@ map <Leader>r reloadTabUncached
 map <Leader>x :restore<Space>
 map R reloadTabUncached
 unmap y
-map yy yankUrl
-map yY yankDocumentUrl
+map yY yankUrl
+map yy yankDocumentUrl
 map ym :call yankForMarkdown<CR>
 map yo :call yankForOrgMode<CR>
 map yt :call yankTitle<CR>
