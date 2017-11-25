@@ -36,6 +36,15 @@ yankTitle -> {{
   Clipboard.copy(text);
 }}
 
+openHatenaEntryInNewTab -> {{
+  const location = window.location;
+  const {pathname, hostname, protocol} = window.location;
+  const isHttps = protocol === "https:";
+  const url = `http://b.hatena.ne.jp/entry/${isHttps ? "s/" : ""}${hostname}${pathname}`
+  const value = `call :tabopen ${url}<CR>`;
+  Mappings.parseLine(value);
+}}
+
 unmap p
 unmap a
 map o :open<Space>
@@ -52,6 +61,7 @@ map tp previousTab
 map tP pinTab
 map tf firstTab
 map tl lastTab
+map tb :call openHatenaEntryInNewTab<CR>
 map b :buffer<Space>
 map <Leader>b :bookmark<Space>
 map <Leader>r reloadTabUncached
