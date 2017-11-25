@@ -38,6 +38,7 @@ yankTitle -> {{
 
 unmap p
 unmap a
+map o :open<Space>
 map <Leader>g :tabnew<Space>google<Space>
 map <Leader>a :tabnew<Space>amazonjp<Space>
 map m centerMatchH
