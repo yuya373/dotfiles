@@ -30,6 +30,12 @@ yankForOrgMode -> {{
   Clipboard.copy(text);
 }}
 
+yankTitle -> {{
+  const text = document.title;
+  Status.setMessage(text,3);
+  Clipboard.copy(text);
+}}
+
 unmap p
 unmap a
 map <Leader>g :tabnew<Space>google<Space>
@@ -55,6 +61,7 @@ map yy yankUrl
 map yY yankDocumentUrl
 map ym :call yankForMarkdown<CR>
 map yo :call yankForOrgMode<CR>
+map yt :call yankTitle<CR>
 map J nextTab
 map K previousTab
 map M centerMatchH
