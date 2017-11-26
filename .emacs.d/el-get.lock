@@ -1,5 +1,7 @@
 (setq el-get-lock-package-versions
-      '((rspec-mode :checksum "94a04f148922852b591957b0b3b22de5c4237448")
+      '((omnisharp-mode :checksum "b0c61e91d1b600875ad2eae06fe72a179a3028b6")
+        (csharp-mode :checksum "331b45df9c6e84601cea323638f82ce5e4a68b03")
+        (rspec-mode :checksum "94a04f148922852b591957b0b3b22de5c4237448")
         (perspeen :checksum "525f2f25358f17c7269c3750d56bfb8a6d59b5e6")
         (websocket :checksum "b77aca6ccf0937601e53b53ec906f9ee4fc5d469")
         (clang-format :checksum "669b82f4adfb7750b04bbbe28aec78f3bed2e7d4")

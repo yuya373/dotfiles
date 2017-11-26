@@ -87,6 +87,7 @@
         (append (mapcar (lambda (l) (append l shackle-rule-bottom))
                         '((timer-list-mode)
                           (flycheck-error-list-mode)
+                          (ert-results-mode)
                           ("\\`\\*quickrun\\*\\'" :regexp t)
                           ("\\`\\*Org.*Export\\*\\'" :regexp t)
                           ("\\`\\*HTTP\sResponse\\*\\'" :regexp t)
