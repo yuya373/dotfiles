@@ -31,7 +31,7 @@
         (flim :checksum "3510d32e5820b2c22b4e9c9f29177beea42c5bfb")
         (apel :checksum "339eb28ffae3165255a79de9b1fd362f43cd37c3")
         (twittering-mode :checksum "63c96fb029033b1a300b90aa922e167c7c405bcb")
-        (helm-dash :checksum "9a230125a7a11f5fa90aa048b61abd95eb78ddfe")
+        (helm-dash :checksum "13dcc176556a7dd0970790e96dbbf9105dc395de")
         (emacschrome :checksum "a0876df85e5a09d4d0b3f05b45a3694639f8e3ae")
         (xclip :checksum "c4c4167405702b8f747f0ebd9b962ba075bdbeb8")
         (company-ghc :checksum "ff2205c0b309467eea763521d30220e7849c75b0")

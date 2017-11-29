@@ -36,6 +36,7 @@
     (setq truncate-lines t)
     (setq tab-width 4)
     (setq evil-shift-width 4)
+    (setq-local helm-dash-docsets '("NET Framework" "Unity 3D"))
     (omnisharp-mode))
   (add-hook 'csharp-mode-hook
             'my-csharp-mode-hook))

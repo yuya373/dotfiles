@@ -114,7 +114,7 @@ word(s) will be searched for via `eww-search-prefix'."
 
 
 
-  (setq url-privacy-level 'paranoid)
+  (setq url-privacy-level '(email lastloc))
   ;; (defun url-http-user-agent-string ()
   ;;   (format "User-Agent: %s\r\n"
   ;;           "Mozilla/5.0 (iPhone; CPU iPhone OS 9_0_2 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13A452 Safari/601.1"))

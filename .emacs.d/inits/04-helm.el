@@ -402,8 +402,9 @@
   (setq helm-dash-common-docsets '("Ruby" "Ruby on Rails" "Rust" "React" "PostgreSQL"
                                    "NodeJS" "Nginx" "MySQL" "Markdown" "JavaScript"
                                    "Java" "Haskell" "Haml" "HTML" "Emacs Lisp"
-                                   "ElasticSearch" "Docker" "Common Lisp" "Bootstrap 3"
+                                   "ElasticSearch" "Docker" "Common Lisp"
                                    "Bash" "OCaml"
+                                   "NET Framework" "Unity 3D"
                                    ))
   (setq helm-dash-min-length 1)
   (setq helm-dash-browser-func 'eww)
