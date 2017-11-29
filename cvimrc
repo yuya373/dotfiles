@@ -37,8 +37,16 @@ yankTitle -> {{
 }}
 
 openHatenaEntryInNewTab -> {{
-  const location = window.location;
-  const {pathname, hostname, protocol} = window.location;
+  let location;
+  const canonical = document.querySelector('link[rel="canonical"]');
+
+  if (canonical) {
+    location = new URL(canonical.href);
+  } else {
+    location = window.location;
+  }
+
+  const {pathname, hostname, protocol} = location;
   const isHttps = protocol === "https:";
   const url = `http://b.hatena.ne.jp/entry/${isHttps ? "s/" : ""}${hostname}${pathname}`
   window.open(url);
