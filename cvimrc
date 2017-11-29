@@ -46,9 +46,9 @@ openHatenaEntryInNewTab -> {{
     location = window.location;
   }
 
-  const {pathname, hostname, protocol} = location;
+  const {pathname, hostname, protocol, search} = location;
   const isHttps = protocol === "https:";
-  const url = `http://b.hatena.ne.jp/entry/${isHttps ? "s/" : ""}${hostname}${pathname}`
+  const url = `http://b.hatena.ne.jp/entry/${isHttps ? "s/" : ""}${hostname}${pathname}${search}`
   window.open(url);
 }}
 
