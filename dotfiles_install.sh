@@ -9,6 +9,7 @@ case ${OSTYPE} in
         ln -sf ~/dotfiles/.xbindkeysrc  ~/.xbindkeysrc
         ln -sf ~/dotfiles/etc/X11/xorg.conf.d/30-touchpad.conf /etc/X11/xorg.conf.d/30-touchpad.conf
         ln -sf ~/dotfiles/etc/X11/xorg.conf.d/10-monitor.conf  /etc/X11/xorg.conf.d/10-monitor.conf
+        ln -sf ~/dotfiles/etc/X11/xorg.conf.d/29-trackpoint.conf /etc/X11/xorg.conf.d/29-trackpoint.conf
         if [[ ! -d ~/.config/zathura ]]; then
             mkdir -p ~/.config/zathura
         fi
