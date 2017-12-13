@@ -21,7 +21,7 @@ zplug "marzocchi/zsh-notify"
 zplug "modules/completion", from:prezto
 zplug "modules/directory", from:prezto
 zplug "modules/history", from:prezto
-zplug "modules/tmux", from:prezto
+## zplug "modules/tmux", from:prezto
 zplug "modules/autosuggestions", from:prezto
 zplug "modules/history-substring-search", from:prezto
 zplug "modules/rsync", from:prezto
