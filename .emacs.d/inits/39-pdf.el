@@ -39,6 +39,7 @@
   ;; (add-hook 'pdf-view-mode-hook 'pdf-view-dark-minor-mode)
   (add-hook 'pdf-view-mode-hook 'pdf-view-midnight-minor-mode)
   (add-hook 'pdf-view-mode-hook #'(lambda () (blink-cursor-mode -1)))
+  (add-hook 'pdf-view-mode-hook 'pdf-links-minor-mode)
   (setq pdf-view-dump-file-name "pdf-view-dump")
   :config
 
@@ -135,7 +136,13 @@
   (use-package pdf-occur)
   (use-package pdf-annot)
   (use-package pdf-history)
-  (use-package pdf-links)
+  (use-package pdf-links
+    :init
+    (setq pdf-links-browse-uri-function #'browse-url)
+    :config
+    (evil-define-key 'normal pdf-links-minor-mode-map
+      ",f" 'pdf-links-action-perform
+      ))
   (use-package pdf-info)
   (use-package pdf-misc)
   (use-package pdf-sync)
