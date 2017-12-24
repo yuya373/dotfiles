@@ -31,7 +31,11 @@
   (require 'evil))
 
 (el-get-bundle scala-mode)
-(el-get-bundle ensime)
+(el-get-bundle ensime
+  :type github
+  :branch "2.0"
+  :pkgname "ensime/ensime-emacs"
+  )
 (el-get-bundle yasnippet)
 
 (use-package scala-mode
@@ -106,9 +110,9 @@
 
   (defun ensime-print-errors-only-at-point ()
     (interactive)
-    (let ((msg (ensime-errors-at (point))))
-      (when msg
-        (message "%s" msg))))
+    (let ((msgs (append (ensime-errors-at (point))
+                        (ensime-implicit-notes-at (point)))))
+      (mapconcat 'identity msgs "\n")))
   (defun ensime-eldoc-info ()
     (when (ensime-connected-p)
       (let ((e (ensime-print-errors-only-at-point)))

@@ -1,5 +1,6 @@
 (setq el-get-lock-package-versions
-      '((omnisharp-mode :checksum "b0c61e91d1b600875ad2eae06fe72a179a3028b6")
+      '((ensime :checksum "3d3ab18436ad6089496b3bce1d49c64a86965431")
+        (omnisharp-mode :checksum "b0c61e91d1b600875ad2eae06fe72a179a3028b6")
         (csharp-mode :checksum "331b45df9c6e84601cea323638f82ce5e4a68b03")
         (rspec-mode :checksum "94a04f148922852b591957b0b3b22de5c4237448")
         (perspeen :checksum "525f2f25358f17c7269c3750d56bfb8a6d59b5e6")
@@ -51,7 +52,6 @@
         (cargo :checksum "b0487f95a7de7a1d6f03cdd05220f633977d65a2")
         (flycheck-rust :checksum "a89c0298f5e8fdcb0c33833ca1eca64632cec053")
         (racer :checksum "6e0d1b3ebd54497c0cc995a92f09328ff101cd33")
-        (ensime :checksum "fe816d36bce96151f90b76887a69f44100bd12da")
         (lua-mode :checksum "652e299cb967fccca827dda381d61a9c144d97de")
         (imenu-anywhere :checksum "94bab9136e1264e98a10d9325ad53d735307f8f3")
         (material-theme :checksum "0890ff69a0fa1f908e79d0f68b1bb3cf0d55af40")
