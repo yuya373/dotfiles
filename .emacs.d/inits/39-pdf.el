@@ -40,6 +40,7 @@
   (add-hook 'pdf-view-mode-hook 'pdf-view-midnight-minor-mode)
   (add-hook 'pdf-view-mode-hook #'(lambda () (blink-cursor-mode -1)))
   (add-hook 'pdf-view-mode-hook 'pdf-links-minor-mode)
+  (add-hook 'pdf-view-mode-hook 'pdf-history-minor-mode)
   (setq pdf-view-dump-file-name "pdf-view-dump")
   :config
 
@@ -100,7 +101,9 @@
     "j" 'pdf-view-scroll-up-or-next-page
     "k" 'pdf-view-scroll-down-or-previous-page
     "h" 'left-char
+    "H" 'pdf-history-backward
     "l" 'right-char
+    "L" 'pdf-history-forward
     "d" 'pdf-view-next-page-command
     "u" 'pdf-view-previous-page-command
     "+" 'pdf-view-enlarge
