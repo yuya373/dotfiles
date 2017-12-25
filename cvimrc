@@ -13,6 +13,8 @@ set noshowtabindices
 set completeonopen
 set sortlinkhints
 set cncpcompletion
+set autohidecursor
+set autoupdategist
 
 yankForMarkdown -> {{
   const title = document.title;
@@ -38,6 +40,8 @@ yankTitle -> {{
 
 openHatenaEntryInNewTab -> {{
   let location;
+  let hatenaUrl;
+
   const canonical = document.querySelector('link[rel="canonical"]');
 
   if (canonical) {
@@ -48,8 +52,18 @@ openHatenaEntryInNewTab -> {{
 
   const {pathname, hostname, protocol, search} = location;
   const isHttps = protocol === "https:";
-  const url = `http://b.hatena.ne.jp/entry/${isHttps ? "s/" : ""}${hostname}${pathname}${search}`
-  window.open(url);
+  const baseUrl = `http://b.hatena.ne.jp/entry/${isHttps ? "s/" : ""}`
+
+  if (hostname === "medium.com") {
+    const paths = pathname.split("/");
+    const filename = paths[paths.length - 1].split("-")
+    const hash = filename[filename.length - 1];
+    const mediumPath = paths.slice(0, paths.length - 1).concat([hash]).join("/");
+    hatenaUrl = `${baseUrl}${hostname}${mediumPath}${search}`;
+  } else {
+    hatenaUrl = `${baseUrl}${hostname}${pathname}${search}`;
+  }
+  window.open(hatenaUrl);
 }}
 
 unmap p
