@@ -50,7 +50,7 @@ openHatenaEntryInNewTab -> {{
     location = window.location;
   }
 
-  const {pathname, hostname, protocol, search} = location;
+  const {pathname, hostname, protocol, search, hash} = location;
   const isHttps = protocol === "https:";
   const baseUrl = `http://b.hatena.ne.jp/entry/${isHttps ? "s/" : ""}`
 
@@ -59,11 +59,11 @@ openHatenaEntryInNewTab -> {{
     const filename = paths[paths.length - 1].split("-")
     const hash = filename[filename.length - 1];
     const mediumPath = paths.slice(0, paths.length - 1).concat([hash]).join("/");
-    hatenaUrl = `${baseUrl}${hostname}${mediumPath}${search}`;
+    hatenaUrl = `${baseUrl}${hostname}${mediumPath}`;
   } else {
-    hatenaUrl = `${baseUrl}${hostname}${pathname}${search}`;
+    hatenaUrl = `${baseUrl}${hostname}${pathname}`;
   }
-  window.open(hatenaUrl);
+  window.open(`${hatenaUrl}${search}${encodeURIComponent(hash)}`);
 }}
 
 unmap p
