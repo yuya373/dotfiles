@@ -162,6 +162,7 @@ systemd-sysvcompat
 tar
 texinfo
 the_silver_searcher
+tig
 tinycdb
 tmux
 ttf-bitstream-vera
