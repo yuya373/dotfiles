@@ -103,7 +103,19 @@
   (add-hook 'evil-normal-state-entry-hook 'evil-ensime-sem-high-refresh t)
 
   (add-hook 'ensime-mode-hook 'eldoc-mode)
-
+  (setq ensime-inf-cmd-template '(:java :java-flags
+                                        "-Djline.terminal=jline.UnsupportedTerminal"
+                                        "-Dscala.usejavacp=true"
+                                        "scala.tools.nsc.MainGenericRunner"
+                                        "-encoding" "UTF-8"
+                                        "-deprecation"
+                                        "-unchecked"
+                                        "-feature"
+                                        "-language:higherKinds"
+                                        ;; "-Xlint"
+                                        ;; "-Xfatal-warnings"
+                                        "-Ypartial-unification"
+                                        ))
   :config
   (defun advice-ensime-imenu-index-function (org-func)
     (if (ensime-connected-p)
