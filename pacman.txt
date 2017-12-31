@@ -85,6 +85,7 @@ iputils
 iw
 jdk8-openjdk
 jfsutils
+joe-go
 kindleforpc
 less
 libgit2

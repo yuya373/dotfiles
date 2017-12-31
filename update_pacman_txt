@@ -1,0 +1,11 @@
+#!/usr/bin/bash -eu
+
+if [[ -e ~/dotfiles/pacman.txt ]]; then
+    mv ~/dotfiles/pacman.txt ~/dotfiles/pacman.txt.bak
+fi
+
+pacman -Qqe > ~/dotfiles/pacman.txt
+
+if [[ -e ~/dotfiles/pacman.txt.bak ]]; then
+    rm  ~/dotfiles/pacman.txt.bak
+fi

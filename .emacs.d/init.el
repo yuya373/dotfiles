@@ -112,3 +112,4 @@
  '(avy-lead-face-2 ((t (:background "#2aa198" :foreground "gray100"))))
  '(perspeen-tab--header-line-active ((t (:inherit mode-line :background "#eee8d5" :foreground "#657b83" :weight bold))))
  '(perspeen-tab--powerline-inactive1 ((t (:inherit mode-line)))))
+(put 'list-timers 'disabled nil)
