@@ -1,3 +1,4 @@
+source ~/dotfiles/tmux.zsh
 typeset -U path cdpath fpath manpath
 
 # zplug
@@ -16,12 +17,10 @@ zplug "junegunn/fzf", as:command, use:bin/fzf-tmux
 zplug "junegunn/fzf", use:"shell/*.zsh", as:plugin
 
 zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
-zplug "marzocchi/zsh-notify"
 
 zplug "modules/completion", from:prezto
 zplug "modules/directory", from:prezto
 zplug "modules/history", from:prezto
-## zplug "modules/tmux", from:prezto
 zplug "modules/autosuggestions", from:prezto
 zplug "modules/history-substring-search", from:prezto
 zplug "modules/rsync", from:prezto
@@ -45,8 +44,6 @@ zstyle ':prezto:module:autosuggestions' color 'yes'
 zstyle ':prezto:module:autosuggestions:color' found 'fg=136'
 zstyle ':prezto:module:history-substring-search' color 'yes'
 zstyle ':prezto:module:history-substring-search' case-sensitive 'yes'
-zstyle ':prezto:module:tmux:auto-start' local 'yes'
-zstyle ':prezto:module:tmux:session' name 'tmux'
 zstyle ':notify:*' command-complete-timeout 1
 zstyle ':prezto:module:pacman' frontend 'yaourt'
 
