@@ -5,3 +5,4 @@
 !/.emacs.d/init.el
 !/.emacs.d/inits/
 /.emacs.d/inits/99-private.el
+.stack-work
