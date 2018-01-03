@@ -41,18 +41,16 @@
 
 (use-package git-timemachine
   :commands (git-timemachine)
-  :init
-  (add-hook 'git-timemachine-mode-hook 'git-timemachine-define-keymap)
-  (defun git-timemachine-define-keymap ()
-    (interactive)
-    (evil-define-key 'normal git-timemachine-mode-map
-      ",g" nil
-      ",gp" 'git-timemachine-show-previous-revision
-      ",gn" 'git-timemachine-show-next-revision
-      ",gg" 'git-timemachine-show-nth-revision
-      ",gq" 'git-timemachine-quit
-      ",gw" 'git-timemachine-kill-abbreviated-revision
-      ",gW" 'git-timemachine-kill-revision)))
+  :config
+  (evil-define-key 'normal git-timemachine-mode-map
+    ",p" 'git-timemachine-show-previous-revision
+    ",n" 'git-timemachine-show-next-revision
+    ",g" 'git-timemachine-show-nth-revision
+    ",q" 'git-timemachine-quit
+    ",w" 'git-timemachine-kill-abbreviated-revision
+    ",W" 'git-timemachine-kill-revision
+    ",b" 'git-timemachine-blame)
+  )
 
 (use-package git-messenger
   :commands (git-messenger:popup-message))
@@ -86,6 +84,7 @@
   (use-package magit-extras)
   (use-package git-rebase)
   (use-package magit-submodule)
+  (use-package magit-subtree)
   (use-package evil-magit
     :config
     (evil-magit-define-key evil-magit-state 'git-rebase-mode-map

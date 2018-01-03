@@ -54,7 +54,7 @@
        ;;  :separator "|"
        ;;  :face highlight-face)
        (buffer-modified buffer-id remote-host)
-       (pdf :when active)
+       ;; (pdf :when active)
        ((flycheck-error flycheck-warning flycheck-info)
         :when active)
        major-mode

@@ -526,7 +526,15 @@
     "gps" 'hub-pr-send-pr
     "gc" 'git-gutter+-commit
     "gC" 'git-gutter+-stage-and-commit
-    "gt" 'git-timemachine
+    "gt" nil
+    "gtt" 'git-timemachine
+    "gtp" 'git-timemachine-show-previous-revision
+    "gtn" 'git-timemachine-show-next-revision
+    "gtg" 'git-timemachine-show-nth-revision
+    "gtq" 'git-timemachine-quit
+    "gtw" 'git-timemachine-kill-abbreviated-revision
+    "gtW" 'git-timemachine-kill-revision
+    "gtb" 'git-timemachine-blame)
     "hgc" 'helm-open-github-from-commit
     "hgf" 'helm-open-github-from-file
     "hgi" 'helm-open-github-from-issues
