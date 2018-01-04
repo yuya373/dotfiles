@@ -2,7 +2,7 @@
 .cVim-completion-item, .cVim-completion-item .cVim-full, .cVim-completion-item .cVim-left,
 .cVim-completion-item .cVim-right {
   font-family: Helvetica, Helvetica Neue, Neue, sans-serif, monospace, Arial;
-  font-size: 15pt !important;
+  font-size: 13pt !important;
   -webkit-font-smoothing: antialiased !important;
 }
 
@@ -52,7 +52,7 @@
 
 .cVim-completion-item, .cVim-completion-item .cVim-full, .cVim-completion-item .cVim-left, .cVim-completion-item .cVim-right {
   text-overflow: ellipsis;
-  padding: 1px;
+  /* padding: 1px; */
   display: inline-block;
   box-sizing: border-box;
   vertical-align: middle;
