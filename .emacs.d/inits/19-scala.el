@@ -38,10 +38,10 @@
   )
 (el-get-bundle yasnippet)
 
+
 (use-package scala-mode
   :commands (scala-mode)
   :mode (("\\.scala\\'" . scala-mode))
-  :interpreter (("scala" . scala-mode))
   :init
   (defun my-scala-mode-hook ()
     (setq-local helm-dash-docsets '("Scala"))
@@ -77,8 +77,8 @@
         ensime-startup-snapshot-notification nil
         ensime-sbt-perform-on-save nil
         ensime-completion-style 'company
-        ensime-sem-high-enabled-p t
-        ensime-typecheck-when-idle t
+        ensime-sem-high-enabled-p nil
+        ensime-typecheck-when-idle nil
         ensime-search-interface 'helm
         ensime-tooltip-type-hints t
         ensime-auto-generate-config nil

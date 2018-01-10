@@ -437,7 +437,7 @@
     (let ((file-name (buffer-file-name)))
       (if file-name
           ;; (set-buffer (find-file (concat "/sudo:root@localhost:" file-name)))
-          (find-alternate-file (concat "/sudo:root@localhost:" file-name))
+          (find-alternate-file (concat "/sudo::" file-name))
         (error "Cannot get a file name"))))
   (defun dired-open-current ()
     (interactive)
@@ -534,7 +534,7 @@
     "gtq" 'git-timemachine-quit
     "gtw" 'git-timemachine-kill-abbreviated-revision
     "gtW" 'git-timemachine-kill-revision
-    "gtb" 'git-timemachine-blame)
+    "gtb" 'git-timemachine-blame
     "hgc" 'helm-open-github-from-commit
     "hgf" 'helm-open-github-from-file
     "hgi" 'helm-open-github-from-issues
@@ -545,6 +545,9 @@
     "hi" 'helm-imenu-anywhere
     "ho" 'helm-semantic-or-imenu
     "hp" 'helm-list-emacs-process
+    "hun" 'easy-hugo-newpost-today
+    "hud" 'easy-hugo-github-deploy
+    "hul" 'easy-hugo-list-posts
     "ig" 'indent-guide-mode
     "jw" 'avy-migemo-goto-word-1
     "jl" 'avy-goto-line

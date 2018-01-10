@@ -298,5 +298,25 @@
 ;;     ",th" 'mime-preview-toggle-header
 ;;     ",tc" 'mime-preview-toggle-content))
 
+(el-get-bundle easy-hugo)
+(use-package easy-hugo
+  :commands (easy-hugo easy-hugo-newpost easy-hugo-github-deploy)
+  :init
+  (setq easy-hugo-postdir "content/posts")
+  (setq easy-hugo-basedir "~/dev/blog/")
+  (defun easy-hugo-list-posts ()
+    (interactive)
+    (helm-find-files-1 (expand-file-name
+                        (format "%s%s/"
+                                easy-hugo-basedir
+                                easy-hugo-postdir))))
+  (defun easy-hugo-newpost-today  ()
+    (interactive)
+    (let ((format "%Y_%m_%d"))
+      (easy-hugo-newpost
+       (format "%s.md"
+               (format-time-string format))))))
+
+
 (provide '24-toy)
 ;;; 24-toy.el ends here

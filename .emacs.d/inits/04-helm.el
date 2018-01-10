@@ -41,13 +41,7 @@
 (el-get-bundle helm-ag)
 (el-get-bundle migemo)
 
-(use-package helm-ls-git
-  :commands (helm-ls-git-ls
-             helm-ls-git-source
-             helm-ls-git-not-inside-git-repo)
-  :init
-  (setq helm-ls-git-default-sources '(helm-source-ls-git))
-  (setq helm-ls-git-fuzzy-match t))
+
 
 (use-package helm
   :diminish helm-mode
@@ -106,6 +100,13 @@
   :config
   (use-package helm-config)
   (use-package helm-eshell)
+  (use-package helm-ls-git
+    ;; :commands (helm-ls-git-ls
+    ;;            helm-ls-git-source
+    ;;            helm-ls-git-not-inside-git-repo)
+    :init
+    (setq helm-ls-git-default-sources '(helm-source-ls-git))
+    (setq helm-ls-git-fuzzy-match t))
   (helm-migemo-mode t)
   (diminish 'helm-migemo-mode)
   (defun make-helm-git-source ()
@@ -430,7 +431,7 @@ The Argument FEED-PATH should be a string with the path of the xml file."
            (urls (car xml))
            (url (xml-get-children urls 'url))
            (_url (cl-caddr (or (cl-find-if #'(lambda (e) (string-match-p "tokyo" (cl-caddr e))) url)
-                          (cl-first url)))))
+                               (cl-first url)))))
 
       (message "%s" _url)
       _url)))

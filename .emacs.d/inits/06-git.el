@@ -115,6 +115,17 @@
   :init
   (add-hook 'after-init-hook 'global-git-gutter+-mode)
   :config
+  (defun git-gutter+-remote-default-directory (dir file)
+    (let* ((vec (tramp-dissect-file-name file))
+           (method (tramp-file-name-method vec))
+           (user (tramp-file-name-user vec))
+           (host (tramp-file-name-host vec)))
+      (format "/%s:%s%s:%s" method (if user (concat user "@") "") host dir)))
+
+  (defun git-gutter+-remote-file-path (dir file)
+    (let ((file (tramp-file-name-localname (tramp-dissect-file-name file))))
+      (replace-regexp-in-string (concat "\\`" dir) "" file)))
+
   (use-package git-gutter-fringe+
     :config
     (use-package fringe-helper
