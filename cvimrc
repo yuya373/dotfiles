@@ -25,7 +25,7 @@ yankForMarkdown -> {{
 }}
 
 yankForOrgMode -> {{
-  const title = document.title;
+  const title = document.title.replace(/\[/g, "【").replace(/\]/g, "】");
   const url = window.location.href;
   const text = `[[${url}][${title}]]`;
   Status.setMessage(text,3);
