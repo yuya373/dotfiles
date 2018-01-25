@@ -94,6 +94,7 @@
                           (twittering-mode)
                           (inf-ruby-mode)
                           (rspec-compilation-mode)
+                          (ensime-inf-mode)
                           ((slack-message-buffer-mode
                             slack-search-result-buffer-mode)
                            :select t)
