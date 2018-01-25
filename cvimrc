@@ -66,6 +66,13 @@ openHatenaEntryInNewTab -> {{
   window.open(`${hatenaUrl}${search}${encodeURIComponent(hash)}`);
 }}
 
+yankGithubGitRepoAddr -> {{
+  const input = document.querySelector(".get-repo-modal .ssh-clone-options .js-zeroclipboard-container .js-zeroclipboard-target")
+  const result = input ? input.value : "Not Found";
+  Status.setMessage(result, 3);
+  Clipboard.copy(result);
+}}
+
 unmap p
 unmap a
 map o :open<Space>
@@ -94,6 +101,7 @@ map yy yankDocumentUrl
 map ym :call yankForMarkdown<CR>
 map yo :call yankForOrgMode<CR>
 map yt :call yankTitle<CR>
+map yg :call yankGithubGitRepoAddr<CR>
 map J nextTab
 map K previousTab
 map M centerMatchH
