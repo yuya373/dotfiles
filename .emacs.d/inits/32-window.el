@@ -98,6 +98,9 @@
                           ((slack-message-buffer-mode
                             slack-search-result-buffer-mode)
                            :select t)
+                          (("\\`\\*eshell\\*\\(<.*>\\)?\\'") :regexp t :select t)
+
+
 
 
                           ((slack-edit-file-comment-buffer-mode
@@ -112,7 +115,8 @@
                             slack-user-profile-buffer-mode
                             slack-stars-buffer-mode
                             slack-pinned-items-buffer-mode)
-                           :select t)))
+                           :select t)
+                          (woman-mode)))
 
                 '((slack-file-info-buffer-mode :custom shackle-new-tab)
                   ("\\`\\*Slack\sEvent\sLog" :regexp t :custom shackle-new-tab)

@@ -35,25 +35,38 @@
 (use-package eshell
   :commands (eshell)
   :init
-  (setq eshell-scroll-to-bottom-on-output t)
   (setq eshell-modules-list '(eshell-alias eshell-banner eshell-basic
                                            eshell-cmpl eshell-dirs
                                            eshell-glob eshell-hist
                                            eshell-ls eshell-pred
                                            eshell-prompt eshell-script
                                            eshell-term eshell-unix))
+  (defun esh-evil-force-normal-state (_ _)
+    (evil-normal-state))
+  (add-hook 'eshell-expand-input-functions 'esh-evil-force-normal-state)
   (defun create-eshell ()
     (interactive)
-    (let* ((eshell-buffer-name
-            "*eshell*"
-            ;; (read-from-minibuffer "Eshell Buffer Name: " "*eshell*")
-            )
+    (let* ((eshell-buffer-name "*eshell*")
+           (buffers (buffer-list))
            (file-name (buffer-file-name (current-buffer)))
-           (git-root (and file-name (vc-git-root file-name))))
-      (if git-root
-          (let ((default-directory git-root))
-            (eshell t))
-        (eshell t))))
+           (git-root (and file-name (vc-git-root file-name)))
+           (same-pwd (cl-assoc git-root
+                               (mapcar #'(lambda (buf)
+                                           (cons (with-current-buffer buf
+                                                   default-directory)
+                                                 buf))
+                                       (cl-remove-if #'(lambda (buf)
+                                                         (with-current-buffer buf
+                                                           (not (eq major-mode
+                                                                    'eshell-mode))))
+                                                     (buffer-list)))
+                               :test #'string=)))
+      (if same-pwd
+          (display-buffer (cdr same-pwd))
+        (if git-root
+            (let ((default-directory git-root))
+              (eshell t))
+          (eshell t)))))
 
   (defun eshell-auto-end ()
     "Move point to end of current prompt when switching to insert state."
@@ -104,9 +117,9 @@ the user activate the completion manually."
   :config
   (require 'em-smart)
   (require 'esh-opt)
-  (setq eshell-where-to-jump 'end
-        eshell-review-quick-commands 'not-even-short-output
-        eshell-smart-space-goes-to-end t)
+  (setq eshell-where-to-jump 'begin
+        eshell-review-quick-commands nil
+        eshell-smart-space-goes-to-end nil)
   (add-hook 'eshell-mode-hook 'eshell-smart-initialize)
 
   (require 'em-term)
@@ -136,14 +149,14 @@ the user activate the completion manually."
 
   ;; (add-hook 'eshell-output-filter-functions 'my-eshell-nuke-ansi-escapes t)
 
-  (defun eshell-exit ()
-    (interactive)
-    (kill-buffer (current-buffer))
-    (delete-window))
+  ;; (defun eshell-exit ()
+  ;;   (interactive)
+  ;;   (kill-buffer (current-buffer))
+  ;;   (delete-window))
 
   (defun eshell-bind-keymap ()
-    (evil-define-key 'normal eshell-mode-map
-      (kbd "C-c") 'eshell-exit)
+    ;; (evil-define-key 'normal eshell-mode-map
+    ;;   (kbd "C-c") 'eshell-exit)
     (evil-define-key 'insert eshell-mode-map
       (kbd "C-p") 'helm-eshell-history
       (kbd "C-n") 'eshell-next-matching-input-from-input))

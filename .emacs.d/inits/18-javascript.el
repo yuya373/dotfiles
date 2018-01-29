@@ -63,7 +63,8 @@
 (el-get-bundle felipeochoa/rjsx-mode)
 (use-package rjsx-mode
   :mode (("\\.jsx\\'" . rjsx-mode)
-         ("\\.jsx.js\\'" . rjsx-mode))
+         ("\\.js\\'" . rjsx-mode)
+         )
   :config
   (defun rjsx-delete-creates-full-tag-and-escape (n &optional killflag)
     (interactive "p")

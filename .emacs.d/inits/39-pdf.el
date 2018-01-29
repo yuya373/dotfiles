@@ -116,8 +116,8 @@
     "H" 'pdf-history-backward
     "l" 'right-char
     "L" 'pdf-history-forward
-    "d" 'pdf-view-next-page-command
-    "u" 'pdf-view-previous-page-command
+    "d" 'pdf-view-scroll-up-or-next-page
+    "u" 'pdf-view-scroll-down-or-previous-page
     "+" 'pdf-view-enlarge
     "-" 'pdf-view-shrink
     "=" 'pdf-view-fit-width-to-window

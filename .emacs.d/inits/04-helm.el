@@ -98,6 +98,7 @@
         helm-move-to-line-cycle-in-source nil
         helm-echo-input-in-header-line t)
   :config
+  (use-package helm-man)
   (use-package helm-config)
   (use-package helm-eshell)
   (use-package helm-ls-git
