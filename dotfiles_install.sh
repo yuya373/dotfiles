@@ -26,6 +26,8 @@ case ${OSTYPE} in
             mkdir -p ~/.docker
         fi
         ln -sf ~/dotfiles/.docker/config.json  ~/.docker/config.json
+        mkdir -p ~/.xmonad
+        ln -sf ~/dotfiles/xmonad.hs ~/.xmonad/xmonad.hs
         ;;
 esac
 

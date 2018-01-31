@@ -38,6 +38,8 @@ myConfig = (ewmh $ defaultConfig) {
   , ((mod1Mask, xK_bracketright), nextNonEmptyWS)
   , ((mod1Mask, xK_Right), nextScreen)
   , ((mod1Mask, xK_Left), prevScreen)
+  , ((mod1Mask, xK_Tab), nextScreen)
+  , ((mod1Mask.|. shiftMask, xK_Tab), prevScreen)
   , ((mod1Mask .|. shiftMask, xK_c), kill)
   , ((0, xK_Insert), pasteSelection)
   ]
