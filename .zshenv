@@ -3,7 +3,6 @@ case ${OSTYPE} in
     darwin*)
         export SYS_NOTIFIER=`which terminal-notifier`
         export HOMEBREW_CASK_OPTS='--appdir=/Applications'
-        export ZPLUG_HOME=/usr/local/opt/zplug
         export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
         export JAVA_HOME=`/usr/libexec/java_home`
         export PATH=$PATH:$JAVA_HOME/bin
@@ -16,10 +15,10 @@ case ${OSTYPE} in
     linux*)
         export PATH=/usr/local/bin:${PATH}
         setopt no_global_rcs
-        export ZPLUG_HOME=$HOME/zplug
         ;;
 esac
 
+export ZPLUG_HOME=$HOME/zplug
 
 # Ensure that a non-login, non-interactive shell has a defined environment.
 

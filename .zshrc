@@ -1,5 +1,9 @@
 typeset -U path cdpath fpath manpath
 
+if [[ ! -d $ZPLUG_HOME ]]; then
+    git clone https://github.com/zplug/zplug $ZPLUG_HOME
+fi
+
 # zplug
 source $ZPLUG_HOME/init.zsh
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
