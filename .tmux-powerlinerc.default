@@ -6,7 +6,8 @@
 case ${OSTYPE} in
     darwin*)
       # Use patched font symbols.
-      export TMUX_POWERLINE_PATCHED_FONT_IN_USE="true"
+      # export TMUX_POWERLINE_PATCHED_FONT_IN_USE="true"
+      export TMUX_POWERLINE_PATCHED_FONT_IN_USE="false"
         ;;
     linux*)
       export TMUX_POWERLINE_PATCHED_FONT_IN_USE="false"
