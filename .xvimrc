@@ -1,17 +1,17 @@
-nmap <C-n> :nc<CR>
+nmap ,r :run<CR>
+nmap ,w :w<CR>
+nmap ,b :make<CR>
+nmap <CR> o<Esc>
 nmap <C-p> :xccmd openQuickly<CR>
-imap <C-j> <ESC>
-nmap <C-j> <ESC>
 nmap <c-b> :xccmd changeToVersionEditorBlameView<CR>
+nmap <C-n> :nc<CR>
 nmap L :xccmd goForwardInHistoryByCommand<CR>
 nmap H :xccmd goBackInHistoryByCommand<CR>
-nmap \ <Leader>
-nmap <Leader>h :xhelp<CR>
 nmap <Leader>a :xccmd changeToGeniusEditor<CR>
 nmap <Leader>c :xccmd removeAssistantEditor<CR>
+nmap ,h :xhelp<CR>
 nmap <ESC><ESC> :set nohlsearch<CR>
 nmap <c-f> :xccmd moveKeyboardFocusToNextArea<CR>
-nmap <CR> o<ESC>
 nmap tn :xccmd selectNextTab<CR>
 nmap tp :xccmd selectPreviousTab<CR>
 nmap tt :xccmd newTab<CR>

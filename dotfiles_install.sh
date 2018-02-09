@@ -1,6 +1,9 @@
+#!/bin/bash
 set -e
 case ${OSTYPE} in
     darwin*)
+        mkdir -p ~/.config/karabiner/
+        ln -sf ~/dotfiles/.config/karabiner/karabiner.json ~/.config/karabiner/karabiner.json
     ;;
     linux*)
         # X

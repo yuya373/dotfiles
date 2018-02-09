@@ -1,5 +1,8 @@
-source ~/dotfiles/tmux.zsh
 typeset -U path cdpath fpath manpath
+
+if [[ ! -d $ZPLUG_HOME ]]; then
+    git clone https://github.com/zplug/zplug $ZPLUG_HOME
+fi
 
 # zplug
 source $ZPLUG_HOME/init.zsh
@@ -48,6 +51,8 @@ zstyle ':notify:*' command-complete-timeout 1
 zstyle ':prezto:module:pacman' frontend 'yaourt'
 
 zplug load --verbose
+
+source ~/dotfiles/tmux.zsh
 
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS=(do_enter kill-line $ZSH_AUTOSUGGEST_CLEAR_WIDGETS)
 
