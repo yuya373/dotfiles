@@ -14,6 +14,50 @@
         },
         "rules": [
           {
+            "description": "Option + ] to Command + Tab, Option + [ to Command + Shift + Tab",
+            "manipulators": [
+              {
+                "from": {
+                  "key_code": "close_bracket",
+                  "modifiers": {
+                    "mandatory": [
+                      "option"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "tab",
+                    "modifiers": [
+                      "command"
+                    ]
+                  }
+                ],
+                "type": "basic"
+              },
+              {
+                "from": {
+                  "key_code": "open_bracket",
+                  "modifiers": {
+                    "mandatory": [
+                      "option"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "tab",
+                    "modifiers": [
+                      "command",
+                      "shift"
+                    ]
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
             "description": "Finder",
             "manipulators": [
               {
@@ -34,30 +78,40 @@
                       "left_command"
                     ]
                   }
-                ]
+                ],
+                "type": "basic"
               },
               {
-                "type": "basic",
+                "conditions": [
+                  {
+                    "bundle_identifiers": [
+                      "^com\\.apple\\.finder$"
+                    ],
+                    "type": "frontmost_application_if"
+                  }
+                ],
                 "from": {
                   "key_code": "return_or_enter"
                 },
                 "to": [
                   {
                     "key_code": "o",
-                    "modifiers": ["right_command"]
-                  }
-                ],
-                "conditions": [
-                  {
-                    "type": "frontmost_application_if",
-                    "bundle_identifiers": [
-                      "^com\\.apple\\.finder$"
+                    "modifiers": [
+                      "right_command"
                     ]
                   }
-                ]
+                ],
+                "type": "basic"
               },
               {
-                "type": "basic",
+                "conditions": [
+                  {
+                    "bundle_identifiers": [
+                      "^com\\.apple\\.finder$"
+                    ],
+                    "type": "frontmost_application_if"
+                  }
+                ],
                 "from": {
                   "key_code": "return_or_enter",
                   "modifiers": {
@@ -71,14 +125,7 @@
                     "key_code": "return_or_enter"
                   }
                 ],
-                "conditions": [
-                  {
-                    "type": "frontmost_application_if",
-                    "bundle_identifiers": [
-                      "^com\\.apple\\.finder$"
-                    ]
-                  }
-                ]
+                "type": "basic"
               }
             ]
           },
@@ -215,7 +262,83 @@
           }
         ]
       },
-      "devices": [],
+      "devices": [
+        {
+          "disable_built_in_keyboard_if_exists": false,
+          "fn_function_keys": [],
+          "identifiers": {
+            "is_keyboard": true,
+            "is_pointing_device": false,
+            "product_id": 4871,
+            "vendor_id": 65261
+          },
+          "ignore": false,
+          "manipulate_caps_lock_led": false,
+          "simple_modifications": []
+        },
+        {
+          "disable_built_in_keyboard_if_exists": false,
+          "fn_function_keys": [],
+          "identifiers": {
+            "is_keyboard": true,
+            "is_pointing_device": false,
+            "product_id": 630,
+            "vendor_id": 1452
+          },
+          "ignore": false,
+          "manipulate_caps_lock_led": true,
+          "simple_modifications": [
+            {
+              "from": {
+                "key_code": "caps_lock"
+              },
+              "to": {
+                "key_code": "tab"
+              }
+            },
+            {
+              "from": {
+                "key_code": "left_command"
+              },
+              "to": {
+                "key_code": "left_control"
+              }
+            },
+            {
+              "from": {
+                "key_code": "left_control"
+              },
+              "to": {
+                "key_code": "left_option"
+              }
+            },
+            {
+              "from": {
+                "key_code": "left_option"
+              },
+              "to": {
+                "key_code": "left_command"
+              }
+            },
+            {
+              "from": {
+                "key_code": "right_command"
+              },
+              "to": {
+                "key_code": "right_control"
+              }
+            },
+            {
+              "from": {
+                "key_code": "right_option"
+              },
+              "to": {
+                "key_code": "right_command"
+              }
+            }
+          ]
+        }
+      ],
       "fn_function_keys": [
         {
           "from": {
@@ -317,54 +440,6 @@
       "name": "Default profile",
       "selected": true,
       "simple_modifications": [
-        {
-          "from": {
-            "key_code": "caps_lock"
-          },
-          "to": {
-            "key_code": "tab"
-          }
-        },
-        {
-          "from": {
-            "key_code": "left_command"
-          },
-          "to": {
-            "key_code": "left_control"
-          }
-        },
-        {
-          "from": {
-            "key_code": "left_control"
-          },
-          "to": {
-            "key_code": "left_option"
-          }
-        },
-        {
-          "from": {
-            "key_code": "left_option"
-          },
-          "to": {
-            "key_code": "left_command"
-          }
-        },
-        {
-          "from": {
-            "key_code": "right_command"
-          },
-          "to": {
-            "key_code": "right_control"
-          }
-        },
-        {
-          "from": {
-            "key_code": "right_option"
-          },
-          "to": {
-            "key_code": "right_command"
-          }
-        }
       ],
       "virtual_hid_keyboard": {
         "caps_lock_delay_milliseconds": 0,
