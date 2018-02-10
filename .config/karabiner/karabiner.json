@@ -131,6 +131,30 @@
                     "shell_command": "open -a 'Emacs.app'"
                   }
                 ]
+              },
+              {
+                "type": "basic",
+                "conditions": [
+                  {
+                    "type": "frontmost_application_if",
+                    "bundle_identifiers": [
+                      "^com\\.runningwithcrayons\\.Alfred-3"
+                    ]
+                  }
+                ],
+                "from": {
+                  "key_code": "x",
+                  "modifiers": {
+                    "mandatory": [
+                      "control"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "shell_command": "open -a 'Xcode.app'"
+                  }
+                ]
               }
             ]
           },
