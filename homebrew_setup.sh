@@ -16,10 +16,10 @@ fi
 #     brew link openssl --force
 # fi
 
-brew install git hub tmux vim sshrc coreutils zsh nodebrew \
+brew install git hub tmux vim sshrc coreutils zsh \
      the_silver_searcher direnv global ctags \
-     sanemat/font/ricty \
-     reattach-to-user-namespace
+     sanemat/font/ricty reattach-to-user-namespace \
+     yarn
 
 
 echo "Finished"

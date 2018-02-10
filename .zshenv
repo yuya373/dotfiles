@@ -71,8 +71,6 @@ fi
 export EDITOR='emacsclient -n'
 export EDITOR=vim
 export LANG="ja_JP.UTF-8"
-export PATH=$HOME/.nodebrew/current/bin:$PATH
-export NODE_BINARY=$HOME/.nodebrew/current/bin/node
 export PATH=$HOME/.local/bin:$PATH
 
 export PATH="$HOME/.cargo/bin:$PATH"
