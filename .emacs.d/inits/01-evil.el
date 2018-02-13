@@ -167,7 +167,8 @@
   (defun evil-cleanup-whitespace ()
     (interactive)
     (unless (evil-insert-state-p)
-      (whitespace-cleanup-region (point-min) (point-max))))
+      (when whitespace-mode
+        (whitespace-cleanup-region (point-min) (point-max)))))
   (add-hook 'before-save-hook 'evil-cleanup-whitespace)
   (defun open-below-esc ()
     (interactive)
