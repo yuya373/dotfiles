@@ -19,7 +19,7 @@ fi
 brew install git hub tmux vim sshrc coreutils zsh \
      the_silver_searcher direnv global ctags \
      sanemat/font/ricty reattach-to-user-namespace \
-     yarn
+     yarn hugo
 
 
 echo "Finished"
