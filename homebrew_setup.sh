@@ -17,7 +17,8 @@ fi
 # fi
 
 brew cask install dash alfred bettertouchtool \
-     google-chrome karabiner-elements
+     google-chrome karabiner-elements \
+     bitbar
 
 brew cask install xquartz
 brew install cairo --with-x11
