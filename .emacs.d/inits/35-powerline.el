@@ -28,8 +28,7 @@
   (el-get-bundle powerline)
   (el-get-bundle TheBB/spaceline)
   (require 'spaceline)
-  (el-get-bundle pdf-tools)
-  (require 'pdf-view))
+)
 
 (el-get-bundle powerline)
 (el-get-bundle TheBB/spaceline)
@@ -88,10 +87,11 @@
     "ruby version used in rbenv"
     (when (bound-and-true-p global-rbenv-mode)
       (rbenv--update-mode-line)))
-  (spaceline-define-segment pdf
-    "pdf tool infomation"
-    (when (eql major-mode 'pdf-view-mode)
-      (format "Page: %s" (eval '(pdf-view-current-page))))))
+  ;; (spaceline-define-segment pdf
+  ;;   "pdf tool infomation"
+  ;;   (when (eql major-mode 'pdf-view-mode)
+  ;;     (format "Page: %s" (eval '(pdf-view-current-page)))))
+  )
 
 
 (provide '35-powerline)
