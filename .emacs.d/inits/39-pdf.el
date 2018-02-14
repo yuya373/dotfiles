@@ -28,7 +28,6 @@
   (require 'evil-leader)
   (el-get-bundle pdf-tools))
 
-(el-get-bundle pdf-tools)
 
 (use-package pdf-links
   :commands (pdf-links-minor-mode)
@@ -41,6 +40,22 @@
 (use-package pdf-history
   :commands (pdf-history-minor-mode))
 
+(el-get-bundle
+  "politza/pdf-tools"
+  :name pdf-tools
+  :depends (tablist let-alist)
+  :description "pdf tools"
+  :type github
+  :minimum-emacs-version "24.3"
+  :prepare
+  (setq pdf-info-epdfinfo-program
+        (concat
+         (el-get-package-directory "pdf-tools")
+         "server/epdfinfo"))
+  :load-path
+  (("lisp"))
+  :compile
+  ("lisp/"))
 (use-package pdf-tools
   :commands (pdf-tools-install)
   :mode (("\\.pdf\\'" . pdf-view-mode))
