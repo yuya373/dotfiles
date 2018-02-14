@@ -1,16 +1,20 @@
 # zmodload zsh/zprof && zprof
 case ${OSTYPE} in
     darwin*)
-        export SYS_NOTIFIER=`which terminal-notifier`
+        if which terminal-notifier > /dev/null; then
+            export SYS_NOTIFIER=`which terminal-notifier`
+        fi
+
+        if which java > /dev/null; then
+            export JAVA_HOME=`/usr/libexec/java_home`
+            export PATH=$PATH:$JAVA_HOME/bin
+        fi
+
+        export HOMEBREW_NO_ANALYTICS=1
         export HOMEBREW_CASK_OPTS='--appdir=/Applications'
         export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
-        export JAVA_HOME=`/usr/libexec/java_home`
-        export PATH=$PATH:$JAVA_HOME/bin
-        export MANPATH=/usr/local/share/man/ja_JP.UTF-8:$MANPATH
-        export HOMEBREW_NO_ANALYTICS=1
         export TERM='xterm-256color'
-        export SBT_OPTS="-Xms512m -Xmx512m -XX:ReservedCodeCacheSize=128m -XX:MaxMetaspaceSize=256m"
-        export PATH="/usr/local/opt/llvm/bin:$PATH"
+        # export PATH="/usr/local/opt/llvm/bin:$PATH"
         ;;
     linux*)
         export PATH=/usr/local/bin:${PATH}
