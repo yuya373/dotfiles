@@ -5,7 +5,7 @@ case ${OSTYPE} in
             export SYS_NOTIFIER=`which terminal-notifier`
         fi
 
-        if which java > /dev/null; then
+        if /usr/libexec/java_home 2> /dev/null; then
             export JAVA_HOME=`/usr/libexec/java_home`
             export PATH=$PATH:$JAVA_HOME/bin
         fi
