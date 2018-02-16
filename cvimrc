@@ -108,16 +108,5 @@ map M centerMatchH
 map T centerMatchT
 map B centerMatchB
 
-imap <C-A> selectAll
-imap <C-a> beginningOfLine
-imap <C-e> endOfLine
 imap <C-k> deleteToEnd
-imap <C-f> forwardWord
-imap <C-b> backwardWord
 imap <C-w> deleteWord
-imap <C-d> deleteForwardWord
-imap <C-h> deleteChar
-iunmap <C-i>
-imap <C-p> forwardLine
-imap <C-n> backwardLine
-iunmap <C-j>
