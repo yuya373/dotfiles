@@ -171,6 +171,11 @@
   (setq rspec-use-docker-when-possible t)
   (setq rspec-docker-container "app")
   :config
+  (defun rspec-spec-file-p (a-file-name)
+    "Return true if the specified A-FILE-NAME is a spec."
+    (or (numberp (string-match rspec-spec-file-name-re a-file-name))
+        (numberp (string-match "spec" a-file-name)))
+    )
   (with-eval-after-load "evil"
     (evil-define-key 'normal rspec-mode-map
       ",tt" 'rspec-verify-single

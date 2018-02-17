@@ -25,8 +25,7 @@
 ;;; Code:
 (eval-when-compile
   (require 'evil)
-  (require 'evil-leader)
-  (el-get-bundle pdf-tools))
+  (require 'evil-leader))
 
 
 (use-package pdf-links

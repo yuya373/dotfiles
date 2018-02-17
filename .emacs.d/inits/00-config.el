@@ -53,8 +53,9 @@
 (setq require-final-newline t)
 (setq ad-redefinition-action 'accept)
 
-(use-package recentf-mode
+(use-package recentf
   :init
+  (defvar recentf-auto-save-timer nil)
   (setq recentf-max-saved-items 1000)
   :config
   (defun my-save-recentf ()
@@ -64,7 +65,9 @@
     (if recentf-auto-save-timer
         (cancel-timer recentf-auto-save-timer))
     (setq recentf-auto-save-timer
-          (run-at-time t 30 #'my-save-recentf))))
+          (run-at-time t 30 #'my-save-recentf)))
+
+  (add-hook 'evil-after-load-hook 'set-recentf-timer))
 
 ;; tab
 (setq tab-always-indent t)

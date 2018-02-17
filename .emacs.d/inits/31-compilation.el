@@ -30,6 +30,7 @@
   :diminish compilation-in-progress
   :config
   (setq compilation-scroll-output t)
+  (define-key compilation-mode-map (kbd "g") nil)
   (with-eval-after-load "evil"
     (evil-define-key 'normal compilation-mode-map
       "g" nil
