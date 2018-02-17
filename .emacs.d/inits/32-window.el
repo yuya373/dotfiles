@@ -120,6 +120,7 @@
 
                 '((slack-file-info-buffer-mode :custom shackle-new-tab)
                   ("\\`\\*Slack\sEvent\sLog" :regexp t :custom shackle-new-tab)
+                  ("\\`\\*Slack\sLog" :regexp t :custom shackle-new-tab)
                   (tuareg-interactive-mode :align t :select t :size 0.4 :popup t)
                   (eww-mode :align right :size 0.5 :select t :popup t)
                   (eww-bookmark-mode :align t :size 0.5 :popup t)
