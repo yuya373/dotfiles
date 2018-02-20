@@ -1,0 +1,9 @@
+#!/bin/bash
+set -e
+
+if ! which rustc > /dev/null; then
+    curl https://sh.rustup.rs -sSf | sh
+fi
+
+rustup update
+cargo install rustfmt racer

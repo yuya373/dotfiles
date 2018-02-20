@@ -26,7 +26,8 @@
 (eval-when-compile
   (require 'evil)
   (require 'evil-leader)
-  (el-get-bundle pdf-tools))
+  (el-get-bundle pdf-tools)
+  (require 'pdf-tools))
 
 
 (use-package pdf-links
@@ -40,27 +41,32 @@
 (use-package pdf-history
   :commands (pdf-history-minor-mode))
 
-(el-get-bundle
-  "politza/pdf-tools"
-  :name pdf-tools
-  :depends (tablist let-alist)
-  :description "pdf tools"
-  :type github
-  :minimum-emacs-version "24.3"
-  :prepare
-  (setq pdf-info-epdfinfo-program
-        (concat
-         (el-get-package-directory "pdf-tools")
-         "server/epdfinfo"))
-  :load-path
-  (("lisp"))
-  :compile
-  ("lisp/"))
+(if (eq 'darwin system-type)
+    (el-get-bundle
+      "politza/pdf-tools"
+      :name pdf-tools
+      :depends (tablist let-alist)
+      :description "pdf tools"
+      :type github
+      :minimum-emacs-version "24.3"
+      :prepare
+      (setq pdf-info-epdfinfo-program
+            (concat
+             (el-get-package-directory "pdf-tools")
+             "server/epdfinfo"))
+      :load-path
+      (("lisp"))
+      :compile
+      ("lisp/"))
+  (el-get-bundle pdf-tools))
+
 (use-package pdf-tools
   :commands (pdf-tools-install)
   :mode (("\\.pdf\\'" . pdf-view-mode))
   :init
-  (setq pdf-view-resize-factor 1.1)
+  (setq pdf-view-use-imagemagick t)
+  (setq pdf-view-use-scaling t)
+  ;; (setq pdf-view-resize-factor 1.1)
   (add-hook 'pdf-view-mode-hook #'(lambda () (linum-mode -1)))
   (add-hook 'pdf-view-mode-hook #'(lambda () (blink-cursor-mode -1)))
   (add-hook 'pdf-view-mode-hook 'pdf-view-auto-slice-minor-mode)
@@ -70,7 +76,6 @@
   (add-hook 'pdf-view-mode-hook 'pdf-history-minor-mode)
   (setq pdf-view-dump-file-name "pdf-view-dump")
   :config
-
   (defun pdf-file-name ()
     (file-name-nondirectory (mapconcat #'identity
                                        (split-string
