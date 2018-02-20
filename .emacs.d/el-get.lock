@@ -57,7 +57,7 @@
         (lua-mode :checksum "652e299cb967fccca827dda381d61a9c144d97de")
         (imenu-anywhere :checksum "94bab9136e1264e98a10d9325ad53d735307f8f3")
         (material-theme :checksum "0890ff69a0fa1f908e79d0f68b1bb3cf0d55af40")
-        (spaceline :checksum "b1c41ddd290153fcc1df8f1d0fb54062e9943894")
+        (spaceline :checksum "ca20430271f80d46892d62cb7624b4dee6cafe72")
         (powerline :checksum "67538e4dbc2f1d2f270142481eb0b0d24e8cde36")
         (persp-mode :checksum "2ab3c6b86527811794235309df6055b4a302aa76")
         (shackle :checksum "0cee957bc0bfbdee5ea3f3e430e94cdcd87ed0c3")

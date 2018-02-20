@@ -99,6 +99,7 @@
                             slack-search-result-buffer-mode)
                            :select t)
                           (("\\`\\*eshell\\*\\(<.*>\\)?\\'") :regexp t :select t)
+                          ("\\`\\*websocket\s.*\sdebug\\*\\'" :regexp t)
 
 
 

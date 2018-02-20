@@ -40,8 +40,8 @@
   :init
   ;; (global-set-key (kbd "TAB") #'company-indent-or-complete-common)
   (defun my-racer-setup ()
-    (make-local-variable 'company-backends)
-    (add-to-list 'company-backends '(company-capf :with company-dabbrev))
+    ;; (make-local-variable 'company-backends)
+    ;; (add-to-list 'company-backends '(company-capf :with company-dabbrev))
     (setq-local company-minimum-prefix-length 0)
     (setq-local company-idle-delay 0.1))
   (add-hook 'racer-mode-hook 'my-racer-setup)
