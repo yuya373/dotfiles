@@ -6,4 +6,5 @@ if ! which rustc > /dev/null; then
 fi
 
 rustup update
-cargo install rustfmt racer
+rustup component add rustfmt-preview rust-src
+cargo install racer
