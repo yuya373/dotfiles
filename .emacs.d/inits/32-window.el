@@ -101,8 +101,8 @@
                           (("\\`\\*eshell\\*\\(<.*>\\)?\\'") :regexp t :select t)
                           ("\\`\\*websocket\s.*\sdebug\\*\\'" :regexp t)
 
-
-
+                          (cargo-process-mode :select t)
+                          (racer-help-mode :select t)
 
                           ((slack-edit-file-comment-buffer-mode
                             slack-message-compose-buffer-mode
