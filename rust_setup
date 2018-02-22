@@ -7,4 +7,4 @@ fi
 
 rustup update
 rustup component add rustfmt-preview rust-src
-cargo install racer
+cargo install racer cargo-edit
