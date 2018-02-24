@@ -14,6 +14,39 @@
         },
         "rules": [
           {
+            "description": "Xcode",
+            "manipulators": [
+              {
+                "type": "basic",
+                "from": {
+                  "key_code": "o",
+                  "modifiers": {
+                    "mandatory": [
+                      "control"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "o",
+                    "modifiers": [
+                      "command",
+                      "shift"
+                    ]
+                  }
+                ],
+                "conditions": [
+                  {
+                    "type": "frontmost_application_if",
+                    "bundle_identifiers": [
+                      "^com\\.apple\\.dt\\.Xcode$"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
             "description": "Option + ] to Command + Tab, Option + [ to Command + Shift + Tab",
             "manipulators": [
               {
