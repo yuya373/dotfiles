@@ -91,26 +91,31 @@
   ;;   :config
   ;;   (add-to-list 'company-backends 'company-yasnippet))
   (use-package company-ispell
-    :init
-    (defun add-company-ispell ()
-      (make-local-variable 'company-backends)
-      (add-to-list 'company-backends 'company-ispell))
-    (add-hook 'gfm-mode-hook #'add-company-ispell)
-    (add-hook 'markdown-mode-hook #'add-company-ispell)
-    (add-hook 'org-mode-hook #'add-company-ispell)
-    (add-hook 'git-commit-mode-hook #'add-company-ispell))
+    ;; :init
+    ;; (defun add-company-ispell ()
+    ;;   (make-local-variable 'company-backends)
+    ;;   (add-to-list 'company-backends 'company-ispell))
+    ;; (add-hook 'gfm-mode-hook #'add-company-ispell)
+    ;; (add-hook 'markdown-mode-hook #'add-company-ispell)
+    ;; (add-hook 'org-mode-hook #'add-company-ispell)
+    ;; (add-hook 'git-commit-mode-hook #'add-company-ispell)
+    )
   ;; (global-set-key (kbd "TAB") 'nil)
   ;; (with-eval-after-load "evil"
   ;;   (evil-define-key 'insert evil-insert-state-map
   ;;     (kbd "TAB") 'company-indent-or-complete-common))
 
+  (setq company-backends (delete 'company-ispell company-backends))
   (setq company-backends (delete 'company-bbdb company-backends))
   (setq company-backends (delete 'company-cmake company-backends))
   (setq company-backends (delete 'company-clang company-backends))
   (setq company-backends (delete 'company-eclim company-backends))
   (setq company-backends (delete 'company-oddmuse company-backends))
   (setq company-backends (delete 'company-xcode company-backends))
+  (setq company-backends (delete 'company-capf company-backends))
   ;; (setq company-backends (delete 'company-capf company-backends))
+  (add-to-list 'company-backends 'company-ispell)
+  (add-to-list 'company-backends '(company-capf :with company-dabbrev-code))
   (defun company-emacs-lisp-mode ()
     (make-local-variable 'company-backends)
     (add-to-list 'company-backends 'company-capf))

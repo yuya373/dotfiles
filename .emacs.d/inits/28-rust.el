@@ -46,7 +46,11 @@
     (setq-local company-idle-delay 0.1))
   (add-hook 'racer-mode-hook 'my-racer-setup)
   (add-hook 'racer-mode-hook 'eldoc-mode)
-  (add-hook 'rust-mode-hook 'racer-mode))
+  (add-hook 'rust-mode-hook 'racer-mode)
+  :config
+  (evil-define-key 'normal racer-mode-map
+    ",h" 'racer-describe
+    "gd" 'racer-find-definition))
 
 (el-get-bundle flycheck-rust)
 (use-package flycheck-rust
