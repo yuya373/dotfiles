@@ -134,6 +134,11 @@
 
 (use-package generic-x)
 
+;; [Emacs におけるスクロールの挙動とその設定 | プログラマーズ雑記帳](http://yohshiy.blog.fc2.com/blog-entry-320.html)
+(setq scroll-conservatively 1)
+(setq scroll-margin 10)
+(setq next-screen-context-lines 10)
+(setq scroll-preserve-screen-position t)
 
 (provide '00-config)
 ;;; 00-config.el ends here
