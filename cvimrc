@@ -108,5 +108,6 @@ map M centerMatchH
 map T centerMatchT
 map B centerMatchB
 
+iunmapAll
 imap <C-k> deleteToEnd
 imap <C-w> deleteWord
