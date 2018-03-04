@@ -14,11 +14,7 @@ fi
 source $ZPLUG_HOME/init.zsh
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
-zplug "sindresorhus/pure", ignore:"*.zsh", \
-      hook-load:"{
-ln -sf $ZPLUG_HOME/repos/sindresorhus/pure/pure.zsh $HOME/.zfunctions/prompt_pure_setup
-ln -sf $ZPLUG_HOME/repos/sindresorhus/pure/async.zsh $HOME/.zfunctions/async
-}"
+zplug "sindresorhus/pure", ignore:"*.zsh"
 zplug "seebi/dircolors-solarized"
 
 zplug "b4b4r07/enhancd", use:init.sh
@@ -60,6 +56,12 @@ zstyle ':notify:*' command-complete-timeout 1
 zstyle ':prezto:module:pacman' frontend 'yaourt'
 
 zplug load --verbose
+
+ln -sf $ZPLUG_HOME/repos/sindresorhus/pure/pure.zsh $HOME/.zfunctions/prompt_pure_setup
+ln -sf $ZPLUG_HOME/repos/sindresorhus/pure/async.zsh $HOME/.zfunctions/async
+autoload -U promptinit
+promptinit
+prompt pure
 
 source ~/dotfiles/tmux.zsh
 
