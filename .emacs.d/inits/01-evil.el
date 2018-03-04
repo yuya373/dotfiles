@@ -64,8 +64,8 @@
         evil-search-module 'isearch
         evil-esc-delay 0
         evil-want-C-i-jump t
-        evil-want-C-u-scroll t
-        evil-want-C-d-scroll t
+        ;; evil-want-C-u-scroll t
+        ;; evil-want-C-d-scroll t
         evil-shift-width 2
         evil-cross-lines t
         evil-want-fine-undo t
@@ -370,6 +370,9 @@
   ;; (advice-add 'evil-normal-state :after 'my-save-if-bufferfilename)
   (define-key evil-normal-state-map (kbd "C-s") nil)
   (define-key evil-normal-state-map (kbd "C-s") 'my-save-if-bufferfilename)
+
+  (define-key evil-normal-state-map (kbd "C-d") 'scroll-up-command)
+  (define-key evil-normal-state-map (kbd "C-u") 'scroll-down-command)
   )
 
 

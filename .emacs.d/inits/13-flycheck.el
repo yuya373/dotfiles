@@ -52,6 +52,9 @@
            (eslint (and root
                         (expand-file-name "node_modules/eslint/bin/eslint.js"
                                           root))))
+
+      ;; (when root
+      ;;   (add-to-list 'flycheck-eslint-rules-directories (expand-file-name root)))
       (when (and eslint (file-executable-p eslint))
         (setq-local flycheck-javascript-eslint-executable eslint))))
 

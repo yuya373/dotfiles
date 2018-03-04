@@ -79,8 +79,8 @@ map o :open<Space>
 map <Leader>g :tabnew<Space>google<Space>
 map <Leader>a :tabnew<Space>amazonjp<Space>
 map m centerMatchH
-map F createActiveTabbedHint
-map <Leader>f createTabbedHint
+map F createTabbedHint
+map <Leader>f createActiveTabbedHint
 map <Leader>h createHoverHint
 map <Leader>H createUnHoverHint
 map tt :tabnew<Space>
