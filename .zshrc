@@ -1,5 +1,11 @@
 typeset -U path cdpath fpath manpath
 
+if [ ! -d $HOME/.zfunctions ]; then
+    echo "creating $HOME/.zfunctions ..."
+    mkdir -p $HOME/.zfunctions
+fi
+fpath=("$HOME/.zfunctions" $fpath)
+
 if [[ ! -d $ZPLUG_HOME ]]; then
     git clone https://github.com/zplug/zplug $ZPLUG_HOME
 fi
@@ -8,8 +14,11 @@ fi
 source $ZPLUG_HOME/init.zsh
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
-zplug "mafredri/zsh-async", from:github
-zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
+zplug "sindresorhus/pure", ignore:"*.zsh", \
+      hook-load:"{
+ln -sf $ZPLUG_HOME/repos/sindresorhus/pure/pure.zsh $HOME/.zfunctions/prompt_pure_setup
+ln -sf $ZPLUG_HOME/repos/sindresorhus/pure/async.zsh $HOME/.zfunctions/async
+}"
 zplug "seebi/dircolors-solarized"
 
 zplug "b4b4r07/enhancd", use:init.sh
