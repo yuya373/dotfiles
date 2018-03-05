@@ -162,6 +162,10 @@
   :config
   (defun perspeen-update-mode-string ()
     (setq perspeen-modestring ""))
+  (defun perspeen-tab--set-header-line-format (&optional force)
+    (if force
+        (setq header-line-format nil)
+        (setq-default header-line-format nil)))
 
   (defun helm-switch-to-buffers-around-advice (org-func buffer-or-name &optional other-window)
     (unless perspeen-use-tab

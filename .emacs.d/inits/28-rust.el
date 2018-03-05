@@ -28,7 +28,9 @@
 (use-package rust-mode
   :mode (("\\.rs\\'" . rust-mode))
   :init
-  (setq rust-format-on-save t))
+  (setq rust-format-on-save t)
+  :config
+  (modify-syntax-entry ?! "_" rust-mode-syntax-table))
 
 (el-get-bundle dash)
 (el-get-bundle s)
@@ -40,14 +42,13 @@
   :init
   ;; (global-set-key (kbd "TAB") #'company-indent-or-complete-common)
   (defun my-racer-setup ()
-    ;; (make-local-variable 'company-backends)
     ;; (add-to-list 'company-backends '(company-capf :with company-dabbrev))
-    (setq-local company-minimum-prefix-length 0)
-    (setq-local company-idle-delay 0.1))
+    )
   (add-hook 'racer-mode-hook 'my-racer-setup)
   (add-hook 'racer-mode-hook 'eldoc-mode)
   (add-hook 'rust-mode-hook 'racer-mode)
   :config
+
   (evil-define-key 'normal racer-mode-map
     ",h" 'racer-describe
     "gd" 'racer-find-definition))
