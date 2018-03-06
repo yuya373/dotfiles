@@ -1,18 +1,24 @@
 # -*- mode: sh -*-
 
-# use vim binding
-bindkey -v
-
 # clear fzf binding
 bindkey -r '^T'
 
+# emacs mode keybinding
+bindkey '^y' push-line
+bindkey '^m' do_enter
+bindkey '^n' history-substring-search-down
+bindkey '^p' history-substring-search-up
+bindkey '^r' fzf-history-widget
+bindkey '^i' fzf-completion
+bindkey '^f' vi-forward-word
+
+# use vim binding
+# bindkey -v
+
 # insert mode binding
 bindkey -M viins '^y' push-line
-# bindkey -M viins '^j' vi-cmd-mode
 bindkey -M viins '^m' do_enter
 bindkey -M viins '^o' fdr
-# bindkey -M viins '^n' down-line-or-history
-# bindkey -M viins '^p' up-line-or-history
 bindkey -M viins '^n' history-substring-search-down
 bindkey -M viins '^p' history-substring-search-up
 bindkey -M viins '^k' kill-line
@@ -20,8 +26,6 @@ bindkey -M viins '^a' beginning-of-line
 bindkey -M viins '^e' end-of-line
 bindkey -M viins '^f' vi-forward-word
 bindkey -M viins '^b' vi-backward-word
-# bindkey -M viins '^f' forward-char
-# bindkey -M viins '^b' backward-char
 bindkey -M viins '^r' fzf-history-widget
 bindkey -M viins '^d' delete-char
 bindkey -M viins '^i' fzf-completion

@@ -1,24 +1,28 @@
 # -*- mode: sh -*-
 
-function zle-line-init zle-keymap-select {
-  PROMPT="$(my_vi_mode_prompt_info) %(?.%F{magenta}.%F{red})${PURE_PROMPT_SYMBOL:->}%f "
-  zle reset-prompt
-}
+autoload -U promptinit
+promptinit
+prompt pure
 
-zle -N zle-line-init
-zle -N zle-keymap-select
+# function zle-line-init zle-keymap-select {
+#   PROMPT="$(my_vi_mode_prompt_info) %(?.%F{magenta}.%F{red})${PURE_PROMPT_SYMBOL:->}%f "
+#     zle reset-prompt
+# }
 
-function my_vi_mode_prompt_info() {
-    local keymap=$KEYMAP
-    case "$keymap" in
-        'vicmd')
-            echo "%F{green}NORMAL%f"
-            ;;
-        'vivis'|'vivli')
-            echo "%F{yellow}VISUAL"
-            ;;
-        *)
-            # vi mode may be 'viins'
-            echo "%F{cyan}INSERT%f"
-    esac
-}
+# zle -N zle-line-init
+# zle -N zle-keymap-select
+
+# function my_vi_mode_prompt_info() {
+#     local keymap=$KEYMAP
+#     case "$keymap" in
+#         'vicmd')
+#             echo "%F{green}NORMAL%f"
+#             ;;
+#         'vivis'|'vivli')
+#             echo "%F{yellow}VISUAL"
+#             ;;
+#         *)
+#             # vi mode may be 'viins'
+#             echo "%F{cyan}INSERT%f"
+#     esac
+# }

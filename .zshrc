@@ -59,9 +59,6 @@ zplug load --verbose
 
 ln -sf $ZPLUG_HOME/repos/sindresorhus/pure/pure.zsh $HOME/.zfunctions/prompt_pure_setup
 ln -sf $ZPLUG_HOME/repos/sindresorhus/pure/async.zsh $HOME/.zfunctions/async
-autoload -U promptinit
-promptinit
-prompt pure
 
 source ~/dotfiles/tmux.zsh
 
