@@ -67,7 +67,7 @@ openHatenaEntryInNewTab -> {{
 }}
 
 yankGithubGitRepoAddr -> {{
-  const input = document.querySelector(".get-repo-modal .ssh-clone-options .js-zeroclipboard-container .js-zeroclipboard-target")
+  const input = document.querySelector(".ssh-clone-options .input-group input");
   const result = input ? input.value : "Not Found";
   Status.setMessage(result, 3);
   Clipboard.copy(result);
