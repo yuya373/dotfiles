@@ -111,3 +111,16 @@ map B centerMatchB
 iunmapAll
 imap <C-k> deleteToEnd
 imap <C-w> deleteWord
+
+-> {{
+  const extraFilters = {
+      '*://app.zenhub.com/*': {
+          reject: [],
+          accept: ['.zhc-issue-card'],
+      }
+  };
+
+  Object.getOwnPropertyNames(extraFilters).forEach(pattern => {
+      Hints.siteFilters[pattern] = extraFilters[pattern];
+  });
+}}
