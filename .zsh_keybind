@@ -13,7 +13,7 @@ bindkey '^i' fzf-completion
 bindkey '^f' vi-forward-word
 
 # use vim binding
-# bindkey -v
+bindkey -v
 
 # insert mode binding
 bindkey -M viins '^y' push-line

@@ -1,28 +1,23 @@
 # -*- mode: sh -*-
-
-autoload -U promptinit
-promptinit
-prompt pure
-
-# function zle-line-init zle-keymap-select {
-#   PROMPT="$(my_vi_mode_prompt_info) %(?.%F{magenta}.%F{red})${PURE_PROMPT_SYMBOL:->}%f "
-#     zle reset-prompt
-# }
-
-# zle -N zle-line-init
-# zle -N zle-keymap-select
-
-# function my_vi_mode_prompt_info() {
-#     local keymap=$KEYMAP
-#     case "$keymap" in
-#         'vicmd')
-#             echo "%F{green}NORMAL%f"
-#             ;;
-#         'vivis'|'vivli')
-#             echo "%F{yellow}VISUAL"
-#             ;;
-#         *)
-#             # vi mode may be 'viins'
-#             echo "%F{cyan}INSERT%f"
-#     esac
-# }
+SPACESHIP_PROMPT_ORDER=(
+  time          # Time stampts section
+  user          # Username section
+  dir           # Current directory section
+  host          # Hostname section
+  git           # Git section (git_branch + git_status)
+  hg            # Mercurial section (hg_branch  + hg_status)
+  exec_time     # Execution time
+  # battery       # Battery level and status
+  exit_code     # Exit code section
+  line_sep      # Line break
+  vi_mode       # Vi-mode indicator
+  jobs          # Background jobs indicator
+  char          # Prompt character
+)
+SPACESHIP_CHAR_SYMBOL="❯ "
+SPACESHIP_DIR_TRUNC=0
+SPACESHIP_DIR_TRUNC_REPO=false
+SPACESHIP_EXEC_TIME_ELAPSED=0
+SPACESHIP_BATTERY_SHOW=always
+SPACESHIP_EXIT_CODE_SHOW=true
+SPACESHIP_EXIT_CODE_SYMBOL="✘ "

@@ -14,7 +14,7 @@ fi
 source $ZPLUG_HOME/init.zsh
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
-zplug "sindresorhus/pure", ignore:"*.zsh"
+zplug denysdovhan/spaceship-prompt, use:spaceship.zsh, from:github, as:theme
 zplug "seebi/dircolors-solarized"
 
 zplug "b4b4r07/enhancd", use:init.sh
@@ -57,8 +57,6 @@ zstyle ':prezto:module:pacman' frontend 'yaourt'
 
 zplug load --verbose
 
-ln -sf $ZPLUG_HOME/repos/sindresorhus/pure/pure.zsh $HOME/.zfunctions/prompt_pure_setup
-ln -sf $ZPLUG_HOME/repos/sindresorhus/pure/async.zsh $HOME/.zfunctions/async
 
 source ~/dotfiles/tmux.zsh
 
@@ -92,9 +90,6 @@ case ${OSTYPE} in
         ;;
     linux*)
         # ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
-        PURE_PROMPT_SYMBOL="❯"
-        # PURE_GIT_DOWN_ARROW="↓"
-        # PURE_GIT_UP_ARROW="↑"
         ;;
 esac
 
