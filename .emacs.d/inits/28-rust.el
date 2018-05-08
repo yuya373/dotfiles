@@ -30,7 +30,9 @@
   :init
   (setq rust-format-on-save t)
   :config
-  (modify-syntax-entry ?! "_" rust-mode-syntax-table))
+  (modify-syntax-entry ?! "_" rust-mode-syntax-table)
+  (modify-syntax-entry ?_ "w" rust-mode-syntax-table)
+  )
 
 (el-get-bundle dash)
 (el-get-bundle s)

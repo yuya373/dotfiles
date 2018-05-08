@@ -1,5 +1,6 @@
 (setq el-get-lock-package-versions
-      '((pdf-tools :checksum "9241a79bbf159ba0b079ebdbfa8ad1b3e69cf8c0")
+      '((github-change-project-column :checksum "301930112d6ced0b67bfbf62bafe6bb4ed3e2565")
+        (pdf-tools :checksum "9241a79bbf159ba0b079ebdbfa8ad1b3e69cf8c0")
         (clang-format :checksum "eccfec12a0d006066ea15e3d13b749fde05766f8")
         (ghub :checksum "b5f81522b0b5b896a62347eb5f238f67b47790b0")
         (magit-popup :checksum "3f23e81eb0267d6578d8f1733c5e42699b0229a1")

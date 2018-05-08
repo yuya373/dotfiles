@@ -1,5 +1,6 @@
 ;; Auto-generated file; don't edit
-((:url "https://doc.rust-lang.org/book/second-edition/ch03-03-how-functions-work.html" :title "How Functions Work - How Functions Work - The Rust Programming Language" :time "Thu Mar  1 15:35:17 2018")
+((:url "https://doc.rust-lang.org/book/second-edition/ch03-05-control-flow.html" :title "Control Flow - Control Flow - The Rust Programming Language" :time "Tue Mar  6 13:30:12 2018")
+ (:url "https://doc.rust-lang.org/book/second-edition/ch03-03-how-functions-work.html" :title "How Functions Work - How Functions Work - The Rust Programming Language" :time "Thu Mar  1 15:35:17 2018")
  (:url "https://doc.rust-lang.org/book/second-edition/ch03-02-data-types.html" :title "Data Types - Data Types - The Rust Programming Language" :time "Mon Feb 26 18:44:04 2018")
  (:url "https://doc.rust-lang.org/book/second-edition/ch02-00-guessing-game-tutorial.html" :title "Guessing Game Tutorial - Guessing Game Tutorial - The Rust Programming Language" :time "Thu Feb 22 19:24:21 2018")
  (:url "http://llvm.org/docs/tutorial/OCamlLangImpl2.html" :title "2. Kaleidoscope: Implementing a Parser and AST — LLVM 6 documentation" :time "Sat Aug 26 21:00:33 2017")
