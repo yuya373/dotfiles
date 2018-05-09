@@ -99,6 +99,35 @@
 
   (define-key magit-process-mode-map [override-state] nil)
   (define-key magit-process-mode-map [intercept-state] nil)
+  (defun magit-blame-open-github ()
+    (interactive)
+    (let ((hash (magit-blame-chunk-get :hash)))
+      (when hash
+        (let* ((default-branch
+                 (shell-command-to-string
+                  (concat "git symbolic-ref refs/remotes/origin/HEAD "
+                          "| sed 's@^refs/remotes/origin/@@'")))
+               (rev-range (format "%s...%s"
+                                  hash
+                                  (substring default-branch 0 -1)))
+               (path-cmd (concat "git log "
+                                 "--merges --oneline "
+                                 "--reverse --ancestry-path "
+                                 (format "%s " rev-range)
+                                 "| grep 'Merge pull request #' "
+                                 "| head -n 1 "
+                                 "| cut -f5 -d' ' "
+                                 "| sed -e 's%#%pull/%'"))
+               (path (shell-command-to-string path-cmd))
+               (cmd (format "hub browse -- %s" path)))
+          (shell-command cmd)))))
+  (evil-define-key 'normal magit-blame-mode-map
+    ",y" 'magit-blame-copy-hash
+    ",q" 'magit-blame-quit
+    ",s" 'magit-show-commit
+    ",t" 'magit-blame-toggle-headings
+    ",o" 'magit-blame-open-github
+    )
   ;; (use-package magit-gh-pulls
   ;;   :commands (turn-on-magit-gh-pulls)
   ;;   :init
