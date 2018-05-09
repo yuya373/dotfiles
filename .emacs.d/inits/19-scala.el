@@ -83,7 +83,7 @@
         ensime-tooltip-type-hints t
         ensime-auto-generate-config nil
         ensime-company-case-sensitive t
-        ensime-eldoc-hints 'all
+        ensime-eldoc-hints nil
         )
 
   (defun evil-ensime-typeckeck ()

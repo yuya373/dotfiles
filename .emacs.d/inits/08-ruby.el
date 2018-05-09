@@ -108,7 +108,7 @@
     ;; (add-to-list 'company-backends '(company-robe :with company-dabbrev))
     (add-to-list 'company-backends 'company-robe)
     ;; (setq company-backends (remq 'company-capf company-backends))
-    (remove-hook 'completion-at-point-functions 'robe-complete-at-point t))
+    )
   (add-hook 'robe-mode-hook 'my-robe-mode-hook)
   :config
   (evil-define-key 'normal robe-mode-map (kbd ",rs") 'robe-start)

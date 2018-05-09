@@ -177,7 +177,7 @@
     :config
     (evil-define-key 'normal pdf-outline-buffer-mode-map
       (kbd "TAB") 'outline-toggle-children
-      "o" 'pdf-outline-follow-link-and-quit
+      "o" 'pdf-outline-follow-link
       "q" 'quit-window
       "c" 'pdf-outline-move-to-current-page
       "l" 'outline-toggle-children)))
