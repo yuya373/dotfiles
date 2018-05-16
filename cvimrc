@@ -117,7 +117,11 @@ imap <C-w> deleteWord
       '*://app.zenhub.com/*': {
           reject: [],
           accept: ['.zhc-issue-card'],
-      }
+      },
+      '*://b.hatena.ne.jp/entry/*': {
+        reject: [],
+        accept: ['li.js-bookmarks-sort-tab'],
+      },
   };
 
   Object.getOwnPropertyNames(extraFilters).forEach(pattern => {
