@@ -89,8 +89,10 @@
   :commands (haskell-indentation-mode)
   :init
   (add-hook 'haskell-mode-hook 'haskell-indentation-mode))
-
-(el-get-bundle intero)
+(el-get-bundle commercialhaskell/intero
+  :type github
+  :name intero
+  :load-path "elisp")
 (use-package intero
   :commands (intero-mode)
   :init
