@@ -122,6 +122,10 @@ imap <C-w> deleteWord
         reject: [],
         accept: ['li.js-bookmarks-sort-tab'],
       },
+      '*://github.com/*': {
+        reject: [],
+        accept: ['summary.btn.js-reviews-toggle'],
+      },
   };
 
   Object.getOwnPropertyNames(extraFilters).forEach(pattern => {
