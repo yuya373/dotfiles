@@ -18,7 +18,7 @@ fi
 
 brew cask install dash alfred bettertouchtool \
      google-chrome karabiner-elements \
-     bitbar
+     bitbar android-platform-tools android-sdk
 
 brew cask install xquartz
 brew install cairo --with-x11
@@ -26,7 +26,8 @@ brew install cairo --with-x11
 brew install git hub tmux vim sshrc coreutils zsh \
      the_silver_searcher direnv global ctags \
      sanemat/font/ricty reattach-to-user-namespace \
-     yarn hugo carthage
+     yarn hugo carthage \
+     mono
 
 brew install texinfo
 brew link --force texinfo
