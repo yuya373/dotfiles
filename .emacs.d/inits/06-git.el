@@ -37,20 +37,20 @@
 ;; (el-get-bundle git-gutter)
 (el-get-bundle git-gutter-fringe+)
 (el-get-bundle git-messenger)
-(el-get-bundle git-timemachine)
 
-(use-package git-timemachine
-  :commands (git-timemachine)
-  :config
-  (evil-define-key 'normal git-timemachine-mode-map
-    ",p" 'git-timemachine-show-previous-revision
-    ",n" 'git-timemachine-show-next-revision
-    ",g" 'git-timemachine-show-nth-revision
-    ",q" 'git-timemachine-quit
-    ",w" 'git-timemachine-kill-abbreviated-revision
-    ",W" 'git-timemachine-kill-revision
-    ",b" 'git-timemachine-blame)
-  )
+;; (el-get-bundle pidu/git-timemachine)
+;; (use-package git-timemachine
+;;   :commands (git-timemachine)
+;;   :config
+;;   (evil-define-key 'normal git-timemachine-mode-map
+;;     ",p" 'git-timemachine-show-previous-revision
+;;     ",n" 'git-timemachine-show-next-revision
+;;     ",g" 'git-timemachine-show-nth-revision
+;;     ",q" 'git-timemachine-quit
+;;     ",w" 'git-timemachine-kill-abbreviated-revision
+;;     ",W" 'git-timemachine-kill-revision
+;;     ",b" 'git-timemachine-blame)
+;;   )
 
 (use-package git-messenger
   :commands (git-messenger:popup-message))
@@ -87,6 +87,7 @@
   (use-package magit-subtree)
   (use-package evil-magit
     :config
+    (setq evil-magit-use-y-for-yank t)
     (evil-magit-define-key evil-magit-state 'git-rebase-mode-map
                            (kbd "C-k") 'git-rebase-move-line-up)
     (evil-magit-define-key evil-magit-state 'git-rebase-mode-map

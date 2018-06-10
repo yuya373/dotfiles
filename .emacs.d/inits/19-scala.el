@@ -35,6 +35,7 @@
   :type github
   :branch "2.0"
   :pkgname "ensime/ensime-emacs"
+  :compile nil
   )
 (el-get-bundle yasnippet)
 
