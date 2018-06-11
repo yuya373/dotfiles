@@ -415,6 +415,18 @@
       ;;     (helm-find-files-1 (expand-file-name (format "%s/%s-%s-%s" junk-dir year month day)))
       ;;   (helm-find-files-1 (expand-file-name junk-dir)))
       ))
+  (defvar diary-root-dir (expand-file-name "~/dev/diary"))
+  (defvar diary-year-format "%Y")
+  (defvar diary-month-format "%m")
+  (defvar diary-file-format (concat (format "%s/%s"
+                                            diary-year-format
+                                            diary-month-format)
+                                    "/%d.md"))
+  (defun open-diary-dir ()
+    (interactive)
+    (helm-find-files-1 (format "%s/%s"
+                               diary-root-dir
+                               (format-time-string diary-file-format))))
   (defun timer (time msg &rest moremsg)
     (interactive
      (list (read-string "いつ? (sec, min, hour, HH:MM) ")
@@ -586,6 +598,7 @@
     "mk" 'slack-ws-close
     "mus" 'slack-user-select
     "mua" 'slack-select-unread-rooms
+    "md" 'open-diary-dir
     "ml" 'open-junk-dir
     "mm" 'slack-start
     "mn" 'open-junk-file

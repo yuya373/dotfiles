@@ -101,6 +101,7 @@
   (setq whitespace-style '(face
                            trailing
                            tabs
+                           indentation
                            ;; indentation::space
                            spaces
                            ;; empty

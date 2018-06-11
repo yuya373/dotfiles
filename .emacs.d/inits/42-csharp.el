@@ -50,7 +50,28 @@
   (setq omnisharp-server-executable-path nil)
   (setq omnisharp-debug t)
   :config
-  (add-to-list 'company-backends 'company-omnisharp))
+  (add-to-list 'company-backends 'company-omnisharp)
+  (evil-define-key 'normal omnisharp-mode-map
+    ",gd" 'omnisharp-go-to-definition
+    ",gD" 'omnisharp-go-to-definition-other-window
+
+    ",ss" 'omnisharp-start-omnisharp-server
+    ",sS" 'omnisharp-stop-server
+    ",sa" 'omnisharp-check-alive-status
+    ",sr" 'omnisharp-check-ready-status
+
+    ",ht" 'omnisharp-current-type-information
+    ",hT" 'omnisharp-current-type-information-to-kill-ring
+    ",hh" 'omnisharp-current-type-documentation
+
+    ",fu" 'omnisharp-find-usages
+    ",fi" 'omnisharp-find-implementations
+    ",fI" 'omnisharp-fix-code-issue-at-point
+    ",ff" 'omnisharp-code-format-entire-file
+
+    ",rr" 'omnisharp-rename
+    ",ri" 'omnisharp-rename-interactively
+    ))
 
 
 
