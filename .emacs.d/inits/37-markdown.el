@@ -92,9 +92,14 @@
 ;; (el-get-bundle markdowncss/retro)
 ;; (el-get-bundle markdowncss/splendor)
 ;; (el-get-bundle markdowncss/modest)
-(el-get-bundle primer/primer-markdown
-  :build (quote (("npm" "install")
-                 ("npm" "run" "build"))))
+;; (el-get-bundle primer/primer-css
+;;   ;; :subdir "modules/primer"
+;;   :compile nil
+;;   :build '(("npm" "--silent" "install")
+;;            ("./script/npm-run"
+;;             "primer-module-build"
+;;             "index.scss"
+;;             )))
 (el-get-bundle primer/github-syntax-light)
 (use-package markdown-mode
   :init
@@ -105,9 +110,10 @@
     )
   (add-hook 'markdown-mode-hook #'my-markdown-mode-setting)
   (setq markdown-command "marked --gfm --breaks --tables")
-  (setq markdown-css-paths (list (expand-file-name "~/.emacs.d/el-get/primer-markdown/build/build.css")
-                                 (expand-file-name "~/.emacs.d/el-get/github-syntax-light/lib/github-light.css")
-                                 ))
+  (setq markdown-css-paths (list
+                            ;; (expand-file-name "~/.emacs.d/el-get/primer-css/modules/primer/build/build.css")
+                            (expand-file-name "~/.emacs.d/el-get/github-syntax-light/lib/github-light.css")
+                            ))
   (setq markdown-xhtml-header-content nil)
   (add-hook 'markdown-mode-hook 'outline-minor-mode)
   (setq markdown-body-class-name "markdown-body")
