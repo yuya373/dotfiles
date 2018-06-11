@@ -29,9 +29,6 @@
   (require 'flycheck))
 
 (el-get-bundle js2-mode)
-;; (el-get-bundle flycheck-flow
-;;   :type github
-;;   :pkgname "lbolla/emacs-flycheck-flow")
 
 (use-package js2-mode
   :mode (("\\.js\\'" . js2-mode)
@@ -117,7 +114,9 @@
   (add-hook 'js2-jsx-mode-hook 'enable-company-tern)
   )
 
-(el-get-bundle flycheck-flow)
+(el-get-bundle flycheck-flow
+  :type github
+  :pkgname "lbolla/emacs-flycheck-flow")
 (use-package flycheck-flow
   :config
   (defun my/use-flow-from-node-modules ()

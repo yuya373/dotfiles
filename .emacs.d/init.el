@@ -91,7 +91,7 @@
 (use-package init-loader
   :commands (init-loader-load)
   :init
-  (setq init-loader-show-log-after-init 'error-only)
+  (setq init-loader-show-log-after-init t)
   (setq init-loader-byte-compile t))
 (init-loader-load)
 (add-hook 'window-setup-hook

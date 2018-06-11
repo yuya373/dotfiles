@@ -39,11 +39,11 @@
   :commands (company-quickhelp-mode)
   :init
   (add-hook 'company-mode-hook '(lambda () (company-quickhelp-mode t))))
-
+(el-get-bundle xclip)
 (use-package xclip
-  :commands (xclip-mode)
+  :commands (turn-on-xclip)
   :init
-  (add-hook 'after-init-hook 'xclip-mode))
+  (add-hook 'after-init-hook 'turn-on-xclip))
 
 (el-get-bundle migemo)
 (use-package migemo

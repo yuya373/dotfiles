@@ -26,7 +26,7 @@
 (eval-when-compile
   (require 'evil))
 
-(el-get-bundle ddskk)
+(el-get-bundle skk-dev/ddskk)
 (use-package skk
   :commands (skk-mode skk-auto-fill-mode)
   :init
@@ -94,7 +94,7 @@
   ;;                 'skk-delete-backward-char)
   ;;               (evil-make-intercept-map skk-j-mode-map 'insert )))
   :config
-  (use-package skk-setup)
+  ;; (use-package skk-setup)
   (use-package ccc)
   (use-package skk-hint)
   (use-package skk-cus)

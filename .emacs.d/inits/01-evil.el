@@ -47,7 +47,8 @@
 ;; (el-get-bundle evil-org-mode)
 ;; (el-get-bundle org-bullets)
 (el-get-bundle avy)
-(el-get-bundle avy-migemo)
+(el-get-bundle momomo5717/avy-migemo)
+;; (el-get-bundle avy-migemo)
 (el-get-bundle ace-link)
 (el-get-bundle migemo)
 

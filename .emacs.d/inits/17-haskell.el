@@ -26,7 +26,17 @@
 (eval-when-compile
   (require 'evil))
 
-(el-get-bundle haskell-mode)
+(el-get-bundle yuya373/haskell-mode
+  :branch "master"
+  :build
+  `(("make" ,(format "EMACS=%s" el-get-emacs)
+     "all"))
+  :post-init
+  (progn
+    (require 'haskell-mode-autoloads)
+    (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+    (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)))
+
 (use-package haskell-mode
   :mode (("\\.hs\\'" . haskell-mode)
          ("\\.lhs\\'" . literate-haskell-mode))

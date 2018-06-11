@@ -81,6 +81,8 @@
   ;; (add-hook 'git-commit-mode-hook 'my-git-commit-mode)
   :config
   ;; (use-package ert)
+
+  (define-key magit-file-mode-map (kbd "C-c") 'evil-window-delete)
   (use-package magit-extras)
   (use-package git-rebase)
   (use-package magit-submodule)
@@ -195,7 +197,7 @@
     (set-face-foreground 'git-gutter-fr+-added    "#859900")
     (set-face-foreground 'git-gutter-fr+-deleted  "#dc322f")))
 
-(el-get-bundle git-link)
+(el-get-bundle sshaw/git-link)
 (use-package git-link
   :commands (git-link git-link-commit git-link-homepage)
   :init
