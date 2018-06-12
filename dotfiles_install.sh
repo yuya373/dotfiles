@@ -31,6 +31,12 @@ case ${OSTYPE} in
         ln -sf ~/dotfiles/.docker/config.json  ~/.docker/config.json
         mkdir -p ~/.xmonad
         ln -sf ~/dotfiles/xmonad.hs ~/.xmonad/xmonad.hs
+        # xkeysnail
+        # NOTE: need restart?
+        ln -sf ~/dotfiles/etc/udev/rules.d/29-input.rules /etc/udev/rules.d/29-input.rules
+        ln -sf ~/dotfiles/etc/udev/rules.d/30-uinput.rules  /etc/udev/rules.d/30-uinput.rules
+        mkdir -p ~/.config/systemd/user
+        ln -sf ~/dotfiles/.config/systemd/user/xkeysnail.service ~/.config/systemd/user/xkeysnail.service
         ;;
 esac
 
