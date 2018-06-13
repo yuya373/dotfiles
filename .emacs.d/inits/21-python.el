@@ -40,7 +40,7 @@
   :mode (("\\.py\\'" . python-mode))
   :init
   (defun my-python-mode-hook ()
-    (run-python (python-shell-parse-command))
+    ;; (run-python (python-shell-parse-command))
     (setq-local helm-dash-docsets '("Python 2"))
     (setq python-indent-offset 4))
   (defun my-inf-python-mode-hook ()
