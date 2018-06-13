@@ -23,7 +23,6 @@
 ;;
 
 ;;; Code:
-
 (el-get-bundle csharp-mode)
 
 (use-package csharp-mode
@@ -41,8 +40,7 @@
   (add-hook 'csharp-mode-hook
             'my-csharp-mode-hook))
 
-(el-get-bundle omnisharp-mode)
-(el-get-bundle shut-up)
+(el-get-bundle omnisharp-mode :compile nil)
 
 (use-package omnisharp
   :commands (omnisharp-mode)

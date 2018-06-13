@@ -57,12 +57,12 @@
   (add-hook 'eww-mode-hook #'(lambda () (whitespace-mode -1)))
   (setq eww-search-prefix "https://www.google.co.jp/search?q=")
   ;; (setq url-user-agent "Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12A366 Safari/600.1.4")
-  (defun eww-mode-hook--rename-buffer ()
-    "Rename eww browser's buffer so sites open in new page."
-    (interactive)
-    (rename-buffer (format "eww - %s" (plist-get eww-data :title)) t))
-  (add-hook 'eww-mode-hook 'eww-mode-hook--rename-buffer)
-  (add-hook 'eww-after-render-hook 'eww-mode-hook--rename-buffer)
+  ;; (defun eww-mode-hook--rename-buffer ()
+  ;;   "Rename eww browser's buffer so sites open in new page."
+  ;;   (interactive)
+  ;;   (rename-buffer (format "eww - %s" (plist-get eww-data :title)) t))
+  ;; (add-hook 'eww-mode-hook 'eww-mode-hook--rename-buffer)
+  ;; (add-hook 'eww-after-render-hook 'eww-mode-hook--rename-buffer)
   :config
   (defvar eww-disable-colorize t)
   (defun shr-colorize-region--disable (orig start end fg &optional bg &rest _)
@@ -80,39 +80,6 @@
     (interactive)
     (setq-local eww-disable-colorize nil)
     (eww-reload))
-  (defvar eww-display-buffer-function 'display-buffer)
-
-  (defun eww (url)
-    "Fetch URL and render the page.
-If the input doesn't look like an URL or a domain name, the
-word(s) will be searched for via `eww-search-prefix'."
-    (interactive
-     (let* ((uris (eww-suggested-uris))
-            (prompt (concat "Enter URL or keywords"
-                            (if uris (format " (default %s)" (car uris)) "")
-                            ": ")))
-       (list (read-string prompt nil nil uris))))
-    (setq url (eww--dwim-expand-url url))
-    (let ((buffer (get-buffer-create "*eww*")))
-      (with-current-buffer buffer
-        (eww-setup-buffer)
-        (funcall eww-display-buffer-function buffer)
-        ;; Check whether the domain only uses "Highly Restricted" Unicode
-        ;; IDNA characters.  If not, transform to punycode to indicate that
-        ;; there may be funny business going on.
-        (let ((parsed (url-generic-parse-url url)))
-          (unless (puny-highly-restrictive-domain-p (url-host parsed))
-            (setf (url-host parsed) (puny-encode-domain (url-host parsed)))
-            (setq url (url-recreate-url parsed))))
-        (plist-put eww-data :url url)
-        (plist-put eww-data :title "")
-        (eww-update-header-line-format)
-        (let ((inhibit-read-only t))
-          (insert (format "Loading %s..." url))
-          (goto-char (point-min)))
-        (url-retrieve url 'eww-render (list url nil buffer)))))
-
-
 
   (setq url-privacy-level '(email lastloc))
   ;; (defun url-http-user-agent-string ()
