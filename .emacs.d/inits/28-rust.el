@@ -53,7 +53,7 @@
 
   (evil-define-key 'normal racer-mode-map
     ",h" 'racer-describe
-    "gd" 'racer-find-definition))
+    ",d" 'racer-find-definition))
 
 (el-get-bundle flycheck-rust)
 (use-package flycheck-rust
@@ -77,7 +77,10 @@
     ",r" 'cargo-process-run
     ",s" 'cargo-process-search
     ",u" 'cargo-process-update
-    ",B" 'cargo-process-bench))
+    ",B" 'cargo-process-bench
+    ",t" 'cargo-process-test
+    )
+  )
 
 (el-get-bundle toml-mode)
 (use-package toml-mode
