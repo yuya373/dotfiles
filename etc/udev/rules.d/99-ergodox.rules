@@ -1,0 +1,1 @@
+ACTION=="add", SUBSYSTEM=="input", ATTRS{name}=="ErgoDox EZ ErgoDox EZ", TAG+="systemd", ENV{SYSTEMD_USER_WANTS}+="ergodox.service"

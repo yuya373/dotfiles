@@ -1,0 +1,2 @@
+[Service]
+ExecStart=/home/yuya373/dotfiles/restart_xkeysnail_service
