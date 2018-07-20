@@ -1,5 +1,6 @@
 (setq el-get-lock-package-versions
-      '((haskell-mode :checksum "61b99b25c903f4dbdf8ea1db6df4fa67dfb0cc76")
+      '((helm-eww :checksum "1a09f11b2376dec8237df40140f056be8a256ef0")
+        (haskell-mode :checksum "61b99b25c903f4dbdf8ea1db6df4fa67dfb0cc76")
         (flycheck-flow :checksum "8173accf0e389f7ba0936d399da84839a7f887af")
         (git-link :checksum "27d642347e3d687a7a2214dbc53d1526e98f7571")
         (avy-migemo :checksum "3d8c87ff6da83eb294b009e901fa5f318d5ef845")

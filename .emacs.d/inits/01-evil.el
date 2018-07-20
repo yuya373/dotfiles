@@ -525,6 +525,11 @@
     "en" 'flycheck-next-error
     "ep" 'flycheck-previous-error
     "eb" 'flycheck-buffer
+    "eww" 'eww
+    "ewB" 'helm-eww-buffers
+    "ewb" 'helm-eww-bookmarks
+    "ewh" 'helm-eww-history
+    "ewe" 'helm-eww
     "fd" 'helm-projectile-find-dir
     "ff" 'helm-find-files
     "fp" 'helm-browse-project

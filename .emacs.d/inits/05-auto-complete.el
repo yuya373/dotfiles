@@ -100,7 +100,7 @@
     ;; (add-hook 'org-mode-hook #'add-company-ispell)
     ;; (add-hook 'git-commit-mode-hook #'add-company-ispell)
     ;; :config
-    ;; (add-to-list 'company-backends 'company-ispell)
+    (add-to-list 'company-backends 'company-ispell)
     )
   ;; (global-set-key (kbd "TAB") 'nil)
   ;; (with-eval-after-load "evil"

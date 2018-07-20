@@ -49,6 +49,12 @@
   (setq js-indent-level 2)
   (setq json-reformat:indent-width 2))
 
+(el-get-bundle emacs-helm/helm-eww)
+(use-package helm-eww
+  :commands (helm-eww
+             helm-eww-bookmarks
+             helm-eww-history
+             helm-eww-buffers))
 (use-package eww
   :commands (eww)
   :init
@@ -64,6 +70,7 @@
   ;; (add-hook 'eww-mode-hook 'eww-mode-hook--rename-buffer)
   ;; (add-hook 'eww-after-render-hook 'eww-mode-hook--rename-buffer)
   :config
+
   (defvar eww-disable-colorize t)
   (defun shr-colorize-region--disable (orig start end fg &optional bg &rest _)
     (unless eww-disable-colorize
@@ -123,9 +130,10 @@
     ",yy" 'eww-copy-page-url
     ",ym" 'eww-copy-page-url-as-md
     ",o" 'eww-browse-with-external-browser
-    ",B" 'eww-list-bookmarks
-    ",b" 'eww-add-bookmark
-    ",h" 'eww-list-histories
+    ",b" nil
+    ",bl" 'helm-eww-bookmarks
+    ",ba" 'eww-add-bookmark
+    ",h" 'helm-eww-history
     ",v" 'eww-view-source
     "q" 'quit-window))
 

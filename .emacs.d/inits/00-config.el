@@ -130,7 +130,7 @@
   :diminish auto-revert-mode
   :init
   (setq auto-revert-check-vc-info nil)
-  (setq auto-revert-interval 5)
+  (setq auto-revert-interval 1)
   (add-hook 'after-init-hook #'(lambda () (global-auto-revert-mode t))))
 
 (use-package generic-x)
