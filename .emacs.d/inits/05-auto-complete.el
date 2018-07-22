@@ -91,16 +91,16 @@
   ;;   :config
   ;;   (add-to-list 'company-backends 'company-yasnippet))
   (use-package company-ispell
-    ;; :init
-    ;; (defun add-company-ispell ()
-    ;;   (make-local-variable 'company-backends)
-    ;;   (add-to-list 'company-backends 'company-ispell))
+    :init
+    (defun add-company-ispell ()
+      (add-to-list 'company-backends 'company-ispell))
+    (add-hook 'text-mode-hook #'add-company-ispell)
     ;; (add-hook 'gfm-mode-hook #'add-company-ispell)
     ;; (add-hook 'markdown-mode-hook #'add-company-ispell)
     ;; (add-hook 'org-mode-hook #'add-company-ispell)
     ;; (add-hook 'git-commit-mode-hook #'add-company-ispell)
-    :config
-    (add-to-list 'company-backends 'company-ispell)
+    ;; :config
+    ;; (add-to-list 'company-backends 'company-ispell)
     )
   ;; (global-set-key (kbd "TAB") 'nil)
   ;; (with-eval-after-load "evil"

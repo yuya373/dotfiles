@@ -27,7 +27,11 @@
   (require 'evil))
 
 ;; smartparens
-;; (el-get-bundle smartparens)
+(el-get-bundle smartparens)
+(use-package smartparens-config
+  :commands (smartparens-mode)
+  :init
+  (add-hook 'prog-mode-hook 'smartparens-mode))
 ;; (use-package smartparens-config
 ;;   :diminish smartparens-mode
 ;;   :commands (smartparens-mode turn-on-smartparens-mode)
@@ -91,23 +95,23 @@ http://www.emacswiki.org/emacs/AlignCommands"
   (setq nlinum-delay t)
   (add-hook 'prog-mode-hook 'nlinum-mode))
 
-(use-package elec-pair
-  :commands (electric-pair-mode)
-  :init
-  (add-hook 'after-init-hook 'electric-pair-mode)
-  (defun elec-remove-from-pairs (pair)
-    (if (boundp 'electric-pair-pairs)
-        (progn
-          (make-local-variable 'electric-pair-pairs)
-          (setq electric-pair-pairs
-                (cl-remove-if (lambda (p) (equal pair p))
-                              electric-pair-pairs)))))
-  (add-hook 'haskell-mode-hook
-            '(lambda () (elec-remove-from-pairs '(?| . ?|))))
-  (add-hook 'haskell-interactive-mode-hook
-            '(lambda () (elec-remove-from-pairs '(?| . ?|))))
-  :config
-  (add-to-list 'electric-pair-pairs '(?| . ?|)))
+;; (use-package elec-pair
+;;   :commands (electric-pair-mode)
+;;   :init
+;;   (add-hook 'after-init-hook 'electric-pair-mode)
+;;   (defun elec-remove-from-pairs (pair)
+;;     (if (boundp 'electric-pair-pairs)
+;;         (progn
+;;           (make-local-variable 'electric-pair-pairs)
+;;           (setq electric-pair-pairs
+;;                 (cl-remove-if (lambda (p) (equal pair p))
+;;                               electric-pair-pairs)))))
+;;   (add-hook 'haskell-mode-hook
+;;             '(lambda () (elec-remove-from-pairs '(?| . ?|))))
+;;   (add-hook 'haskell-interactive-mode-hook
+;;             '(lambda () (elec-remove-from-pairs '(?| . ?|))))
+;;   :config
+;;   (add-to-list 'electric-pair-pairs '(?| . ?|)))
 
 (el-get-bundle rainbow-delimiters)
 (use-package rainbow-delimiters
