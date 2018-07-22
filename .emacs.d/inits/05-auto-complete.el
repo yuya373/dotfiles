@@ -99,7 +99,7 @@
     ;; (add-hook 'markdown-mode-hook #'add-company-ispell)
     ;; (add-hook 'org-mode-hook #'add-company-ispell)
     ;; (add-hook 'git-commit-mode-hook #'add-company-ispell)
-    ;; :config
+    :config
     (add-to-list 'company-backends 'company-ispell)
     )
   ;; (global-set-key (kbd "TAB") 'nil)
