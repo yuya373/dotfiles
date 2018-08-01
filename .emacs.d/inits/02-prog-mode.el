@@ -31,7 +31,18 @@
 (use-package smartparens-config
   :commands (smartparens-mode)
   :init
-  (add-hook 'prog-mode-hook 'smartparens-mode))
+  (add-hook 'prog-mode-hook 'smartparens-mode)
+  :config
+  (defun sp-enter-and-indent-sexp (&rest _ignored)
+    "Insert an extra newline after point, and reindent."
+    (newline)
+    (indent-according-to-mode)
+    (forward-line -1)
+    (indent-according-to-mode))
+
+  (dolist (mode '(rust-mode))
+    (sp-local-pair mode "{" nil
+                   :post-handlers '((sp-enter-and-indent-sexp "RET")))))
 ;; (use-package smartparens-config
 ;;   :diminish smartparens-mode
 ;;   :commands (smartparens-mode turn-on-smartparens-mode)

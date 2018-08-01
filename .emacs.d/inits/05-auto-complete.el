@@ -94,7 +94,7 @@
     :init
     (defun add-company-ispell ()
       (add-to-list 'company-backends 'company-ispell))
-    (add-hook 'text-mode-hook #'add-company-ispell)
+    ;; (add-hook 'text-mode-hook #'add-company-ispell)
     ;; (add-hook 'gfm-mode-hook #'add-company-ispell)
     ;; (add-hook 'markdown-mode-hook #'add-company-ispell)
     ;; (add-hook 'org-mode-hook #'add-company-ispell)
