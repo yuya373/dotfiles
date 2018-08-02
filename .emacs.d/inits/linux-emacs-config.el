@@ -43,6 +43,7 @@
 (use-package xclip
   :commands (turn-on-xclip)
   :init
+  (setq xclip-select-enable-clipboard t)
   (add-hook 'after-init-hook 'turn-on-xclip))
 
 (el-get-bundle migemo)
