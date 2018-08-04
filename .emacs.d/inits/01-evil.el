@@ -507,6 +507,7 @@
     "brr" 'browser-refresh
     "bra" 'browser-refresh-and-activate
     "bw" 'projectile-switch-to-buffer-other-window
+    "ci" 'toggle-company-ispell
     ;; "dd" 'osx-dictionary-search-pointer
     ;; "di" 'osx-dictionary-search-input
     "dc" 'dired-open-current

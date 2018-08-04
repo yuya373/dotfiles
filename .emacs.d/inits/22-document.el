@@ -253,6 +253,16 @@
 ;;   :commands (org-mobile-sync-mode)
 ;;   :init
 ;;   (add-to-list 'after-init-hook 'org-mobile-sync-mode))
+(el-get-bundle esxml)
+(el-get-bundle wasamasa/nov.el :name nov)
+(use-package nov
+  :mode (("\\.epub\\'" . nov-mode))
+  :config
+  (evil-define-key 'normal nov-mode-map
+    "H" 'nov-previous-document
+    "L" 'nov-next-document
+    ",t" 'nov-goto-toc
+    ))
 
 
 (provide '22-document)

@@ -102,6 +102,14 @@
   ;;   (add-to-list 'company-backends 'company-yasnippet))
   (use-package company-ispell
     :init
+    (defun toggle-company-ispell ()
+      (interactive)
+      (if (memq 'company-ispell company-backends)
+          (progn
+            (setq company-backends (delete 'company-ispell company-backends))
+            (message "Turn OFF `company-ispell'"))
+        (add-to-list 'company-backends 'company-ispell)
+        (message "Turn ON `company-ispell'")))
     (defun add-company-ispell ()
       (make-local-variable 'company-backends)
       (add-to-list 'company-backends 'company-ispell))
