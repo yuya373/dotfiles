@@ -115,7 +115,11 @@
         (message "Turn ON `company-ispell'")))
     (defun add-company-ispell ()
       (make-local-variable 'company-backends)
-      (add-to-list 'company-backends 'company-ispell))
+      (add-to-list 'company-backends
+                   '(company-ispell
+                     company-files
+                     company-dabbrev
+                     )))
     (add-hook 'text-mode-hook #'add-company-ispell)
     ;; (add-hook 'gfm-mode-hook #'add-company-ispell)
     ;; (add-hook 'markdown-mode-hook #'add-company-ispell)
