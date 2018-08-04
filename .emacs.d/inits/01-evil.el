@@ -537,7 +537,6 @@
     "fr" 'helm-recentf
     "fs" 'reopen-with-sudo
     "gb" 'magit-blame-popup
-    "gf" 'magit-fetch-popup
     "gg" 'magit-status
     "gm" 'git-messenger:popup-message
     "ghn" 'git-gutter+-next-hunk

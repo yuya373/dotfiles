@@ -147,6 +147,19 @@
   :init
   (add-hook 'after-init-hook 'global-git-gutter+-mode)
   :config
+  (defvar git-gutter+-refresh-timer nil)
+  (defun git-gutter+-disable-refresh-timer ()
+    (interactive)
+    (when (timerp git-gutter+-refresh-timer)
+      (cancel-timer git-gutter+-refresh-timer)
+      (setq git-gutter+-refresh-timer nil)))
+  (defun git-gutter+-enable-refresh-timer ()
+    (interactive)
+    (git-gutter+-disable-refresh-timer)
+    (setq git-gutter+-refresh-timer
+          (run-with-idle-timer 1 t #'git-gutter+-refresh)))
+  (git-gutter+-enable-refresh-timer)
+
   (defun git-gutter+-remote-default-directory (dir file)
     (let* ((vec (tramp-dissect-file-name file))
            (method (tramp-file-name-method vec))

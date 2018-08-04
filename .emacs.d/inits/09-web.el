@@ -119,6 +119,7 @@
     "n" nil
     "p" nil
     "d" nil
+    "v" nil
     "r" 'eww-reload
     "H" 'eww-back-url
     "L" 'eww-forward-url

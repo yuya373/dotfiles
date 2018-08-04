@@ -88,11 +88,14 @@
   (add-hook 'after-init-hook 'global-company-mode)
   :config
   (setq company-backends
-        '((company-files          ; files & directory
-           company-keywords       ; keywords
-           company-capf
-           company-dabbrev-code
+        '((company-capf
+           :with
+           company-files
+           company-keywords)
+          (company-dabbrev-code
            company-dabbrev
+           company-files          ; files & directory
+           company-keywords       ; keywords
            company-gtags
            company-etags
            ;; company-yasnippet
