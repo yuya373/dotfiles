@@ -40,7 +40,7 @@
     (forward-line -1)
     (indent-according-to-mode))
 
-  (dolist (mode '(rust-mode))
+  (dolist (mode '(rust-mode rjsx-mode))
     (sp-local-pair mode "{" nil
                    :post-handlers '((sp-enter-and-indent-sexp "RET")))))
 ;; (use-package smartparens-config

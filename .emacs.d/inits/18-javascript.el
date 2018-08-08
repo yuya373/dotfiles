@@ -109,7 +109,11 @@
     ;; (setq company-idle-delay 0)
     ;; (setq company-backends (remq 'company-capf company-backends))
     ;; (setq company-backends (remq 'company-tern company-backends))
-    (add-to-list 'company-backends '(company-tern :with company-dabbrev)))
+    (add-to-list 'company-backends
+                 '(company-tern
+                   :with
+                   company-dabbrev-code
+                   )))
   (add-hook 'js2-mode-hook 'enable-company-tern)
   (add-hook 'js2-jsx-mode-hook 'enable-company-tern)
   )
