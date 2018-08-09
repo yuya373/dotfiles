@@ -28,6 +28,38 @@
 (use-package compile
   :defer t
   :diminish compilation-in-progress
+  :init
+  (defun compile-finish-notify-alert (buffer msg)
+    ;; (message "buffer: %s" buffer)
+    ;; (message "msg: %s" msg)
+    (alert msg :title (buffer-name buffer)))
+  (add-to-list 'compilation-finish-functions 'compile-finish-notify-alert)
+
+  ;; (defun compilation-apply-ansi-color ()
+  ;;   (interactive)
+  ;;   (let ((inhibit-read-only t))
+  ;;     (ansi-color-apply-on-region (point-min)
+  ;;                                 (point-max))))
+  ;; (remove-hook 'compilation-filter-hook 'compilation-apply-ansi-color)
+
+  (defvar my-ansi-escape-re
+    (rx (or "(B"
+            (: (or ?\233 (and ?\e ?\[))
+               (zero-or-more (char (?0 . ?\?)))
+               (zero-or-more (char ?\s ?- ?\/))
+               (char (?@ . ?~))))))
+
+  (defun my-nuke-ansi-escapes (beg end)
+    (save-excursion
+      (goto-char beg)
+      (while (re-search-forward my-ansi-escape-re end t)
+        (replace-match ""))))
+
+  (defun compilation-filter-ansi ()
+    (let ((inhibit-read-only t))
+      (my-nuke-ansi-escapes (point-min)
+                            (point-max))))
+  (add-hook 'compilation-filter-hook 'compilation-filter-ansi)
   :config
   (setq compilation-scroll-output t)
   (define-key compilation-mode-map (kbd "g") nil)

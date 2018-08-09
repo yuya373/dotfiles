@@ -380,16 +380,6 @@
 (use-package es-mode
   :mode (("\\.es\\'" . es-mode)))
 
-
-(use-package compile
-  :init
-  (setq compilation-scroll-output nil)
-  (defun compile-finish-notify-alert (buffer msg)
-    ;; (message "buffer: %s" buffer)
-    ;; (message "msg: %s" msg)
-    (alert msg :title (buffer-name buffer)))
-  (add-to-list 'compilation-finish-functions 'compile-finish-notify-alert))
-
 (el-get-bundle sr-speedbar)
 (use-package sr-speedbar
   :commands (sr-speedbar-toggle)

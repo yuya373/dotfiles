@@ -68,8 +68,10 @@
   :init
   (add-hook 'rust-mode-hook 'cargo-minor-mode)
   :config
+  (setq cargo-process--command-test "test --color=never")
   (evil-define-key 'normal cargo-minor-mode-map
     ",C" 'cargo-process-clean
+    ",c" 'cargo-process-clippy
     ",d" 'cargo-process-doc
     ",b" 'cargo-process-build
     ",n" 'cargo-process-new
