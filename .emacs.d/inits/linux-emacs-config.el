@@ -33,18 +33,21 @@
 (setq ring-bell-function 'ignore)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
+(setq x-select-enable-clipboard t)
+(setq x-select-enable-primary t)
+      (when xclip-select-enable-clipboard
 
 (el-get-bundle company-quickhelp)
 (use-package company-quickhelp
   :commands (company-quickhelp-mode)
   :init
   (add-hook 'company-mode-hook '(lambda () (company-quickhelp-mode t))))
-(el-get-bundle xclip)
-(use-package xclip
-  :commands (turn-on-xclip)
-  :init
-  (setq xclip-select-enable-clipboard t)
-  (add-hook 'after-init-hook 'turn-on-xclip))
+;; (el-get-bundle xclip)
+;; (use-package xclip
+;;   :commands (turn-on-xclip)
+;;   :init
+;;   (setq xclip-select-enable-clipboard t)
+;;   (add-hook 'after-init-hook 'turn-on-xclip))
 
 (el-get-bundle migemo)
 (use-package migemo
