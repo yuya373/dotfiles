@@ -125,7 +125,7 @@
         (know-your-http-well :checksum "3cc5ab6d2764ab7aacb1b6e026abaccbeb6c37f2")
         (company-statistics :checksum "e62157d43b2c874d2edbd547c3bdfb05d0a7ae5c")
         (company-emoji :checksum "8dc88ffe0773ef44321f245d39430c14a1bc2b82")
-        (company-mode :checksum "779662f9e994c351002107a18f99cd06e00ed6c1")
+        (company-mode :checksum "1c768504eb0ed7c416be4f7844311b6c68f789fb")
         (helm-open-github :checksum "2f03d97552a1233db7694116d5f80ecde7612756")
         (gh :checksum "f029fc11f345ef04ab62ee91c38657e29c462fea")
         (marshal :checksum "f038689cbd5b3680b80b44edd0c7a63ca3038e26")

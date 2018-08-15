@@ -35,7 +35,6 @@
 (scroll-bar-mode -1)
 (setq x-select-enable-clipboard t)
 (setq x-select-enable-primary t)
-      (when xclip-select-enable-clipboard
 
 (el-get-bundle company-quickhelp)
 (use-package company-quickhelp

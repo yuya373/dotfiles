@@ -83,6 +83,9 @@
   (setq company-dabbrev-other-buffers t)
   (setq company-dabbrev-ignore-case nil)
   (setq company-dabbrev-downcase nil)
+  (setq company-frontends '(company-pseudo-tooltip-frontend
+                            company-preview-frontend
+                            company-echo-metadata-frontend))
 
   ;; (add-to-list 'completion-styles 'initials)
   (add-hook 'after-init-hook 'global-company-mode)
