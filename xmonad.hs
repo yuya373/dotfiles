@@ -12,6 +12,8 @@ import qualified XMonad.StackSet as W
 import XMonad.Actions.CycleRecentWS
 import XMonad.Util.Paste
 import XMonad.Util.WorkspaceCompare
+import XMonad.Actions.DynamicWorkspaces
+import Data.Maybe ( isNothing, isJust )
 -- import XMonad.Config.Desktop
 
 -- baseConfig = desktopConfig
@@ -22,8 +24,10 @@ moBar = "xmobar"
 printer = xmobarPP {
   ppCurrent = xmobarColor "#429942" "" . wrap "<" ">"
   , ppOrder = \(ws:_) -> [ws]
+  , ppHidden = \(_) -> ""
   }
 toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
+myWorkspaces = ["Emacs", "Terminal", "WebBrowser"]
 myConfig = (ewmh $ defaultConfig) {
   terminal = "urxvt"
   , borderWidth = 3
@@ -31,30 +35,37 @@ myConfig = (ewmh $ defaultConfig) {
   , manageHook = myManageHook
   , handleEventHook = myEventHook
   , layoutHook =  myLayoutHook
+  , workspaces = myWorkspaces
   } `additionalKeys`
   [ ((mod1Mask .|. shiftMask, xK_z), spawn "xscreensaver-command -lock")
   -- , ((mod1Mask, xK_space), sendMessage $ Toggle FULL)
   , ((mod1Mask, xK_bracketleft), prevNonEmptyWS)
   , ((mod1Mask, xK_bracketright), nextNonEmptyWS)
+  , ((mod1Mask .|. shiftMask, xK_bracketleft), prevHiddenNonEmptyWS)
+  , ((mod1Mask .|. shiftMask, xK_bracketright), nextHiddenNonEmptyWS)
   , ((mod1Mask, xK_Right), nextScreen)
   , ((mod1Mask, xK_Left), prevScreen)
   , ((mod1Mask, xK_Tab), nextScreen)
-  , ((mod1Mask.|. shiftMask, xK_Tab), prevScreen)
+  , ((mod1Mask .|. shiftMask, xK_Tab), prevScreen)
   , ((mod1Mask .|. shiftMask, xK_c), kill)
   , ((0, xK_Insert), pasteSelection)
   ]
 
 myStartupHook = do
   spawnOnce "feh ~/Downloads/Xmbindings.png"
+  addHiddenWorkspace "Hidden"
+
 
 myManageHook = composeAll
-  [ className =? "Emacs" --> doShift "1"
-  , className =? "URxvt" --> doShift "2"
-  , className =? "feh" --> doShift "2"
-  , className =? "Google-chrome" --> doShift "3"
-  , className =? "MPlayer"        --> doShift "3"
-  , className =? "mplayer2"       --> doShift "3"
-  , className =? "Wine" --> doShift "3"
+  [ className =? "Emacs" --> doShift "Emacs"
+  , className =? "URxvt" --> doShift "Terminal"
+  , className =? "feh" --> doShift "Terminal"
+  , className =? "Google-chrome" --> doShift "WebBrowser"
+  , className =? "MPlayer"        --> doShift "Hidden"
+  , className =? "mplayer2"       --> doShift "Hidden"
+  , className =? "Wine" --> doShift "Hidden"
+  , className =? "Genymotion" --> doShift "Hidden"
+  , className =? "Genymotion Player" --> doShift "Hidden"
   ]
 
 myEventHook = ewmhDesktopsEventHook <+> fullscreenEventHook
@@ -67,8 +78,21 @@ myLayoutHook =  tiled ||| Full
     delta = 3/100
 
 
+visibleWs :: X (WindowSpace -> Bool)
+visibleWs = do
+  hs <- gets (map W.tag . W.hidden . windowset)
+  return (\w -> (not ((W.tag w) `elem` hs)))
+
+visibleNonEmptyWs :: X (WindowSpace -> Bool)
+visibleNonEmptyWs = do ne <- isNonEmptyWs
+                       vi <- visibleWs
+                       return (\w -> ne w && vi w)
+
+  where isNonEmptyWs = return (isJust . W.stack)
+
+
 nonEmptyWsBy :: Int -> X (WorkspaceId)
-nonEmptyWsBy = findWorkspace getSortByIndex Next NonEmptyWS
+nonEmptyWsBy = findWorkspace getSortByIndex Next (WSIs visibleNonEmptyWs)
 
 switchNonEmptyWorkspace :: Int ->  X ()
 switchNonEmptyWorkspace d = nonEmptyWsBy d >>= windows . W.greedyView
@@ -78,3 +102,16 @@ nextNonEmptyWS = switchNonEmptyWorkspace 1
 
 prevNonEmptyWS :: X ()
 prevNonEmptyWS = switchNonEmptyWorkspace (-1)
+
+
+hiddenNonEmptyWsBy :: Int -> X (WorkspaceId)
+hiddenNonEmptyWsBy = findWorkspace getSortByIndex Next HiddenNonEmptyWS
+
+switchHiddenNonEmptyWorkspace :: Int ->  X ()
+switchHiddenNonEmptyWorkspace d = hiddenNonEmptyWsBy d >>= windows . W.view
+
+nextHiddenNonEmptyWS :: X ()
+nextHiddenNonEmptyWS = switchHiddenNonEmptyWorkspace 1
+
+prevHiddenNonEmptyWS :: X ()
+prevHiddenNonEmptyWS = switchHiddenNonEmptyWorkspace (-1)
