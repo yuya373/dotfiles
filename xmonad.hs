@@ -24,10 +24,9 @@ moBar = "xmobar"
 printer = xmobarPP {
   ppCurrent = xmobarColor "#429942" "" . wrap "<" ">"
   , ppOrder = \(ws:_) -> [ws]
-  , ppHidden = \(_) -> ""
   }
 toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
-myWorkspaces = ["Emacs", "Terminal", "WebBrowser"]
+myWorkspaces = ["Emacs", "Terminal", "WebBrowser", "Hidden"]
 myConfig = (ewmh $ defaultConfig) {
   terminal = "urxvt"
   , borderWidth = 3
@@ -41,8 +40,6 @@ myConfig = (ewmh $ defaultConfig) {
   -- , ((mod1Mask, xK_space), sendMessage $ Toggle FULL)
   , ((mod1Mask, xK_bracketleft), prevNonEmptyWS)
   , ((mod1Mask, xK_bracketright), nextNonEmptyWS)
-  , ((mod1Mask .|. shiftMask, xK_bracketleft), prevHiddenNonEmptyWS)
-  , ((mod1Mask .|. shiftMask, xK_bracketright), nextHiddenNonEmptyWS)
   , ((mod1Mask, xK_Right), nextScreen)
   , ((mod1Mask, xK_Left), prevScreen)
   , ((mod1Mask, xK_Tab), nextScreen)
@@ -53,7 +50,6 @@ myConfig = (ewmh $ defaultConfig) {
 
 myStartupHook = do
   spawnOnce "feh ~/Downloads/Xmbindings.png"
-  addHiddenWorkspace "Hidden"
 
 
 myManageHook = composeAll
@@ -92,26 +88,19 @@ visibleNonEmptyWs = do ne <- isNonEmptyWs
 
 
 nonEmptyWsBy :: Int -> X (WorkspaceId)
-nonEmptyWsBy = findWorkspace getSortByIndex Next (WSIs visibleNonEmptyWs)
+nonEmptyWsBy = findWorkspace getSortByIndex Next NonEmptyWS
 
 switchNonEmptyWorkspace :: Int ->  X ()
-switchNonEmptyWorkspace d = nonEmptyWsBy d >>= windows . W.greedyView
+switchNonEmptyWorkspace d = do
+  id <- nonEmptyWsBy d
+  if id == "Hidden"
+  then if d < 0
+       then switchNonEmptyWorkspace (d - 1)
+       else switchNonEmptyWorkspace (d + 1)
+  else (windows . W.greedyView) id
 
 nextNonEmptyWS :: X ()
 nextNonEmptyWS = switchNonEmptyWorkspace 1
 
 prevNonEmptyWS :: X ()
 prevNonEmptyWS = switchNonEmptyWorkspace (-1)
-
-
-hiddenNonEmptyWsBy :: Int -> X (WorkspaceId)
-hiddenNonEmptyWsBy = findWorkspace getSortByIndex Next HiddenNonEmptyWS
-
-switchHiddenNonEmptyWorkspace :: Int ->  X ()
-switchHiddenNonEmptyWorkspace d = hiddenNonEmptyWsBy d >>= windows . W.view
-
-nextHiddenNonEmptyWS :: X ()
-nextHiddenNonEmptyWS = switchHiddenNonEmptyWorkspace 1
-
-prevHiddenNonEmptyWS :: X ()
-prevHiddenNonEmptyWS = switchHiddenNonEmptyWorkspace (-1)
