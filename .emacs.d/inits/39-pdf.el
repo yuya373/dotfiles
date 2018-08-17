@@ -69,6 +69,7 @@
   ;; (setq pdf-view-resize-factor 1.1)
   (add-hook 'pdf-view-mode-hook #'(lambda () (linum-mode -1)))
   (add-hook 'pdf-view-mode-hook #'(lambda () (blink-cursor-mode -1)))
+  (add-hook 'pdf-view-mode-hook #'(lambda () (git-gutter+-mode -1)))
   (add-hook 'pdf-view-mode-hook 'pdf-view-auto-slice-minor-mode)
   ;; (add-hook 'pdf-view-mode-hook 'pdf-view-dark-minor-mode)
   (add-hook 'pdf-view-mode-hook 'pdf-view-midnight-minor-mode)
