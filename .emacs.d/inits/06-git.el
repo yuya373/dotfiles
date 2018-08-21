@@ -153,11 +153,14 @@
     (when (timerp git-gutter+-refresh-timer)
       (cancel-timer git-gutter+-refresh-timer)
       (setq git-gutter+-refresh-timer nil)))
+  (defun git-gutter+-refresh-if-enabled ()
+    (when git-gutter+-mode
+      (git-gutter+-refresh)))
   (defun git-gutter+-enable-refresh-timer ()
     (interactive)
     (git-gutter+-disable-refresh-timer)
     (setq git-gutter+-refresh-timer
-          (run-with-idle-timer 1 t #'git-gutter+-refresh)))
+          (run-with-idle-timer 1 t #'git-gutter+-refresh-if-enabled)))
   (git-gutter+-enable-refresh-timer)
 
   (defun git-gutter+-remote-default-directory (dir file)
