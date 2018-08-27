@@ -81,7 +81,7 @@
   (setq shackle-default-rule nil)
   (setq shackle-default-alignment 'below)
   (setq shackle-rules nil)
-  (setq shackle-rule-bottom '(:align bottom :select nil :size 0.5 :popup t))
+  (setq shackle-rule-bottom '(:align bottom :select nil :size 0.4 :popup t))
   (setq shackle-rule-right-half '(:align right :select nil :size 0.4 :popup t))
   (setq shackle-rules
         (append (mapcar (lambda (l) (append l shackle-rule-bottom))
@@ -115,7 +115,9 @@
                             slack-thread-message-buffer-mode
                             slack-user-profile-buffer-mode
                             slack-stars-buffer-mode
-                            slack-pinned-items-buffer-mode)
+                            slack-pinned-items-buffer-mode
+                            slack-dialog-buffer-mode
+                            slack-dialog-edit-element-buffer-mode)
                            :select t)
                           (woman-mode)))
 
