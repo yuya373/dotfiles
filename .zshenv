@@ -52,6 +52,10 @@ if [ -d ${HOME}/.roswell ]; then
     export PATH=${HOME}/.roswell/bin:${PATH}
 fi
 
+if [ -d ${HOME}/.yarn/bin ]; then
+    export PATH=${HOME}/.yarn/bin:${PATH}
+fi
+
 export PAGER='less'
 # export LESS='-g -n -i -M -R -S -w -X -z4'
 export LESS='-g -n -i -M -R -w -X -z4'
