@@ -101,6 +101,7 @@
 ;;             "index.scss"
 ;;             )))
 (el-get-bundle primer/github-syntax-light)
+(el-get-bundle sindresorhus/github-markdown-css)
 (use-package markdown-mode
   :init
   (defun my-markdown-mode-setting ()
@@ -112,7 +113,7 @@
   (setq markdown-command "marked --gfm --breaks --tables")
   (setq markdown-css-paths (list
                             ;; (expand-file-name "~/.emacs.d/el-get/primer-css/modules/primer/build/build.css")
-                            (expand-file-name "~/.emacs.d/el-get/github-syntax-light/lib/github-light.css")
+                            (expand-file-name "~/.emacs.d/el-get/github-markdown-css/github-markdown.css")
                             ))
   (setq markdown-xhtml-header-content nil)
   (add-hook 'markdown-mode-hook 'outline-minor-mode)

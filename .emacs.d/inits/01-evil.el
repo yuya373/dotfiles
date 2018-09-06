@@ -576,7 +576,7 @@
     "jc" 'avy-migemo-goto-char
     "ju" 'exec-ace-link
     "l" 'toggle-folding
-    "ma" 'slack-select-rooms
+    "ma" 'helm-slack
     "mcA" 'slack-channel-unarchive
     "mca" 'slack-channel-archive
     "mcc" 'slack-create-channel
