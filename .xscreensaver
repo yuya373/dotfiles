@@ -1,5 +1,5 @@
 # XScreenSaver Preferences File
-# Written by xscreensaver-demo 5.40 for yuya373 on Sat Sep 15 19:17:23 2018.
+# Written by xscreensaver-demo 5.40 for yuya373 on Sun Sep 16 20:59:19 2018.
 # https://www.jwz.org/xscreensaver/
 
 timeout:	0:10:00
@@ -11,7 +11,7 @@ visualID:	default
 installColormap:    True
 verbose:	False
 timestamp:	True
-splash:		True
+splash:		False
 splashDuration:	0:00:05
 demoCommand:	xscreensaver-demo
 prefsCommand:	xscreensaver-demo -prefs
@@ -24,11 +24,11 @@ fadeTicks:	20
 captureStderr:	True
 ignoreUninstalledPrograms:False
 font:		*-medium-r-*-140-*-m-*
-dpmsEnabled:	False
+dpmsEnabled:	True
 dpmsQuickOff:	False
-dpmsStandby:	2:00:00
-dpmsSuspend:	2:00:00
-dpmsOff:	4:00:00
+dpmsStandby:	0:20:00
+dpmsSuspend:	0:30:00
+dpmsOff:	0:00:00
 grabDesktopImages:  True
 grabVideoFrames:    False
 chooseRandomImages: False
@@ -287,4 +287,3 @@ procInterrupts:	True
 xinputExtensionDev: False
 overlayStderr:	True
 authWarningSlack:   20
-
