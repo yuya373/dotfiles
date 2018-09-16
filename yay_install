@@ -1,0 +1,6 @@
+#!/bin/bash
+
+mkdir -p ~/dev
+git clone https://aur.archlinux.org/yay.git ~/dev/yay
+cd ~/dev/yay
+makepkg -si

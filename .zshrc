@@ -62,7 +62,6 @@ source ~/dotfiles/tmux.zsh
 
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS=(do_enter kill-line $ZSH_AUTOSUGGEST_CLEAR_WIDGETS)
 
-source ~/dotfiles/.zenv
 source ~/dotfiles/.zprompt
 source ~/dotfiles/.zshfunc
 source ~/dotfiles/.zsh_keybind

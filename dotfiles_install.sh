@@ -6,13 +6,19 @@ case ${OSTYPE} in
         ln -sf ~/dotfiles/.config/karabiner/karabiner.json ~/.config/karabiner/karabiner.json
     ;;
     linux*)
+        ln -sf ~/dotfiles/.aspell.conf  ~/.aspell.conf
+        ln -sf ~/dotfiles/.zlogin  ~/.zlogin
         # X
+        ln -sf ~/dotfiles/.xscreensaver  ~/.xscreensaver
         ln -sf ~/dotfiles/.Xresources  ~/.Xresources
-        ln -sf ~/dotfiles/SandS  ~/SandS
         ln -sf ~/dotfiles/.xbindkeysrc  ~/.xbindkeysrc
-        ln -sf ~/dotfiles/etc/X11/xorg.conf.d/30-touchpad.conf /etc/X11/xorg.conf.d/30-touchpad.conf
-        ln -sf ~/dotfiles/etc/X11/xorg.conf.d/10-monitor.conf  /etc/X11/xorg.conf.d/10-monitor.conf
-        ln -sf ~/dotfiles/etc/X11/xorg.conf.d/29-trackpoint.conf /etc/X11/xorg.conf.d/29-trackpoint.conf
+        sudo ln -sf ~/dotfiles/etc/X11/xorg.conf.d/30-touchpad.conf /etc/X11/xorg.conf.d/30-touchpad.conf
+        sudo ln -sf ~/dotfiles/etc/X11/xorg.conf.d/10-monitor.conf  /etc/X11/xorg.conf.d/10-monitor.conf
+        sudo ln -sf ~/dotfiles/etc/X11/xorg.conf.d/29-trackpoint.conf /etc/X11/xorg.conf.d/29-trackpoint.conf
+        if [[ ! -d ~/.config/dunst ]]; then
+            mkdir -p ~/.config/dunst
+        fi
+        ln -sf ~/dotfiles/.config/dunst/dunstrc ~/.config/dunst/dunstrc
         if [[ ! -d ~/.config/zathura ]]; then
             mkdir -p ~/.config/zathura
         fi
@@ -20,6 +26,7 @@ case ${OSTYPE} in
         if [[ ! -d ~/.config/fontconfig/conf.d ]]; then
             mkdir -p ~/.config/fontconfig/conf.d
         fi
+        ln -sf ~/dotfiles/.config/fontconfig/conf.d/50-enable-terminal-powerline.conf ~/.config/fontconfig/conf.d/50-enable-terminal-powerline.conf
         ln -sf ~/dotfiles/.config/fontconfig/conf.d/71-no-embedded-bitmaps.conf  ~/.config/fontconfig/conf.d/71-no-embedded-bitmaps.conf
         # ln -sf ~/dotfiles/.config/fontconfig/conf.d/72-use-twitter-color-emoji.conf ~/.config/fontconfig/conf.d/72-use-twitter-color-emoji.conf
         ln -sf ~/dotfiles/.config/fontconfig/conf.d/73-sharp-font.conf  ~/.config/fontconfig/conf.d/73-sharp-font.conf
@@ -33,9 +40,11 @@ case ${OSTYPE} in
         ln -sf ~/dotfiles/xmonad.hs ~/.xmonad/xmonad.hs
         # xkeysnail
         # NOTE: need restart?
-        ln -sf ~/dotfiles/etc/udev/rules.d/29-input.rules /etc/udev/rules.d/29-input.rules
-        ln -sf ~/dotfiles/etc/udev/rules.d/30-uinput.rules  /etc/udev/rules.d/30-uinput.rules
+        sudo ln -sf ~/dotfiles/etc/modules-load.d/uinput.conf /etc/modules-load.d/uinput.conf
+        sudo ln -sf ~/dotfiles/etc/udev/rules.d/29-input.rules /etc/udev/rules.d/29-input.rules
+        sudo ln -sf ~/dotfiles/etc/udev/rules.d/30-uinput.rules  /etc/udev/rules.d/30-uinput.rules
         mkdir -p ~/.config/systemd/user
+        ln -sf ~/dotfiles/.config/systemd/user/ssh-agent.service ~/.config/systemd/user/ssh-agent.service
         ln -sf ~/dotfiles/.config/systemd/user/xkeysnail.service ~/.config/systemd/user/xkeysnail.service
         ;;
 esac
