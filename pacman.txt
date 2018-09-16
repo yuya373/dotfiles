@@ -7,8 +7,10 @@ automake
 autorandr-git
 bash
 binutils
+bison
 bzip2
 cairo
+ccache
 clang
 clingo
 clipmenu
@@ -18,6 +20,7 @@ cryptsetup
 ctags
 deepin-screenshot
 device-mapper
+dhcpcd
 dialog
 dictd
 diffutils
@@ -41,6 +44,7 @@ file
 filesystem
 findutils
 firefox
+flex
 fontforge
 gauche
 gawk
@@ -92,6 +96,7 @@ mdadm
 modemmanager
 mplayer
 nano
+netctl
 networkmanager
 noto-fonts
 noto-fonts-cjk
@@ -123,9 +128,11 @@ pulseaudio-alsa
 qrencode
 redshift
 reflector
+reiserfsprogs
 rsync
 rtags
 rxvt-unicode
+s-nail
 sbcl
 sbt
 scala
@@ -168,6 +175,7 @@ xf86-input-synaptics
 xf86-video-fbdev
 xf86-video-intel
 xf86-video-vesa
+xfsprogs
 xkeysnail-git
 xlogin-git
 xmobar
