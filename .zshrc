@@ -89,6 +89,7 @@ case ${OSTYPE} in
         ;;
     linux*)
         # ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
+        export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
         ;;
 esac
 
