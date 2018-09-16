@@ -187,6 +187,7 @@ xorg-xcursorgen
 xorg-xdpyinfo
 xorg-xdriinfo
 xorg-xev
+xorg-xhost
 xorg-xinit
 xorg-xkbevd
 xorg-xkbutils
