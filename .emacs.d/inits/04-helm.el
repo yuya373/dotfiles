@@ -404,11 +404,13 @@
   :commands (helm-dash-at-point helm-dash helm-dash-install-docset helm-dash-install-docset-from-file)
   :init
   (setq helm-dash-common-docsets '("Ruby" "Ruby on Rails" "Rust" "React" "PostgreSQL"
-                                   "NodeJS" "Nginx" "MySQL" "Markdown" "JavaScript"
-                                   "Java" "Haskell" "Haml" "HTML" "Emacs Lisp"
-                                   "ElasticSearch" "Docker" "Common Lisp"
-                                   "Bash" "OCaml"
-                                   "NET Framework" "Unity 3D"
+                                   "NodeJS" "Nginx" ;; "MySQL"
+                                   "Markdown" "JavaScript"
+                                   ;; "Java"
+                                   "Haskell" "Haml" "HTML" "Emacs Lisp"
+                                   "ElasticSearch" "Docker" ;; "Common Lisp"
+                                   "Bash" ;; "OCaml"
+                                   ;; "NET Framework" "Unity 3D"
                                    ))
   (setq helm-dash-min-length 1)
   (setq helm-dash-browser-func 'eww)
@@ -419,7 +421,7 @@
   ;;   (add-hook 'projectile-rails-mode-hook
   ;;             '(lambda () (setq-local helm-dash-docsets '("Ruby" "Ruby on Rails"))))
   ;;   (add-hook 'emacs-lisp-mode-hook
-  ;;             '(lambda () (setq-local helm-dash-docsets '("Emacs" "Emacs Lisp"))))
+  ;;             '(lambda () (setq-local helm-dash-docsets '("Emacs Lisp"))))
   ;;   (defun helm-lisp-mode ()
   ;;     (setq-local helm-dash-docsets '("Common Lisp")))
   ;;   (add-hook 'lisp-mode-hook 'helm-lisp-mode)
