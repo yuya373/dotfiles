@@ -1,4 +1,5 @@
 acpi
+adobe-base-14-fonts
 alsa-utils
 arandr
 aspell-en
@@ -141,6 +142,7 @@ scala-sources
 sed
 shadow
 skk-jisyo
+skktools
 sshrc
 stack
 strace
@@ -213,6 +215,7 @@ xscreensaver
 xsensors
 xss-lock-git
 yarn
+yaskkserv
 yay-bin
 zathura
 zathura-pdf-poppler
