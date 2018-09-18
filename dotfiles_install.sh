@@ -4,7 +4,7 @@ case ${OSTYPE} in
     darwin*)
         mkdir -p ~/.config/karabiner/
         ln -sf ~/dotfiles/.config/karabiner/karabiner.json ~/.config/karabiner/karabiner.json
-    ;;
+        ;;
     linux*)
         ln -sf ~/dotfiles/.aspell.conf  ~/.aspell.conf
         ln -sf ~/dotfiles/.zlogin  ~/.zlogin
@@ -43,6 +43,8 @@ case ${OSTYPE} in
         sudo ln -sf ~/dotfiles/etc/modules-load.d/uinput.conf /etc/modules-load.d/uinput.conf
         sudo ln -sf ~/dotfiles/etc/udev/rules.d/29-input.rules /etc/udev/rules.d/29-input.rules
         sudo ln -sf ~/dotfiles/etc/udev/rules.d/30-uinput.rules  /etc/udev/rules.d/30-uinput.rules
+        sudo ln -sf ~/dotfiles/etc/udev/rules.d/99-ergodox.rules /etc/udev/rules.d/99-ergodox.rules
+        ln -sf ~/dotfiles/.config/systemd/user/ergodox.service ~/.config/systemd/user/ergodox.service
         mkdir -p ~/.config/systemd/user
         ln -sf ~/dotfiles/.config/systemd/user/ssh-agent.service ~/.config/systemd/user/ssh-agent.service
         ln -sf ~/dotfiles/.config/systemd/user/xkeysnail.service ~/.config/systemd/user/xkeysnail.service
