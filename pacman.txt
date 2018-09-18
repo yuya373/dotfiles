@@ -1,5 +1,6 @@
 acpi
 adobe-base-14-fonts
+aic94xx-firmware
 alsa-utils
 arandr
 aspell-en
@@ -27,6 +28,7 @@ dictd
 diffutils
 direnv
 dmenu
+dmidecode
 docker
 docker-compose
 dosfstools
@@ -167,6 +169,7 @@ usbutils
 util-linux
 vi
 vim
+wd719x-firmware
 wget
 which
 words
