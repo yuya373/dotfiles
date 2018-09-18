@@ -35,7 +35,6 @@
         (company-irony :checksum "52aca45bcd0f2cb0648fcafa2bbb4f8ad4b2fee7")
         (irony-eldoc :checksum "0df5831eaae264a25422b061eb2792aadde8b3f2")
         (irony-mode :checksum "2b1db096b65260fa06690a81ce4e9fca2d164cdf")
-        (cmake-mode :checksum "2b6ba21f26e1d6004db9940a5daf06f14571b432")
         (pdf-tools :checksum "60d12ce15220d594e8eb95f4d072e2710cddefe0")
         (tablist :checksum "c834a84efb6efa32497efe1e73160fade741b836")
         (nginx-mode :checksum "a2bab83c2eb233d57d76b236e7c141c2ccc97005")
@@ -190,4 +189,4 @@
         (use-package :checksum "d3ace722ea890f9e99054af4487eff65c4e36243")))
 (setq el-get-lock-locked-packages 'nil)
 (setq el-get-lock-unlocked-packages
-      '(slack))
+      '(slack cmake-mode))
