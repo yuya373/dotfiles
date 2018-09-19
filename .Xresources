@@ -1,5 +1,7 @@
 ! https://wiki.archlinuxjp.org/index.php/XScreenSaver
 xscreensaver.newLoginCommand:
+! https://www.hadacchi.com/wp_blog/3341.html
+Emacs*useXIM: false
 
 URxvt.scrollTtyOutput: false
 URxvt.scrollWithBuffer: true
