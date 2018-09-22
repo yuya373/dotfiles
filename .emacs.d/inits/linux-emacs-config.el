@@ -59,5 +59,23 @@
   (setq migemo-coding-system 'utf-8-unix)
   (add-hook 'after-init-hook 'migemo-init))
 
+(el-get-bundle exec-path-from-shell)
+(use-package exec-path-from-shell
+  ;; :commands (exec-path-from-shell-initialize)
+  :init
+  ;; (add-hook 'before-init-hook 'exec-path-from-shell-initialize)
+  (setq exec-path-from-shell-variables
+        '("PATH"
+          "MANPATH"
+          "LANG"
+          "JAVA_HOME"
+          "NODE_PATH"
+          "SSH_AUTH_SOCK"
+          ))
+  :config
+  (exec-path-from-shell-initialize)
+  ;; (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
+  )
+
 (provide 'linux-emacs-config)
 ;;; linux-emacs-config.el ends here

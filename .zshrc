@@ -62,7 +62,6 @@ source ~/dotfiles/tmux.zsh
 
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS=(do_enter kill-line $ZSH_AUTOSUGGEST_CLEAR_WIDGETS)
 
-source ~/dotfiles/.zenv
 source ~/dotfiles/.zprompt
 source ~/dotfiles/.zshfunc
 source ~/dotfiles/.zsh_keybind
@@ -90,6 +89,7 @@ case ${OSTYPE} in
         ;;
     linux*)
         # ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
+        export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
         ;;
 esac
 

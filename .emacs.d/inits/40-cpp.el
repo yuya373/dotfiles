@@ -39,6 +39,7 @@
 
 ;; [C++11時代のEmacs C++コーディング環境 - Qiita](http://qiita.com/alpha22jp/items/90f7f2ad4f8b1fa089f4)
 (el-get-bundle cmake-mode)
+(el-get-lock-unlock 'cmake-mode)
 (el-get-bundle irony-mode)
 (el-get-bundle irony-eldoc)
 (el-get-bundle company-irony)

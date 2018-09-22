@@ -1,5 +1,7 @@
 (setq el-get-lock-package-versions
-      '((github-markdown-css :checksum "4d639a534aa9b8856a3b8bcc43239ea48d68d1fc")
+      '((ddskk :checksum "b05c610e27b86e71fb4e8d67292ef6a696dd5992")
+        (el-get :checksum "87bb3f9481077f67d6520800b9ce5b8bf88fde5c")
+        (github-markdown-css :checksum "4d639a534aa9b8856a3b8bcc43239ea48d68d1fc")
         (esxml :checksum "5548ceba17deae0c3c6d0092672edc4de3c75ce3")
         (kv :checksum "721148475bce38a70e0b678ba8aa923652e8900e")
         (nov :checksum "3be6e8cd1a6311b0782ca2aa3d9961bec6183632")
@@ -33,7 +35,6 @@
         (company-irony :checksum "52aca45bcd0f2cb0648fcafa2bbb4f8ad4b2fee7")
         (irony-eldoc :checksum "0df5831eaae264a25422b061eb2792aadde8b3f2")
         (irony-mode :checksum "2b1db096b65260fa06690a81ce4e9fca2d164cdf")
-        (cmake-mode :checksum "2b6ba21f26e1d6004db9940a5daf06f14571b432")
         (pdf-tools :checksum "60d12ce15220d594e8eb95f4d072e2710cddefe0")
         (tablist :checksum "c834a84efb6efa32497efe1e73160fade741b836")
         (nginx-mode :checksum "a2bab83c2eb233d57d76b236e7c141c2ccc97005")
@@ -44,7 +45,6 @@
         (spaceline :checksum "0fb964d96c15b18e77f1d91923645777b66ff534")
         (powerline :checksum "af5ef31a33c3589a9be0b2a55a2741582e605efd")
         (dockerfile-mode :checksum "818e6946fcf2d58438ab78ea06761a372cc5435a")
-        (ddskk :checksum "16d156562aef72f02ced58087335ed72d520d878")
         (helm-perspeen :checksum "7fe2922d85608bfa9e18269fc44181428b8849ff")
         (perspeen :checksum "edb70c530bda50ff3d1756e32a703d5fef5e5480")
         (shackle :checksum "4189c1c773aab533969b587f7801ffbcd1d7d613")
@@ -189,4 +189,4 @@
         (use-package :checksum "d3ace722ea890f9e99054af4487eff65c4e36243")))
 (setq el-get-lock-locked-packages 'nil)
 (setq el-get-lock-unlocked-packages
-      '(slack))
+      '(slack cmake-mode))
