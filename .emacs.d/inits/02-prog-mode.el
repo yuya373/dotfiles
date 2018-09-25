@@ -159,6 +159,13 @@ http://www.emacswiki.org/emacs/AlignCommands"
   :init
   (setq quickrun-focus-p nil))
 
+(el-get-bundle wbolster/emacs-direnv
+  :name direnv)
+
+(use-package direnv
+  :commands (direnv-mode)
+  :init
+  (add-hook 'after-init-hook 'direnv-mode))
 
 (provide '02-prog-mode)
 ;;; 02-prog-mode.el ends here
