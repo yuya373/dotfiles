@@ -31,6 +31,7 @@
 (use-package smartparens-config
   :commands (smartparens-mode)
   :init
+  (add-hook 'toml-mode-hook 'smartparens-mode)
   (add-hook 'prog-mode-hook 'smartparens-mode)
   :config
   (defun sp-enter-and-indent-sexp (&rest _ignored)

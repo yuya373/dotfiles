@@ -139,7 +139,7 @@
         (helm-dash :checksum "0ac2db529577fa63f2ed32310062873c585b91de")
         (helm-ag :checksum "2fc02c4ead29bf0db06fd70740cc7c364cb650ac")
         (helm-ls-git :checksum "ceeac5c89a3db7868ff94e5ac272bc1cd9262aa0")
-        (helm :checksum "100df622e9563654b746ec415d92b3b555c3f2be")
+        (helm :checksum "3f3bfa4f4b4ed163bd1b36690fd63ff40ce14669")
         (emacs-async :checksum "6fa6a866b4b31908166e010ac60e77927bdbfc5a")
         (ace-window :checksum "92d20e7e75dbb2ba0b879d3aedb8bed51fcee6a7")
         (imenu-anywhere :checksum "fc7f0fd2f19e5ebee70156a99bf87393123893e3")
