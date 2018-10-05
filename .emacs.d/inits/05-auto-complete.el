@@ -56,19 +56,7 @@
                                company-sort-by-backend-importance
                                company-sort-by-occurrence)))
 
-(use-package company-emoji
-  :commands (company-emoji)
-  :init
-  (setq company-emoji-insert-unicode nil)
-  ;; (defun add-company-emoji ()
-  ;;   (make-local-variable 'company-backends)
-  ;;   (add-to-list 'company-backends 'company-emoji))
-  ;; ;; (add-hook 'gfm-mode-hook #'add-company-emoji)
-  ;; ;; (add-hook 'slack-edit-message-mode-hook #'add-company-emoji)
-  ;; ;; (add-hook 'slack-mode-hook #'add-company-emoji)
-  ;; (add-hook 'git-commit-mode-hook #'add-company-emoji)
-  ;; (add-hook 'markdown-mode-hook #'add-company-emoji)
-  )
+
 
 (use-package company
   :commands (company-mode global-company-mode)
@@ -90,19 +78,33 @@
   ;; (add-to-list 'completion-styles 'initials)
   (add-hook 'after-init-hook 'global-company-mode)
   :config
-  (setq company-backends
-        '((company-capf
-           company-dabbrev-code
-           company-files
-           company-keywords)
-          (company-dabbrev-code
-           company-dabbrev
-           company-files          ; files & directory
-           company-keywords       ; keywords
-           company-gtags
-           company-etags
-           ;; company-yasnippet
-           )))
+  ;; (setq company-backends
+  ;;       '((company-capf
+  ;;          company-dabbrev-code
+  ;;          company-files
+  ;;          company-keywords)
+  ;;         (company-dabbrev-code
+  ;;          company-dabbrev
+  ;;          company-files          ; files & directory
+  ;;          company-keywords       ; keywords
+  ;;          company-gtags
+  ;;          company-etags
+  ;;          ;; company-yasnippet
+  ;;          )))
+  (use-package company-emoji
+    :commands (company-emoji)
+    :init
+    ;; (add-to-list 'company-backends 'company-emoji)
+    (setq company-emoji-insert-unicode nil)
+    ;; (defun add-company-emoji ()
+    ;;   (make-local-variable 'company-backends)
+    ;;   (add-to-list 'company-backends 'company-emoji))
+    ;; ;; (add-hook 'gfm-mode-hook #'add-company-emoji)
+    ;; ;; (add-hook 'slack-edit-message-mode-hook #'add-company-emoji)
+    ;; ;; (add-hook 'slack-mode-hook #'add-company-emoji)
+    ;; (add-hook 'git-commit-mode-hook #'add-company-emoji)
+    ;; (add-hook 'markdown-mode-hook #'add-company-emoji)
+    )
   ;; (use-package company-yasnippet
   ;;   :config
   ;;   (add-to-list 'company-backends 'company-yasnippet))
