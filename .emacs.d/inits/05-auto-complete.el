@@ -32,6 +32,8 @@
 (el-get-bundle company-mode)
 (el-get-bundle company-emoji)
 (el-get-bundle company-statistics)
+(el-get-bundle company-quickhelp)
+
 
 ;; (use-package yasnippet
 ;;   :commands (yas-global-mode)
@@ -91,6 +93,8 @@
   ;;          company-etags
   ;;          ;; company-yasnippet
   ;;          )))
+  (use-package company-quickhelp)
+  (company-quickhelp-mode)
   (use-package company-emoji
     :commands (company-emoji)
     :init

@@ -54,7 +54,7 @@
         (cargo :checksum "10093586bdac7252e65e11851f26da8ba4720608")
         (flycheck-rust :checksum "1ffbbfeed6344107a3f65d837b30c8879274e4cf")
         (racer :checksum "dd7f179efbab6597eb7eb1d66883f168b3dc5573")
-        (rust-mode :checksum "106aeab800fb3404baf231845d3e3549ec235afa")
+        (rust-mode :checksum "ee262ccdee16e0e78c7e16f81630c154d0b8f39b")
         (google-translate :checksum "24ee8e91b7ada9415e2035ee54e3342994fcfe04")
         (osx-dictionary :checksum "b16630ecf69f87ac873486d8b9c8c03e6c9ea7fa")
         (major-mode-log :checksum "36ff32dc3fd42b6d8c4561d5916aeec8dd353a63")

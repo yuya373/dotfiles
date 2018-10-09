@@ -48,13 +48,7 @@
   ;;   :commands (flycheck-pos-tip-mode)
   ;;   :init
   ;;   (add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode))
-
-
-  (el-get-bundle company-quickhelp)
-  (use-package company-quickhelp
-    :commands (company-quickhelp-mode)
-    :init
-    (add-hook 'company-mode-hook '(lambda () (company-quickhelp-mode t)))))
+  )
 
 (el-get-bundle emacschrome)
 (use-package edit-server
