@@ -83,8 +83,14 @@
   (setq shackle-rules nil)
   (setq shackle-rule-bottom '(:align bottom :select nil :size 0.4 :popup t))
   (setq shackle-rule-right-half '(:align right :select nil :size 0.4 :popup t))
+  (setq shackle-rule-bottom-wide '(:align bottom :select nil :size 0.6 :popup t))
   (setq shackle-rules
-        (append (mapcar (lambda (l) (append l shackle-rule-bottom))
+        (append (mapcar (lambda (l) (append l shackle-rule-bottom-wide))
+                        '(((slack-message-buffer-mode
+                            slack-search-result-buffer-mode)
+                           :select t)))
+
+                (mapcar (lambda (l) (append l shackle-rule-bottom))
                         '((timer-list-mode)
                           (flycheck-error-list-mode)
                           (ert-results-mode)
@@ -95,9 +101,6 @@
                           (inf-ruby-mode)
                           (rspec-compilation-mode)
                           (ensime-inf-mode)
-                          ((slack-message-buffer-mode
-                            slack-search-result-buffer-mode)
-                           :select t)
                           (("\\`\\*eshell\\*\\(<.*>\\)?\\'") :regexp t :select t)
                           ("\\`\\*websocket\s.*\sdebug\\*\\'" :regexp t)
 
