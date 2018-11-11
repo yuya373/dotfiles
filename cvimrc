@@ -41,6 +41,7 @@ yankTitle -> {{
 openHatenaEntryInNewTab -> {{
   let location;
   let hatenaUrl;
+  const maxLength = 277;
 
   const canonical = document.querySelector('link[rel="canonical"]');
 
@@ -63,7 +64,7 @@ openHatenaEntryInNewTab -> {{
   } else {
     hatenaUrl = `${baseUrl}${hostname}${pathname}`;
   }
-  window.open(`${hatenaUrl}${search}${encodeURIComponent(hash)}`);
+  window.open(`${hatenaUrl}${search}${encodeURIComponent(hash)}`.slice(0, maxLength));
 }}
 
 yankGithubGitRepoAddr -> {{

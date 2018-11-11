@@ -169,6 +169,7 @@ usbutils
 util-linux
 vi
 vim
+virtualbox
 wd719x-firmware
 wget
 which
