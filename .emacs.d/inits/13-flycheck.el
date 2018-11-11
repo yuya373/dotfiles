@@ -28,8 +28,8 @@
 
 (el-get-bundle flycheck)
 (el-get-bundle alexmurray/evil-flycheck)
-(el-get-bundle purcell/flycheck-package
-  :name flycheck-package)
+(el-get-bundle package-lint)
+(el-get-bundle flycheck-package)
 (el-get-bundle pkg-info)
 
 (use-package flycheck
@@ -74,13 +74,13 @@
             evil-paste-after
             evil-paste-before
             )))
-  (defconst flycheck-error-list-format
-    [("Line" 5 flycheck-error-list-entry-< :right-align t)
-     ("Col" 3 nil :right-align t)
-     ("Level" 8 flycheck-error-list-entry-level-<)
-     ("ID" 10 t)
-     ("Message (Checker)" 0 t)]
-    "Table format for the error list.")
+  ;; (defconst flycheck-error-list-format
+  ;;   [("Line" 5 flycheck-error-list-entry-< :right-align t)
+  ;;    ("Col" 3 nil :right-align t)
+  ;;    ("Level" 8 flycheck-error-list-entry-level-<)
+  ;;    ("ID" 10 t)
+  ;;    ("Message (Checker)" 0 t)]
+  ;;   "Table format for the error list.")
   (evil-define-key 'normal flycheck-error-list-mode-map
     "RET" #'flycheck-error-list-goto-error
     ",n" #'flycheck-error-list-next-error
@@ -92,7 +92,9 @@
   )
 
 (use-package flycheck-package
-  :commands (flycheck-package-setup))
+  :commands (flycheck-package-setup)
+  :init
+  (add-hook 'flycheck-mode-hook 'flycheck-package-setup))
 
 ;; (use-package flycheck-tip
 ;;   :commands (flycheck-tip-display-current-line-error-message)
