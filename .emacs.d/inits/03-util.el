@@ -274,9 +274,9 @@ This respects the `emojify-emoji-styles' variable."
 
 (el-get-bundle auto-mark)
 (use-package auto-mark
-  :commands (auto-mark-mode)
+  :commands (global-auto-mark-mode)
   :init
-  (add-hook 'after-init-hook 'auto-mark-mode)
+  (add-hook 'after-init-hook 'global-auto-mark-mode)
 
   ;; A list of (COMMAND . CLASS) for classfying command to CLASS.
 
@@ -298,8 +298,12 @@ This respects the `emojify-emoji-styles' variable."
                                         (isearch-exit . jump)
                                         (evil-search-next . jump)
                                         (evil-search-previous . jump)
-                                        (evil-scroll-down . move)
-                                        (evil-scroll-up . move))))
+                                        (evil-scroll-down . jump)
+                                        (evil-scroll-up . jump)
+                                        (evil-jump-to-tag . jump)
+                                        (scroll-up-command . jump)
+                                        (scroll-down-command . jump)
+                                        (helm-gtags-find-tag-from-here . jump))))
 
 ;; (el-get-bundle prodigy)
 ;; (use-package prodigy

@@ -29,11 +29,32 @@
 (require 'use-package)
 (el-get-bundle markdown-mode)
 
-(use-package gfm-mode
+;; (el-get-bundle gist:2554919:github.css)
+;; (el-get-bundle markdowncss/retro)
+;; (el-get-bundle markdowncss/splendor)
+;; (el-get-bundle markdowncss/modest)
+;; (el-get-bundle primer/primer-css
+;;   ;; :subdir "modules/primer"
+;;   :compile nil
+;;   :build '(("npm" "--silent" "install")
+;;            ("./script/npm-run"
+;;             "primer-module-build"
+;;             "index.scss"
+;;             )))
+(el-get-bundle primer/github-syntax-light)
+(el-get-bundle sindresorhus/github-markdown-css)
+(use-package markdown-mode
   :mode (("\\.markdown\\'" . gfm-mode)
          ("\\.md\\'" . gfm-mode)
          ("PULLREQ_MSG" . gfm-mode))
   :init
+  (setq markdown-command "marked --gfm --breaks --tables")
+  (setq markdown-css-paths (list
+                            ;; (expand-file-name "~/.emacs.d/el-get/primer-css/modules/primer/build/build.css")
+                            (expand-file-name "~/.emacs.d/el-get/github-markdown-css/github-markdown.css")
+                            ))
+  (setq markdown-xhtml-header-content nil)
+  (add-hook 'markdown-mode-hook 'outline-minor-mode)
   (defun my-gfm-mode-hook ()
     (whitespace-mode -1)
     (set (make-local-variable 'tab-width) 2)
@@ -86,37 +107,8 @@
   (defun md-insert-task-list ()
     (interactive)
     (insert "- [ ] "))
-  (add-hook 'gfm-mode-hook 'my-gfm-map))
+  (add-hook 'gfm-mode-hook 'my-gfm-map)
 
-;; (el-get-bundle gist:2554919:github.css)
-;; (el-get-bundle markdowncss/retro)
-;; (el-get-bundle markdowncss/splendor)
-;; (el-get-bundle markdowncss/modest)
-;; (el-get-bundle primer/primer-css
-;;   ;; :subdir "modules/primer"
-;;   :compile nil
-;;   :build '(("npm" "--silent" "install")
-;;            ("./script/npm-run"
-;;             "primer-module-build"
-;;             "index.scss"
-;;             )))
-(el-get-bundle primer/github-syntax-light)
-(el-get-bundle sindresorhus/github-markdown-css)
-(use-package markdown-mode
-  :init
-  (defun my-markdown-mode-setting ()
-    (set (make-local-variable 'tab-width) 2)
-    ;; (make-local-variable 'company-backends)
-    ;; (add-to-list 'company-backends 'company-ispell)
-    )
-  (add-hook 'markdown-mode-hook #'my-markdown-mode-setting)
-  (setq markdown-command "marked --gfm --breaks --tables")
-  (setq markdown-css-paths (list
-                            ;; (expand-file-name "~/.emacs.d/el-get/primer-css/modules/primer/build/build.css")
-                            (expand-file-name "~/.emacs.d/el-get/github-markdown-css/github-markdown.css")
-                            ))
-  (setq markdown-xhtml-header-content nil)
-  (add-hook 'markdown-mode-hook 'outline-minor-mode)
   (setq markdown-body-class-name "markdown-body")
   :config
   (defun markdown-add-xhtml-header-and-footer (title)

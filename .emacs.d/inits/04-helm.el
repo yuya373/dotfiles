@@ -192,7 +192,8 @@
   (defun helm-ace-split-ff ()
     (interactive)
     (with-helm-alive-p
-      (helm-exit-and-execute-action 'ace-split-find-file)))
+      (helm-exit-and-execute-action #'(lambda (candidate)
+                                        (ace-split-find-file candidate)))))
 
   (defun ace-split-helm-ag (filename)
     (let ((dir (or helm-ag--default-directory
@@ -207,7 +208,8 @@
   (defun helm-ace-split-ag ()
     (interactive)
     (with-helm-alive-p
-      (helm-exit-and-execute-action 'ace-split--helm-ag)))
+      (helm-exit-and-execute-action #'(lambda (candidate)
+                                        (ace-split--helm-ag candidate)))))
 
   (defun ace-ff--helm-ag (candidate)
     (message "%s" candidate)
@@ -218,7 +220,8 @@
   (defun helm-ace-ff-ag ()
     (interactive
      (with-helm-alive-p
-       (helm-exit-and-execute-action 'ace-ff--helm-ag))))
+       (helm-exit-and-execute-action #'(lambda (candidate)
+                                         (ace-ff--helm-ag candidate))))))
 
   (defun ace-split-switch-to-buffer (buffer-or-name)
     (switch-window-if-gteq-3-windows)
@@ -234,7 +237,8 @@
   (defun helm-ace-split-sb ()
     (interactive)
     (with-helm-alive-p
-      (helm-exit-and-execute-action 'ace-split-switch-to-buffer)))
+      (helm-exit-and-execute-action #'(lambda (candidate)
+                                        (ace-split-switch-to-buffer candidate)))))
 
   (defun ace-vsplit-find-file (candidate)
     (switch-window-if-gteq-3-windows)
@@ -243,7 +247,8 @@
   (defun helm-ace-vsplit-ff ()
     (interactive)
     (with-helm-alive-p
-      (helm-exit-and-execute-action 'ace-vsplit-find-file)))
+      (helm-exit-and-execute-action '(lambda (candidate)
+                                       (ace-vsplit-find-file candidate)))))
 
   (defun ace-vsplit-helm-ag (filename)
     (let ((dir (or helm-ag--default-directory
@@ -258,7 +263,8 @@
   (defun helm-ace-vsplit-ag ()
     (interactive)
     (with-helm-alive-p
-      (helm-exit-and-execute-action 'ace-vsplit--helm-ag)))
+      (helm-exit-and-execute-action '(lambda (candidate)
+                                       (ace-vsplit--helm-ag candidate)))))
 
   (defun ace-vsplit-switch-to-buffer (buffer-or-name)
     (switch-window-if-gteq-3-windows)
@@ -274,7 +280,8 @@
   (defun helm-ace-vsplit-sb ()
     (interactive)
     (with-helm-alive-p
-      (helm-exit-and-execute-action 'ace-vsplit-switch-to-buffer)))
+      (helm-exit-and-execute-action '(lambda (candidate)
+                                       (ace-vsplit-switch-to-buffer candidate)))))
 
   (defun ace-helm-find-file (candidate)
     (let ((file-name (my-helm-normalize-candidate candidate)))
@@ -292,7 +299,8 @@
   (defun helm-ace-ff ()
     (interactive)
     (with-helm-alive-p
-      (helm-exit-and-execute-action 'ace-helm-find-file)))
+      (helm-exit-and-execute-action '(lambda (candidate)
+                                       (ace-helm-find-file candidate)))))
 
   (defun ace-helm-switch-to-buffer (buffer-or-name)
     (if (= (length (window-list)) 1)
@@ -307,7 +315,8 @@
   (defun helm-ace-sb ()
     (interactive)
     (with-helm-alive-p
-      (helm-exit-and-execute-action 'ace-helm-switch-to-buffer)))
+      (helm-exit-and-execute-action '(lambda (candidate)
+                                       (ace-helm-switch-to-buffer candidate)))))
 
   ;; (defun helm-imenu--execute-action-at-once-p ()
   ;;   ;; (let ((cur (helm-get-selection))
