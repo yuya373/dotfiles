@@ -82,6 +82,11 @@
       ",C" 'markdown-insert-gfm-code-block)
     (evil-define-key 'normal gfm-mode-map
       (kbd "TAB") 'markdown-cycle
+      ",ta" 'markdown-table-align
+      ",tic" 'markdown-table-insert-column
+      ",tir" 'markdown-table-insert-row
+      ",tdc" 'markdown-table-delete-column
+      ",tdr" 'markdown-table-delete-row
       ",i" nil
       ",iL" 'markdown-insert-list-item
       ",ilr" 'markdown-insert-reference-link-dwim
@@ -100,6 +105,7 @@
       ",ip" 'markdown-insert-pre
       ",iC" 'markdown-insert-gfm-code-block
       ",it" 'md-insert-task-list
+      ",iTt" 'markdown-insert-table
       ",m" 'markdown-other-window
       ",p" 'markdown-preview
       ",k" 'markdown-promote
