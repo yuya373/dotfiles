@@ -115,6 +115,7 @@
                           ))
                 (mapcar (lambda (l) (append l shackle-rule-right-half))
                         '(((slack-file-list-buffer-mode
+                            slack-all-threads-buffer-mode
                             slack-thread-message-buffer-mode
                             slack-user-profile-buffer-mode
                             slack-stars-buffer-mode

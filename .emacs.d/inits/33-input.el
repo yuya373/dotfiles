@@ -126,7 +126,9 @@
 This is reasonable since inserted text during `skk-henkan-mode'
 is a kind of temporary one which is not confirmed yet."
     (unless (bound-and-true-p skk-henkan-mode)
-      ad-do-it)))
+      ad-do-it))
+  (with-eval-after-load "markdown"
+    (skk-wrap-newline-command markdown-enter-key)))
 
 
 
