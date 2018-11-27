@@ -603,7 +603,7 @@
     "miu" 'slack-im-list-update
     "mk" 'slack-ws-close
     "mus" 'slack-user-select
-    "mua" 'slack-select-unread-rooms
+    "mua" 'helm-slack-unreads
     "md" 'open-diary-dir
     "ml" 'open-junk-dir
     "mm" 'slack-start
@@ -616,7 +616,7 @@
     "mss" 'slack-search-select
     "msl" 'slack-stars-list
     "mtt" 'slack-change-current-team
-    "mts" 'slack-thread-select
+    "mta" 'slack-all-threads
     ;; "mus" 'slack-user-stars-list
     "oa" 'org-agenda
     "oo" 'open-junk-org-today
