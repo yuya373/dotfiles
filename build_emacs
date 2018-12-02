@@ -1,0 +1,88 @@
+#!/bin/bash
+set -eu
+
+print_sep() {
+    echo "========================================================================================="
+}
+
+print_colored() {
+    # [console - How does one output bold text in Bash? - Stack Overflow](https://stackoverflow.com/questions/2924697/how-does-one-output-bold-text-in-bash)
+    # [bash - How to change the output color of echo in Linux - Stack Overflow](https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux/20983251#20983251)
+    bold=$(tput bold)
+    # dim=$(tput dim)
+    # underline=$(tput smul)
+    # reset_underline=$(tput rmul)
+    # rev=$(tput rev)
+    # standout=$(tput smso)
+    # reset_standout=$(tput rmso)
+    normal=$(tput sgr0)
+    # red=$(tput setaf 1)
+    green=$(tput setaf 2)
+    # yellow=$(tput setaf 3)
+    # blue=$(tput setaf 4)
+    # magenta=$(tput setaf 5)
+    # cyan=$(tput setaf 6)
+    # white=$(tput setaf 7)
+    echo "${green}"
+    print_sep
+    echo "$1"
+    print_sep
+    echo "${normal}"
+}
+
+total_step="7"
+current_step=1
+
+print_with_current_step() {
+    print_colored "[$current_step/$total_step] $1"
+    current_step=$(( current_step + 1 ))
+}
+
+
+
+emacs_dir="$HOME/dev/emacs"
+
+
+
+if [[ ! -d "$emacs_dir" ]]; then
+    total_step="8"
+    print_with_current_step "Cloning emacs repository"
+    mkdir -p ~/dev
+    git clone git://git.sv.gnu.org/emacs.git $emacs_dir
+fi
+
+print_with_current_step "Change working directory to $emacs_dir"
+pushd $emacs_dir
+
+print_with_current_step "Update master branch"
+git fetch -a
+git checkout -B master origin/master
+
+
+print_with_current_step "Executing 'make distclean'"
+make distclean
+
+print_with_current_step "Executing './autogen.sh'"
+./autogen.sh
+
+print_with_current_step "Configure with dbus, gnutls, jpeg, png, tiff, rsvg, imagemagick, modules, xml2, xft, zlib"
+PKG_CONFIG_PATH="/usr/lib/imagemagick6/pkgconfig" ./configure \
+               --with-dbus \
+               --with-gnutls \
+               --with-jpeg \
+               --with-png \
+               --with-tiff \
+               --with-rsvg \
+               --with-imagemagick \
+               --with-modules \
+               --with-xml2 \
+               --with-xft \
+               --with-zlib
+
+print_with_current_step "Executing 'make -j4'"
+make -j4
+
+print_with_current_step "Install emacs"
+sudo make install
+
+popd
