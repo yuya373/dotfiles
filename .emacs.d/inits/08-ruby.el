@@ -38,6 +38,15 @@
   :github h3poteto/ruby-block.el)
 ;; (el-get-bundle ruby-end)
 (el-get-bundle rspec-mode)
+(el-get-bundle ruby-mode)
+
+(defvar ruby-font-lock-syntax-table
+  (let ((tbl (make-syntax-table ruby-mode-syntax-table)))
+    (modify-syntax-entry ?_ "w" tbl)
+    tbl)
+  "The syntax table to use for fontifying Ruby mode buffers.
+See `font-lock-syntax-table'.")
+
 
 (defun my-ruby-modify-syntax (tables)
   (dolist (syntax-table tables)
@@ -170,6 +179,7 @@
   :init
   (setq rspec-use-docker-when-possible t)
   (setq rspec-docker-container "app")
+  (setq rspec-docker-command "docker-compose run --rm")
   :config
   (defun rspec-spec-file-p (a-file-name)
     "Return true if the specified A-FILE-NAME is a spec."

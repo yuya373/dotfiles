@@ -1,5 +1,6 @@
 (setq el-get-lock-package-versions
-      '((org-mode :checksum "feb44212b564bf5622b6cfaed24b9fb91e163954")
+      '((solarized-css :checksum "cb2741075b9a4353bfffe624944f54fbdfc7957e")
+        (org-mode :checksum "feb44212b564bf5622b6cfaed24b9fb91e163954")
         (pcre2el :checksum "0b5b2a2c173aab3fd14aac6cf5e90ad3bf58fa7d")
         (el-get-lock :checksum "df8cfe55441695865a64b97946750b6413a40425")
         (treepy :checksum "b40e6b09eb9be45da67b8c9e4990a5a0d7a2a09d")

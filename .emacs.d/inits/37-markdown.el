@@ -25,35 +25,22 @@
 ;;; Code:
 (eval-when-compile
   (require 'evil))
-
 (require 'use-package)
 (el-get-bundle markdown-mode)
-
-;; (el-get-bundle gist:2554919:github.css)
-;; (el-get-bundle markdowncss/retro)
-;; (el-get-bundle markdowncss/splendor)
-;; (el-get-bundle markdowncss/modest)
-;; (el-get-bundle primer/primer-css
-;;   ;; :subdir "modules/primer"
-;;   :compile nil
-;;   :build '(("npm" "--silent" "install")
-;;            ("./script/npm-run"
-;;             "primer-module-build"
-;;             "index.scss"
-;;             )))
-(el-get-bundle primer/github-syntax-light)
 (el-get-bundle sindresorhus/github-markdown-css)
+
 (use-package markdown-mode
   :mode (("\\.markdown\\'" . gfm-mode)
          ("\\.md\\'" . gfm-mode)
          ("PULLREQ_MSG" . gfm-mode))
   :init
+  (setq markdown-list-indent-width 2)
   (setq markdown-command "marked --gfm --breaks --tables")
   (setq markdown-css-paths (list
                             ;; (expand-file-name "~/.emacs.d/el-get/primer-css/modules/primer/build/build.css")
-                            (expand-file-name "~/.emacs.d/el-get/github-markdown-css/github-markdown.css")
+                            ;; (expand-file-name "~/.emacs.d/el-get/github-markdown-css/github-markdown.css")
+                            "http://thomasf.github.io/solarized-css/solarized-light.min.css"
                             ))
-  (setq markdown-xhtml-header-content nil)
   (add-hook 'markdown-mode-hook 'outline-minor-mode)
   (defun my-gfm-mode-hook ()
     (whitespace-mode -1)
@@ -117,6 +104,9 @@
 
   (setq markdown-body-class-name "markdown-body")
   :config
+  (setq auto-mode-alist
+        (cl-remove-if #'(lambda (mode) (eq (cdr mode) 'markdown-mode))
+                      auto-mode-alist))
   (defun markdown-add-xhtml-header-and-footer (title)
     "Wrap XHTML header and footer with given TITLE around current buffer."
     (goto-char (point-min))

@@ -272,38 +272,38 @@ This respects the `emojify-emoji-styles' variable."
   (setq dired-k-style 'git)
   (setq dired-k-human-readable t))
 
-(el-get-bundle auto-mark)
-(use-package auto-mark
-  :commands (global-auto-mark-mode)
-  :init
-  (add-hook 'after-init-hook 'global-auto-mark-mode)
+;; (el-get-bundle auto-mark)
+;; (use-package auto-mark
+;;   :commands (global-auto-mark-mode)
+;;   :init
+;;   (add-hook 'after-init-hook 'global-auto-mark-mode)
 
-  ;; A list of (COMMAND . CLASS) for classfying command to CLASS.
+;;   ;; A list of (COMMAND . CLASS) for classfying command to CLASS.
 
-  ;; COMMAND is a symbol you want to try to classify.
-  ;; CLASS is a symbol for detecting a border where auro-mark should push mark.
+;;   ;; COMMAND is a symbol you want to try to classify.
+;;   ;; CLASS is a symbol for detecting a border where auro-mark should push mark.
 
-  ;; There is pre-defined CLASS:
-  ;; edit      edit command
-  ;; move      point move command
-  ;; ignore    make auto-mark ignore pushing mark
-  (setq auto-mark-command-class-alist '((goto-line . jump)
-                                        (avy-goto-char . jump)
-                                        (avy-goto-char-2 . jump)
-                                        (avy-goto-line . jump)
-                                        (avy-goto-word-0 . jump)
-                                        (avy-migemo-goto-char . jump)
-                                        (avy-migemo-goto-word-1 . jump)
-                                        (avy-migemo-goto-char-in-line . jump)
-                                        (isearch-exit . jump)
-                                        (evil-search-next . jump)
-                                        (evil-search-previous . jump)
-                                        (evil-scroll-down . jump)
-                                        (evil-scroll-up . jump)
-                                        (evil-jump-to-tag . jump)
-                                        (scroll-up-command . jump)
-                                        (scroll-down-command . jump)
-                                        (helm-gtags-find-tag-from-here . jump))))
+;;   ;; There is pre-defined CLASS:
+;;   ;; edit      edit command
+;;   ;; move      point move command
+;;   ;; ignore    make auto-mark ignore pushing mark
+;;   (setq auto-mark-command-class-alist '((goto-line . jump)
+;;                                         (avy-goto-char . jump)
+;;                                         (avy-goto-char-2 . jump)
+;;                                         (avy-goto-line . jump)
+;;                                         (avy-goto-word-0 . jump)
+;;                                         (avy-migemo-goto-char . jump)
+;;                                         (avy-migemo-goto-word-1 . jump)
+;;                                         (avy-migemo-goto-char-in-line . jump)
+;;                                         (isearch-exit . jump)
+;;                                         (evil-search-next . jump)
+;;                                         (evil-search-previous . jump)
+;;                                         (evil-scroll-down . jump)
+;;                                         (evil-scroll-up . jump)
+;;                                         (evil-jump-to-tag . jump)
+;;                                         (scroll-up-command . jump)
+;;                                         (scroll-down-command . jump)
+;;                                         (helm-gtags-find-tag-from-here . jump))))
 
 ;; (el-get-bundle prodigy)
 ;; (use-package prodigy

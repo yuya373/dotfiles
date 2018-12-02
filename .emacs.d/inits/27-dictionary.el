@@ -50,7 +50,20 @@
   :config
   (use-package google-translate-smooth-ui)
   (setq google-translate-default-source-language "en"
-        google-translate-default-target-language "ja"))
+        google-translate-default-target-language "ja")
+  (defun google-translate--search-tkk ()
+    "Search TKK."
+    (let ((start nil)
+          (tkk nil)
+          (nums '()))
+      (setq start (search-forward ",tkk:'"))
+      (search-forward "',")
+      (backward-char 2)
+      (setq tkk (buffer-substring start (point)))
+      (setq nums (split-string tkk "\\."))
+      (list (string-to-number (car nums))
+            (string-to-number (car (cdr nums)))))))
+
 
 (provide '27-dictionary)
 ;;; 27-dictionary.el ends here
