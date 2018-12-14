@@ -25,6 +25,8 @@
 ;;; Code:
 
 (eval-when-compile
+  (require 'use-package)
+  (require 'el-get)
   (require 'evil)
   (require 'evil-common))
 
@@ -39,14 +41,6 @@
 ;; (el-get-bundle ruby-end)
 (el-get-bundle rspec-mode)
 (el-get-bundle ruby-mode)
-
-(defvar ruby-font-lock-syntax-table
-  (let ((tbl (make-syntax-table ruby-mode-syntax-table)))
-    (modify-syntax-entry ?_ "w" tbl)
-    tbl)
-  "The syntax table to use for fontifying Ruby mode buffers.
-See `font-lock-syntax-table'.")
-
 
 (defun my-ruby-modify-syntax (tables)
   (dolist (syntax-table tables)
@@ -139,6 +133,19 @@ See `font-lock-syntax-table'.")
                           (kbd ",bo") 'bundle-open))
         '(projectile-rails-mode-map enh-ruby-mode-map)))
 
+(use-package ruby-mode
+  :init
+  (setq ruby-insert-encoding-magic-comment nil)
+  (setq ruby-deep-indent-paren-style nil)
+  (setq ruby-align-chained-calls nil)
+  :config
+  (defvar ruby-font-lock-syntax-table
+    (let ((tbl (make-syntax-table ruby-mode-syntax-table)))
+      (modify-syntax-entry ?_ "w" tbl)
+      tbl)
+    "The syntax table to use for fontifying Ruby mode buffers.
+See `font-lock-syntax-table'."))
+
 (use-package enh-ruby-mode
   :mode (("\\(Rake\\|Thor\\|Guard\\|Gem\\|Cap\\|Vagrant\\|Berks\\|Pod\\|Puppet\\)file\\'" . enh-ruby-mode)
          ("\\.\\(rb\\|rabl\\|ru\\|builder\\|rake\\|thor\\|gemspec\\|jbuilder\\|schema\\|cap\\)\\'" . enh-ruby-mode))
@@ -151,9 +158,6 @@ See `font-lock-syntax-table'.")
         ;; enh-ruby-program "~/.rbenv/shims/ruby"
         ;; enh-ruby-deep-arglist t
         enh-ruby-bounce-deep-indent nil)
-  (setq ruby-insert-encoding-magic-comment nil)
-  (setq ruby-deep-indent-paren-style nil)
-  (setq ruby-align-chained-calls nil)
   (defun my-enh-ruby-modify-syntax ()
     (my-ruby-modify-syntax (list enh-ruby-mode-syntax-table enh-ruby-mode-syntax-table)))
   (add-hook 'enh-ruby-mode-hook 'my-enh-ruby-modify-syntax)

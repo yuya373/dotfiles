@@ -62,7 +62,77 @@
   :mode (("\\.jsx\\'" . rjsx-mode)
          ("\\.js\\'" . rjsx-mode)
          )
+  :init
+  (defun my-rjsx-use-buitin-indent ()
+    (setq-local indent-line-function 'rjsx-indent-line))
+  (add-hook 'rjsx-mode-hook 'my-rjsx-use-buitin-indent)
   :config
+  (defun rjsx--indent-line-1 ()
+    "Helper for `rjsx-indent-line'."
+    (let* ((indent-tabs-mode nil)
+           (cur-pos (point))
+           (cur-char (char-after cur-pos))
+           (node (js2-node-at-point (- cur-pos rjsx--indent-running-offset)))
+           (parent (js2-node-parent node)))
+      (cond
+       ((rjsx-node-p node)
+        (cond
+         ((eq cur-char ?<)
+          (if (rjsx-node-p parent)
+              (rjsx--indent-line-to-offset parent sgml-basic-offset)
+            ;; Top-level node, indent as JS
+            (js-indent-line))
+          (when rjsx--node-abs-pos-cache
+            (setf (gethash node rjsx--node-abs-pos-cache)
+                  (save-excursion (back-to-indentation) (point)))))
+         ((memq cur-char '(?/ ?>))
+          (rjsx--indent-line-to-offset node sgml-basic-offset))
+         ((eq cur-char ?\n)
+          (rjsx--indent-line-to-offset node sgml-basic-offset))
+         (t (error "Don't know how to indent %s for JSX node" (make-string 1 cur-char)))))
+       ((and (rjsx-identifier-p parent)
+             (rjsx-member-p (js2-node-parent parent))
+             (rjsx-node-p (js2-node-parent (js2-node-parent parent))))
+        (rjsx--indent-line-to-offset (js2-node-parent (js2-node-parent parent)) 0))
+
+       ;; JSX children
+       ((rjsx-closing-tag-p node)
+        (rjsx--indent-line-to-offset parent 0))
+       ((rjsx-text-p node)
+        (rjsx--indent-line-to-offset parent sgml-basic-offset))
+       ((rjsx-wrapped-expr-p node)
+        (if (eq cur-char ?})
+            (js-indent-line)
+          (rjsx--indent-line-to-offset parent sgml-basic-offset)))
+
+       ;; Attribute-like (spreads, attributes, etc.)
+       ;; if first attr is on same line as tag, then align
+       ;; otherwise indent to parent level + sgml-basic-offset
+       ((or (rjsx-identifier-p node)
+            (and (rjsx-identifier-p parent)
+                 (rjsx-attr-p (js2-node-parent parent)))
+            (rjsx-spread-p node))
+        (let* ((tag (or (rjsx-ancestor node #'rjsx-node-p)
+                        (error "Did not find containing JSX tag for attributes")))
+               (name (rjsx-node-name tag))
+               column)
+          (save-excursion
+            (goto-char (rjsx--node-abs-pos tag))
+            (setq column (current-column))
+            (when name (forward-char (js2-node-end name)) (skip-chars-forward " \t"))
+            (if (eolp)
+                (setq column (+ column sgml-basic-offset sgml-attribute-offset))
+              (setq column (current-column))))
+          (indent-line-to column)))
+
+       ;; Everything else indent as javascript
+       (t (js-indent-line)))
+
+      (when rjsx--indent-region-p
+        (cl-incf rjsx--indent-running-offset
+                 (- (save-excursion (back-to-indentation) (point))
+                    cur-pos)))))
+
   (defun rjsx-delete-creates-full-tag-and-escape (n &optional killflag)
     (interactive "p")
     (rjsx-delete-creates-full-tag n killflag)
@@ -134,23 +204,23 @@
       (when (and flow (file-executable-p flow))
         (setq-local flycheck-javascript-flow-executable flow))))
   (add-hook 'flycheck-mode-hook 'my/use-flow-from-node-modules)
-;;   (flycheck-define-checker javascript-flow
-;;     "A JavaScript syntax and style checker using Flow.
+  ;;   (flycheck-define-checker javascript-flow
+  ;;     "A JavaScript syntax and style checker using Flow.
 
-;; See URL `http://flowtype.org/'."
-;;     :command (
-;;               "flow"
-;;               "check-contents"
-;;               (eval flycheck-javascript-flow-args)
-;;               "--json"
-;;               "--from" "emacs"
-;;               "--color=never"
-;;               source-original)
-;;     :standard-input t
-;;     :predicate flycheck-flow--predicate
-;;     :error-parser flycheck-flow--parse-json
-;;     ;; js3-mode doesn't support jsx
-;;     :modes (js-mode js-jsx-mode js2-mode js2-jsx-mode js3-mode rjsx-mode))
+  ;; See URL `http://flowtype.org/'."
+  ;;     :command (
+  ;;               "flow"
+  ;;               "check-contents"
+  ;;               (eval flycheck-javascript-flow-args)
+  ;;               "--json"
+  ;;               "--from" "emacs"
+  ;;               "--color=never"
+  ;;               source-original)
+  ;;     :standard-input t
+  ;;     :predicate flycheck-flow--predicate
+  ;;     :error-parser flycheck-flow--parse-json
+  ;;     ;; js3-mode doesn't support jsx
+  ;;     :modes (js-mode js-jsx-mode js2-mode js2-jsx-mode js3-mode rjsx-mode))
   )
 
 (provide '18-javascript)

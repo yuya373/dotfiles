@@ -49,6 +49,8 @@
 (unless (eq system-type 'windows-nt)
   (set-selection-coding-system 'utf-8))
 (prefer-coding-system 'utf-8)
+(setq coding-system-for-read 'utf-8)
+(setq coding-system-for-write 'utf-8)
 
 (setq require-final-newline t)
 (setq ad-redefinition-action 'accept)

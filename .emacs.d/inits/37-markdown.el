@@ -74,6 +74,7 @@
       ",tir" 'markdown-table-insert-row
       ",tdc" 'markdown-table-delete-column
       ",tdr" 'markdown-table-delete-row
+      ",tt" 'markdown-toggle-gfm-checkbox
       ",i" nil
       ",iL" 'markdown-insert-list-item
       ",ilr" 'markdown-insert-reference-link-dwim
