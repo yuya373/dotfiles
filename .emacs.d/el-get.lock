@@ -1,5 +1,7 @@
 (setq el-get-lock-package-versions
-      '((solarized-css :checksum "cb2741075b9a4353bfffe624944f54fbdfc7957e")
+      '((tide :checksum "2d17c051cccd248a980575caf5728f4d5c986b30")
+        (typescript-mode :checksum "32b8e1b6d09b6c3fc712c8b00f794591dfc7205a")
+        (solarized-css :checksum "cb2741075b9a4353bfffe624944f54fbdfc7957e")
         (org-mode :checksum "feb44212b564bf5622b6cfaed24b9fb91e163954")
         (pcre2el :checksum "0b5b2a2c173aab3fd14aac6cf5e90ad3bf58fa7d")
         (el-get-lock :checksum "df8cfe55441695865a64b97946750b6413a40425")
