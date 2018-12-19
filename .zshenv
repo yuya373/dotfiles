@@ -85,4 +85,8 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export WEBPACK_NOTIFY=true
 export PATH="$HOME/.evm/bin:$PATH"
 
+if [ -d ${HOME}/bin ]; then
+    export PATH=$HOME/bin:$PATH
+fi
+
 source ~/dotfiles/.zenv

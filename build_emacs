@@ -77,12 +77,14 @@ PKG_CONFIG_PATH="/usr/lib/imagemagick6/pkgconfig" ./configure \
                --with-modules \
                --with-xml2 \
                --with-xft \
-               --with-zlib
+               --with-zlib \
+               --prefix=$HOME/emacs \
+               --bindir=$HOME/bin
 
 print_with_current_step "Executing 'make -j4'"
 make -j4
 
 print_with_current_step "Install emacs"
-sudo make install
+make install
 
 popd
