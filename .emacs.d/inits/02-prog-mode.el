@@ -135,7 +135,7 @@ http://www.emacswiki.org/emacs/AlignCommands"
   :diminish eldoc-mode
   :commands (eldoc-mode)
   :init
-  (add-hook 'prog-mode-hook 'eldoc-mode))
+  (add-hook 'after-init-hook 'global-eldoc-mode))
 
 (el-get-bundle volatile-highlights)
 (use-package volatile-highlights
