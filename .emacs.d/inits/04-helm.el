@@ -97,6 +97,7 @@
         helm-ff-search-library-in-sexp t
         helm-move-to-line-cycle-in-source nil
         helm-echo-input-in-header-line t)
+  (setq helm-ff-guess-ffap-filenames t)
   :config
   (use-package helm-man)
   (use-package helm-config)

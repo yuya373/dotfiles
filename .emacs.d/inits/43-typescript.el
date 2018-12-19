@@ -50,7 +50,9 @@
   (add-hook 'web-mode-hook 'setup-tsx))
 
 (use-package typescript-mode
-  :mode (("\\.ts\\'" . typescript-mode)))
+  :mode (("\\.ts\\'" . typescript-mode))
+  :init
+  (setq typescript-indent-level 2))
 
 (use-package tide
   :init
