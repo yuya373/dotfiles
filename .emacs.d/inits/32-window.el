@@ -107,6 +107,9 @@
                           (cargo-process-mode :select t)
                           (racer-help-mode :select t)
 
+                          (compilation-mode)
+                          (godoc-mode)
+
                           ((slack-edit-file-comment-buffer-mode
                             slack-message-compose-buffer-mode
                             slack-message-edit-buffer-mode

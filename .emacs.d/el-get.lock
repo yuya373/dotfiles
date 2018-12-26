@@ -1,5 +1,7 @@
 (setq el-get-lock-package-versions
-      '((tide :checksum "2d17c051cccd248a980575caf5728f4d5c986b30")
+      '((go-eldoc :checksum "cbbd2ea1e94a36004432a9ac61414cb5a95a39bd")
+        (go-mode :checksum "120fb911f1d8038f828da85eed8aaad977dabd8c")
+        (tide :checksum "2d17c051cccd248a980575caf5728f4d5c986b30")
         (typescript-mode :checksum "32b8e1b6d09b6c3fc712c8b00f794591dfc7205a")
         (solarized-css :checksum "cb2741075b9a4353bfffe624944f54fbdfc7957e")
         (org-mode :checksum "feb44212b564bf5622b6cfaed24b9fb91e163954")

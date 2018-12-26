@@ -61,6 +61,7 @@
   (add-hook 'tide-mode-hook 'setup-tide-format)
 
   (add-hook 'typescript-mode-hook 'tide-setup)
+  (setq tide-always-show-documentation t)
   :config
   (evil-define-key 'visual tide-mode-map
     ",rr" 'tide-refactor)
