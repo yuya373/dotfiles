@@ -7,5 +7,5 @@ fi
 
 rustup update
 rustup install nightly
-rustup component add rustfmt-preview rust-src
+rustup component add rustfmt rust-src
 cargo install racer
