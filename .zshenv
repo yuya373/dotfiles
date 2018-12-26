@@ -36,12 +36,9 @@ if [ -e ${HOME}/.cabal/bin ]; then
     export PATH=${HOME}/.cabal/bin:${PATH}
 fi
 
-if [ -e /usr/local/opt/go ]; then
-    if [ ! -d $HOME/go ]; then
-        mkdir -p $HOME/go
-    fi
-    export PATH=$PATH:/usr/local/opt/go/libexec/bin:${HOME}/go/bin
+if [ -d $HOME/go ]; then
     export GOPATH=$HOME/go
+    export PATH=$PATH:${GOPATH}/bin
 fi
 
 if [ -d ${HOME}/.rbenv ] ; then
