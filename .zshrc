@@ -32,6 +32,7 @@ zplug "modules/history", from:prezto
 zplug "modules/autosuggestions", from:prezto
 zplug "modules/history-substring-search", from:prezto
 zplug "modules/rsync", from:prezto
+zplug "modules/archive", from:prezto
 
 case ${OSTYPE} in
     linux*)

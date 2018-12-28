@@ -36,11 +36,6 @@ if [ -e ${HOME}/.cabal/bin ]; then
     export PATH=${HOME}/.cabal/bin:${PATH}
 fi
 
-if [ -d $HOME/go ]; then
-    export GOPATH=$HOME/go
-    export PATH=$PATH:${GOPATH}/bin
-fi
-
 if [ -d ${HOME}/.rbenv ] ; then
     export PATH=${HOME}/.rbenv/bin:${PATH}
 fi
@@ -85,5 +80,9 @@ export PATH="$HOME/.evm/bin:$PATH"
 if [ -d ${HOME}/bin ]; then
     export PATH=$HOME/bin:$PATH
 fi
+
+mkdir -p $HOME/go/bin
+export GOPATH=$HOME/go
+export PATH=$PATH:${GOPATH}/bin
 
 source ~/dotfiles/.zenv
