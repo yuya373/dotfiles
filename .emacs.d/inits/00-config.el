@@ -24,6 +24,9 @@
 
 ;;; Code:
 
+(eval-when-compile
+  (el-get-bundle solarized-emacs)
+  )
 (setq split-width-threshold nil)
 (menu-bar-mode -1)
 

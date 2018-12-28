@@ -44,8 +44,11 @@
                 '((space-mark ?\u3000 [?\　])
                   (newline-mark ?\n [?\¬ ?\n])))
 
+    (whitespace-mode -1)
+    (whitespace-mode 1)
     (go-eldoc-setup)
-    (add-hook 'before-save-hook 'gofmt-before-save t t))
+    (add-hook 'before-save-hook 'gofmt-before-save t t)
+    )
 
   (add-hook 'go-mode-hook 'init-go-mode)
 
