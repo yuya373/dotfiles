@@ -21,6 +21,7 @@ coreutils
 cryptsetup
 ctags
 deepin-screenshot
+dep
 device-mapper
 dhcpcd
 dialog
@@ -54,6 +55,7 @@ gawk
 gcc
 gcc-libs
 gdb
+genymotion
 gettext
 git
 glibc
@@ -85,7 +87,6 @@ libtool
 libyaml
 licenses
 linux
-llvm
 logrotate
 lsof
 lvm2
@@ -96,6 +97,7 @@ man-db
 man-pages
 man-pages-ja
 mdadm
+mitmproxy
 modemmanager
 mplayer
 nano
@@ -128,6 +130,7 @@ poppler-glib
 procps-ng
 psmisc
 pulseaudio-alsa
+python-pygments
 qrencode
 redshift
 reflector
@@ -170,6 +173,7 @@ util-linux
 vi
 vim
 virtualbox
+vlc
 wd719x-firmware
 wget
 which

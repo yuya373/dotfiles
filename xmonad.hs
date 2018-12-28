@@ -58,6 +58,7 @@ myManageHook = composeAll
   , className =? "URxvt" --> doShift "Terminal"
   , className =? "feh" --> doShift "Terminal"
   , className =? "Google-chrome" --> doShift "WebBrowser"
+  , className =? "Electron" --> doShift "WebBrowser"
   , className =? "MPlayer"        --> doShift "Hidden"
   , className =? "mplayer2"       --> doShift "Hidden"
   , className =? "Wine" --> doShift "Hidden"
