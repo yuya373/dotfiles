@@ -233,7 +233,7 @@ This respects the `emojify-emoji-styles' variable."
     (define-key dired-mode-map [override-state] nil)
     (define-key dired-mode-map [intercept-state] nil)
     (evil-define-key 'normal dired-mode-map
-      (kbd "RET") 'dired-find-file-other-window
+      (kbd "RET") 'dired-find-file
       "t" nil
       "g" nil
       "w" nil
