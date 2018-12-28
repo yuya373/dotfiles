@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+
+~/dotfiles/dotfiles_install.sh
+~/dotfiles/homebrew_setup.sh
+~/dotfiles/rbenv_install
+~/dotfiles/yarn_setup.sh
+~/dotfiles/go_setup
+~/dotfiles/rust_setup
+~/dotfiles/powerline_fonts_install
+
