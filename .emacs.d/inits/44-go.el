@@ -34,8 +34,21 @@
   :mode ((".go\\'" . go-mode))
   :init
   (defun init-go-mode ()
+    (interactive)
+    (setq-local tab-width 2)
+    (setq-local whitespace-style (remq 'tabs
+                                       (remq 'tab-mark
+                                             whitespace-style)))
+
+    (setq-local whitespace-display-mappings
+                '((space-mark ?\u3000 [?\　])
+                  (newline-mark ?\n [?\¬ ?\n])))
+
+    (whitespace-mode -1)
+    (whitespace-mode 1)
     (go-eldoc-setup)
-    (add-hook 'before-save-hook 'gofmt-before-save t t))
+    (add-hook 'before-save-hook 'gofmt-before-save t t)
+    )
 
   (add-hook 'go-mode-hook 'init-go-mode)
 
