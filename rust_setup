@@ -1,11 +1,11 @@
 #!/bin/bash
 set -e
 
-if ! which rustc > /dev/null; then
+if [[ ! -d $HOME/.cargo ]]; then
     curl https://sh.rustup.rs -sSf | sh
 fi
 
-rustup update
-rustup install nightly
-rustup component add rustfmt rust-src
-cargo install racer
+$HOME/.cargo/bin/rustup update
+$HOME/.cargo/bin/rustup install nightly
+$HOME/.cargo/bin/rustup component add rustfmt rust-src
+$HOME/.cargo/bin/cargo install racer
