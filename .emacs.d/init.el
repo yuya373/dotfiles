@@ -7,6 +7,8 @@
 ;; You may delete these explanatory comments.
 ;; (package-initialize)
 
+(setq default-directory "~/")
+(setq command-line-default-directory "~/")
 (setq gc-cons-threshold (* 256 1024 1024))
 (setq garbage-collection-messages t)
 

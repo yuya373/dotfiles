@@ -28,8 +28,7 @@
   ;; (el-get-bundle powerline)
   ;; (el-get-bundle TheBB/spaceline)
   ;; (require 'spaceline)
-  ;; (el-get-bundle pdf-tools)
-  ;; (require 'pdf-tools)
+  (el-get-bundle solarized-emacs)
   )
 
 (el-get-bundle solarized-emacs)
@@ -60,7 +59,43 @@
         (solarized-light (load-solarized-dark))
         (t (load-default-theme))))
     (add-hook 'after-init-hook #'load-default-theme))
-  )
+  :config
+  (use-package whitespace
+    :diminish whitespace-mode
+    :init
+    (add-hook 'prog-mode-hook #'(lambda () (whitespace-mode 1)))
+    :config
+    (setq whitespace-style '(face
+                             trailing
+                             tabs
+                             indentation
+                             ;; indentation::space
+                             spaces
+                             ;; empty
+                             newline
+                             newline-mark
+                             space-mark
+                             tab-mark))
+    (setq whitespace-display-mappings
+          '((space-mark ?\u3000 [?\　])
+            (newline-mark ?\n [?\¬ ?\n])
+            (tab-mark ?\t [?\▸ ?\▸])))
+    (setq whitespace-space-regexp "\\(\u3000+\\)")
+    (add-hook 'whitespace-mode-hook 'modify-whitespace-faces)
+    (defun modify-whitespace-faces ()
+      (interactive)
+      (set-face-bold 'whitespace-space t)
+      (set-face-bold 'whitespace-trailing t)
+      (set-face-underline  'whitespace-trailing t)
+      (solarized-with-color-variables 'dark
+        (set-face-foreground 'whitespace-space red)
+        (set-face-background 'whitespace-space 'nil)
+        (set-face-foreground 'whitespace-trailing red)
+        (set-face-background 'whitespace-trailing 'nil)
+        (set-face-foreground 'whitespace-newline  base00)
+        (set-face-background 'whitespace-newline 'nil)
+        (set-face-background 'whitespace-tab magenta)
+        (set-face-foreground 'whitespace-tab base03)))))
 
 
 ;; (el-get-bundle material-theme)
