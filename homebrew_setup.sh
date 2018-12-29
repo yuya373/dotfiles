@@ -28,6 +28,8 @@ brew install git hub tmux vim sshrc coreutils zsh \
 brew install emacs --with-cocoa --with-ctags --with-imagemagick@6 --with-librsvg --with-dbus --HEAD
 # pdf-tools
 brew install autoconf automake poppler
+# emacs-slack
+brew install terminal-notifier
 
 brew install texinfo
 brew link --force texinfo
