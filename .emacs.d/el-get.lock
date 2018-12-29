@@ -200,4 +200,4 @@
         (use-package :checksum "d9f229453da31fdf9a55207db09e360c5071d706")))
 (setq el-get-lock-locked-packages 'nil)
 (setq el-get-lock-unlocked-packages
-      '(cmake-mode))
+      '(slack cmake-mode))
