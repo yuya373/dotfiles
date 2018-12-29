@@ -1,6 +1,13 @@
 #!/bin/bash
 set -eu
 
+case ${OSTYPE} in
+    darwin*)
+        export LIBXML2_CFLAGS=`xml2-config --cflags`
+        export LIBXML2_LIBS=`xml2-config --libs`
+esac
+
+
 print_sep() {
     echo "========================================================================================="
 }
@@ -48,7 +55,7 @@ if [[ ! -d "$emacs_dir" ]]; then
     total_step="8"
     print_with_current_step "Cloning emacs repository"
     mkdir -p ~/dev
-    git clone git://git.sv.gnu.org/emacs.git $emacs_dir
+    git clone --depth 1 git://git.sv.gnu.org/emacs.git $emacs_dir
 fi
 
 print_with_current_step "Change working directory to $emacs_dir"
@@ -65,7 +72,7 @@ make distclean
 print_with_current_step "Executing './autogen.sh'"
 ./autogen.sh
 
-print_with_current_step "Configure with dbus, gnutls, jpeg, png, tiff, rsvg, imagemagick, modules, xml2, xft, zlib"
+print_with_current_step "Configure with --prefix=$HOME/local, dbus, gnutls, jpeg, png, tiff, rsvg, imagemagick, modules, xml2, xft, zlib"
 PKG_CONFIG_PATH="/usr/lib/imagemagick6/pkgconfig" ./configure \
                --with-dbus \
                --with-gnutls \
@@ -78,8 +85,7 @@ PKG_CONFIG_PATH="/usr/lib/imagemagick6/pkgconfig" ./configure \
                --with-xml2 \
                --with-xft \
                --with-zlib \
-               --prefix=$HOME/emacs \
-               --bindir=$HOME/bin
+               --prefix=$HOME/local
 
 print_with_current_step "Executing 'make -j4'"
 make -j4
