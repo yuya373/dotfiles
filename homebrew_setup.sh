@@ -21,11 +21,8 @@ brew install git hub tmux vim sshrc coreutils zsh \
      yarn hugo carthage \
      mono go dep
 
-# build Emacs
-# brew install autoconf
-# brew install --build-from-source gnutls
-
 brew install emacs --with-cocoa --with-ctags --with-imagemagick@6 --with-librsvg --with-dbus --HEAD
+ln -sf `brew --prefix emacs`/Emacs.app /Applications/Emacs.app
 # pdf-tools
 brew install autoconf automake poppler
 # emacs-slack
