@@ -421,6 +421,7 @@
                                    "ElasticSearch" "Docker" ;; "Common Lisp"
                                    "Bash" ;; "OCaml"
                                    ;; "NET Framework" "Unity 3D"
+                                   "Go"
                                    ))
   (setq helm-dash-min-length 1)
   (setq helm-dash-browser-func 'eww)

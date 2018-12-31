@@ -35,6 +35,7 @@
   :init
   (defun init-go-mode ()
     (interactive)
+    (setq-local helm-dash-docsets '("Go"))
     (setq-local tab-width 2)
     (setq-local whitespace-style (remq 'tabs
                                        (remq 'tab-mark

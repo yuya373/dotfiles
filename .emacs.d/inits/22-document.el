@@ -262,6 +262,7 @@
     "H" 'nov-previous-document
     "L" 'nov-next-document
     ",t" 'nov-goto-toc
+    ",r" 'nov-render-document
     ))
 
 
