@@ -22,6 +22,7 @@ export PATH=/usr/local/bin:${PATH}
 export PATH="$HOME/.cargo/bin:$PATH"
 mkdir -p $HOME/go/bin
 export PATH=$PATH:${GOPATH}/bin
+export PATH=$HOME/local/bin:$PATH
 
 case ${OSTYPE} in
     darwin*)
@@ -43,7 +44,6 @@ case ${OSTYPE} in
         # export PATH="/usr/local/opt/llvm/bin:$PATH"
         ;;
     linux*)
-        export PATH=/usr/local/bin:${PATH}
         setopt no_global_rcs
         ;;
 esac
