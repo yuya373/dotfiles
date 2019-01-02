@@ -83,6 +83,7 @@
   ;; (use-package ert)
 
   (define-key magit-file-mode-map (kbd "C-c") 'evil-window-delete)
+  (use-package magit-gitignore)
   (use-package magit-extras)
   (use-package git-rebase)
   (use-package magit-submodule)

@@ -68,8 +68,25 @@
   (defun go-run-file ()
     (interactive)
     (let* ((file-name (buffer-file-name))
+
            (compile-command (format "go run %s" file-name)))
-      (compilation-start compile-command)))
+      (if (string-suffix-p "main.go" file-name)
+          (compilation-start compile-command)
+        (let* ((paths (split-string file-name "/"))
+               (dirs (cl-loop for n
+                              from (- (length paths) 2)
+                              downto 1
+                              collect (mapconcat
+                                       #'identity
+                                       (seq-take paths n)
+                                       "/")))
+               (dir (cl-find-if #'(lambda (dir)
+                                    (file-exists-p
+                                     (format "%s/main.go" dir)))
+                                dirs)))
+
+          (when dir
+            (compilation-start (format "go run %s/main.go" dir)))))))
   (evil-define-key 'visual go-mode-map
     ",p" 'go-play-region)
   (evil-define-key 'normal go-mode-map
