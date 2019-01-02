@@ -29,7 +29,7 @@ case ${OSTYPE} in
             export SYS_NOTIFIER=`which terminal-notifier`
         fi
 
-	export PATH=/usr/local/opt/texinfo/bin:$PATH
+        export PATH=/usr/local/opt/texinfo/bin:$PATH
 
         if /usr/libexec/java_home > /dev/null 2> /dev/null; then
             export JAVA_HOME=`/usr/libexec/java_home`

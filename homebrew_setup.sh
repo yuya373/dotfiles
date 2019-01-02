@@ -6,31 +6,38 @@ if ! which brew > /dev/null; then
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
-brew cask install dash alfred bettertouchtool \
-     google-chrome karabiner-elements \
-     bitbar android-platform-tools android-sdk \
-     dropbox aquaskk \
-     vlc
+brew cask install \
+     dash alfred bettertouchtool \
+     aquaskk karabiner-elements bitbar \
+     google-chrome dropbox vlc
 
-brew cask install xquartz
-brew install cairo --with-x11
+# Android
+# brew cask install \
+#      android-platform-tools \
+#      android-sdk
 
-brew install git hub tmux vim sshrc coreutils zsh \
-     cmigemo ispell \
-     the_silver_searcher direnv global ctags \
+
+brew install
+     git hub tmux zsh vim sshrc
+     coreutils cmigemo ispell \
+     direnv global ctags \
+     the_silver_searcher \
      reattach-to-user-namespace \
-     yarn hugo carthage \
-     mono go dep
+     yarn \
+     go dep hugo
 
+# iOS
+# brew install carthage
+
+# Emacs
 brew install emacs --with-cocoa --with-ctags --with-imagemagick@6 --with-librsvg --with-dbus --HEAD
 ln -sf `brew --prefix emacs`/Emacs.app /Applications/Emacs.app
-# pdf-tools
-brew install autoconf automake poppler
-# emacs-slack
-brew install terminal-notifier
-
+## makeinfo
 brew install texinfo
-brew link --force texinfo
+## pdf-tools
+brew install autoconf automake poppler
+## emacs-slack
+brew install terminal-notifier
 
 brew tap sanemat/font
 brew install ricty --with-patch-in-place
