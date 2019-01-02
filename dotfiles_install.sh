@@ -56,7 +56,7 @@ esac
 ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
 
 # vim
-# ln -sf ~/dotfiles/.vimrc ~/.vimrc
+ln -sf ~/dotfiles/.vimrc ~/.vimrc
 # ln -sf ~/dotfiles/.vimshrc ~/.vimshrc
 # ln -sf ~/dotfiles/.gvimrc ~/.gvimrc
 # ln -sf ~/dotfiles/.xvimrc ~/.xvimrc
