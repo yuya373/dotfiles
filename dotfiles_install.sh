@@ -4,6 +4,7 @@ case ${OSTYPE} in
     darwin*)
         mkdir -p ~/.config/karabiner/
         ln -sf ~/dotfiles/.config/karabiner/karabiner.json ~/.config/karabiner/karabiner.json
+        sudo ln -sf ~/dotfiles/Library/LaunchDaemons/limit.maxfiles.plist /Library/LaunchDaemons/limit.maxfiles.plist
         ;;
     linux*)
         ln -sf ~/dotfiles/.aspell.conf  ~/.aspell.conf
