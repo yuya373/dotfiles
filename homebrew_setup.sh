@@ -9,7 +9,8 @@ fi
 brew cask install dash alfred bettertouchtool \
      google-chrome karabiner-elements \
      bitbar android-platform-tools android-sdk \
-     dropbox aquaskk
+     dropbox aquaskk \
+     vlc
 
 brew cask install xquartz
 brew install cairo --with-x11
