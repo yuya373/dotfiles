@@ -9,7 +9,8 @@ fi
 brew cask install \
      dash alfred bettertouchtool \
      aquaskk karabiner-elements bitbar \
-     google-chrome dropbox vlc
+     google-chrome dropbox vlc \
+     trailer
 
 # Android
 # brew cask install \
