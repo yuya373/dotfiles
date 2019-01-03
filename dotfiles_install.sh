@@ -64,6 +64,7 @@ ln -sf ~/dotfiles/.vimrc ~/.vimrc
 # zsh
 ln -sf ~/dotfiles/.zshrc ~/.zshrc
 ln -sf ~/dotfiles/.zshenv ~/.zshenv
+ln -sf ~/dotfiles/.zprofile ~/.zprofile
 
 # tmux
 if [[ ! -d ~/.tmux/plugins/tpm ]]; then

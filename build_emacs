@@ -1,10 +1,30 @@
 #!/bin/bash
 set -eu
 
+configure_opts="\
+--with-dbus \
+--with-gnutls \
+--with-jpeg \
+--with-png \
+--with-tiff \
+--with-rsvg \
+--with-imagemagick \
+--with-modules \
+--with-xml2 \
+--with-xft \
+--with-zlib \
+--prefix=$HOME/local \
+"
+
 case ${OSTYPE} in
     darwin*)
         export LIBXML2_CFLAGS=`xml2-config --cflags`
         export LIBXML2_LIBS=`xml2-config --libs`
+        configure_opts="$configure_opts \
+--without-x \
+--with-ns \
+--disable-ns-self-contained"
+        ;;
 esac
 
 
@@ -72,20 +92,8 @@ make distclean
 print_with_current_step "Executing './autogen.sh'"
 ./autogen.sh
 
-print_with_current_step "Configure with --prefix=$HOME/local, dbus, gnutls, jpeg, png, tiff, rsvg, imagemagick, modules, xml2, xft, zlib"
-PKG_CONFIG_PATH="/usr/lib/imagemagick6/pkgconfig" ./configure \
-               --with-dbus \
-               --with-gnutls \
-               --with-jpeg \
-               --with-png \
-               --with-tiff \
-               --with-rsvg \
-               --with-imagemagick \
-               --with-modules \
-               --with-xml2 \
-               --with-xft \
-               --with-zlib \
-               --prefix=$HOME/local
+print_with_current_step "Configure with $configure_opts"
+eval "PKG_CONFIG_PATH=/usr/lib/imagemagick6/pkgconfig ./configure $configure_opts"
 
 print_with_current_step "Executing 'make -j4'"
 make -j4
