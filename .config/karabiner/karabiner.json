@@ -1,13 +1,14 @@
 {
   "global": {
     "check_for_updates_on_startup": true,
-    "show_in_menu_bar": true,
+    "show_in_menu_bar": false,
     "show_profile_name_in_menu_bar": false
   },
   "profiles": [
     {
       "complex_modifications": {
         "parameters": {
+          "basic.simultaneous_threshold_milliseconds": 50,
           "basic.to_delayed_action_delay_milliseconds": 500,
           "basic.to_if_alone_timeout_milliseconds": 1000,
           "basic.to_if_held_down_threshold_milliseconds": 500
@@ -17,7 +18,14 @@
             "description": "Xcode",
             "manipulators": [
               {
-                "type": "basic",
+                "conditions": [
+                  {
+                    "bundle_identifiers": [
+                      "^com\\.apple\\.dt\\.Xcode$"
+                    ],
+                    "type": "frontmost_application_if"
+                  }
+                ],
                 "from": {
                   "key_code": "o",
                   "modifiers": {
@@ -35,14 +43,7 @@
                     ]
                   }
                 ],
-                "conditions": [
-                  {
-                    "type": "frontmost_application_if",
-                    "bundle_identifiers": [
-                      "^com\\.apple\\.dt\\.Xcode$"
-                    ]
-                  }
-                ]
+                "type": "basic"
               }
             ]
           },
@@ -94,13 +95,12 @@
             "description": "Alfred",
             "manipulators": [
               {
-                "type": "basic",
                 "conditions": [
                   {
-                    "type": "frontmost_application_if",
                     "bundle_identifiers": [
                       "^com\\.runningwithcrayons\\.Alfred-3"
-                    ]
+                    ],
+                    "type": "frontmost_application_if"
                   }
                 ],
                 "from": {
@@ -115,16 +115,16 @@
                   {
                     "shell_command": "open -a 'Google Chrome.app'"
                   }
-                ]
+                ],
+                "type": "basic"
               },
               {
-                "type": "basic",
                 "conditions": [
                   {
-                    "type": "frontmost_application_if",
                     "bundle_identifiers": [
                       "^com\\.runningwithcrayons\\.Alfred-3"
-                    ]
+                    ],
+                    "type": "frontmost_application_if"
                   }
                 ],
                 "from": {
@@ -139,16 +139,16 @@
                   {
                     "shell_command": "open -a 'Terminal.app'"
                   }
-                ]
+                ],
+                "type": "basic"
               },
               {
-                "type": "basic",
                 "conditions": [
                   {
-                    "type": "frontmost_application_if",
                     "bundle_identifiers": [
                       "^com\\.runningwithcrayons\\.Alfred-3"
-                    ]
+                    ],
+                    "type": "frontmost_application_if"
                   }
                 ],
                 "from": {
@@ -163,16 +163,16 @@
                   {
                     "shell_command": "open -a 'Emacs.app'"
                   }
-                ]
+                ],
+                "type": "basic"
               },
               {
-                "type": "basic",
                 "conditions": [
                   {
-                    "type": "frontmost_application_if",
                     "bundle_identifiers": [
                       "^com\\.runningwithcrayons\\.Alfred-3"
-                    ]
+                    ],
+                    "type": "frontmost_application_if"
                   }
                 ],
                 "from": {
@@ -187,7 +187,8 @@
                   {
                     "shell_command": "open -a 'Xcode.app'"
                   }
-                ]
+                ],
+                "type": "basic"
               }
             ]
           },
@@ -195,13 +196,14 @@
             "description": "Finder",
             "manipulators": [
               {
-                "type": "basic",
-                "conditions": [{
-                  "type": "frontmost_application_if",
-                  "bundle_identifiers": [
-                    "^com\\.apple\\.finder$"
-                  ]
-                }],
+                "conditions": [
+                  {
+                    "bundle_identifiers": [
+                      "^com\\.apple\\.finder$"
+                    ],
+                    "type": "frontmost_application_if"
+                  }
+                ],
                 "from": {
                   "key_code": "quote"
                 },
@@ -393,6 +395,14 @@
                 "type": "basic"
               },
               {
+                "conditions": [
+                  {
+                    "type": "frontmost_application_unless",
+                    "bundle_identifiers": [
+                      "^org\\.gnu\\.Emacs"
+                    ]
+                  }
+                ],
                 "from": {
                   "key_code": "n",
                   "modifiers": {
@@ -409,6 +419,14 @@
                 "type": "basic"
               },
               {
+                "conditions": [
+                  {
+                    "type": "frontmost_application_unless",
+                    "bundle_identifiers": [
+                      "^org\\.gnu\\.Emacs"
+                    ]
+                  }
+                ],
                 "from": {
                   "key_code": "p",
                   "modifiers": {
@@ -420,6 +438,36 @@
                 "to": [
                   {
                     "key_code": "up_arrow"
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
+            "description": "Ctrl-J to Kana on Apple Terminal/iTerm2",
+            "manipulators": [
+              {
+                "conditions": [
+                  {
+                    "bundle_identifiers": [
+                      "^com\\.googlecode\\.iterm2$",
+                      "^com\\.apple\\.Terminal$"
+                    ],
+                    "type": "frontmost_application_if"
+                  }
+                ],
+                "from": {
+                  "key_code": "j",
+                  "modifiers": {
+                    "mandatory": [
+                      "control"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "japanese_kana"
                   }
                 ],
                 "type": "basic"
@@ -667,10 +715,10 @@
       ],
       "name": "Default profile",
       "selected": true,
-      "simple_modifications": [
-      ],
+      "simple_modifications": [],
       "virtual_hid_keyboard": {
         "caps_lock_delay_milliseconds": 0,
+        "country_code": 0,
         "keyboard_type": "ansi",
         "standalone_keys_delay_milliseconds": 0
       }
