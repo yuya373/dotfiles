@@ -18,8 +18,8 @@ brew cask install \
 #      android-sdk
 
 
-brew install
-     git hub tmux zsh vim sshrc
+brew install \
+     git hub tmux zsh vim sshrc \
      coreutils cmigemo ispell \
      direnv global ctags \
      the_silver_searcher \
