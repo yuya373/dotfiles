@@ -10,7 +10,7 @@ brew cask install \
      dash alfred bettertouchtool \
      aquaskk karabiner-elements bitbar \
      google-chrome dropbox vlc \
-     trailer
+     trailer flux
 
 # Android
 # brew cask install \
