@@ -1,4 +1,8 @@
 #!/bin/bash
 
-git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+if [[ ! -d $HOME/.rbenv ]]; then
+  git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+  if [[ ! -d $HOME/.rbenv/plugins/ruby-build  ]]; then
+    git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+  fi
+fi
