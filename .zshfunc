@@ -325,3 +325,9 @@ man() {
     LESS_TERMCAP_us=$'\e[01;32m' \
     command man "$@"
 }
+
+fzf_src() {
+    local dir
+    dir=$(ghq list --full-path | fzf) && cd "$dir" && my_reset_prompt
+}
+zle -N fzf_src

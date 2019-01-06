@@ -37,12 +37,14 @@ bindkey -M vicmd '^o' fcdr
 bindkey -M vicmd '^k' fzf-cd-widget
 bindkey -M vicmd '^r' fzf-history-widget
 
-tmuximumm() {
-    tmuximum
-}
-zle -N tmuximumm
-bindkey -M vicmd '^s' tmuximumm
-bindkey -M viins '^s' tmuximumm
+# tmuximumm() {
+#     tmuximum
+# }
+# zle -N tmuximumm
+# bindkey -M vicmd '^s' tmuximumm
+# bindkey -M viins '^s' tmuximumm
+bindkey -M vicmd '^s' fzf_src
+bindkey -M viins '^s' fzf_src
 
 # text object
 autoload -Uz select-quoted
