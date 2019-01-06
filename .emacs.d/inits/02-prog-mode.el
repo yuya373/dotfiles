@@ -27,23 +27,23 @@
   (require 'evil))
 
 ;; smartparens
-(el-get-bundle smartparens)
-(use-package smartparens-config
-  :commands (smartparens-mode)
-  :init
-  (add-hook 'toml-mode-hook 'smartparens-mode)
-  (add-hook 'prog-mode-hook 'smartparens-mode)
-  :config
-  (defun sp-enter-and-indent-sexp (&rest _ignored)
-    "Insert an extra newline after point, and reindent."
-    (newline)
-    (indent-according-to-mode)
-    (forward-line -1)
-    (indent-according-to-mode))
+;; (el-get-bundle smartparens)
+;; (use-package smartparens-config
+;;   :commands (smartparens-mode)
+;;   :init
+;;   (add-hook 'toml-mode-hook 'smartparens-mode)
+;;   (add-hook 'prog-mode-hook 'smartparens-mode)
+;;   :config
+;;   (defun sp-enter-and-indent-sexp (&rest _ignored)
+;;     "Insert an extra newline after point, and reindent."
+;;     (newline)
+;;     (indent-according-to-mode)
+;;     (forward-line -1)
+;;     (indent-according-to-mode))
 
-  (dolist (mode '(rust-mode rjsx-mode))
-    (sp-local-pair mode "{" nil
-                   :post-handlers '((sp-enter-and-indent-sexp "RET")))))
+;;   (dolist (mode '(rust-mode rjsx-mode))
+;;     (sp-local-pair mode "{" nil
+;;                    :post-handlers '((sp-enter-and-indent-sexp "RET")))))
 ;; (use-package smartparens-config
 ;;   :diminish smartparens-mode
 ;;   :commands (smartparens-mode turn-on-smartparens-mode)
@@ -107,23 +107,16 @@ http://www.emacswiki.org/emacs/AlignCommands"
   (setq nlinum-delay t)
   (add-hook 'prog-mode-hook 'nlinum-mode))
 
-;; (use-package elec-pair
-;;   :commands (electric-pair-mode)
-;;   :init
-;;   (add-hook 'after-init-hook 'electric-pair-mode)
-;;   (defun elec-remove-from-pairs (pair)
-;;     (if (boundp 'electric-pair-pairs)
-;;         (progn
-;;           (make-local-variable 'electric-pair-pairs)
-;;           (setq electric-pair-pairs
-;;                 (cl-remove-if (lambda (p) (equal pair p))
-;;                               electric-pair-pairs)))))
-;;   (add-hook 'haskell-mode-hook
-;;             '(lambda () (elec-remove-from-pairs '(?| . ?|))))
-;;   (add-hook 'haskell-interactive-mode-hook
-;;             '(lambda () (elec-remove-from-pairs '(?| . ?|))))
-;;   :config
-;;   (add-to-list 'electric-pair-pairs '(?| . ?|)))
+(use-package elec-pair
+  :commands (electric-pair-mode)
+  :init
+  (add-hook 'after-init-hook 'electric-pair-mode)
+  (defun add-ruby-do-arg-pair ()
+    (make-local-variable 'electric-pair-pairs)
+    (add-to-list 'electric-pair-pairs '(?| . ?|)))
+  (add-hook 'enh-ruby-mode-hook
+            'add-ruby-do-arg-pair)
+  (setq electric-pair-open-newline-between-pairs t))
 
 (el-get-bundle rainbow-delimiters)
 (use-package rainbow-delimiters

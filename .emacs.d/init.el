@@ -94,7 +94,7 @@
   :commands (init-loader-load)
   :init
   (setq init-loader-show-log-after-init t)
-  (setq init-loader-byte-compile t))
+  (setq init-loader-byte-compile nil))
 (init-loader-load)
 (add-hook 'window-setup-hook
           #'(lambda ()

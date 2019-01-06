@@ -38,7 +38,7 @@
 (el-get-bundle ruby-test-mode)
 (el-get-bundle ruby-block
   :github h3poteto/ruby-block.el)
-;; (el-get-bundle ruby-end)
+(el-get-bundle ruby-end)
 (el-get-bundle rspec-mode)
 (el-get-bundle ruby-mode)
 
@@ -47,13 +47,13 @@
     (dolist (tbl '((?$ . "_") (?@ . "_") (?: . "_") (?: . ".") (?! . "_") (?_ . "w") (?? . "w")))
       (modify-syntax-entry (car tbl) (cdr tbl) syntax-table))))
 
-;; (use-package ruby-end
-;;   :commands (ruby-end-mode)
-;;   :diminish ruby-end-mode
-;;   :init
-;;   (setq ruby-end-insert-newline nil)
-;;   (add-hook 'enh-ruby-mode-hook 'ruby-end-mode)
-;;   )
+(use-package ruby-end
+  :commands (ruby-end-mode)
+  :diminish ruby-end-mode
+  :init
+  (setq ruby-end-insert-newline nil)
+  (add-hook 'enh-ruby-mode-hook 'ruby-end-mode)
+  )
 
 (use-package ruby-block
   :commands (ruby-block-mode)
