@@ -63,7 +63,7 @@
   (use-package go-eldoc)
   (defun go-compile ()
     (interactive)
-    (let ((compile-command "go build -v && go test -v && go vet"))
+    (let ((compile-command "go build -v && go test -v ./... && go vet ./..."))
       (compilation-start compile-command)))
   (defun go-run-file ()
     (interactive)
