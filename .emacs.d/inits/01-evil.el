@@ -642,7 +642,8 @@
     "tQ" 'google-translate-query-translate-reverse
     "tl" 'google-translate-smooth-translate
     "tq" 'google-translate-query-translate
-    "ts" 'timer
+    "ti" 'timer
+    "ts" 'text-scale-adjust
     "tw" 'twit-another-buffer
     "uv" 'undo-tree-visualize
     "wb" 'balance-windows
