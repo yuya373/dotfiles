@@ -99,6 +99,10 @@
                            (kbd ",c") 'with-editor-finish)
     (evil-magit-define-key evil-magit-state 'git-rebase-mode-map
                            (kbd ",k") 'with-editor-cancel))
+
+  (evil-define-key 'normal magit-diff-mode-map
+    "\C-?" 'evil-window-left)
+
   (magit-auto-revert-mode)
 
   (define-key magit-process-mode-map [override-state] nil)

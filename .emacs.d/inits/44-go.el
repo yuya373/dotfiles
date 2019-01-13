@@ -68,9 +68,11 @@
   (defun go-run-file ()
     (interactive)
     (let* ((file-name (buffer-file-name))
-
+           (content (buffer-substring-no-properties (point-min) (point-max)))
            (compile-command (format "go run %s" file-name)))
-      (if (string-suffix-p "main.go" file-name)
+
+      (if (and (string-match "package main" content)
+               (string-match "func main()" content))
           (compilation-start compile-command)
         (let* ((paths (split-string file-name "/"))
                (dirs (cl-loop for n
