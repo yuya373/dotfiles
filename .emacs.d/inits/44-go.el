@@ -30,6 +30,9 @@
 (el-get-bundle go-company)
 (el-get-bundle go-eldoc)
 
+(use-package go-eldoc
+  :commands (go-eldoc-setup))
+
 (use-package go-mode
   :mode ((".go\\'" . go-mode))
   :init
@@ -60,7 +63,6 @@
     (setq company-go-show-annotation t)
     :config
     (add-to-list 'company-backends 'company-go))
-  (use-package go-eldoc)
   (defun go-compile ()
     (interactive)
     (let ((compile-command "go build -v && go test -v ./... && go vet ./...")
