@@ -61,11 +61,19 @@
 (use-package rjsx-mode
   :mode (("\\.jsx\\'" . rjsx-mode)
          ("\\.js\\'" . rjsx-mode)
+         ("\\.tsx\\'" . rjsx-mode)
          )
   :init
   (defun my-rjsx-use-buitin-indent ()
     (setq-local indent-line-function 'rjsx-indent-line))
   (add-hook 'rjsx-mode-hook 'my-rjsx-use-buitin-indent)
+  (defun setup-tsx ()
+    (when (string-prefix-p "tsx" (buffer-name))
+      (add-hook 'before-save-hook 'tide-format-before-save nil t)
+      (eldoc-mode +1)
+      (tern-mode -1)
+      (tide-setup)))
+  (add-hook 'rjsx-mode-hook 'setup-tsx)
   :config
   (defun rjsx--indent-line-1 ()
     "Helper for `rjsx-indent-line'."

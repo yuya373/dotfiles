@@ -32,22 +32,22 @@
 (el-get-bundle web-mode)
 (el-get-bundle tide)
 
-(use-package web-mode
-  :mode (("\\.tsx\\'" . web-mode))
-  :init
-  (setq web-mode-markup-indent-offset 2
-        web-mode-css-indent-offset 2
-        web-mode-code-indent-offset 2
-        )
+;; (use-package web-mode
+;;   :mode (("\\.tsx\\'" . web-mode))
+;;   :init
+;;   (setq web-mode-markup-indent-offset 2
+;;         web-mode-css-indent-offset 2
+;;         web-mode-code-indent-offset 2
+;;         )
 
-  (defun setup-tsx ()
-    (when (and (buffer-file-name)
-               (string= "tsx" (file-name-extension
-                               (buffer-file-name))))
-      (add-hook 'before-save-hook 'tide-format-before-save nil t)
-      (eldoc-mode +1)
-      (tide-setup)))
-  (add-hook 'web-mode-hook 'setup-tsx))
+;;   (defun setup-tsx ()
+;;     (when (and (buffer-file-name)
+;;                (string= "tsx" (file-name-extension
+;;                                (buffer-file-name))))
+;;       (add-hook 'before-save-hook 'tide-format-before-save nil t)
+;;       (eldoc-mode +1)
+;;       (tide-setup)))
+;;   (add-hook 'web-mode-hook 'setup-tsx))
 
 (use-package typescript-mode
   :mode (("\\.ts\\'" . typescript-mode))
