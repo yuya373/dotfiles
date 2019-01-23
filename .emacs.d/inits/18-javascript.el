@@ -67,13 +67,23 @@
   (defun my-rjsx-use-buitin-indent ()
     (setq-local indent-line-function 'rjsx-indent-line))
   (add-hook 'rjsx-mode-hook 'my-rjsx-use-buitin-indent)
+  (defun file-tsx-p ()
+    (string-suffix-p "tsx"
+                     (or (buffer-file-name)
+                         (buffer-name))))
   (defun setup-tsx ()
-    (when (string-prefix-p "tsx" (buffer-name))
+    (interactive)
+    (when (file-tsx-p)
       (add-hook 'before-save-hook 'tide-format-before-save nil t)
       (eldoc-mode +1)
       (tern-mode -1)
       (tide-setup)))
   (add-hook 'rjsx-mode-hook 'setup-tsx)
+  (defun setup-tern ()
+    (interactive)
+    (unless (file-tsx-p)
+      (tern-mode t)))
+  (add-hook 'rjsx-mode-hook 'setup-tern)
   :config
   (defun rjsx--indent-line-1 ()
     "Helper for `rjsx-indent-line'."
@@ -163,7 +173,6 @@
   :commands (tern-mode)
   :init
   (add-hook 'js2-mode-hook 'tern-mode)
-  (add-hook 'js2-jsx-mode-hook 'tern-mode)
   :config
   ;; (defun strip-multibyte (str)
   ;;   (replace-regexp-in-string "[[:multibyte:]]*" "" str))
