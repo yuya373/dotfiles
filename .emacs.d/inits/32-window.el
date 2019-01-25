@@ -109,6 +109,8 @@
 
                           (compilation-mode)
                           (godoc-mode)
+                          (tide-project-errors-mode)
+                          ("\\`\\*tide-documentation\\*\\'" :regexp t :select t)
 
                           ((slack-edit-file-comment-buffer-mode
                             slack-message-compose-buffer-mode
