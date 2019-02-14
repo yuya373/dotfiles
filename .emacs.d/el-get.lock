@@ -89,7 +89,7 @@
         (scala-mode :checksum "56cba2903cf6e12c715dbb5c99b34c97b2679379")
         (company-tern :checksum "10ac058b065ae73c1f30e9fb7d969dd1a79387be")
         (coffee-mode :checksum "86ab8aae8662e8eff54d3013010b9c693b16eac5")
-        (rjsx-mode :checksum "89358fd230878a19e3232a3e4ce21b7fb608faae")
+        (rjsx-mode :checksum "a481ca375ca26ca3285e112fbf41e8fae8bd753f")
         (js2-mode :checksum "5165f4dc3805add174e48f0d64c5617d10ac3507")
         (intero :checksum "4be2a4a5de81bae504654a6b3a5d8a340be00e7e")
         (flycheck-package :checksum "6d99248b45eea1e5236062f38e524230efdb1a84")
