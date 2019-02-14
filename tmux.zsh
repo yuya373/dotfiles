@@ -1,4 +1,4 @@
-# if [[ $DISPLAY ]]; then
+start() {
     if [[ ! -n $TMUX && $- == *l* ]]; then
         # get the IDs
         ID="`tmux list-sessions`"
@@ -16,4 +16,14 @@
             :  # Start terminal normally
         fi
     fi
-# fi
+}
+case $OSTYPE in
+    linux*)
+        if [[ $DISPLAY ]]; then
+            start
+        fi
+        ;;
+    darwin*)
+        start
+        ;;
+esac

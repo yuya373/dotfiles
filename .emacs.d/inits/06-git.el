@@ -83,11 +83,12 @@
   ;; (use-package ert)
 
   (define-key magit-file-mode-map (kbd "C-c") 'evil-window-delete)
-  (use-package magit-gitignore)
-  (use-package magit-extras)
-  (use-package git-rebase)
-  (use-package magit-submodule)
-  (use-package magit-subtree)
+  (require 'magit-subtree)
+  (require 'magit-ediff)
+  (require 'magit-extras)
+  (require 'git-rebase)
+  (require 'magit-imenu)
+  (require 'magit-bookmark)
   (use-package evil-magit
     :config
     (setq evil-magit-use-y-for-yank t)
