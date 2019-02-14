@@ -9,7 +9,7 @@ fi
 brew cask install \
      dash alfred bettertouchtool \
      aquaskk karabiner-elements bitbar \
-     google-chrome dropbox vlc \
+     google-chrome dropbox vlc handbrake \
      trailer flux
 
 # Android
@@ -19,12 +19,13 @@ brew cask install \
 
 
 brew install \
+     libdvdcss \
      git hub tmux zsh vim sshrc \
      coreutils cmigemo ispell \
      direnv global ctags \
      the_silver_searcher \
      reattach-to-user-namespace \
-     yarn \
+     yarn watchman \
      go dep hugo
 
 # iOS
