@@ -1,6 +1,9 @@
 #!/bin/bash
 
-mkdir -p ~/dev
-git clone --depth=1 git@github.com:powerline/fonts.git ~/dev/fonts
-cd ~/dev/fonts
-./install.sh
+if [[ ! -d $HOME/dev/fonts ]]; then
+    mkdir -p $HOME/dev
+    git clone --depth=1 git@github.com:powerline/fonts.git $HOME/dev/fonts
+    $HOME/dev/fonts/install.sh
+else
+    echo "Powerline Fonts already installed"
+fi

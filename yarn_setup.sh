@@ -1,3 +1,3 @@
 #!/bin/bash
 
-yarn global add marked
+yarn global add marked expo-cli
