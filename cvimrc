@@ -125,7 +125,7 @@ imap <C-w> deleteWord
       },
       '*://github.com/*': {
         reject: [],
-        accept: ['summary.btn.js-reviews-toggle'],
+        accept: ['summary.btn.js-reviews-toggle', 'details summary'],
       },
   };
 
