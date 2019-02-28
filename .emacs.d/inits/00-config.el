@@ -111,5 +111,18 @@
 (setq next-screen-context-lines 15)
 (setq scroll-preserve-screen-position t)
 
+(use-package ert
+  :config
+  (defun around-ert (func &rest args)
+    (let* ((buf (current-buffer))
+           (cur-point (with-current-buffer buf
+                        (point))))
+      (apply func args)
+      (with-current-buffer buf
+        (when (and (<= (point-min) cur-point)
+                   (<= cur-point (point-max)))
+          (goto-char cur-point)))))
+  (advice-add 'ert :around 'around-ert))
+
 (provide '00-config)
 ;;; 00-config.el ends here
