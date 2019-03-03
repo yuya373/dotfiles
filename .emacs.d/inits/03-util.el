@@ -74,14 +74,14 @@
     ", d" "Dired-Do")
   )
 
-(el-get-bundle indent-guide)
-(use-package indent-guide
-  :diminish indent-guide-mode
-  :commands (indent-guide-mode)
+(el-get-bundle DarthFennec/highlight-indent-guides)
+(use-package highlight-indent-guides
+  :commands (highlight-indent-guides-mode)
   :init
-  (setq indent-guide-recursive t)
-  (setq indent-guide-delay 1)
-  (add-hook 'lisp-mode-hook 'indent-guide-mode))
+  (setq highlight-indent-guides-responsive 'top)
+  (setq highlight-indent-guides-method 'character)
+  (setq highlight-indent-guides-character ?\|)
+  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode))
 
 (el-get-bundle restclient)
 (use-package restclient

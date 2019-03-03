@@ -1,5 +1,6 @@
 (setq el-get-lock-package-versions
-      '((go-eldoc :checksum "cbbd2ea1e94a36004432a9ac61414cb5a95a39bd")
+      '((highlight-indent-guides :checksum "0b10f38c54ffc099861ce8463e16a1b07ddbb203")
+        (go-eldoc :checksum "cbbd2ea1e94a36004432a9ac61414cb5a95a39bd")
         (go-mode :checksum "120fb911f1d8038f828da85eed8aaad977dabd8c")
         (tide :checksum "2d17c051cccd248a980575caf5728f4d5c986b30")
         (typescript-mode :checksum "32b8e1b6d09b6c3fc712c8b00f794591dfc7205a")
@@ -11,7 +12,7 @@
         (graphql :checksum "e2b309689f4faf9225f290080f836e988c5a576d")
         (direnv :checksum "6cf079fe8171bdf4bebefe02e8353d7f13847ebd")
         (ddskk :checksum "b05c610e27b86e71fb4e8d67292ef6a696dd5992")
-        (el-get :checksum "424487ed3aef4e6a08b48084654e7210deb0512e")
+        (el-get :checksum "7129a7c6d880f4d55cb22f63d5070ac753dfe660")
         (github-markdown-css :checksum "4d639a534aa9b8856a3b8bcc43239ea48d68d1fc")
         (esxml :checksum "5548ceba17deae0c3c6d0092672edc4de3c75ce3")
         (kv :checksum "721148475bce38a70e0b678ba8aa923652e8900e")
