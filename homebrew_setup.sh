@@ -10,7 +10,7 @@ brew cask install \
      dash alfred bettertouchtool \
      aquaskk karabiner-elements bitbar \
      google-chrome dropbox vlc handbrake \
-     trailer flux
+     trailer flux docker react-native-debugger
 
 # Android
 # brew cask install \
@@ -32,8 +32,14 @@ brew install \
 # brew install carthage
 
 # Emacs
-brew install emacs --with-cocoa --with-ctags --with-imagemagick@6 --with-librsvg --with-dbus --HEAD
-ln -sf `brew --prefix emacs`/Emacs.app /Applications/Emacs.app
+
+# TODO: create own taps
+# brew install emacs --with-cocoa --with-ctags --with-imagemagick@6 --with-librsvg --with-dbus --HEAD
+# ln -sf `brew --prefix emacs`/Emacs.app /Applications/Emacs.app
+
+brew install imagemagick@6 guntls pkgconfig
+~/dotfiles/build_emacs
+
 ## makeinfo
 brew install texinfo
 ## pdf-tools
