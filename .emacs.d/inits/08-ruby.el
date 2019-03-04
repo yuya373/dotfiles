@@ -251,6 +251,11 @@ See `font-lock-syntax-table'."))
     (my-ruby-modify-syntax (list haml-mode-syntax-table)))
   (add-hook 'haml-mode-hook 'my-haml-mode-modify-syntax))
 
+(el-get-bundle slim-mode)
+(use-package slim-mode
+  :mode (("\\.slim\\'" . slim-mode))
+  )
+
 
 (provide '08-ruby)
 ;;; 08-ruby.el ends here

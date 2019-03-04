@@ -95,6 +95,7 @@
   :init
   (setq init-loader-show-log-after-init t)
   (setq init-loader-byte-compile nil))
+(init-loader-load (expand-file-name "~/.emacs.d/platform-inits"))
 (init-loader-load)
 (add-hook 'window-setup-hook
           #'(lambda ()
