@@ -10,7 +10,8 @@ brew cask install \
      dash alfred bettertouchtool \
      aquaskk karabiner-elements bitbar \
      google-chrome dropbox vlc handbrake \
-     trailer flux docker react-native-debugger
+     trailer flux docker react-native-debugger \
+     sketch
 
 # Android
 # brew cask install \
@@ -26,7 +27,8 @@ brew install \
      the_silver_searcher \
      reattach-to-user-namespace \
      yarn watchman \
-     go dep hugo
+     go dep hugo \
+     awscli tfenv
 
 # iOS
 # brew install carthage
@@ -43,7 +45,7 @@ brew install imagemagick@6 guntls pkgconfig
 ## makeinfo
 brew install texinfo
 ## pdf-tools
-brew install autoconf automake poppler
+brew install autoconf automake poppler zlib
 ## emacs-slack
 brew install terminal-notifier
 
