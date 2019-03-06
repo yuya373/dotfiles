@@ -1,5 +1,7 @@
 (setq el-get-lock-package-versions
-      '((pdf-tools :checksum "fea0cad844e34d2265f7d6dc0370988bbaf5b996")
+      '((terraform-mode :checksum "6973d1acaba2835dfdf174f5a5e27de6366002e1")
+        (hcl-mode :checksum "0f2c5ec7e7bcf77c8548e8cac8721ea935ca1b5e")
+        (pdf-tools :checksum "fea0cad844e34d2265f7d6dc0370988bbaf5b996")
         (slim-mode :checksum "3636d18ab1c8b316eea71c4732eb44743e2ded87")
         (package-lint :checksum "9a5b92cfa675323891d7297cce34b568db2759d2")
         (highlight-indent-guides :checksum "0b10f38c54ffc099861ce8463e16a1b07ddbb203")
