@@ -11,7 +11,7 @@ brew cask install \
      aquaskk karabiner-elements bitbar \
      google-chrome dropbox vlc handbrake \
      trailer flux docker react-native-debugger \
-     sketch
+     sketch amethyst
 
 # Android
 # brew cask install \
