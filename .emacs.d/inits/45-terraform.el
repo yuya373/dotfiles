@@ -29,6 +29,11 @@
 (use-package terraform-mode
   :mode (("\\.tf\\(vars\\)?\\'" . terraform-mode)))
 
+(el-get-bundle company-terraform)
+(use-package company-terraform
+  :commands (company-terraform-init)
+  :init
+  (add-hook 'terraform-mode-hook 'company-terraform-init))
 
 (provide '45-terraform)
 ;;; 45-terraform.el ends here

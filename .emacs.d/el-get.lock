@@ -142,7 +142,7 @@
         (know-your-http-well :checksum "3cc5ab6d2764ab7aacb1b6e026abaccbeb6c37f2")
         (company-statistics :checksum "e62157d43b2c874d2edbd547c3bdfb05d0a7ae5c")
         (company-emoji :checksum "f0d91d5be0077b20b418a3ba37d36f431fae322f")
-        (company-mode :checksum "c95a6b41d621de4253b77e512aa61fc0e75acddc")
+        (company-mode :checksum "20fe01542bf7665ba90f9fe1a86cbe0eea4d9f8a")
         (helm-open-github :checksum "2f03d97552a1233db7694116d5f80ecde7612756")
         (gh :checksum "f029fc11f345ef04ab62ee91c38657e29c462fea")
         (marshal :checksum "f038689cbd5b3680b80b44edd0c7a63ca3038e26")
