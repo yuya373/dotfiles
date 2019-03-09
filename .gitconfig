@@ -37,7 +37,7 @@
   verbose = true
 [user]
   email = yuya373@me.com
+  name = "Yuya Minami"
 [ghq]
-root = "~/dev"
-root = "~/go/src"
-
+  root = "~/dev"
+  root = "~/go/src"
