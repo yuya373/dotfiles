@@ -99,7 +99,7 @@
         (intero :checksum "4be2a4a5de81bae504654a6b3a5d8a340be00e7e")
         (flycheck-package :checksum "6d99248b45eea1e5236062f38e524230efdb1a84")
         (evil-flycheck :checksum "1e506bfa8921f4f902736b2c63acf177af20078b")
-        (flycheck :checksum "1702d2db3d8ba9bcb9b2bf810e791e907fcc3adc")
+        (flycheck :checksum "db3693faef3c844fa0f49d05765828ba023d80ae")
         (solarized-emacs :checksum "87d4758e7ecc8ed873f3326e4f8b185fd2b9da0a")
         (json-mode :checksum "ffc92b1eefc54963703b43be140f4c8c8ad348f7")
         (json-snatcher :checksum "c4cecc0a5051bd364373aa499c47a1bb7a5ac51c")
