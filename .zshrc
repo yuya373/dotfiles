@@ -56,7 +56,7 @@ zstyle ':prezto:module:history-substring-search' case-sensitive 'yes'
 zstyle ':notify:*' command-complete-timeout 1
 zstyle ':prezto:module:pacman' frontend 'yaourt'
 
-zplug load --verbose
+zplug load
 
 
 source ~/dotfiles/tmux.zsh
