@@ -93,7 +93,10 @@ ln -sf ~/dotfiles/.config/common-lisp/source-registry.conf ~/.config/common-lisp
 ln -sf ~/dotfiles/.sbclrc ~/.sbclrc
 
 # emacs
+mkdir -p ~/.emacs.d
 ln -sf ~/dotfiles/.emacs.d ~/.emacs.d
+mkdir -p ~/.emacs.d/var/slack-images
+mkdir -p ~/.emacs.d/var/slack-profile-images
 
 # sshrc
 ln -sf ~/dotfiles/.sshrc ~/.sshrc
