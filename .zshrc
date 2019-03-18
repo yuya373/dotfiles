@@ -87,6 +87,7 @@ case ${OSTYPE} in
         fi
         alias mc='~/dotfiles/google_chrome'
         ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
+        fpath=("/usr/local/share/zsh/site-functions" $fpath)
         ;;
     linux*)
         # ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
