@@ -28,58 +28,67 @@
   ;; (el-get-bundle powerline)
   ;; (el-get-bundle TheBB/spaceline)
   ;; (require 'spaceline)
-)
+  )
 
 (el-get-bundle powerline)
 (el-get-bundle TheBB/spaceline)
 (use-package spaceline-config
-  :commands (spaceline-define-segment spaceline-install spaceline-spacemacs-theme)
+  :commands (spaceline-spacemacs-theme)
   :init
   (setq anzu-cons-mode-line-p nil)
   (setq powerline-height 25)
   (setq powerline-default-separator 'contour)
   (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
-  ;; (spaceline-spacemacs-theme)
-  (add-hook 'evil-mode-hook 'spaceline-spacemacs-theme)
-  ;; (add-hook 'evil-mode-hook 'install-my-spaceline-theme)
-  ;; (defun install-my-spaceline-theme ()
-  ;;   (spaceline-install
-  ;;    '(
-  ;;      ;; (pomodoro
-  ;;      ;;  :when active)
-  ;;      (evil-state
-  ;;       :face highlight-face)
-  ;;      anzu
-  ;;      ;; ((workspace-number window-number)
-  ;;      ;;  :fallback evil-state
-  ;;      ;;  :separator "|"
-  ;;      ;;  :face highlight-face)
-  ;;      (buffer-modified buffer-id remote-host)
-  ;;      ;; (pdf :when active)
-  ;;      ((flycheck-error flycheck-warning flycheck-info)
-  ;;       :when active)
-  ;;      major-mode
-  ;;      (((minor-modes :separator spaceline-minor-modes-separator)
-  ;;        process)
-  ;;       )
-  ;;      (erc-track :when active)
-  ;;      (version-control :when active)
-  ;;      ;; (org-pomodoro :when active)
-  ;;      ;; (org-clock :when active)
-  ;;      ;; nyan-cat
-  ;;      )
-
-  ;;    `((battery :when active)
-  ;;      selection-info
-  ;;      ((buffer-encoding-abbrev
-  ;;        point-position
-  ;;        line-column)
-  ;;       :separator " | ")
-  ;;      buffer-position
-  ;;      ;; (global :when active)
-  ;;      ;; (rbenv :when active)
-  ;;      hud))
-  ;;   (setq-default mode-line-format '("%e" (:eval (spaceline-ml-main)))))
+  (add-hook 'after-init-hook 'setup-spaceline)
+  (defvar slack-modeline "")
+  (defun setup-spaceline ()
+    (spaceline-spacemacs-theme)
+    (spaceline-define-segment my-slack-modeline
+      "Slack"
+      slack-modeline)
+    (spaceline-compile
+                                        ; left side
+      '(((persp-name
+          workspace-number
+          window-number)
+         :fallback evil-state
+         :face highlight-face
+         :priority 100)
+        (anzu :priority 95)
+        auto-compile
+        ((buffer-modified buffer-size buffer-id remote-host)
+         :priority 98)
+        (major-mode :priority 79)
+        (process :when active)
+        ((flycheck-error flycheck-warning flycheck-info)
+         :when active
+         :priority 89)
+        (minor-modes :when active
+                     :priority 9)
+        (mu4e-alert-segment :when active)
+        (erc-track :when active)
+        (version-control :when active
+                         :priority 78)
+        (my-slack-modeline :priority 10)
+        (org-pomodoro :when active)
+        (org-clock :when active)
+        nyan-cat
+        )
+                                        ; right side
+      '(which-function
+        (python-pyvenv :fallback python-pyenv)
+        (purpose :priority 94)
+        (battery :when active)
+        (selection-info :priority 95)
+        input-method
+        ((buffer-encoding-abbrev
+          point-position
+          line-column)
+         :separator " | "
+         :priority 96)
+        (global :when active)
+        (buffer-position :priority 99)
+        (hud :priority 99))))
   :config
   ;; (spaceline-define-segment pomodoro
   ;;   "pomodoro.el"
