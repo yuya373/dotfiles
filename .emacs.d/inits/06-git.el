@@ -56,8 +56,7 @@
   :commands (git-messenger:popup-message))
 
 (use-package magit
-  :commands (magit-status magit-blame-popup
-                          magit-fetch-popup magit-branch-popup)
+  :commands (magit-status magit-blame)
   :init
   (add-hook 'magit-mode-hook '(lambda () (linum-mode -1)))
   (setq magit-push-always-verify t)

@@ -536,7 +536,7 @@
     "fp" 'helm-browse-project
     "fr" 'helm-recentf
     "fs" 'reopen-with-sudo
-    "gb" 'magit-blame-popup
+    "gb" 'magit-blame
     "gg" 'magit-status
     "gm" 'git-messenger:popup-message
     "ghn" 'git-gutter+-next-hunk
