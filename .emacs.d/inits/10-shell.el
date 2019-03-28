@@ -108,12 +108,6 @@ the user activate the completion manually."
   (add-hook 'eshell-directory-change-hook
             'spacemacs//toggle-shell-auto-completion-based-on-path)
 
-  (defun spacemacs//eshell-switch-company-frontend ()
-    "Sets the company frontend to `company-preview-frontend' in e-shell mode."
-    (setq-local company-frontends '(company-preview-frontend)))
-  (add-hook 'eshell-mode-hook
-            'spacemacs//eshell-switch-company-frontend)
-
   :config
   (require 'em-smart)
   (require 'esh-opt)
