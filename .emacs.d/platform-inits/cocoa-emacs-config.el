@@ -75,7 +75,7 @@
   (setq exec-path-from-shell-variables '("PATH" "MANPATH" "LANG" "JAVA_HOME" "NODE_PATH" "GOPATH"))
   :config
   (setenv "SHELL" "/usr/local/bin/zsh")
-  (setenv "PKG_CONFIG_PATH" "/usr/local/opt/zlib/lib/pkgconfig:/usr/local/lib/pkgconfig")
+  (setenv "PKG_CONFIG_PATH" "/usr/local/opt/zlib/lib/pkgconfig:/usr/local/opt/libffi/lib/pkgconfig:/usr/local/lib/pkgconfig")
   (exec-path-from-shell-initialize))
 
 (el-get-bundle migemo)

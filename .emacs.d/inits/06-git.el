@@ -82,8 +82,10 @@
   ;; (use-package ert)
 
   (define-key magit-file-mode-map (kbd "C-c") 'evil-window-delete)
+  (require 'magit-patch)
   (require 'magit-subtree)
   (require 'magit-ediff)
+  (require 'magit-gitignore)
   (require 'magit-extras)
   (require 'git-rebase)
   (require 'magit-imenu)

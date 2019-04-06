@@ -42,6 +42,7 @@ case ${OSTYPE} in
         export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
         export TERM='xterm-256color'
         # export PATH="/usr/local/opt/llvm/bin:$PATH"
+        export PATH="/usr/local/opt/imagemagick@6/bin:$PATH"
         ;;
     linux*)
         setopt no_global_rcs
