@@ -58,18 +58,25 @@
                                company-sort-by-backend-importance
                                company-sort-by-occurrence)))
 
-
+(use-package company-quickhelp
+  :commands (company-quickhelp-mode)
+  :init
+  (add-hook 'global-company-mode-hook 'company-quickhelp-mode)
+  (setq company-quickhelp-use-propertized-text t)
+  (setq company-quickhelp-delay 0)
+  :config
+  (add-to-list 'company-frontends 'company-quickhelp-frontend t))
 
 (use-package company
   :commands (company-mode global-company-mode)
   ;; :diminish company-mode
   :init
   (setq company-idle-delay 0.5) ; デフォルトは0.5
-  (setq company-minimum-prefix-length 2) ; デフォルトは4
+  (setq company-minimum-prefix-length 1) ; デフォルトは4
   (setq company-selection-wrap-around t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
   (setq company-auto-complete nil)
   (setq company-tooltip-align-annotations t)
-  (setq company-transformers '(company-sort-by-occurrence company-sort-by-backend-importance))
+  ;; (setq company-transformers '(company-sort-by-occurrence company-sort-by-backend-importance))
   (setq company-dabbrev-other-buffers t)
   (setq company-dabbrev-ignore-case nil)
   (setq company-dabbrev-downcase nil)
@@ -93,8 +100,6 @@
   ;;          company-etags
   ;;          ;; company-yasnippet
   ;;          )))
-  (use-package company-quickhelp)
-  (company-quickhelp-mode)
   (use-package company-emoji
     :commands (company-emoji)
     :init

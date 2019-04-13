@@ -26,7 +26,7 @@
 (eval-when-compile
   (require 'evil))
 
-(el-get-bundle skk-dev/ddskk)
+(el-get-bundle skk-dev/ddskk :autoloads nil)
 (use-package skk
   :commands (skk-mode skk-auto-fill-mode)
   :init
