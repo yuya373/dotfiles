@@ -11,7 +11,7 @@ brew cask install \
      aquaskk karabiner-elements bitbar \
      google-chrome dropbox vlc handbrake \
      trailer flux docker react-native-debugger \
-     sketch amethyst
+     sketch amethyst kap
 
 # Android
 # brew cask install \
@@ -28,7 +28,8 @@ brew install \
      reattach-to-user-namespace \
      yarn watchman \
      go dep hugo \
-     awscli tfenv
+     awscli tfenv \
+     htop
 
 # iOS
 # brew install carthage
