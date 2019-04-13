@@ -490,6 +490,39 @@
                           (perspeen-ws-struct-buffers perspeen-current-ws)
                         (buffer-list))))
         (mapc #'kill buf-list))))
+  (defun :command-one-line (cmd args)
+    (with-temp-buffer
+      (when (zerop (apply 'call-process cmd nil t nil args))
+        (goto-char (point-min))
+        (buffer-substring-no-properties
+         (line-beginning-position) (line-end-position)))))
+  (defun github-url ()
+    (let* ((remote-url (:command-one-line "git"
+                                          '("config" "--get" "remote.origin.url")))
+           (url (replace-regexp-in-string ".git\\'"
+                                          ""
+                                          (replace-regexp-in-string "git@github.com:"
+                                                                    "https://github.com/"
+                                                                    remote-url))))
+      url))
+
+  (defun github-open ()
+    (interactive)
+    (browse-url (github-url)))
+
+  (defun github-branches-open ()
+    (interactive)
+    (browse-url (format "%s/branches" (github-url))))
+
+  (defun github-pulls-open ()
+    (interactive)
+    (browse-url (format "%s/pulls" (github-url))))
+
+  (defun github-commit-open ()
+    (interactive)
+    (browse-url (format "%s/commit/%s"
+                        (github-url)
+                        (read-from-minibuffer "Commit: "))))
   :config
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
@@ -548,6 +581,10 @@
     "gps" 'hub-pr-send-pr
     "gc" 'git-gutter+-commit
     "gC" 'git-gutter+-stage-and-commit
+    "goo" 'github-open
+    "gob" 'github-branches-open
+    "gop" 'github-pulls-open
+    "goc" 'github-commit-open
     "gt" nil
     "gtt" 'git-timemachine
     "gtp" 'git-timemachine-show-previous-revision

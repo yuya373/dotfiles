@@ -153,25 +153,6 @@
   (setq emojify-emoji-styles '(github))
   (setq emojify-display-style 'image)
   ;; (setq emojify-emoji-set "EmojiOne_4.0_32x32_png")
-  :config
-  (define-key evil-insert-state-map (kbd "C-e") 'emojify-insert-emoji)
-  (defun emojify-filter-github-emoji (emoji data)
-    (and (string= (gethash "style" data) "github")
-         (not (string-match "-" (gethash "emoji" data)))
-         ;; (message "%S" (hash-table-keys data))
-         ;; (message "ASCII: %S" (gethash "ascii" data))
-         ;; (message "UNICODE: %S" (gethash "unicode" data))
-         ;; (message "EMOJI: %S" (gethash "emoji" data))
-         )
-    ;; ("style" "image" "unicode" "name" "emoji" "custom") [146 times]
-    ;; ("style" "ascii" "image" "unicode" "name" "emoji" "custom")
-    )
-  (defun emojify-insert-emoji ()
-    "Interactively prompt for Emojis and insert them in the current buffer.
-
-This respects the `emojify-emoji-styles' variable."
-    (interactive)
-    (insert (emojify-completing-read "Insert Emoji: " #'emojify-filter-github-emoji)))
   )
 
 ;; (el-get-bundle syl20bnr/emacs-emoji-cheat-sheet-plus

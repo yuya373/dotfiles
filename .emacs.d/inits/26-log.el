@@ -24,6 +24,13 @@
 
 ;;; Code:
 
+(el-get-bundle logview)
+(use-package logview
+  :mode (("\\.log?\\'" . log4j-mode))
+  :init
+  (add-hook 'logview-mode-hook 'read-only-mode)
+  )
+
 (el-get-bundle log4j-mode)
 (use-package log4j-mode
   :mode (("\\.log?\\'" . log4j-mode))
