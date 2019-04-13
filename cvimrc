@@ -115,6 +115,10 @@ imap <C-w> deleteWord
 
 -> {{
   const extraFilters = {
+      '*://*.aws.amazon.com/*': {
+        reject: [],
+        accept: ['.expander-icon'],
+      },
       '*://app.zenhub.com/*': {
           reject: [],
           accept: ['.zhc-issue-card'],
