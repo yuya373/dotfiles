@@ -21,6 +21,7 @@ brew cask install \
 
 brew install \
      libdvdcss \
+     ffmpeg \
      git hub tmux zsh vim sshrc \
      coreutils cmigemo ispell \
      direnv global ctags \
