@@ -331,3 +331,9 @@ fzf_src() {
     dir=$(ghq list --full-path | fzf) && cd "$dir" && my_reset_prompt
 }
 zle -N fzf_src
+
+convert_to_gif() {
+    input="$1"
+    output="${2:-out.gif}"
+    ffmpeg -i $input -vf scale=320:-1 -r 30 $output
+}
