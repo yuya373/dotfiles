@@ -63,7 +63,7 @@
   :init
   (add-hook 'global-company-mode-hook 'company-quickhelp-mode)
   (setq company-quickhelp-use-propertized-text t)
-  (setq company-quickhelp-delay 0)
+  (setq company-quickhelp-delay 0.5)
   :config
   (add-to-list 'company-frontends 'company-quickhelp-frontend t))
 

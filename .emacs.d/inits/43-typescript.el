@@ -52,7 +52,9 @@
 (use-package typescript-mode
   :mode (("\\.ts\\'" . typescript-mode))
   :init
-  (setq typescript-indent-level 2))
+  (setq typescript-indent-level 2)
+  :config
+  (use-package sgml-mode))
 
 (use-package tide
   :init
