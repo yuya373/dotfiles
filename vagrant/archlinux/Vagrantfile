@@ -24,6 +24,7 @@ Vagrant.configure("2") do |config|
   # accessing "localhost:8080" will access port 80 on the guest machine.
   # NOTE: This will enable public access to the opened port
   # config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 4010, host: 4010
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine and only allow access
@@ -51,11 +52,12 @@ Vagrant.configure("2") do |config|
   # Example for VirtualBox:
   #
   config.vm.provider "virtualbox" do |vb|
-    #   # Display the VirtualBox GUI when booting the machine
-    #   vb.gui = true
+    # Display the VirtualBox GUI when booting the machine
+    vb.gui = false
     #
-    #   # Customize the amount of memory on the VM:
+    # Customize the amount of memory on the VM:
     # vb.memory = "1024"
+    vb.cpus = 2
     vb.memory = "4096"
     # https://github.com/hashicorp/vagrant/issues/1807
     vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
@@ -63,6 +65,8 @@ Vagrant.configure("2") do |config|
     # https://akamist.com/blog/archives/520
     vb.customize ["modifyvm", :id, "--nictype1",  "virtio"]
     vb.customize ["modifyvm", :id, "--nictype2",  "virtio"]
+
+    vb.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
   end
   #
   # View the documentation for the provider you are using for more
@@ -71,8 +75,26 @@ Vagrant.configure("2") do |config|
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
-  config.vm.provision "shell", inline: <<-SHELL
-    pacman -Syu --noconfirm git docker docker-compose vim
-    sudo usermod -aG docker vagrant
+  config.vm.provision "shell", privileged: false, inline: <<-SHELL
+    sudo pacman -Syu --noconfirm --needed base-devel git archlinux-keyring
+
+    if ! command -v yay > /dev/null; then
+      if [[ ! -d ~/yay ]]; then
+        git clone https://aur.archlinux.org/yay.git ~/yay
+      fi
+      pushd ~/yay
+      makepkg -Csi --needed --noconfirm
+      popd
+    fi
+    yay -Syu --noconfirm --needed docker docker-compose vim zsh direnv
+
+    sudo usermod -aG docker $USER
+
+    sudo ln -sf ~/dotfiles/etc/locale.gen /etc/locale.gen
+    sudo locale-gen
+
+    ln -sf ~/dotfiles/.zshrc ~/.zshrc
+    ln -sf ~/dotfiles/.zshenv ~/.zshenv
+    ln -sf ~/dotfiles/.zprofile ~/.zprofile
   SHELL
 end
