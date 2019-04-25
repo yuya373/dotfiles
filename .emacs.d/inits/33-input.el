@@ -94,6 +94,8 @@
   ;;                 'skk-delete-backward-char)
   ;;               (evil-make-intercept-map skk-j-mode-map 'insert )))
   :config
+  (defun skk-setup-modeline ()
+    (setq skk-indicator-alist (skk-make-indicator-alist)))
   ;; (use-package skk-setup)
   (use-package ccc)
   (use-package skk-hint)

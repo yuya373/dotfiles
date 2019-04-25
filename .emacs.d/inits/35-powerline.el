@@ -46,49 +46,76 @@
     (spaceline-define-segment my-slack-modeline
       "Slack"
       slack-modeline)
+    (spaceline-define-segment perspeen-name
+      "Current perspeen name."
+      (when (and (bound-and-true-p perspeen-mode)
+                 perspeen-current-ws)
+        (perspeen-ws-struct-name perspeen-current-ws)))
+    (spaceline-define-segment skk-name
+      "skk name."
+      (when (and active
+                 (bound-and-true-p skk-mode)
+                 (stringp skk-modeline-input-mode))
+        (string-trim skk-modeline-input-mode)))
     (spaceline-compile
-                                        ; left side
-      '(((persp-name
-          workspace-number
-          window-number)
-         :fallback evil-state
+      '((skk-name :priority 100)
+        (macrodef
+         :priority 80
+         :face other-face)
+        (evil-state
+         :priority 90
          :face highlight-face
+         :when active)
+        (perspeen-name :priority 80)
+        ;; ((persp-name
+        ;;   workspace-number
+        ;;   window-number)
+        ;;  :fallback evil-state
+        ;;  :face highlight-face
+        ;;  :priority 100)
+        (anzu :priority 60)
+        ;; auto-compile
+        ((buffer-modified
+          ;; buffer-size
+          buffer-id
+          remote-host)
          :priority 100)
-        (anzu :priority 95)
-        auto-compile
-        ((buffer-modified buffer-size buffer-id remote-host)
-         :priority 98)
-        (major-mode :priority 79)
+        (major-mode
+         :priority 90)
         (process :when active)
         ((flycheck-error flycheck-warning flycheck-info)
          :when active
-         :priority 89)
-        (minor-modes :when active
-                     :priority 9)
-        (mu4e-alert-segment :when active)
-        (erc-track :when active)
-        (version-control :when active
-                         :priority 78)
-        (my-slack-modeline :priority 10)
-        (org-pomodoro :when active)
-        (org-clock :when active)
-        nyan-cat
+         :priority 100)
+        ;; (minor-modes :when active :priority 9)
+        ;; (mu4e-alert-segment :when active)
+        ;; (erc-track :when active)
+        ;; (version-control :when active
+        ;;                  :priority 78)
+        ;; (org-pomodoro :when active)
+        ;; (org-clock :when active)
+        ;; nyan-cat
         )
-                                        ; right side
-      '(which-function
-        (python-pyvenv :fallback python-pyenv)
-        (purpose :priority 94)
-        (battery :when active)
-        (selection-info :priority 95)
+      ;; right side
+      '((my-slack-modeline :priority 90)
+        ;; which-function
+        ;; (python-pyvenv :fallback python-pyenv)
+        ;; (purpose :priority 94)
+        ;; (battery :when active)
+        (selection-info :priority 100)
         input-method
         ((buffer-encoding-abbrev
           point-position
           line-column)
          :separator " | "
-         :priority 96)
+         :priority 90
+         :when active)
         (global :when active)
-        (buffer-position :priority 99)
-        (hud :priority 99))))
+        (buffer-position
+         :priority 80
+         :when active)
+        (hud
+         :priority 60
+         :when active))))
   :config
   ;; (spaceline-define-segment pomodoro
   ;;   "pomodoro.el"
