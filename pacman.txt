@@ -39,7 +39,7 @@ dunst
 e2fsprogs
 efibootmgr
 evtest
-exfat-utils
+exfat-utils-autodetect
 expect
 fakeroot
 fcgi
@@ -70,7 +70,7 @@ haskell-haddock-library
 hello
 htop
 hub
-imagemagick6
+imagemagick
 inetutils
 intel-ucode
 iproute2
@@ -103,6 +103,7 @@ mplayer
 nano
 netctl
 networkmanager
+ngrok
 noto-fonts
 noto-fonts-cjk
 noto-fonts-emoji
@@ -173,6 +174,7 @@ util-linux
 vi
 vim
 virtualbox
+virtualbox-guest-iso
 vlc
 wd719x-firmware
 wget
