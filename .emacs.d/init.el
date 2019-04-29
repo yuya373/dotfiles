@@ -103,13 +103,40 @@
                                    'fullscreen 'maximized))
           t)
 
+;; Font
+(let* ((size 15)
+       (height (* 10 15))
+       (spec (list :family "Ricty"
+                   :slant 'normal
+                   :weight 'normal
+                   :height height
+                   :width 'normal))
+       (fontspec (apply #'font-spec spec))
+       (jp-fontspec (apply #'font-spec spec)))
+
+  (apply #'set-face-attribute 'default nil spec)
+  (apply #'set-face-attribute 'variable-pitch nil spec)
+
+  (set-fontset-font nil 'japanese-jisx0208 jp-fontspec)
+  (set-fontset-font nil 'japanese-jisx0208-1978 jp-fontspec)
+  (set-fontset-font nil 'japanese-jisx0212 jp-fontspec)
+  (set-fontset-font nil 'japanese-jisx0213-1 jp-fontspec)
+  (set-fontset-font nil 'japanese-jisx0213-2 jp-fontspec)
+  (set-fontset-font nil 'japanese-jisx0213.2004-1 jp-fontspec)
+  (set-fontset-font nil 'jisx0201 jp-fontspec)
+
+  (set-fontset-font nil 'japanese-jisx0213-a jp-fontspec)
+
+  (set-fontset-font nil 'katakana-jisx0201 jp-fontspec)
+  (set-fontset-font nil 'katakana-sjis jp-fontspec)
+
+  (set-fontset-font nil 'latin-jisx0201 jp-fontspec))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Ricty" :foundry "PfEd" :slant normal :weight normal :height 151 :width normal))))
  '(avy-lead-face ((t (:inherit isearch :foreground "gray100"))))
  '(avy-lead-face-0 ((t (:background "#6c71c4" :foreground "gray100"))))
  '(avy-lead-face-1 ((t (:background "#cb4b16" :foreground "gray100"))))

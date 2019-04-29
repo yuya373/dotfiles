@@ -426,5 +426,9 @@
 (use-package font-lock-studio
   :commands (font-lock-studio))
 
+(defun font-at-point ()
+  (interactive)
+  (message (font-xlfd-name (font-at (point)))))
+
 (provide '03-util)
 ;;; 03-util.el ends here
