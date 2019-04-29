@@ -101,7 +101,7 @@ print_with_current_step "Executing './autogen.sh'"
 ./autogen.sh
 
 print_with_current_step "Configure with $configure_opts"
-eval "PKG_CONFIG_PATH=/usr/lib/imagemagick6/pkgconfig ./configure $configure_opts"
+eval "./configure $configure_opts"
 
 print_with_current_step "Executing 'make -j4'"
 make -j4

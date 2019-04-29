@@ -7,5 +7,6 @@ fi
 
 $HOME/.cargo/bin/rustup update
 $HOME/.cargo/bin/rustup install nightly
-$HOME/.cargo/bin/rustup component add rustfmt rust-src
+# https://rust-lang.github.io/rustup-components-history/x86_64-unknown-linux-gnu.html
+$HOME/.cargo/bin/rustup component add rustfmt rust-src clippy
 $HOME/.cargo/bin/cargo install racer

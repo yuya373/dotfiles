@@ -24,21 +24,6 @@
 
 ;;; Code:
 (when window-system
-  ;; Ricty フォントの利用
-  (let ((font-size 16))
-    (create-fontset-from-ascii-font
-     (format "Ricty-%d:weight=normal:slant=normal" font-size) nil "ricty")
-    (set-fontset-font "fontset-ricty" 'unicode
-                      (font-spec :family "Ricty" :size font-size) nil 'append)
-    (add-to-list 'default-frame-alist '(font . "fontset-ricty")))
-
-  ;; (set-face-attribute 'default nil :family "Ricty" :height 142)
-  ;; (set-fontset-font t
-  ;;                   'japanese-jisx0208
-  ;;                   (font-spec :family "Ricty"))
-  ;; (add-to-list 'face-font-rescale-alist
-  ;;              '(".*Ricty.*" . 1.2))
-
   (setq ring-bell-function 'ignore)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)

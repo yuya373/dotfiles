@@ -257,6 +257,8 @@
 (el-get-bundle wasamasa/nov.el :name nov)
 (use-package nov
   :mode (("\\.epub\\'" . nov-mode))
+  :init
+  (setq nov-text-width 90)
   :config
   (evil-define-key 'normal nov-mode-map
     "H" 'nov-previous-document

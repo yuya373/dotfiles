@@ -23,13 +23,6 @@
 ;;
 
 ;;; Code:
-(let ((font-size 15))
-  (create-fontset-from-ascii-font
-   (format "Ricty-%d:weight=normal:slant=normal" font-size) nil "ricty")
-  (set-fontset-font "fontset-ricty" 'unicode
-                    (font-spec :family "Ricty" :size font-size) nil 'append)
-  (add-to-list 'default-frame-alist '(font . "fontset-ricty")))
-
 (setq ring-bell-function 'ignore)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
