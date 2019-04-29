@@ -81,7 +81,7 @@
   (setq highlight-indent-guides-responsive 'top)
   (setq highlight-indent-guides-method 'character)
   (setq highlight-indent-guides-character ?\|)
-  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+  ;; (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
   (add-hook 'yaml-mode-hook 'highlight-indent-guides-mode))
 
 (el-get-bundle restclient)
