@@ -24,22 +24,23 @@
 
 ;;; Code:
 (eval-when-compile
-  (require 'evil)
-  (el-get-bundle syohex/emacs-browser-refresh))
+  (require 'use-package)
+  (require 'el-get))
 
 (el-get-bundle which-key)
 (use-package which-key
   :diminish which-key-mode
   :commands (which-key-mode)
   :init
-  (setq which-key-use-C-h-for-paging nil)
+  (setq which-key-use-C-h-commands t)
   (setq which-key-idle-delay 0.3)
   (setq which-key-separator " - ")
   (setq which-key-show-prefix 'echo)
   (setq which-key-popup-type 'side-window)
   (setq which-key-side-window-location 'bottom)
   (setq which-key-side-window-max-height 0.50)
-  (add-hook 'after-init-hook 'which-key-mode)
+  (setq which-key-allow-evil-operators t)
+  (add-hook 'evil-mode-hook 'which-key-mode)
   :config
   ;; (which-key-add-key-based-replacements "SPC r" " Rest")
   (which-key-add-key-based-replacements "SPC a" " Ag")
@@ -214,41 +215,7 @@
   (setq dired-recursive-copies 'always)
   :config
   (require 'ls-lisp)
-  (setq ls-lisp-use-insert-directory-program nil)
-  (with-eval-after-load "evil"
-    (define-key dired-mode-map [override-state] nil)
-    (define-key dired-mode-map [intercept-state] nil)
-    (evil-define-key 'normal dired-mode-map
-      (kbd "RET") 'dired-find-file
-      "t" nil
-      "g" nil
-      "w" nil
-      "v" nil
-      "j" 'dired-next-line
-      "k" 'dired-previous-line
-      "h" 'dired-up-directory
-      "l" 'dired-find-file
-      "q" (lookup-key dired-mode-map "q")
-      ",mm" 'dired-mark
-      ",mu" 'dired-unmark
-      ",mU" 'dired-unmark-all-marks
-      ",mt" 'dired-toggle-marks
-      ",r" 'revert-buffer
-      ",t" 'dired-show-file-type
-      ",y" 'dired-copy-filename-as-kill
-      ",k" 'dired-k
-      ",v" 'dired-view-file
-      ",w" 'wdired-change-to-wdired-mode
-      ",dc" 'dired-do-copy
-      ",dm" 'dired-do-chmod
-      ",do" 'dired-do-chown
-      ",dr" 'dired-do-rename
-      ",ds" 'dired-do-symlink
-      ",dt" 'dired-do-touch
-      ",dz" 'dired-do-compress
-      ",dd" 'dired-do-delete
-      ",=" 'dired-diff
-      )))
+  (setq ls-lisp-use-insert-directory-program nil))
 
 (el-get-bundle dired-k)
 (use-package dired-k
@@ -257,131 +224,6 @@
   (add-hook 'dired-after-readin-hook 'dired-k-no-revert)
   (setq dired-k-style 'git)
   (setq dired-k-human-readable t))
-
-;; (el-get-bundle auto-mark)
-;; (use-package auto-mark
-;;   :commands (global-auto-mark-mode)
-;;   :init
-;;   (add-hook 'after-init-hook 'global-auto-mark-mode)
-
-;;   ;; A list of (COMMAND . CLASS) for classfying command to CLASS.
-
-;;   ;; COMMAND is a symbol you want to try to classify.
-;;   ;; CLASS is a symbol for detecting a border where auro-mark should push mark.
-
-;;   ;; There is pre-defined CLASS:
-;;   ;; edit      edit command
-;;   ;; move      point move command
-;;   ;; ignore    make auto-mark ignore pushing mark
-;;   (setq auto-mark-command-class-alist '((goto-line . jump)
-;;                                         (avy-goto-char . jump)
-;;                                         (avy-goto-char-2 . jump)
-;;                                         (avy-goto-line . jump)
-;;                                         (avy-goto-word-0 . jump)
-;;                                         (avy-migemo-goto-char . jump)
-;;                                         (avy-migemo-goto-word-1 . jump)
-;;                                         (avy-migemo-goto-char-in-line . jump)
-;;                                         (isearch-exit . jump)
-;;                                         (evil-search-next . jump)
-;;                                         (evil-search-previous . jump)
-;;                                         (evil-scroll-down . jump)
-;;                                         (evil-scroll-up . jump)
-;;                                         (evil-jump-to-tag . jump)
-;;                                         (scroll-up-command . jump)
-;;                                         (scroll-down-command . jump)
-;;                                         (helm-gtags-find-tag-from-here . jump))))
-
-;; (el-get-bundle prodigy)
-;; (use-package prodigy
-;;   :commands (prodigy)
-;;   :config
-;;   (evil-define-key 'normal prodigy-mode-map
-;;     "s" 'prodigy-start
-;;     "S" 'prodigy-stop
-;;     "r" 'prodigy-restart
-;;     "v" 'prodigy-display-process
-;;     "o" 'prodigy-browse)
-;;   (prodigy-define-tag
-;;    :name 'rails
-;;    :on-output (lambda (&rest args)
-;;                 (let ((output (plist-get args :output))
-;;                       (service (plist-get args :service)))
-;;                   (when (or (s-matches? "Listening on 0\.0\.0\.0:[0-9]+, CTRL\\+C to stop" output)
-;;                             (s-matches? "Ctrl-C to shutdown server" output))
-;;                     (prodigy-set-status service 'ready)))))
-
-;;   (prodigy-define-service
-;;    :name "IB server"
-;;    :command "bundle"
-;;    :args '("exec" "rails" "server" "--port=3000")
-;;    :cwd "/Users/yuyaminami/dev/instabase"
-;;    :url "http://localhost:3000"
-;;    :tags '(rails))
-;;   (prodigy-define-service
-;;    :name "IB migrateion"
-;;    :command "bundle"
-;;    :args '("exec" "rake" "db:migrate")
-;;    :cwd "/Users/yuyaminami/dev/instabase"
-;;    :tags '(rails))
-;;   (prodigy-define-service
-;;    :name "IB rollback"
-;;    :command "bundle"
-;;    :args '("exec" "rake" "db:rollback")
-;;    :cwd "/Users/yuyaminami/dev/instabase"
-;;    :tags '(rails))
-;;   )
-
-;; (el-get-bundle pomodoro)
-;; (use-package pomodoro
-;;   :commands (pomodoro:start)
-;;   :init
-
-;;   (setq pomodoro:set-mode-line-p t
-;;         pomodoro:mode-line-work-sign "働 "
-;;         pomodoro:mode-line-rest-sign "休 "
-;;         pomodoro:mode-line-long-rest-sign "長休 "
-;;         pomodoro:work-time 25
-;;         pomodoro:rest-time 5
-;;         pomodoro:long-rest-time 25
-;;         pomodoro:iteration-for-long-rest 3
-;;         pomodoro:mode-line-time-display t
-;;         pomodoro:file nil
-;;         pomodoro:myfile (lambda ()
-;;                           (format-time-string "~/Dropbox/junk/%Y-%m-%d.org")))
-
-;;   (defun pomodoro:find-rest-buffer ()
-;;     (when (functionp pomodoro:myfile)
-;;       (find-file (funcall pomodoro:myfile))))
-;;   (add-hook 'pomodoro:finish-work-hook #'pomodoro:find-rest-buffer)
-;;   (add-hook 'pomodoro:long-rest-hook #'pomodoro:find-rest-buffer)
-
-;;   (defun my-pomodoro-notify (msg)
-;;     (alert msg
-;;            :title "Pomodoro"
-;;            :category 'pomodoro))
-;;   (add-hook 'pomodoro:finish-work-hook
-;;             #'(lambda () (my-pomodoro-notify "Work is Finish")))
-;;   (add-hook 'pomodoro:finish-rest-hook
-;;             #'(lambda () (my-pomodoro-notify "Break time is Finish")))
-;;   (add-hook 'pomodoro:long-rest-hook
-;;             #'(lambda () (my-pomodoro-notify "Long Break time now"))))
-
-
-;; (el-get-bundle google-this)
-;; (use-package google-this
-;;   :commands (google-this google-this-search google-this-region
-;;                          google-maps google-this-translate-query-or-region))
-
-(el-get-bundle syohex/emacs-browser-refresh)
-(use-package browser-refresh
-  :commands (browser-refresh)
-  :init
-  (setq browser-refresh-save-buffer nil)
-  (setq browser-refresh-activate nil)
-  (defun browser-refresh-and-activate ()
-    (interactive)
-    (let ((browser-refresh-activate t))
-      (browser-refresh))))
 
 (el-get-bundle alpha22jp/atomic-chrome)
 (use-package atomic-chrome

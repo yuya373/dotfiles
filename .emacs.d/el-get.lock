@@ -1,5 +1,6 @@
 (setq el-get-lock-package-versions
-      '((transient :checksum "9e30038d2d69e4ad0f3333777137af52e4771442")
+      '((evil-collection :checksum "d165a975a48ba8168eab5fafc5eb1cd4cda3b92c")
+        (transient :checksum "9e30038d2d69e4ad0f3333777137af52e4771442")
         (terraform-mode :checksum "6973d1acaba2835dfdf174f5a5e27de6366002e1")
         (hcl-mode :checksum "0f2c5ec7e7bcf77c8548e8cac8721ea935ca1b5e")
         (pdf-tools :checksum "9a63f3909e5a331b6974deb03abd2c4bad42c2d9")

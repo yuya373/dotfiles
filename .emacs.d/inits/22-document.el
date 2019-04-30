@@ -258,14 +258,7 @@
 (use-package nov
   :mode (("\\.epub\\'" . nov-mode))
   :init
-  (setq nov-text-width 80)
-  :config
-  (evil-define-key 'normal nov-mode-map
-    "H" 'nov-previous-document
-    "L" 'nov-next-document
-    ",t" 'nov-goto-toc
-    ",r" 'nov-render-document
-    ))
+  (setq nov-text-width 80))
 
 
 (provide '22-document)

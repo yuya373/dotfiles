@@ -25,15 +25,16 @@
 ;;; Code:
 
 (eval-when-compile
-  (require 'evil)
-  (require 'evil-leader))
+  (require 'use-package)
+  (require 'el-get))
 
-(el-get-bundle ace-window)
-(use-package ace-window
-  :commands (ace-window aw-select aw-switch-to-window)
-  :init
-  (setq aw-dispatch-always t)
-  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+(defvar diary-root-dir (expand-file-name "~/dev/diary"))
+(defvar diary-year-format "%Y")
+(defvar diary-month-format "%m")
+(defvar diary-file-format (concat (format "%s/%s"
+                                          diary-year-format
+                                          diary-month-format)
+                                  "/%d.md"))
 
 ;; helm
 (el-get-bundle helm)
@@ -42,7 +43,21 @@
 (el-get-bundle migemo)
 
 
-
+(use-package helm-man
+  :after (helm))
+(use-package helm-config
+  :after (helm))
+(use-package helm-eshell
+  :after (helm))
+(use-package helm-ls-git
+  :after (helm)
+  :init
+  (setq helm-ls-git-default-sources '(helm-source-ls-git))
+  (setq helm-ls-git-fuzzy-match t))
+(use-package helm-ag
+  :after (helm)
+  :config
+  (setq helm-ag-insert-at-point 'symbol))
 (use-package helm
   :diminish helm-mode
   :commands (helm-eshell-history
@@ -63,6 +78,7 @@
              helm-semantic-or-imenu
              helm-elscreen)
   :init
+  ;; (add-hook 'after-init-hook 'helm-mode)
   (setq helm-mini-default-sources '(
                                     helm-source-buffers-list
                                     helm-source-files-in-current-dir
@@ -99,27 +115,18 @@
         helm-echo-input-in-header-line t)
   (setq helm-ff-guess-ffap-filenames t)
   :config
-  (use-package helm-man)
-  (use-package helm-config)
-  (use-package helm-eshell)
-  (use-package helm-ls-git
-    ;; :commands (helm-ls-git-ls
-    ;;            helm-ls-git-source
-    ;;            helm-ls-git-not-inside-git-repo)
-    :init
-    (setq helm-ls-git-default-sources '(helm-source-ls-git))
-    (setq helm-ls-git-fuzzy-match t))
   (helm-migemo-mode t)
   (diminish 'helm-migemo-mode)
-  (defun make-helm-git-source ()
-    (unless (helm-ls-git-not-inside-git-repo)
-      (setq helm-source-ls-git
-            (helm-make-source "Git files" 'helm-ls-git-source
-              :fuzzy-match helm-ls-git-fuzzy-match))))
-  (use-package helm-ag
-    :config
-    (setq helm-ag-insert-at-point 'symbol))
-  (helm-mode +1)
+  (defun open-junk-dir ()
+    (interactive)
+    (let* ((junk-dir "~/Dropbox/junk/"))
+      (helm-find-files-1 (expand-file-name (format "%s/%s" junk-dir (format-time-string "%Y-%m-%d"))))))
+  (defun open-diary-dir ()
+    (interactive)
+    (helm-find-files-1 (format "%s/%s"
+                               diary-root-dir
+                               (format-time-string diary-file-format))))
+
   (defun switch-window-if-gteq-3-windows ()
     (if (>= (1+ (length (window-list))) 3)
         (aw-switch-to-window (aw-select "Ace - Window"))))
@@ -319,18 +326,6 @@
       (helm-exit-and-execute-action '(lambda (candidate)
                                        (ace-helm-switch-to-buffer candidate)))))
 
-  ;; (defun helm-imenu--execute-action-at-once-p ()
-  ;;   ;; (let ((cur (helm-get-selection))
-  ;;   ;;       (mb (with-helm-current-buffer
-  ;;   ;;             (save-excursion
-  ;;   ;;               (goto-char (point-at-bol))
-  ;;   ;;               (point-marker)))))
-  ;;   ;;   (if (equal (cdr cur) mb)
-  ;;   ;;       (prog1 nil
-  ;;   ;;         (helm-set-pattern "")
-  ;;   ;;         (helm-force-update))
-  ;;   ;;     t))
-  ;;   nil)
   (with-eval-after-load "evil"
     (define-key evil-motion-state-map
       (kbd "C-b") 'helm-mini)
@@ -404,10 +399,7 @@
   (define-key helm-ag-map (kbd "C-t") 'helm-perspeen-open-with-new-tab)
   (define-key helm-ag-map (kbd "C-s") 'helm-ace-split-ag)
   (define-key helm-ag-map (kbd "C-v") 'helm-ace-vsplit-ag)
-  (define-key helm-ag-map (kbd "C-o") 'helm-ace-ff-ag)
-  ;; (define-key helm-ag-map (kbd "C-o") 'helm-ag--run-other-window-action)
-
-  )
+  (define-key helm-ag-map (kbd "C-o") 'helm-ace-ff-ag))
 
 (el-get-bundle helm-dash)
 (use-package helm-dash
@@ -488,13 +480,6 @@ The Argument FEED-PATH should be a string with the path of the xml file."
   (evil-define-key 'normal helm-gtags-mode-map
     (kbd "\C-]") 'helm-gtags-find-tag-from-here
     (kbd "\C-t") 'helm-gtags-pop-stack))
-
-(el-get-bundle helm-open-github)
-(use-package helm-open-github
-  :commands (helm-open-github-from-file
-             helm-open-github-from-commit
-             helm-open-github-from-issues
-             helm-open-github-from-pull-requests))
 
 (provide '04-helm)
 ;;; 04-helm.el ends here

@@ -61,22 +61,7 @@
                             (point-max))))
   (add-hook 'compilation-filter-hook 'compilation-filter-ansi)
   :config
-  (setq compilation-scroll-output t)
-  (define-key compilation-mode-map (kbd "g") nil)
-  (with-eval-after-load "evil"
-    (evil-define-key 'normal compilation-mode-map
-      "g" nil
-      "\C-c" 'evil-window-delete
-      "\C-d" 'evil-scroll-down
-      "\C-c" 'evil-window-delete
-      "\C-m" 'compile-goto-error
-      ",v" 'compilation-display-error
-      ",n" 'compilation-next-error
-      ",p" 'compilation-previous-error
-      ",fn" 'compilation-next-file
-      ",fp" 'compilation-previous-file
-      ",r" 'recompile
-      ",c" 'kill-compilation)))
+  (setq compilation-scroll-output t))
 
 (provide '31-compilation)
 ;;; 31-compilation.el ends here

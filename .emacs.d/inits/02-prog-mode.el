@@ -26,58 +26,6 @@
 (eval-when-compile
   (require 'evil))
 
-;; smartparens
-;; (el-get-bundle smartparens)
-;; (use-package smartparens-config
-;;   :commands (smartparens-mode)
-;;   :init
-;;   (add-hook 'toml-mode-hook 'smartparens-mode)
-;;   (add-hook 'prog-mode-hook 'smartparens-mode)
-;;   :config
-;;   (defun sp-enter-and-indent-sexp (&rest _ignored)
-;;     "Insert an extra newline after point, and reindent."
-;;     (newline)
-;;     (indent-according-to-mode)
-;;     (forward-line -1)
-;;     (indent-according-to-mode))
-
-;;   (dolist (mode '(rust-mode rjsx-mode))
-;;     (sp-local-pair mode "{" nil
-;;                    :post-handlers '((sp-enter-and-indent-sexp "RET")))))
-;; (use-package smartparens-config
-;;   :diminish smartparens-mode
-;;   :commands (smartparens-mode turn-on-smartparens-mode)
-;;   :init
-;;   (add-hook 'ensime-inf-mode-hook 'smartparens-mode)
-;;   (add-hook 'sbt-mode-hook 'smartparens-mode)
-;;   (add-hook 'scala-mode-hook 'smartparens-mode)
-;;   (add-hook 'elm-interactive-mode-hook 'smartparens-mode)
-;;   (add-hook 'inferior-ess-mode-hook 'smartparens-mode)
-;;   (add-hook 'ess-mode-hook 'smartparens-mode)
-;;   (add-hook 'inferior-python-mode-hook 'smartparens-mode)
-;;   (add-hook 'ensime-inf-mode-hook 'smartparens-mode)
-;;   (add-hook 'eshell-mode-hook 'smartparens-mode)
-;;   (add-hook 'slime-repl-mode-hook '(lambda () (turn-off-smartparens-mode)))
-;;   (add-hook 'web-mode-hook '(lambda () (turn-off-smartparens-mode)))
-;;   (add-hook 'yaml-mode-hook 'smartparens-mode)
-;;   (add-hook 'inf-ruby-mode-hook 'smartparens-mode)
-;;   (add-hook 'restclient-mode-hook 'smartparens-mode)
-;;   (add-hook 'prog-mode-hook 'smartparens-mode)
-;;   :config
-;;   ;; (with-eval-after-load "evil"
-;;   ;;   (evil-define-key 'normal smartparens-mode-map
-;;   ;;     (kbd "C-s C-f") 'sp-forward-sexp
-;;   ;;     (kbd "C-s C-b") 'sp-backward-sexp
-;;   ;;     (kbd "C-s C-w") 'sp-unwrap-sexp
-;;   ;;     (kbd "C-s C-p") 'sp-previous-sexp
-;;   ;;     (kbd "C-s C-n") 'sp-next-sexp
-;;   ;;     (kbd "C-s C-d") 'sp-down-sexp
-;;   ;;     (kbd "C-s C-u") 'sp-up-sexp
-;;   ;;     (kbd "C-s C-k") 'sp-kill-hybrid-sexp)
-;;   ;; (define-key evil-normal-state-map (kbd "C-s") smartparens-mode-map))
-;;   )
-
-
 (defun align-regexp-repeated (start stop regexp)
   "Like align-regexp, but repeated for multiple columns. See
 http://www.emacswiki.org/emacs/AlignCommands"
