@@ -312,7 +312,7 @@
                                 easy-hugo-postdir))))
   (defun easy-hugo-newpost-today  ()
     (interactive)
-    (let ((format "%Y_%m_%d"))
+    (let ((format "%Y_%m_%d-%H_%M"))
       (easy-hugo-newpost
        (format "%s.md"
                (format-time-string format))))))
