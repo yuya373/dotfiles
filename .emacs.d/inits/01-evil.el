@@ -93,9 +93,13 @@
   :after (evil)
   :init
   (setq evil-collection-company-use-tng nil
-        evil-collection-setup-minibuffer nil)
+        evil-collection-setup-minibuffer nil
+        evil-collection-key-blacklist '("t" "SPC" "C-j" "C-k" "C-h" "C-l"))
   :config
-  (evil-collection-init))
+  (evil-collection-init)
+  (evil-collection-define-key 'normal 'compilation-mode-map
+    (kbd "C-n") 'compilation-next-error
+    (kbd "C-p") 'compilation-previous-error))
 (use-package evil-anzu
   :after (evil))
 (use-package evil-indent-textobject
@@ -261,6 +265,14 @@
 
   ;; C-h
   (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char)
+  (define-key evil-ex-completion-map (kbd "C-h") 'evil-delete-backward-char)
+  (define-key minibuffer-inactive-mode-map (kbd "C-h") 'evil-delete-backward-char)
+  (define-key minibuffer-local-map (kbd "C-h") 'evil-delete-backward-char)
+  (define-key minibuffer-local-ns-map (kbd "C-h") 'evil-delete-backward-char)
+  (define-key minibuffer-local-completion-map (kbd "C-h") 'evil-delete-backward-char)
+  (define-key minibuffer-local-must-match-map (kbd "C-h") 'evil-delete-backward-char)
+  (define-key minibuffer-local-shell-command-map (kbd "C-h") 'evil-delete-backward-char)
+  (define-key minibuffer-local-isearch-map (kbd "C-h") 'evil-delete-backward-char)
   ;; (keyboard-translate ?\C-h ?\C-?)
 
   ;; window move
