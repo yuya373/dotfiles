@@ -99,7 +99,14 @@
   (evil-collection-init)
   (evil-collection-define-key 'normal 'compilation-mode-map
     (kbd "C-n") 'compilation-next-error
-    (kbd "C-p") 'compilation-previous-error))
+    (kbd "C-p") 'compilation-previous-error)
+  (evil-collection-define-key 'normal 'flycheck-error-list-mode-map
+    (kbd "C-n") 'flycheck-error-list-next-error
+    (kbd "C-p") 'flycheck-error-list-previous-error)
+  (evil-collection-define-key 'normal 'tide-project-errors-mode-map
+    (kbd "C-n") 'tide-find-next-error
+    (kbd "C-p") 'tide-find-previous-error)
+  )
 (use-package evil-anzu
   :after (evil))
 (use-package evil-indent-textobject

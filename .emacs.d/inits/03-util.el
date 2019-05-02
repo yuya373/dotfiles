@@ -173,11 +173,7 @@
 (el-get-bundle wgrep-ag)
 
 (use-package wgrep-ag
-  :commands (wgrep-ag-setup)
-  :config
-  (evil-define-key 'normal wgrep-mode-map
-    ",k" 'wgrep-exit
-    ",s" 'wgrep-finish-edit))
+  :commands (wgrep-ag-setup))
 
 (use-package ag
   :commands (ag)
@@ -189,8 +185,7 @@
   :config
   (evil-set-initial-state 'ag-mode 'normal)
   (evil-define-key 'normal ag-mode-map
-    "k" 'evil-previous-visual-line
-    ",e" 'wgrep-change-to-wgrep-mode))
+    "E" 'wgrep-change-to-wgrep-mode))
 
 (use-package tramp
   :defer t
