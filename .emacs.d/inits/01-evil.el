@@ -106,6 +106,9 @@
   (evil-collection-define-key 'normal 'tide-project-errors-mode-map
     (kbd "C-n") 'tide-find-next-error
     (kbd "C-p") 'tide-find-previous-error)
+  (evil-collection-define-key 'normal 'nov-mode-map
+    (kbd "C-n") 'nov-next-document
+    (kbd "C-p") 'nov-previous-document)
   )
 (use-package evil-anzu
   :after (evil))
@@ -147,7 +150,6 @@
     (kbd ",,") 'evilnc-comment-or-uncomment-lines))
 (use-package evil-args
   :after (evil)
-  :commands (evil-inner-arg evil-outer-arg)
   :config
   (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
   (define-key evil-outer-text-objects-map "a" 'evil-outer-arg))
