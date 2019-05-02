@@ -39,10 +39,10 @@ brew install \
 # Emacs
 
 # TODO: create own taps
-# brew install emacs --with-cocoa --with-ctags --with-imagemagick@6 --with-librsvg --with-dbus --HEAD
+# brew install emacs --with-cocoa --with-ctags --with-imagemagick --with-librsvg --with-dbus --HEAD
 # ln -sf `brew --prefix emacs`/Emacs.app /Applications/Emacs.app
 
-brew install imagemagick@6 guntls pkgconfig
+brew install imagemagick guntls pkgconfig
 ~/dotfiles/build_emacs
 
 ## makeinfo
