@@ -44,7 +44,14 @@
 (use-package projectile-rails
   :commands (projectile-rails-global-mode)
   :init
-  (add-hook 'projectile-mode-hook #'projectile-rails-global-mode))
+  (add-hook 'projectile-mode-hook #'projectile-rails-global-mode)
+  :config
+  (evil-define-key 'normal projectile-rails-mode-map
+    ",rfm" 'projectile-rails-find-model
+    ",rfc" 'projectile-rails-find-controller
+    ",rfv" 'projectile-rails-find-view
+    ",rfM" 'projectile-rails-find-migration
+    ))
 
 (provide '07-projectile)
 ;;; 07-projectile.el ends here
