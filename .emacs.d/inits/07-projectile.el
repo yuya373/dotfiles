@@ -46,6 +46,22 @@
   :init
   (add-hook 'projectile-mode-hook #'projectile-rails-global-mode)
   :config
+  (defun projectile-rails-find-controller ()
+    (interactive)
+    (helm-find-files-1 (format "%sapp/controllers/"
+                               (projectile-rails-root))))
+  (defun projectile-rails-find-model ()
+    (interactive)
+    (helm-find-files-1 (format "%sapp/models/"
+                               (projectile-rails-root))))
+  (defun projectile-rails-find-view ()
+    (interactive)
+    (helm-find-files-1 (format "%sapp/views/"
+                               (projectile-rails-root))))
+  (defun projectile-rails-find-migration ()
+    (interactive)
+    (helm-find-files-1 (format "%sdb/migrate/"
+                               (projectile-rails-root))))
   (evil-define-key 'normal projectile-rails-mode-map
     ",rfm" 'projectile-rails-find-model
     ",rfc" 'projectile-rails-find-controller
