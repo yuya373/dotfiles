@@ -1,5 +1,6 @@
 (setq el-get-lock-package-versions
-      '((helm :checksum "5a2c0d55fbee47f617aff4f04eeae0bf161b1b50")
+      '((yasnippet-snippets :checksum "69cc1c19c7d67780d9f0f910462b818e8c0a570e")
+        (helm :checksum "5a2c0d55fbee47f617aff4f04eeae0bf161b1b50")
         (emacs-async :checksum "ec374cacb324e0bd042586de90d3d42b9bcffb01")
         (evil-collection :checksum "d165a975a48ba8168eab5fafc5eb1cd4cda3b92c")
         (transient :checksum "9e30038d2d69e4ad0f3333777137af52e4771442")

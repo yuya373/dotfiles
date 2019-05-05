@@ -27,25 +27,20 @@
 (eval-when-compile
   (require 'evil))
 
-;; (el-get-bundle yasnippet)
-;; (el-get-bundle yasnippet-snippets)
+(el-get-bundle yasnippet)
+(el-get-bundle yasnippet-snippets)
 (el-get-bundle company-mode)
 (el-get-bundle company-emoji)
 (el-get-bundle company-statistics)
 (el-get-bundle company-quickhelp)
 
+(use-package yasnippet-snippets
+  :after (yasnippet))
 
-;; (use-package yasnippet
-;;   :commands (yas-global-mode)
-;;   :init
-;;   (add-hook 'after-init-hook 'yas-global-mode)
-;;   :config
-;;   (use-package yasnippet-snippets
-;;     :config
-;;     (add-to-list 'yas-snippet-dirs
-;;                  (expand-file-name
-;;                   (concat user-emacs-directory
-;;                           "el-get/yasnippet-snippets")))))
+(use-package yasnippet
+  :commands (yas-global-mode)
+  :init
+  (add-hook 'after-init-hook 'yas-global-mode))
 
 (use-package company-statistics
   :commands (company-statistics-mode)

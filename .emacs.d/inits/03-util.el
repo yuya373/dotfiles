@@ -267,5 +267,16 @@
   (interactive)
   (message (font-xlfd-name (font-at (point)))))
 
+(defun image-at-point ()
+  (interactive)
+  (let* ((point (point))
+         (display-prop (get-text-property point 'display))
+         (type (car-safe display-prop)))
+    (when (eq type 'image)
+      (let* ((image-plist (cdr display-prop))
+             (file (plist-get image-plist :file)))
+        (when file
+          (helm-find-files-1 file))))))
+
 (provide '03-util)
 ;;; 03-util.el ends here

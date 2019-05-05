@@ -315,7 +315,18 @@
     (let ((format "%Y_%m_%d-%H_%M"))
       (easy-hugo-newpost
        (format "%s.md"
-               (format-time-string format))))))
+               (format-time-string format)))))
+  (evil-define-key 'normal easy-hugo-mode-map
+    (kbd "C-p") 'easy-hugo-previous-line
+    (kbd "C-n") 'easy-hugo-next-line
+    (kbd "RET") 'easy-hugo-open
+    "a" 'easy-hugo-ag
+    "e" 'easy-hugo-open
+    "q" 'easy-hugo-quit
+    "p" 'easy-hugo-preview
+    "d" 'easy-hugo-github-deploy
+    "f" 'easy-hugo-list-posts
+    ))
 
 
 (provide '24-toy)

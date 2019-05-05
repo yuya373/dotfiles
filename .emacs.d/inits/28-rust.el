@@ -29,6 +29,11 @@
   :mode (("\\.rs\\'" . rust-mode))
   :init
   (setq rust-format-on-save t)
+  (defun rust-mode-setup-company ()
+    (set (make-local-variable 'company-backends)
+         (cons '(company-capf company-yasnippet)
+               company-backends)))
+  (add-hook 'rust-mode-hook 'rust-mode-setup-company)
   :config
   (modify-syntax-entry ?! "_" rust-mode-syntax-table)
   (modify-syntax-entry ?_ "w" rust-mode-syntax-table)
