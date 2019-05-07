@@ -62,11 +62,16 @@
     (interactive)
     (helm-find-files-1 (format "%sdb/migrate/"
                                (projectile-rails-root))))
+  (defun projectile-rails-find-helper ()
+    (interactive)
+    (helm-find-files-1 (format "%sapp/helpers/"
+                               (projectile-rails-root))))
   (evil-define-key 'normal projectile-rails-mode-map
     ",rfm" 'projectile-rails-find-model
     ",rfc" 'projectile-rails-find-controller
     ",rfv" 'projectile-rails-find-view
     ",rfM" 'projectile-rails-find-migration
+    ",rfh" 'projectile-rails-find-helper
     ))
 
 (provide '07-projectile)
