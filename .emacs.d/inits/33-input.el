@@ -109,8 +109,7 @@
   (use-package skk-study)
   (use-package skk-cdb)
   (use-package skk-num)
-  ;; (define-key skk-j-mode-map (kbd "C-h") 'skk-delete-backward-char)
-  ;; (evil-make-intercept-map skk-j-mode-map 'insert)
+  (define-key skk-j-mode-map (kbd "C-h") 'skk-delete-backward-char)
   ;; @@ server completion
   (add-to-list 'skk-search-prog-list
                '(skk-server-completion-search) t)

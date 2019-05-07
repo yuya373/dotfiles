@@ -276,7 +276,7 @@
   ;; (define-key minibuffer-local-isearch-map (kbd "C-[") 'minibuffer-keyboard-quit)
 
   ;; C-h
-  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char)
+  (global-set-key (kbd "C-h") 'evil-delete-backward-char)
   (define-key evil-ex-completion-map (kbd "C-h") 'evil-delete-backward-char)
   (define-key minibuffer-inactive-mode-map (kbd "C-h") 'evil-delete-backward-char)
   (define-key minibuffer-local-map (kbd "C-h") 'evil-delete-backward-char)
