@@ -25,7 +25,7 @@
 ;;; Code:
 (eval-when-compile
   (require 'el-get)
-  (require 'usepackage))
+  (require 'use-package))
 
 (el-get-bundle flycheck)
 (el-get-bundle alexmurray/evil-flycheck)
