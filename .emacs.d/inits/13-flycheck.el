@@ -73,7 +73,9 @@
           evil-delete-char
           evil-paste-after
           evil-paste-before
-          )))
+          ))
+  :config
+  (flycheck-add-mode 'javascript-eslint 'typescript-mode))
 
 (use-package flycheck-package
   :commands (flycheck-package-setup)
