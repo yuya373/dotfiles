@@ -36,6 +36,9 @@
 (use-package pkg-info
   :after (flycheck))
 
+;; (use-package evil-flycheck
+;;   :after (flycheck))
+
 (defun my/use-eslint-from-node-modules ()
   (interactive)
   (let* ((root (or (locate-dominating-file
@@ -45,10 +48,11 @@
                     (or (buffer-file-name) default-directory)
                     ".eslintrc")))
          (eslint (and root
-                      (expand-file-name "node_modules/eslint/bin/eslint.js"
+                      (expand-file-name "node_modules/.bin/eslint"
                                         root))))
 
     ;; (when root
+    ;;   (make-local-variable 'flycheck-eslint-rules-directories)
     ;;   (add-to-list 'flycheck-eslint-rules-directories (expand-file-name root)))
     (when (and eslint (file-executable-p eslint))
       (setq-local flycheck-javascript-eslint-executable eslint))))
@@ -65,16 +69,12 @@
   (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
   (setq flycheck-scalastylerc "~/dotfiles/scalastyle_config.xml")
   (setq flycheck-check-syntax-automatically
-        '(evil-normal-state
-          keyboard-quit
-          evil-delete
-          evil-delete-line
-          evil-delete-marks
-          evil-delete-char
-          evil-paste-after
-          evil-paste-before
+        '(idle-change
+          idle-buffer-switch
+          save
           ))
   :config
+  (flycheck-add-next-checker 'typescript-tide 'javascript-eslint)
   (flycheck-add-mode 'javascript-eslint 'typescript-mode))
 
 (use-package flycheck-package
