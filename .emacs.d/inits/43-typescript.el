@@ -71,6 +71,7 @@
         tide-always-show-documentation t
         )
   :config
+  (flycheck-add-next-checker 'typescript-tide 'javascript-eslint)
   (evil-define-key 'visual tide-mode-map
     ",rr" 'tide-refactor)
   (evil-define-key 'normal tide-mode-map

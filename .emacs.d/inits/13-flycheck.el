@@ -74,7 +74,6 @@
           save
           ))
   :config
-  (flycheck-add-next-checker 'typescript-tide 'javascript-eslint)
   (flycheck-add-mode 'javascript-eslint 'typescript-mode))
 
 (use-package flycheck-package
