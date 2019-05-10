@@ -39,6 +39,15 @@
 ;; (use-package evil-flycheck
 ;;   :after (flycheck))
 
+
+;; Better to use https://github.com/tomoya/auto-fix.el
+(defun flycheck-eslint-fix ()
+  (interactive)
+  (shell-command (format "%s --fix %s"
+                         flycheck-javascript-eslint-executable
+                         (buffer-file-name)))
+  (revert-buffer t t))
+;; Better to use https://github.com/codesuki/add-node-modules-path
 (defun my/use-eslint-from-node-modules ()
   (interactive)
   (let* ((root (or (locate-dominating-file

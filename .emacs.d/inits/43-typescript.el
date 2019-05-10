@@ -70,8 +70,11 @@
                                   jump-to-implementation)
         tide-always-show-documentation t
         )
+  (setq tide-format-options '(:tabSize 2 :indentSize 2 :baseIndentSize 0))
   :config
-  (flycheck-add-next-checker 'typescript-tide 'javascript-eslint)
+  (flycheck-add-next-checker 'typescript-tide 'javascript-eslint t)
+  (flycheck-add-mode 'tsx-tide 'rjsx-mode)
+  (flycheck-add-next-checker 'tsx-tide 'javascript-eslint t)
   (evil-define-key 'visual tide-mode-map
     ",rr" 'tide-refactor)
   (evil-define-key 'normal tide-mode-map

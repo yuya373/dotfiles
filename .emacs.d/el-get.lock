@@ -12,7 +12,7 @@
         (highlight-indent-guides :checksum "0b10f38c54ffc099861ce8463e16a1b07ddbb203")
         (go-eldoc :checksum "cbbd2ea1e94a36004432a9ac61414cb5a95a39bd")
         (go-mode :checksum "120fb911f1d8038f828da85eed8aaad977dabd8c")
-        (tide :checksum "b64f7b5a9b8a111fbda05e5bdce23668b547ef36")
+        (tide :checksum "5224eae7da0a286d94a394620f9bbc8c7446a268")
         (typescript-mode :checksum "08ceb01ff3983f6d743a83fa19dbf78f2a1609d2")
         (solarized-css :checksum "cb2741075b9a4353bfffe624944f54fbdfc7957e")
         (org-mode :checksum "d588274878241e4d37aac186a6d92110ba2a3711")
