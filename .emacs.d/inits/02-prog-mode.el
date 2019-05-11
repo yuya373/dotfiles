@@ -64,7 +64,9 @@ http://www.emacswiki.org/emacs/AlignCommands"
     (add-to-list 'electric-pair-pairs '(?| . ?|)))
   (add-hook 'enh-ruby-mode-hook
             'add-ruby-do-arg-pair)
-  (setq electric-pair-open-newline-between-pairs t))
+  (setq electric-pair-open-newline-between-pairs t)
+  :config
+  (define-key electric-pair-mode-map (kbd "C-h") [backspace]))
 
 (el-get-bundle rainbow-delimiters)
 (use-package rainbow-delimiters
