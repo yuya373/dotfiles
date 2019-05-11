@@ -1,0 +1,7 @@
+#!/usr/bin/bash -eu
+
+pushd ~/.xmonad
+xmonad --recompile
+result=$?
+popd
+exit "$result"
