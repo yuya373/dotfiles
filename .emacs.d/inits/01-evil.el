@@ -94,7 +94,7 @@
   :init
   (setq evil-collection-company-use-tng nil
         evil-collection-setup-minibuffer nil
-        evil-collection-key-blacklist '("t" "SPC" "C-j" "C-k" "C-h" "C-l" "C-c"))
+        evil-collection-key-blacklist '("t" "SPC" "C-j" "C-k" "C-h" "C-l" "C-c" "C-c C-c"))
   :config
   (evil-collection-init)
   (evil-collection-define-key 'normal 'compilation-mode-map
