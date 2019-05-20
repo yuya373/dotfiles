@@ -50,12 +50,16 @@
 ;; Better to use https://github.com/codesuki/add-node-modules-path
 (defun my/use-eslint-from-node-modules ()
   (interactive)
-  (let* ((root (or (locate-dominating-file
-                    (or (buffer-file-name) default-directory)
-                    ".eslintrc.js")
-                   (locate-dominating-file
-                    (or (buffer-file-name) default-directory)
-                    ".eslintrc")))
+  (let* ((root (locate-dominating-file
+                (or (buffer-file-name) default-directory)
+                "package.json")
+               ;; (or (locate-dominating-file
+               ;;      (or (buffer-file-name) default-directory)
+               ;;      ".eslintrc.js")
+               ;;     (locate-dominating-file
+               ;;      (or (buffer-file-name) default-directory)
+               ;;      ".eslintrc"))
+               )
          (eslint (and root
                       (expand-file-name "node_modules/.bin/eslint"
                                         root))))
