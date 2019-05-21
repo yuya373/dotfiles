@@ -107,10 +107,7 @@
 (let* ((size 15)
        (height (* 10 15))
        (spec (list :family "Ricty"
-                   :slant 'normal
-                   :weight 'normal
-                   :height height
-                   :width 'normal))
+                   :height height))
        (fontspec (apply #'font-spec spec))
        (jp-fontspec (apply #'font-spec spec)))
 
