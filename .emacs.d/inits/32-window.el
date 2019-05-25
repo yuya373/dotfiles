@@ -84,8 +84,11 @@
   (setq shackle-rule-bottom '(:align bottom :select nil :size 0.4 :popup t))
   (setq shackle-rule-right-half '(:align right :select nil :size 0.4 :popup t))
   (setq shackle-rule-bottom-wide '(:align bottom :select nil :size 0.6 :popup t))
+  (setq shackle-rule-ignore '(:ignore t))
   (setq shackle-rules
-        (append (mapcar (lambda (l) (append l shackle-rule-bottom-wide))
+        (append (mapcar (lambda (l) (append l shackle-rule-ignore))
+                        '(("\\`\\*flycheck-eslint-fix" :regexp t)))
+                (mapcar (lambda (l) (append l shackle-rule-bottom-wide))
                         '(((slack-message-buffer-mode
                             slack-search-result-buffer-mode)
                            :select t)))
@@ -111,6 +114,7 @@
                           (godoc-mode)
                           (tide-project-errors-mode)
                           ("\\`\\*tide-documentation\\*\\'" :regexp t :select t)
+
 
                           ((slack-edit-file-comment-buffer-mode
                             slack-message-compose-buffer-mode
@@ -176,7 +180,7 @@
   (defun perspeen-tab--set-header-line-format (&optional force)
     (if force
         (setq header-line-format nil)
-        (setq-default header-line-format nil)))
+      (setq-default header-line-format nil)))
 
   (defun helm-switch-to-buffers-around-advice (org-func buffer-or-name &optional other-window)
     (unless perspeen-use-tab

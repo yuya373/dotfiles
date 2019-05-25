@@ -31,18 +31,25 @@
 (el-get-bundle js2-mode)
 
 (use-package js2-mode
-  :mode (("\\.js\\'" . js2-mode)
+  :mode (;; ("\\.js\\'" . js2-mode)
          ;; ("\\.jsx\\'" . js2-jsx-mode)
          ;; ("\\.jsx.js\\'" . js2-jsx-mode)
          )
   :init
-  (setq js2-highlight-level 3)
-  (setq js2-include-browser-externs nil)
-  (setq js2-mode-show-parse-errors nil)
-  (setq js2-mode-show-strict-warnings nil)
-  (setq js2-highlight-external-variables nil)
-  (setq js2-include-jslint-globals nil)
+  ;; (setq js2-include-browser-externs nil)
   (setq js2-basic-offset 2)
+  (setq js2-skip-preprocessor-directives t
+        js-chain-indent t
+        ;; let flycheck handle this
+        js2-mode-show-parse-errors nil
+        js2-mode-show-strict-warnings nil
+        ;; Flycheck provides these features, so disable them: conflicting with
+        ;; the eslint settings.
+        js2-strict-trailing-comma-warning nil
+        js2-strict-missing-semi-warning nil
+        ;; maximum fontification
+        js2-highlight-level 3
+        js2-highlight-external-variables t)
   :config
   (defun my-js2-modify-syntax ()
     (modify-syntax-entry ?_ "w" js2-mode-syntax-table))
@@ -60,106 +67,10 @@
 (el-get-bundle felipeochoa/rjsx-mode)
 (use-package rjsx-mode
   :mode (("\\.jsx\\'" . rjsx-mode)
-         ("\\.js\\'" . rjsx-mode)
-         ("\\.tsx\\'" . rjsx-mode)
-         )
+         ("\\.js\\'" . rjsx-mode))
+  :commands (rjsx-minor-mode)
   :init
-  (defun my-rjsx-use-buitin-indent ()
-    (setq-local indent-line-function 'rjsx-indent-line))
-  (add-hook 'rjsx-mode-hook 'my-rjsx-use-buitin-indent)
-  (defun file-tsx-p ()
-    (string-suffix-p "tsx"
-                     (or (buffer-file-name)
-                         (buffer-name))))
-  (defun setup-tsx ()
-    (interactive)
-    (when (file-tsx-p)
-      (add-hook 'before-save-hook 'tide-format-before-save nil t)
-      (eldoc-mode +1)
-      (tern-mode -1)
-      (tide-setup)))
-  (add-hook 'rjsx-mode-hook 'setup-tsx)
-  (defun setup-tern ()
-    (interactive)
-    (unless (file-tsx-p)
-      (tern-mode t)))
-  (add-hook 'rjsx-mode-hook 'setup-tern)
-  :config
-  (defun rjsx--indent-line-1 ()
-    "Helper for `rjsx-indent-line'."
-    (let* ((indent-tabs-mode nil)
-           (cur-pos (point))
-           (cur-char (char-after cur-pos))
-           (node (js2-node-at-point (- cur-pos rjsx--indent-running-offset)))
-           (parent (js2-node-parent node)))
-      (cond
-       ((rjsx-node-p node)
-        (cond
-         ((eq cur-char ?<)
-          (if (rjsx-node-p parent)
-              (rjsx--indent-line-to-offset parent sgml-basic-offset)
-            ;; Top-level node, indent as JS
-            (js-indent-line))
-          (when rjsx--node-abs-pos-cache
-            (setf (gethash node rjsx--node-abs-pos-cache)
-                  (save-excursion (back-to-indentation) (point)))))
-         ((memq cur-char '(?/ ?>))
-          (rjsx--indent-line-to-offset node sgml-basic-offset))
-         ((eq cur-char ?\n)
-          (rjsx--indent-line-to-offset node sgml-basic-offset))
-         (t (error "Don't know how to indent %s for JSX node" (make-string 1 cur-char)))))
-       ((and (rjsx-identifier-p parent)
-             (rjsx-member-p (js2-node-parent parent))
-             (rjsx-node-p (js2-node-parent (js2-node-parent parent))))
-        (rjsx--indent-line-to-offset (js2-node-parent (js2-node-parent parent)) 0))
-
-       ;; JSX children
-       ((rjsx-closing-tag-p node)
-        (rjsx--indent-line-to-offset parent 0))
-       ((rjsx-text-p node)
-        (rjsx--indent-line-to-offset parent sgml-basic-offset))
-       ((rjsx-wrapped-expr-p node)
-        (if (eq cur-char ?})
-            (js-indent-line)
-          (rjsx--indent-line-to-offset parent sgml-basic-offset)))
-
-       ;; Attribute-like (spreads, attributes, etc.)
-       ;; if first attr is on same line as tag, then align
-       ;; otherwise indent to parent level + sgml-basic-offset
-       ((or (rjsx-identifier-p node)
-            (and (rjsx-identifier-p parent)
-                 (rjsx-attr-p (js2-node-parent parent)))
-            (rjsx-spread-p node))
-        (let* ((tag (or (rjsx-ancestor node #'rjsx-node-p)
-                        (error "Did not find containing JSX tag for attributes")))
-               (name (rjsx-node-name tag))
-               column)
-          (save-excursion
-            (goto-char (rjsx--node-abs-pos tag))
-            (setq column (current-column))
-            (when name (forward-char (js2-node-end name)) (skip-chars-forward " \t"))
-            (if (eolp)
-                (setq column (+ column sgml-basic-offset sgml-attribute-offset))
-              (setq column (current-column))))
-          (indent-line-to column)))
-
-       ;; Everything else indent as javascript
-       (t (js-indent-line)))
-
-      (when rjsx--indent-region-p
-        (cl-incf rjsx--indent-running-offset
-                 (- (save-excursion (back-to-indentation) (point))
-                    cur-pos)))))
-
-  (defun rjsx-delete-creates-full-tag-and-escape (n &optional killflag)
-    (interactive "p")
-    (rjsx-delete-creates-full-tag n killflag)
-    (evil-normal-state))
-
-  (eval-after-load "evil"
-    (evil-define-key 'insert rjsx-mode-map
-      (kbd "C-d") 'rjsx-delete-creates-full-tag-and-escape))
-  )
+  (add-hook 'rjsx-mode-hook 'tern-mode))
 
 (el-get-bundle coffee-mode)
 (use-package coffee-mode
@@ -172,7 +83,7 @@
 (use-package tern
   :commands (tern-mode)
   :init
-  (add-hook 'js2-mode-hook 'tern-mode)
+  ;; (add-hook 'js2-mode-hook 'tern-mode)
   :config
   ;; (defun strip-multibyte (str)
   ;;   (replace-regexp-in-string "[[:multibyte:]]*" "" str))
@@ -203,41 +114,6 @@
                    )))
   (add-hook 'js2-mode-hook 'enable-company-tern)
   (add-hook 'js2-jsx-mode-hook 'enable-company-tern)
-  )
-
-(el-get-bundle flycheck-flow
-  :type github
-  :pkgname "lbolla/emacs-flycheck-flow")
-(use-package flycheck-flow
-  :config
-  (defun my/use-flow-from-node-modules ()
-    (interactive)
-    (let* ((root (locate-dominating-file
-                  (or (buffer-file-name) default-directory)
-                  ".flowconfig"))
-           (flow (and root
-                      (expand-file-name "node_modules/flow-bin/cli.js"
-                                        root))))
-      (when (and flow (file-executable-p flow))
-        (setq-local flycheck-javascript-flow-executable flow))))
-  (add-hook 'flycheck-mode-hook 'my/use-flow-from-node-modules)
-  ;;   (flycheck-define-checker javascript-flow
-  ;;     "A JavaScript syntax and style checker using Flow.
-
-  ;; See URL `http://flowtype.org/'."
-  ;;     :command (
-  ;;               "flow"
-  ;;               "check-contents"
-  ;;               (eval flycheck-javascript-flow-args)
-  ;;               "--json"
-  ;;               "--from" "emacs"
-  ;;               "--color=never"
-  ;;               source-original)
-  ;;     :standard-input t
-  ;;     :predicate flycheck-flow--predicate
-  ;;     :error-parser flycheck-flow--parse-json
-  ;;     ;; js3-mode doesn't support jsx
-  ;;     :modes (js-mode js-jsx-mode js2-mode js2-jsx-mode js3-mode rjsx-mode))
   )
 
 (provide '18-javascript)

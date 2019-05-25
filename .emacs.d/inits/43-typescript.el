@@ -48,18 +48,32 @@
 ;;       (eldoc-mode +1)
 ;;       (tide-setup)))
 ;;   (add-hook 'web-mode-hook 'setup-tsx))
-
 (use-package typescript-mode
-  :mode (("\\.ts\\'" . typescript-mode))
+  :mode (("\\.ts\\'" . typescript-mode)
+         ("\\.tsx\\'" . typescript-mode))
   :init
   (setq typescript-indent-level 2)
+  (defun file-tsx-p ()
+    (string-suffix-p "tsx"
+                     (or (buffer-file-name)
+                         (buffer-name))))
+  (defun setup-tsx ()
+    (interactive)
+    (when (file-tsx-p)
+      ;; (eldoc-mode +1)
+      (rjsx-minor-mode)
+      (setq-local indent-line-function 'rjsx-indent-line)
+      (tide-setup)
+      (setq-local flycheck-checker 'tsx-tide)))
+  (add-hook 'typescript-mode-hook 'setup-tsx)
   :config
   (use-package sgml-mode))
 
 (use-package tide
   :init
   (defun setup-tide-format ()
-    (add-hook 'before-save-hook 'tide-format-before-save nil t))
+    ;; (add-hook 'before-save-hook 'tide-format-before-save nil t)
+    )
   (add-hook 'tide-mode-hook 'setup-tide-format)
 
   (add-hook 'typescript-mode-hook 'tide-setup)
@@ -72,9 +86,9 @@
         )
   (setq tide-format-options '(:tabSize 2 :indentSize 2 :baseIndentSize 0))
   :config
-  (flycheck-add-next-checker 'typescript-tide 'javascript-eslint t)
-  (flycheck-add-mode 'tsx-tide 'rjsx-mode)
+  (flycheck-add-next-checker 'tsx-tide 'typescript-tide)
   (flycheck-add-next-checker 'tsx-tide 'javascript-eslint t)
+  (flycheck-add-mode 'tsx-tide 'typescript-mode)
   (evil-define-key 'visual tide-mode-map
     ",rr" 'tide-refactor)
   (evil-define-key 'normal tide-mode-map

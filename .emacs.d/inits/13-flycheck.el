@@ -43,16 +43,26 @@
 ;; Better to use https://github.com/tomoya/auto-fix.el
 (defun flycheck-eslint-fix ()
   (interactive)
-  (shell-command (format "%s --fix %s"
-                         flycheck-javascript-eslint-executable
-                         (buffer-file-name)))
-  (revert-buffer t t))
+  (when (and flycheck-javascript-eslint-executable
+             (file-executable-p flycheck-javascript-eslint-executable))
+    (let ((async-shell-command-display-buffer nil)
+          (file-name (buffer-file-name))
+          (eslint flycheck-javascript-eslint-executable)
+          (out-buf (get-buffer-create "*flycheck-eslint-fix-out*"))
+          (err-buf (get-buffer-create "*flycheck-eslint-fix-error*")))
+      (shell-command (format "%s --fix %s" eslint file-name)
+                           out-buf
+                           err-buf))
+
+
+    (revert-buffer t t)))
+
 ;; Better to use https://github.com/codesuki/add-node-modules-path
 (defun my/use-eslint-from-node-modules ()
   (interactive)
   (let* ((root (locate-dominating-file
                 (or (buffer-file-name) default-directory)
-                "package.json")
+                "node_modules")
                ;; (or (locate-dominating-file
                ;;      (or (buffer-file-name) default-directory)
                ;;      ".eslintrc.js")
