@@ -110,6 +110,7 @@
   (use-package skk-cdb)
   (use-package skk-num)
   (define-key skk-j-mode-map (kbd "C-h") 'skk-delete-backward-char)
+  (define-key minibuffer-local-map (kbd "C-j") 'skk-j-mode-on)
   ;; @@ server completion
   (add-to-list 'skk-search-prog-list
                '(skk-server-completion-search) t)

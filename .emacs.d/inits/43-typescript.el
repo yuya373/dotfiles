@@ -67,7 +67,12 @@
       (setq-local flycheck-checker 'tsx-tide)))
   (add-hook 'typescript-mode-hook 'setup-tsx)
   :config
-  (use-package sgml-mode))
+  (use-package sgml-mode)
+  (define-key typescript-mode-map (kbd "<") 'rjsx-electric-lt)
+  (define-key typescript-mode-map (kbd ">") 'rjsx-electric-gt)
+  (evil-define-key 'insert typescript-mode-map
+    (kbd "C-d") 'rjsx-delete-creates-full-tag)
+  )
 
 (use-package tide
   :init
