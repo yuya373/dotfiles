@@ -12,7 +12,7 @@ brew cask install \
      google-chrome dropbox vlc handbrake \
      trailer flux docker react-native-debugger \
      sketch amethyst kap \
-     virtualbox vagrant
+     virtualbox vagrant genymotion
 
 # Android
 # brew cask install \
