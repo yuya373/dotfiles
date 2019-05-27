@@ -48,6 +48,7 @@
 ;;       (eldoc-mode +1)
 ;;       (tide-setup)))
 ;;   (add-hook 'web-mode-hook 'setup-tsx))
+
 (use-package typescript-mode
   :mode (("\\.ts\\'" . typescript-mode)
          ("\\.tsx\\'" . typescript-mode))
@@ -72,7 +73,10 @@
   (define-key typescript-mode-map (kbd ">") 'rjsx-electric-gt)
   (evil-define-key 'insert typescript-mode-map
     (kbd "C-d") 'rjsx-delete-creates-full-tag)
-  )
+  (evil-define-key 'normal typescript-mode-map
+    (kbd "gt") 'rjsx-jump-tag
+    (kbd ",rt") 'rjsx-rename-tag-at-point
+    (kbd ",c") 'rjsx-comment-dwim))
 
 (use-package tide
   :init
