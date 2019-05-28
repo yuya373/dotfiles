@@ -46,6 +46,11 @@
   :init
   (add-hook 'projectile-mode-hook #'projectile-rails-global-mode)
   :config
+  (defun projectile-rails-classify (name)
+    "Accepts a filepath, splits it by '/' character and classifieses each of the element"
+    (mapcar #'(lambda (it)
+                (mapconcat #'upcase-initials (split-string it "_") ""))
+            (split-string name "/")))
   (defun projectile-rails-find-controller ()
     (interactive)
     (helm-find-files-1 (format "%sapp/controllers/"

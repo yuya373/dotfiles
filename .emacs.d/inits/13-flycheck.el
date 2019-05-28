@@ -43,26 +43,36 @@
 ;; Better to use https://github.com/tomoya/auto-fix.el
 (defun flycheck-eslint-fix ()
   (interactive)
-  (shell-command (format "%s --fix %s"
-                         flycheck-javascript-eslint-executable
-                         (buffer-file-name)))
-  (revert-buffer t t))
+  (when (and flycheck-javascript-eslint-executable
+             (file-executable-p flycheck-javascript-eslint-executable))
+    (let ((async-shell-command-display-buffer nil)
+          (file-name (buffer-file-name))
+          (eslint flycheck-javascript-eslint-executable)
+          (out-buf (get-buffer-create "*flycheck-eslint-fix-out*"))
+          (err-buf (get-buffer-create "*flycheck-eslint-fix-error*")))
+      (shell-command (format "%s --fix %s" eslint file-name)
+                           out-buf
+                           err-buf))
+
+
+    (revert-buffer t t)))
+
 ;; Better to use https://github.com/codesuki/add-node-modules-path
 (defun my/use-eslint-from-node-modules ()
   (interactive)
   (let* ((root (locate-dominating-file
                 (or (buffer-file-name) default-directory)
-                "package.json"))
-         (files (and root
-                     (list (expand-file-name "node_modules/.bin/eslint"
-                                             root)
-                           (expand-file-name "node_modules/.bin/eslint"
-                                             (mapconcat #'identity
-                                                        (butlast (split-string root "/") 2)
-                                                        "/")))))
-
-         (eslint (cl-find-if #'(lambda (file) (file-executable-p file))
-                             files)))
+                "node_modules")
+               ;; (or (locate-dominating-file
+               ;;      (or (buffer-file-name) default-directory)
+               ;;      ".eslintrc.js")
+               ;;     (locate-dominating-file
+               ;;      (or (buffer-file-name) default-directory)
+               ;;      ".eslintrc"))
+               )
+         (eslint (and root
+                      (expand-file-name "node_modules/.bin/eslint"
+                                        root))))
     ;; (when root
     ;;   (make-local-variable 'flycheck-eslint-rules-directories)
     ;;   (add-to-list 'flycheck-eslint-rules-directories (expand-file-name root)))

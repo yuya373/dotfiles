@@ -94,7 +94,7 @@
   :init
   (setq evil-collection-company-use-tng nil
         evil-collection-setup-minibuffer nil
-        evil-collection-key-blacklist '("t" "SPC" "C-j" "C-k" "C-h" "C-l" "C-c" "C-c C-c"))
+        evil-collection-key-blacklist '("t" "SPC" "C-j" "C-k" "C-h" "C-l" "C-c" "C-c C-c" "C-b"))
   :config
   (evil-collection-init)
   (evil-collection-define-key 'normal 'compilation-mode-map
@@ -109,6 +109,7 @@
   (evil-collection-define-key 'normal 'nov-mode-map
     (kbd "C-n") 'nov-next-document
     (kbd "C-p") 'nov-previous-document)
+  (evil-set-initial-state 'shell-mode 'normal)
   )
 (use-package evil-anzu
   :after (evil))
@@ -479,6 +480,7 @@
     "dd" 'helm-dash-at-point
     "da" 'helm-dash
     "di" 'helm-dash-async-install-docset
+    "ef" 'flycheck-eslint-fix
     "eha" 'helm-apropos
     "ehb" 'describe-bindings
     "ehf" 'describe-function
