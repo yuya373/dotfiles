@@ -62,22 +62,21 @@
   (interactive)
   (let* ((root (locate-dominating-file
                 (or (buffer-file-name) default-directory)
-                "node_modules")
-               ;; (or (locate-dominating-file
-               ;;      (or (buffer-file-name) default-directory)
-               ;;      ".eslintrc.js")
-               ;;     (locate-dominating-file
-               ;;      (or (buffer-file-name) default-directory)
-               ;;      ".eslintrc"))
-               )
-         (eslint (and root
-                      (expand-file-name "node_modules/.bin/eslint"
-                                        root))))
+                "node_modules"))
+         (files (and root
+                     (list (expand-file-name "node_modules/.bin/eslint"
+                                             root)
+                           (expand-file-name "node_modules/.bin/eslint"
+                                             (mapconcat #'identity
+                                                        (butlast (split-string root "/") 2)
+                                                        "/")))))
 
+         (eslint (cl-find-if #'(lambda (file) (file-executable-p file))
+                             files)))
     ;; (when root
     ;;   (make-local-variable 'flycheck-eslint-rules-directories)
     ;;   (add-to-list 'flycheck-eslint-rules-directories (expand-file-name root)))
-    (when (and eslint (file-executable-p eslint))
+    (when eslint
       (setq-local flycheck-javascript-eslint-executable eslint))))
 
 (use-package flycheck
