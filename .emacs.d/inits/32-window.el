@@ -177,10 +177,13 @@
   :config
   (defun perspeen-update-mode-string ()
     (setq perspeen-modestring ""))
-  (defun perspeen-tab--set-header-line-format (&optional force)
-    (if force
-        (setq header-line-format nil)
-      (setq-default header-line-format nil)))
+
+  (defun perspeen-tab--set-header-line-format-advice (&rest _args)
+    (perspeen-tab--update-current-buffer))
+
+  (advice-add 'perspeen-tab--set-header-line-format
+              :before
+              'perspeen-tab--set-header-line-format-advice)
 
   (defun helm-switch-to-buffers-around-advice (org-func buffer-or-name &optional other-window)
     (unless perspeen-use-tab
@@ -193,7 +196,10 @@
                             (perspeen-tab-get-tabs))))
       (if tab
           (perspeen-tab-switch-to-tab tab)
-        (funcall org-func buffer-or-name other-window))))
+        (progn
+          (funcall org-func buffer-or-name other-window)
+          (perspeen-tab--update-current-buffer)
+          (perspeen-tab--set-header-line-format t)))))
 
   (advice-add 'helm-switch-to-buffers
               :around
