@@ -78,13 +78,13 @@
         ensime-startup-snapshot-notification nil
         ensime-sbt-perform-on-save nil
         ensime-completion-style 'company
-        ensime-sem-high-enabled-p nil
-        ensime-typecheck-when-idle nil
+        ensime-sem-high-enabled-p t
+        ensime-typecheck-when-idle t
         ensime-search-interface 'helm
         ensime-tooltip-type-hints t
-        ensime-auto-generate-config nil
+        ensime-auto-generate-config t
         ensime-company-case-sensitive t
-        ensime-eldoc-hints nil
+        ensime-eldoc-hints 'all
         )
 
   (defun evil-ensime-typeckeck ()
