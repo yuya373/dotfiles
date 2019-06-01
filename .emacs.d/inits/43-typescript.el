@@ -64,11 +64,11 @@
       ;; (eldoc-mode +1)
       (rjsx-minor-mode)
       (setq-local indent-line-function 'rjsx-indent-line)
-      (tide-setup)
-      (setq-local flycheck-checker 'tsx-tide)))
+      (tide-setup)))
   (add-hook 'typescript-mode-hook 'setup-tsx)
   :config
   (use-package sgml-mode)
+  (require 'rjsx-mode)
   (define-key typescript-mode-map (kbd "<") 'rjsx-electric-lt)
   (define-key typescript-mode-map (kbd ">") 'rjsx-electric-gt)
   (evil-define-key 'insert typescript-mode-map
@@ -91,13 +91,13 @@
         tide-allow-popup-select '(code-fix
                                   refactor
                                   jump-to-implementation)
-        tide-always-show-documentation t
-        )
-  (setq tide-format-options '(:tabSize 2 :indentSize 2 :baseIndentSize 0))
+        tide-always-show-documentation t)
   :config
+  (setq tide-user-preferences
+        (plist-put tide-user-preferences :quotePreference "single"))
   (flycheck-add-next-checker 'tsx-tide 'typescript-tide)
   (flycheck-add-next-checker 'tsx-tide 'javascript-eslint t)
-  (flycheck-add-mode 'tsx-tide 'typescript-mode)
+  (flycheck-add-next-checker 'typescript-tide 'javascript-eslint)
   (evil-define-key 'visual tide-mode-map
     ",rr" 'tide-refactor)
   (evil-define-key 'normal tide-mode-map
