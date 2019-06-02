@@ -269,8 +269,8 @@
     (defun helm-perspeen ()
       "Display workspaces (perspeen.el) with helm interface."
       (interactive)
-      (helm '(helm-source-perspeen-tabs
-              helm-source-perspeen-workspaces
+      (helm '(helm-source-perspeen-workspaces
+              helm-source-perspeen-tabs
               ;; helm-source-perspeen-create-tab
               my-helm-source-perspeen-create-workspace))))
 

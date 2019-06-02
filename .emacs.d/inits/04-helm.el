@@ -112,11 +112,14 @@
         helm-exit-idle-delay 0
         helm-ff-search-library-in-sexp t
         helm-move-to-line-cycle-in-source nil
-        helm-echo-input-in-header-line t)
-  (setq helm-ff-guess-ffap-filenames t)
+        helm-echo-input-in-header-line t
+        helm-ff-guess-ffap-filenames t)
   :config
   (helm-migemo-mode t)
   (diminish 'helm-migemo-mode)
+  (defun helm-dwim-target-directory ()
+    "Try to return a suitable directory according to `helm-dwim-target'."
+    default-directory)
   (defun open-junk-dir ()
     (interactive)
     (let* ((junk-dir "~/Dropbox/junk/"))
