@@ -95,6 +95,8 @@
     (setq evil-magit-use-y-for-yank t)
     (evil-define-key 'normal magit-status-mode-map
       (kbd "q") 'magit-mode-bury-buffer)
+    (evil-define-key 'normal magit-mode-map
+      (kbd "q") 'magit-mode-bury-buffer)
     (evil-magit-define-key evil-magit-state 'git-rebase-mode-map
                            (kbd "C-k") 'git-rebase-move-line-up)
     (evil-magit-define-key evil-magit-state 'git-rebase-mode-map
