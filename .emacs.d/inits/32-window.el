@@ -185,25 +185,25 @@
               :before
               'perspeen-tab--set-header-line-format-advice)
 
-  (defun helm-switch-to-buffers-around-advice (org-func buffer-or-name &optional other-window)
-    (unless perspeen-use-tab
-      (funcall org-func buffer-or-name other-window))
-    (let* ((bufname (or (and (stringp buffer-or-name) buffer-or-name)
-                        (buffer-name buffer-or-name)))
-           (tab (cl-find-if #'(lambda (tab)
-                                (string= (buffer-name (get tab 'current-buffer))
-                                         bufname))
-                            (perspeen-tab-get-tabs))))
-      (if tab
-          (perspeen-tab-switch-to-tab tab)
-        (progn
-          (funcall org-func buffer-or-name other-window)
-          (perspeen-tab--update-current-buffer)
-          (perspeen-tab--set-header-line-format t)))))
+  ;; (defun helm-switch-to-buffers-around-advice (org-func buffer-or-name &optional other-window)
+  ;;   (unless perspeen-use-tab
+  ;;     (funcall org-func buffer-or-name other-window))
+  ;;   (let* ((bufname (or (and (stringp buffer-or-name) buffer-or-name)
+  ;;                       (buffer-name buffer-or-name)))
+  ;;          (tab (cl-find-if #'(lambda (tab)
+  ;;                               (string= (buffer-name (get tab 'current-buffer))
+  ;;                                        bufname))
+  ;;                           (perspeen-tab-get-tabs))))
+  ;;     (if tab
+  ;;         (perspeen-tab-switch-to-tab tab)
+  ;;       (progn
+  ;;         (funcall org-func buffer-or-name other-window)
+  ;;         (perspeen-tab--update-current-buffer)
+  ;;         (perspeen-tab--set-header-line-format t)))))
 
-  (advice-add 'helm-switch-to-buffers
-              :around
-              'helm-switch-to-buffers-around-advice)
+  ;; (advice-add 'helm-switch-to-buffers
+  ;;             :around
+  ;;             'helm-switch-to-buffers-around-advice)
   ;; (advice-remove 'helm-switch-to-buffers
   ;;                'helm-switch-to-buffers-around-advice)
 
