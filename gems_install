@@ -1,4 +1,6 @@
 #!/bin/bash
 set -e
 
-gem i rubocop onkcop
+gem i \
+    rubocop onkcop \
+    solargraph
