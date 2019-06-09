@@ -269,7 +269,8 @@
         lsp-auto-configure t
         lsp-markup-display-all t
         lsp-eldoc-enable-hover t
-        lsp-eldoc-render-all t
+        lsp-eldoc-render-all nil
+        lsp-eldoc-enable-signature-help t
         lsp-enable-completion-at-point nil
         lsp-enable-xref t
         lsp-enable-indentation t
@@ -290,7 +291,9 @@
   :init
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 
-  (setq lsp-ui-sideline-show-hover t)
+  (setq lsp-ui-doc-position 'bottom
+        lsp-ui-doc-header t
+        lsp-ui-doc-include-signature t)
   :config
   (use-package helm-lsp :commands (helm-lsp-workspace-symbol))
   (use-package lsp-treemacs :commands (lsp-treemacs-errors-list))
