@@ -224,6 +224,7 @@
 (el-get-bundle helm-lsp)
 
 (use-package treemacs
+  :commands (treemacs-find-file treemacs-add-project)
   :defer t
   :init
   (setq treemacs-follow-after-init t
@@ -288,6 +289,8 @@
   :commands (lsp-ui-mode)
   :init
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+
+  (setq lsp-ui-sideline-show-hover t)
   :config
   (use-package helm-lsp :commands (helm-lsp-workspace-symbol))
   (use-package lsp-treemacs :commands (lsp-treemacs-errors-list))
