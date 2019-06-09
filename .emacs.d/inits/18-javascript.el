@@ -69,8 +69,7 @@
   :mode (("\\.jsx\\'" . rjsx-mode)
          ("\\.js\\'" . rjsx-mode))
   :commands (rjsx-minor-mode)
-  :init
-  (add-hook 'rjsx-mode-hook 'tern-mode))
+  )
 
 (el-get-bundle coffee-mode)
 (use-package coffee-mode
@@ -79,42 +78,6 @@
   (setq coffee-tab-width 2)
   (setq coffee-indent-tabs-mode nil))
 
-(el-get-bundle company-tern :post-init nil)
-(use-package tern
-  :commands (tern-mode)
-  :init
-  ;; (add-hook 'js2-mode-hook 'tern-mode)
-  :config
-  ;; (defun strip-multibyte (str)
-  ;;   (replace-regexp-in-string "[[:multibyte:]]*" "" str))
-  ;; (defun buffer-string-without-multibyte ()
-  ;;   (strip-multibyte (buffer-string)))
-  ;; (add-to-list 'tern-command "--no-port-file" t)
-  (evil-define-key 'normal tern-mode-keymap
-    ",gd" 'tern-find-definition
-    ",gD" 'tern-find-definition-by-name
-    ",ht" 'tern-get-type
-    ",hh" 'tern-get-docs)
-  )
-
-(use-package company-tern
-  :commands (company-tern)
-  :init
-  (defun enable-company-tern ()
-    (interactive)
-    ;; (make-local-variable 'company-backends)
-    ;; (make-local-variable 'company-idle-delay)
-    ;; (setq company-idle-delay 0)
-    ;; (setq company-backends (remq 'company-capf company-backends))
-    ;; (setq company-backends (remq 'company-tern company-backends))
-    (add-to-list 'company-backends
-                 '(company-tern
-                   :with
-                   company-dabbrev-code
-                   )))
-  (add-hook 'js2-mode-hook 'enable-company-tern)
-  (add-hook 'js2-jsx-mode-hook 'enable-company-tern)
-  )
 
 (provide '18-javascript)
 ;;; 18-javascript.el ends here

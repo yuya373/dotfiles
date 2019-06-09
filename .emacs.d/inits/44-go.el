@@ -27,7 +27,6 @@
 (require 'use-package)
 
 (el-get-bundle go-mode)
-(el-get-bundle go-company)
 (el-get-bundle go-eldoc)
 
 (use-package go-eldoc
@@ -57,11 +56,6 @@
 
   (setq godoc-and-godef-command "go doc")
   :config
-  (use-package company-go
-    :init
-    (setq company-go-show-annotation t)
-    :config
-    (add-to-list 'company-backends 'company-go))
   (defun go-compile ()
     (interactive)
     (let ((compile-command "go build -v && go test -v ./... && go vet ./...")

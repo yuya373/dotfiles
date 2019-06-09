@@ -193,7 +193,74 @@
 (use-package avy-migemo
   :after (avy)
   :config
-  (avy-migemo-mode t))
+  (avy-migemo-mode t)
+
+  ;; (defun avy-migemo-goto-char (char &optional arg)
+  ;;   "The same as `avy-migemo-goto-char' except for the candidates via migemo."
+  ;;   (interactive (list (read-char "char: " t)
+  ;;                      current-prefix-arg))
+  ;;   (avy-with avy-goto-char
+  ;;     (avy-jump
+  ;;      (if (= 13 char)
+  ;;          "\n"
+  ;;        ;; Adapt for migemo
+  ;;        (avy-migemo-regex-quote-concat (string char)))
+  ;;      :window-flip arg)))
+
+  ;; (defun avy-migemo-goto-char-2 (char1 char2 &optional arg beg end)
+  ;;   "The same as `avy-goto-char-2' except for the candidates via migemo."
+  ;;   (interactive (list (read-char "char 1: " t)
+  ;;                      (read-char "char 2: " t)
+  ;;                      current-prefix-arg
+  ;;                      nil nil))
+  ;;   (when (eq char1 ?)
+  ;;     (setq char1 ?\n))
+  ;;   (when (eq char2 ?)
+  ;;     (setq char2 ?\n))
+  ;;   (avy-with avy-goto-char-2
+  ;;     (avy-jump
+  ;;      ;; Adapt for migemo
+  ;;      (if (eq char1 ?\n)
+  ;;          (concat (string char1) (avy-migemo-regex-quote-concat (string char2)))
+  ;;        (avy-migemo-regex-quote-concat (string char1 char2)))
+  ;;      :window-flip arg
+  ;;      :beg beg
+  ;;      :end end)))
+
+  ;; (defun avy-migemo-goto-char-in-line (char)
+  ;;   "The same as `avy-goto-char-in-line' except for the candidates via migemo."
+  ;;   (interactive (list (read-char "char: " t)))
+  ;;   (avy-with avy-goto-char
+  ;;     (avy-jump
+  ;;      ;; Adapt for migemo
+  ;;      (avy-migemo-regex-quote-concat (string char))
+  ;;      :window-flip avy-all-windows
+  ;;      :beg (line-beginning-position)
+  ;;      :end (line-end-position))))
+
+  ;; (defun avy-migemo-goto-word-1 (char &optional arg beg end symbol)
+  ;;   "The same as `avy-goto-word-1' except for the candidates via migemo."
+  ;;   (interactive (list (read-char "char: " t)
+  ;;                      current-prefix-arg))
+  ;;   (avy-with avy-goto-word-1
+  ;;     (let* ((str (string char))
+  ;;            (regex (cond ((string= str ".")
+  ;;                          "\\.")
+  ;;                         ((and avy-word-punc-regexp
+  ;;                               (string-match avy-word-punc-regexp str))
+  ;;                          ;; Adapt for migemo
+  ;;                          (avy-migemo-regex-quote-concat str))
+  ;;                         ((<= char 26) str)
+  ;;                         (symbol (concat "\\_<" str))
+  ;;                         (t ;; Adapt for migemo
+  ;;                          (concat
+  ;;                           "\\b"
+  ;;                           (avy-migemo-regex-concat str))))))
+  ;;       (avy-jump regex
+  ;;                 :window-flip arg
+  ;;                 :beg beg
+  ;;                 :end end))))
+  )
 
 (el-get-bundle ace-window)
 (use-package ace-window
@@ -219,6 +286,45 @@
         evil-want-integration t
         evil-overriding-maps nil)
   :config
+  (evil-define-command evil-scroll-down (count)
+    "Scrolls the window and the cursor COUNT lines downwards.
+If COUNT is not specified the function scrolls down
+`evil-scroll-count', which is the last used count.
+If the scroll count is zero the command scrolls half the screen."
+    :repeat nil
+    :keep-visual t
+    (interactive "<c>")
+    (evil-save-column
+      (setq count (or count (max 0 evil-scroll-count)))
+      (setq evil-scroll-count count)
+      (when (eobp) (signal 'end-of-buffer nil))
+      (when (zerop count)
+        (setq count (/ (1- (window-height)) 2)))
+      ;; BUG #660: First check whether the eob is visible.
+      ;; In that case we do not scroll but merely move point.
+      (if (<= (point-max) (window-end))
+          (with-no-warnings (next-line count nil))
+        (let ((xy (posn-x-y (posn-at-point))))
+          (condition-case nil
+              (progn
+                (scroll-up count)
+                (let* ((wend (window-end nil t))
+                       (p (posn-at-x-y (car xy) (cdr xy)))
+                       (margin (max 0 (- scroll-margin
+                                         (cdr (posn-col-row p))))))
+                  (when (posn-point p)
+                    (goto-char (posn-point p)))
+                  ;; ensure point is not within the scroll-margin
+                  (when (> margin 0)
+                    (with-no-warnings (next-line margin))
+                    (recenter scroll-margin))
+                  (when (<= (point-max) wend)
+                    (save-excursion
+                      (goto-char (point-max))
+                      (recenter (- (max 1 scroll-margin)))))))
+            (end-of-buffer
+             (goto-char (point-max))
+             (recenter (- (max 1 scroll-margin)))))))))
   (add-hook 'evil-normal-state-exit-hook 'evil-ex-nohighlight)
   ;; cleanup whitespace
   (defun evil-cleanup-whitespace ()
@@ -476,9 +582,11 @@
     "bra" 'browser-refresh-and-activate
     "bw" 'projectile-switch-to-buffer-other-window
     "ci" 'toggle-company-ispell
-    "dc" 'dired-open-current
+    "dt" 'treemacs-select-window
+    "dc" 'treemacs-find-file
+    "da" 'treemacs-add-project
     "dd" 'helm-dash-at-point
-    "da" 'helm-dash
+    ;; "da" 'helm-dash
     "di" 'helm-dash-async-install-docset
     "ef" 'flycheck-eslint-fix
     "eha" 'helm-apropos

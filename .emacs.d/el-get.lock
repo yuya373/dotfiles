@@ -1,5 +1,9 @@
 (setq el-get-lock-package-versions
-      '((yasnippet-snippets :checksum "69cc1c19c7d67780d9f0f910462b818e8c0a570e")
+      '((company-lsp :checksum "cd1a41583f2d71baef44604a14ea71f49b280bf0")
+        (lsp-ui :checksum "3ccc3e3386732c3ee22c151e6b5215a0e4c99173")
+        (lsp-mode :checksum "4f0510ece181c1aeb6c27eb8f9be9bc75a7498d1")
+        (spinner :checksum "4b335260edcdd8dcee0811d7048bb08274e941f1")
+        (yasnippet-snippets :checksum "69cc1c19c7d67780d9f0f910462b818e8c0a570e")
         (helm :checksum "5a2c0d55fbee47f617aff4f04eeae0bf161b1b50")
         (emacs-async :checksum "ec374cacb324e0bd042586de90d3d42b9bcffb01")
         (evil-collection :checksum "d165a975a48ba8168eab5fafc5eb1cd4cda3b92c")

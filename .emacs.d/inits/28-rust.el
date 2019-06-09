@@ -39,27 +39,6 @@
   (modify-syntax-entry ?_ "w" rust-mode-syntax-table)
   )
 
-(el-get-bundle dash)
-(el-get-bundle s)
-(el-get-bundle racer-rust/emacs-racer
-  :name racer)
-(use-package racer
-  :commands (racer-mode)
-  :diminish racer-mode
-  :init
-  ;; (global-set-key (kbd "TAB") #'company-indent-or-complete-common)
-  (defun my-racer-setup ()
-    ;; (add-to-list 'company-backends '(company-capf :with company-dabbrev))
-    )
-  (add-hook 'racer-mode-hook 'my-racer-setup)
-  (add-hook 'racer-mode-hook 'eldoc-mode)
-  (add-hook 'rust-mode-hook 'racer-mode)
-  :config
-
-  (evil-define-key 'normal racer-mode-map
-    ",h" 'racer-describe
-    ",d" 'racer-find-definition))
-
 (el-get-bundle flycheck-rust)
 (use-package flycheck-rust
   :commands (flycheck-rust-setup)

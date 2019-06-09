@@ -30,7 +30,6 @@
 
 (el-get-bundle typescript-mode)
 (el-get-bundle web-mode)
-(el-get-bundle tide)
 
 ;; (use-package web-mode
 ;;   :mode (("\\.tsx\\'" . web-mode))
@@ -44,9 +43,8 @@
 ;;     (when (and (buffer-file-name)
 ;;                (string= "tsx" (file-name-extension
 ;;                                (buffer-file-name))))
-;;       (add-hook 'before-save-hook 'tide-format-before-save nil t)
 ;;       (eldoc-mode +1)
-;;       (tide-setup)))
+;;       ))
 ;;   (add-hook 'web-mode-hook 'setup-tsx))
 
 (use-package typescript-mode
@@ -64,7 +62,7 @@
       ;; (eldoc-mode +1)
       (rjsx-minor-mode)
       (setq-local indent-line-function 'rjsx-indent-line)
-      (tide-setup)))
+      ))
   (add-hook 'typescript-mode-hook 'setup-tsx)
   :config
   (use-package sgml-mode)
@@ -77,41 +75,6 @@
     (kbd "gt") 'rjsx-jump-tag
     (kbd ",rt") 'rjsx-rename-tag-at-point
     (kbd ",c") 'rjsx-comment-dwim))
-
-(use-package tide
-  :init
-  (defun setup-tide-format ()
-    ;; (add-hook 'before-save-hook 'tide-format-before-save nil t)
-    )
-  (add-hook 'tide-mode-hook 'setup-tide-format)
-
-  (add-hook 'typescript-mode-hook 'tide-setup)
-  (setq tide-completion-detailed t
-        tide-completion-enable-autoimport-suggestions t
-        tide-allow-popup-select '(code-fix
-                                  refactor
-                                  jump-to-implementation)
-        tide-always-show-documentation t)
-  :config
-  (setq tide-user-preferences
-        (plist-put tide-user-preferences :quotePreference "single"))
-  (flycheck-add-next-checker 'tsx-tide 'typescript-tide)
-  (flycheck-add-next-checker 'tsx-tide 'javascript-eslint t)
-  (flycheck-add-next-checker 'typescript-tide 'javascript-eslint)
-  (evil-define-key 'visual tide-mode-map
-    ",rr" 'tide-refactor)
-  (evil-define-key 'normal tide-mode-map
-    ",h" 'tide-documentation-at-point
-    ",e" 'tide-project-errors
-    ",rr" 'tide-refactor
-    ",re" 'tide-references
-    ",rf" 'tide-rename-file
-    ",rs" 'tide-rename-symbol
-    ",fo" 'tide-format
-    ",fi" 'tide-fix
-    ",o" 'tide-organize-imports
-    ))
-
 
 
 (provide '43-typescript)

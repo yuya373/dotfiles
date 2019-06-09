@@ -213,21 +213,106 @@
   :pkgname "pitkali/pos-tip"
   :name pos-tip)
 
-;; (el-get-bundle ycmd)
-;; (use-package ycmd
-;;   :commands (global-ycmd-mode)
-;;   :init
-;;   (add-hook 'company-mode-hook 'global-ycmd-mode)
-;;   (setq ycmd-server-command '("python" "/Users/yuyaminami/dev/ycmd/ycmd"))
-;;   )
+(el-get-bundle lsp-mode)
+(el-get-bundle lsp-ui)
+(el-get-bundle company-lsp)
+(el-get-bundle treemacs)
+(el-get-bundle treemacs-evil)
+(el-get-bundle treemacs-projectile)
+(el-get-bundle treemacs-magit)
+(el-get-bundle lsp-treemacs)
+(el-get-bundle helm-lsp)
 
-;; ;; (global-ycmd-mode -1)
+(use-package treemacs
+  :defer t
+  :init
+  (setq treemacs-follow-after-init t
+        treemacs-width 35
+        treemacs-position 'left
+        treemacs-is-never-other-window nil
+        treemacs-silent-refresh nil
+        treemacs-indentation 2
+        treemacs-change-root-without-asking nil
+        treemacs-sorting 'alphabetic-desc
+        treemacs-show-hidden-files t
+        treemacs-never-persist nil
+        treemacs-goto-tag-strategy 'refetch-index
+        treemacs-collapse-dirs 0
+        )
+  :config
+  (treemacs-follow-mode t)
+  (treemacs-filewatch-mode t)
+  (treemacs-fringe-indicator-mode t)
+  (treemacs-git-mode 'deferred)
+  )
+(use-package treemacs-evil
+  :after (treemacs))
+(use-package treemacs-projectile
+  :after (treemacs))
+(use-package treemacs-magit
+  :after (treemacs))
 
-;; (el-get-bundle company-ycmd)
-;; (use-package company-ycmd
-;;   :commands (company-ycmd-setup)
-;;   :init
-;;   (add-hook 'global-ycmd-mode-hook 'company-ycmd-setup))
+(use-package lsp-mode
+  :commands (lsp)
+  :init
+  (add-hook 'enh-ruby-mode-hook 'lsp)
+  (add-hook 'typescript-mode-hook 'lsp)
+  (add-hook 'rjsx-mode-hook 'lsp)
+  (add-hook 'web-mode-hook 'lsp)
+  (add-hook 'enh-ruby-mode-hook 'lsp)
+  (add-hook 'go-mode-hook 'lsp)
+  (add-hook 'rust-mode-hook 'lsp)
+
+  (setq lsp-auto-guess-root t
+        lsp-enable-snippet t
+        lsp-auto-configure t
+        lsp-markup-display-all t
+        lsp-eldoc-enable-hover t
+        lsp-eldoc-render-all t
+        lsp-enable-completion-at-point nil
+        lsp-enable-xref t
+        lsp-enable-indentation t
+        lsp-enable-on-type-formatting t
+        )
+  (evil-collection-define-key 'normal 'lsp-mode-map
+    ",hs" 'lsp-describe-session
+    "K" 'lsp-describe-thing-at-point
+    ",a" 'lsp-execute-code-action
+    "gR" 'lsp-rename
+    "gD" 'lsp-find-declaration
+    "gt" 'lsp-find-type-definition
+    )
+  )
+
+(use-package lsp-ui
+  :commands (lsp-ui-mode)
+  :init
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+  :config
+  (use-package helm-lsp :commands (helm-lsp-workspace-symbol))
+  (use-package lsp-treemacs :commands (lsp-treemacs-errors-list))
+
+  (evil-collection-define-key 'normal 'lsp-ui-mode-map
+    "gr" 'lsp-ui-peek-find-references
+    "gd" 'lsp-ui-peek-find-definitions
+    "gi" 'lsp-ui-peek-find-implementation
+    ",a" 'lsp-ui-sideline-apply-code-actions
+    ",i" 'lsp-ui-imenu
+    ",s" 'helm-lsp-workspace-symbol
+    ",le" 'lsp-treemacs-errors-list
+    )
+  (evil-collection-define-key 'normal 'lsp-ui-peek-mode-map
+    (kbd "TAB") 'lsp-ui-peek--toggle-file
+    (kbd "RET") 'lsp-ui-peek--goto-xref
+    (kbd "ESC") 'lsp-ui-peek--abort
+    ))
+
+(use-package company-lsp
+  :after (lsp-mode)
+  :config
+  (push 'company-lsp company-backends))
+
+
 
 
 (provide '05-auto-complete)
