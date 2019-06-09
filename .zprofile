@@ -1,1 +1,5 @@
-export PATH=$HOME/local/bin:$PATH
+case ${OSTYPE} in
+    darwin*)
+        source ~/.zshenv
+        ;;
+esac

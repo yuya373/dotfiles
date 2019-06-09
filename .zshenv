@@ -43,6 +43,10 @@ case ${OSTYPE} in
         export TERM='xterm-256color'
         # export PATH="/usr/local/opt/llvm/bin:$PATH"
         export PATH="/usr/local/opt/imagemagick@6/bin:$PATH"
+
+        if [ -d /Applications/Genymotion.app/Contents/MacOS/tools ] ; then
+            export PATH=$PATH:/Applications/Genymotion.app/Contents/MacOS/tools
+        fi
         ;;
     linux*)
         setopt no_global_rcs
