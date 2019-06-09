@@ -32,7 +32,6 @@
 
 (el-get-bundle bundler)
 (el-get-bundle rbenv)
-(el-get-bundle robe-mode)
 (el-get-bundle inf-ruby)
 (el-get-bundle enh-ruby-mode)
 (el-get-bundle ruby-test-mode)
@@ -90,35 +89,6 @@
     ",ee" 'ruby-send-last-sexp)
   (evil-define-key 'visual inf-ruby-minor-mode-map
     ",er" 'ruby-send-region-and-go))
-
-(use-package robe
-  :diminish robe-mode
-  :commands (robe-mode robe-start)
-  :init
-  (setq robe-highlight-capf-candidates t)
-  (add-hook 'enh-ruby-mode-hook 'robe-mode)
-  (defun disable-robe-eldoc ()
-    (interactive)
-    (setq-local eldoc-documentation-function nil))
-  (defun my-robe-mode-hook ()
-    (disable-robe-eldoc)
-    (setq-default tab-width 2)
-    ;; (make-local-variable 'company-minimum-prefix-length)
-    ;; (setq company-minimum-prefix-length 2)
-    ;; (make-local-variable 'company-idle-delay)
-    ;; (setq company-idle-delay 0.5)
-    ;; (make-local-variable 'company-backends)
-    ;; (add-to-list 'company-backends '(company-robe :with company-dabbrev))
-    (add-to-list 'company-backends 'company-robe)
-    ;; (setq company-backends (remq 'company-capf company-backends))
-    )
-  (add-hook 'robe-mode-hook 'my-robe-mode-hook)
-  :config
-  (evil-define-key 'normal robe-mode-map (kbd ",rs") 'robe-start)
-  (evil-define-key 'normal robe-mode-map (kbd ",rh") 'robe-doc)
-  (evil-define-key 'normal robe-mode-map (kbd ",ra") 'robe-ask)
-  (evil-define-key 'normal robe-mode-map (kbd ",rj") 'robe-jump)
-  (evil-define-key 'normal robe-mode-map (kbd ",rR") 'robe-rails-refresh))
 
 (use-package bundler
   :commands (bundle-open bundle-exec bundle-check bundle-gemfile
