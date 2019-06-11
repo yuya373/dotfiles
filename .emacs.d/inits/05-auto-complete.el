@@ -281,7 +281,7 @@
     ",hs" 'lsp-describe-session
     "K" 'lsp-describe-thing-at-point
     ",a" 'lsp-execute-code-action
-    ",r" 'lsp-rename
+    ",R" 'lsp-rename
     "gD" 'lsp-find-declaration
     "gt" 'lsp-find-type-definition
     "gR" 'lsp-restart-workspace
