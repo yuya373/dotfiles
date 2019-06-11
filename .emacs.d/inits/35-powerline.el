@@ -86,7 +86,7 @@
         ((flycheck-error flycheck-warning flycheck-info)
          :when active
          :priority 100)
-        ;; (minor-modes :when active :priority 9)
+        (minor-modes :when active :priority 70)
         ;; (mu4e-alert-segment :when active)
         ;; (erc-track :when active)
         ;; (version-control :when active

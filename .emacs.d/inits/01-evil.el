@@ -87,6 +87,9 @@
                (message "Quit")
                (throw 'end-flag t)))))))
 
+(use-package undo-tree
+  :after (evil)
+  :diminish undo-tree-mode)
 (use-package goto-chg
   :after (evil))
 (use-package evil-collection
