@@ -71,7 +71,6 @@
   (setq company-selection-wrap-around t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
   (setq company-auto-complete nil)
   (setq company-tooltip-align-annotations t)
-  ;; (setq company-transformers '(company-sort-by-occurrence company-sort-by-backend-importance))
   (setq company-dabbrev-other-buffers t)
   (setq company-dabbrev-ignore-case nil)
   (setq company-dabbrev-downcase nil)
@@ -267,22 +266,23 @@
   (setq lsp-auto-guess-root t
         lsp-enable-snippet t
         lsp-auto-configure t
-        lsp-markup-display-all t
-        lsp-eldoc-enable-hover t
-        lsp-eldoc-render-all nil
-        lsp-eldoc-enable-signature-help t
-        lsp-enable-completion-at-point nil
         lsp-enable-xref t
         lsp-enable-indentation t
         lsp-enable-on-type-formatting t
-        )
+
+        lsp-document-sync-method nil
+
+        lsp-enable-completion-at-point nil
+
+        lsp-prefer-flymake nil)
   (evil-collection-define-key 'normal 'lsp-mode-map
     ",hs" 'lsp-describe-session
     "K" 'lsp-describe-thing-at-point
     ",a" 'lsp-execute-code-action
-    "gR" 'lsp-rename
+    ",r" 'lsp-rename
     "gD" 'lsp-find-declaration
     "gt" 'lsp-find-type-definition
+    "gR" 'lsp-restart-workspace
     )
   )
 
@@ -291,7 +291,13 @@
   :init
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 
-  (setq lsp-ui-doc-position 'bottom
+  (setq lsp-ui-flycheck-enable t
+        lsp-ui-flycheck-live-reporting nil
+        lsp-ui-flycheck-list-position 'bottom)
+
+  (setq lsp-ui-peek-always-show t)
+
+  (setq lsp-ui-doc-position 'top
         lsp-ui-doc-header t
         lsp-ui-doc-include-signature t)
   :config
@@ -309,14 +315,31 @@
     )
   (evil-collection-define-key 'normal 'lsp-ui-peek-mode-map
     (kbd "TAB") 'lsp-ui-peek--toggle-file
-    (kbd "RET") 'lsp-ui-peek--goto-xref
+    (kbd "RET") 'lsp-ui-peek--goto-xref-other-window
     (kbd "ESC") 'lsp-ui-peek--abort
     ))
 
 (use-package company-lsp
   :after (lsp-mode)
+  :init
+  (setq company-lsp-async t
+        company-lsp-enable-recompletion t
+        company-lsp-enable-additional-text-edit t
+        company-lsp-enable-snippet t
+        company-lsp-enable-trigger-kind t
+        )
   :config
   (push 'company-lsp company-backends))
+
+;; (el-get-bundle company-box)
+;; (use-package company-box
+;;   :commands (company-box-mode)
+;;   :init
+;;   (setq company-box-show-single-candidate t
+;;         company-box-doc-enable t
+;;         company-box-doc-delay 0.1
+;;         )
+;;   (add-hook 'company-mode-hook 'company-box-mode))
 
 
 
