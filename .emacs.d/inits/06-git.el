@@ -55,6 +55,9 @@
 (use-package git-messenger
   :commands (git-messenger:popup-message))
 
+(use-package smerge-mode
+  :after (magit)
+  :diminish smerge-mode)
 (use-package magit
   :commands (magit-status magit-blame)
   :init

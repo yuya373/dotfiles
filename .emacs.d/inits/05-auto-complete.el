@@ -39,6 +39,7 @@
 
 (use-package yasnippet
   :commands (yas-global-mode)
+  :diminish yas-minor-mode
   :init
   (add-hook 'after-init-hook 'yas-global-mode))
 
@@ -254,6 +255,7 @@
 
 (use-package lsp-mode
   :commands (lsp)
+  :diminish lsp-mode
   :init
   (add-hook 'enh-ruby-mode-hook 'lsp)
   (add-hook 'typescript-mode-hook 'lsp)

@@ -43,6 +43,7 @@
 
 (use-package projectile-rails
   :commands (projectile-rails-global-mode)
+  :diminish projectile-rails-mode
   :init
   (add-hook 'projectile-mode-hook #'projectile-rails-global-mode)
   :config
