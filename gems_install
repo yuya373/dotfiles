@@ -2,5 +2,7 @@
 set -e
 
 gem i \
-    rubocop onkcop \
-    solargraph
+    rubocop:'0.67.2' \
+    onkcop \
+    solargraph \
+    yard
