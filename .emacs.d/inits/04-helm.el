@@ -81,10 +81,10 @@
   ;; (add-hook 'after-init-hook 'helm-mode)
   (setq helm-mini-default-sources '(
                                     helm-source-buffers-list
-                                    helm-source-files-in-current-dir
+                                    helm-source-ls-git
+                                    ;; helm-source-files-in-current-dir
                                     helm-source-recentf
                                     helm-source-buffer-not-found
-                                    helm-source-ls-git
                                     ))
   (setq helm-M-x-fuzzy-match t
         helm-apropos-fuzzy-match t
