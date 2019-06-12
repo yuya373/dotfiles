@@ -50,9 +50,12 @@
   (setq company-statistics-auto-restore t)
   (add-hook 'company-mode-hook 'company-statistics-mode)
   :config
-  (setq company-transformers '(company-sort-by-statistics
-                               company-sort-by-backend-importance
-                               company-sort-by-occurrence)))
+  ;; NOTE: off transformers for lsp
+  (setq company-transformers nil)
+  ;; (setq company-transformers '(company-sort-by-statistics
+  ;;                              company-sort-by-backend-importance
+  ;;                              company-sort-by-occurrence))
+  )
 
 (use-package company-quickhelp
   :commands (company-quickhelp-mode)
@@ -276,7 +279,11 @@
 
         lsp-enable-completion-at-point nil
 
-        lsp-prefer-flymake nil)
+        lsp-prefer-flymake nil
+
+        lsp-eldoc-render-all t
+        )
+  :config
   (evil-collection-define-key 'normal 'lsp-mode-map
     ",hs" 'lsp-describe-session
     "K" 'lsp-describe-thing-at-point
@@ -294,14 +301,15 @@
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 
   (setq lsp-ui-flycheck-enable t
-        lsp-ui-flycheck-live-reporting nil
-        lsp-ui-flycheck-list-position 'bottom)
+        lsp-ui-flycheck-live-reporting t
+        lsp-ui-flycheck-list-position 'right)
 
   (setq lsp-ui-peek-always-show t)
 
   (setq lsp-ui-doc-position 'top
         lsp-ui-doc-header t
         lsp-ui-doc-include-signature t)
+
   :config
   (use-package helm-lsp :commands (helm-lsp-workspace-symbol))
   (use-package lsp-treemacs :commands (lsp-treemacs-errors-list))
@@ -313,7 +321,7 @@
     ",a" 'lsp-ui-sideline-apply-code-actions
     ",i" 'lsp-ui-imenu
     ",s" 'helm-lsp-workspace-symbol
-    ",le" 'lsp-treemacs-errors-list
+    ",le" 'lsp-ui-flycheck-list
     )
   (evil-collection-define-key 'normal 'lsp-ui-peek-mode-map
     (kbd "TAB") 'lsp-ui-peek--toggle-file

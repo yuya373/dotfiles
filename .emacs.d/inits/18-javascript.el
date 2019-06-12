@@ -35,6 +35,7 @@
          ;; ("\\.jsx\\'" . js2-jsx-mode)
          ;; ("\\.jsx.js\\'" . js2-jsx-mode)
          )
+  :diminish js2-minor-mode
   :init
   ;; (setq js2-include-browser-externs nil)
   (setq js2-basic-offset 2)
@@ -69,6 +70,7 @@
   :mode (("\\.jsx\\'" . rjsx-mode)
          ("\\.js\\'" . rjsx-mode))
   :commands (rjsx-minor-mode)
+  :diminish rjsx-minor-mode
   )
 
 (el-get-bundle coffee-mode)
