@@ -12,7 +12,8 @@ brew cask install \
      google-chrome dropbox vlc handbrake \
      trailer flux docker react-native-debugger \
      sketch amethyst kap \
-     virtualbox vagrant genymotion
+     virtualbox vagrant genymotion \
+     appcleaner
 
 # Android
 # brew cask install \
@@ -31,7 +32,8 @@ brew install \
      yarn watchman \
      go dep hugo \
      awscli tfenv \
-     htop
+     htop \
+     openssl mysql
 
 # iOS
 # brew install carthage
