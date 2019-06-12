@@ -281,7 +281,7 @@
 
         lsp-prefer-flymake nil
 
-        lsp-eldoc-render-all t
+        lsp-eldoc-render-all nil
         )
   :config
   (evil-collection-define-key 'normal 'lsp-mode-map
