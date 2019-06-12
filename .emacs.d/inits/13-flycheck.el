@@ -28,6 +28,7 @@
   (require 'use-package))
 
 (el-get-bundle flycheck)
+(el-get-bundle flycheck/flycheck-inline)
 (el-get-bundle alexmurray/evil-flycheck)
 (el-get-bundle package-lint)
 (el-get-bundle flycheck-package)
@@ -51,8 +52,8 @@
           (out-buf (get-buffer-create "*flycheck-eslint-fix-out*"))
           (err-buf (get-buffer-create "*flycheck-eslint-fix-error*")))
       (shell-command (format "%s --fix %s" eslint file-name)
-                           out-buf
-                           err-buf))
+                     out-buf
+                     err-buf))
 
 
     (revert-buffer t t)))
@@ -97,6 +98,18 @@
           ))
   :config
   (flycheck-add-mode 'javascript-eslint 'typescript-mode))
+
+(use-package flycheck-inline
+  :commands (flycheck-inline-mode)
+  :init
+  (add-hook 'flycheck-mode-hook #'flycheck-inline-mode)
+  :config
+  (defun evil-flycheck-inline-display-phantom (msg &optional pos)
+    (when (or (not (boundp 'evil-state))
+              (not (eq evil-state 'insert)))
+      (flycheck-inline-display-phantom msg pos)))
+  (setq flycheck-inline-display-function
+        #'evil-flycheck-inline-display-phantom))
 
 (use-package flycheck-package
   :commands (flycheck-package-setup)

@@ -1,5 +1,6 @@
 (setq el-get-lock-package-versions
-      '((company-lsp :checksum "cd1a41583f2d71baef44604a14ea71f49b280bf0")
+      '((flycheck-inline :checksum "cf9eceabff8370f3b834b943a5777b9f914583f9")
+        (company-lsp :checksum "cd1a41583f2d71baef44604a14ea71f49b280bf0")
         (lsp-ui :checksum "3ccc3e3386732c3ee22c151e6b5215a0e4c99173")
         (lsp-mode :checksum "4f0510ece181c1aeb6c27eb8f9be9bc75a7498d1")
         (spinner :checksum "4b335260edcdd8dcee0811d7048bb08274e941f1")

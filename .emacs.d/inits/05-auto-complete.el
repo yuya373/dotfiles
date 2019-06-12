@@ -310,6 +310,8 @@
         lsp-ui-doc-header t
         lsp-ui-doc-include-signature t)
 
+  (setq lsp-ui-sideline-show-diagnostics nil)
+
   :config
   (use-package helm-lsp :commands (helm-lsp-workspace-symbol))
   (use-package lsp-treemacs :commands (lsp-treemacs-errors-list))
