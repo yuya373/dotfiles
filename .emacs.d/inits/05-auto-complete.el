@@ -50,11 +50,9 @@
   (setq company-statistics-auto-restore t)
   (add-hook 'company-mode-hook 'company-statistics-mode)
   :config
-  ;; NOTE: off transformers for lsp
-  (setq company-transformers nil)
-  ;; (setq company-transformers '(company-sort-by-statistics
-  ;;                              company-sort-by-backend-importance
-  ;;                              company-sort-by-occurrence))
+  (setq company-transformers '(company-sort-by-statistics
+                               company-sort-by-backend-importance
+                               company-sort-by-occurrence))
   )
 
 (use-package company-quickhelp
@@ -316,6 +314,22 @@
   (use-package helm-lsp :commands (helm-lsp-workspace-symbol))
   (use-package lsp-treemacs :commands (lsp-treemacs-errors-list))
 
+  (defun evil-lsp-ui-sideline--stop-p (org-func)
+    (if (and (boundp 'evil-state)
+             (eq evil-state 'insert))
+        t
+      (funcall org-func)))
+
+  (advice-add 'lsp-ui-sideline--stop-p :around 'evil-lsp-ui-sideline--stop-p)
+
+  (defun evil-lsp-ui-doc--make-request (org-func)
+    (if (and (boundp 'evil-state)
+             (eq evil-state 'insert))
+        (lsp-ui-doc--hide-frame)
+      (funcall org-func)))
+
+  (advice-add 'lsp-ui-doc--make-request :around 'evil-lsp-ui-doc--make-request)
+
   (evil-collection-define-key 'normal 'lsp-ui-mode-map
     "gr" 'lsp-ui-peek-find-references
     "gd" 'lsp-ui-peek-find-definitions
@@ -341,6 +355,14 @@
         company-lsp-enable-trigger-kind t
         )
   :config
+
+  (defun company-lsp-match-candidate-prefix (candidate prefix)
+    "Return non-nil if the filter text of CANDIDATE starts with PREFIX.
+
+The match is case-insensitive."
+    (string-prefix-p prefix (company-lsp--candidate-filter-text candidate) nil))
+  (setq company-lsp-match-candidate-predicate
+        #'company-lsp-match-candidate-prefix)
   (push 'company-lsp company-backends))
 
 ;; (el-get-bundle company-box)
