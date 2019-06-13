@@ -339,9 +339,11 @@
     ",s" 'helm-lsp-workspace-symbol
     ",le" 'lsp-ui-flycheck-list
     )
+  (define-key lsp-ui-peek-mode-map
+    (kbd "<C-return>") 'lsp-ui-peek--goto-xref-other-window)
   (evil-collection-define-key 'normal 'lsp-ui-peek-mode-map
     (kbd "TAB") 'lsp-ui-peek--toggle-file
-    (kbd "RET") 'lsp-ui-peek--goto-xref-other-window
+    (kbd "RET") 'lsp-ui-peek--goto-xref
     (kbd "ESC") 'lsp-ui-peek--abort
     ))
 
