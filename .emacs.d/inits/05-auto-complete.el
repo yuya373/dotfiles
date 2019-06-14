@@ -280,6 +280,8 @@
         lsp-prefer-flymake nil
 
         lsp-eldoc-render-all nil
+
+        lsp-report-if-no-buffer t
         )
   :config
   (evil-collection-define-key 'normal 'lsp-mode-map
@@ -339,8 +341,20 @@
     ",s" 'helm-lsp-workspace-symbol
     ",le" 'lsp-ui-flycheck-list
     )
+
+  (defun evil-lsp-ui-peek--goto-xref-other-window ()
+    (interactive)
+    (let ((display-buffer-function
+           #'(lambda (buffer &rest _args)
+               (let ((win (split-window (selected-window)
+                                        nil
+                                        'right)))
+                 (set-window-buffer win buffer)
+                 (select-window win)))))
+      (lsp-ui-peek--goto-xref-other-window)))
+
   (define-key lsp-ui-peek-mode-map
-    (kbd "<C-return>") 'lsp-ui-peek--goto-xref-other-window)
+    (kbd "<C-return>") 'evil-lsp-ui-peek--goto-xref-other-window)
   (evil-collection-define-key 'normal 'lsp-ui-peek-mode-map
     (kbd "TAB") 'lsp-ui-peek--toggle-file
     (kbd "RET") 'lsp-ui-peek--goto-xref

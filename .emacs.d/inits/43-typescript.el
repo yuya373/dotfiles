@@ -64,6 +64,13 @@
       (setq-local indent-line-function 'rjsx-indent-line)
       ))
   (add-hook 'typescript-mode-hook 'setup-tsx)
+  (defun typescript-setup-projectile ()
+    (interactive)
+    (if (cl-find-if #'(lambda (file-name) (string= "yarn.lock" file-name))
+                    (projectile-project-files (projectile-project-root)))
+        (setq-local projectile-project-compilation-cmd "yarn run tsc --noEmit")
+      (setq-local projectile-project-compilation-cmd "npm run tsc --noEmit")))
+  (add-hook 'typescript-mode-hook 'typescript-setup-projectile)
   :config
   (use-package sgml-mode)
   (require 'rjsx-mode)

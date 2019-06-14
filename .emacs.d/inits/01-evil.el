@@ -585,6 +585,7 @@ If the scroll count is zero the command scrolls half the screen."
     "bra" 'browser-refresh-and-activate
     "bw" 'projectile-switch-to-buffer-other-window
     "ci" 'toggle-company-ispell
+    "cc" 'projectile-compile-project
     "dt" 'treemacs-select-window
     "dc" 'treemacs-find-file
     "da" 'treemacs-add-project
