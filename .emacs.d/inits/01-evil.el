@@ -713,15 +713,6 @@ If the scroll count is zero the command scrolls half the screen."
     "qs" 'quickrun-shell
     "r" 'create-restclient-buffer
     "s" 'create-eshell
-    "tG" 'projectile-regenerate-tags
-    "tc" 'helm-gtags-create-tags
-    "tf" 'helm-gtags-select
-    "tu" 'helm-gtags-update-tags
-    "tU" 'helm-gtags-update-all-tags
-    "td" 'helm-gtags-find-tag
-    "tr" 'helm-gtags-find-rtag
-    "tn" 'helm-gtags-next-history
-    "tp" 'helm-gtags-previous-history
     "tQ" 'google-translate-query-translate-reverse
     "tl" 'google-translate-smooth-translate
     "tq" 'google-translate-query-translate
