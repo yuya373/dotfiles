@@ -115,6 +115,7 @@
                           (tide-project-errors-mode)
                           ("\\`\\*tide-documentation\\*\\'" :regexp t :select t)
 
+                          ("\\`\\*Codic Result\\*\\'" :regexp t)
 
                           ((slack-edit-file-comment-buffer-mode
                             slack-message-compose-buffer-mode

@@ -64,6 +64,11 @@
       (list (string-to-number (car nums))
             (string-to-number (car (cdr nums)))))))
 
+(el-get-bundle codic)
+(use-package codic
+  :commands (codic codic-translate)
+  :defer t
+  )
 
 (provide '27-dictionary)
 ;;; 27-dictionary.el ends here

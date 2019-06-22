@@ -171,6 +171,14 @@
   (define-key company-search-map (kbd "C-n") 'company-select-next)
   (define-key company-search-map (kbd "C-p") 'company-select-previous)
 
+  (set-face-attribute 'company-tooltip-mouse
+                      nil
+                      :foreground nil :background nil)
+  (set-face-attribute 'company-tooltip-common-selection nil
+                      :foreground "white" :background "#2aa198")
+  (set-face-attribute 'company-tooltip-selection nil
+                      :foreground "white" :background "#2aa198")
+
   ;; (set-face-attribute 'company-tooltip nil
   ;;                     :foreground "black" :background "lightgrey")
   ;; (set-face-attribute 'company-tooltip-common nil
