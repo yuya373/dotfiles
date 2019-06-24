@@ -114,6 +114,7 @@
                           (godoc-mode)
                           (tide-project-errors-mode)
                           ("\\`\\*tide-documentation\\*\\'" :regexp t :select t)
+                          ("\\`\\*lsp-help\\*\\'" :regexp t :select t)
 
                           ("\\`\\*Codic Result\\*\\'" :regexp t)
 
