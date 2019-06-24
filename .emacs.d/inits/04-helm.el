@@ -445,44 +445,44 @@ The Argument FEED-PATH should be a string with the path of the xml file."
       (message "%s" _url)
       _url)))
 
-(el-get-bundle helm-gtags)
-(use-package helm-gtags
-  :diminish helm-gtags-mode
-  :commands (helm-gtags-mode)
-  :init
-  (add-hook 'enh-ruby-mode-hook 'helm-gtags-mode)
-  (add-hook 'scala-mode-hook 'helm-gtags-mode)
-  (setq helm-gtags-update-interval-second 60)
-  (setq helm-gtags-auto-update t)
-  (setq helm-gtags-preselect t)
-  (setq helm-gtags-use-input-at-cursor t)
-  (setq helm-gtags-path-style 'root)
-  (setq helm-gtags-display-style 'detail)
-  :config
-  (defun helm-gtags-update-all-tags ()
-    (interactive)
-    (let ((how-to 'entire-update)
-          (interactive-p (called-interactively-p 'interactive))
-          (current-time (float-time (current-time))))
-      (when (helm-gtags--update-tags-p how-to interactive-p current-time)
-        (let* ((cmds (helm-gtags--update-tags-command how-to))
-               (proc (apply 'start-file-process "helm-gtags-update-tag" nil cmds)))
-          (if (not proc)
-              (message "Failed: %s" (mapconcat 'identity cmds " "))
-            (set-process-sentinel proc (helm-gtags--make-gtags-sentinel 'update))
-            (setq helm-gtags--last-update-time current-time))))))
-  (evil-leader/set-key-for-mode 'helm-gtags-mode
-    "tc" 'helm-gtags-create-tags
-    "tf" 'helm-gtags-select
-    "tu" 'helm-gtags-update-tags
-    "tU" 'helm-gtags-update-all-tags
-    "td" 'helm-gtags-find-tag
-    "tr" 'helm-gtags-find-rtag
-    "tn" 'helm-gtags-next-history
-    "tp" 'helm-gtags-previous-history)
-  (evil-define-key 'normal helm-gtags-mode-map
-    (kbd "\C-]") 'helm-gtags-find-tag-from-here
-    (kbd "\C-t") 'helm-gtags-pop-stack))
+;; (el-get-bundle helm-gtags)
+;; (use-package helm-gtags
+;;   :diminish helm-gtags-mode
+;;   :commands (helm-gtags-mode)
+;;   :init
+;;   (add-hook 'enh-ruby-mode-hook 'helm-gtags-mode)
+;;   (add-hook 'scala-mode-hook 'helm-gtags-mode)
+;;   (setq helm-gtags-update-interval-second 60)
+;;   (setq helm-gtags-auto-update t)
+;;   (setq helm-gtags-preselect t)
+;;   (setq helm-gtags-use-input-at-cursor t)
+;;   (setq helm-gtags-path-style 'root)
+;;   (setq helm-gtags-display-style 'detail)
+;;   :config
+;;   (defun helm-gtags-update-all-tags ()
+;;     (interactive)
+;;     (let ((how-to 'entire-update)
+;;           (interactive-p (called-interactively-p 'interactive))
+;;           (current-time (float-time (current-time))))
+;;       (when (helm-gtags--update-tags-p how-to interactive-p current-time)
+;;         (let* ((cmds (helm-gtags--update-tags-command how-to))
+;;                (proc (apply 'start-file-process "helm-gtags-update-tag" nil cmds)))
+;;           (if (not proc)
+;;               (message "Failed: %s" (mapconcat 'identity cmds " "))
+;;             (set-process-sentinel proc (helm-gtags--make-gtags-sentinel 'update))
+;;             (setq helm-gtags--last-update-time current-time))))))
+;;   (evil-leader/set-key-for-mode 'helm-gtags-mode
+;;     "tc" 'helm-gtags-create-tags
+;;     "tf" 'helm-gtags-select
+;;     "tu" 'helm-gtags-update-tags
+;;     "tU" 'helm-gtags-update-all-tags
+;;     "td" 'helm-gtags-find-tag
+;;     "tr" 'helm-gtags-find-rtag
+;;     "tn" 'helm-gtags-next-history
+;;     "tp" 'helm-gtags-previous-history)
+;;   (evil-define-key 'normal helm-gtags-mode-map
+;;     (kbd "\C-]") 'helm-gtags-find-tag-from-here
+;;     (kbd "\C-t") 'helm-gtags-pop-stack))
 
 (provide '04-helm)
 ;;; 04-helm.el ends here
