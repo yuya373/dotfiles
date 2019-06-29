@@ -657,7 +657,7 @@ If the scroll count is zero the command scrolls half the screen."
     "hun" 'easy-hugo-newpost-today
     "hud" 'easy-hugo-github-deploy
     "hul" 'easy-hugo-list-posts
-    "ig" 'indent-guide-mode
+    "ig" 'highlight-indent-guides-mode
     "jw" 'avy-migemo-goto-word-1
     "jl" 'avy-goto-line
     "jc" 'avy-migemo-goto-char
