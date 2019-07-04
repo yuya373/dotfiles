@@ -309,7 +309,7 @@
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 
   (setq lsp-ui-flycheck-enable t
-        lsp-ui-flycheck-live-reporting t
+        lsp-ui-flycheck-live-reporting nil
         lsp-ui-flycheck-list-position 'right)
 
   (setq lsp-ui-peek-always-show t)
@@ -321,6 +321,7 @@
   (setq lsp-ui-sideline-show-diagnostics nil)
 
   :config
+  (flycheck-add-next-checker 'lsp-ui 'javascript-eslint)
   (use-package helm-lsp :commands (helm-lsp-workspace-symbol))
   (use-package lsp-treemacs :commands (lsp-treemacs-errors-list))
 
