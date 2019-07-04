@@ -109,7 +109,24 @@
               (not (eq evil-state 'insert)))
       (flycheck-inline-display-phantom msg pos)))
   (setq flycheck-inline-display-function
-        #'evil-flycheck-inline-display-phantom))
+        #'evil-flycheck-inline-display-phantom)
+
+  (defun flycheck-inline-clear-all-phantoms ()
+    (let* ((all (overlay-lists))
+           (before-overlays (car all))
+           (after-overlays (cdr all)))
+      (cl-loop for overlays in (list before-overlays
+                                     after-overlays)
+               do (cl-loop for ov in overlays
+                           do (when (overlay-get ov 'phantom)
+                                (delete-overlay ov)))))
+
+    (setq flycheck-inline--phantoms nil))
+
+  (setq flycheck-inline-clear-function
+        #'flycheck-inline-clear-all-phantoms)
+  )
+
 
 (use-package flycheck-package
   :commands (flycheck-package-setup)
