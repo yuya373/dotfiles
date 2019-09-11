@@ -18,6 +18,9 @@ configure_opts="\
 
 case ${OSTYPE} in
     darwin*)
+        if [[ $1 = "26" ]]; then
+          export PKG_CONFIG_PATH=/usr/local/opt/imagemagick@6/lib/pkgconfig
+        fi
         export LIBXML2_CFLAGS=`xml2-config --cflags`
         export LIBXML2_LIBS=`xml2-config --libs`
         configure_opts="$configure_opts \
@@ -75,7 +78,7 @@ if [[ ! -d "$emacs_dir" ]]; then
     total_step="8"
     print_with_current_step "Cloning emacs repository"
     mkdir -p ~/dev
-    git clone --depth 1 git://git.sv.gnu.org/emacs.git $emacs_dir
+    git clone git://git.savannah.gnu.org/emacs.git $emacs_dir
 fi
 
 print_with_current_step "Change working directory to $emacs_dir"
