@@ -27,7 +27,6 @@
 
 (use-package compile
   :defer t
-  :diminish compilation-in-progress
   :init
   (defun compile-finish-notify-alert (buffer msg)
     ;; (message "buffer: %s" buffer)

@@ -46,17 +46,26 @@
   (interactive)
   (when (and flycheck-javascript-eslint-executable
              (file-executable-p flycheck-javascript-eslint-executable))
-    (let ((async-shell-command-display-buffer nil)
-          (file-name (buffer-file-name))
-          (eslint flycheck-javascript-eslint-executable)
-          (out-buf (get-buffer-create "*flycheck-eslint-fix-out*"))
-          (err-buf (get-buffer-create "*flycheck-eslint-fix-error*")))
-      (shell-command (format "%s --fix %s" eslint file-name)
-                     out-buf
-                     err-buf))
-
-
-    (revert-buffer t t)))
+    (let* (
+           ;; (async-shell-command-display-buffer nil)
+           (buf (current-buffer))
+           (file-name (buffer-file-name buf))
+           (eslint flycheck-javascript-eslint-executable)
+           (out-buf (get-buffer-create "*flycheck-eslint-fix-out*"))
+           (err-buf (get-buffer-create "*flycheck-eslint-fix-error*"))
+           (process (start-file-process "flycheck-eslint-fix"
+                                        "*flycheck-eslint-process*"
+                                        eslint
+                                        "--fix"
+                                        file-name)))
+      (with-current-buffer out-buf
+        (setq buffer-read-only nil)
+        (delete-region (point-min) (point-max)))
+      (set-process-sentinel process
+                            #'(lambda (process event)
+                                (when (string= "finished\n" event)
+                                  (with-current-buffer buf
+                                    (revert-buffer nil t t))))))))
 
 ;; Better to use https://github.com/codesuki/add-node-modules-path
 (defun my/use-eslint-from-node-modules ()
@@ -91,12 +100,14 @@
   (add-hook 'prog-mode-hook 'flycheck-mode)
   (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
   (setq flycheck-scalastylerc "~/dotfiles/scalastyle_config.xml")
-  (setq flycheck-check-syntax-automatically
-        '(idle-change
-          idle-buffer-switch
-          save
-          ))
+  (setq flycheck-check-syntax-automatically '(save))
   :config
+  (defun flycheck-eslint-config-exists-p ()
+    "Whether there is a valid eslint config for the current buffer."
+    (let* ((executable (flycheck-find-checker-executable 'javascript-eslint))
+           (exitcode (and executable (call-process executable nil nil nil
+                                                   "--print-config" (buffer-file-name)))))
+      (eq exitcode 0)))
   (flycheck-add-mode 'javascript-eslint 'typescript-mode))
 
 (use-package flycheck-inline

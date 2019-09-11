@@ -266,7 +266,6 @@
   :commands (lsp)
   :diminish lsp-mode
   :init
-  (add-hook 'enh-ruby-mode-hook 'lsp)
   (add-hook 'typescript-mode-hook 'lsp)
   (add-hook 'rjsx-mode-hook 'lsp)
   (add-hook 'web-mode-hook 'lsp)
@@ -307,6 +306,11 @@
   :commands (lsp-ui-mode)
   :init
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+
+  (add-hook 'lsp-ui-mode-hook 'setup-lsp-ui-mode)
+  (defun setup-lsp-ui-mode ()
+    (interactive)
+    (remove-hook 'lsp-after-diagnostics-hook 'lsp-ui-sideline--diagnostics-changed t))
 
   (setq lsp-ui-flycheck-enable t
         lsp-ui-flycheck-live-reporting nil
