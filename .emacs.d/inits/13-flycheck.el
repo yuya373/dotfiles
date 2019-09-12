@@ -100,7 +100,17 @@
   (add-hook 'prog-mode-hook 'flycheck-mode)
   (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
   (setq flycheck-scalastylerc "~/dotfiles/scalastyle_config.xml")
-  (setq flycheck-check-syntax-automatically '(save))
+  (setq flycheck-check-syntax-automatically '(save idle-change mode-enabled))
+  (defun evil-flycheck-may-check-automatically (org-func &rest args)
+    ;; (message "%s or %s: %s"
+    ;;          (not evil-mode)
+    ;;          (eq 'normal evil-state)
+    ;;          (or (not evil-mode)
+    ;;              (eq 'normal evil-state)))
+    (and (or (not evil-mode)
+             (eq 'normal evil-state))
+         (apply org-func args)))
+  (advice-add 'flycheck-may-check-automatically :around 'evil-flycheck-may-check-automatically)
   :config
   (defun flycheck-eslint-config-exists-p ()
     "Whether there is a valid eslint config for the current buffer."
