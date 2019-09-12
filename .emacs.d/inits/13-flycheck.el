@@ -118,7 +118,9 @@
            (exitcode (and executable (call-process executable nil nil nil
                                                    "--print-config" (buffer-file-name)))))
       (eq exitcode 0)))
-  (flycheck-add-mode 'javascript-eslint 'typescript-mode))
+  (flycheck-add-mode 'javascript-eslint 'typescript-mode)
+  (flycheck-add-mode 'javascript-eslint 'web-mode)
+  )
 
 (use-package flycheck-inline
   :commands (flycheck-inline-mode)

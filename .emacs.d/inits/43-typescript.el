@@ -31,57 +31,49 @@
 (el-get-bundle typescript-mode)
 (el-get-bundle web-mode)
 
-;; (use-package web-mode
-;;   :mode (("\\.tsx\\'" . web-mode))
-;;   :init
-;;   (setq web-mode-markup-indent-offset 2
-;;         web-mode-css-indent-offset 2
-;;         web-mode-code-indent-offset 2
-;;         )
+(defun file-tsx-p ()
+  (string-suffix-p "tsx"
+                   (or (buffer-file-name)
+                       (buffer-name))))
 
-;;   (defun setup-tsx ()
-;;     (when (and (buffer-file-name)
-;;                (string= "tsx" (file-name-extension
-;;                                (buffer-file-name))))
-;;       (eldoc-mode +1)
-;;       ))
-;;   (add-hook 'web-mode-hook 'setup-tsx))
+(defun typescript-setup-projectile ()
+  (interactive)
+  (if (cl-find-if #'(lambda (file-name) (string= "yarn.lock" file-name))
+                  (projectile-project-files (projectile-project-root)))
+      (setq-local projectile-project-compilation-cmd "yarn run tsc --noEmit")
+    (setq-local projectile-project-compilation-cmd "npm run tsc --noEmit")))
+
+(use-package web-mode
+  :mode (("\\.tsx\\'" . web-mode))
+  :init
+  (setq web-mode-markup-indent-offset 2
+        web-mode-css-indent-offset 2
+        web-mode-code-indent-offset 2
+        web-mode-block-padding 2
+        web-mode-comment-style 2
+        web-mode-auto-quote-style 1
+
+        web-mode-enable-css-colorization t
+        web-mode-enable-auto-pairing t
+        web-mode-enable-comment-keywords t
+        web-mode-enable-current-element-highlight t
+        )
+  (setq web-mode-extra-auto-pairs nil)
+  (defun setup-tsx ()
+    (when (and (buffer-file-name)
+               (string= "tsx" (file-name-extension
+                               (buffer-file-name))))
+      (eldoc-mode +1)
+      (typescript-setup-projectile)))
+  (add-hook 'web-mode-hook 'setup-tsx))
 
 (use-package typescript-mode
-  :mode (("\\.ts\\'" . typescript-mode)
-         ("\\.tsx\\'" . typescript-mode))
+  :mode (("\\.ts\\'" . typescript-mode))
   :init
   (setq typescript-indent-level 2)
-  (defun file-tsx-p ()
-    (string-suffix-p "tsx"
-                     (or (buffer-file-name)
-                         (buffer-name))))
-  (defun setup-tsx ()
-    (interactive)
-    (when (file-tsx-p)
-      ;; (eldoc-mode +1)
-      (rjsx-minor-mode)
-      (setq-local indent-line-function 'rjsx-indent-line)
-      ))
-  (add-hook 'typescript-mode-hook 'setup-tsx)
-  (defun typescript-setup-projectile ()
-    (interactive)
-    (if (cl-find-if #'(lambda (file-name) (string= "yarn.lock" file-name))
-                    (projectile-project-files (projectile-project-root)))
-        (setq-local projectile-project-compilation-cmd "yarn run tsc --noEmit")
-      (setq-local projectile-project-compilation-cmd "npm run tsc --noEmit")))
   (add-hook 'typescript-mode-hook 'typescript-setup-projectile)
   :config
-  (use-package sgml-mode)
-  (require 'rjsx-mode)
-  (define-key typescript-mode-map (kbd "<") 'rjsx-electric-lt)
-  (define-key typescript-mode-map (kbd ">") 'rjsx-electric-gt)
-  (evil-define-key 'insert typescript-mode-map
-    (kbd "C-d") 'rjsx-delete-creates-full-tag)
-  (evil-define-key 'normal typescript-mode-map
-    (kbd "gt") 'rjsx-jump-tag
-    (kbd ",rt") 'rjsx-rename-tag-at-point
-    (kbd ",c") 'rjsx-comment-dwim))
+  (use-package sgml-mode))
 
 
 (provide '43-typescript)
