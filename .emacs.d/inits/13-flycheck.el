@@ -100,7 +100,8 @@
   (add-hook 'prog-mode-hook 'flycheck-mode)
   (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
   (setq flycheck-scalastylerc "~/dotfiles/scalastyle_config.xml")
-  (setq flycheck-check-syntax-automatically '(save idle-change mode-enabled))
+  (setq flycheck-check-syntax-automatically
+        '(save idle-change idle-buffer-switch mode-enabled))
   (defun evil-flycheck-may-check-automatically (org-func &rest args)
     ;; (message "%s or %s: %s"
     ;;          (not evil-mode)
