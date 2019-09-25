@@ -355,7 +355,7 @@
     ",le" 'lsp-ui-flycheck-list
     )
 
-  (defun evil-lsp-ui-peek--goto-xref-other-window ()
+  (defun lsp-ui-peek--goto-xref-vertical-window ()
     (interactive)
     (let ((display-buffer-function
            #'(lambda (buffer &rest _args)
@@ -365,14 +365,39 @@
                  (set-window-buffer win buffer)
                  (select-window win)))))
       (lsp-ui-peek--goto-xref-other-window)))
+  (defun lsp-ui-peek--goto-xref-horizontal-window ()
+    (interactive)
+    (let ((display-buffer-function
+           #'(lambda (buffer &rest _args)
+               (let ((win (split-window (selected-window)
+                                        nil
+                                        'below)))
+                 (set-window-buffer win buffer)
+                 (select-window win)))))
+      (lsp-ui-peek--goto-xref-other-window)))
+  (defun lsp-ui-peek--goto-xref-tab-window ()
+    (interactive)
+    (let ((display-buffer-function
+           #'(lambda (buffer &rest _args)
+               (let* ((marker (with-current-buffer buffer
+                                (point-marker))))
+                 (perspeen-tab-create-tab buffer marker)
+                 (selected-window)))))
+      (lsp-ui-peek--goto-xref-other-window)))
 
   (define-key lsp-ui-peek-mode-map
-    (kbd "<C-return>") 'evil-lsp-ui-peek--goto-xref-other-window)
+    (kbd ",v") 'lsp-ui-peek--goto-xref-vertical-window
+    )
+  (define-key lsp-ui-peek-mode-map
+    (kbd ",s") 'lsp-ui-peek--goto-xref-horizontal-window
+    )
+  (define-key lsp-ui-peek-mode-map
+    (kbd ",t") 'lsp-ui-peek--goto-xref-tab-window
+    )
   (evil-collection-define-key 'normal 'lsp-ui-peek-mode-map
     (kbd "TAB") 'lsp-ui-peek--toggle-file
     (kbd "RET") 'lsp-ui-peek--goto-xref
-    (kbd "ESC") 'lsp-ui-peek--abort
-    ))
+    (kbd "ESC") 'lsp-ui-peek--abort))
 
 (use-package company-lsp
   :after (lsp-mode)

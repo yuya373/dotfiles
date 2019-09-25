@@ -47,11 +47,22 @@
   :init
   (add-hook 'projectile-mode-hook #'projectile-rails-global-mode)
   :config
+  (defun projectile-rails-expand-snippet-maybe ()
+    "Expand snippet corresponding to the current file.
+
+This only works when yas package is installed."
+    (when (and projectile-rails-expand-snippet
+               (fboundp 'yas-expand-snippet)
+               (s-blank? (buffer-string))
+               (projectile-rails-expand-corresponding-snippet)
+               (let ((inhibit-message t))
+                 (indent-region (point-min) (point-max))))))
   (defun projectile-rails-classify (name)
     "Accepts a filepath, splits it by '/' character and classifieses each of the element"
-    (mapcar #'(lambda (it)
-                (mapconcat #'upcase-initials (split-string it "_") ""))
-            (split-string name "/")))
+    (let ((name (mapcar #'(lambda (it)
+                            (mapconcat #'upcase-initials (split-string it "_") ""))
+                        (split-string name "/"))))
+      name))
   (defun projectile-rails-find-controller ()
     (interactive)
     (helm-find-files-1 (format "%sapp/controllers/"

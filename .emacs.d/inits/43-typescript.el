@@ -43,37 +43,48 @@
       (setq-local projectile-project-compilation-cmd "yarn run tsc --noEmit")
     (setq-local projectile-project-compilation-cmd "npm run tsc --noEmit")))
 
-(use-package web-mode
-  :mode (("\\.tsx\\'" . web-mode))
-  :init
-  (setq web-mode-markup-indent-offset 2
-        web-mode-css-indent-offset 2
-        web-mode-code-indent-offset 2
-        web-mode-block-padding 2
-        web-mode-comment-style 2
-        web-mode-auto-quote-style 1
+;; (use-package web-mode
+;;   :mode (("\\.tsx\\'" . web-mode))
+;;   :init
+;;   (setq web-mode-markup-indent-offset 2
+;;         web-mode-css-indent-offset 2
+;;         web-mode-code-indent-offset 2
+;;         web-mode-block-padding 2
+;;         web-mode-comment-style 2
+;;         web-mode-auto-quote-style 1
 
-        web-mode-enable-css-colorization t
-        web-mode-enable-auto-pairing t
-        web-mode-enable-comment-keywords t
-        web-mode-enable-current-element-highlight t
-        )
-  (setq web-mode-extra-auto-pairs nil)
-  (defun setup-tsx ()
-    (when (and (buffer-file-name)
-               (string= "tsx" (file-name-extension
-                               (buffer-file-name))))
-      (eldoc-mode +1)
-      (typescript-setup-projectile)))
-  (add-hook 'web-mode-hook 'setup-tsx))
+;;         web-mode-enable-css-colorization t
+;;         web-mode-enable-auto-pairing t
+;;         web-mode-enable-comment-keywords t
+;;         web-mode-enable-current-element-highlight t
+;;         )
+;;   (setq web-mode-extra-auto-pairs nil)
+;;   (defun setup-tsx ()
+;;     (when (and (buffer-file-name)
+;;                (string= "tsx" (file-name-extension
+;;                                (buffer-file-name))))
+;;       (eldoc-mode +1)
+;;       (typescript-setup-projectile)))
+;;   (add-hook 'web-mode-hook 'setup-tsx))
 
 (use-package typescript-mode
-  :mode (("\\.ts\\'" . typescript-mode))
+  :mode (("\\.ts\\'" . typescript-mode)
+         ("\\.tsx\\'" . typescript-mode))
   :init
   (setq typescript-indent-level 2)
   (add-hook 'typescript-mode-hook 'typescript-setup-projectile)
   :config
-  (use-package sgml-mode))
+  (use-package sgml-mode)
+  (require 'rjsx-mode)
+  (define-key typescript-mode-map (kbd "<") 'rjsx-electric-lt)
+  (define-key typescript-mode-map (kbd ">") 'rjsx-electric-gt)
+  (evil-define-key 'insert typescript-mode-map
+    (kbd "C-d") 'rjsx-delete-creates-full-tag)
+  (evil-define-key 'normal typescript-mode-map
+    (kbd "gt") 'rjsx-jump-tag
+    (kbd ",rt") 'rjsx-rename-tag-at-point
+    (kbd ",c") 'rjsx-comment-dwim))
+
 
 
 (provide '43-typescript)

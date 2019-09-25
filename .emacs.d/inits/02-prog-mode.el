@@ -65,7 +65,6 @@ http://www.emacswiki.org/emacs/AlignCommands"
   (add-hook 'enh-ruby-mode-hook
             'add-ruby-do-arg-pair)
   (setq electric-pair-open-newline-between-pairs t)
-  (add-to-list 'electric-pair-pairs '(?\' . ?\'))
   :config
   (define-key electric-pair-mode-map (kbd "C-h") [backspace]))
 
