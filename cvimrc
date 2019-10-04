@@ -33,7 +33,13 @@ yankForOrgMode -> {{
 }}
 
 yankTitle -> {{
-  const text = document.title;
+  let text = document.title;
+
+  const githubTitle = document.querySelector("h1.gh-header-title .js-issue-title");
+  if (githubTitle) {
+    text = githubTitle.textContent.trim();
+  }
+
   Status.setMessage(text,3);
   Clipboard.copy(text);
 }}
