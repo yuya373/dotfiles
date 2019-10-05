@@ -325,6 +325,27 @@
   (setq lsp-ui-sideline-show-diagnostics nil)
 
   :config
+  (defun lsp-ui-peek--get-xrefs-in-file (file)
+    "Return all references that contain a file.
+FILE is a cons where its car is the filename and the cdr is a list of Locations
+within the file.  We open and/or create the file/buffer only once for all
+references.  The function returns a list of `ls-xref-item'."
+    (let* ((filename (car file))
+           (visiting (find-buffer-visiting filename))
+           (fn (lambda (loc) (lsp-ui-peek--xref-make-item filename loc))))
+      (cond
+       (visiting
+        (with-temp-buffer
+          (insert-buffer-substring-no-properties visiting)
+          (lsp-ui-peek--fontify-buffer filename)
+          (mapcar fn (cdr file))))
+       ((file-readable-p filename)
+        (with-temp-buffer
+          ;; (insert-file-contents-literally filename)
+          (insert-file-contents filename)
+          (lsp-ui-peek--fontify-buffer filename)
+          (mapcar fn (cdr file))))
+       (t (user-error "Cannot read %s" filename)))))
   (flycheck-add-next-checker 'lsp-ui 'javascript-eslint)
   (use-package helm-lsp :commands (helm-lsp-workspace-symbol))
   (use-package lsp-treemacs :commands (lsp-treemacs-errors-list))
