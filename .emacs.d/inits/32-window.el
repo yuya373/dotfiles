@@ -97,7 +97,7 @@
                         '((timer-list-mode)
                           (flycheck-error-list-mode)
                           (ert-results-mode)
-                          ("\\`\\*quickrun\\*\\'" :regexp t)
+                          ("\\`\\*quickrun\\*\\'" :regexp t :select t)
                           ("\\`\\*Org.*Export\\*\\'" :regexp t)
                           ("\\`\\*HTTP\sResponse\\*\\'" :regexp t)
                           (twittering-mode)

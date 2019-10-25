@@ -38,8 +38,8 @@
   (setq markdown-command "marked --gfm --breaks --tables")
   (setq markdown-css-paths (list
                             ;; (expand-file-name "~/.emacs.d/el-get/primer-css/modules/primer/build/build.css")
-                            ;; (expand-file-name "~/.emacs.d/el-get/github-markdown-css/github-markdown.css")
-                            "http://thomasf.github.io/solarized-css/solarized-light.min.css"
+                            "https://thomasf.github.io/solarized-css/solarized-light.min.css"
+                            (expand-file-name "~/.emacs.d/el-get/github-markdown-css/github-markdown.css")
                             ))
   (add-hook 'markdown-mode-hook 'outline-minor-mode)
   (defun my-gfm-mode-hook ()
