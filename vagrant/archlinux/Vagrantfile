@@ -14,6 +14,9 @@ Vagrant.configure("2") do |config|
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "archlinux/archlinux"
 
+  # [sprotheroe/vagrant-disksize: Vagrant plugin to resize disks in VirtualBox](https://github.com/sprotheroe/vagrant-disksize)
+  config.disksize.size = "50GB"
+
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
@@ -25,6 +28,7 @@ Vagrant.configure("2") do |config|
   # NOTE: This will enable public access to the opened port
   # config.vm.network "forwarded_port", guest: 80, host: 8080
   config.vm.network "forwarded_port", guest: 4010, host: 4010
+  config.vm.network "forwarded_port", guest: 4135, host: 4135
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine and only allow access
@@ -86,7 +90,7 @@ Vagrant.configure("2") do |config|
       makepkg -Csi --needed --noconfirm
       popd
     fi
-    yay -Syu --noconfirm --needed docker docker-compose vim zsh direnv
+    yay -Syu --noconfirm --needed docker docker-compose vim zsh direnv yarn nodenv nodenv-node-build
 
     sudo usermod -aG docker $USER
 
