@@ -15,6 +15,9 @@ brew cask install \
      virtualbox vagrant genymotion \
      appcleaner
 
+# Vagrant plugin
+vagrant plugin install vagrant-disksize
+
 # Android
 # brew cask install \
 #      android-platform-tools \
@@ -22,6 +25,7 @@ brew cask install \
 
 
 brew install \
+     pigz \
      libdvdcss \
      ffmpeg \
      git hub tmux zsh vim sshrc \
