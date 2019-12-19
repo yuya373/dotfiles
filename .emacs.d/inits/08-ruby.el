@@ -230,7 +230,7 @@ See `font-lock-syntax-table'."))
 (use-package rufo
   :after (enh-ruby-mode)
   :init
-  (add-hook 'enh-ruby-mode 'rufo-minor-mode))
+  (add-hook 'enh-ruby-mode-hook 'rufo-minor-mode))
 
 
 (provide '08-ruby)
