@@ -431,7 +431,7 @@ If the scroll count is zero the command scrolls half the screen."
         (progn
           (set-buffer-modified-p t)
           (save-buffer))))
-  ;; (add-hook 'evil-normal-state-entry-hook #'my-save-if-bufferfilename)
+  (add-hook 'evil-normal-state-entry-hook #'my-save-if-bufferfilename)
   (define-key evil-normal-state-map (kbd "C-s") nil)
   (define-key evil-normal-state-map (kbd "C-s") 'my-save-if-bufferfilename)
 

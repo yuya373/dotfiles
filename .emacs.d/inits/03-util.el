@@ -118,14 +118,15 @@
   (setq make-backup-files nil)
   (setq auto-save-list-file-prefix nil)
   (setq create-lockfiles nil)
-  (setq auto-save-buffers-enhanced-interval 0.5)
+  (setq auto-save-buffers-enhanced-interval 1)
   (setq auto-save-buffers-enhanced-quiet-save-p t)
   (setq auto-save-buffers-enhanced-exclude-regexps
         '("^/scp:" "^/ssh:" "/sudo:" "/multi:"))
   :config
   (defun auto-save-buffers-enhanced-save-buffers-if-normal-state ()
     (if (eq evil-state 'normal)
-        (auto-save-buffers-enhanced-save-buffers)))
+      (ignore-errors
+        (auto-save-buffers-enhanced-save-buffers))))
   (defun auto-save-buffers-enhanced (flag)
     (when flag
       (run-with-idle-timer
