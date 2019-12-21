@@ -5,4 +5,5 @@ gem i \
     rubocop:'0.67.2' \
     onkcop \
     solargraph \
-    yard
+    yard \
+    rufo

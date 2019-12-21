@@ -85,4 +85,8 @@ if which pyenv > /dev/null; then
     export PATH
 fi
 
+if which nodenv > /dev/null; then
+    eval "$(nodenv init -)"
+fi
+
 source ~/dotfiles/.zenv

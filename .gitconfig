@@ -41,3 +41,4 @@
 [ghq]
   root = "~/dev"
   root = "~/go/src"
+  root = "~/dotfiles"
