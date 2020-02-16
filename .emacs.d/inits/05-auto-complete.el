@@ -230,42 +230,6 @@
 (el-get-bundle lsp-mode)
 (el-get-bundle lsp-ui)
 (el-get-bundle company-lsp)
-(el-get-bundle treemacs)
-(el-get-bundle treemacs-evil)
-(el-get-bundle treemacs-projectile)
-(el-get-bundle treemacs-magit)
-(el-get-bundle lsp-treemacs)
-(el-get-bundle helm-lsp)
-
-(use-package treemacs
-  :commands (treemacs-find-file treemacs-add-project)
-  :defer t
-  :init
-  (setq treemacs-follow-after-init t
-        treemacs-width 35
-        treemacs-position 'left
-        treemacs-is-never-other-window nil
-        treemacs-silent-refresh nil
-        treemacs-indentation 2
-        treemacs-change-root-without-asking nil
-        treemacs-sorting 'alphabetic-desc
-        treemacs-show-hidden-files t
-        treemacs-never-persist nil
-        treemacs-goto-tag-strategy 'refetch-index
-        treemacs-collapse-dirs 0
-        )
-  :config
-  (treemacs-follow-mode t)
-  (treemacs-filewatch-mode t)
-  (treemacs-fringe-indicator-mode t)
-  (treemacs-git-mode 'deferred)
-  )
-(use-package treemacs-evil
-  :after (treemacs))
-(use-package treemacs-projectile
-  :after (treemacs))
-(use-package treemacs-magit
-  :after (treemacs))
 
 (use-package lsp-mode
   :commands (lsp)
@@ -352,8 +316,6 @@ references.  The function returns a list of `ls-xref-item'."
           (mapcar fn (cdr file))))
        (t (user-error "Cannot read %s" filename)))))
   (flycheck-add-next-checker 'lsp-ui 'javascript-eslint)
-  (use-package helm-lsp :commands (helm-lsp-workspace-symbol))
-  (use-package lsp-treemacs :commands (lsp-treemacs-errors-list))
 
   (defun evil-lsp-ui-sideline--stop-p (org-func)
     (if (and (boundp 'evil-state)
@@ -377,7 +339,6 @@ references.  The function returns a list of `ls-xref-item'."
     "gi" 'lsp-ui-peek-find-implementation
     ",a" 'lsp-ui-sideline-apply-code-actions
     ",i" 'lsp-ui-imenu
-    ",s" 'helm-lsp-workspace-symbol
     ",le" 'lsp-ui-flycheck-list
     )
 
