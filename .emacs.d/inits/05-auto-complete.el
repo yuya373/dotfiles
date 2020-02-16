@@ -178,6 +178,11 @@
                       :foreground "white" :background "#2aa198")
   (set-face-attribute 'company-tooltip-selection nil
                       :foreground "white" :background "#2aa198")
+  (set-face-attribute 'company-tooltip-annotation nil
+                      :foreground "#2aa198")
+  (set-face-attribute 'company-tooltip-annotation-selection nil
+                      :foreground "white")
+  (setq company-lsp-async t)
 
   ;; (set-face-attribute 'company-tooltip nil
   ;;                     :foreground "black" :background "lightgrey")
@@ -392,7 +397,7 @@ references.  The function returns a list of `ls-xref-item'."
            #'(lambda (buffer &rest _args)
                (let ((win (split-window (selected-window)
                                         nil
-                                        'below)))
+                                        'above)))
                  (set-window-buffer win buffer)
                  (select-window win)))))
       (lsp-ui-peek--goto-xref-other-window)))
