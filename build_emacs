@@ -18,8 +18,10 @@ configure_opts="\
 
 case ${OSTYPE} in
     darwin*)
-        if [[ $1 = "26" ]]; then
-          export PKG_CONFIG_PATH=/usr/local/opt/imagemagick@6/lib/pkgconfig
+        if [[ $# -ge 1 ]]; then
+            if [[ $1 = "26" ]]; then
+                export PKG_CONFIG_PATH=/usr/local/opt/imagemagick@6/lib/pkgconfig
+            fi
         fi
         export LIBXML2_CFLAGS=`xml2-config --cflags`
         export LIBXML2_LIBS=`xml2-config --libs`
