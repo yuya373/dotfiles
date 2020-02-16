@@ -87,15 +87,16 @@
       (set-face-bold 'whitespace-space t)
       (set-face-bold 'whitespace-trailing t)
       (set-face-underline  'whitespace-trailing t)
-      (solarized-with-color-variables 'dark
-        (set-face-foreground 'whitespace-space red)
-        (set-face-background 'whitespace-space 'nil)
-        (set-face-foreground 'whitespace-trailing red)
-        (set-face-background 'whitespace-trailing 'nil)
-        (set-face-foreground 'whitespace-newline  base00)
-        (set-face-background 'whitespace-newline 'nil)
-        (set-face-background 'whitespace-tab magenta)
-        (set-face-foreground 'whitespace-tab base03)))))
+      (solarized-with-color-variables 'dark 'solarized-dark
+        solarized-dark-color-palette-alist
+        `((set-face-foreground 'whitespace-space red)
+           (set-face-background 'whitespace-space 'nil)
+           (set-face-foreground 'whitespace-trailing red)
+           (set-face-background 'whitespace-trailing 'nil)
+           (set-face-foreground 'whitespace-newline  base00)
+           (set-face-background 'whitespace-newline 'nil)
+           (set-face-background 'whitespace-tab magenta)
+           (set-face-foreground 'whitespace-tab base03))))))
 
 
 ;; (el-get-bundle material-theme)

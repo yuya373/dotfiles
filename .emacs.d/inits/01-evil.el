@@ -50,6 +50,7 @@
 (el-get-bundle momomo5717/avy-migemo)
 (el-get-bundle ace-link)
 (el-get-bundle migemo)
+(el-get-bundle noctuid/annalist.el :name annalist)
 (el-get-bundle emacs-evil/evil-collection)
 
 (defun window-resizer ()
@@ -196,6 +197,67 @@
 (use-package avy-migemo
   :after (avy)
   :config
+  (defun avy-migemo-goto-char (char &optional arg)
+    "The same as `avy-migemo-goto-char' except for the candidates via migemo."
+    (interactive (list (read-char "char: " t)
+                       current-prefix-arg))
+    (avy-with avy-goto-char
+      (avy-jump
+       (if (= 13 char)
+           "\n"
+         ;; Adapt for migemo
+         (avy-migemo-regex-quote-concat (string char)))
+       :window-flip arg)))
+  (defun avy-migemo-goto-char-2 (char1 char2 &optional arg beg end)
+    "The same as `avy-goto-char-2' except for the candidates via migemo."
+    (interactive (list (read-char "char 1: " t)
+                       (read-char "char 2: " t)
+                       current-prefix-arg
+                       nil nil))
+    (when (eq char1 ?)
+      (setq char1 ?\n))
+    (when (eq char2 ?)
+      (setq char2 ?\n))
+    (avy-with avy-goto-char-2
+      (avy-jump
+       ;; Adapt for migemo
+       (if (eq char1 ?\n)
+           (concat (string char1) (avy-migemo-regex-quote-concat (string char2)))
+         (avy-migemo-regex-quote-concat (string char1 char2)))
+       :window-flip arg
+       :beg beg
+       :end end)))
+  (defun avy-migemo-goto-char-in-line (char)
+    "The same as `avy-goto-char-in-line' except for the candidates via migemo."
+    (interactive (list (read-char "char: " t)))
+    (avy-with avy-goto-char
+      (avy-jump
+       (avy-migemo-regex-quote-concat (string char))
+       :window-flip avy-all-windows
+       :beg (line-beginning-position)
+       :end (line-end-position))))
+  (defun avy-migemo-goto-word-1 (char &optional arg beg end symbol)
+    "The same as `avy-goto-word-1' except for the candidates via migemo."
+    (interactive (list (read-char "char: " t)
+                       current-prefix-arg))
+    (avy-with avy-goto-word-1
+      (let* ((str (string char))
+             (regex (cond ((string= str ".")
+                           "\\.")
+                          ((and avy-word-punc-regexp
+                                (string-match avy-word-punc-regexp str))
+                           ;; Adapt for migemo
+                           (avy-migemo-regex-quote-concat str))
+                          ((<= char 26) str)
+                          (symbol (concat "\\_<" str))
+                          (t ;; Adapt for migemo
+                           (concat
+                            "\\b"
+                            (avy-migemo-regex-concat str))))))
+        (avy-jump regex
+                  :window-flip arg
+                  :beg beg
+                  :end end))))
   (avy-migemo-mode t)
 
   ;; (defun avy-migemo-goto-char (char &optional arg)

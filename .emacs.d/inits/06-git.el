@@ -31,6 +31,7 @@
 
 ;; git
 (el-get-bundle evil-magit)
+(el-get-bundle git-commit)
 (el-get-bundle magit)
 ;; (el-get-bundle magit-gh-pulls)
 (el-get-bundle gist)

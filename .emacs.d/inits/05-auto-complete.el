@@ -253,13 +253,14 @@
 
         lsp-enable-completion-at-point nil
 
-        lsp-prefer-flymake nil
+        lsp-diagnostic-package ':flycheck
 
         lsp-eldoc-render-all nil
 
         lsp-report-if-no-buffer t
         )
   :config
+  (flycheck-add-next-checker 'lsp 'javascript-eslint)
   (evil-collection-define-key 'normal 'lsp-mode-map
     ",hs" 'lsp-describe-session
     "K" 'lsp-describe-thing-at-point
@@ -287,9 +288,10 @@
 
   (setq lsp-ui-peek-always-show t)
 
-  (setq lsp-ui-doc-position 'top
+  (setq lsp-ui-doc-position 'at-point
         lsp-ui-doc-header t
-        lsp-ui-doc-include-signature t)
+        lsp-ui-doc-include-signature t
+        lsp-ui-doc-alignment 'window)
 
   (setq lsp-ui-sideline-show-diagnostics nil)
 
@@ -315,7 +317,6 @@ references.  The function returns a list of `ls-xref-item'."
           (lsp-ui-peek--fontify-buffer filename)
           (mapcar fn (cdr file))))
        (t (user-error "Cannot read %s" filename)))))
-  (flycheck-add-next-checker 'lsp-ui 'javascript-eslint)
 
   (defun evil-lsp-ui-sideline--stop-p (org-func)
     (if (and (boundp 'evil-state)

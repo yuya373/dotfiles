@@ -86,6 +86,8 @@
                                     helm-source-recentf
                                     helm-source-buffer-not-found
                                     ))
+  (setq helm-completion-style 'emacs)
+  (setq completion-styles '(basic partial-completion emacs22 helm-flex))
   (setq helm-M-x-fuzzy-match t
         helm-apropos-fuzzy-match t
         helm-file-cache-fuzzy-match t
@@ -97,7 +99,11 @@
         helm-ag-fuzzy-match t
         helm-mode-fuzzy-match t
         helm-completion-in-region-fuzzy-match t
-        helm-buffers-fuzzy-matching t)
+        helm-buffers-fuzzy-matching t
+        helm-eshell-fuzzy-match t
+        helm-etags-fuzzy-match t
+        helm-ff-fuzzy-matching t
+        )
   (setq helm-prevent-escaping-from-minibuffer t
         helm-buffers-truncate-lines t
         helm-buffer-max-length nil

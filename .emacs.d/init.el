@@ -81,7 +81,7 @@
              "Doo you really want to update all installed packages? "))
     (let ((el-get-elpa-do-refresh 'once)
           errors)
-      (mapc '(lambda (p) (condition-case e
+      (mapc #'(lambda (p) (condition-case e
                              (el-get-update p)
                            (error (push e errors))))
             (el-get-list-package-names-with-status "installed"))
