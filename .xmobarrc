@@ -8,7 +8,7 @@ Config {
 
   , sepChar = "%"
   , alignSep = "}{"
-  , template = "%StdinReader% | %battery% | %multicpu% | %coretemp% | %memory% | %dynnetwork% }{ %RJTT% | %date% "
+  , template = "%StdinReader% | %battery% | %multicpu% | %coretemp% | %memory% | %dynnetwork% }{ %date% "
   , lowerOnStart = True
   , hideOnStart = False
   , allDesktops = True
@@ -18,8 +18,6 @@ Config {
 
   , commands =
     [ Run StdinReader
-    , Run Weather "RJTT" [ "--template", "<skyCondition> | <fc=#4682B4><tempC></fc>℃ | <fc=#4682B4><rh></fc>%"
-                         ] 3000
     , Run DynNetwork [ "--template", "<dev>:↑ <tx>kB/s|↓ <rx>kB/s"
                      , "--Low", "1000"
                      , "--High", "5000"
