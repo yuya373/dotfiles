@@ -248,16 +248,19 @@
         lsp-enable-xref t
         lsp-enable-indentation t
         lsp-enable-on-type-formatting t
-
-        lsp-document-sync-method nil
-
-        lsp-enable-completion-at-point nil
+        lsp-document-sync-method 'lsp--sync-incremental
+        lsp-report-if-no-buffer t
+        lsp-lens-auto-enable t
 
         lsp-diagnostic-package ':flycheck
+        lsp-flycheck-live-reporting nil
 
         lsp-eldoc-render-all nil
 
-        lsp-report-if-no-buffer t
+
+        lsp-enable-completion-at-point nil
+        lsp-prefer-capf nil
+
         )
   :config
   (flycheck-add-next-checker 'lsp 'javascript-eslint)
@@ -268,7 +271,7 @@
     ",R" 'lsp-rename
     "gD" 'lsp-find-declaration
     "gt" 'lsp-find-type-definition
-    "gR" 'lsp-restart-workspace
+    "gR" 'lsp-workspace-restart
     )
   )
 
@@ -277,14 +280,7 @@
   :init
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 
-  (add-hook 'lsp-ui-mode-hook 'setup-lsp-ui-mode)
-  (defun setup-lsp-ui-mode ()
-    (interactive)
-    (remove-hook 'lsp-after-diagnostics-hook 'lsp-ui-sideline--diagnostics-changed t))
-
-  (setq lsp-ui-flycheck-enable t
-        lsp-ui-flycheck-live-reporting nil
-        lsp-ui-flycheck-list-position 'right)
+  (setq lsp-ui-flycheck-list-position 'bottom)
 
   (setq lsp-ui-peek-always-show t)
 

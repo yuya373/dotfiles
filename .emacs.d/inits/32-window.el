@@ -256,6 +256,15 @@
                      "Create Workspace (perspeen)"
                      #'helm-source--perspeen-create-workspace)))
 
+    (defun projectile-rails-expand-corresponding-snippet-around-advice (org-func &rest args)
+      (let ((name (buffer-file-name)))
+        (when name
+          (funcall org-func))))
+
+    (advice-add 'projectile-rails-expand-corresponding-snippet
+                :around
+                'projectile-rails-expand-corresponding-snippet-around-advice)
+
     (defun helm-source--perspeen-create-workspace (candidate)
       (perspeen-create-ws)
       (perspeen-rename-ws candidate)
