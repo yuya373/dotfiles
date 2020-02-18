@@ -248,7 +248,7 @@
         lsp-enable-xref t
         lsp-enable-indentation t
         lsp-enable-on-type-formatting t
-        lsp-document-sync-method 'lsp--sync-incremental
+        lsp-document-sync-method nil
         lsp-report-if-no-buffer t
         lsp-lens-auto-enable t
 
@@ -284,7 +284,7 @@
 
   (setq lsp-ui-peek-always-show t)
 
-  (setq lsp-ui-doc-position 'at-point
+  (setq lsp-ui-doc-position 'top
         lsp-ui-doc-header t
         lsp-ui-doc-include-signature t
         lsp-ui-doc-alignment 'window)
