@@ -229,8 +229,12 @@ See `font-lock-syntax-table'."))
 (el-get-bundle rufo)
 (use-package rufo
   :after (enh-ruby-mode)
+  :commands (rufo-format)
   :init
-  (add-hook 'enh-ruby-mode-hook 'rufo-minor-mode))
+  ;; (add-hook 'enh-ruby-mode-hook 'rufo-minor-mode)
+  (evil-collection-define-key 'normal 'enh-ruby-mode-map
+    ",f" 'rufo-format)
+  )
 
 
 (provide '08-ruby)

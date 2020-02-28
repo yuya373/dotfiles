@@ -65,7 +65,8 @@
                             #'(lambda (process event)
                                 (when (string= "finished\n" event)
                                   (with-current-buffer buf
-                                    (revert-buffer nil t t))))))))
+                                    (unless revert-buffer-in-progress-p
+                                      (revert-buffer nil t t)))))))))
 
 ;; Better to use https://github.com/codesuki/add-node-modules-path
 (defun my/use-eslint-from-node-modules ()

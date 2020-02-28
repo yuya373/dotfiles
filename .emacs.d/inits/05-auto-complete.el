@@ -251,6 +251,10 @@
         lsp-document-sync-method nil
         lsp-report-if-no-buffer t
         lsp-lens-auto-enable t
+        lsp-lens-check-interval 1
+        lsp-lens-debounce-interval 2
+
+        lsp-idle-delay 0.5
 
         lsp-diagnostic-package ':flycheck
         lsp-flycheck-live-reporting nil

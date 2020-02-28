@@ -123,6 +123,7 @@
   :config
   (helm-migemo-mode t)
   (diminish 'helm-migemo-mode)
+  (use-package ace-window)
   (defun helm-dwim-target-directory ()
     "Try to return a suitable directory according to `helm-dwim-target'."
     default-directory)
@@ -137,8 +138,10 @@
                                (format-time-string diary-file-format))))
 
   (defun switch-window-if-gteq-3-windows ()
-    (if (>= (1+ (length (window-list))) 3)
-        (aw-switch-to-window (aw-select "Ace - Window"))))
+    (let ((windows (cl-remove-if #'(lambda (window) (member (buffer-name (window-buffer window)) aw-ignored-buffers))
+                                 (window-list))))
+      (if (>= (1+ (length windows)) 3)
+          (aw-switch-to-window (aw-select "Ace - Window")))))
 
   (defun my-helm-normalize-candidate (candidate)
     (cl-labels
@@ -410,6 +413,7 @@
   (define-key helm-ag-map (kbd "C-v") 'helm-ace-vsplit-ag)
   (define-key helm-ag-map (kbd "C-o") 'helm-ace-ff-ag))
 
+(el-get-bundle dash-docs)
 (el-get-bundle helm-dash)
 (use-package helm-dash
   :commands (helm-dash-at-point helm-dash helm-dash-install-docset helm-dash-install-docset-from-file)
@@ -426,6 +430,7 @@
                                    ))
   (setq helm-dash-min-length 1)
   (setq helm-dash-browser-func 'eww)
+  (setq dash-docs-browser-func 'eww)
   ;;   (add-hook 'markdown-mode-hook
   ;;             '(lambda () (setq-local helm-dash-docsets '("Markdown"))))
   ;;   (add-hook 'enh-ruby-mode-hook
