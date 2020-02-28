@@ -1,0 +1,26 @@
+{
+  "settingsVersion": "1.65.2",
+  "exclusionRules": [
+    {
+      "pattern": "https?://mail.google.com/*",
+      "passKeys": ""
+    }
+  ],
+  "filterLinkHints": false,
+  "waitForEnterForFilteredHints": true,
+  "hideHud": false,
+  "keyMappings": "# Insert your preferred key mappings here.\nunmap t\nmap tt createTab\nmap tn nextTab\nmap tp previousTab\n\nunmap <<\nmap < moveTabLeft\nunmap >>\nmap > moveTabRight\n\nmap ym Vomnibar.activate query=javascript:navigator.clipboard.writeText(%60%5B%24%7Bdocument.title%7D%5D(%24%7Bwindow.location.href%7D)%60)%3B\nmap yt Vomnibar.activate query=javascript:navigator.clipboard.writeText(document.querySelector(%22h1.gh-header-title%20.js-issue-title%22)%20%3F%20document.querySelector(%22h1.gh-header-title%20.js-issue-title%22).textContent.trim()%20%3A%20document.title)%3B\nmap tb Vomnibar.activate query=javascript:(function()%20%7B%0A%20%20let%20location%3B%0A%20%20let%20hatenaUrl%3B%0A%20%20const%20maxLength%20%3D%20277%3B%0A%0A%20%20const%20canonical%20%3D%20document.querySelector('link%5Brel%3D%22canonical%22%5D')%3B%0A%0A%20%20if%20(canonical)%20%7B%0A%20%20%20%20location%20%3D%20new%20URL(canonical.href)%3B%0A%20%20%7D%20else%20%7B%0A%20%20%20%20location%20%3D%20window.location%3B%0A%20%20%7D%0A%0A%20%20const%20%7Bpathname%2C%20hostname%2C%20protocol%2C%20search%2C%20hash%7D%20%3D%20location%3B%0A%20%20const%20isHttps%20%3D%20protocol%20%3D%3D%3D%20%22https%3A%22%3B%0A%20%20const%20baseUrl%20%3D%20%60http%3A%2F%2Fb.hatena.ne.jp%2Fentry%2F%24%7BisHttps%20%3F%20%22s%2F%22%20%3A%20%22%22%7D%60%0A%0A%20%20if%20(hostname%20%3D%3D%3D%20%22medium.com%22)%20%7B%0A%20%20%20%20const%20paths%20%3D%20pathname.split(%22%2F%22)%3B%0A%20%20%20%20const%20filename%20%3D%20paths%5Bpaths.length%20-%201%5D.split(%22-%22)%0A%20%20%20%20const%20hash%20%3D%20filename%5Bfilename.length%20-%201%5D%3B%0A%20%20%20%20const%20mediumPath%20%3D%20paths.slice(0%2C%20paths.length%20-%201).concat(%5Bhash%5D).join(%22%2F%22)%3B%0A%20%20%20%20hatenaUrl%20%3D%20%60%24%7BbaseUrl%7D%24%7Bhostname%7D%24%7BmediumPath%7D%60%3B%0A%20%20%7D%20else%20%7B%0A%20%20%20%20hatenaUrl%20%3D%20%60%24%7BbaseUrl%7D%24%7Bhostname%7D%24%7Bpathname%7D%60%3B%0A%20%20%7D%0A%20%20window.open(%60%24%7BhatenaUrl%7D%24%7Bsearch%7D%24%7BencodeURIComponent(hash)%7D%60.slice(0%2C%20maxLength))%3B%0A%7D)()%0A",
+  "linkHintCharacters": "sadfjklewcmpgh",
+  "linkHintNumbers": "0123456789",
+  "newTabUrl": "about:newtab",
+  "nextPatterns": "next,more,newer,>,›,→,»,≫,>>",
+  "previousPatterns": "prev,previous,back,older,<,‹,←,«,≪,<<",
+  "regexFindMode": false,
+  "ignoreKeyboardLayout": false,
+  "scrollStepSize": 60,
+  "smoothScroll": true,
+  "grabBackFocus": true,
+  "searchEngines": "w: https://www.wikipedia.org/w/index.php?title=Special:Search&search=%s Wikipedia\n\n# More examples.\n#\n# (Vimium supports search completion Wikipedia, as\n# above, and for these.)\n#\n# g: https://www.google.com/search?q=%s Google\n# l: https://www.google.com/search?q=%s&btnI I'm feeling lucky...\n# y: https://www.youtube.com/results?search_query=%s Youtube\n# gm: https://www.google.com/maps?q=%s Google maps\n# b: https://www.bing.com/search?q=%s Bing\n# d: https://duckduckgo.com/?q=%s DuckDuckGo\n# az: https://www.amazon.com/s/?field-keywords=%s Amazon\n# qw: https://www.qwant.com/?q=%s Qwant",
+  "searchUrl": "https://www.google.com/search?q=",
+  "userDefinedLinkHintCss": "div > .vimiumHintMarker {\n/* linkhint boxes */\nbackground: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFF785),\n  color-stop(100%,#FFC542));\nborder: 1px solid #E3BE23;\n}\n\ndiv > .vimiumHintMarker span {\n/* linkhint text */\ncolor: black;\nfont-weight: bold;\nfont-size: 12px;\n}\n\ndiv > .vimiumHintMarker > .matchingCharacter {\n}"
+}
