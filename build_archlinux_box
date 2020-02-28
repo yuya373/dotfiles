@@ -1,0 +1,11 @@
+#!/bin/bash
+set -eu
+
+if [[ ! -d $HOME/dev/arch-boxes ]]; then
+    mkdir -p $HOME/arch-boxes
+    git clone git@github.com:yuya373/arch-boxes.git $HOME/dev/arch-boxes
+fi
+
+pushd $HOME/dev/arch-boxes
+packer build -only=virtualbox-iso local.json
+popd

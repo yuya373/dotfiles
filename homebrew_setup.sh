@@ -16,7 +16,7 @@ brew cask install \
      appcleaner
 
 # Vagrant plugin
-vagrant plugin install vagrant-disksize
+vagrant plugin install vagrant-disksize vagrant-mutagen
 
 # Android
 # brew cask install \
@@ -37,7 +37,8 @@ brew install \
      go dep hugo \
      awscli tfenv \
      htop \
-     openssl mysql
+     openssl mysql \
+     mutagen-io/mutagen/mutagen rsync packer
 
 # iOS
 # brew install carthage

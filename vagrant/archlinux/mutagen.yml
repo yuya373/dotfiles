@@ -1,0 +1,21 @@
+sync:
+  defaults:
+    mode: "two-way-resolved"
+    ignore:
+      vcs: false
+    symlink:
+      mode: "portable"
+    watch:
+      mode: "portable"
+    permissions:
+      defaultFileMode: 0644
+      defaultDirectoryMode: 0755
+  dotfiles:
+    alpha: "archlinux:/home/vagrant/dotfiles"
+    beta: "~/dotfiles"
+  maricuru:
+    alpha: "archlinux:/home/vagrant/dev/maricuru"
+    beta: "~/dev/maricuru"
+    ignore:
+      paths:
+        - "tmp/cache"

@@ -9,3 +9,4 @@
 .stack-work
 
 .vagrant/
+/vagrant/archlinux/mutagen.yml.lock
