@@ -267,6 +267,7 @@
 
         )
   :config
+  (defun lsp--flycheck-report ())
   (flycheck-add-next-checker 'lsp 'javascript-eslint)
   (evil-collection-define-key 'normal 'lsp-mode-map
     ",hs" 'lsp-describe-session

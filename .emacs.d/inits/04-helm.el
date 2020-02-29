@@ -87,7 +87,11 @@
                                     helm-source-buffer-not-found
                                     ))
   (setq helm-completion-style 'emacs)
-  (setq completion-styles '(basic partial-completion emacs22 helm-flex))
+
+  (setq completion-styles (if (< 26 emacs-major-version)
+                            '(flex)
+                          '(helm-flex)))
+
   (setq helm-M-x-fuzzy-match t
         helm-apropos-fuzzy-match t
         helm-file-cache-fuzzy-match t

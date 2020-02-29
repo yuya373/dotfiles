@@ -1,5 +1,6 @@
 (setq el-get-lock-package-versions
-      '((annalist :checksum "134fa3f0fb91a636a1c005c483516d4b64905a6d")
+      '((evil-nerd-commenter :checksum "fa40dab8d2f010db17e1e62dfd245c1504d0542f")
+        (annalist :checksum "134fa3f0fb91a636a1c005c483516d4b64905a6d")
         (clang-format :checksum "c2783928a2413267fd595b6aaa4fce4764f9cfa4")
         (highlight :checksum "9258a2b8362d737115cbd87618f947eadb140411")
         (helm-slack :checksum "2a624f233fec95a32df09ee8299729bae2a498f2")
@@ -202,7 +203,6 @@
         (evil-visualstar :checksum "06c053d8f7381f91c53311b1234872ca96ced752")
         (evil-surround :checksum "9b0b17f06cef9bac81ee4800d121265e54718a17")
         (evil-numbers :checksum "6ea1c8c3a9b37bed63d48f1128e9a4910e68187e")
-        (evil-nerd-commenter :checksum "bed56ecb885cf6e382d3080903b46891dbdfa1b9")
         (evil-matchit :checksum "11d98debf8b051b10068137668eb54c2fede0e30")
         (evil-lisp-state :checksum "3c65fecd9917a41eaf6460f22187e2323821f3ce")
         (evil-args :checksum "758ad5ae54ad34202064fec192c88151c08cb387")
