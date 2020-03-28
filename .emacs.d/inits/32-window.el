@@ -132,7 +132,8 @@
                             slack-stars-buffer-mode
                             slack-pinned-items-buffer-mode
                             slack-dialog-buffer-mode
-                            slack-dialog-edit-element-buffer-mode)
+                            slack-dialog-edit-element-buffer-mode
+                            slack-message-attachment-preview-buffer-mode)
                            :select t)
                           (woman-mode)))
 
