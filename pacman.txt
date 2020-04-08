@@ -8,13 +8,14 @@ autoconf
 automake
 autorandr-git
 bash
+bind-tools
 binutils
 bison
+blueman
 bzip2
 cairo
 ccache
 clang
-clingo
 clipmenu
 cmigemo-git
 coreutils
@@ -55,7 +56,6 @@ gawk
 gcc
 gcc-libs
 gdb
-genymotion
 gettext
 git
 glibc
@@ -70,6 +70,7 @@ haskell-haddock-library
 hello
 htop
 hub
+hugo
 imagemagick
 inetutils
 intel-ucode
@@ -80,6 +81,7 @@ jdk8-openjdk
 jfsutils
 joe-go
 joyutils
+jq
 less
 libcurl-compat
 libgit2
@@ -131,13 +133,13 @@ poppler-glib
 procps-ng
 psmisc
 pulseaudio-alsa
+python-pip
 python-pygments
 qrencode
 redshift
 reflector
 reiserfsprogs
 rsync
-rtags
 rxvt-unicode
 s-nail
 sbcl
@@ -226,7 +228,7 @@ xsensors
 xss-lock-git
 yarn
 yaskkserv
-yay-bin
+yay
 zathura
 zathura-pdf-poppler
 zsh
