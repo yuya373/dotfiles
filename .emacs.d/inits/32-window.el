@@ -125,7 +125,9 @@
                            :select t :size 0.3)
                           ))
                 (mapcar (lambda (l) (append l shackle-rule-right-half))
-                        '(((slack-file-list-buffer-mode
+                        '(((woman-mode
+                            slack-message-attachment-preview-buffer-mode))
+                          ((slack-file-list-buffer-mode
                             slack-all-threads-buffer-mode
                             slack-thread-message-buffer-mode
                             slack-user-profile-buffer-mode
@@ -133,10 +135,10 @@
                             slack-pinned-items-buffer-mode
                             slack-dialog-buffer-mode
                             slack-dialog-edit-element-buffer-mode)
-                           :select t)
-                          (woman-mode)))
+                           :select t)))
 
                 '((slack-file-info-buffer-mode :custom shackle-new-tab)
+                  ;; (slack-message-attachment-preview-buffer-mode :align right :size 0.4 :popup t :select nil)
                   ("\\`\\*Slack\sEvent\sLog" :regexp t :custom shackle-new-tab)
                   ("\\`\\*Slack\sLog" :regexp t :custom shackle-new-tab)
                   (tuareg-interactive-mode :align t :select t :size 0.4 :popup t)
