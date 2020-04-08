@@ -85,8 +85,8 @@ if which pyenv > /dev/null; then
     export PATH
 fi
 
-if which nodenv > /dev/null; then
-    eval "$(nodenv init -)"
+if which nodebrew > /dev/null; then
+    export PATH=$HOME/.nodebrew/current/bin:$PATH
 fi
 
 source ~/dotfiles/.zenv
