@@ -23,6 +23,7 @@ case ${OSTYPE} in
                 export PKG_CONFIG_PATH=/usr/local/opt/imagemagick@6/lib/pkgconfig
             fi
         fi
+        export PATH="/usr/local/opt/texinfo/bin:$PATH"
         export LIBXML2_CFLAGS=`xml2-config --cflags`
         export LIBXML2_LIBS=`xml2-config --libs`
         configure_opts="$configure_opts \
