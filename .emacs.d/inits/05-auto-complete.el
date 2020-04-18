@@ -353,7 +353,8 @@ references.  The function returns a list of `ls-xref-item'."
                                         'right)))
                  (set-window-buffer win buffer)
                  (select-window win)))))
-      (lsp-ui-peek--goto-xref-other-window)))
+      (lsp-ui-peek--goto-xref-other-window))
+    (balance-windows))
   (defun lsp-ui-peek--goto-xref-horizontal-window ()
     (interactive)
     (let ((display-buffer-function
@@ -363,7 +364,8 @@ references.  The function returns a list of `ls-xref-item'."
                                         'above)))
                  (set-window-buffer win buffer)
                  (select-window win)))))
-      (lsp-ui-peek--goto-xref-other-window)))
+      (lsp-ui-peek--goto-xref-other-window))
+    (balance-windows))
   (defun lsp-ui-peek--goto-xref-tab-window ()
     (interactive)
     (let ((display-buffer-function
