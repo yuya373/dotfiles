@@ -98,7 +98,7 @@
                 "conditions": [
                   {
                     "bundle_identifiers": [
-                      "^com\\.runningwithcrayons\\.Alfred-3"
+                      "^com\\.runningwithcrayons\\.Alfred"
                     ],
                     "type": "frontmost_application_if"
                   }
@@ -122,7 +122,7 @@
                 "conditions": [
                   {
                     "bundle_identifiers": [
-                      "^com\\.runningwithcrayons\\.Alfred-3"
+                      "^com\\.runningwithcrayons\\.Alfred"
                     ],
                     "type": "frontmost_application_if"
                   }
@@ -146,7 +146,7 @@
                 "conditions": [
                   {
                     "bundle_identifiers": [
-                      "^com\\.runningwithcrayons\\.Alfred-3"
+                      "^com\\.runningwithcrayons\\.Alfred"
                     ],
                     "type": "frontmost_application_if"
                   }
@@ -170,7 +170,7 @@
                 "conditions": [
                   {
                     "bundle_identifiers": [
-                      "^com\\.runningwithcrayons\\.Alfred-3"
+                      "^com\\.runningwithcrayons\\.Alfred"
                     ],
                     "type": "frontmost_application_if"
                   }
