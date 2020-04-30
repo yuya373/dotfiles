@@ -417,47 +417,42 @@
   (define-key helm-ag-map (kbd "C-o") 'helm-ace-ff-ag))
 
 (el-get-bundle dash-docs)
+(use-package dash-docs
+  :defer t
+  :init
+  (setq dash-docs-common-docsets '(
+                                   "Ruby"
+                                   "Ruby on Rails"
+                                   "Haml"
+                                   "HTML"
+                                   "JavaScript"
+                                   "React"
+                                   "Rust"
+                                   ;; "PostgreSQL"
+                                   ;; "Nginx"
+                                   ;; "NodeJS"
+                                   ;; "MySQL"
+                                   "Markdown"
+                                   ;; "Java"
+                                   ;; "Haskell"
+                                   "Emacs Lisp"
+                                   ;; "ElasticSearch"
+                                   ;; "Docker"
+                                   ;; "Common Lisp"
+                                   "Bash"
+                                   ;; "OCaml"
+                                   ;; "NET Framework"
+                                   ;; "Unity 3D"
+                                   "Go"
+                                   ))
+  (setq dash-docs-min-length 1)
+  (setq dash-docs-browser-func 'eww))
 (el-get-bundle helm-dash)
+
 (use-package helm-dash
   :commands (helm-dash-at-point helm-dash helm-dash-install-docset helm-dash-install-docset-from-file)
   :init
-  (setq helm-dash-common-docsets '("Ruby" "Ruby on Rails" "Rust" "React" "PostgreSQL"
-                                   "NodeJS" "Nginx" ;; "MySQL"
-                                   "Markdown" "JavaScript"
-                                   ;; "Java"
-                                   "Haskell" "Haml" "HTML" "Emacs Lisp"
-                                   "ElasticSearch" "Docker" ;; "Common Lisp"
-                                   "Bash" ;; "OCaml"
-                                   ;; "NET Framework" "Unity 3D"
-                                   "Go"
-                                   ))
-  (setq helm-dash-min-length 1)
-  (setq helm-dash-browser-func 'eww)
-  (setq dash-docs-browser-func 'eww)
-  ;;   (add-hook 'markdown-mode-hook
-  ;;             '(lambda () (setq-local helm-dash-docsets '("Markdown"))))
-  ;;   (add-hook 'enh-ruby-mode-hook
-  ;;             '(lambda () (setq-local helm-dash-docsets '("Ruby"))))
-  ;;   (add-hook 'projectile-rails-mode-hook
-  ;;             '(lambda () (setq-local helm-dash-docsets '("Ruby" "Ruby on Rails"))))
-  ;;   (add-hook 'emacs-lisp-mode-hook
-  ;;             '(lambda () (setq-local helm-dash-docsets '("Emacs Lisp"))))
-  ;;   (defun helm-lisp-mode ()
-  ;;     (setq-local helm-dash-docsets '("Common Lisp")))
-  ;;   (add-hook 'lisp-mode-hook 'helm-lisp-mode)
-  ;;   (add-hook 'slime-repl-mode-hook 'helm-lisp-mode)
-  :config
-  (defun helm-dash-get-docset-url (feed-path)
-    "Parse a xml feed with docset urls and return the first url.
-The Argument FEED-PATH should be a string with the path of the xml file."
-    (let* ((xml (xml-parse-file feed-path))
-           (urls (car xml))
-           (url (xml-get-children urls 'url))
-           (_url (cl-caddr (or (cl-find-if #'(lambda (e) (string-match-p "tokyo" (cl-caddr e))) url)
-                               (cl-first url)))))
-
-      (message "%s" _url)
-      _url)))
+  (setq helm-dash-browser-func 'eww))
 
 ;; (el-get-bundle helm-gtags)
 ;; (use-package helm-gtags
