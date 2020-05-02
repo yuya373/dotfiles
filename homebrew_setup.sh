@@ -28,7 +28,7 @@ brew install \
      pigz \
      libdvdcss \
      ffmpeg \
-     git hub tmux zsh vim sshrc \
+     git hub tmux zsh vim \
      coreutils cmigemo ispell \
      direnv global ctags \
      the_silver_searcher \
@@ -38,7 +38,8 @@ brew install \
      awscli tfenv \
      htop \
      openssl mysql \
-     mutagen-io/mutagen/mutagen rsync packer
+     mutagen-io/mutagen/mutagen rsync packer \
+     ghq
 
 # iOS
 # brew install carthage
@@ -49,7 +50,7 @@ brew install \
 # brew install emacs --with-cocoa --with-ctags --with-imagemagick --with-librsvg --with-dbus --HEAD
 # ln -sf `brew --prefix emacs`/Emacs.app /Applications/Emacs.app
 
-brew install imagemagick guntls pkgconfig
+brew install imagemagick gnutls pkgconfig autoconf texinfo
 ~/dotfiles/build_emacs
 
 ## makeinfo

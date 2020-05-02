@@ -176,7 +176,7 @@
         (es-mode :checksum "9e5bcb290b38d5bd143e0ee480ed49147cfd3504")
         (spark :checksum "0bf148c3ede3b31d56fd75f347cdd0b0eae60025")
         (atomic-chrome :checksum "a505f638866f9e7b913784be0dc84f338e9ad449")
-        (websocket :checksum "ee44af2cc55415591e7ccb1007193294c702affd")
+        (websocket :checksum "078f83902c0846c00ed8e3b6c5add7ff9b98d8f9")
         (auto-mark :checksum "d7e34b8964aeedb7e27dc828dda5290ede9a8f8a")
         (dired-k :checksum "c50e8f73358060a448bff66db2d330b52bbeffc1")
         (ag :checksum "bd81d68466e44301505629454dfc689b6c17d94b")
