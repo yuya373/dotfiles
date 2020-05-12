@@ -155,7 +155,7 @@
   (setq emojify-display-style 'image)
   (defun emojify-inhibit-buffers-p (buffer)
     (with-current-buffer buffer
-      (memq major-mode '(nov-mode))))
+      (memq major-mode '(nov-mode magit-status-mode))))
   (setq emojify-inhibit-in-buffer-functions '(emojify-inhibit-buffers-p))
   ;; (setq emojify-inhibit-in-buffer-functions nil)
   ;; (setq emojify-emoji-set "EmojiOne_4.0_32x32_png")

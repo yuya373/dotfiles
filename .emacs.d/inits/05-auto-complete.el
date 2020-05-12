@@ -240,7 +240,7 @@
   (add-hook 'web-mode-hook 'lsp)
   (add-hook 'enh-ruby-mode-hook 'lsp)
   (add-hook 'go-mode-hook 'lsp)
-  (add-hook 'rust-mode-hook 'lsp)
+  (add-hook 'rustic-mode-hook 'lsp)
 
   (setq lsp-auto-guess-root t
         lsp-enable-snippet t
@@ -257,17 +257,27 @@
         lsp-idle-delay 0.5
 
         lsp-diagnostic-package ':flycheck
-        lsp-flycheck-live-reporting nil
+        lsp-flycheck-live-reporting t
 
         lsp-eldoc-render-all nil
-
 
         lsp-enable-completion-at-point nil
         lsp-prefer-capf nil
 
+        lsp-log-io t
+
+        lsp-rust-clippy-preference "on"
+        lsp-rust-server 'rls
+        ;; lsp-rust-server 'rust-analyzer
+        ;; lsp-rust-analyzer-cargo-watch-enable t
+        ;; ;; lsp-rust-analyzer-cargo-watch-command "clippy"
+        ;; ;; lsp-rust-analyzer-cargo-watch-args ["--message-format=json"]
+        ;; lsp-rust-analyzer-cargo-override-command ["-x" "clippy" "--message-format=json"]
+        ;; lsp-rust-analyzer-server-display-inlay-hints t
+        ;; lsp-rust-analyzer-display-chaining-hints t
+        ;; lsp-rust-analyzer-display-parameter-hints t
         )
   :config
-  (defun lsp--flycheck-report ())
   (flycheck-add-next-checker 'lsp 'javascript-eslint)
   (evil-collection-define-key 'normal 'lsp-mode-map
     ",hs" 'lsp-describe-session
@@ -297,28 +307,6 @@
   (setq lsp-ui-sideline-show-diagnostics nil)
 
   :config
-  (defun lsp-ui-peek--get-xrefs-in-file (file)
-    "Return all references that contain a file.
-FILE is a cons where its car is the filename and the cdr is a list of Locations
-within the file.  We open and/or create the file/buffer only once for all
-references.  The function returns a list of `ls-xref-item'."
-    (let* ((filename (car file))
-           (visiting (find-buffer-visiting filename))
-           (fn (lambda (loc) (lsp-ui-peek--xref-make-item filename loc))))
-      (cond
-       (visiting
-        (with-temp-buffer
-          (insert-buffer-substring-no-properties visiting)
-          (lsp-ui-peek--fontify-buffer filename)
-          (mapcar fn (cdr file))))
-       ((file-readable-p filename)
-        (with-temp-buffer
-          ;; (insert-file-contents-literally filename)
-          (insert-file-contents filename)
-          (lsp-ui-peek--fontify-buffer filename)
-          (mapcar fn (cdr file))))
-       (t (user-error "Cannot read %s" filename)))))
-
   (defun evil-lsp-ui-sideline--stop-p (org-func)
     (if (and (boundp 'evil-state)
              (eq evil-state 'insert))

@@ -24,49 +24,29 @@
 
 ;;; Code:
 
-(el-get-bundle rust-mode)
-(use-package rust-mode
-  :mode (("\\.rs\\'" . rust-mode))
+(el-get-bundle brotzeit/rustic)
+(el-get-bundle xterm-color)
+(use-package rustic
   :init
-  (setq rust-format-on-save t)
-  (defun rust-mode-setup-company ()
-    (set (make-local-variable 'company-backends)
-         (cons '(company-capf company-yasnippet)
-               company-backends)))
-  (add-hook 'rust-mode-hook 'rust-mode-setup-company)
+  (setq rustic-lsp-format t
+        ;; rustic-lsp-server 'rust-analyzer
+        rustic-lsp-server 'rls
+        )
   :config
-  (modify-syntax-entry ?! "_" rust-mode-syntax-table)
-  (modify-syntax-entry ?_ "w" rust-mode-syntax-table)
-  )
-
-(el-get-bundle flycheck-rust)
-(use-package flycheck-rust
-  :commands (flycheck-rust-setup)
-  :init
-  (add-hook 'flycheck-mode-hook 'flycheck-rust-setup))
-
-(el-get-bundle cargo)
-(use-package cargo
-  :commands (cargo-minor-mode)
-  :diminish cargo-minor-mode
-  :init
-  (add-hook 'rust-mode-hook 'cargo-minor-mode)
-  :config
-  (setq cargo-process--command-test "test --color=never")
-  (evil-define-key 'normal cargo-minor-mode-map
-    ",C" 'cargo-process-clean
-    ",c" 'cargo-process-clippy
-    ",d" 'cargo-process-doc
-    ",b" 'cargo-process-build
-    ",n" 'cargo-process-new
-    ",i" 'cargo-process-init
-    ",r" 'cargo-process-run
-    ",s" 'cargo-process-search
-    ",u" 'cargo-process-update
-    ",B" 'cargo-process-bench
-    ",t" 'cargo-process-test
-    )
-  )
+  (evil-define-key 'normal rustic-mode-map
+    ",p" 'rustic-popup
+    ",CC" 'rustic-compile
+    ",CR" 'rustic-recompile
+    ",cb" 'rustic-cargo-build
+    ",cc" 'rustic-cargo-check
+    ",cr" 'rustic-cargo-run
+    ",cf" 'rustic-cargo-fmt
+    ",ct" 'rustic-cargo-test
+    ",cT" 'rustic-cargo-current-test
+    ",cl" 'rustic-cargo-clippy
+    ",co" 'rustic-cargo-outdated
+    ",f" 'rustic-format-buffer
+    ))
 
 (el-get-bundle toml-mode)
 (use-package toml-mode
