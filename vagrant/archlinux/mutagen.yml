@@ -13,9 +13,10 @@ sync:
   dotfiles:
     alpha: "archlinux:/home/vagrant/dotfiles"
     beta: "~/dotfiles"
-  maricuru:
-    alpha: "archlinux:/home/vagrant/dev/maricuru"
-    beta: "~/dev/maricuru"
+  dev:
+    alpha: "archlinux:/home/vagrant/dev"
+    beta: "~/dev"
     ignore:
       paths:
-        - "tmp/cache"
+        - "emacs"
+        - "arch-boxes"
