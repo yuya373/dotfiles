@@ -1,5 +1,6 @@
 (setq el-get-lock-package-versions
-      '((xterm-color :checksum "d53a39a5af72cd340ebf686e59a37289b4cb6e8c")
+      '((request :checksum "216d570a58d05ef1307edb63d2539bafa5f688c6")
+        (xterm-color :checksum "d53a39a5af72cd340ebf686e59a37289b4cb6e8c")
         (rustic :checksum "cb2bfde237fd941f8c512e4d4f59ab5be53a5382")
         (evil-nerd-commenter :checksum "fa40dab8d2f010db17e1e62dfd245c1504d0542f")
         (annalist :checksum "134fa3f0fb91a636a1c005c483516d4b64905a6d")
@@ -164,7 +165,6 @@
         (helm-open-github :checksum "2f03d97552a1233db7694116d5f80ecde7612756")
         (gh :checksum "f029fc11f345ef04ab62ee91c38657e29c462fea")
         (marshal :checksum "f038689cbd5b3680b80b44edd0c7a63ca3038e26")
-        (request :checksum "48a35969f7c41810d550e6cdf784cb86c5a05a20")
         (deferred :checksum "2239671d94b38d92e9b28d4e12fd79814cfb9c16")
         (logito :checksum "824acb89d2cc18cb47281a4fbddd81ad244a2052")
         (pcache :checksum "1f31433ad0b37a2e68d60ee043a8188ef1ce3176")
