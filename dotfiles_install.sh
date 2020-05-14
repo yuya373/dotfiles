@@ -12,6 +12,7 @@ case ${OSTYPE} in
         ln -sf ~/dotfiles/.aspell.conf  ~/.aspell.conf
         ln -sf ~/dotfiles/.zlogin  ~/.zlogin
         # X
+        ln -sf ~/dotfiles/.xinitrc ~/.xinitrc
         ln -sf ~/dotfiles/.xscreensaver  ~/.xscreensaver
         ln -sf ~/dotfiles/.Xresources  ~/.Xresources
         ln -sf ~/dotfiles/.xbindkeysrc  ~/.xbindkeysrc
@@ -41,14 +42,15 @@ case ${OSTYPE} in
         ln -sf ~/dotfiles/.docker/config.json  ~/.docker/config.json
         mkdir -p ~/.xmonad
         ln -sf ~/dotfiles/xmonad.hs ~/.xmonad/xmonad.hs
+        ln -sf ~/dotfiles/.xmobarrc ~/.xmobarrc
         # xkeysnail
         # NOTE: need restart?
         sudo ln -sf ~/dotfiles/etc/modules-load.d/uinput.conf /etc/modules-load.d/uinput.conf
         sudo ln -sf ~/dotfiles/etc/udev/rules.d/29-input.rules /etc/udev/rules.d/29-input.rules
         sudo ln -sf ~/dotfiles/etc/udev/rules.d/30-uinput.rules  /etc/udev/rules.d/30-uinput.rules
         sudo ln -sf ~/dotfiles/etc/udev/rules.d/99-ergodox.rules /etc/udev/rules.d/99-ergodox.rules
-        ln -sf ~/dotfiles/.config/systemd/user/ergodox.service ~/.config/systemd/user/ergodox.service
         mkdir -p ~/.config/systemd/user
+        ln -sf ~/dotfiles/.config/systemd/user/ergodox.service ~/.config/systemd/user/ergodox.service
         ln -sf ~/dotfiles/.config/systemd/user/ssh-agent.service ~/.config/systemd/user/ssh-agent.service
         ln -sf ~/dotfiles/.config/systemd/user/xkeysnail.service ~/.config/systemd/user/xkeysnail.service
         ;;
@@ -93,7 +95,6 @@ ln -sf ~/dotfiles/.config/common-lisp/source-registry.conf ~/.config/common-lisp
 ln -sf ~/dotfiles/.sbclrc ~/.sbclrc
 
 # emacs
-mkdir -p ~/.emacs.d
 ln -sf ~/dotfiles/.emacs.d ~/.emacs.d
 mkdir -p ~/.emacs.d/var/slack-images
 mkdir -p ~/.emacs.d/var/slack-profile-images

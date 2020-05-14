@@ -3,7 +3,7 @@ set -e
 
 if [[ ! -d $HOME/dev/fonts ]]; then
     mkdir -p $HOME/dev
-    git clone --depth=1 git@github.com:powerline/fonts.git $HOME/dev/fonts
+    git clone --depth=1 https://github.com/powerline/fonts.git $HOME/dev/fonts
     $HOME/dev/fonts/install.sh
 else
     echo "Powerline Fonts already installed"

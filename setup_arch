@@ -1,0 +1,44 @@
+#!/bin/bash
+
+set -e
+
+sudo pacman -Sy --noconfirm archlinux-keyring
+sudo pacman -Syyu --noconfirm
+sudo pacman -S --noconfirm --needed base-devel git
+
+
+if ! command -v yay > /dev/null; then
+  if [[ ! -d ~/yay ]]; then
+    git clone https://aur.archlinux.org/yay.git ~/yay
+  fi
+  pushd ~/yay
+  makepkg -Csi --needed --noconfirm
+  popd
+fi
+
+cat ~/dotfiles/pacman.txt | yay -S --noconfirm --needed -
+
+sudo usermod -aG docker $USER
+systemctl enable docker
+systemctl start docker
+systemctl enable NetworkManager
+systemctl enable bluetooth
+systemctl --user enable clipmenud
+
+# [xkeysnailをsystemdでデーモン化 - Qiita](https://qiita.com/samurai20000@github/items/2e1d779e806a7e8543d6)
+sudo groupadd uinput
+sudo usermod -aG input $USER
+sudo usermod -aG uinput $USER
+
+~/dotfiles/dotfiles_install.sh
+sudo udevadm control --reload-rules && udevadm trigger
+systemctl --user enable xkeysnail
+systemctl --user start xkeysnail
+
+~/dotfiles/powerline_fonts_install
+~/dotfiles/rbenv_install.sh
+~/dotfiles/yarn_setup.sh
+~/dotfiles/go_setup
+~/dotfiles/rust_setup
+
+
