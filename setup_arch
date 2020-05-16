@@ -18,6 +18,8 @@ fi
 
 cat ~/dotfiles/pacman.txt | yay -S --noconfirm --needed -
 
+ln -sf ~/dotfiles/clipmenu_fontified ~/local/bin/clipmenu
+
 sudo usermod -aG docker $USER
 systemctl enable docker
 systemctl start docker

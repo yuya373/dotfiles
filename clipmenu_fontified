@@ -1,0 +1,9 @@
+#!/bin/bash
+
+
+if [ -e /usr/bin/clipmenu ]; then
+    exec /usr/bin/clipmenu -l 20 -fn 'Ricty:size=16'
+else
+    sudo pacman -S clipmenu
+fi
+
