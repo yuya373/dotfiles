@@ -14,3 +14,5 @@ $HOME/.cargo/bin/rustup component add \
                         rust-analysis \
                         rust-src \
                         clippy
+
+$HOME/dotfiles/install_rust_analyzer
