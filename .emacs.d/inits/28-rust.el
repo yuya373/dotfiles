@@ -25,6 +25,7 @@
 ;;; Code:
 
 (el-get-bundle rustic)
+(el-get-bundle xterm-color)
 (use-package rustic
   :init
   (setq rustic-lsp-format t
