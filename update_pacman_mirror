@@ -1,2 +1,2 @@
 #!/usr/bin/bash -eu
-sudo reflector --latest 200 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+sudo reflector --country Japan --country Taiwan --country 'South Korea' --protocol http --protocol https --sort rate --save /etc/pacman.d/mirrorlist
