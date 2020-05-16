@@ -24,15 +24,40 @@
 
 ;;; Code:
 
-(el-get-bundle brotzeit/rustic)
-(el-get-bundle xterm-color)
+(el-get-bundle rustic)
 (use-package rustic
   :init
   (setq rustic-lsp-format t
-        ;; rustic-lsp-server 'rust-analyzer
-        rustic-lsp-server 'rls
+        rustic-lsp-server 'rust-analyzer
+        ;; rustic-lsp-server 'rls
         )
+  (setq flycheck-rust-check-tests nil)
+  (defun rustic-init-flycheck ()
+    (interactive)
+    (add-to-list 'flycheck-checkers 'rustic-clippy)
+    (flycheck-add-next-checker 'lsp 'rustic-clippy)
+    (add-to-list 'flycheck-checkers 'rustic-check)
+    (flycheck-add-next-checker 'rustic-clippy 'rustic-check))
+  (add-hook 'lsp-mode-hook 'rustic-init-flycheck)
   :config
+  (flycheck-define-checker rustic-check
+    "A Rust syntax checker using check."
+    :command ("cargo" "check" "--message-format=json")
+    :error-parser flycheck-parse-cargo-rustc
+    :error-filter flycheck-rust-error-filter
+    :error-explainer flycheck-rust-error-explainer
+    :modes rustic-mode
+    :predicate flycheck-buffer-saved-p
+    :enabled (lambda () (flycheck-rust-manifest-directory))
+    :working-directory (lambda (_) (flycheck-rust-manifest-directory))
+    :verify (lambda (_)
+              (and buffer-file-name
+                   (let ((has-toml (flycheck-rust-manifest-directory)))
+                     (list (flycheck-verification-result-new
+                            :label "Cargo.toml"
+                            :message (if has-toml "Found" "Missing")
+                            :face (if has-toml 'success '(bold warning))))))))
+
   (evil-define-key 'normal rustic-mode-map
     ",p" 'rustic-popup
     ",CC" 'rustic-compile

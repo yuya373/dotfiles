@@ -257,7 +257,7 @@
         lsp-idle-delay 0.5
 
         lsp-diagnostic-package ':flycheck
-        lsp-flycheck-live-reporting t
+        lsp-flycheck-live-reporting nil
 
         lsp-eldoc-render-all nil
 
@@ -266,16 +266,17 @@
 
         lsp-log-io t
 
-        lsp-rust-clippy-preference "on"
-        lsp-rust-server 'rls
-        ;; lsp-rust-server 'rust-analyzer
+        ;; lsp-rust-clippy-preference "on"
+        ;; lsp-rust-server 'rls
+        lsp-rust-server 'rust-analyzer
+        lsp-rust-analyzer-cargo-watch-enable nil
         ;; lsp-rust-analyzer-cargo-watch-enable t
-        ;; ;; lsp-rust-analyzer-cargo-watch-command "clippy"
-        ;; ;; lsp-rust-analyzer-cargo-watch-args ["--message-format=json"]
+        ;; lsp-rust-analyzer-cargo-watch-command "clippy"
+        ;; lsp-rust-analyzer-cargo-watch-args ["--message-format=json"]
         ;; lsp-rust-analyzer-cargo-override-command ["-x" "clippy" "--message-format=json"]
-        ;; lsp-rust-analyzer-server-display-inlay-hints t
-        ;; lsp-rust-analyzer-display-chaining-hints t
-        ;; lsp-rust-analyzer-display-parameter-hints t
+        lsp-rust-analyzer-server-display-inlay-hints t
+        lsp-rust-analyzer-display-chaining-hints t
+        lsp-rust-analyzer-display-parameter-hints t
         )
   :config
   (flycheck-add-next-checker 'lsp 'javascript-eslint)

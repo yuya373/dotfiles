@@ -1,7 +1,5 @@
 (setq el-get-lock-package-versions
       '((request :checksum "216d570a58d05ef1307edb63d2539bafa5f688c6")
-        (xterm-color :checksum "d53a39a5af72cd340ebf686e59a37289b4cb6e8c")
-        (rustic :checksum "cb2bfde237fd941f8c512e4d4f59ab5be53a5382")
         (evil-nerd-commenter :checksum "fa40dab8d2f010db17e1e62dfd245c1504d0542f")
         (annalist :checksum "134fa3f0fb91a636a1c005c483516d4b64905a6d")
         (clang-format :checksum "c2783928a2413267fd595b6aaa4fce4764f9cfa4")

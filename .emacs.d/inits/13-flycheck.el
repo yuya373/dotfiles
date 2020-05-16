@@ -102,7 +102,11 @@
   (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
   (setq flycheck-scalastylerc "~/dotfiles/scalastyle_config.xml")
   (setq flycheck-check-syntax-automatically
-        '(save idle-change idle-buffer-switch mode-enabled))
+        '(save
+          ;; idle-change
+          ;; idle-buffer-switch
+          mode-enabled
+          ))
   (defun evil-flycheck-may-check-automatically (org-func &rest args)
     ;; (message "%s or %s: %s"
     ;;          (not evil-mode)
@@ -149,7 +153,7 @@
     (setq flycheck-inline--phantoms nil))
 
   (setq flycheck-inline-clear-function
-        #'flycheck-inline-clear-all-phantoms)
+        #'flycheck-inline-clear-phantoms)
   )
 
 
