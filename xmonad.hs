@@ -47,6 +47,7 @@ myConfig = (ewmh $ defaultConfig) {
   , ((mod1Mask .|. shiftMask, xK_Tab), prevScreen)
   , ((mod1Mask .|. shiftMask, xK_c), kill)
   , ((0, xK_Insert), pasteSelection)
+  , ((mod1Mask, xK_p), spawn "exe=`dmenu_run -l 10 -fn 'Ricty:size=16'` && exec $exe")
   ]
 
 myStartupHook = do
