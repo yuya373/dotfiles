@@ -28,7 +28,7 @@ printer = xmobarPP {
 toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
 myWorkspaces = ["Emacs", "Terminal", "WebBrowser", "Hidden"]
 myConfig = (ewmh $ defaultConfig) {
-  terminal = "urxvt"
+  terminal = "alacritty"
   , borderWidth = 3
   , startupHook = myStartupHook
   , manageHook = myManageHook
