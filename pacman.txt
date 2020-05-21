@@ -1,4 +1,5 @@
 adobe-base-14-fonts
+alacritty
 alsa-utils
 arandr
 aspell-en
@@ -8,9 +9,12 @@ autorandr-git
 base
 bison
 blueman
+bluez-firmware
+bluez-utils
 clang
 clipmenu
 cmigemo-git
+code
 ctags
 deepin-screen-recorder
 direnv
@@ -38,7 +42,9 @@ imagemagick
 intel-ucode
 jdk8-openjdk
 jq
+libvncserver
 linux
+linux-firmware
 lsof
 make
 man-pages
@@ -57,12 +63,15 @@ openssh
 parted
 patch
 pkgconf
+powerline-fonts
 pulseaudio-alsa
+pulseaudio-bluetooth
 python-pip
 python-pygments
 qrencode
 redshift
 reflector
+remmina
 rsync
 rxvt-unicode
 sbt
@@ -71,6 +80,7 @@ scala-docs
 scala-sources
 skk-jisyo
 skktools
+sof-firmware
 sudo
 texinfo
 the_silver_searcher
@@ -86,8 +96,10 @@ virtualbox-guest-iso
 vlc
 wget
 which
+words
 xbindkeys
 xclip
+xdg-utils
 xf86-video-intel
 xkeysnail
 xmobar
@@ -97,6 +109,7 @@ xorg-server
 xorg-xev
 xorg-xhost
 xorg-xinit
+xorg-xinput
 xscreensaver
 xss-lock-git
 yarn
