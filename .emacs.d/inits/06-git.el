@@ -231,7 +231,7 @@
 (use-package git-link
   :commands (git-link git-link-commit git-link-homepage)
   :init
-  (setq git-link-default-branch "develop"))
+  (setq git-link-default-branch "master"))
 
 
 (provide '06-git)

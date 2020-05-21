@@ -445,6 +445,8 @@
                                    ;; "Unity 3D"
                                    "Go"
                                    ))
+  ;; (dolist (doc '("Ruby" "Ruby_on_Rails_6" "Haml" "HTML" "JavaScript" "React" "Rust" "Markdown" "Emacs_Lisp" "Bash" "Go"))
+  ;;   (dash-docs-install-docset doc))
   (setq dash-docs-min-length 1)
   (setq dash-docs-browser-func 'eww))
 (el-get-bundle helm-dash)
