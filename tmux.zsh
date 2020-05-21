@@ -1,5 +1,5 @@
 start() {
-    if [[ ! -n $TMUX && $- == *l* ]]; then
+    if [[ ! -n $TMUX ]]; then
         # get the IDs
         ID="`tmux list-sessions`"
         if [[ -z "$ID" ]]; then
