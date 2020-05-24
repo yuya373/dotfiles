@@ -9,6 +9,7 @@ case ${OSTYPE} in
         ln -sf ~/dotfiles/home/Library/Preferences/com.amethyst.Amethyst.plist ~/Library/Preferences/com.amethyst.Amethyst.plist
         ;;
     linux*)
+        ln -sf ~/dotfiles/.alacritty.yml ~/.alacritty.yml
         ln -sf ~/dotfiles/.aspell.conf  ~/.aspell.conf
         ln -sf ~/dotfiles/.zlogin  ~/.zlogin
         # X
