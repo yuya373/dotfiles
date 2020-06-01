@@ -100,6 +100,10 @@
         evil-collection-setup-minibuffer nil
         evil-collection-key-blacklist '("t" "SPC" "C-j" "C-k" "C-h" "C-l" "C-c" "C-c C-c" "C-b"))
   :config
+  ;; [copy paste - evil-mode visual selection copies text to clipboard automatically - Emacs Stack Exchange](https://emacs.stackexchange.com/questions/14940/evil-mode-visual-selection-copies-text-to-clipboard-automatically)
+  (fset 'evil-visual-update-x-selection 'ignore)
+  ;; [In Evil mode, how can I prevent adding to the kill ring when I yank text, visual mode over other text, then paste over? - Emacs Stack Exchange](https://emacs.stackexchange.com/questions/28135/in-evil-mode-how-can-i-prevent-adding-to-the-kill-ring-when-i-yank-text-visual)
+  (setq-default evil-kill-on-visual-paste nil)
   (evil-collection-init)
   (evil-collection-define-key 'normal 'compilation-mode-map
     (kbd "C-n") 'compilation-next-error

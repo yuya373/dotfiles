@@ -103,7 +103,7 @@
   (setq flycheck-scalastylerc "~/dotfiles/scalastyle_config.xml")
   (setq flycheck-check-syntax-automatically
         '(save
-          idle-change
+          ;; idle-change
           ;; idle-buffer-switch
           mode-enabled
           ))
