@@ -29,7 +29,9 @@ fakeroot
 feh
 flex
 gdb
+ghq
 git
+github-cli
 global
 google-chrome
 groff
