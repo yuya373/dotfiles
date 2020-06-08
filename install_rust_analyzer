@@ -3,10 +3,10 @@ set -e
 
 if [ ! -d $HOME/rust-analyzer ]; then
     git clone https://github.com/rust-analyzer/rust-analyzer.git $HOME/rust-analyzer
-else
-    git pull origin master
 fi
 
 pushd $HOME/rust-analyzer
+git fetch -a
+git checkout -B release origin/release
 cargo xtask install --server
 popd
