@@ -38,7 +38,7 @@
     (add-to-list 'flycheck-checkers 'rustic-clippy)
     (flycheck-add-next-checker 'lsp 'rustic-clippy)
     (add-to-list 'flycheck-checkers 'rustic-check)
-    (flycheck-add-next-checker 'rustic-clippy 'rustic-check))
+    (flycheck-add-next-checker 'lsp 'rustic-check))
   (add-hook 'lsp-mode-hook 'rustic-init-flycheck)
   :config
   (flycheck-define-checker rustic-check
