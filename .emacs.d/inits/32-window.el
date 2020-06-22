@@ -123,6 +123,8 @@
                             slack-message-edit-buffer-mode
                             slack-message-share-buffer-mode)
                            :select t :size 0.3)
+                          (rustic-format-mode)
+                          (rustic-compilation-mode)
                           ))
                 (mapcar (lambda (l) (append l shackle-rule-right-half))
                         '(((woman-mode
