@@ -231,7 +231,32 @@
 (use-package git-link
   :commands (git-link git-link-commit git-link-homepage)
   :init
-  (setq git-link-default-branch "master"))
+  (setq git-link-default-branch nil)
+  :config
+  (defun git-link--current-branch ()
+    (interactive)
+    (let* ((branches nil))
+      (dolist (line (with-temp-buffer
+                      (when (zerop (apply #'process-file
+                                          "git"
+                                          nil
+                                          (current-buffer)
+                                          nil
+                                          (list "branch" "--contains")))
+                        (goto-char (point-min))
+                        (cl-loop until (eobp)
+                                 collect (buffer-substring-no-properties
+                                          (line-beginning-position)
+                                          (line-end-position))
+                                 do (forward-line 1)))))
+        (unless (string-match-p "detached" line)
+          (push (if (string-prefix-p "*" line)
+                    (string-trim (substring line 1))
+                  (string-trim line))
+                branches)))
+      (car branches)))
+  )
+
 
 
 (provide '06-git)
