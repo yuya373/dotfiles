@@ -125,6 +125,7 @@
                            :select t :size 0.3)
                           (rustic-format-mode)
                           (rustic-compilation-mode)
+                          (rustic-cargo-test-mode)
                           ))
                 (mapcar (lambda (l) (append l shackle-rule-right-half))
                         '(((woman-mode

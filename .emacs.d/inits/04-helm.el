@@ -88,7 +88,7 @@
                                     ))
   (setq helm-completion-style 'emacs)
   (setq completion-styles (if (< 26 emacs-major-version)
-                              '(flex)
+                              '(basic partial-completion emacs22 flex)
                             '(basic partial-completion emacs22 helm-flex)))
 
   (setq helm-M-x-fuzzy-match t
@@ -124,10 +124,6 @@
         helm-echo-input-in-header-line t
         helm-ff-guess-ffap-filenames t)
   :config
-  (defun helm-kill-ring-action-yank-1 (str)
-    (set-text-properties 0 (length str) nil str)
-    (setq kill-ring (delete str kill-ring))
-    (kill-new str))
   (helm-migemo-mode t)
   (diminish 'helm-migemo-mode)
   (use-package ace-window)
@@ -350,6 +346,12 @@
       (kbd "C-b") 'helm-mini)
     (define-key evil-normal-state-map
       (kbd "C-b") 'helm-mini))
+  (with-eval-after-load "helm-ring"
+    (defun helm-kill-ring-action-yank-1 (str)
+      (set-text-properties 0 (length str) nil str)
+      (setq kill-ring (delete str kill-ring))
+      (kill-new str)))
+
 
   (define-key helm-map (kbd "C-t") 'helm-perspeen-open-with-new-tab)
   (define-key helm-map (kbd "C-v") 'helm-ace-vsplit-ff)

@@ -249,7 +249,12 @@
                                           (line-beginning-position)
                                           (line-end-position))
                                  do (forward-line 1)))))
-        (unless (string-match-p "detached" line)
+        (if (string-match-p "detached" line)
+            (progn
+              (push (replace-regexp-in-string
+                     ")" ""
+                     (string-trim (cadr (split-string line "/"))))
+                    branches))
           (push (if (string-prefix-p "*" line)
                     (string-trim (substring line 1))
                   (string-trim line))
