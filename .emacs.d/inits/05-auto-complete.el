@@ -229,7 +229,6 @@
 
 (el-get-bundle lsp-mode)
 (el-get-bundle lsp-ui)
-(el-get-bundle company-lsp)
 
 (use-package lsp-mode
   :commands (lsp)
@@ -260,9 +259,10 @@
         lsp-flycheck-live-reporting nil
 
         lsp-eldoc-render-all nil
+        lsp-eldoc-enable-hover nil
 
-        lsp-enable-completion-at-point nil
-        lsp-prefer-capf nil
+        lsp-enable-completion-at-point t
+        lsp-prefer-capf t
 
         lsp-log-io t
 
@@ -278,6 +278,12 @@
         lsp-rust-analyzer-display-chaining-hints t
         lsp-rust-analyzer-display-parameter-hints t
         )
+  (defun my-lsp-inhibit-hooks ()
+    (setq-local lsp-inhibit-lsp-hooks t))
+  (defun my-lsp-activate-hooks ()
+    (setq-local lsp-inhibit-lsp-hooks nil))
+  (add-hook 'evil-normal-state-entry-hook #'my-lsp-activate-hooks)
+  (add-hook 'evil-normal-state-exit-hook #'my-lsp-inhibit-hooks)
   :config
   (flycheck-add-next-checker 'lsp 'javascript-eslint)
   (evil-collection-define-key 'normal 'lsp-mode-map
@@ -303,7 +309,8 @@
   (setq lsp-ui-doc-position 'top
         lsp-ui-doc-header t
         lsp-ui-doc-include-signature t
-        lsp-ui-doc-alignment 'window)
+        lsp-ui-doc-alignment 'window
+        lsp-ui-doc-delay 0.5)
 
   (setq lsp-ui-sideline-show-diagnostics nil)
 
@@ -379,25 +386,26 @@
     (kbd "RET") 'lsp-ui-peek--goto-xref
     (kbd "ESC") 'lsp-ui-peek--abort))
 
-(use-package company-lsp
-  :after (lsp-mode)
-  :init
-  (setq company-lsp-async t
-        company-lsp-enable-recompletion t
-        company-lsp-enable-additional-text-edit t
-        company-lsp-enable-snippet t
-        company-lsp-enable-trigger-kind t
-        )
-  :config
+;; (el-get-bundle company-lsp)
+;; (use-package company-lsp
+;;   :after (lsp-mode)
+;;   :init
+;;   (setq company-lsp-async t
+;;         company-lsp-enable-recompletion t
+;;         company-lsp-enable-additional-text-edit t
+;;         company-lsp-enable-snippet t
+;;         company-lsp-enable-trigger-kind t
+;;         )
+;;   :config
 
-  (defun company-lsp-match-candidate-prefix (candidate prefix)
-    "Return non-nil if the filter text of CANDIDATE starts with PREFIX.
+;;   (defun company-lsp-match-candidate-prefix (candidate prefix)
+;;     "Return non-nil if the filter text of CANDIDATE starts with PREFIX.
 
-The match is case-insensitive."
-    (string-prefix-p prefix (company-lsp--candidate-filter-text candidate) nil))
-  (setq company-lsp-match-candidate-predicate
-        #'company-lsp-match-candidate-prefix)
-  (push 'company-lsp company-backends))
+;; The match is case-insensitive."
+;;     (string-prefix-p prefix (company-lsp--candidate-filter-text candidate) nil))
+;;   (setq company-lsp-match-candidate-predicate
+;;         #'company-lsp-match-candidate-prefix)
+;;   (push 'company-lsp company-backends))
 
 ;; (el-get-bundle company-box)
 ;; (use-package company-box

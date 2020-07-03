@@ -43,7 +43,7 @@
   :config
   (flycheck-define-checker rustic-check
     "A Rust syntax checker using check."
-    :command ("cargo" "check" "--message-format=json")
+    :command ("cargo" "check" "--all-targets" "--message-format=json")
     :error-parser flycheck-parse-cargo-rustc
     :error-filter flycheck-rust-error-filter
     :error-explainer flycheck-rust-error-explainer

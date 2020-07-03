@@ -11,6 +11,7 @@
 (setq command-line-default-directory "~/")
 (setq gc-cons-threshold (* 256 1024 1024))
 (setq garbage-collection-messages t)
+(setq read-process-output-max (* 1024 1024))
 
 (when load-file-name
   (setq user-emacs-directory (file-name-directory load-file-name)))
@@ -106,7 +107,7 @@
 ;; Font
 ;; [エディタで等幅日本語フォントを最適に表示させるには、フォントサイズを2か3か5の倍数にするといいよ！ - Qiita](https://qiita.com/suin/items/559d02ea32bd4a6ef08b)
 ;; [Emacs のフォント設定について - Qiita](https://qiita.com/melito/items/238bdf72237290bc6e42)
-(let* ((size 16)
+(let* ((size 15)
        (height (* 10 size))
        (spec (list :family "Ricty"
                    :height height))
