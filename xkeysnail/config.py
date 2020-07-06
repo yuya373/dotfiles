@@ -6,14 +6,14 @@ from xkeysnail.transform import *
 # [Global modemap] Change modifier keys as in xmodmap
 
 # [Conditional modmap] Change modifier keys in certain applications
-define_conditional_modmap(lambda wm_class, device_name: device_name not in ("ErgoDox EZ ErgoDox EZ"),{
-    Key.CAPSLOCK: Key.TAB,
-    Key.LEFT_ALT: Key.LEFT_CTRL,
-    Key.RIGHT_ALT: Key.RIGHT_CTRL,
-    Key.SYSRQ: Key.RIGHT_ALT,
-    Key.LEFT_META: Key.LEFT_ALT,
-    Key.RIGHT_META: Key.RIGHT_ALT,
-})
+# define_conditional_modmap(lambda wm_class, device_name: device_name not in ("ErgoDox EZ ErgoDox EZ"),{
+#     Key.CAPSLOCK: Key.TAB,
+#     Key.LEFT_ALT: Key.LEFT_CTRL,
+#     Key.RIGHT_ALT: Key.RIGHT_CTRL,
+#     Key.SYSRQ: Key.RIGHT_ALT,
+#     Key.LEFT_META: Key.LEFT_ALT,
+#     Key.RIGHT_META: Key.RIGHT_ALT,
+# })
 
 # define_conditional_modmap(lambda wm_class: wm_class not in ("Emacs", "URxvt"), {
 #     Key.LEFT_CTRL: Key.TAB,
