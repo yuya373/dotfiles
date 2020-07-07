@@ -135,19 +135,34 @@ URxvt.pointerBlank:         true
 *pointerColorBackground:  S_base01
 *pointerColorForeground:  S_base1
 
+!! black dark/light
 *color0:                  S_base02
-*color1:                  S_red
-*color2:                  S_green
-*color3:                  S_yellow
-*color4:                  S_blue
-*color5:                  S_magenta
-*color6:                  S_cyan
-*color7:                  S_base2
-*color9:                  S_orange
 *color8:                  S_base00
+
+!! red dark/light
+*color1:                  S_red
+*color9:                  S_orange
+
+!! green dark/light
+*color2:                  S_green
 *color10:                 S_base01
+
+!! yellow dark/light
+*color3:                  S_yellow
 *color11:                 S_base00
+
+!! blue dark/light
+*color4:                  S_blue
 *color12:                 S_base0
+
+!! magenta dark/light
+*color5:                  S_magenta
 *color13:                 S_violet
+
+!! cyan dark/light
+*color6:                  S_cyan
 *color14:                 S_base1
+
+!! white dark/light
+*color7:                  S_base2
 *color15:                 S_base3
