@@ -258,6 +258,7 @@
         lsp-diagnostic-package ':flycheck
         lsp-flycheck-live-reporting nil
 
+        lsp-signature-auto-activate nil
         lsp-eldoc-render-all nil
         lsp-eldoc-enable-hover nil
 
