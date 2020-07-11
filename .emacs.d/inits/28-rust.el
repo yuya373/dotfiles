@@ -35,15 +35,18 @@
   (setq flycheck-rust-check-tests nil)
   (defun rustic-init-flycheck ()
     (interactive)
-    (add-to-list 'flycheck-checkers 'rustic-clippy)
-    (flycheck-add-next-checker 'lsp 'rustic-clippy)
+    (setq-local flycheck-check-syntax-automatically '(save))
+    ;; (add-to-list 'flycheck-checkers 'rustic-clippy)
+    ;; (flycheck-add-next-checker 'lsp 'rustic-clippy)
     (add-to-list 'flycheck-checkers 'rustic-check)
-    (flycheck-add-next-checker 'lsp 'rustic-check))
+    (flycheck-add-next-checker 'lsp 'rustic-check)
+    )
   (add-hook 'lsp-mode-hook 'rustic-init-flycheck)
   :config
   (flycheck-define-checker rustic-check
     "A Rust syntax checker using check."
-    :command ("cargo" "check" "--all-targets" "--message-format=json")
+    :command ("cargo" "check" ;; "--all-targets"
+              "--message-format=json")
     :error-parser flycheck-parse-cargo-rustc
     :error-filter flycheck-rust-error-filter
     :error-explainer flycheck-rust-error-explainer

@@ -279,5 +279,8 @@
         (when file
           (helm-find-files-1 file))))))
 
+(el-get-bundle string-inflection)
+(use-package string-inflection)
+
 (provide '03-util)
 ;;; 03-util.el ends here

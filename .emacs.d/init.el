@@ -9,9 +9,9 @@
 
 (setq default-directory "~/")
 (setq command-line-default-directory "~/")
-(setq gc-cons-threshold (* 256 1024 1024))
+(setq gc-cons-threshold (* (* 4 256) 1024 1024)) ;; 1gb
 (setq garbage-collection-messages t)
-(setq read-process-output-max (* 1024 1024))
+(setq read-process-output-max (* 3 (* 1024 1024))) ;; 3mb
 
 (when load-file-name
   (setq user-emacs-directory (file-name-directory load-file-name)))
