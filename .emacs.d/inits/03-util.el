@@ -48,7 +48,7 @@
   (which-key-add-key-based-replacements "SPC f" " Find-File")
   (which-key-add-key-based-replacements "SPC h" " Helm")
   (which-key-add-key-based-replacements "SPC p" " Projectile")
-  (which-key-add-key-based-replacements "SPC u" " Undo-Tree")
+  ;; (which-key-add-key-based-replacements "SPC u" " Undo-Tree")
   (which-key-add-key-based-replacements "SPC b" " Buffers")
   (which-key-add-key-based-replacements "SPC e" " Errors")
   (which-key-add-key-based-replacements "SPC i" " Indent-Guides")

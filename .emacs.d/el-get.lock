@@ -1,5 +1,6 @@
 (setq el-get-lock-package-versions
-      '((xterm-color :checksum "29a0916218222761201c1dcae55449f0df0610f5")
+      '((use-package :checksum "bfc5ecd69cdf71fae0af722d90336c66a6415f03")
+        (xterm-color :checksum "29a0916218222761201c1dcae55449f0df0610f5")
         (request :checksum "216d570a58d05ef1307edb63d2539bafa5f688c6")
         (evil-nerd-commenter :checksum "fa40dab8d2f010db17e1e62dfd245c1504d0542f")
         (annalist :checksum "134fa3f0fb91a636a1c005c483516d4b64905a6d")
@@ -10,8 +11,8 @@
         (sass-mode :checksum "247a0d4b509f10b28e4687cd8763492bca03599b")
         (flycheck-inline :checksum "cf9eceabff8370f3b834b943a5777b9f914583f9")
         (company-lsp :checksum "cd1a41583f2d71baef44604a14ea71f49b280bf0")
-        (lsp-ui :checksum "eabdf740570c26ce78e6e1d3e0a6be7dc749b7e1")
-        (lsp-mode :checksum "51d960f742e8ccd33f6fd2d9836bf9274413ff10")
+        (lsp-ui :checksum "7d5326430eb88a58e111cb22ffa42c7d131e5052")
+        (lsp-mode :checksum "e8ed95f0dfefd725f45464009e82cf3299cd84ff")
         (spinner :checksum "a5d721eea578abb0f13e2a7ba668033d6009f38f")
         (yasnippet-snippets :checksum "612be838d2e50c3601c349d7842702d95e17682a")
         (helm :checksum "7c5d910162ea33197b7e3656355f9b2eb2f538f2")
@@ -214,8 +215,7 @@
         (goto-chg :checksum "1829a13026c597e358f716d2c7793202458120b5")
         (init-loader :checksum "5d3cea1004c11ff96b33020e337b03b925c67c42")
         (initchart :checksum "2df1fbc965c5ef82906a0fa76b3517c5831d3581")
-        (diminish :checksum "73669b69e5f9a0c9261c5b53624329d0e24d1ed8")
-        (use-package :checksum "42db6b3d90ee57d0f5947d3b0bf4b0010bdf7b40")))
+        (diminish :checksum "73669b69e5f9a0c9261c5b53624329d0e24d1ed8")))
 (setq el-get-lock-locked-packages 'nil)
 (setq el-get-lock-unlocked-packages
       '(helm-slack slack cmake-mode))

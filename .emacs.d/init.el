@@ -9,9 +9,27 @@
 
 (setq default-directory "~/")
 (setq command-line-default-directory "~/")
-(setq gc-cons-threshold (* (* 4 256) 1024 1024)) ;; 1gb
+(setq gc-cons-threshold (* (* 1 128) 1024 1024)) ;; 100mb
+(setq gc-cons-percentage nil)
 (setq garbage-collection-messages t)
-(setq read-process-output-max (* 3 (* 1024 1024))) ;; 3mb
+(setq read-process-output-max (* 1 (* 1024 1024))) ;; 1mb
+
+(defvar before-gc-elapsed nil)
+(defvar before-pure-bytes-used nil)
+(defun notify-gc-finished ()
+  (when (and before-gc-elapsed
+             before-pure-bytes-used)
+    (let ((current-gc-elapsed (- gc-elapsed before-gc-elapsed))
+          (collected-pure-bytes (- before-pure-bytes-used pure-bytes-used)))
+      (message "Garbage collection finished. ELAPSED: %s sec, COLLECTED: %s bytes"
+               current-gc-elapsed
+               collected-pure-bytes)))
+  (setq before-gc-elapsed gc-elapsed)
+  (setq before-pure-bytes-used pure-bytes-used)
+  )
+(add-hook 'post-gc-hook #'notify-gc-finished)
+
+
 
 (when load-file-name
   (setq user-emacs-directory (file-name-directory load-file-name)))

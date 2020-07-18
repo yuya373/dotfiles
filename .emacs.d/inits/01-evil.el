@@ -88,9 +88,6 @@
                (message "Quit")
                (throw 'end-flag t)))))))
 
-(use-package undo-tree
-  :after (evil)
-  :diminish undo-tree-mode)
 (use-package goto-chg
   :after (evil))
 (use-package evil-collection
@@ -336,7 +333,23 @@
   :commands (ace-window aw-select aw-switch-to-window)
   :init
   (setq aw-dispatch-always t)
-  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+
+  :config
+  (set-face-attribute 'aw-leading-char-face nil
+                      :height 5.0
+                      ;; magenta
+                      :foreground "#d33682"
+                      ;; red
+                      ;; :foreground "#dc322f"
+                      ;; green
+                      ;; :foreground "#859900"
+                      ;; blue
+                      ;; :foreground "#268bd2"
+                      ;; cyan
+                      ;; :foreground "#2aa198"
+                      )
+  )
 
 (use-package evil
   :commands (evil-mode)
@@ -355,6 +368,8 @@
         evil-want-integration t
         evil-overriding-maps nil)
   :config
+  (global-undo-tree-mode -1)
+  (remove-hook 'evil-local-mode-hook #'evil-turn-on-undo-tree-mode)
   (evil-define-command evil-scroll-down (count)
     "Scrolls the window and the cursor COUNT lines downwards.
 If COUNT is not specified the function scrolls down
@@ -787,7 +802,7 @@ If the scroll count is zero the command scrolls half the screen."
     "ti" 'timer
     "ts" 'text-scale-adjust
     "tw" 'twit-another-buffer
-    "uv" 'undo-tree-visualize
+    ;; "uv" 'undo-tree-visualize
     "wb" 'balance-windows
     "wc" 'whitespace-cleanup
     "wg" 'golden-ratio-mode

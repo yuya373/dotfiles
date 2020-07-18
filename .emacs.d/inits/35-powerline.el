@@ -43,6 +43,8 @@
   (defvar slack-modeline "")
   (defun setup-spaceline ()
     (spaceline-spacemacs-theme)
+    (spaceline-helm-mode)
+    (spaceline-info-mode)
     (spaceline-define-segment my-slack-modeline
       "Slack"
       slack-modeline)

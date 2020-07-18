@@ -249,11 +249,13 @@
         lsp-enable-on-type-formatting t
         lsp-document-sync-method nil
         lsp-report-if-no-buffer t
+
         lsp-lens-auto-enable t
         lsp-lens-check-interval 1
         lsp-lens-debounce-interval 2
 
-        lsp-idle-delay 0.5
+        lsp-idle-delay 1
+        lsp-links-check-internal 1
 
         lsp-diagnostic-package ':flycheck
         lsp-flycheck-live-reporting nil
@@ -265,7 +267,10 @@
         lsp-enable-completion-at-point t
         lsp-prefer-capf t
 
-        lsp-log-io t
+        lsp-log-io nil
+
+        lsp-file-watch-threshold nil
+        lsp-enable-file-watchers t
 
         ;; lsp-rust-clippy-preference "on"
         ;; lsp-rust-server 'rls
@@ -311,7 +316,8 @@
         lsp-ui-doc-alignment 'frame
         lsp-ui-doc-header t
         lsp-ui-doc-include-signature t
-        lsp-ui-doc-delay 1)
+        lsp-ui-doc-delay 1
+        lsp-ui-doc-use-childframe t)
 
   (setq lsp-ui-sideline-show-diagnostics nil)
 
