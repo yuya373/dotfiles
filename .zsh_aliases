@@ -1,7 +1,6 @@
 # -*- mode: sh -*-
 
 alias show-colors='for c in {000..255}; do echo -n "\e[38;5;${c}m $c" ; [ $(($c%16)) -eq 15 ] && echo;done;echo'
-alias ssh="sshrc"
 compdef _hosts sshrc
 case ${OSTYPE} in
     darwin*)
@@ -87,7 +86,7 @@ case ${OSTYPE} in
         alias tp="top -o cpu"
         ;;
     linux*)
-	# https://unix.stackexchange.com/questions/231316/exiting-terminal-running-nohup-my-script-you-have-running-jobs-ok-to
+        # https://unix.stackexchange.com/questions/231316/exiting-terminal-running-nohup-my-script-you-have-running-jobs-ok-to
         alias chrome=">/dev/null 2>&1 google-chrome-stable &!"
         alias emacs="emacs &"
         alias tm="top -o %MEM"

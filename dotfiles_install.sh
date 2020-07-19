@@ -100,9 +100,6 @@ ln -sf ~/dotfiles/.emacs.d ~/.emacs.d
 mkdir -p ~/.emacs.d/var/slack-images
 mkdir -p ~/.emacs.d/var/slack-profile-images
 
-# sshrc
-ln -sf ~/dotfiles/.sshrc ~/.sshrc
-
 # gems
 ln -sf ~/dotfiles/.gemrc  ~/.gemrc
 
