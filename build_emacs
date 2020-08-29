@@ -92,6 +92,9 @@ if [[ $# -ge 1 ]]; then
     if [[ $1 = "26" ]]; then
         branch="emacs-26"
     fi
+    if [[ $1 = "27" ]]; then
+        branch="emacs-27"
+    fi
 fi
 print_with_current_step "Update master $branch"
 git fetch -a

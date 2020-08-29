@@ -133,10 +133,10 @@
   :init
   (add-hook 'flycheck-mode-hook #'flycheck-inline-mode)
   :config
-  (defun evil-flycheck-inline-display-phantom (msg &optional pos)
+  (defun evil-flycheck-inline-display-phantom (msg &optional pos err)
     (when (or (not (boundp 'evil-state))
               (not (eq evil-state 'insert)))
-      (flycheck-inline-display-phantom msg pos)))
+      (flycheck-inline-display-phantom msg pos err)))
   (setq flycheck-inline-display-function
         #'evil-flycheck-inline-display-phantom)
 

@@ -182,7 +182,6 @@
                       :foreground "#2aa198")
   (set-face-attribute 'company-tooltip-annotation-selection nil
                       :foreground "white")
-  (setq company-lsp-async t)
 
   ;; (set-face-attribute 'company-tooltip nil
   ;;                     :foreground "black" :background "lightgrey")
@@ -228,6 +227,7 @@
   :name pos-tip)
 
 (el-get-bundle lsp-mode)
+(el-get-bundle all-the-icons)
 (el-get-bundle lsp-ui)
 
 (use-package lsp-mode
@@ -249,6 +249,7 @@
         lsp-enable-on-type-formatting t
         lsp-document-sync-method nil
         lsp-report-if-no-buffer t
+        lsp-auto-execute-action nil
 
         lsp-lens-auto-enable t
         lsp-lens-check-interval 1
@@ -264,7 +265,7 @@
         lsp-eldoc-render-all nil
         lsp-eldoc-enable-hover nil
 
-        lsp-enable-completion-at-point t
+        lsp-completion-enable t
         lsp-prefer-capf t
 
         lsp-log-io nil
@@ -272,11 +273,14 @@
         lsp-file-watch-threshold nil
         lsp-enable-file-watchers t
 
+        lsp-response-timeout 5
+
         ;; lsp-rust-clippy-preference "on"
         ;; lsp-rust-server 'rls
         lsp-rust-server 'rust-analyzer
-        lsp-rust-analyzer-cargo-watch-enable nil
-        ;; lsp-rust-analyzer-cargo-watch-enable t
+        ;; lsp-rust-analyzer-cargo-watch-enable nil
+        lsp-rust-analyzer-cargo-watch-enable t
+        lsp-rust-analyzer-cargo-all-targets nil
         ;; lsp-rust-analyzer-cargo-watch-command "clippy"
         ;; lsp-rust-analyzer-cargo-watch-args ["--message-format=json"]
         ;; lsp-rust-analyzer-cargo-override-command ["-x" "clippy" "--message-format=json"]
@@ -290,8 +294,26 @@
     (setq-local lsp-inhibit-lsp-hooks nil))
   (add-hook 'evil-normal-state-entry-hook #'my-lsp-activate-hooks)
   (add-hook 'evil-normal-state-exit-hook #'my-lsp-inhibit-hooks)
+
+
+  (defun my-enable-eslint-for-next-of-lsp (&rest _)
+    (flycheck-add-next-checker 'lsp 'javascript-eslint))
+
+  (advice-add 'lsp-diagnostics--flycheck-enable
+              :after
+              'my-enable-eslint-for-next-of-lsp)
   :config
-  (flycheck-add-next-checker 'lsp 'javascript-eslint)
+  (use-package lsp-lens)
+  (use-package lsp-modeline)
+  (use-package lsp-headerline)
+  (use-package lsp-diagnostics)
+  (use-package lsp-completion)
+  (defface my:lsp-modeline-code-actions-face-14
+    '((t (:inherit homoglyph :foreground "#002b36" :bold t)))
+    "Used to modeline code actions"
+    :group 'lsp-mode)
+  (setq lsp-modeline-code-actions-face 'my:lsp-modeline-code-actions-face-14)
+
   (evil-collection-define-key 'normal 'lsp-mode-map
     ",hs" 'lsp-describe-session
     "K" 'lsp-describe-thing-at-point
@@ -312,16 +334,24 @@
 
   (setq lsp-ui-peek-always-show t)
 
-  (setq lsp-ui-doc-position 'at-point
+  (setq lsp-ui-doc-position 'top
         lsp-ui-doc-alignment 'frame
         lsp-ui-doc-header t
         lsp-ui-doc-include-signature t
         lsp-ui-doc-delay 1
         lsp-ui-doc-use-childframe t)
 
-  (setq lsp-ui-sideline-show-diagnostics nil)
+  (setq lsp-ui-sideline-show-diagnostics t)
 
   :config
+  (defun lsp-ui-peek--peek-hide ()
+    "Hide the chunk of code and restore previous state."
+    (when (overlayp lsp-ui-peek--overlay)
+      (delete-overlay lsp-ui-peek--overlay))
+    (setq lsp-ui-peek--overlay nil
+          lsp-ui-peek--last-xref nil)
+    ;; (set-window-start (get-buffer-window) lsp-ui-peek--win-start)
+    )
   (defun evil-lsp-ui-sideline--stop-p (org-func)
     (if (and (boundp 'evil-state)
              (eq evil-state 'insert))
@@ -342,7 +372,7 @@
     "gr" 'lsp-ui-peek-find-references
     "gd" 'lsp-ui-peek-find-definitions
     "gi" 'lsp-ui-peek-find-implementation
-    ",a" 'lsp-ui-sideline-apply-code-actions
+    ",a" nil
     ",i" 'lsp-ui-imenu
     ",le" 'lsp-ui-flycheck-list
     )
@@ -392,39 +422,6 @@
     (kbd "TAB") 'lsp-ui-peek--toggle-file
     (kbd "RET") 'lsp-ui-peek--goto-xref
     (kbd "ESC") 'lsp-ui-peek--abort))
-
-;; (el-get-bundle company-lsp)
-;; (use-package company-lsp
-;;   :after (lsp-mode)
-;;   :init
-;;   (setq company-lsp-async t
-;;         company-lsp-enable-recompletion t
-;;         company-lsp-enable-additional-text-edit t
-;;         company-lsp-enable-snippet t
-;;         company-lsp-enable-trigger-kind t
-;;         )
-;;   :config
-
-;;   (defun company-lsp-match-candidate-prefix (candidate prefix)
-;;     "Return non-nil if the filter text of CANDIDATE starts with PREFIX.
-
-;; The match is case-insensitive."
-;;     (string-prefix-p prefix (company-lsp--candidate-filter-text candidate) nil))
-;;   (setq company-lsp-match-candidate-predicate
-;;         #'company-lsp-match-candidate-prefix)
-;;   (push 'company-lsp company-backends))
-
-;; (el-get-bundle company-box)
-;; (use-package company-box
-;;   :commands (company-box-mode)
-;;   :init
-;;   (setq company-box-show-single-candidate t
-;;         company-box-doc-enable t
-;;         company-box-doc-delay 0.1
-;;         )
-;;   (add-hook 'company-mode-hook 'company-box-mode))
-
-
 
 
 (provide '05-auto-complete)

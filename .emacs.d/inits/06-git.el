@@ -84,7 +84,6 @@
   ;; (add-hook 'git-commit-mode-hook 'my-git-commit-mode)
   :config
   ;; (use-package ert)
-
   (define-key magit-file-mode-map (kbd "C-c") 'evil-window-delete)
   (require 'magit-patch)
   (require 'magit-subtree)
@@ -149,6 +148,15 @@
   ;;   :commands (turn-on-magit-gh-pulls)
   ;;   :init
   ;;   (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
+
+  (defun my-magit-section-initial-visibility (section)
+    ;; (when (magit-file-section-p section)
+    ;;   ;; (message "section: %S" (oref section hidden))
+    ;;   ;; (if (oref section hidden) 'hide 'show)
+    ;;   'hide)
+    )
+
+  (add-hook 'magit-section-set-visibility-hook #' my-magit-section-initial-visibility)
   )
 
 (use-package gist
