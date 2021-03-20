@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -e
+
+sudo pacman -Sy --noconfirm archlinux-keyring
+sudo pacman -Syyu --noconfirm
+sudo pacman -S --noconfirm --needed base-devel git
+
+
+if ! command -v yay > /dev/null; then
+  if [[ ! -d ~/yay ]]; then
+    git clone https://aur.archlinux.org/yay.git ~/yay
+  fi
+  pushd ~/yay
+  makepkg -Csi --needed --noconfirm
+  popd
+fi
+
+cat ~/dotfiles/pacman_wsl.txt | yay -S --noconfirm --needed -
+
+sudo usermod -aG docker $USER
+# systemctl enable docker
+# systemctl start docker
+
+~/dotfiles/dotfiles_install_wsl.sh
+~/dotfiles/powerline_fonts_install
+~/dotfiles/rbenv_install.sh
+~/dotfiles/rust_setup
+
+
