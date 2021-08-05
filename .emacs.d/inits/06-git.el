@@ -30,7 +30,6 @@
   (require 'fringe-helper))
 
 ;; git
-(el-get-bundle evil-magit)
 (el-get-bundle git-commit)
 (el-get-bundle magit)
 ;; (el-get-bundle magit-gh-pulls)
@@ -93,24 +92,6 @@
   (require 'git-rebase)
   (require 'magit-imenu)
   (require 'magit-bookmark)
-  (use-package evil-magit
-    :config
-    (setq evil-magit-use-y-for-yank t)
-    (define-key magit-status-mode-map (kbd "t") nil)
-    (define-key magit-mode-map (kbd "t") nil)
-    (evil-define-key evil-magit-state magit-status-mode-map
-      (kbd "q") 'magit-mode-bury-buffer
-      "t" nil
-      "T" 'magit-tag)
-    (evil-define-key evil-magit-state magit-mode-map
-      (kbd "q") 'magit-mode-bury-buffer
-      "t" nil
-      "T" 'magit-tag)
-    (evil-define-key evil-magit-state git-rebase-mode-map
-      (kbd "C-k") 'git-rebase-move-line-up
-      (kbd "C-j") 'git-rebase-move-line-down
-      (kbd ",c") 'with-editor-finish
-      (kbd ",k") 'with-editor-cancel))
   (magit-auto-revert-mode)
 
   (define-key magit-process-mode-map [override-state] nil)

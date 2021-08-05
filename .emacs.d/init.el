@@ -46,7 +46,6 @@
 (setq el-get-use-autoloads nil)
 (setq el-get-is-lazy t)
 (setq el-get-notify-type 'message)
-(el-get-bundle org-mode)
 (el-get-bundle pcre2el)
 
 ;; el-get-lock
@@ -65,6 +64,7 @@
 ;; (setq el-get-verbose t)
 ;; (setq use-package-verbose t)
 
+(el-get-bundle queue)
 ;; initchart
 (el-get-bundle yuttie/initchart)
 (use-package initchart

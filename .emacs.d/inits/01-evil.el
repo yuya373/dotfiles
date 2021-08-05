@@ -31,7 +31,8 @@
   (require 'el-get))
 
 (el-get-bundle goto-chg)
-(el-get-bundle evil)
+(el-get-bundle undo-tree)
+(el-get-bundle emacs-evil/evil)
 (el-get-bundle evil-leader)
 (el-get-bundle anzu)
 (el-get-bundle evil-anzu)
@@ -90,9 +91,14 @@
 
 (use-package goto-chg
   :after (evil))
+
+(setq evil-want-keybinding nil)
 (use-package evil-collection
   :after (evil)
   :init
+
+  (setq evil-collection-magit-state 'normal)
+  (setq evil-collection-magit-use-y-for-yank nil)
   (setq evil-collection-company-use-tng nil
         evil-collection-setup-minibuffer nil
         evil-collection-key-blacklist '("t" "SPC" "C-j" "C-k" "C-h" "C-l" "C-c" "C-c C-c" "C-b"))
@@ -114,6 +120,19 @@
   (evil-collection-define-key 'normal 'nov-mode-map
     (kbd "C-n") 'nov-next-document
     (kbd "C-p") 'nov-previous-document)
+  (evil-collection-define-key 'normal 'magit-status-mode-map
+    (kbd "q") 'magit-mode-bury-buffer
+    (kbd "t") nil
+    (kbd "T") 'magit-tag)
+  (evil-collection-define-key 'normal 'magit-mode-map
+    (kbd "q") 'magit-mode-bury-buffer
+    (kbd "t") nil
+    (kbd "T") 'magit-tag)
+  (evil-collection-define-key 'normal 'git-rebase-mode-map
+    (kbd "C-k") 'git-rebase-move-line-up
+    (kbd "C-j") 'git-rebase-move-line-down
+    (kbd ",c") 'with-editor-finish
+    (kbd ",k") 'with-editor-cancel)
   (evil-set-initial-state 'shell-mode 'normal)
   )
 (use-package evil-anzu

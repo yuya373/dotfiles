@@ -228,7 +228,7 @@
 
 (el-get-bundle emacs-lsp/lsp-mode :checkout "4db1151dbf1fe84769433d841e90803448b0b354")
 (el-get-bundle all-the-icons)
-(el-get-bundle emacs-lsp/lsp-ui :checkout "44f3a6b80a60d88c4ed300e69d64eb8e875f1c7")
+(el-get-bundle emacs-lsp/lsp-ui :checkout "449f3a6b80a60d88c4ed300e69d64eb8e875f1c7")
 
 (use-package lsp-mode
   :commands (lsp)

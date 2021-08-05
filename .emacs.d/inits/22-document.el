@@ -229,7 +229,10 @@
 (use-package open-junk-file
   :commands (open-junk-file open-junk-org-today)
   :config
-  (setq open-junk-file-format "~/Dropbox/junk/%Y-%m-%d.")
+  (if (string= "windows" system-name)
+      (setq open-junk-file-format "/mnt/c/Users/yuya373/Dropbox/junk/%Y-%m-%d.")
+    (setq open-junk-file-format "~/Dropbox/junk/%Y-%m-%d."))
+
   (defun open-junk-org-today ()
     (interactive)
     (let ((file (format "%sorg"
