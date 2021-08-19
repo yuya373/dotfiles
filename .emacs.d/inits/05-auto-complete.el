@@ -319,8 +319,11 @@
     "K" 'lsp-describe-thing-at-point
     ",a" 'lsp-execute-code-action
     ",R" 'lsp-rename
+    "gd" 'lsp-find-definition
     "gD" 'lsp-find-declaration
+    "gr" 'lsp-find-references
     "gt" 'lsp-find-type-definition
+    "gi" 'lsp-find-implementation
     "gR" 'lsp-workspace-restart
     )
   )
