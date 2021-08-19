@@ -50,8 +50,18 @@ define_multipurpose_modmap(
 #     K("C-s"): K("C-k"),
 # }, "Zeal")
 
+define_keymap(lambda wm_class: wm_class in ("Code"), {
+    # K("C-b"): with_mark(K("left")),
+    # K("C-f"): with_mark(K("right")),
+    K("C-p"): with_mark(K("up")),
+    K("C-n"): with_mark(K("down")),
+    K("C-h"): with_mark(K("backspace")),
+    K("C-m"): K("enter"),
+    K("C-LEFT_BRACE"): [K("ESC"), set_mark(False)],
+}, "Emacs-like keys")
+
 # Emacs-like keybindings in non-Emacs applications
-define_keymap(lambda wm_class: wm_class not in ("Emacs", "URxvt"), {
+define_keymap(lambda wm_class: wm_class not in ("Emacs", "URxvt", "Code"), {
     # Cursor
     K("C-b"): with_mark(K("left")),
     K("C-f"): with_mark(K("right")),
