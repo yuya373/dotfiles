@@ -83,7 +83,8 @@
   ;; (add-hook 'git-commit-mode-hook 'my-git-commit-mode)
   :config
   ;; (use-package ert)
-  (define-key magit-file-mode-map (kbd "C-c") 'evil-window-delete)
+  (define-key magit-file-section-map (kbd "C-c") 'evil-window-delete)
+  (define-key magit-mode-map "t" nil)
   (require 'magit-patch)
   (require 'magit-subtree)
   (require 'magit-ediff)
@@ -92,6 +93,8 @@
   (require 'git-rebase)
   (require 'magit-imenu)
   (require 'magit-bookmark)
+  (define-key git-rebase-mode-map (kbd "C-k") 'git-rebase-move-line-up)
+  (define-key git-rebase-mode-map (kbd "C-j") 'git-rebase-move-line-down)
   (magit-auto-revert-mode)
 
   (define-key magit-process-mode-map [override-state] nil)

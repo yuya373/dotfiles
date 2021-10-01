@@ -130,9 +130,7 @@
   (evil-set-initial-state 'pdf-outline-buffer-mode 'normal)
 
   (evil-define-key 'normal pdf-view-mode-map
-    "g" 'pdf-view-goto-page
-    "j" 'pdf-view-scroll-up-or-next-page
-    "k" 'pdf-view-scroll-down-or-previous-page
+    ;; "g" 'pdf-view-goto-page
     "h" 'left-char
     "H" 'pdf-history-backward
     "l" 'right-char
