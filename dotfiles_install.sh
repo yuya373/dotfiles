@@ -54,6 +54,8 @@ case ${OSTYPE} in
         ln -sf ~/dotfiles/.config/systemd/user/ergodox.service ~/.config/systemd/user/ergodox.service
         ln -sf ~/dotfiles/.config/systemd/user/ssh-agent.service ~/.config/systemd/user/ssh-agent.service
         ln -sf ~/dotfiles/.config/systemd/user/xkeysnail.service ~/.config/systemd/user/xkeysnail.service
+        # sudo ln -sf ~/dotfiles/etc/systemd/system/phonesim.service /etc/systemd/system/phonesim.service
+        # sudo ln -sf ~/dotfiles/etc/ofono/phonesim.conf /etc/ofono/phonesim.conf
         ;;
 esac
 

@@ -124,5 +124,9 @@
           (goto-char cur-point)))))
   (advice-add 'ert :around 'around-ert))
 
+(el-get-bundle font-lock-studio)
+(use-package font-lock-studio
+  :commands (font-lock-studio))
+
 (provide '00-config)
 ;;; 00-config.el ends here

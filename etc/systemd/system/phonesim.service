@@ -1,0 +1,10 @@
+[Unit]
+Description=phonesim
+
+[Service]
+ExecStart=phonesim -p 12345 /usr/share/phonesim/default.xml
+ExecStartPost=/home/yuya373/dotfiles/start_phonesim
+
+
+[Install]
+WantedBy=default.target

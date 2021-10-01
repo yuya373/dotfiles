@@ -1,7 +1,31 @@
 ! https://wiki.archlinuxjp.org/index.php/XScreenSaver
-xscreensaver.newLoginCommand:
+! xscreensaver.newLoginCommand:
+xscreensaver.logFile: /home/yuya373/xscreensaver.log
+xscreensaver.verbose: true
+
+! http://blog.teapot-lab.space/article/475123785.html
+XScreenSaver.Dialog.headingFont: -*-fixed-bold-r-*-*-24-*-*-*-*-*-*
+
+XScreenSaver.Dialog.bodyFont: -*-fixed-medium-r-normal-*-24-*-*-*-*-*-*-*
+XScreenSaver.Dialog.labelFont: -*-fixed-medium-r-normal-*-24-*-*-*-*-*-*-*
+XScreenSaver.Dialog.unameFont: -*-fixed-medium-r-normal-*-14-*-*-*-*-*-*-*
+XScreenSaver.Dialog.buttonFont: -*-fixed-bold-r-normal-*-24-*-*-*-*-*-*-*
+XScreenSaver.Dialog.dateFont: -*-fixed-medium-r-normal-*-14-*-*-*-*-*-*-*
+XScreenSaver.passwd.passwdFont: -*-fixed-bold-r-normal-*-24-*-*-*-*-*-*-*
+
+
+! XScreenSaver.Dialog.headingFont:    Ricty bold 16
+! XScreenSaver.Dialog.bodyFont:       Ricty 14
+! XScreenSaver.Dialog.errorFont:      Ricty bold 14
+! XScreenSaver.Dialog.labelFont:      Ricty bold 14
+! XScreenSaver.Dialog.unameFont:      Ricty 12
+! XScreenSaver.Dialog.buttonFont:     Ricty bold 14
+! XScreenSaver.Dialog.dateFont:       Ricty 9
+
+
 ! https://www.hadacchi.com/wp_blog/3341.html
 Emacs*useXIM: false
+Code*useXIM: false
 
 URxvt.scrollTtyOutput: false
 URxvt.scrollWithBuffer: true
@@ -31,7 +55,7 @@ URxvt.font: xft:Ricty:size=16:antialias=true,xft:DejaVu Sans Mono for Powerline:
 ! Xft settings
 !-------------------------------------------------------------------------------
 
-Xft.dpi: 192
+Xft.dpi: 210
 
 ! These might also be useful depending on your monitor and personal preference:
 Xft.autohint: 0

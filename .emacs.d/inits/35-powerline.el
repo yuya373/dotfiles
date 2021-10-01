@@ -84,7 +84,7 @@
          :priority 100)
         (major-mode
          :priority 90)
-        (process :when active)
+        (process :when active :priority 90)
         ((flycheck-error flycheck-warning flycheck-info)
          :when active
          :priority 100)
@@ -109,11 +109,11 @@
           point-position
           line-column)
          :separator " | "
-         :priority 90
+         :priority 50
          :when active)
         (global :when active)
         (buffer-position
-         :priority 80
+         :priority 50
          :when active)
         (hud
          :priority 60

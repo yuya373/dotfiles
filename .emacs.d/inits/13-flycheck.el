@@ -103,7 +103,7 @@
   (setq flycheck-scalastylerc "~/dotfiles/scalastyle_config.xml")
   (setq flycheck-check-syntax-automatically
         '(save
-          ;; idle-change
+          idle-change
           ;; idle-buffer-switch
           mode-enabled
           ))
@@ -126,6 +126,14 @@
       (eq exitcode 0)))
   (flycheck-add-mode 'javascript-eslint 'typescript-mode)
   (flycheck-add-mode 'javascript-eslint 'web-mode)
+  (evil-collection-define-key 'normal 'flycheck-error-list-mode-map
+    ",h" 'flycheck-error-list-explain-error
+    ",e" 'flycheck-error-list-explain-error
+    ",f" 'flycheck-error-list-set-filter
+    ",F" 'flycheck-error-list-reset-filter
+    ",g" 'flycheck-error-list-check-source
+    "RET" 'flycheck-error-list-goto-error
+    )
   )
 
 (use-package flycheck-inline

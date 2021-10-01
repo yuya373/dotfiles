@@ -215,16 +215,18 @@
   ;;                'helm-switch-to-buffers-around-advice)
 
   (defun perspeen-tab-create-tab-advice (org-func &optional buffer marker switch-to-tab)
-    (unless buffer
-      (funcall org-func buffer marker switch-to-tab))
-    (let* ((bufname (buffer-name buffer))
-           (tab (cl-find-if #'(lambda (tab)
-                                (string= (buffer-name (get tab 'current-buffer))
-                                         bufname))
-                            (perspeen-tab-get-tabs))))
-      (if tab
-          (perspeen-tab-switch-to-tab tab)
-        (funcall org-func buffer marker switch-to-tab))))
+    ;; (unless buffer
+    ;;   (funcall org-func buffer marker switch-to-tab))
+    ;; (let* ((bufname (buffer-name buffer))
+    ;;        (tab (cl-find-if #'(lambda (tab)
+    ;;                             (string= (buffer-name (get tab 'current-buffer))
+    ;;                                      bufname))
+    ;;                         (perspeen-tab-get-tabs))))
+    ;;   (if tab
+    ;;       (perspeen-tab-switch-to-tab tab)
+    ;;     (funcall org-func buffer marker switch-to-tab)))
+    (funcall org-func buffer marker switch-to-tab)
+    )
 
   (advice-add 'perspeen-tab-create-tab
               :around
@@ -285,8 +287,9 @@
     (defun helm-perspeen ()
       "Display workspaces (perspeen.el) with helm interface."
       (interactive)
-      (helm '(helm-source-perspeen-workspaces
+      (helm '(
               helm-source-perspeen-tabs
+              helm-source-perspeen-workspaces
               ;; helm-source-perspeen-create-tab
               my-helm-source-perspeen-create-workspace))))
 

@@ -1,0 +1,7 @@
+#!/bin/bash
+echo "restart ofono"
+systemctl restart ofono
+echo "power on"
+dbus-send --print-reply --system --dest=org.ofono /phonesim org.ofono.Modem.SetProperty string:"Powered" variant:boolean:true
+echo "online"
+dbus-send --print-reply --system --dest=org.ofono /phonesim org.ofono.Modem.SetProperty string:"Online" variant:boolean:true
