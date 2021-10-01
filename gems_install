@@ -3,7 +3,7 @@ set -e
 
 gem i \
     bundler:'1.17.2' \
-    rubocop:'0.67.2' \
+    rubocop \
     onkcop \
     solargraph \
     yard \
