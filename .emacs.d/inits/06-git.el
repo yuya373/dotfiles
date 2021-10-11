@@ -64,9 +64,9 @@
   (add-hook 'magit-mode-hook '(lambda () (linum-mode -1)))
   (setq magit-push-always-verify t)
   (setq magit-branch-arguments nil)
-  (setq magit-restore-window-configuration t)
 
 
+  (setq magit-bury-buffer-function #'magit-restore-window-configuration)
   (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
   ;; (setq magit-display-buffer-function #'magit-display-buffer-traditional)
   ;; (setq magit-display-buffer-function
