@@ -28,11 +28,12 @@
 (el-get-bundle xterm-color)
 (use-package rustic
   :init
-  (setq rustic-lsp-setup-p nil
+  (setq rustic-lsp-setup-p t
         rustic-lsp-format t
         rustic-lsp-server 'rust-analyzer
         rustic-format-trigger nil
         )
+  (setq rustic-test-arguments "-- --nocapture")
   (setq flycheck-rust-check-tests nil)
   ;; (defun rustic-init-flycheck ()
   ;;   (interactive)

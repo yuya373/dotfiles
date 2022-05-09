@@ -77,7 +77,6 @@
   (setq company-dabbrev-ignore-case nil)
   (setq company-dabbrev-downcase nil)
   (setq company-frontends '(company-pseudo-tooltip-frontend
-                            company-preview-frontend
                             company-echo-metadata-frontend))
 
   ;; (add-to-list 'completion-styles 'initials)
@@ -226,9 +225,11 @@
   :pkgname "pitkali/pos-tip"
   :name pos-tip)
 
-(el-get-bundle emacs-lsp/lsp-mode :checkout "4db1151dbf1fe84769433d841e90803448b0b354")
+(el-get-bundle emacs-lsp/lsp-mode :checkout "5e0524cc9a4e21c4fe5b35153ad33e7b8a4f9117")
+(add-to-list 'load-path (expand-file-name (concat user-emacs-directory
+                                                  "el-get/lsp-mode/clients")))
 (el-get-bundle all-the-icons)
-(el-get-bundle emacs-lsp/lsp-ui :checkout "449f3a6b80a60d88c4ed300e69d64eb8e875f1c7")
+(el-get-bundle emacs-lsp/lsp-ui :checkout "b625f3cb5e88559ab99bec58f7a14272edb296bc")
 
 (use-package lsp-mode
   :commands (lsp)

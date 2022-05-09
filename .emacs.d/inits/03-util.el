@@ -46,7 +46,6 @@
   (which-key-add-key-based-replacements "SPC a" " Ag")
   (which-key-add-key-based-replacements "SPC d" " Dash")
   (which-key-add-key-based-replacements "SPC f" " Find-File")
-  (which-key-add-key-based-replacements "SPC h" " Helm")
   (which-key-add-key-based-replacements "SPC p" " Projectile")
   ;; (which-key-add-key-based-replacements "SPC u" " Undo-Tree")
   (which-key-add-key-based-replacements "SPC b" " Buffers")
@@ -55,10 +54,10 @@
   (which-key-add-key-based-replacements "SPC t" " Tags, Transrate")
   (which-key-add-key-based-replacements "SPC w" " Windows")
   (which-key-add-key-based-replacements "SPC g" " Git")
-  (which-key-add-key-based-replacements "SPC h g" " Helm-Github")
   (which-key-add-key-based-replacements ", h" " Help")
   (which-key-add-key-based-replacements "SPC m" " Memo, Message")
   (which-key-add-key-based-replacements "SPC m u" " slack-update")
+  (which-key-add-key-based-replacements "SPC c" " Consult")
 
   (which-key-add-major-mode-key-based-replacements 'emacs-lisp-mode
     ", e" " Eval")

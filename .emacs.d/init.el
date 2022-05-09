@@ -11,7 +11,7 @@
 (setq command-line-default-directory "~/")
 (setq gc-cons-threshold (* (* 1 128) 1024 1024)) ;; 100mb
 (setq gc-cons-percentage nil)
-(setq garbage-collection-messages t)
+(setq garbage-collection-messages nil)
 (setq read-process-output-max (* 1 (* 1024 1024))) ;; 1mb
 
 (defvar before-gc-elapsed nil)
@@ -27,7 +27,7 @@
   (setq before-gc-elapsed gc-elapsed)
   (setq before-pure-bytes-used pure-bytes-used)
   )
-(add-hook 'post-gc-hook #'notify-gc-finished)
+;; (add-hook 'post-gc-hook #'notify-gc-finished)
 
 
 
@@ -116,11 +116,6 @@
   (setq init-loader-byte-compile nil))
 (init-loader-load (expand-file-name "~/.emacs.d/platform-inits"))
 (init-loader-load)
-(add-hook 'window-setup-hook
-          #'(lambda ()
-              (set-frame-parameter nil
-                                   'fullscreen 'maximized))
-          t)
 
 ;; Font
 ;; [エディタで等幅日本語フォントを最適に表示させるには、フォントサイズを2か3か5の倍数にするといいよ！ - Qiita](https://qiita.com/suin/items/559d02ea32bd4a6ef08b)
@@ -128,27 +123,10 @@
 (let* ((size 15)
        (height (* 10 size))
        (spec (list :family "Ricty"
-                   :height height))
-       (fontspec (apply #'font-spec spec))
-       (jp-fontspec (apply #'font-spec spec)))
+                   :height height)))
 
   (apply #'set-face-attribute 'default nil spec)
-  (apply #'set-face-attribute 'variable-pitch nil spec)
-
-  (set-fontset-font nil 'japanese-jisx0208 jp-fontspec)
-  (set-fontset-font nil 'japanese-jisx0208-1978 jp-fontspec)
-  (set-fontset-font nil 'japanese-jisx0212 jp-fontspec)
-  (set-fontset-font nil 'japanese-jisx0213-1 jp-fontspec)
-  (set-fontset-font nil 'japanese-jisx0213-2 jp-fontspec)
-  (set-fontset-font nil 'japanese-jisx0213.2004-1 jp-fontspec)
-  (set-fontset-font nil 'jisx0201 jp-fontspec)
-
-  (set-fontset-font nil 'japanese-jisx0213-a jp-fontspec)
-
-  (set-fontset-font nil 'katakana-jisx0201 jp-fontspec)
-  (set-fontset-font nil 'katakana-sjis jp-fontspec)
-
-  (set-fontset-font nil 'latin-jisx0201 jp-fontspec))
+  (apply #'set-face-attribute 'variable-pitch nil spec))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

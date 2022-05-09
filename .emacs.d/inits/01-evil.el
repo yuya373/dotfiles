@@ -162,17 +162,17 @@
   :commands (evil-numbers/inc-at-pt evil-numbers/dec-at-pt)
   :init
   (define-key evil-normal-state-map
-    (kbd "+") 'evil-numbers/inc-at-pt)
+              (kbd "+") 'evil-numbers/inc-at-pt)
   (define-key evil-normal-state-map
-    (kbd "-") 'evil-numbers/dec-at-pt))
+              (kbd "-") 'evil-numbers/dec-at-pt))
 (use-package evil-nerd-commenter
   :after (evil)
   :commands (evilnc-comment-or-uncomment-lines)
   :init
   (define-key evil-normal-state-map
-    (kbd ",,") 'evilnc-comment-or-uncomment-lines)
+              (kbd ",,") 'evilnc-comment-or-uncomment-lines)
   (define-key evil-visual-state-map
-    (kbd ",,") 'evilnc-comment-or-uncomment-lines))
+              (kbd ",,") 'evilnc-comment-or-uncomment-lines))
 (use-package evil-args
   :after (evil)
   :config
@@ -442,7 +442,7 @@ If the scroll count is zero the command scrolls half the screen."
     (evil-normal-state))
   (define-key evil-insert-state-map (kbd "C-n") nil)
   (define-key evil-insert-state-map (kbd "C-p") nil)
-  (define-key evil-insert-state-map (kbd "C-k") 'helm-show-kill-ring)
+  (define-key evil-insert-state-map (kbd "C-k") 'consult-yank-from-kill-ring)
 
   (defun set-mark-and-exit ()
     (interactive)
@@ -605,23 +605,23 @@ If the scroll count is zero the command scrolls half the screen."
   (interactive)
   (cl-labels
       ((kill (buf)
-             (let ((buf-name (buffer-name buf)))
-               (when buf-name
-                 (let* ((window-buffers (mapcar #'window-buffer (window-list)))
-                        (window-buffer-names (mapcar #'buffer-name window-buffers))
-                        (tab-buffers (mapcar #'(lambda (tab) (get tab 'current-buffer))
-                                             (perspeen-tab-get-tabs)))
-                        (tab-buffer-names (mapcar #'buffer-name tab-buffers))
-                        (first-char (substring-no-properties buf-name 0 1)))
-                   (unless (or (string= " " first-char)
-                               (string= "*" first-char)
-                               (string= buf-name
-                                        (buffer-name (current-buffer)))
-                               (cl-find-if #'(lambda (bn) (string= bn buf-name))
-                                           tab-buffer-names)
-                               (cl-find-if #'(lambda (bn) (string= bn buf-name))
-                                           window-buffer-names))
-                     (kill-buffer buf)))))))
+         (let ((buf-name (buffer-name buf)))
+           (when buf-name
+             (let* ((window-buffers (mapcar #'window-buffer (window-list)))
+                    (window-buffer-names (mapcar #'buffer-name window-buffers))
+                    (tab-buffers (mapcar #'(lambda (tab) (get tab 'current-buffer))
+                                         (perspeen-tab-get-tabs)))
+                    (tab-buffer-names (mapcar #'buffer-name tab-buffers))
+                    (first-char (substring-no-properties buf-name 0 1)))
+               (unless (or (string= " " first-char)
+                           (string= "*" first-char)
+                           (string= buf-name
+                                    (buffer-name (current-buffer)))
+                           (cl-find-if #'(lambda (bn) (string= bn buf-name))
+                                       tab-buffer-names)
+                           (cl-find-if #'(lambda (bn) (string= bn buf-name))
+                                       window-buffer-names))
+                 (kill-buffer buf)))))))
     (let ((debug-on-error t)
           (buf-list (if perspeen-mode
                         (perspeen-ws-struct-buffers perspeen-current-ws)
@@ -671,157 +671,57 @@ If the scroll count is zero the command scrolls half the screen."
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
     "=" 'all-indent
-    ":" 'helm-M-x
+    ":" 'execute-extended-command
     "<SPC>" 'avy-migemo-goto-word-1
-    "aa" 'helm-do-ag
-    "ab" 'helm-do-ag-buffers
+
     "ag" 'ag
-    "ap" 'helm-projectile-ag
-    "bb" 'helm-buffers-list
-    "bb" 'helm-mini
+    "aa" 'consult-git-grep-at-point
+    "aA" 'consult-grep-in-directory
+
     "bk" 'kill-buffers
-    "br" nil
-    "brr" 'browser-refresh
-    "bra" 'browser-refresh-and-activate
-    "bw" 'projectile-switch-to-buffer-other-window
+
     "ci" 'toggle-company-ispell
-    "cc" 'projectile-compile-project
-    "cC" 'codic
-    "ct" 'codic-translate
-    "dt" 'treemacs-select-window
-    "dc" 'treemacs-find-file
-    "da" 'treemacs-add-project
-    "dd" 'helm-dash-at-point
-    ;; "da" 'helm-dash
-    "di" 'helm-dash-async-install-docset
+
+    "dd" 'consult-dir
+    "da" 'consult-apropos
+    "db" 'describe-bindings
+    "df" 'describe-function
+    "dm" 'describe-mode
+    "dp" 'describe-package
+    "ds" 'describe-syntax
+    "dv" 'describe-variable
+
     "ef" 'flycheck-eslint-fix
-    "eha" 'helm-apropos
-    "ehb" 'describe-bindings
-    "ehf" 'describe-function
-    "ehm" 'describe-mode
-    "ehp" 'describe-package
-    "ehs" 'describe-syntax
-    "ehv" 'describe-variable
-    "el" 'flycheck-list-errors
+    "el" 'consult-flycheck
     "en" 'flycheck-next-error
     "ep" 'flycheck-previous-error
     "eb" 'flycheck-buffer
-    "eww" 'eww
-    "ewB" 'helm-eww-buffers
-    "ewb" 'helm-eww-bookmarks
-    "ewh" 'helm-eww-history
-    "ewe" 'helm-eww
-    "fd" 'helm-projectile-find-dir
-    "ff" 'helm-find-files
-    "fp" 'helm-browse-project
-    "fr" 'helm-recentf
+
+    "ff" 'find-file-at-point
+    "fr" 'consult-recent-file
+    "fp" 'consult-projectile-find-file
     "fs" 'reopen-with-sudo
+
     "gb" 'magit-blame
     "gg" 'magit-status
-    "gm" 'git-messenger:popup-message
-    "ghn" 'git-gutter+-next-hunk
-    "ghp" 'git-gutter+-previous-hunk
-    "ghr" 'git-gutter+-revert-hunks
-    "ghs" 'git-gutter+-stage-hunks
-    "gp" nil
-    "gpp" 'hub-pr-prepare-pr
-    "gps" 'hub-pr-send-pr
-    "gc" 'git-gutter+-commit
-    "gC" 'git-gutter+-stage-and-commit
+    "gl" 'consult-line-at-point
+    "gL" 'consult-line-multi-at-point
+    "gi" 'consult-imenu
+    "gI" 'consult-imenu-multi
+    "gn" 'consult-goto-line
     "goo" 'github-open
     "gob" 'github-branches-open
     "gop" 'github-pulls-open
     "goc" 'github-commit-open
-    "gt" nil
-    "gtt" 'git-timemachine
-    "gtp" 'git-timemachine-show-previous-revision
-    "gtn" 'git-timemachine-show-next-revision
-    "gtg" 'git-timemachine-show-nth-revision
-    "gtq" 'git-timemachine-quit
-    "gtw" 'git-timemachine-kill-abbreviated-revision
-    "gtW" 'git-timemachine-kill-revision
-    "gtb" 'git-timemachine-blame
-    "hgc" 'helm-open-github-from-commit
-    "hgf" 'helm-open-github-from-file
-    "hgi" 'helm-open-github-from-issues
-    "hgp" 'helm-open-github-from-pull-requests
-    "hkt" 'which-key-show-top-level
-    "hkm" 'which-key-show-major-mode
-    "hkM" 'which-key-show-minor-mode-keymap
-    "hl" 'helm-resume
-    "hL" '(lambda () (interactive) (helm-resume t))
-    "hm" 'helm-all-mark-rings
-    "hi" 'helm-imenu-anywhere
-    "ho" 'helm-semantic-or-imenu
-    "hp" 'helm-list-emacs-process
-    "hun" 'easy-hugo-newpost-today
-    "hud" 'easy-hugo-github-deploy
-    "hul" 'easy-hugo-list-posts
+
     "ig" 'highlight-indent-guides-mode
-    "jw" 'avy-migemo-goto-word-1
-    "jl" 'avy-goto-line
-    "jc" 'avy-migemo-goto-char
-    "ju" 'exec-ace-link
     "l" 'toggle-folding
-    "ma" 'helm-slack
-    "mcA" 'slack-channel-unarchive
-    "mca" 'slack-channel-archive
-    "mcc" 'slack-create-channel
-    "mci" 'slack-channel-invite
-    "mcj" 'slack-channel-join
-    "mcl" 'slack-channel-leave
-    "mcr" 'slack-channel-rename
-    "mcs" 'slack-channel-select
-    "mcu" 'slack-channel-list-update
-    "mfd" 'slack-file-delete
-    "mfl" 'slack-file-list
-    "mfu" 'slack-file-upload
-    "mgA" 'slack-group-unarchive
-    "mga" 'slack-group-archive
-    "mgc" 'slack-create-group
-    "mgi" 'slack-group-invite
-    "mgl" 'slack-group-leave
-    "mgr" 'slack-group-rename
-    "mgs" 'slack-group-select
-    "mgu" 'slack-group-list-update
-    "mic" 'slack-im-close
-    "mio" 'slack-im-open
-    "mis" 'slack-im-select
-    "miu" 'slack-im-list-update
-    "mk" 'slack-ws-close
-    "mus" 'slack-user-select
-    "mua" 'helm-slack-unreads
-    "md" 'open-diary-dir
     "ml" 'open-junk-dir
-    "mm" 'slack-start
     "mn" 'open-junk-file
-    "mow" 'slack-log-open-websocket-buffer
-    "moe" 'slack-log-open-event-buffer
-    "moo" 'slack-log-open-buffer
-    "msf" 'slack-search-from-files
-    "msm" 'slack-search-from-messages
-    "mss" 'slack-search-select
-    "msl" 'slack-stars-list
-    "mtt" 'slack-change-current-team
-    "mta" 'slack-all-threads
-    "oa" 'org-agenda
-    "oo" 'open-junk-org-today
-    "oco" 'org-clock-out
     "pk" 'projectile-invalidate-cache
-    "ps" 'projectile-switch-project
-    "qR" 'quickrun-region
-    "qa" 'quickrun-with-arg
-    "qr" 'quickrun
-    "qs" 'quickrun-shell
     "r" 'create-restclient-buffer
     "s" 'create-eshell
-    "tQ" 'google-translate-query-translate-reverse
-    "tl" 'google-translate-smooth-translate
-    "tq" 'google-translate-query-translate
-    "ti" 'timer
     "ts" 'text-scale-adjust
-    "tw" 'twit-another-buffer
-    ;; "uv" 'undo-tree-visualize
     "wb" 'balance-windows
     "wc" 'whitespace-cleanup
     "wg" 'golden-ratio-mode
@@ -829,6 +729,45 @@ If the scroll count is zero the command scrolls half the screen."
     "wm" 'toggle-window-maximized
     "wt" 'toggle-frame-alpha
     "ww" 'ace-window
+
+    ;; "ma" 'helm-slack
+    ;; "mcA" 'slack-channel-unarchive
+    ;; "mca" 'slack-channel-archive
+    ;; "mcc" 'slack-create-channel
+    ;; "mci" 'slack-channel-invite
+    ;; "mcj" 'slack-channel-join
+    ;; "mcl" 'slack-channel-leave
+    ;; "mcr" 'slack-channel-rename
+    ;; "mcs" 'slack-channel-select
+    ;; "mcu" 'slack-channel-list-update
+    ;; "mfd" 'slack-file-delete
+    ;; "mfl" 'slack-file-list
+    ;; "mfu" 'slack-file-upload
+    ;; "mgA" 'slack-group-unarchive
+    ;; "mga" 'slack-group-archive
+    ;; "mgc" 'slack-create-group
+    ;; "mgi" 'slack-group-invite
+    ;; "mgl" 'slack-group-leave
+    ;; "mgr" 'slack-group-rename
+    ;; "mgs" 'slack-group-select
+    ;; "mgu" 'slack-group-list-update
+    ;; "mic" 'slack-im-close
+    ;; "mio" 'slack-im-open
+    ;; "mis" 'slack-im-select
+    ;; "miu" 'slack-im-list-update
+    ;; "mk" 'slack-ws-close
+    ;; "mus" 'slack-user-select
+    ;; "mua" 'helm-slack-unreads
+    ;; "mm" 'slack-start
+    ;; "mow" 'slack-log-open-websocket-buffer
+    ;; "moe" 'slack-log-open-event-buffer
+    ;; "moo" 'slack-log-open-buffer
+    ;; "msf" 'slack-search-from-files
+    ;; "msm" 'slack-search-from-messages
+    ;; "mss" 'slack-search-select
+    ;; "msl" 'slack-stars-list
+    ;; "mtt" 'slack-change-current-team
+    ;; "mta" 'slack-all-threads
     )
   )
 

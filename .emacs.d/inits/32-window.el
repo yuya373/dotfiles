@@ -25,8 +25,7 @@
 ;;; Code:
 
 (eval-when-compile
-  (require 'evil)
-  (require 'helm))
+  (require 'evil))
 
 (el-get-bundle golden-ratio)
 (use-package golden-ratio
@@ -126,6 +125,10 @@
                           (rustic-format-mode)
                           (rustic-compilation-mode)
                           (rustic-cargo-test-mode)
+                          (occur-mode)
+                          (apropos-mode :select t)
+                          (ag-mode :select t)
+                          (consult-typescript-compilation-mode)
                           ))
                 (mapcar (lambda (l) (append l shackle-rule-right-half))
                         '(((woman-mode
@@ -149,7 +152,6 @@
                   (eww-bookmark-mode :align t :size 0.5 :popup t)
                   (org-mode :align right :size 0.5)
                   (pdf-outline-buffer-mode :size 0.4 :align right)
-                  ;; ("\\`\\*helm.*?\\*\\'" :regexp t :align t :size 0.4)
                   (comint-mode :size 0.3 :select nil :align bottom :popup t :inhibit-window-quit nil)
                   ("*Backtrace*" :regexp t :popup t :size 0.3 :inhibit-window-quit t :align t)
                   (help-mode :select t :popup t :size 0.4 :inhibit-window-quit t :align t)
@@ -172,168 +174,6 @@
                 )
         )
   (add-hook 'after-init-hook 'shackle-mode))
-
-(el-get-bundle seudut/perspeen)
-(el-get-bundle jimo1001/helm-perspeen)
-(use-package perspeen
-  :commands (perspeen-mode)
-  :init
-  (setq perspeen-use-tab t)
-  (setq perspeen-workspace-default-name "emacs")
-  (add-hook 'evil-mode-hook 'perspeen-mode)
-  :config
-  (defun perspeen-update-mode-string ()
-    (setq perspeen-modestring ""))
-
-  (defun perspeen-tab--set-header-line-format-advice (&rest _args)
-    (perspeen-tab--update-current-buffer))
-
-  (advice-add 'perspeen-tab--set-header-line-format
-              :before
-              'perspeen-tab--set-header-line-format-advice)
-
-  ;; (defun helm-switch-to-buffers-around-advice (org-func buffer-or-name &optional other-window)
-  ;;   (unless perspeen-use-tab
-  ;;     (funcall org-func buffer-or-name other-window))
-  ;;   (let* ((bufname (or (and (stringp buffer-or-name) buffer-or-name)
-  ;;                       (buffer-name buffer-or-name)))
-  ;;          (tab (cl-find-if #'(lambda (tab)
-  ;;                               (string= (buffer-name (get tab 'current-buffer))
-  ;;                                        bufname))
-  ;;                           (perspeen-tab-get-tabs))))
-  ;;     (if tab
-  ;;         (perspeen-tab-switch-to-tab tab)
-  ;;       (progn
-  ;;         (funcall org-func buffer-or-name other-window)
-  ;;         (perspeen-tab--update-current-buffer)
-  ;;         (perspeen-tab--set-header-line-format t)))))
-
-  ;; (advice-add 'helm-switch-to-buffers
-  ;;             :around
-  ;;             'helm-switch-to-buffers-around-advice)
-  ;; (advice-remove 'helm-switch-to-buffers
-  ;;                'helm-switch-to-buffers-around-advice)
-
-  (defun perspeen-tab-create-tab-advice (org-func &optional buffer marker switch-to-tab)
-    ;; (unless buffer
-    ;;   (funcall org-func buffer marker switch-to-tab))
-    ;; (let* ((bufname (buffer-name buffer))
-    ;;        (tab (cl-find-if #'(lambda (tab)
-    ;;                             (string= (buffer-name (get tab 'current-buffer))
-    ;;                                      bufname))
-    ;;                         (perspeen-tab-get-tabs))))
-    ;;   (if tab
-    ;;       (perspeen-tab-switch-to-tab tab)
-    ;;     (funcall org-func buffer marker switch-to-tab)))
-    (funcall org-func buffer marker switch-to-tab)
-    )
-
-  (advice-add 'perspeen-tab-create-tab
-              :around
-              'perspeen-tab-create-tab-advice)
-  ;; (advice-remove 'perspeen-tab-create-tab
-  ;;                'perspeen-tab-create-tab-advice)
-
-  (use-package helm-perspeen
-    :config
-
-    (define-key helm-perspeen-workspaces-map
-      (kbd "C-d")
-      '(lambda () (interactive) (helm-exit-and-execute-action 'helm-perspeen--kill-workspace)))
-    (define-key helm-perspeen-workspaces-map
-      (kbd "C-r")
-      '(lambda () (interactive) (helm-exit-and-execute-action 'helm-perspeen--rename-workspace)))
-    (define-key helm-perspeen-tabs-map
-      (kbd "C-d")
-      '(lambda () (interactive) (helm-exit-and-execute-action 'helm-perspeen--kill-tab)))
-
-    (setq helm-source-perspeen-create-tab nil)
-    (setq helm-source-perspeen-create-tab
-          (helm-build-dummy-source
-              "Create perspeen tab"
-            :action (helm-make-actions
-                     "Create Tab (perspeen)"
-                     (lambda (candidate)
-                       (perspeen-tab-create-tab) nil))))
-
-    (setq my-helm-source-perspeen-create-workspace
-          (helm-build-dummy-source
-              "Create perspeen workspace"
-            :action (helm-make-actions
-                     "Create Workspace (perspeen)"
-                     #'helm-source--perspeen-create-workspace)))
-
-    (defun projectile-rails-expand-corresponding-snippet-around-advice (org-func &rest args)
-      (let ((name (buffer-file-name)))
-        (when name
-          (funcall org-func))))
-
-    (advice-add 'projectile-rails-expand-corresponding-snippet
-                :around
-                'projectile-rails-expand-corresponding-snippet-around-advice)
-
-    (defun helm-source--perspeen-create-workspace (candidate)
-      (perspeen-create-ws)
-      (perspeen-rename-ws candidate)
-      (let ((projects (projectile-relevant-known-projects)))
-        (when projects
-          (projectile-completing-read
-           "Switch to project: " projects
-           :action (lambda (project)
-                     (projectile-switch-project-by-name project))
-           :initial-input candidate)))
-      nil)
-
-    (defun helm-perspeen ()
-      "Display workspaces (perspeen.el) with helm interface."
-      (interactive)
-      (helm '(
-              helm-source-perspeen-tabs
-              helm-source-perspeen-workspaces
-              ;; helm-source-perspeen-create-tab
-              my-helm-source-perspeen-create-workspace))))
-
-  (defun my-perspeen-set-ws-root-dir (project-to-switch &optional arg)
-    (perspeen-change-root-dir project-to-switch))
-  (advice-add 'projectile-switch-project-by-name :after 'my-perspeen-set-ws-root-dir)
-
-  (defun perspeen-tab-advice-bofore-evil-window (_)
-    (perspeen-tab--construct-header-line))
-
-  (defun perspeen-tab-advice-after-evil-window (_)
-    (perspeen-tab--update-current-buffer)
-    )
-
-  (dolist (fun '(evil-window-up
-                 evil-window-bottom
-                 evil-window-left
-                 evil-window-right))
-    ;; (advice-remove fun 'perspeen-tab--update-current-buffer)
-    (advice-add fun :after 'perspeen-tab-advice-after-evil-window)
-    ;; (advice-add fun :before 'perspeen-tab-advice-bofore-evil-window)
-    ;; (advice-remove fun 'perspeen-tab-advice-bofore-evil-window)
-    )
-  (advice-add 'evil-window-delete :after 'perspeen-tab--update-current-buffer)
-
-  (define-key evil-normal-state-map "T" nil)
-  (define-key evil-normal-state-map "Tt" 'perspeen-create-ws)
-  (define-key evil-normal-state-map "Tn" 'perspeen-next-ws)
-  (define-key evil-normal-state-map "Tp" 'perspeen-previous-ws)
-  (define-key evil-normal-state-map "Tl" 'perspeen-goto-last-ws)
-  (define-key evil-normal-state-map "Tg" 'perspeen-goto-ws)
-  (define-key evil-normal-state-map "Ts" 'perspeen-ws-eshell)
-  (define-key evil-normal-state-map "Tk" 'perspeen-delete-ws)
-  (define-key evil-normal-state-map "Ts" 'perspeen-ws-eshell)
-  (define-key evil-normal-state-map "Tr" 'perspeen-rename-ws)
-  (define-key evil-normal-state-map "Tj" 'perspeen-go-ws)
-  (define-key evil-normal-state-map "Td" 'perspeen-change-root-dir)
-
-  (define-key evil-normal-state-map "tt" 'helm-perspeen)
-  (define-key evil-normal-state-map "to" 'perspeen-tab-create-tab)
-  (define-key evil-normal-state-map "tk" 'perspeen-tab-del)
-  (define-key evil-normal-state-map "tn" 'perspeen-tab-next)
-  (define-key evil-normal-state-map "tp" 'perspeen-tab-prev)
-  )
 
 (provide '32-window)
 ;;; 32-window.el ends here

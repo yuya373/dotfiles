@@ -46,21 +46,19 @@
   (add-hook 'eshell-expand-input-functions 'esh-evil-force-normal-state)
   (defun create-eshell ()
     (interactive)
-    (let* ((eshell-buffer-name "*eshell*")
-           (buffers (buffer-list))
+    (let* ((buffers (buffer-list))
            (file-name (buffer-file-name (current-buffer)))
            (git-root (and file-name (vc-git-root file-name)))
-           (same-pwd (cl-assoc git-root
-                               (mapcar #'(lambda (buf)
-                                           (cons (with-current-buffer buf
-                                                   default-directory)
-                                                 buf))
-                                       (cl-remove-if #'(lambda (buf)
-                                                         (with-current-buffer buf
-                                                           (not (eq major-mode
-                                                                    'eshell-mode))))
-                                                     (buffer-list)))
-                               :test #'string=)))
+           (pwds (mapcar #'(lambda (buf)
+                             (cons (with-current-buffer buf
+                                     default-directory)
+                                   buf))
+                         (cl-remove-if #'(lambda (buf)
+                                           (with-current-buffer buf
+                                             (not (eq major-mode
+                                                      'eshell-mode))))
+                                       buffers)))
+           (same-pwd (cl-assoc git-root pwds :test #'string=)))
       (if same-pwd
           (display-buffer (cdr same-pwd))
         (if git-root
@@ -143,16 +141,15 @@ the user activate the completion manually."
 
   ;; (add-hook 'eshell-output-filter-functions 'my-eshell-nuke-ansi-escapes t)
 
-  ;; (defun eshell-exit ()
-  ;;   (interactive)
-  ;;   (kill-buffer (current-buffer))
-  ;;   (delete-window))
+  (defun eshell-exit ()
+    (interactive)
+    (kill-buffer (current-buffer))
+    (delete-window))
 
   (defun eshell-bind-keymap ()
-    ;; (evil-define-key 'normal eshell-mode-map
-    ;;   (kbd "C-c") 'eshell-exit)
+    (evil-define-key 'normal eshell-mode-map
+      (kbd "C-c") 'eshell-exit)
     (evil-define-key 'insert eshell-mode-map
-      (kbd "C-p") 'helm-eshell-history
       (kbd "C-n") 'eshell-next-matching-input-from-input))
 
   (add-hook 'eshell-mode-hook #'eshell-bind-keymap)

@@ -49,12 +49,6 @@
   (setq js-indent-level 2)
   (setq json-reformat:indent-width 2))
 
-(el-get-bundle emacs-helm/helm-eww)
-(use-package helm-eww
-  :commands (helm-eww
-             helm-eww-bookmarks
-             helm-eww-history
-             helm-eww-buffers))
 (use-package eww
   :commands (eww)
   :init
@@ -132,9 +126,7 @@
     ",ym" 'eww-copy-page-url-as-md
     ",o" 'eww-browse-with-external-browser
     ",b" nil
-    ",bl" 'helm-eww-bookmarks
     ",ba" 'eww-add-bookmark
-    ",h" 'helm-eww-history
     ",v" 'eww-view-source
     "q" 'quit-window))
 

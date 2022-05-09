@@ -36,12 +36,6 @@
                    (or (buffer-file-name)
                        (buffer-name))))
 
-(defun typescript-setup-projectile ()
-  (interactive)
-  (if (cl-find-if #'(lambda (file-name) (string= "yarn.lock" file-name))
-                  (projectile-project-files (projectile-project-root)))
-      (setq-local projectile-project-compilation-cmd "yarn run tsc --noEmit")
-    (setq-local projectile-project-compilation-cmd "npm run tsc --noEmit")))
 
 ;; (use-package web-mode
 ;;   :mode (("\\.tsx\\'" . web-mode))
@@ -72,7 +66,6 @@
          ("\\.tsx\\'" . typescript-mode))
   :init
   (setq typescript-indent-level 2)
-  (add-hook 'typescript-mode-hook 'typescript-setup-projectile)
   :config
   (use-package sgml-mode)
   (require 'rjsx-mode)
@@ -83,7 +76,71 @@
   (evil-define-key 'normal typescript-mode-map
     (kbd "gt") 'rjsx-jump-tag
     (kbd ",rt") 'rjsx-rename-tag-at-point
-    (kbd ",c") 'rjsx-comment-dwim))
+    (kbd ",c") 'rjsx-comment-dwim)
+  (use-package projectile
+    :config
+    (defun typescript-projectile-bundler-cmd ()
+      (if (file-exists-p (expand-file-name "yarn.lock" (projectile-project-root)))
+          "yarn"
+        "npm"))
+
+    (defun typescript-projectile-build-consult-source ()
+      (let* ((json (with-temp-buffer
+                     (goto-char (point-min))
+                     (insert-file-contents (expand-file-name "package.json" (projectile-project-root)))
+                     (goto-char (point-min))
+                     (json-parse-buffer)))
+             (scripts (gethash "scripts" json))
+             (source (make-hash-table :test #'equal)))
+        (maphash #'(lambda (key value)
+                     (puthash (format "%s - %s" key value)
+                              key
+                              source))
+                 scripts)
+        source))
+
+    (use-package consult
+      :config
+      (define-compilation-mode consult-typescript-compilation-mode "consult-typescript-scripts"
+        "Rust compilation mode.
+
+Error matching regexes from compile.el are removed.")
+      (defun consult-typescript-scripts ()
+        (interactive)
+        (let* ((source (typescript-projectile-build-consult-source))
+               (script (consult--read
+                        source
+                        :require-match t
+                        :prompt "Select command: "))
+               (out-buf (get-buffer-create "*consult-typescript-scripts*")))
+
+          (when script
+            (with-current-buffer out-buf
+              (consult-typescript-compilation-mode)
+              (setq buffer-read-only nil)
+              (erase-buffer))
+            (let* ((run-cmd (gethash script source))
+                   (process (start-file-process "consult-typescript-scripts"
+                                                out-buf
+                                                (typescript-projectile-bundler-cmd)
+                                                "run"
+                                                run-cmd)))
+              (display-buffer out-buf)
+              (set-process-sentinel process
+                                    #'(lambda (process event)
+                                        (when (string= "finished\n" event)
+                                          (with-current-buffer out-buf
+                                            (setq buffer-read-only nil)
+                                            (goto-char (point-max))
+                                            (insert (format "\n`%s run %s' exit with %s"
+                                                            (typescript-projectile-bundler-cmd)
+                                                            run-cmd
+                                                            (process-exit-status process)))
+                                            (goto-char (point-min))))))))))
+
+      (evil-define-key 'normal typescript-mode-map
+        (kbd ",s") 'consult-typescript-scripts)
+      )))
 
 
 

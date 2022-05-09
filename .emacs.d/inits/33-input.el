@@ -26,7 +26,7 @@
 (eval-when-compile
   (require 'evil))
 
-(el-get-bundle skk-dev/ddskk :autoloads nil)
+(el-get-bundle ddskk)
 (use-package skk
   :commands (skk-mode skk-auto-fill-mode)
   :init
@@ -109,6 +109,8 @@
   (use-package skk-study)
   (use-package skk-cdb)
   (use-package skk-num)
+  (use-package skk-dcomp)
+  (use-package skk-look)
   (define-key skk-j-mode-map (kbd "C-h") 'skk-delete-backward-char)
   (define-key minibuffer-local-map (kbd "C-j") 'skk-j-mode-on)
   ;; @@ server completion

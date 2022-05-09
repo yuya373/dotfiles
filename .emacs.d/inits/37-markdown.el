@@ -45,8 +45,6 @@
   (defun my-gfm-mode-hook ()
     (whitespace-mode -1)
     (set (make-local-variable 'tab-width) 2)
-    ;; (make-local-variable 'company-backends)
-    ;; (add-to-list 'company-backends 'company-ispell)
     (visual-line-mode t))
   (add-hook 'gfm-mode-hook #'my-gfm-mode-hook)
   (defun my-gfm-map ()

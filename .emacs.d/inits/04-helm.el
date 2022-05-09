@@ -36,526 +36,499 @@
                                           diary-month-format)
                                   "/%d.md"))
 
-;; helm
-(el-get-bundle helm)
-(el-get-bundle helm-ls-git)
-(el-get-bundle helm-ag)
-(el-get-bundle migemo)
+(el-get-bundle vertico)
+(el-get-bundle consult)
+(el-get-bundle consult-flycheck)
+(el-get-bundle consult-lsp)
+(el-get-bundle consult-dir)
+(el-get-bundle marginalia)
+(el-get-bundle orderless)
+(el-get-bundle embark)
+(el-get-bundle embark-consult)
+(el-get-bundle consult-projectile)
+(el-get-bundle all-the-icons)
+(el-get-bundle all-the-icons-completion)
 
-
-(use-package helm-man
-  :after (helm))
-(use-package helm-config
-  :after (helm))
-(use-package helm-eshell
-  :after (helm))
-(use-package helm-ls-git
-  :after (helm)
+(use-package orderless
+  :after (vertico)
   :init
-  (setq helm-ls-git-default-sources '(helm-source-ls-git))
-  (setq helm-ls-git-fuzzy-match t))
-(use-package helm-ag
-  :after (helm)
-  :config
-  (setq helm-ag-insert-at-point 'symbol))
-(use-package helm
-  :diminish helm-mode
-  :commands (helm-eshell-history
-             helm-etags-select
-             helm-do-ag
-             helm-do-ag-buffers
-             helm-M-x
-             helm-buffers-list
-             helm-find-file-at
-             helm-recentf
-             helm-browse-project
-             helm-find-files
-             helm-resume
-             helm-mini
-             helm-semantic-or-imenu
-             helm-show-kill-ring
-             helm-all-mark-rings
-             helm-semantic-or-imenu
-             helm-elscreen)
-  :init
-  ;; (add-hook 'after-init-hook 'helm-mode)
-  (setq helm-mini-default-sources '(
-                                    helm-source-buffers-list
-                                    helm-source-ls-git
-                                    ;; helm-source-files-in-current-dir
-                                    helm-source-recentf
-                                    helm-source-buffer-not-found
-                                    ))
-  (setq helm-completion-style 'emacs)
-  (setq completion-styles (if (< 26 emacs-major-version)
-                              '(basic partial-completion emacs22 flex)
-                            '(basic partial-completion emacs22 helm-flex)))
+  (setq orderless-matching-styles
+        '(
+          orderless-prefixes
+          ;; orderless-flex
+          orderless-literal
+          orderless-regexp
+          ))
+  (setq completion-styles '(orderless basic)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles partial-completion)))))
 
-  (setq helm-M-x-fuzzy-match t
-        helm-apropos-fuzzy-match t
-        helm-file-cache-fuzzy-match t
-        helm-imenu-fuzzy-match t
-        helm-lisp-fuzzy-completion t
-        helm-locate-fuzzy-match t
-        helm-recentf-fuzzy-match t
-        helm-semantic-fuzzy-match t
-        helm-ag-fuzzy-match t
-        helm-mode-fuzzy-match t
-        helm-completion-in-region-fuzzy-match t
-        helm-buffers-fuzzy-matching t
-        helm-eshell-fuzzy-match t
-        helm-etags-fuzzy-match t
-        helm-ff-fuzzy-matching t
-        )
-  (setq helm-prevent-escaping-from-minibuffer t
-        helm-buffers-truncate-lines t
-        helm-buffer-max-length nil
-        helm-ff-transformer-show-only-basename t
-        helm-bookmark-show-location t
-        helm-display-header-line t
-        helm-split-window-in-side-p nil
-        helm-always-two-windows t
-        helm-autoresize-max-height 40
-        helm-autoresize-mode t
-        helm-ff-file-name-history-use-recentf t
-        helm-exit-idle-delay 0
-        helm-ff-search-library-in-sexp t
-        helm-move-to-line-cycle-in-source nil
-        helm-echo-input-in-header-line t
-        helm-ff-guess-ffap-filenames t)
+(use-package vertico
+  :init
+  (vertico-mode)
   :config
-  (helm-migemo-mode t)
-  (diminish 'helm-migemo-mode)
+  (marginalia-mode)
+  (savehist-mode)
+  (setq vertico-count 20)
+  (setq vertico-cycle t)
+  (define-key vertico-map
+              (kbd "C-l") 'vertico-directory-up)
+  (defun my/vertico-truncate-candidates (args)
+    ;; (message "ARGS: %s" args)
+    (if-let ((arg (car args))
+             (type (get-text-property 0 'multi-category arg))
+             ;; ((eq (car-safe type) 'file))
+             (w (max 30 (- (window-width) (* 2 38))))
+             (l (length arg))
+             ((> l w)))
+        (progn
+          ;; (message "ARG: %s W: %s, L: %s, WW: %s" arg w l (window-width))
+          (if (eq (car-safe type) 'file)
+              (setcar args (concat "…" (truncate-string-to-width arg l (- l w))))
+            (setcar args (concat (truncate-string-to-width arg l (- l w)) "…"))))
+      )
+    args)
+  (advice-add #'vertico--format-candidate
+              :filter-args
+              #'my/vertico-truncate-candidates)
+  )
+
+(use-package marginalia
+  :after (vertico)
+  :config
+  (setq all-the-icons-scale-factor 0.8)
+  (use-package all-the-icons)
+  (use-package all-the-icons-completion)
+  (all-the-icons-completion-mode))
+
+(use-package consult
+  :after (vertico)
+  :config
+  (recentf-mode)
+  (define-key evil-normal-state-map
+              (kbd "C-b") 'consult-buffer)
+  (setq consult-buffer-sources '(
+                                 ;; consult--source-hidden-buffer
+                                 consult--source-buffer
+                                 ;; consult--source-recent-file
+                                 ))
+
+  (setq consult-narrow-key "<")
+  (defun consult-narrow-cycle-backward ()
+    "Cycle backward through the narrowing keys."
+    (interactive)
+    (when consult--narrow-keys
+      (consult-narrow
+       (if consult--narrow
+           (let ((idx (seq-position consult--narrow-keys
+                                    (assq consult--narrow consult--narrow-keys))))
+             (unless (eq idx 0)
+               (car (nth (1- idx) consult--narrow-keys))))
+         (caar (last consult--narrow-keys))))))
+
+  (defun consult-narrow-cycle-forward ()
+    "Cycle forward through the narrowing keys."
+    (interactive)
+    (when consult--narrow-keys
+      (consult-narrow
+       (if consult--narrow
+           (let ((idx (seq-position consult--narrow-keys
+                                    (assq consult--narrow consult--narrow-keys))))
+             (unless (eq idx (1- (length consult--narrow-keys)))
+               (car (nth (1+ idx) consult--narrow-keys))))
+         (caar consult--narrow-keys)))))
+
+  (define-key consult-narrow-map (kbd "C-,") #'consult-narrow-cycle-backward)
+  (define-key consult-narrow-map (kbd "C-.") #'consult-narrow-cycle-forward)
+
+  (defun consult-git-grep-at-point ()
+    (interactive)
+    (let ((thing (thing-at-point 'symbol t)))
+      (consult-git-grep nil thing)))
+
+  (defun consult-line-at-point ()
+    (interactive)
+    (let ((thing (thing-at-point 'symbol t)))
+      (consult-line thing)))
+
+  (defun consult-line-multi-at-point ()
+    (interactive)
+    (let ((thing (thing-at-point 'symbol t)))
+      (consult-line-multi nil thing)))
+
+  (defun consult-grep-in-directory ()
+    (interactive)
+    (let ((thing (thing-at-point 'symbol t)))
+      (consult-git-grep t thing)))
+
+  (use-package evil-leader
+    :config
+    (evil-leader/set-key
+      "cG" 'consult-grep
+      "cg" nil
+      "cgg" 'consult-git-grep
+      "cgl" 'consult-goto-line
+      "cb" 'consult-buffer
+      "cr" 'consult-recent-file
+      "ca" 'consult-apropos
+      "cef" 'consult-flycheck
+      "co" 'consult-outline
+      "cm" 'consult-mark
+      "cM" 'consult-global-mark
+      "ci" 'consult-imenu
+      "cI" 'consult-imenu-multi
+      "cf" 'consult-find
+      "cl" nil
+      "cll" 'consult-line
+      "cld" 'consult-lsp-diagnostics
+      "cls" 'consult-lsp-symbols
+      "clfs" 'consult-lsp-file-symbols
+      "cL" 'consult-line-multi
+      "cy" 'consult-yank-from-kill-ring
+      "cd" 'consult-dir
+      "cgg" 'consult-git-grep-at-point
+      "cgd" 'consult-grep-in-directory
+      "cll" 'consult-line-at-point
+      "cL" 'consult-line-multi-at-point)))
+
+(use-package consult-flycheck :after (consult flycheck))
+
+(use-package consult-lsp
+  :after (consult lsp-mode)
+  :config
+  (require 'consult-lsp-marginalia)
+  (consult-lsp-marginalia-mode))
+
+(use-package consult-dir :after (consult))
+
+(use-package consult-projectile
+  :after (consult projectile)
+  :config
+  (add-to-list 'consult-buffer-sources
+               'consult-projectile--source-projectile-file
+               t))
+
+(use-package embark
+  :after (consult)
+  :bind (("C-a" . embark-act))
+  :config
   (use-package ace-window)
-  (defun helm-dwim-target-directory ()
-    "Try to return a suitable directory according to `helm-dwim-target'."
-    default-directory)
-  (defun open-junk-dir ()
-    (interactive)
-    (let* ((junk-dir "~/Dropbox/junk/"))
-      (helm-find-files-1 (expand-file-name (format "%s/%s" junk-dir (format-time-string "%Y-%m-%d"))))))
-  (defun open-diary-dir ()
-    (interactive)
-    (helm-find-files-1 (format "%s/%s"
-                               diary-root-dir
-                               (format-time-string diary-file-format))))
+  (use-package projectile)
+  ;; (:orig-type multi-category :orig-target .emacs.d/elpa/consult-20220408.657/consult-imenu.el����� :bounds nil :type file :target .emacs.d/elpa/consult-20220408.657/consult-imenu.el)
+  (defun embark--act-around-projectile (func &rest args)
+    (let ((action (car args))
+          (target (cadr args))
+          (quit (caddr args)))
+      (if-let ((project-p (projectile-project-root))
+               (type (plist-get target :type))
+               (type-file-p (eq 'file type))
+               (relative-p (not (file-name-absolute-p (plist-get target :target))))
+               (path (expand-file-name (plist-get target :target)
+                                       (projectile-project-root))))
+          (funcall func action (plist-put target :target path) quit)
+        (apply func args))))
+
+  (advice-add 'embark--act :around 'embark--act-around-projectile)
+
+  (defun evil-vsplit-find-file (filename)
+    (let ((evil-vsplit-window-right t)
+          (evil-auto-balance-windows t))
+      (evil-window-vsplit nil (expand-file-name filename))))
+
+  (defun evil-split-find-file (filename)
+    (let ((evil-split-window-below nil)
+          (evil-auto-balance-windows t))
+      (evil-window-split nil (expand-file-name filename))))
 
   (defun switch-window-if-gteq-3-windows ()
-    (let ((windows (cl-remove-if #'(lambda (window) (member (buffer-name (window-buffer window)) aw-ignored-buffers))
+    (let ((windows (cl-remove-if #'(lambda (window)
+                                     (member (buffer-name (window-buffer window))
+                                             aw-ignored-buffers))
                                  (window-list))))
       (if (>= (1+ (length windows)) 3)
           (aw-switch-to-window (aw-select "Ace - Window")))))
 
-  (defun my-helm-normalize-candidate (candidate)
-    (cl-labels
-        ((normalize-string
-          (candidate)
-          (let ((candidates (split-string candidate ":"))
-                (default-directory (or helm-ag--default-directory
-                                       helm-ag--last-default-directory
-                                       default-directory)))
-            (expand-file-name (cl-first candidates)))))
-      (let ((file-name (or (and (stringp candidate)
-                                (normalize-string candidate))
-                           (and (consp candidate)
-                                (buffer-file-name (marker-buffer
-                                                   (cdr candidate))))
-                           (and (markerp candidate)
-                                (buffer-file-name (marker-buffer candidate)))
-                           (and (bufferp candidate)
-                                (buffer-file-name candidate)))))
-        file-name)))
 
-  (defun my-handle-marker-position (candidate)
-    (let ((pos (or (markerp candidate)
-                   (and (consp candidate)
-                        (markerp (cdr candidate))
-                        (cdr candidate))
-                   (and (stringp candidate)
-                        (cl-second (split-string candidate ":"))))))
-      (when pos
-        (if (markerp pos)
-            (with-current-buffer (current-buffer)
-              (goto-char (marker-position pos)))
-          (progn
-            (goto-char (point-min))
-            (forward-line (1- (string-to-number pos))))))))
-
-  (defun my-evil-vsplit-window (candidate)
-    (let ((evil-vsplit-window-right t)
-          (evil-auto-balance-windows t)
-          (file-name (my-helm-normalize-candidate candidate)))
-      (evil-window-vsplit nil (expand-file-name file-name))
-      (my-handle-marker-position candidate)))
-
-  (defun my-evil-split-window (candidate)
-    (let ((evil-split-window-below nil)
-          (evil-auto-balance-windows t)
-          (file-name (expand-file-name
-                      (my-helm-normalize-candidate candidate))))
-      (evil-window-split nil file-name)
-      (my-handle-marker-position candidate)))
-
-  (defun helm-perspeen-open-with-new-tab ()
-    (interactive)
-    (with-helm-alive-p
-      (helm-exit-and-execute-action
-       #'(lambda (candidate)
-           (let ((file-name (my-helm-normalize-candidate candidate)))
-             (perspeen-tab-create-tab
-              (or (and file-name (find-file-noselect (expand-file-name file-name)))
-                  candidate)
-              0)
-             (my-handle-marker-position candidate))))))
-
-  (defun ace-split-find-file (candidate)
+  (defun embark-find-file-vsplit (filename &optional wildcards)
     (switch-window-if-gteq-3-windows)
-    (my-evil-split-window candidate))
+    (evil-vsplit-find-file filename))
 
-  (defun helm-ace-split-ff ()
-    (interactive)
-    (with-helm-alive-p
-      (helm-exit-and-execute-action #'(lambda (candidate)
-                                        (ace-split-find-file candidate)))))
-
-  (defun ace-split-helm-ag (filename)
-    (let ((dir (or helm-ag--default-directory
-                   helm-ag--last-default-directory
-                   default-directory)))
-      (switch-window-if-gteq-3-windows)
-      (my-evil-split-window (concat dir filename))))
-
-  (defun ace-split--helm-ag (candidate)
-    (helm-ag--find-file-action candidate 'ace-split-helm-ag
-                               (helm-ag--search-this-file-p)))
-  (defun helm-ace-split-ag ()
-    (interactive)
-    (with-helm-alive-p
-      (helm-exit-and-execute-action #'(lambda (candidate)
-                                        (ace-split--helm-ag candidate)))))
-
-  (defun ace-ff--helm-ag (candidate)
-    (message "%s" candidate)
-    ;; (helm-ag--find-file-action candidate 'ace-
-    (ace-helm-find-file candidate)
-    )
-
-  (defun helm-ace-ff-ag ()
-    (interactive
-     (with-helm-alive-p
-       (helm-exit-and-execute-action #'(lambda (candidate)
-                                         (ace-ff--helm-ag candidate))))))
-
-  (defun ace-split-switch-to-buffer (buffer-or-name)
+  (defun embark-find-file-split (filename &optional wildcards)
     (switch-window-if-gteq-3-windows)
-    (let ((file-name (ignore-errors (buffer-file-name buffer-or-name))))
-      (if file-name
-          (my-evil-split-window file-name)
-        (let ((window (split-window (selected-window) nil 'above)))
-          (unwind-protect
-              (progn
-                (aw-switch-to-window window)
-                (switch-to-buffer buffer-or-name)))))))
+    (evil-split-find-file filename))
 
-  (defun helm-ace-split-sb ()
-    (interactive)
-    (with-helm-alive-p
-      (helm-exit-and-execute-action #'(lambda (candidate)
-                                        (ace-split-switch-to-buffer candidate)))))
-
-  (defun ace-vsplit-find-file (candidate)
-    (switch-window-if-gteq-3-windows)
-    (my-evil-vsplit-window candidate))
-
-  (defun helm-ace-vsplit-ff ()
-    (interactive)
-    (with-helm-alive-p
-      (helm-exit-and-execute-action '(lambda (candidate)
-                                       (ace-vsplit-find-file candidate)))))
-
-  (defun ace-vsplit-helm-ag (filename)
-    (let ((dir (or helm-ag--default-directory
-                   helm-ag--last-default-directory
-                   default-directory)))
-      (switch-window-if-gteq-3-windows)
-      (my-evil-vsplit-window (concat dir filename))))
-
-  (defun ace-vsplit--helm-ag (candidate)
-    (helm-ag--find-file-action candidate 'ace-vsplit-helm-ag
-                               (helm-ag--search-this-file-p)))
-  (defun helm-ace-vsplit-ag ()
-    (interactive)
-    (with-helm-alive-p
-      (helm-exit-and-execute-action '(lambda (candidate)
-                                       (ace-vsplit--helm-ag candidate)))))
-
-  (defun ace-vsplit-switch-to-buffer (buffer-or-name)
-    (switch-window-if-gteq-3-windows)
-    (let ((file-name (buffer-file-name buffer-or-name)))
-      (if file-name
-          (my-evil-vsplit-window file-name)
-        (let ((window (split-window-right)))
-          (unwind-protect
-              (progn
-                (aw-switch-to-window window)
-                (switch-to-buffer buffer-or-name)))))))
-
-  (defun helm-ace-vsplit-sb ()
-    (interactive)
-    (with-helm-alive-p
-      (helm-exit-and-execute-action '(lambda (candidate)
-                                       (ace-vsplit-switch-to-buffer candidate)))))
-
-  (defun ace-helm-find-file (candidate)
-    (let ((file-name (my-helm-normalize-candidate candidate)))
-      (message "file-name: %s\ncandidate: %s" file-name candidate)
-      (if (one-window-p)
-          (find-file-other-window (expand-file-name file-name))
-        (let ((buf (find-file-noselect (expand-file-name file-name)))
-              (window (aw-select "Ace - Window")))
-          (unwind-protect
-              (progn
-                (aw-switch-to-window window)
-                (switch-to-buffer buf))))))
-    (my-handle-marker-position candidate))
-
-  (defun helm-ace-ff ()
-    (interactive)
-    (with-helm-alive-p
-      (helm-exit-and-execute-action '(lambda (candidate)
-                                       (ace-helm-find-file candidate)))))
-
-  (defun ace-helm-switch-to-buffer (buffer-or-name)
-    (if (= (length (window-list)) 1)
-        (switch-to-buffer-other-window buffer-or-name)
-      (let ((buf buffer-or-name)
+  (defun embark-find-file-other-window (filename &optional wildcards)
+    (if (one-window-p)
+        (find-file-other-window (expand-file-name filename))
+      (let ((buf (find-file-noselect (expand-file-name filename)))
             (window (aw-select "Ace - Window")))
         (unwind-protect
             (progn
               (aw-switch-to-window window)
-              (switch-to-buffer buf))))))
+              (switch-to-buffer buf)
+              (select-window window))))))
 
-  (defun helm-ace-sb ()
-    (interactive)
-    (with-helm-alive-p
-      (helm-exit-and-execute-action '(lambda (candidate)
-                                       (ace-helm-switch-to-buffer candidate)))))
+  (define-key embark-file-map
+              (kbd "v") 'embark-find-file-vsplit)
+  (define-key embark-file-map
+              (kbd "C-v") 'embark-find-file-vsplit)
+  (define-key embark-file-map
+              (kbd "s") 'embark-find-file-split)
+  (define-key embark-file-map
+              (kbd "C-s") 'embark-find-file-split)
+  (define-key embark-file-map
+              (kbd "o") 'embark-find-file-other-window)
+  (define-key embark-file-map
+              (kbd "C-o") 'embark-find-file-other-window)
+  (define-key embark-file-map
+              (kbd "V") 'embark-vc-file-map)
 
-  (with-eval-after-load "evil"
-    (define-key evil-motion-state-map
-      (kbd "C-b") 'helm-mini)
-    (define-key evil-normal-state-map
-      (kbd "C-b") 'helm-mini))
-  (with-eval-after-load "helm-ring"
-    (defun helm-kill-ring-action-yank-1 (str)
-      (set-text-properties 0 (length str) nil str)
-      (setq kill-ring (delete str kill-ring))
-      (kill-new str)))
+  (defun embark-switch-to-buffer-split (buffer-or-name)
+    (switch-window-if-gteq-3-windows)
+    (split-window (selected-window) nil 'below)
+    (balance-windows (window-parent))
+    (switch-to-buffer (window-normalize-buffer-to-switch-to buffer-or-name)))
+
+  (defun embark-switch-to-buffer-vsplit (buffer-or-name)
+    (switch-window-if-gteq-3-windows)
+    (split-window (selected-window) nil 'left)
+    (balance-windows (window-parent))
+    (switch-to-buffer (window-normalize-buffer-to-switch-to buffer-or-name)))
+
+  (defun embark-switch-to-buffer-other-window (buffer-or-name)
+    (if (= (length (window-list)) 1)
+        (embark-switch-to-buffer-split buffer-or-name)
+      (let ((buf buffer-or-name)
+            (window (aw-select "Ace - Window")))
+        (aw-switch-to-window window)
+        (switch-to-buffer buf))))
+
+  (define-key embark-buffer-map
+              (kbd "v") 'embark-switch-to-buffer-vsplit)
+  (define-key embark-buffer-map
+              (kbd "C-v") 'embark-switch-to-buffer-vsplit)
+  (define-key embark-buffer-map
+              (kbd "s") 'embark-switch-to-buffer-split)
+  (define-key embark-buffer-map
+              (kbd "C-s") 'embark-switch-to-buffer-split)
+  (define-key embark-buffer-map
+              (kbd "o") 'embark-switch-to-buffer-other-window)
+  (define-key embark-buffer-map
+              (kbd "C-o") 'embark-switch-to-buffer-other-window)
+
+  (defun embark-which-key-indicator ()
+    "An embark indicator that displays keymaps using which-key.
+The which-key help message will show the type and value of the
+current target followed by an ellipsis if there are further
+targets."
+    (lambda (&optional keymap targets prefix)
+      (if (null keymap)
+          (which-key--hide-popup-ignore-command)
+        (which-key--show-keymap
+         (if (eq (plist-get (car targets) :type) 'embark-become)
+             "Become"
+           (format "Act on %s '%s'%s"
+                   (plist-get (car targets) :type)
+                   (embark--truncate-target (plist-get (car targets) :target))
+                   (if (cdr targets) "…" "")))
+         (if prefix
+             (pcase (lookup-key keymap prefix 'accept-default)
+               ((and (pred keymapp) km) km)
+               (_ (key-binding prefix 'accept-default)))
+           keymap)
+         nil nil t (lambda (binding)
+                     (not (string-suffix-p "-argument" (cdr binding))))))))
+
+  (setq embark-indicators
+        '(embark-which-key-indicator
+          embark-highlight-indicator
+          embark-isearch-highlight-indicator))
+
+  (defun embark-hide-which-key-indicator (fn &rest args)
+    "Hide the which-key indicator immediately when using the completing-read prompter."
+    (which-key--hide-popup-ignore-command)
+    (let ((embark-indicators
+           (remq #'embark-which-key-indicator embark-indicators)))
+      (apply fn args)))
+
+  (advice-add #'embark-completing-read-prompter
+              :around #'embark-hide-which-key-indicator)
+  (require 'embark-consult))
+
+(use-package embark-consult
+  :after (consult embark)
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
+
+(el-get-bundle seudut/perspeen)
+(use-package perspeen
+  :commands (perspeen-mode)
+  :init
+  (setq perspeen-use-tab t)
+  (setq perspeen-workspace-default-name "emacs")
+  (add-hook 'evil-mode-hook 'perspeen-mode)
+  :config
+  (defun perspeen-update-mode-string ()
+    (setq perspeen-modestring ""))
+
+  (defun perspeen-tab--set-header-line-format-advice (&rest _args)
+    (perspeen-tab--update-current-buffer))
+
+  (advice-add 'perspeen-tab--set-header-line-format
+              :before
+              'perspeen-tab--set-header-line-format-advice)
 
 
-  (define-key helm-map (kbd "C-t") 'helm-perspeen-open-with-new-tab)
-  (define-key helm-map (kbd "C-v") 'helm-ace-vsplit-ff)
-  (define-key helm-map (kbd "C-s") 'helm-ace-split-ff)
-  (define-key helm-map (kbd "C-o") 'helm-ace-ff)
-  (define-key helm-map (kbd "C-,") 'helm-toggle-visible-mark)
-  (define-key helm-map (kbd "C-a") 'helm-select-action)
-  (define-key helm-map (kbd "C-h") 'delete-backward-char)
-  (define-key helm-map (kbd "C-w") 'backward-kill-word)
-  (define-key helm-map (kbd "TAB") 'helm-execute-persistent-action)
-  (define-key helm-map [escape] 'helm-keyboard-quit)
-  (define-key helm-map (kbd "C-[") 'helm-keyboard-quit)
-  (define-key helm-map (kbd "C-j") 'helm-next-source)
-  (define-key helm-map (kbd "C-k") 'helm-previous-source)
-  (define-key helm-map (kbd "C-n") 'helm-next-line)
-  (define-key helm-map (kbd "C-p") 'helm-previous-line)
+  (defun perspeen-tab-create-tab-advice (org-func &optional buffer marker switch-to-tab)
+    ;; (unless buffer
+    ;;   (funcall org-func buffer marker switch-to-tab))
+    ;; (let* ((bufname (buffer-name buffer))
+    ;;        (tab (cl-find-if #'(lambda (tab)
+    ;;                             (string= (buffer-name (get tab 'current-buffer))
+    ;;                                      bufname))
+    ;;                         (perspeen-tab-get-tabs))))
+    ;;   (if tab
+    ;;       (perspeen-tab-switch-to-tab tab)
+    ;;     (funcall org-func buffer marker switch-to-tab)))
+    (funcall org-func buffer marker switch-to-tab)
+    )
 
+  (advice-add 'perspeen-tab-create-tab
+              :around
+              'perspeen-tab-create-tab-advice)
+  ;; (advice-remove 'perspeen-tab-create-tab
+  ;;                'perspeen-tab-create-tab-advice)
+  (defun my-perspeen-set-ws-root-dir (project-to-switch &optional arg)
+    (perspeen-change-root-dir project-to-switch))
+  (advice-add 'projectile-switch-project-by-name :after 'my-perspeen-set-ws-root-dir)
 
-  (define-key helm-comp-read-map (kbd "C-t") 'helm-perspeen-open-with-new-tab)
-  (define-key helm-comp-read-map (kbd "C-v") 'helm-ace-vsplit-ff)
-  (define-key helm-comp-read-map (kbd "C-s") 'helm-ace-split-ff)
-  (define-key helm-comp-read-map (kbd "C-o") 'helm-ace-ff)
+  (defun perspeen-tab-advice-bofore-evil-window (_)
+    (perspeen-tab--construct-header-line))
 
-  (define-key helm-buffer-map (kbd "C-t") 'helm-perspeen-open-with-new-tab)
-  (define-key helm-buffer-map (kbd "C-s") 'helm-ace-split-sb)
-  (define-key helm-buffer-map (kbd "C-v") 'helm-ace-vsplit-sb)
-  (define-key helm-buffer-map (kbd "C-d") 'helm-buffer-run-kill-buffers)
-  (define-key helm-buffer-map (kbd "C-o") 'helm-ace-sb)
-  (define-key helm-buffer-map (kbd "C-g") 'helm-keyboard-quit)
+  (defun perspeen-tab-advice-after-evil-window (_)
+    (perspeen-tab--update-current-buffer))
 
-  (define-key helm-find-files-map (kbd "C-t") 'helm-perspeen-open-with-new-tab)
-  (define-key helm-find-files-map (kbd "C-s") 'helm-ace-split-ff)
-  (define-key helm-find-files-map (kbd "C-v") 'helm-ace-vsplit-ff)
-  ;; (define-key helm-find-files-map (kbd "C-t") 'helm-ff-run-etags)
-  (define-key helm-find-files-map (kbd "C-o") 'helm-ace-ff)
-  (define-key helm-find-files-map (kbd "C-r") 'helm-ff-run-rename-file)
-  (define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
-  (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
-  (define-key helm-find-files-map (kbd "C-d") 'helm-ff-run-delete-file)
+  (dolist (fun '(evil-window-up
+                 evil-window-bottom
+                 evil-window-left
+                 evil-window-right))
+    ;; (advice-remove fun 'perspeen-tab--update-current-buffer)
+    (advice-add fun :after 'perspeen-tab-advice-after-evil-window)
+    ;; (advice-add fun :before 'perspeen-tab-advice-bofore-evil-window)
+    ;; (advice-remove fun 'perspeen-tab-advice-bofore-evil-window)
+    )
 
-  (define-key helm-read-file-map (kbd "C-t") 'helm-perspeen-open-with-new-tab)
-  (define-key helm-read-file-map (kbd "C-s") 'helm-ace-split-ff)
-  (define-key helm-read-file-map (kbd "C-v") 'helm-ace-vsplit-ff)
-  ;; (define-key helm-read-file-map (kbd "C-t") 'helm-ff-run-etags)
-  (define-key helm-read-file-map (kbd "C-o") 'helm-ace-ff)
-  (define-key helm-read-file-map (kbd "C-r") 'helm-ff-run-rename-file)
-  (define-key helm-read-file-map (kbd "C-h") 'delete-backward-char)
-  (define-key helm-read-file-map (kbd "C-w") 'backward-kill-word)
-  (define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
+  (defun perspeen-workspaces-source-consult ()
+    (mapcar (lambda (ws)
+              (let ((name (perspeen-ws-struct-name ws)))
+                name))
+            perspeen-ws-list))
 
-  (define-key helm-generic-files-map (kbd "C-t") 'helm-perspeen-open-with-new-tab)
-  (define-key helm-generic-files-map (kbd "C-s") 'helm-ace-split-ff)
-  (define-key helm-generic-files-map (kbd "C-v") 'helm-ace-vsplit-ff)
-  (define-key helm-generic-files-map (kbd "C-o") 'helm-ace-ff)
-  (define-key helm-generic-files-map (kbd "C-r") 'helm-ff-run-rename-file)
-  (define-key helm-generic-files-map (kbd "C-h") 'delete-backward-char)
-  (define-key helm-generic-files-map (kbd "C-w") 'backward-kill-word)
-  (define-key helm-generic-files-map (kbd "TAB") 'helm-execute-persistent-action)
+  (defun perspeen-tabs-source-consult ()
+    (if perspeen-tab-configurations
+        (let ((index -1))
+          (mapcar (lambda (tab)
+                    (let* ((buffer (get tab 'current-buffer))
+                           (current-dir (or (file-name-directory (or (buffer-file-name buffer) ""))
+                                            default-directory)))
+                      (setq index (1+ index))
+                      (format "%s: %s" index (buffer-name buffer))))
+                  (perspeen-tab-get-tabs)))
+      nil))
 
-  (with-eval-after-load "helm-ls-git"
-    (define-key helm-ls-git-map (kbd "C-t") 'helm-perspeen-open-with-new-tab)
-    (define-key helm-ls-git-map (kbd "C-s") 'helm-ace-split-ff)
-    (define-key helm-ls-git-map (kbd "C-v") 'helm-ace-vsplit-ff)
-    (define-key helm-ls-git-map (kbd "C-o") 'helm-ace-ff))
+  (use-package embark
+    :config
+    (defun embark-find-file-tab (filename &optional wildcards)
+      (perspeen-tab-create-tab
+       (find-file-noselect (expand-file-name filename))
+       0)
+      (perspeen-update-mode-string))
+    (define-key embark-file-map (kbd "t") 'embark-find-file-tab)
+    (defun embark-switch-to-buffer-tab (buffer-or-name)
+      (perspeen-tab-create-tab
+       (window-normalize-buffer-to-switch-to buffer-or-name)
+       0)
+      (perspeen-update-mode-string))
+    (define-key embark-buffer-map (kbd "t") 'embark-switch-to-buffer-tab))
 
-  (define-key helm-ag-map (kbd "C-t") 'helm-perspeen-open-with-new-tab)
-  (define-key helm-ag-map (kbd "C-s") 'helm-ace-split-ag)
-  (define-key helm-ag-map (kbd "C-v") 'helm-ace-vsplit-ag)
-  (define-key helm-ag-map (kbd "C-o") 'helm-ace-ff-ag)
+  (use-package consult
+    :config
+    (defun consult--workspace-action (name)
+      (let ((ws (cl-find-if #'(lambda (ws) (string= name (perspeen-ws-struct-name ws)))
+                            perspeen-ws-list)))
+        (when ws
+          (perspeen-switch-ws-internal ws)
+          (perspeen-update-mode-string))))
 
+    (defvar consult--source-perspeen-workspaces
+      `(
+        :name "Workspaces"
+        :narrow ?w
+        :category perspeen-workspace
+        :face consult-bookmark
+        :items ,#'perspeen-workspaces-source-consult
+        :action ,#'consult--workspace-action
+        ))
 
+    (defun consult--perspeen-tab-action (name)
+      (if-let ((idx-s (car (split-string name ":")))
+               (idx (string-to-number idx-s)))
+          (progn
+            (perspeen-tab-switch-internal idx))))
 
-  (defun helm-match-from-candidates (cands matchfns match-part-fn limit source)
-    (when cands ; nil in async sources.
-      (condition-case-unless-debug err
-          (cl-loop with hash = (make-hash-table :test 'equal)
-                   with allow-dups = (assq 'allow-dups source)
-                   with case-fold-search = (helm-set-case-fold-search)
-                   with count = 0
-                   for iter from 1
-                   for fn in matchfns
-                   when (< count limit) nconc
-                   (cl-loop for c in cands
-                            for dup = (gethash c hash)
-                            for disp = (helm-candidate-get-display c)
-                            while (< count limit)
-                            for target = (if (helm-attr 'match-on-real source)
-                                             (or (cdr-safe c)
-                                                 (get-text-property 0 'helm-realvalue disp)
-                                                 "")
-                                           disp)
-                            for prop-part = (get-text-property 0 'match-part target)
-                            for part = (and match-part-fn
-                                            (or prop-part
-                                                (funcall match-part-fn target)))
-                            ;; When allowing dups check if DUP
-                            ;; have been already found in previous loop
-                            ;; by comparing its value with ITER.
-                            when (and (or (and allow-dups dup (= dup iter))
-                                          (null dup))
-                                      (condition-case nil
-                                          (funcall fn (or part target))
-                                        (invalid-regexp nil)))
-                            do
-                            (progn
-                              ;; Give as value the iteration number of
-                              ;; inner loop to be able to check if
-                              ;; the duplicate have not been found in previous loop.
-                              (puthash c iter hash)
-                              (helm--maybe-process-filter-one-by-one-candidate c source)
-                              (cl-incf count))
-                            ;; Filter out nil candidates maybe returned by
-                            ;; `helm--maybe-process-filter-one-by-one-candidate'.
-                            and when c collect
-                            (if (and part (not prop-part))
-                                (if (consp c)
-                                    (cons (propertize target 'match-part part) (cdr c))
-                                  (propertize c 'match-part part))
-                              c)))
-        (error (unless (eq (car err) 'invalid-regexp) ; Always ignore regexps errors.
-                 (helm-log-error "helm-match-from-candidates in source `%s': %s %s"
-                                 (assoc-default 'name source) (car err) (cdr err)))
-               nil))))
+    (defvar consult--source-perspeen-tabs
+      `(
+        :name "Tabs"
+        :narrow ?t
+        :category perspeen-tab
+        :face consult-bookmark
+        :items ,#'perspeen-tabs-source-consult
+        :action ,#'consult--perspeen-tab-action
+        ))
+    (add-to-list 'consult-buffer-sources
+                 'consult--source-perspeen-tabs
+                 t)
 
+    (defun consult-perspeen ()
+      (interactive)
+      (when-let (buffer (consult--multi (list consult--source-perspeen-tabs
+                                              consult--source-perspeen-workspaces)
+                                        :require-match nil
+                                        :prompt "Switch to: "))
+        (unless (cdr buffer)
+          (let ((name (car buffer)))
+            (perspeen-create-ws)
+            (perspeen-rename-ws name)
+            (let ((projects (projectile-relevant-known-projects)))
+              (when projects
+                (projectile-completing-read
+                 "Switch to project: " projects
+                 :action (lambda (project)
+                           (projectile-switch-project-by-name project))
+                 :initial-input name)))
+            ))))
+    (define-key evil-normal-state-map "tt" 'consult-perspeen))
+
+  (advice-add 'evil-window-delete :after 'perspeen-tab--update-current-buffer)
+
+  (define-key evil-normal-state-map "T" nil)
+  (define-key evil-normal-state-map "Tt" 'perspeen-create-ws)
+  (define-key evil-normal-state-map "Tn" 'perspeen-next-ws)
+  (define-key evil-normal-state-map "Tp" 'perspeen-previous-ws)
+  (define-key evil-normal-state-map "Tl" 'perspeen-goto-last-ws)
+  (define-key evil-normal-state-map "Tg" 'perspeen-goto-ws)
+  (define-key evil-normal-state-map "Ts" 'perspeen-ws-eshell)
+  (define-key evil-normal-state-map "Tk" 'perspeen-delete-ws)
+  (define-key evil-normal-state-map "Ts" 'perspeen-ws-eshell)
+  (define-key evil-normal-state-map "Tr" 'perspeen-rename-ws)
+  (define-key evil-normal-state-map "Tj" 'perspeen-go-ws)
+  (define-key evil-normal-state-map "Td" 'perspeen-change-root-dir)
+
+  (define-key evil-normal-state-map "to" 'perspeen-tab-create-tab)
+  (define-key evil-normal-state-map "tk" 'perspeen-tab-del)
+  (define-key evil-normal-state-map "tn" 'perspeen-tab-next)
+  (define-key evil-normal-state-map "tp" 'perspeen-tab-prev)
   )
-
-(el-get-bundle dash-docs)
-(use-package dash-docs
-  :defer t
-  :init
-  (setq dash-docs-common-docsets '(
-                                   "Ruby"
-                                   "Ruby on Rails"
-                                   "Haml"
-                                   "HTML"
-                                   "JavaScript"
-                                   "React"
-                                   "Rust"
-                                   ;; "PostgreSQL"
-                                   ;; "Nginx"
-                                   ;; "NodeJS"
-                                   ;; "MySQL"
-                                   "Markdown"
-                                   ;; "Java"
-                                   ;; "Haskell"
-                                   "Emacs Lisp"
-                                   ;; "ElasticSearch"
-                                   ;; "Docker"
-                                   ;; "Common Lisp"
-                                   "Bash"
-                                   ;; "OCaml"
-                                   ;; "NET Framework"
-                                   ;; "Unity 3D"
-                                   "Go"
-                                   ))
-  ;; (dolist (doc '("Ruby" "Ruby_on_Rails_6" "Haml" "HTML" "JavaScript" "React" "Rust" "Markdown" "Emacs_Lisp" "Bash" "Go"))
-  ;;   (dash-docs-install-docset doc))
-  (setq dash-docs-min-length 1)
-  (setq dash-docs-browser-func 'eww))
-(el-get-bundle helm-dash)
-
-(use-package helm-dash
-  :commands (helm-dash-at-point helm-dash helm-dash-install-docset helm-dash-install-docset-from-file)
-  :init
-  (setq helm-dash-browser-func 'eww))
-
-;; (el-get-bundle helm-gtags)
-;; (use-package helm-gtags
-;;   :diminish helm-gtags-mode
-;;   :commands (helm-gtags-mode)
-;;   :init
-;;   (add-hook 'enh-ruby-mode-hook 'helm-gtags-mode)
-;;   (add-hook 'scala-mode-hook 'helm-gtags-mode)
-;;   (setq helm-gtags-update-interval-second 60)
-;;   (setq helm-gtags-auto-update t)
-;;   (setq helm-gtags-preselect t)
-;;   (setq helm-gtags-use-input-at-cursor t)
-;;   (setq helm-gtags-path-style 'root)
-;;   (setq helm-gtags-display-style 'detail)
-;;   :config
-;;   (defun helm-gtags-update-all-tags ()
-;;     (interactive)
-;;     (let ((how-to 'entire-update)
-;;           (interactive-p (called-interactively-p 'interactive))
-;;           (current-time (float-time (current-time))))
-;;       (when (helm-gtags--update-tags-p how-to interactive-p current-time)
-;;         (let* ((cmds (helm-gtags--update-tags-command how-to))
-;;                (proc (apply 'start-file-process "helm-gtags-update-tag" nil cmds)))
-;;           (if (not proc)
-;;               (message "Failed: %s" (mapconcat 'identity cmds " "))
-;;             (set-process-sentinel proc (helm-gtags--make-gtags-sentinel 'update))
-;;             (setq helm-gtags--last-update-time current-time))))))
-;;   (evil-leader/set-key-for-mode 'helm-gtags-mode
-;;     "tc" 'helm-gtags-create-tags
-;;     "tf" 'helm-gtags-select
-;;     "tu" 'helm-gtags-update-tags
-;;     "tU" 'helm-gtags-update-all-tags
-;;     "td" 'helm-gtags-find-tag
-;;     "tr" 'helm-gtags-find-rtag
-;;     "tn" 'helm-gtags-next-history
-;;     "tp" 'helm-gtags-previous-history)
-;;   (evil-define-key 'normal helm-gtags-mode-map
-;;     (kbd "\C-]") 'helm-gtags-find-tag-from-here
-;;     (kbd "\C-t") 'helm-gtags-pop-stack))
 
 (provide '04-helm)
 ;;; 04-helm.el ends here

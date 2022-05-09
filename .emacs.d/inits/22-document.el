@@ -179,7 +179,6 @@
       "t" 'org-agenda-todo
       ":" 'org-agenda-set-tags
       ";" 'org-timer-set-timer
-      "I" 'helm-org-task-file-headings
       "i" 'org-agenda-clock-in-avy
       "O" 'org-agenda-clock-out-avy
       "u" 'org-agenda-bulk-unmark
@@ -198,7 +197,6 @@
       "gv" 'org-agenda-view-mode-dispatch
       "f" 'org-agenda-later
       "b" 'org-agenda-earlier
-      "c" 'helm-org-capture-templates
       "e" 'org-agenda-set-effort
       "n" nil  ; evil-search-next
       "{" 'org-agenda-manipulate-query-add-re
@@ -230,8 +228,9 @@
   :commands (open-junk-file open-junk-org-today)
   :config
   (if (string= "windows" system-name)
-      (setq open-junk-file-format "/mnt/c/Users/yuya373/Dropbox/junk/%Y-%m-%d.")
+      (setq open-junk-file-format "/mnt/c/Users/yuya373/Dropbox/junk/%Y-%m-%d")
     (setq open-junk-file-format "~/Dropbox/junk/%Y-%m-%d."))
+  (setq open-junk-file-find-file-function 'find-file-other-window)
 
   (defun open-junk-org-today ()
     (interactive)
@@ -239,7 +238,22 @@
                         (format-time-string open-junk-file-format (current-time)))))
       (when open-junk-file-make-directory
         (make-directory (file-name-directory file) t))
-      (funcall open-junk-file-find-file-function file))))
+      (funcall open-junk-file-find-file-function file)))
+
+  (defun open-junk-file ()
+    (interactive)
+    (let ((file (let* ((path (format-time-string open-junk-file-format (current-time)))
+                       (dir (file-name-directory path))
+                       (filename (file-name-nondirectory path)))
+                  (read-file-name "Junk Code (Enter extension): " dir nil nil
+                                  filename))))
+      (when open-junk-file-make-directory
+        (make-directory (file-name-directory file) t))
+      (funcall open-junk-file-find-file-function file)))
+  )
+
+
+
 
 ;; (use-package org-mobile
 ;;   :init

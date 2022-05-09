@@ -26,19 +26,13 @@
 
 (el-get-bundle projectile)
 (el-get-bundle projectile-rails)
-(el-get-bundle helm-projectile)
 
-(use-package helm-projectile
-  :commands (helm-projectile-on)
-  :init
-  (add-hook 'projectile-mode-hook 'helm-projectile-on))
 
 (use-package projectile
   :commands (projectile-mode)
   :diminish projectile-mode
   :init
-  (setq projectile-enable-caching t
-        projectile-completion-system 'helm)
+  (setq projectile-enable-caching t)
   (add-hook 'after-init-hook 'projectile-mode))
 
 (use-package projectile-rails
@@ -63,26 +57,28 @@ This only works when yas package is installed."
                             (mapconcat #'upcase-initials (split-string it "_") ""))
                         (split-string name "/"))))
       name))
+
+  (defun find-file-at-project-dir (dir)
+    (let* ((prompt "Find file: ")
+           (directory (format "%s%s" (projectile-project-root) dir))
+           (filename (read-file-name prompt directory nil)))
+      (find-file filename)))
+
   (defun projectile-rails-find-controller ()
     (interactive)
-    (helm-find-files-1 (format "%sapp/controllers/"
-                               (projectile-rails-root))))
+    (find-file-at-project-dir "app/controllers/"))
   (defun projectile-rails-find-model ()
     (interactive)
-    (helm-find-files-1 (format "%sapp/models/"
-                               (projectile-rails-root))))
+    (find-file-at-project-dir "app/models/"))
   (defun projectile-rails-find-view ()
     (interactive)
-    (helm-find-files-1 (format "%sapp/views/"
-                               (projectile-rails-root))))
+    (find-file-at-project-dir "app/views/"))
   (defun projectile-rails-find-migration ()
     (interactive)
-    (helm-find-files-1 (format "%sdb/migrate/"
-                               (projectile-rails-root))))
+    (find-file-at-project-dir "app/migrate/"))
   (defun projectile-rails-find-helper ()
     (interactive)
-    (helm-find-files-1 (format "%sapp/helpers/"
-                               (projectile-rails-root))))
+    (find-file-at-project-dir "app/helpers/"))
   (evil-define-key 'normal projectile-rails-mode-map
     ",rfm" 'projectile-rails-find-model
     ",rfc" 'projectile-rails-find-controller
