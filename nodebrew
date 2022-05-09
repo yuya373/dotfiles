@@ -1,6 +1,0 @@
-#!/bin/bash
-
-curl -L git.io/nodebrew | perl - setup
-
-nodebrew install-binary stable
-nodebrew use stable

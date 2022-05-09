@@ -110,3 +110,8 @@ eval "$(direnv hook zsh)"
 
 # OPAM configuration
 . /home/yuya373/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+
+eval "$(nodenv init -)"
+
+# Fix zsh: command not found: tmuximum
+unalias t
