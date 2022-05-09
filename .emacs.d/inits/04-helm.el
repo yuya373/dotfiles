@@ -194,10 +194,7 @@
 (use-package consult-flycheck :after (consult flycheck))
 
 (use-package consult-lsp
-  :after (consult lsp-mode)
-  :config
-  (require 'consult-lsp-marginalia)
-  (consult-lsp-marginalia-mode))
+  :after (consult lsp-mode))
 
 (use-package consult-dir :after (consult))
 
@@ -495,7 +492,7 @@ targets."
                                               consult--source-perspeen-workspaces)
                                         :require-match nil
                                         :prompt "Switch to: "))
-        (unless (cdr buffer)
+        (unless(plist-get (cdr buffer) :match)
           (let ((name (car buffer)))
             (perspeen-create-ws)
             (perspeen-rename-ws name)

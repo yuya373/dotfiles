@@ -23,124 +23,124 @@
 ;;
 
 ;;; Code:
-(eval-when-compile
-  (require 'evil))
+;; (eval-when-compile
+;;   (require 'evil))
 
-(el-get-bundle yuya373/haskell-mode
-  :branch "master"
-  :build
-  `(("make" ,(format "EMACS=%s" el-get-emacs)
-     "all"))
-  :post-init
-  (progn
-    (require 'haskell-mode-autoloads)
-    (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-    (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)))
+;; (el-get-bundle yuya373/haskell-mode
+;;   :branch "master"
+;;   :build
+;;   `(("make" ,(format "EMACS=%s" el-get-emacs)
+;;      "all"))
+;;   :post-init
+;;   (progn
+;;     (require 'haskell-mode-autoloads)
+;;     (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+;;     (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)))
 
-(use-package haskell-mode
-  :mode (("\\.hs\\'" . haskell-mode)
-         ("\\.lhs\\'" . literate-haskell-mode))
-  :init
-  ;; (add-hook 'haskell-mode-hook 'font-lock-mode)
-  ;; (add-hook 'haskell-mode-hook 'inf-haskell-mode)
-  (add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
-  (add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
-
-  (setq haskell-stylish-on-save t
-        haskell-tags-on-save t
-        tags-revert-without-query t
-        haskell-indentation-electric-flag t
-        haskell-compile-cabal-build-command "stack build"
-        haskell-process-suggest-remove-import-lines t
-        haskell-interactive-mode-eval-mode 'haskell-mode
-        haskell-indent-spaces 4
-        )
-  :config
-  ;; (use-package inf-haskell
-  ;;   :diminish inf-haskell-mode)
-  (evil-define-key 'normal haskell-mode-map
-    ",m" 'haskell-menu
-    ",c" 'haskell-compile
-    ",si" 'haskell-sort-imports
-    ",gl" 'haskell-mode-goto-loc
-    ",gi" 'haskell-navigate-imports
-    ",fi" 'haskell-mode-format-imports
-    ",ai" 'haskell-align-imports
-    ",hh" 'haskell-hoogle
-    ;; ",ht" 'haskell-mode-show-type-at
-    ;; ",is" 'haskell-interactive-switch
-    ;; ",ir" 'haskell-process-restart
-    ;; ",il" 'haskell-process-load-file
-    ;; ",it" 'haskell-process-do-type
-    ;; ",ii" 'haskell-process-do-info
-    ;; ",ij" 'haskell-mode-jump-to-def-or-tag
-    ;; ",iL" 'haskell-process-reload
-    ;; "\C-]" 'haskell-mode-tag-find
-    )
-  ;; (evil-define-key 'insert haskell-interactive-mode-map
-  ;;   "\C-p" 'haskell-interactive-mode-history-previous
-  ;;   "\C-n" 'haskell-interactive-mode-history-next)
-  )
-
-;; (use-package haskell
-;;   :commands (interactive-haskell-mode)
+;; (use-package haskell-mode
+;;   :mode (("\\.hs\\'" . haskell-mode)
+;;          ("\\.lhs\\'" . literate-haskell-mode))
 ;;   :init
-;;   (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+;;   ;; (add-hook 'haskell-mode-hook 'font-lock-mode)
+;;   ;; (add-hook 'haskell-mode-hook 'inf-haskell-mode)
+;;   (add-hook 'haskell-mode-hook 'haskell-auto-insert-module-template)
+;;   (add-hook 'haskell-mode-hook 'haskell-decl-scan-mode)
+
+;;   (setq haskell-stylish-on-save t
+;;         haskell-tags-on-save t
+;;         tags-revert-without-query t
+;;         haskell-indentation-electric-flag t
+;;         haskell-compile-cabal-build-command "stack build"
+;;         haskell-process-suggest-remove-import-lines t
+;;         haskell-interactive-mode-eval-mode 'haskell-mode
+;;         haskell-indent-spaces 4
+;;         )
 ;;   :config
-;;   (require 'haskell-process))
+;;   ;; (use-package inf-haskell
+;;   ;;   :diminish inf-haskell-mode)
+;;   (evil-define-key 'normal haskell-mode-map
+;;     ",m" 'haskell-menu
+;;     ",c" 'haskell-compile
+;;     ",si" 'haskell-sort-imports
+;;     ",gl" 'haskell-mode-goto-loc
+;;     ",gi" 'haskell-navigate-imports
+;;     ",fi" 'haskell-mode-format-imports
+;;     ",ai" 'haskell-align-imports
+;;     ",hh" 'haskell-hoogle
+;;     ;; ",ht" 'haskell-mode-show-type-at
+;;     ;; ",is" 'haskell-interactive-switch
+;;     ;; ",ir" 'haskell-process-restart
+;;     ;; ",il" 'haskell-process-load-file
+;;     ;; ",it" 'haskell-process-do-type
+;;     ;; ",ii" 'haskell-process-do-info
+;;     ;; ",ij" 'haskell-mode-jump-to-def-or-tag
+;;     ;; ",iL" 'haskell-process-reload
+;;     ;; "\C-]" 'haskell-mode-tag-find
+;;     )
+;;   ;; (evil-define-key 'insert haskell-interactive-mode-map
+;;   ;;   "\C-p" 'haskell-interactive-mode-history-previous
+;;   ;;   "\C-n" 'haskell-interactive-mode-history-next)
+;;   )
 
-(use-package haskell-doc
-  :commands (haskell-doc-mode)
-  :init
-  (add-hook 'haskell-mode-hook 'haskell-doc-mode))
+;; ;; (use-package haskell
+;; ;;   :commands (interactive-haskell-mode)
+;; ;;   :init
+;; ;;   (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+;; ;;   :config
+;; ;;   (require 'haskell-process))
 
-
-(use-package haskell-indentation-mode
-  :commands (haskell-indentation-mode)
-  :init
-  (add-hook 'haskell-mode-hook 'haskell-indentation-mode))
-(el-get-bundle commercialhaskell/intero
-  :type github
-  :name intero
-  :load-path "elisp")
-(use-package intero
-  :commands (intero-mode)
-  :init
-  (add-hook 'haskell-mode-hook 'intero-mode)
-  :config
-  (evil-define-key 'normal intero-mode-map
-    ",r" nil
-    ",rr" 'intero-repl
-    ",re" 'intero-repl-load
-    ",ht" 'intero-type-at
-    ",hi" 'intero-info
-    ",gd" 'intero-goto-definition
-    ",a" 'intero-apply-suggestions
-    ",e" 'intero-expand-splice-at-point
-    )
-  (evil-define-key 'normal intero-repl-mode-map
-    ",l" 'intero-repl-clear-buffer))
-
-;; (el-get-bundle company-ghc)
-;; (use-package ghc
-;;   :commands (ghc-init ghc-debug)
+;; (use-package haskell-doc
+;;   :commands (haskell-doc-mode)
 ;;   :init
-;;   (add-hook 'haskell-mode-hook 'ghc-init))
+;;   (add-hook 'haskell-mode-hook 'haskell-doc-mode))
 
-;; (use-package company-ghc
-;;   :commands (company-ghc)
+
+;; (use-package haskell-indentation-mode
+;;   :commands (haskell-indentation-mode)
 ;;   :init
-;;   (defun my-company-ghc-init ()
-;;     (make-local-variable 'company-backends)
-;;     (add-to-list 'company-backends
-;;                  '(company-ghc :with company-dabbrev)))
-;;   (add-hook 'haskell-mode-hook 'my-company-ghc-init))
+;;   (add-hook 'haskell-mode-hook 'haskell-indentation-mode))
+;; (el-get-bundle commercialhaskell/intero
+;;   :type github
+;;   :name intero
+;;   :load-path "elisp")
+;; (use-package intero
+;;   :commands (intero-mode)
+;;   :init
+;;   (add-hook 'haskell-mode-hook 'intero-mode)
+;;   :config
+;;   (evil-define-key 'normal intero-mode-map
+;;     ",r" nil
+;;     ",rr" 'intero-repl
+;;     ",re" 'intero-repl-load
+;;     ",ht" 'intero-type-at
+;;     ",hi" 'intero-info
+;;     ",gd" 'intero-goto-definition
+;;     ",a" 'intero-apply-suggestions
+;;     ",e" 'intero-expand-splice-at-point
+;;     )
+;;   (evil-define-key 'normal intero-repl-mode-map
+;;     ",l" 'intero-repl-clear-buffer))
 
-(el-get-bundle shakespeare-mode)
-(use-package shakespeare-mode
-  :mode (("\\.hamlet\\'" . shakespeare-hamlet-mode)
-         ("\\.julius\\'" . shakespeare-julius-mode)
-         ("\\.lucius\\'" . shakespeare-lucius-mode)))
+;; ;; (el-get-bundle company-ghc)
+;; ;; (use-package ghc
+;; ;;   :commands (ghc-init ghc-debug)
+;; ;;   :init
+;; ;;   (add-hook 'haskell-mode-hook 'ghc-init))
 
-(provide '17-haskell)
-;; 17-haskell.el ends here
+;; ;; (use-package company-ghc
+;; ;;   :commands (company-ghc)
+;; ;;   :init
+;; ;;   (defun my-company-ghc-init ()
+;; ;;     (make-local-variable 'company-backends)
+;; ;;     (add-to-list 'company-backends
+;; ;;                  '(company-ghc :with company-dabbrev)))
+;; ;;   (add-hook 'haskell-mode-hook 'my-company-ghc-init))
+
+;; (el-get-bundle shakespeare-mode)
+;; (use-package shakespeare-mode
+;;   :mode (("\\.hamlet\\'" . shakespeare-hamlet-mode)
+;;          ("\\.julius\\'" . shakespeare-julius-mode)
+;;          ("\\.lucius\\'" . shakespeare-lucius-mode)))
+
+;; (provide '17-haskell)
+;; ;; 17-haskell.el ends here
