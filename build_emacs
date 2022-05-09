@@ -95,11 +95,12 @@ if [[ $# -ge 1 ]]; then
     if [[ $1 = "27" ]]; then
         branch="emacs-27"
     fi
+    if [[ $1 = "28" ]]; then
+        branch="emacs-28"
+    fi
 fi
 print_with_current_step "Update master $branch"
 git fetch -a
-# git checkout -B master origin/master
-# git checkout -B emacs-26 origin/emacs-26
 git checkout -B $branch origin/$branch
 
 
