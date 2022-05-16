@@ -107,6 +107,7 @@
   (recentf-mode)
   (define-key evil-normal-state-map
               (kbd "C-b") 'consult-buffer)
+  (setq consult-goto-line-numbers nil)
   (setq consult-buffer-sources '(
                                  ;; consult--source-hidden-buffer
                                  consult--source-buffer

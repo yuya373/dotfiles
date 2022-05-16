@@ -680,7 +680,7 @@ If the scroll count is zero the command scrolls half the screen."
 
     "bk" 'kill-buffers
 
-    "ci" 'toggle-company-ispell
+    "ci" nil
 
     "dd" 'consult-dir
     "da" 'consult-apropos
@@ -713,6 +713,8 @@ If the scroll count is zero the command scrolls half the screen."
     "gob" 'github-branches-open
     "gop" 'github-pulls-open
     "goc" 'github-commit-open
+    "ghn" 'git-gutter+-next-hunk
+    "ghp" 'git-gutter+-previous-hunk
 
     "ig" 'highlight-indent-guides-mode
     "l" 'toggle-folding
