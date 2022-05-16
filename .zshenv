@@ -64,10 +64,6 @@ if [ -e ${HOME}/.cabal/bin ]; then
     export PATH=${HOME}/.cabal/bin:${PATH}
 fi
 
-if [ -d ${HOME}/.rbenv ] ; then
-    export PATH=${HOME}/.rbenv/bin:${PATH}
-fi
-
 if [ -d ${HOME}/.roswell ]; then
     export PATH=${HOME}/.roswell/bin:${PATH}
 fi
@@ -78,11 +74,6 @@ fi
 
 if [ -e ${HOME}/.my_zshenv ]; then
     source ${HOME}/.my_zshenv
-fi
-
-if which pyenv > /dev/null; then
-    PATH=/usr/local/opt/pyenv/shims:${PATH}
-    export PATH
 fi
 
 source ~/dotfiles/.zenv
