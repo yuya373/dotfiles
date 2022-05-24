@@ -30,6 +30,7 @@
 
 (el-get-bundle typescript-mode)
 (el-get-bundle web-mode)
+(el-get-bundle f)
 
 (defun file-tsx-p ()
   (string-suffix-p "tsx"
@@ -83,11 +84,14 @@
       (if (file-exists-p (expand-file-name "yarn.lock" (projectile-project-root)))
           "yarn"
         "npm"))
-
+    (require 'f)
     (defun typescript-projectile-build-consult-source ()
-      (let* ((json (with-temp-buffer
+      (let* ((dir (f-traverse-upwards (lambda (path)
+                                        (f-exists? (f-expand "package.json" path)))
+                                      default-directory))
+             (json (with-temp-buffer
                      (goto-char (point-min))
-                     (insert-file-contents (expand-file-name "package.json" (projectile-project-root)))
+                     (insert-file-contents (expand-file-name "package.json" dir))
                      (goto-char (point-min))
                      (json-parse-buffer)))
              (scripts (gethash "scripts" json))
@@ -105,6 +109,7 @@
         "Rust compilation mode.
 
 Error matching regexes from compile.el are removed.")
+      (require 'ansi-color)
       (defun consult-typescript-scripts ()
         (interactive)
         (let* ((source (typescript-projectile-build-consult-source))
@@ -113,12 +118,13 @@ Error matching regexes from compile.el are removed.")
                         :require-match t
                         :prompt "Select command: "))
                (out-buf (get-buffer-create "*consult-typescript-scripts*")))
-
           (when script
             (with-current-buffer out-buf
-              (consult-typescript-compilation-mode)
               (setq buffer-read-only nil)
-              (erase-buffer))
+              (erase-buffer)
+              (consult-typescript-compilation-mode)
+              (setq buffer-read-only t)
+              (goto-char (point-min)))
             (let* ((run-cmd (gethash script source))
                    (process (start-file-process "consult-typescript-scripts"
                                                 out-buf
@@ -126,17 +132,27 @@ Error matching regexes from compile.el are removed.")
                                                 "run"
                                                 run-cmd)))
               (display-buffer out-buf)
+              (set-process-filter process
+                                  #'(lambda (process s)
+                                      (when (buffer-live-p (process-buffer process))
+                                        (with-current-buffer (process-buffer process)
+                                          (setq buffer-read-only nil)
+                                          (goto-char (process-mark process))
+                                          (insert (ansi-color-filter-apply s))
+                                          (set-marker (process-mark process) (point))
+                                          (setq buffer-read-only t)))))
+
               (set-process-sentinel process
                                     #'(lambda (process event)
-                                        (when (string= "finished\n" event)
-                                          (with-current-buffer out-buf
+                                        (when (buffer-live-p (process-buffer process))
+                                          (with-current-buffer (process-buffer process)
                                             (setq buffer-read-only nil)
-                                            (goto-char (point-max))
-                                            (insert (format "\n`%s run %s' exit with %s"
+                                            (insert (format "\n`%s %s' %s"
                                                             (typescript-projectile-bundler-cmd)
                                                             run-cmd
-                                                            (process-exit-status process)))
-                                            (goto-char (point-min))))))))))
+                                                            event))
+
+                                            (setq buffer-read-only t)))))))))
 
       (evil-define-key 'normal typescript-mode-map
         (kbd ",s") 'consult-typescript-scripts)
