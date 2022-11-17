@@ -225,7 +225,7 @@
 
 (el-get-bundle open-junk-file)
 (use-package open-junk-file
-  :commands (open-junk-file open-junk-org-today)
+  :commands (open-junk-dir open-junk-file open-junk-org-today)
   :config
   (if (string= "windows" system-name)
       (setq open-junk-file-format "/mnt/c/Users/yuya373/Dropbox/junk/%Y-%m-%d")
@@ -250,6 +250,13 @@
       (when open-junk-file-make-directory
         (make-directory (file-name-directory file) t))
       (funcall open-junk-file-find-file-function file)))
+  (defun open-junk-dir ()
+    (interactive)
+    (let* ((dir (file-name-directory open-junk-file-format))
+           (file (read-file-name "Find file:" dir)))
+      (when file
+        (funcall open-junk-file-find-file-function file)))
+    )
   )
 
 

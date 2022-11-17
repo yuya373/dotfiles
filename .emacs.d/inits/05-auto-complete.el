@@ -288,6 +288,7 @@
         lsp-rust-analyzer-server-display-inlay-hints t
         lsp-rust-analyzer-display-chaining-hints t
         lsp-rust-analyzer-display-parameter-hints t
+        standard-indent 2
         )
   (defun my-lsp-inhibit-hooks ()
     (setq-local lsp-inhibit-lsp-hooks t))

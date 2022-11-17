@@ -676,7 +676,7 @@ If the scroll count is zero the command scrolls half the screen."
 
     "ag" 'ag
     "aa" 'consult-git-grep-at-point
-    "aA" 'consult-grep-in-directory
+    "ad" 'consult-grep-in-directory
 
     "bk" 'kill-buffers
 

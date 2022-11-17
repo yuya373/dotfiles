@@ -33,7 +33,8 @@
         rustic-lsp-server 'rust-analyzer
         rustic-format-trigger nil
         )
-  (setq rustic-test-arguments "-- --nocapture")
+  (setq rustic-default-test-arguments "--benches --tests --all-features -- --nocapture")
+  (setq rustic-cargo-check-arguments "--benches --tests --all-features --workspace")
   (setq flycheck-rust-check-tests nil)
   ;; (defun rustic-init-flycheck ()
   ;;   (interactive)

@@ -1,5 +1,8 @@
 (setq el-get-lock-package-versions
-      '((toml-mode :checksum "f6c61817b00f9c4a3cab1bae9c309e0fc45cdd06")
+      '((origami :checksum "e558710a975e8511b9386edc81cd6bdd0a5bda74")
+        (tsi :checksum "eb26ee20437576eefc62a61616bfdc5bda25caae")
+        (tsx-mode :checksum "7a585ea372bd399316d935a92f8df293a2f660bc")
+        (toml-mode :checksum "f6c61817b00f9c4a3cab1bae9c309e0fc45cdd06")
         (rustic :checksum "3b379fc25b7a097a014147d9c8b83ec1a418cd76")
         (rust-mode :checksum "d17be3051b22a06d7742178cd1367aed61807a66")
         (xterm-color :checksum "1a4012854c69a5cdaeb5a73d2ad705011892fca3")
@@ -8,10 +11,6 @@
         (alert-toast :checksum "ba931529a266537783cfec2a28c2b8c058364ff2")
         (alert :checksum "7046393272686c7a1a9b3e7f7b1d825d2e5250a6")
         (circe :checksum "710f057fedae6e9b820cce9336fef24b7d057e4c")
-        (terraform-mode :checksum "e560caaa9d9a11b0868adf6d9dcae5ebb5055730")
-        (hcl-mode :checksum "ec27736c4c16fbf7f1ecab0210ec3c71ac2406fa")
-        (go-eldoc :checksum "cbbd2ea1e94a36004432a9ac61414cb5a95a39bd")
-        (go-mode :checksum "fa2693278637f56759480d2bf203bb8aad107230")
         \.\.\.))
 (setq el-get-lock-locked-packages 'nil)
 (setq el-get-lock-unlocked-packages
