@@ -56,6 +56,10 @@
                             key
                             source))
                scripts)
+      (let ((file (buffer-file-name)))
+        (puthash "test -- /path/to/current-file"
+                 (format  "test -- %s" file)
+                 source))
       source))
 
   (use-package projectile
@@ -85,12 +89,16 @@ Error matching regexes from compile.el are removed.")
               (consult-typescript-compilation-mode)
               (setq buffer-read-only t)
               (goto-char (point-min)))
-            (let* ((run-cmd (gethash script source))
-                   (process (start-file-process "consult-typescript-scripts"
-                                                out-buf
-                                                (typescript-projectile-bundler-cmd)
-                                                "run"
-                                                run-cmd)))
+            (let* ((run-cmd (split-string (gethash script source) " "))
+                   (cmd (car run-cmd))
+                   (args (cdr run-cmd))
+                   (process (apply #'start-file-process
+                                   "consult-typescript-scripts"
+                                   out-buf
+                                   (typescript-projectile-bundler-cmd)
+                                   "run"
+                                   cmd
+                                   args)))
               (display-buffer out-buf)
               (set-process-filter process
                                   #'(lambda (process s)
@@ -107,10 +115,11 @@ Error matching regexes from compile.el are removed.")
                                         (when (buffer-live-p (process-buffer process))
                                           (with-current-buffer (process-buffer process)
                                             (setq buffer-read-only nil)
-                                            (insert (format "\n`%s %s' %s"
-                                                            (typescript-projectile-bundler-cmd)
-                                                            run-cmd
-                                                            event))
+                                            (insert (format "\n`%s %s %s' %s"
+                                                           (typescript-projectile-bundler-cmd)
+                                                           cmd
+                                                           (mapconcat #'identity args " ")
+                                                           event))
 
                                             (setq buffer-read-only t)))))))))
 

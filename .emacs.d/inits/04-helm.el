@@ -49,6 +49,16 @@
 (el-get-bundle all-the-icons)
 (el-get-bundle all-the-icons-completion)
 
+(defun consult-normalize-file-string (s)
+  (let* ((splitted (split-string s ":"))
+         (path (car splitted))
+         (line (cadr splitted))
+         (word (caddr splitted))
+         (path (if (file-name-absolute-p path)
+                   path
+                 (expand-file-name path default-directory))))
+    (list path (when line (string-to-number line)) word)))
+
 (use-package orderless
   :after (vertico)
   :init
@@ -109,20 +119,20 @@
     (kbd "C-b") 'consult-buffer)
   (setq consult-goto-line-numbers nil)
   (setq consult--source-buffer-perspeen
-    `(:name     "Buffer"
-                :narrow   ?b
-                :category buffer
-                :face     consult-buffer
-                :history  buffer-name-history
-                :state    ,#'consult--buffer-state
-                :default  t
-                :items
-                ,(lambda ()
-                   (let ((buffers (perspeen-ws-struct-buffers perspeen-current-ws)))
-                     (consult--buffer-query :sort 'visibility
-                                            :predicate (lambda (buf) (member buf buffers))
-                                            :as 'buffer-name)))
-    ))
+        `(:name "Buffer"
+          :narrow   ?b
+          :category buffer
+          :face     consult-buffer
+          :history  buffer-name-history
+          :state    ,#'consult--buffer-state
+          :default  t
+          :items
+          ,(lambda ()
+             (let ((buffers (perspeen-ws-struct-buffers perspeen-current-ws)))
+               (consult--buffer-query :sort 'visibility
+                                      :predicate (lambda (buf) (member buf buffers))
+                                      :as 'buffer-name)))
+          ))
   (setq consult-buffer-sources '(
                                  consult--source-buffer-perspeen
                                  ;; consult--source-hidden-buffer
@@ -160,23 +170,28 @@
 
   (defun consult-git-grep-at-point ()
     (interactive)
-    (let ((thing (thing-at-point 'symbol t)))
-      (consult-git-grep nil thing)))
+    (consult-git-grep nil (evil-visual-thing-at-point)))
 
   (defun consult-line-at-point ()
     (interactive)
-    (let ((thing (thing-at-point 'symbol t)))
-      (consult-line thing)))
+    (consult-line (evil-visual-thing-at-point)))
 
   (defun consult-line-multi-at-point ()
     (interactive)
-    (let ((thing (thing-at-point 'symbol t)))
-      (consult-line-multi nil thing)))
+    (consult-line-multi nil (evil-visual-thing-at-point)))
 
   (defun consult-grep-in-directory ()
     (interactive)
-    (let ((thing (thing-at-point 'symbol t)))
-      (consult-git-grep t thing)))
+    (consult-git-grep t (evil-visual-thing-at-point)))
+
+  (defun evil-visual-thing-at-point ()
+    (if (evil-visual-state-p)
+        (progn
+          (let ((thing (buffer-substring-no-properties (marker-position evil-visual-beginning)
+                                                       (marker-position evil-visual-end))))
+            (evil-exit-visual-state)
+            thing))
+      (thing-at-point 'symbol t)))
 
   (use-package evil-leader
     :config
@@ -330,6 +345,43 @@
   (define-key embark-buffer-map
     (kbd "C-o") 'embark-switch-to-buffer-other-window)
 
+  (embark-define-keymap embark-consult-grep-map
+    "Keymap for consult-grep actions."
+    :parent embark-general-map)
+
+  (add-to-list 'embark-keymap-alist '(consult-grep embark-consult-grep-map))
+  (defun embark-switch-to-file-vsplit (filename)
+    (let* ((n (consult-normalize-file-string filename))
+           (path (car n))
+           (line (cadr n)))
+      (embark-switch-to-buffer-vsplit (find-file-noselect path))
+      (when line (goto-line line))))
+  (defun embark-switch-to-file-split (filename)
+    (let* ((n (consult-normalize-file-string filename))
+           (path (car n))
+           (line (cadr n)))
+      (embark-switch-to-buffer-split (find-file-noselect path))
+      (when line (goto-line line))))
+  (defun embark-switch-to-file-window (filename)
+    (let* ((n (consult-normalize-file-string filename))
+           (path (car n))
+           (line (cadr n)))
+      (embark-switch-to-buffer-other-window (find-file-noselect path))
+      (when line (goto-line line))))
+
+  (define-key embark-consult-grep-map
+    (kbd "v") 'embark-switch-to-file-vsplit)
+  (define-key embark-consult-grep-map
+    (kbd "C-v") 'embark-switch-to-file-vsplit)
+  (define-key embark-consult-grep-map
+    (kbd "s") 'embark-switch-to-file-split)
+  (define-key embark-consult-grep-map
+    (kbd "C-s") 'embark-switch-to-file-split)
+  (define-key embark-consult-grep-map
+    (kbd "o") 'embark-switch-to-file-window)
+  (define-key embark-consult-grep-map
+    (kbd "C-o") 'embark-switch-to-file-window)
+
   (defun embark-which-key-indicator ()
     "An embark indicator that displays keymaps using which-key.
 The which-key help message will show the type and value of the
@@ -463,7 +515,23 @@ targets."
        (window-normalize-buffer-to-switch-to buffer-or-name)
        0)
       (perspeen-update-mode-string))
-    (define-key embark-buffer-map (kbd "t") 'embark-switch-to-buffer-tab))
+    (define-key embark-buffer-map (kbd "t") 'embark-switch-to-buffer-tab)
+    (defun embark-switch-to-file-tab (file-name)
+      (let* ((n (consult-normalize-file-string file-name))
+             (path (car n))
+             (line (cadr n))
+             (path (if (file-name-absolute-p path)
+                       path
+                     (expand-file-name path default-directory)))
+             (buffer (find-file-noselect path)))
+        (perspeen-tab-create-tab
+         (window-normalize-buffer-to-switch-to buffer)
+         0)
+        (perspeen-update-mode-string)
+        (when line
+          (goto-line line))))
+    (define-key embark-consult-grep-map (kbd "t") 'embark-switch-to-file-tab)
+    )
 
   (use-package consult
     :config
