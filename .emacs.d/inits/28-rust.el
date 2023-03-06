@@ -24,6 +24,7 @@
 
 ;;; Code:
 
+(el-get-bundle project)
 (el-get-bundle rustic)
 (el-get-bundle xterm-color)
 (use-package rustic
