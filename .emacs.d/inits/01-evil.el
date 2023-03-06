@@ -30,6 +30,11 @@
   (require 'use-package)
   (require 'el-get))
 
+(el-get-bundle transient
+  :type github
+  :pkgname "magit/transient"
+  :branch "main"
+  :load-path "lisp/")
 (el-get-bundle goto-chg)
 (el-get-bundle undo-tree)
 (el-get-bundle emacs-evil/evil)

@@ -7,11 +7,11 @@
         (rust-mode :checksum "d17be3051b22a06d7742178cd1367aed61807a66")
         (xterm-color :checksum "1a4012854c69a5cdaeb5a73d2ad705011892fca3")
         (el-get :checksum "9353309744e4f8a7c9b1adf22ec99536fb2146b0")
-        (magit :checksum "f331092df4d4dfc0a2a7424d929a9c845088d57f")
+        (magit :checksum "b926ab0e051e497e8ed43754cfd2012d23dbfc4c")
         (alert-toast :checksum "ba931529a266537783cfec2a28c2b8c058364ff2")
         (alert :checksum "7046393272686c7a1a9b3e7f7b1d825d2e5250a6")
         (circe :checksum "710f057fedae6e9b820cce9336fef24b7d057e4c")
         \.\.\.))
 (setq el-get-lock-locked-packages 'nil)
 (setq el-get-lock-unlocked-packages
-      '(slack cmake-mode))
+      '(helm-slack slack cmake-mode))
