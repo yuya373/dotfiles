@@ -8,10 +8,11 @@ Description=xkeysnail
 
 [Service]
 KillMode=process
-ExecStart=/usr/bin/xkeysnail --quiet --watch /home/yuya373/dotfiles/xkeysnail/config.py
 ExecStartPre=/usr/bin/xhost +SI:localuser:root
+ExecStart=/usr/bin/xkeysnail --quiet --watch /home/yuya373/dotfiles/xkeysnail/config.py
 Type=simple
 Restart=always
+RestartSec=10s
 
 # Update DISPLAY to be the same as `echo $DISPLAY` on your graphical terminal.
 Environment=DISPLAY=:0
