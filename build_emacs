@@ -98,10 +98,11 @@ if [[ $# -ge 1 ]]; then
     if [[ $1 = "28" ]]; then
         branch="emacs-28"
     fi
+
+    print_with_current_step "Update master $branch"
+    git fetch -a
+    git checkout -B $branch origin/$branch
 fi
-print_with_current_step "Update master $branch"
-git fetch -a
-git checkout -B $branch origin/$branch
 
 
 print_with_current_step "Executing 'make distclean'"
