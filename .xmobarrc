@@ -1,8 +1,8 @@
 Config {
-  font = "xft:Ricty:size=16:antialias=true"
+  font = "HackGen 30"
   , bgColor = "black"
   , fgColor = "#646464"
-  , position = Top
+  , position = TopH 50
   , border = BottomB
   , borderColor = "#646464"
 

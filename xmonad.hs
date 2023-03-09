@@ -27,12 +27,12 @@ printer = xmobarPP {
   }
 toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
 myWorkspaces = ["Emacs", "Terminal", "WebBrowser", "Hidden"]
-myConfig = (ewmh $ defaultConfig) {
+
+myConfig = (ewmh . ewmhFullscreen $ def) {
   terminal = "urxvt"
   , borderWidth = 3
   , startupHook = myStartupHook
   , manageHook = myManageHook
-  , handleEventHook = myEventHook
   , layoutHook =  myLayoutHook
   , workspaces = myWorkspaces
   } `additionalKeys`
@@ -47,7 +47,7 @@ myConfig = (ewmh $ defaultConfig) {
   , ((mod1Mask .|. shiftMask, xK_Tab), prevScreen)
   , ((mod1Mask .|. shiftMask, xK_c), kill)
   , ((0, xK_Insert), pasteSelection)
-  , ((mod1Mask, xK_p), spawn "dmenu_run -l 10 -fn 'Ricty:size=16'")
+  , ((mod1Mask, xK_p), spawn "dmenu_run -l 10 -fn 'HackGen:size=14'")
   ]
 
 myStartupHook = do
@@ -67,7 +67,6 @@ myManageHook = composeAll
   , className =? "Genymotion Player" --> doShift "Hidden"
   ]
 
-myEventHook = ewmhDesktopsEventHook <+> fullscreenEventHook
 
 myLayoutHook =  tiled ||| Full
   where
@@ -91,7 +90,7 @@ visibleNonEmptyWs = do ne <- isNonEmptyWs
 
 
 nonEmptyWsBy :: Int -> X (WorkspaceId)
-nonEmptyWsBy = findWorkspace getSortByIndex Next NonEmptyWS
+nonEmptyWsBy = findWorkspace getSortByIndex Next (Not emptyWS)
 
 switchNonEmptyWorkspace :: Int ->  X ()
 switchNonEmptyWorkspace d = do
