@@ -229,7 +229,7 @@
 (add-to-list 'load-path (expand-file-name (concat user-emacs-directory
                                                   "el-get/lsp-mode/clients")))
 (el-get-bundle all-the-icons)
-(el-get-bundle emacs-lsp/lsp-ui :checkout "b625f3cb5e88559ab99bec58f7a14272edb296bc")
+(el-get-bundle emacs-lsp/lsp-ui :checkout "9a8983d95d823ae62e5f842a4bd433c860131398")
 
 (use-package lsp-mode
   :commands (lsp)

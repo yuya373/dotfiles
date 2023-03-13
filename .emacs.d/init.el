@@ -122,7 +122,7 @@
 ;; [Emacs のフォント設定について - Qiita](https://qiita.com/melito/items/238bdf72237290bc6e42)
 (let* ((size 14)
        (height (* 10 size))
-       (spec (list :family "HackGen"
+       (spec (list :family "HackGen Console"
                    :height height)))
 
   (apply #'set-face-attribute 'default nil spec)
@@ -136,3 +136,10 @@
  '(perspeen-tab--header-line-active ((t (:inherit mode-line :background "#eee8d5" :foreground "#657b83" :weight bold))))
  '(perspeen-tab--powerline-inactive1 ((t (:inherit mode-line)))))
 (put 'list-timers 'disabled nil)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(wgrep-ag vertico tree-sitter-langs term-run rufo queue ox-gfm orderless oauth2 nlinum marginalia lv logview log4j-mode git-commit font-lock-studio eshell-prompt-extras embark-consult electric-operator easy-hugo csv-mode coverlay consult-projectile consult-lsp consult-flycheck consult-dir company-terraform codic auto-save-buffers-enhanced all-the-icons-completion)))
