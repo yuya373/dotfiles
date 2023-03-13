@@ -125,3 +125,7 @@ fi
 
 # Fix zsh: command not found: tmuximum
 unalias t
+
+if (which anyenv > /dev/null) ;then
+   eval "$(anyenv init -)"
+fi

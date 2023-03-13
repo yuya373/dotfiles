@@ -1,6 +1,7 @@
 adobe-base-14-fonts
 alacritty
 alsa-utils
+anyenv
 arandr
 aspell-en
 autoconf
