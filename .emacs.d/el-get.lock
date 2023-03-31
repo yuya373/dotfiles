@@ -1,5 +1,7 @@
 (setq el-get-lock-package-versions
-      '((lsp-ui :checksum "9a8983d95d823ae62e5f842a4bd433c860131398")
+      '((editorconfig :checksum "cd5799a6b728cfb9995605cdceffb5bf7c97622d")
+        (copilot :checksum "e11847ab0c3b183a1e53fbc1ac587de82912b9cf")
+        (lsp-ui :checksum "9a8983d95d823ae62e5f842a4bd433c860131398")
         (origami :checksum "e558710a975e8511b9386edc81cd6bdd0a5bda74")
         (tsi :checksum "eb26ee20437576eefc62a61616bfdc5bda25caae")
         (tsx-mode :checksum "7a585ea372bd399316d935a92f8df293a2f660bc")
@@ -9,9 +11,7 @@
         (xterm-color :checksum "1a4012854c69a5cdaeb5a73d2ad705011892fca3")
         (el-get :checksum "9353309744e4f8a7c9b1adf22ec99536fb2146b0")
         (magit :checksum "b926ab0e051e497e8ed43754cfd2012d23dbfc4c")
-        (alert-toast :checksum "ba931529a266537783cfec2a28c2b8c058364ff2")
-        (alert :checksum "7046393272686c7a1a9b3e7f7b1d825d2e5250a6")
-        \.\.\.))
+        ...))
 (setq el-get-lock-locked-packages 'nil)
 (setq el-get-lock-unlocked-packages
       '(slack cmake-mode))

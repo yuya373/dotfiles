@@ -33,6 +33,27 @@
 (el-get-bundle company-emoji)
 (el-get-bundle company-statistics)
 (el-get-bundle company-quickhelp)
+(el-get-bundle dash)
+(el-get-bundle s)
+(el-get-bundle editorconfig)
+(el-get-bundle copilot
+  :type github
+  :pkgname "zerolfx/copilot.el"
+  :branch "main"
+  )
+
+(use-package copilot
+  :init
+  (add-hook 'prog-mode-hook 'copilot-mode)
+  :config
+  ;; (defun my/copilot-tab ()
+  ;;   (interactive)
+  ;;   (or (copilot-accept-completion-by-word)
+  ;;       (indent-for-tab-command)))
+  (evil-define-key 'insert copilot-mode-map
+    (kbd "C-<tab>") #'copilot-accept-completion
+    ))
+
 
 (use-package yasnippet-snippets
   :after (yasnippet))
