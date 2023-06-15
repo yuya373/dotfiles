@@ -64,8 +64,5 @@ ln -sf ~/dotfiles/.cargo/config ~/.cargo/config
 # rubocop
 ln -sf ~/dotfiles/.rubocop.yml  ~/.rubocop.yml
 
-# npm
-ln -sf ~/dotfiles/.npmrc ~/.npmrc
-
 echo "Finished"
 

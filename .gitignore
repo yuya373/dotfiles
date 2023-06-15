@@ -10,3 +10,4 @@
 
 .vagrant/
 /vagrant/archlinux/mutagen.yml.lock
+/.npmrc

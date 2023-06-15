@@ -116,9 +116,6 @@ ln -sf ~/dotfiles/.cargo/config ~/.cargo/config
 # rubocop
 ln -sf ~/dotfiles/.rubocop.yml  ~/.rubocop.yml
 
-# npm
-ln -sf ~/dotfiles/.npmrc ~/.npmrc
-
 # sbt
 if [[ ! -d ~/.sbt/0.13/plugins ]]; then
     mkdir -p ~/.sbt/0.13/plugins/
