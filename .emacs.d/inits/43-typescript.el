@@ -35,6 +35,7 @@
 (el-get-bundle coverlay)
 (el-get-bundle gregsexton/origami.el :name origami)
 (el-get-bundle orzechowskid/tsx-mode.el :name tsx-mode)
+(el-get-bundle graphql-mode)
 
 
 (use-package typescript-mode
@@ -45,7 +46,12 @@
 (use-package tsx-mode
   :mode (("\\.tsx\\'" . tsx-mode))
   :init
-  (setq tsx-mode-tsx-auto-tags t))
+  (setq tsx-mode-tsx-auto-tags t)
+  :config
+  (defun around-tsx-mode--css-update-regions (func &rest args)
+    (ignore-errors
+      (apply func args)))
+  (advice-add 'tsx-mode--css-update-regions :around 'around-tsx-mode--css-update-regions))
 
 (use-package tree-sitter
   :config

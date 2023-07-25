@@ -120,7 +120,9 @@
 ;; Font
 ;; [エディタで等幅日本語フォントを最適に表示させるには、フォントサイズを2か3か5の倍数にするといいよ！ - Qiita](https://qiita.com/suin/items/559d02ea32bd4a6ef08b)
 ;; [Emacs のフォント設定について - Qiita](https://qiita.com/melito/items/238bdf72237290bc6e42)
-(let* ((size 14)
+(let* ((size (if (file-exists-p "/mnt/c/Windows/System32/cmd.exe") ;; WSL
+                 20
+               14))
        (height (* 10 size))
        (spec (list :family "HackGen Console"
                    :height height)))
