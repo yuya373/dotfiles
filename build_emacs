@@ -13,6 +13,12 @@ configure_opts="\
 --with-xml2 \
 --with-xft \
 --with-zlib \
+--with-json \
+--with-native-compilation \
+--with-pgtk \
+--with-webp \
+--with-sqlite3 \
+--without-threads \
 --prefix=$HOME/local \
 "
 
@@ -98,15 +104,19 @@ if [[ $# -ge 1 ]]; then
     if [[ $1 = "28" ]]; then
         branch="emacs-28"
     fi
+    if [[ $1 = "29.1" ]]; then
+      branch="emacs-29.1"
+    fi
 
     print_with_current_step "Update master $branch"
     git fetch -a
-    git checkout -B $branch origin/$branch
+    # git checkout -B $branch origin/$branch
+    git checkout $branch
 fi
 
 
-print_with_current_step "Executing 'make distclean'"
-make distclean
+print_with_current_step "Executing 'make mostlyclean'"
+make mostlyclean
 
 print_with_current_step "Executing './autogen.sh'"
 ./autogen.sh
