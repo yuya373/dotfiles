@@ -42,17 +42,17 @@
   :branch "main"
   )
 
-(use-package copilot
-  :init
-  (add-hook 'prog-mode-hook 'copilot-mode)
-  :config
-  ;; (defun my/copilot-tab ()
-  ;;   (interactive)
-  ;;   (or (copilot-accept-completion-by-word)
-  ;;       (indent-for-tab-command)))
-  (evil-define-key 'insert copilot-mode-map
-    (kbd "C-<tab>") #'copilot-accept-completion
-    ))
+;; (use-package copilot
+;;   :init
+;;   (add-hook 'prog-mode-hook 'copilot-mode)
+;;   :config
+;;   ;; (defun my/copilot-tab ()
+;;   ;;   (interactive)
+;;   ;;   (or (copilot-accept-completion-by-word)
+;;   ;;       (indent-for-tab-command)))
+;;   (evil-define-key 'insert copilot-mode-map
+;;     (kbd "C-<tab>") #'copilot-accept-completion
+;;     ))
 
 
 (use-package yasnippet-snippets
@@ -309,6 +309,8 @@
         lsp-rust-analyzer-server-display-inlay-hints t
         lsp-rust-analyzer-display-chaining-hints t
         lsp-rust-analyzer-display-parameter-hints t
+        lsp-rust-analyzer-proc-macro-enable t
+        lsp-rust-analyzer-experimental-proc-attr-macros t
         standard-indent 2
         )
   (defun my-lsp-inhibit-hooks ()
@@ -349,6 +351,13 @@
     "gi" 'lsp-find-implementation
     "gR" 'lsp-workspace-restart
     )
+  ;; https://github.com/emacs-lsp/lsp-mode/issues/2681#issuecomment-1500173268
+  (advice-add 'json-parse-buffer :around
+              (lambda (orig &rest rest)
+                (save-excursion
+                  (while (re-search-forward "\\\\u0000" nil t)
+                    (replace-match "")))
+                (apply orig rest)))
   )
 
 (use-package lsp-ui
@@ -402,27 +411,20 @@
     ",i" 'lsp-ui-imenu
     ",le" 'lsp-ui-flycheck-list
     )
-
   (defun lsp-ui-peek--goto-xref-vertical-window ()
     (interactive)
-    (let ((display-buffer-function
-           #'(lambda (buffer &rest _args)
-               (let ((win (split-window (selected-window)
-                                        nil
-                                        'right)))
-                 (set-window-buffer win buffer)
-                 (select-window win)))))
+    (let ((display-buffer-alist
+           '((t
+              (display-buffer-in-side-window)
+              (side . right)))))
       (lsp-ui-peek--goto-xref-other-window))
     (balance-windows))
   (defun lsp-ui-peek--goto-xref-horizontal-window ()
     (interactive)
-    (let ((display-buffer-function
-           #'(lambda (buffer &rest _args)
-               (let ((win (split-window (selected-window)
-                                        nil
-                                        'above)))
-                 (set-window-buffer win buffer)
-                 (select-window win)))))
+    (let ((display-buffer-alist
+           '((t
+              (display-buffer-in-side-window)
+              (side . top)))))
       (lsp-ui-peek--goto-xref-other-window))
     (balance-windows))
   (defun lsp-ui-peek--goto-xref-tab-window ()

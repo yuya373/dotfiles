@@ -126,6 +126,7 @@
     (kbd "C-n") 'nov-next-document
     (kbd "C-p") 'nov-previous-document)
   (evil-collection-define-key 'normal 'magit-status-mode-map
+    (kbd "y") 'magit-copy-buffer-revision
     (kbd "q") 'magit-mode-bury-buffer
     (kbd "t") nil
     (kbd "T") 'magit-tag)
@@ -167,17 +168,17 @@
   :commands (evil-numbers/inc-at-pt evil-numbers/dec-at-pt)
   :init
   (define-key evil-normal-state-map
-              (kbd "+") 'evil-numbers/inc-at-pt)
+    (kbd "+") 'evil-numbers/inc-at-pt)
   (define-key evil-normal-state-map
-              (kbd "-") 'evil-numbers/dec-at-pt))
+    (kbd "-") 'evil-numbers/dec-at-pt))
 (use-package evil-nerd-commenter
   :after (evil)
   :commands (evilnc-comment-or-uncomment-lines)
   :init
   (define-key evil-normal-state-map
-              (kbd ",,") 'evilnc-comment-or-uncomment-lines)
+    (kbd ",,") 'evilnc-comment-or-uncomment-lines)
   (define-key evil-visual-state-map
-              (kbd ",,") 'evilnc-comment-or-uncomment-lines))
+    (kbd ",,") 'evilnc-comment-or-uncomment-lines))
 (use-package evil-args
   :after (evil)
   :config
@@ -392,8 +393,15 @@
         evil-want-integration t
         evil-overriding-maps nil)
   :config
-  (global-undo-tree-mode -1)
-  (remove-hook 'evil-local-mode-hook #'evil-turn-on-undo-tree-mode)
+  (use-package undo-tree
+    :init
+    (setq undo-tree-visualizer-diff t)
+    (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
+    (setq undo-tree-visualizer-timestamps t)
+    )
+
+  (global-undo-tree-mode t)
+  (evil-set-undo-system 'undo-tree)
   (evil-define-command evil-scroll-down (count)
     "Scrolls the window and the cursor COUNT lines downwards.
 If COUNT is not specified the function scrolls down
@@ -610,23 +618,23 @@ If the scroll count is zero the command scrolls half the screen."
   (interactive)
   (cl-labels
       ((kill (buf)
-         (let ((buf-name (buffer-name buf)))
-           (when buf-name
-             (let* ((window-buffers (mapcar #'window-buffer (window-list)))
-                    (window-buffer-names (mapcar #'buffer-name window-buffers))
-                    (tab-buffers (mapcar #'(lambda (tab) (get tab 'current-buffer))
-                                         (perspeen-tab-get-tabs)))
-                    (tab-buffer-names (mapcar #'buffer-name tab-buffers))
-                    (first-char (substring-no-properties buf-name 0 1)))
-               (unless (or (string= " " first-char)
-                           (string= "*" first-char)
-                           (string= buf-name
-                                    (buffer-name (current-buffer)))
-                           (cl-find-if #'(lambda (bn) (string= bn buf-name))
-                                       tab-buffer-names)
-                           (cl-find-if #'(lambda (bn) (string= bn buf-name))
-                                       window-buffer-names))
-                 (kill-buffer buf)))))))
+             (let ((buf-name (buffer-name buf)))
+               (when buf-name
+                 (let* ((window-buffers (mapcar #'window-buffer (window-list)))
+                        (window-buffer-names (mapcar #'buffer-name window-buffers))
+                        (tab-buffers (mapcar #'(lambda (tab) (get tab 'current-buffer))
+                                             (perspeen-tab-get-tabs)))
+                        (tab-buffer-names (mapcar #'buffer-name tab-buffers))
+                        (first-char (substring-no-properties buf-name 0 1)))
+                   (unless (or (string= " " first-char)
+                               (string= "*" first-char)
+                               (string= buf-name
+                                        (buffer-name (current-buffer)))
+                               (cl-find-if #'(lambda (bn) (string= bn buf-name))
+                                           tab-buffer-names)
+                               (cl-find-if #'(lambda (bn) (string= bn buf-name))
+                                           window-buffer-names))
+                     (kill-buffer buf)))))))
     (let ((debug-on-error t)
           (buf-list (if perspeen-mode
                         (perspeen-ws-struct-buffers perspeen-current-ws)
@@ -665,7 +673,7 @@ If the scroll count is zero the command scrolls half the screen."
   (interactive)
   (browse-url (format "%s/commit/%s"
                       (github-url)
-                      (read-from-minibuffer "Commit: "))))
+                      (read-from-minibuffer "Commit: " (car kill-ring)))))
 
 (use-package evil-leader
   :commands (global-evil-leader-mode)

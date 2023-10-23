@@ -29,6 +29,7 @@
   )
 ;; (add-hook 'post-gc-hook #'notify-gc-finished)
 
+(setq native-comp-async-report-warnings-errors 'silent)
 
 
 (when load-file-name
