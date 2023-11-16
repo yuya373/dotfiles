@@ -35,6 +35,7 @@
 (el-get-bundle coverlay)
 (el-get-bundle gregsexton/origami.el :name origami)
 (el-get-bundle orzechowskid/tsx-mode.el :name tsx-mode)
+(el-get-bundle orzechowskid/tree-sitter-css-in-js :name css-in-js-mode)
 (el-get-bundle graphql-mode)
 
 

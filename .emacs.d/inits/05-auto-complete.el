@@ -352,12 +352,12 @@
     "gR" 'lsp-workspace-restart
     )
   ;; https://github.com/emacs-lsp/lsp-mode/issues/2681#issuecomment-1500173268
-  (advice-add 'json-parse-buffer :around
-              (lambda (orig &rest rest)
-                (save-excursion
-                  (while (re-search-forward "\\\\u0000" nil t)
-                    (replace-match "")))
-                (apply orig rest)))
+  ;; (advice-add 'json-parse-buffer :around
+  ;;             (lambda (orig &rest rest)
+  ;;               (save-excursion
+  ;;                 (while (re-search-forward "\\\\u0000" nil t)
+  ;;                   (replace-match "")))
+  ;;               (apply orig rest)))
   )
 
 (use-package lsp-ui
@@ -413,39 +413,32 @@
     )
   (defun lsp-ui-peek--goto-xref-vertical-window ()
     (interactive)
-    (let ((display-buffer-alist
-           '((t
-              (display-buffer-in-side-window)
-              (side . right)))))
-      (lsp-ui-peek--goto-xref-other-window))
-    (balance-windows))
+    (let ((evil-vsplit-window-right t))
+      (evil-window-vsplit)
+      (lsp-ui-peek--goto-xref)))
   (defun lsp-ui-peek--goto-xref-horizontal-window ()
     (interactive)
-    (let ((display-buffer-alist
-           '((t
-              (display-buffer-in-side-window)
-              (side . top)))))
-      (lsp-ui-peek--goto-xref-other-window))
-    (balance-windows))
+    (let ((evil-split-window-below nil))
+      (evil-window-split)
+      (lsp-ui-peek--goto-xref)))
   (defun lsp-ui-peek--goto-xref-tab-window ()
     (interactive)
-    (let ((display-buffer-function
-           #'(lambda (buffer &rest _args)
-               (let* ((marker (with-current-buffer buffer
-                                (point-marker))))
-                 (perspeen-tab-create-tab buffer marker)
-                 (selected-window)))))
+    (let ((display-buffer-alist
+           '((t (lambda (buffer alist)
+                  (let ((marker (with-current-buffer buffer (point-marker))))
+                    (perspeen-tab-create-tab buffer marker)
+                    (selected-window)))))))
       (lsp-ui-peek--goto-xref-other-window)))
 
   (define-key lsp-ui-peek-mode-map
-    (kbd ",v") 'lsp-ui-peek--goto-xref-vertical-window
-    )
+              (kbd ",v") 'lsp-ui-peek--goto-xref-vertical-window
+              )
   (define-key lsp-ui-peek-mode-map
-    (kbd ",s") 'lsp-ui-peek--goto-xref-horizontal-window
-    )
+              (kbd ",s") 'lsp-ui-peek--goto-xref-horizontal-window
+              )
   (define-key lsp-ui-peek-mode-map
-    (kbd ",t") 'lsp-ui-peek--goto-xref-tab-window
-    )
+              (kbd ",t") 'lsp-ui-peek--goto-xref-tab-window
+              )
   (evil-collection-define-key 'normal 'lsp-ui-peek-mode-map
     (kbd "TAB") 'lsp-ui-peek--toggle-file
     (kbd "RET") 'lsp-ui-peek--goto-xref

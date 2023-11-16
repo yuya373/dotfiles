@@ -345,8 +345,8 @@
   (define-key embark-buffer-map
     (kbd "C-o") 'embark-switch-to-buffer-other-window)
 
-  (embark-define-keymap embark-consult-grep-map
-    "Keymap for consult-grep actions."
+  (defvar-keymap embark-consult-grep-map
+    :doc "Keymap for consult-grep actions."
     :parent embark-general-map)
 
   (add-to-list 'embark-keymap-alist '(consult-grep embark-consult-grep-map))

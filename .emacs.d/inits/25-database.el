@@ -27,7 +27,6 @@
 (eval-when-compile
   (require 'evil))
 
-(el-get-bundle sql)
 (el-get-bundle emacswiki:sql-indent)
 (el-get-bundle emacswiki:sql-complete)
 (el-get-bundle emacswiki:sql-transform)

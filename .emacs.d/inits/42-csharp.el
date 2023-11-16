@@ -23,7 +23,8 @@
 ;;
 
 ;;; Code:
-(el-get-bundle csharp-mode)
+(if (< emacs-major-version 29)
+    (el-get-bundle csharp-mode))
 
 (use-package csharp-mode
   :init
