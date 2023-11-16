@@ -15,10 +15,7 @@ configure_opts="\
 --with-zlib \
 --with-json \
 --with-native-compilation \
---with-pgtk \
---with-webp \
---with-sqlite3 \
---without-threads \
+--with-threads \
 --prefix=$HOME/local \
 "
 
@@ -106,6 +103,11 @@ if [[ $# -ge 1 ]]; then
     fi
     if [[ $1 = "29.1" ]]; then
       branch="emacs-29.1"
+      configure_opts="$configure_opts \
+--with-tree-sitter \
+--with-pgtk \
+--with-webp \
+--with-sqlite3"
     fi
 
     print_with_current_step "Update master $branch"
