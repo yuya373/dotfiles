@@ -101,8 +101,8 @@ if [[ $# -ge 1 ]]; then
     if [[ $1 = "28" ]]; then
         branch="emacs-28"
     fi
-    if [[ $1 = "29.1" ]]; then
-      branch="emacs-29.1"
+    if [[ $1 = "29" ]]; then
+      branch="emacs-29.2"
       configure_opts="$configure_opts \
 --with-tree-sitter \
 --with-pgtk \
