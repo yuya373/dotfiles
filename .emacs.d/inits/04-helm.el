@@ -73,6 +73,13 @@
         completion-category-defaults nil
         completion-category-overrides '((file (styles partial-completion)))))
 
+(use-package ffap
+  :config
+  (defun my-ffap-guesser-current-file (func &rest args)
+    (let ((guess (apply func args)))
+      (or guess (buffer-file-name))))
+  (advice-add 'ffap-guesser :around 'my-ffap-guesser-current-file))
+
 (use-package vertico
   :init
   (vertico-mode)

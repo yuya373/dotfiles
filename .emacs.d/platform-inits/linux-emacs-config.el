@@ -26,8 +26,6 @@
 (setq ring-bell-function 'ignore)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
-(setq x-select-enable-clipboard t)
-(setq x-select-enable-primary t)
 
 ;; (el-get-bundle xclip)
 ;; (use-package xclip
@@ -43,24 +41,6 @@
     (setq browse-url-generic-program  cmd-exe
           browse-url-generic-args     cmd-args
           browse-url-browser-function 'browse-url-generic)))
-
-;; [[Home] Copy And Paste](https://www.emacswiki.org/emacs/CopyAndPaste)
-;; credit: yorickvP on Github
-(when (string-match-p "--with-pgtk" system-configuration-options)
-  (setq wl-copy-process nil)
-  (defun wl-copy (text)
-    (setq wl-copy-process (make-process :name "wl-copy"
-                                        :buffer nil
-                                        :command '("wl-copy" "-f" "-n")
-                                        :connection-type 'pipe))
-    (process-send-string wl-copy-process text)
-    (process-send-eof wl-copy-process))
-  (defun wl-paste ()
-    (if (and wl-copy-process (process-live-p wl-copy-process))
-        nil ; should return nil if we're the current paste owner
-      (shell-command-to-string "wl-paste -n | tr -d \r")))
-  (setq interprogram-cut-function 'wl-copy)
-  (setq interprogram-paste-function 'wl-paste))
 
 (el-get-bundle migemo)
 (use-package migemo

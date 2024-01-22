@@ -256,7 +256,8 @@
   :commands (lsp)
   :diminish lsp-mode
   :init
-  (add-hook 'typescript-mode-hook 'lsp)
+  (add-hook 'typescript-ts-mode-hook 'lsp)
+  (add-hook 'tsx-ts-mode-hook 'lsp)
   (add-hook 'rjsx-mode-hook 'lsp)
   (add-hook 'web-mode-hook 'lsp)
   (add-hook 'enh-ruby-mode-hook 'lsp)

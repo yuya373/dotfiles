@@ -28,34 +28,19 @@
   (require 'el-get)
   (require 'use-package))
 
-(el-get-bundle typescript-mode)
 (el-get-bundle tree-sitter-langs)
 (el-get-bundle tree-sitter)
-(el-get-bundle orzechowskid/tsi.el :name tsi)
-(el-get-bundle coverlay)
-(el-get-bundle gregsexton/origami.el :name origami)
-(el-get-bundle orzechowskid/tsx-mode.el :name tsx-mode)
-(el-get-bundle orzechowskid/tree-sitter-css-in-js :name css-in-js-mode)
-(el-get-bundle graphql-mode)
 
 
-(use-package typescript-mode
-  :mode (("\\.ts\\'" . typescript-mode))
-  :init
-  (setq typescript-indent-level 2))
-
-(use-package tsx-mode
-  :mode (("\\.tsx\\'" . tsx-mode))
-  :init
-  (setq tsx-mode-tsx-auto-tags t)
-  :config
-  (defun around-tsx-mode--css-update-regions (func &rest args)
-    (ignore-errors
-      (apply func args)))
-  (advice-add 'tsx-mode--css-update-regions :around 'around-tsx-mode--css-update-regions))
+(use-package typescript-ts-mode
+  :mode (("\\.ts\\'" . typescript-ts-mode)
+         ("\\.tsx\\'" . tsx-ts-mode)))
 
 (use-package tree-sitter
   :config
+  (global-tree-sitter-mode)
+  (tree-sitter-require 'tsx)
+  (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))
   (defun around-tree-sitter--do-parse (func &rest args)
     (ignore-errors
       (apply func args)))

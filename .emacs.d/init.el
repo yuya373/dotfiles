@@ -118,6 +118,27 @@
 (init-loader-load (expand-file-name "~/.emacs.d/platform-inits"))
 (init-loader-load)
 
+;; [[Home] Copy And Paste](https://www.emacswiki.org/emacs/CopyAndPaste)
+;; credit: yorickvP on Github
+(if (string-match-p "--with-pgtk" system-configuration-options)
+    (progn
+      (setq wl-copy-process nil)
+      (defun wl-copy (text)
+        (setq wl-copy-process (make-process :name "wl-copy"
+                                            :buffer nil
+                                            :command '("wl-copy" "-f" "-n")
+                                            :connection-type 'pipe))
+        (process-send-string wl-copy-process text)
+        (process-send-eof wl-copy-process))
+      (defun wl-paste ()
+        (if (and wl-copy-process (process-live-p wl-copy-process))
+            nil ; should return nil if we're the current paste owner
+          (shell-command-to-string "wl-paste -n | tr -d \r")))
+      (setq interprogram-cut-function 'wl-copy)
+      (setq interprogram-paste-function 'wl-paste))
+  (setq x-select-enable-clipboard t)
+  (setq x-select-enable-primary t))
+
 ;; Font
 ;; [エディタで等幅日本語フォントを最適に表示させるには、フォントサイズを2か3か5の倍数にするといいよ！ - Qiita](https://qiita.com/suin/items/559d02ea32bd4a6ef08b)
 ;; [Emacs のフォント設定について - Qiita](https://qiita.com/melito/items/238bdf72237290bc6e42)
