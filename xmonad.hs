@@ -26,7 +26,7 @@ printer = xmobarPP {
   , ppOrder = \(ws:_) -> [ws]
   }
 toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
-myWorkspaces = ["Emacs", "Terminal", "WebBrowser", "Hidden"]
+myWorkspaces = ["Emacs", "Terminal", "WebBrowser", "Messages", "Hidden"]
 
 myConfig = (ewmh . ewmhFullscreen $ def) {
   terminal = "urxvt"
@@ -65,6 +65,7 @@ myManageHook = composeAll
   , className =? "Wine" --> doShift "Hidden"
   , className =? "Genymotion" --> doShift "Hidden"
   , className =? "Genymotion Player" --> doShift "Hidden"
+  , className =? "Slack" --> doShift "Messages"
   ]
 
 
