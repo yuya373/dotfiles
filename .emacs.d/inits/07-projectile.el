@@ -123,11 +123,9 @@ Error matching regexes from compile.el are removed.")
 
                                             (setq buffer-read-only t)))))))))
 
-      (evil-define-key 'normal typescript-mode-map
+      (evil-define-key 'normal typescript-ts-mode-map
         (kbd ",s") 'consult-typescript-scripts)
-      (evil-define-key 'normal typescript-mode-map
-        (kbd ",s") 'consult-typescript-scripts)
-      (evil-define-key 'normal tsx-mode-map
+      (evil-define-key 'normal tsx-ts-mode-map
         (kbd ",s") 'consult-typescript-scripts)
       )))
 

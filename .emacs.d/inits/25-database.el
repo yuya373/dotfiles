@@ -30,6 +30,7 @@
 (el-get-bundle emacswiki:sql-indent)
 (el-get-bundle emacswiki:sql-complete)
 (el-get-bundle emacswiki:sql-transform)
+(el-get-bundle sqlformat)
 
 (use-package sql
   :commands (sql-postgres sql-mysql)
@@ -104,6 +105,13 @@
     ",sb" 'sql-set-sqli-buffer)
   (evil-define-key 'visual sql-mode-map
     ",er" 'sql-send-region))
+
+(use-package sqlformat
+  :init
+  (setq sqlformat-command 'sql-formatter)
+  (setq sqlformat-args '("-l" "postgresql"))
+  (add-hook 'sql-mode-hook 'sqlformat-on-save-mode)
+  )
 
 (provide '25-database)
 ;;; 25-database.el ends here
