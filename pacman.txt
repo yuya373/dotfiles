@@ -60,14 +60,12 @@ tig
 tmux
 tree-sitter
 ttf-hackgen
-ttf-ricty
 unzip
 vi
 vim
 wget
 which
 wine
-wl-clipboard
 xclip
 xorg-bdftopcf
 xorg-docs
