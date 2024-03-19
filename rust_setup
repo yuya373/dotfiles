@@ -11,6 +11,7 @@ $HOME/.cargo/bin/rustup install nightly
 $HOME/.cargo/bin/rustup component add \
                         rustfmt \
                         rust-src \
-                        clippy
+                        clippy \
+                        rust-analyzer
 
-$HOME/dotfiles/install_rust_analyzer
+# $HOME/dotfiles/install_rust_analyzer
