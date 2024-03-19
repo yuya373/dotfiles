@@ -246,11 +246,11 @@
   :pkgname "pitkali/pos-tip"
   :name pos-tip)
 
-(el-get-bundle emacs-lsp/lsp-mode :checkout "5e0524cc9a4e21c4fe5b35153ad33e7b8a4f9117")
+(el-get-bundle emacs-lsp/lsp-mode)
 (add-to-list 'load-path (expand-file-name (concat user-emacs-directory
                                                   "el-get/lsp-mode/clients")))
 (el-get-bundle all-the-icons)
-(el-get-bundle emacs-lsp/lsp-ui :checkout "9a8983d95d823ae62e5f842a4bd433c860131398")
+(el-get-bundle emacs-lsp/lsp-ui)
 
 (use-package lsp-mode
   :commands (lsp)

@@ -44,8 +44,16 @@
   (defun around-tree-sitter--do-parse (func &rest args)
     (ignore-errors
       (apply func args)))
-  (advice-add 'tree-sitter--do-parse :around 'around-tree-sitter--do-parse))
+  (advice-add 'tree-sitter--do-parse :around 'around-tree-sitter--do-parse)
+  (setq treesit-language-source-alist
+        '((tsx        "https://github.com/tree-sitter/tree-sitter-typescript"
+                      "v0.20.3"
+                      "tsx/src")
+          (typescript "https://github.com/tree-sitter/tree-sitter-typescript"
+                      "v0.20.3"
+                      "typescript/src")))
 
+  )
 
 (provide '43-typescript)
 ;;; 43-typescript.el ends here

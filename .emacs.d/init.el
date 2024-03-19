@@ -166,4 +166,4 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(sqlformat wgrep-ag vertico tree-sitter-langs term-run rufo queue ox-gfm orderless oauth2 nlinum marginalia lv logview log4j-mode git-commit font-lock-studio eshell-prompt-extras embark-consult electric-operator easy-hugo csv-mode coverlay consult-projectile consult-lsp consult-flycheck consult-dir company-terraform codic auto-save-buffers-enhanced all-the-icons-completion)))
+   '(treesit-auto sqlformat wgrep-ag vertico tree-sitter-langs term-run rufo queue ox-gfm orderless oauth2 nlinum marginalia lv logview log4j-mode git-commit font-lock-studio eshell-prompt-extras embark-consult electric-operator easy-hugo csv-mode coverlay consult-projectile consult-lsp consult-flycheck consult-dir company-terraform codic auto-save-buffers-enhanced all-the-icons-completion)))
