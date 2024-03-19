@@ -77,3 +77,4 @@ if [ -e ${HOME}/.my_zshenv ]; then
 fi
 
 source ~/dotfiles/.zenv
+. "$HOME/.cargo/env"

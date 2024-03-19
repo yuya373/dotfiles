@@ -1,18 +1,28 @@
 # -*- mode: sh -*-
 SPACESHIP_PROMPT_ORDER=(
-  time          # Time stampts section
-  user          # Username section
-  dir           # Current directory section
-  host          # Hostname section
-  git           # Git section (git_branch + git_status)
-  hg            # Mercurial section (hg_branch  + hg_status)
-  exec_time     # Execution time
-  # battery       # Battery level and status
-  exit_code     # Exit code section
-  line_sep      # Line break
+  time           # Time stamps section
+  user           # Username section
+  dir            # Current directory section
+  host           # Hostname section
+  git            # Git section (git_branch + git_status)
+  package        # Package version
+  node           # Node.js section
+  bun            # Bun section
+  deno           # Deno section
+  ruby           # Ruby section
+  rust           # Rust section
+  docker         # Docker section
+  docker_compose # Docker section
+  terraform      # Terraform workspace section
+  exec_time      # Execution time
+  async          # Async jobs indicator
+  line_sep       # Line break
   vi_mode       # Vi-mode indicator
-  jobs          # Background jobs indicator
-  char          # Prompt character
+  # battery        # Battery level and status
+  jobs           # Background jobs indicator
+  exit_code      # Exit code section
+  sudo           # Sudo indicator
+  char           # Prompt character
 )
 SPACESHIP_CHAR_SYMBOL="❯ "
 SPACESHIP_DIR_TRUNC=0

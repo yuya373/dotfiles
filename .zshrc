@@ -19,9 +19,9 @@ zplug "seebi/dircolors-solarized"
 
 zplug "b4b4r07/enhancd", use:init.sh
 zplug "b4b4r07/zsh-vimode-visual"
+zplug "spaceship-prompt/spaceship-vi-mode"
 
-zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
-zplug "junegunn/fzf", as:command, use:bin/fzf-tmux
+zplug "junegunn/fzf", as:command, use:"bin/fzf-tmux"
 zplug "junegunn/fzf", use:"shell/*.zsh", as:plugin
 
 zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
@@ -63,7 +63,6 @@ source ~/dotfiles/tmux.zsh
 
 ZSH_AUTOSUGGEST_CLEAR_WIDGETS=(do_enter kill-line $ZSH_AUTOSUGGEST_CLEAR_WIDGETS)
 
-source ~/dotfiles/.zprompt
 source ~/dotfiles/.zshfunc
 source ~/dotfiles/.zsh_keybind
 source ~/dotfiles/.zsh_aliases
@@ -129,3 +128,5 @@ unalias t
 if (which anyenv > /dev/null) ;then
    eval "$(anyenv init -)"
 fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
