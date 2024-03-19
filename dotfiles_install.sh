@@ -84,7 +84,11 @@ if [[ ! -d ~/tmux-powerline ]]; then
 fi
 
 ln -sf ~/dotfiles/.tmux.conf ~/.tmux.conf
-ln -sf ~/dotfiles/.tmux-powerlinerc.default ~/.tmux-powerlinerc
+if [[ ! -d ~/.config/tmux-powerline/themes ]]; then
+    mkdir -p ~/.config/tmux-powerline/themes
+fi
+ln -sf ~/dotfiles/.tmux-powerlinerc.default ~/.config/tmux-powerline/config.sh
+ln -sf ~/dotfiles/powerline/themes/mytheme.sh ~/.config/tmux-powerline/themes/mytheme.sh
 
 # lisp
 if [[ ! -d ~/.config/common-lisp ]]; then
