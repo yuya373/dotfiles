@@ -105,7 +105,6 @@ if [[ $# -ge 1 ]]; then
       branch="emacs-29.2"
       configure_opts="$configure_opts \
 --with-tree-sitter \
---with-pgtk \
 --with-webp \
 --with-sqlite3"
     fi
