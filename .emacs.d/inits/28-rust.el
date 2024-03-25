@@ -32,7 +32,7 @@
   (setq rustic-lsp-setup-p t
         rustic-lsp-format t
         rustic-lsp-server 'rust-analyzer
-        rustic-format-trigger nil
+        rustic-format-trigger 'on-compile
         )
   (setq rustic-default-test-arguments "--benches --tests --all-features -- --nocapture")
   (setq rustic-cargo-check-arguments "--benches --tests --all-features --workspace")
@@ -79,7 +79,7 @@
     ",cT" 'rustic-cargo-current-test
     ",cl" 'rustic-cargo-clippy
     ",co" 'rustic-cargo-outdated
-    ",f" 'rustic-format-buffer
+    ",f" 'rustic-cargo-fmt
     ))
 
 (el-get-bundle toml-mode)

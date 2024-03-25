@@ -27,7 +27,9 @@
 
 (el-get-bundle terraform-mode)
 (use-package terraform-mode
-  :mode (("\\.tf\\(vars\\)?\\'" . terraform-mode)))
+  :mode (("\\.tf\\(vars\\)?\\'" . terraform-mode))
+  :init
+  (setq terraform-format-on-save t))
 
 (el-get-bundle company-terraform)
 (use-package company-terraform
