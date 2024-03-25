@@ -39,7 +39,7 @@ rsync
 sqlfluff
 sudo
 systemd
-terraform
+tfenv
 the_silver_searcher
 tmux
 tree-sitter
@@ -49,6 +49,7 @@ vi
 vim
 wget
 wl-clipboard
+words
 yarn
 yay
 zsh
