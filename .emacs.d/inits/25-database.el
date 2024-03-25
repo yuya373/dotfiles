@@ -108,8 +108,8 @@
 
 (use-package sqlformat
   :init
-  (setq sqlformat-command 'sql-formatter)
-  (setq sqlformat-args '("-l" "postgresql"))
+  (setq sqlformat-command 'sqlfluff)
+  (setq sqlformat-args '("--dialect" "postgres"))
   (add-hook 'sql-mode-hook 'sqlformat-on-save-mode)
   )
 

@@ -134,6 +134,44 @@
     ",g" 'flycheck-error-list-check-source
     "RET" 'flycheck-error-list-goto-error
     )
+
+  (defun flycheck-parse-sqlfluff (output checker buffer)
+    (let ((errors nil))
+      (dolist (msg (car (flycheck-parse-json output)))
+        (let-alist msg
+          (dolist (violation .violations)
+            (let-alist violation
+              (push (flycheck-error-new-at
+                     .line_no
+                     .line_pos
+                     (if (or (string= .code "TMP")
+                             (string= .code "PRS"))
+                         'error
+                       'warning)
+                     .description
+                     :id .code
+                     :checker checker
+                     :buffer buffer
+                     :filename (buffer-file-name buffer))
+                    errors)))))
+      errors))
+  (defun sqlfluff-exists-p ()
+    (executable-find "sqlfluff"))
+  (flycheck-define-checker sql-sqlfluff
+    "A Javascript syntax and style checker using eslint.
+See URL `https://eslint.org/'."
+    :command (
+              "sqlfluff" "lint"
+              "--nofail"
+              "--disable-progress-bar"
+              "--dialect" "postgres"
+              "--format" "json"
+              source
+              )
+    :enabled sqlfluff-exists-p
+    :error-parser flycheck-parse-sqlfluff
+    :modes (sql-mode))
+  (add-to-list 'flycheck-checkers 'sql-sqlfluff)
   )
 
 (use-package flycheck-inline
