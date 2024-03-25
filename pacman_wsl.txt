@@ -2,12 +2,13 @@ arch-install-scripts
 aspell-en
 base
 base-devel
+cmigemo-git
 ctags
 direnv
 docker
 docker-compose
 expect
-fakeroot-tcp
+fakeroot
 fzf
 git
 github-cli
@@ -19,6 +20,8 @@ less
 libgccjit
 libxpm
 nano
+neovim
+nkf-git
 nodenv
 nodenv-node-build
 npm
@@ -33,6 +36,7 @@ python-pip
 python-pygments
 reflector
 rsync
+sqlfluff
 sudo
 systemd
 terraform
@@ -47,5 +51,4 @@ wget
 wl-clipboard
 yarn
 yay
-yay-debug
 zsh
