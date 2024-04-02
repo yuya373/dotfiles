@@ -110,7 +110,8 @@
   :init
   (setq sqlformat-command 'sqlfluff)
   (setq sqlformat-args '("--dialect" "postgres"))
-  (add-hook 'sql-mode-hook 'sqlformat-on-save-mode)
+  (evil-define-key 'normal sql-mode-map
+    ",f" 'sqlformat-buffer)
   )
 
 (provide '25-database)

@@ -42,17 +42,17 @@
   :branch "main"
   )
 
-;; (use-package copilot
-;;   :init
-;;   (add-hook 'prog-mode-hook 'copilot-mode)
-;;   :config
-;;   ;; (defun my/copilot-tab ()
-;;   ;;   (interactive)
-;;   ;;   (or (copilot-accept-completion-by-word)
-;;   ;;       (indent-for-tab-command)))
-;;   (evil-define-key 'insert copilot-mode-map
-;;     (kbd "C-<tab>") #'copilot-accept-completion
-;;     ))
+(use-package copilot
+  :init
+  (add-hook 'prog-mode-hook 'copilot-mode)
+  :config
+  ;; (defun my/copilot-tab ()
+  ;;   (interactive)
+  ;;   (or (copilot-accept-completion-by-word)
+  ;;       (indent-for-tab-command)))
+  (evil-define-key 'insert copilot-mode-map
+    (kbd "C-<tab>") #'copilot-accept-completion
+    ))
 
 
 (use-package yasnippet-snippets
@@ -370,7 +370,8 @@
 
   (setq lsp-ui-peek-always-show t)
 
-  (setq lsp-ui-doc-position 'top
+  (setq lsp-ui-doc-position 'at-point
+        lsp-ui-doc-show-with-cursor nil
         lsp-ui-doc-alignment 'frame
         lsp-ui-doc-header t
         lsp-ui-doc-include-signature t
@@ -411,6 +412,7 @@
     ",a" nil
     ",i" 'lsp-ui-imenu
     ",le" 'lsp-ui-flycheck-list
+    ",k" 'lsp-ui-doc-show
     )
   (defun lsp-ui-peek--goto-xref-vertical-window ()
     (interactive)

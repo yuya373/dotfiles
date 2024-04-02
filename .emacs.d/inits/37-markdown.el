@@ -34,6 +34,9 @@
          ("\\.md\\'" . gfm-mode)
          ("PULLREQ_MSG" . gfm-mode))
   :init
+  (setq markdown-header-scaling t)
+  (setq markdown-indent-on-enter 'indent-and-new-item)
+  (setq markdown-fontify-code-blocks-natively t)
   (setq markdown-list-indent-width 2)
   (setq markdown-command "marked --gfm --breaks --tables")
   (setq markdown-css-paths (list
@@ -41,11 +44,11 @@
                             "https://thomasf.github.io/solarized-css/solarized-light.min.css"
                             (expand-file-name "~/.emacs.d/el-get/github-markdown-css/github-markdown.css")
                             ))
-  (add-hook 'markdown-mode-hook 'outline-minor-mode)
   (defun my-gfm-mode-hook ()
     (whitespace-mode -1)
-    (set (make-local-variable 'tab-width) 2)
-    (visual-line-mode t))
+    ;; (set (make-local-variable 'tab-width) 2)
+    ;; (visual-line-mode t)
+    )
   (add-hook 'gfm-mode-hook #'my-gfm-mode-hook)
   (defun my-gfm-map ()
     (interactive)

@@ -27,10 +27,6 @@
 (require 'use-package)
 
 (el-get-bundle go-mode)
-(el-get-bundle go-eldoc)
-
-(use-package go-eldoc
-  :commands (go-eldoc-setup))
 
 (use-package go-mode
   :mode ((".go\\'" . go-mode))
@@ -48,7 +44,6 @@
 
     (whitespace-mode -1)
     (whitespace-mode 1)
-    (go-eldoc-setup)
     (add-hook 'before-save-hook 'gofmt-before-save t t)
     )
 
@@ -60,7 +55,9 @@
     (interactive)
     (let ((compile-command "go build -v && go test -v ./... && go vet ./...")
           (compile-command "go test -v ./... && go vet ./... && go build -v")
-          (default-directory (or (vc-root-dir)
+          (compile-command "go build -v")
+          (default-directory (or (locate-dominating-file (buffer-file-name) "go.mod")
+                                 (vc-root-dir)
                                  (vc-git-root (buffer-file-name)))))
       (compilation-start compile-command)))
   (defun go-run-file ()
