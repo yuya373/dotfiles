@@ -1,0 +1,11 @@
+#!/usr/bin/bash -eu
+
+if [[ -e ~/dotfiles/pacman_wsl.txt ]]; then
+    mv ~/dotfiles/pacman_wsl.txt ~/dotfiles/pacman_wsl.txt.bak
+fi
+
+pacman -Qqe > ~/dotfiles/pacman_wsl.txt
+
+if [[ -e ~/dotfiles/pacman_wsl.txt.bak ]]; then
+    rm  ~/dotfiles/pacman_wsl.txt.bak
+fi
