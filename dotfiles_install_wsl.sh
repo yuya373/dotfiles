@@ -61,6 +61,7 @@ if [[ ! -d ~/.cargo ]]; then
     mkdir -p ~/.cargo
 fi
 ln -sf ~/dotfiles/.cargo/config ~/.cargo/config
+ln -sf ~/dotfiles/.cargo/config ~/.cargo/config.toml
 
 # rubocop
 ln -sf ~/dotfiles/.rubocop.yml  ~/.rubocop.yml
