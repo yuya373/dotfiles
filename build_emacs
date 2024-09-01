@@ -102,7 +102,7 @@ if [[ $# -ge 1 ]]; then
         branch="emacs-28"
     fi
     if [[ $1 = "29" ]]; then
-      branch="emacs-29.3"
+      branch="emacs-29.4"
       configure_opts="$configure_opts \
 --with-tree-sitter \
 --with-webp \
