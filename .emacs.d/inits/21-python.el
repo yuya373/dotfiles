@@ -27,8 +27,8 @@
 (eval-when-compile
   (require 'evil))
 
-(el-get-bundle virtualenvwrapper)
 (use-package virtualenvwrapper
+  :ensure t
   :commands (venv-workon)
   :init
   (setq venv-location '("~/dev/BuildingMachineLearningSystemsWithPython"))
@@ -37,6 +37,7 @@
   (venv-initialize-interactive-shells))
 
 (use-package python-mode
+  :ensure t
   :mode (("\\.py\\'" . python-mode))
   :init
   (defun my-python-mode-hook ()
@@ -56,8 +57,8 @@
   (evil-define-key 'visual python-mode-map
     ",er" 'python-shell-send-region))
 
-(el-get-bundle elpy)
 (use-package elpy
+  :ensure t
   :commands (elpy-mode elpy-enable)
   :init
   (setq elpy-modules '(elpy-module-sane-defaults

@@ -26,39 +26,6 @@
 ;;
 
 ;;; Code:
-(eval-when-compile
-  (require 'use-package)
-  (require 'el-get))
-
-(el-get-bundle transient
-  :type github
-  :pkgname "magit/transient"
-  :branch "main"
-  :load-path "lisp/")
-(el-get-bundle goto-chg)
-(el-get-bundle undo-tree)
-(el-get-bundle emacs-evil/evil)
-(el-get-bundle evil-leader)
-(el-get-bundle anzu)
-(el-get-bundle evil-anzu)
-(el-get-bundle evil-args)
-(el-get-bundle evil-lisp-state)
-(el-get-bundle evil-matchit)
-(el-get-bundle evil-nerd-commenter)
-(el-get-bundle evil-numbers)
-(el-get-bundle highlight)
-(el-get-bundle evil-surround)
-(el-get-bundle evil-visualstar)
-(el-get-bundle expand-region)
-(el-get-bundle evil-indent-textobject)
-(el-get-bundle evil-exchange)
-(el-get-bundle avy)
-(el-get-bundle momomo5717/avy-migemo)
-(el-get-bundle ace-link)
-(el-get-bundle migemo)
-(el-get-bundle noctuid/annalist.el :name annalist)
-(el-get-bundle emacs-evil/evil-collection)
-
 (defun window-resizer ()
   "Control window size and position."
   (interactive)
@@ -95,10 +62,12 @@
                (throw 'end-flag t)))))))
 
 (use-package goto-chg
+  :ensure t
   :after (evil))
 
 (setq evil-want-keybinding nil)
 (use-package evil-collection
+  :ensure t
   :after (evil)
   :init
 
@@ -142,44 +111,54 @@
   (evil-set-initial-state 'shell-mode 'normal)
   )
 (use-package evil-anzu
+  :ensure t
   :after (evil))
 (use-package evil-indent-textobject
+  :ensure t
   :after (evil))
 (use-package evil-exchange
+  :ensure t
   :after (evil)
   :config (evil-exchange-install))
 (use-package evil-visualstar
+  :ensure t
   :after (evil)
   :config (global-evil-visualstar-mode))
 (use-package evil-surround
+  :ensure t
   :after (evil)
   :config (global-evil-surround-mode t))
 (use-package evil-matchit
+  :ensure t
   :after (evil)
   :init
   (setq evilmi-ignore-comments nil)
   :config
   (global-evil-matchit-mode t))
 (use-package expand-region
+  :ensure t
   :after (evil)
   :commands (er/expand-region er/contract-region))
 (use-package evil-numbers
+  :ensure t
   :after (evil)
   :commands (evil-numbers/inc-at-pt evil-numbers/dec-at-pt)
   :init
   (define-key evil-normal-state-map
-    (kbd "+") 'evil-numbers/inc-at-pt)
+              (kbd "+") 'evil-numbers/inc-at-pt)
   (define-key evil-normal-state-map
-    (kbd "-") 'evil-numbers/dec-at-pt))
+              (kbd "-") 'evil-numbers/dec-at-pt))
 (use-package evil-nerd-commenter
+  :ensure t
   :after (evil)
   :commands (evilnc-comment-or-uncomment-lines)
   :init
   (define-key evil-normal-state-map
-    (kbd ",,") 'evilnc-comment-or-uncomment-lines)
+              (kbd ",,") 'evilnc-comment-or-uncomment-lines)
   (define-key evil-visual-state-map
-    (kbd ",,") 'evilnc-comment-or-uncomment-lines))
+              (kbd ",,") 'evilnc-comment-or-uncomment-lines))
 (use-package evil-args
+  :ensure t
   :after (evil)
   :config
   (define-key evil-motion-state-map "L" 'evil-forward-arg)
@@ -188,6 +167,7 @@
   (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
   (define-key evil-outer-text-objects-map "a" 'evil-outer-arg))
 (use-package avy
+  :ensure t
   :after (evil)
   :init
   (setq avy-background t)
@@ -221,6 +201,7 @@
   (define-key evil-visual-state-map (kbd "m") #'evil-avy-goto-word))
 
 (use-package avy-migemo
+  :ensure t
   :after (avy)
   :config
   (defun avy-migemo-goto-char (char &optional arg)
@@ -353,8 +334,8 @@
   ;;                 :end end))))
   )
 
-(el-get-bundle ace-window)
 (use-package ace-window
+  :ensure t
   :commands (ace-window aw-select aw-switch-to-window)
   :init
   (setq aw-dispatch-always t)
@@ -376,7 +357,15 @@
                       )
   )
 
+(use-package undo-tree
+  :ensure t
+  :init
+  (setq undo-tree-visualizer-diff t)
+  (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
+  (setq undo-tree-visualizer-timestamps t))
+
 (use-package evil
+  :ensure t
   :commands (evil-mode)
   :init
   (setq evil-fold-level 4
@@ -393,12 +382,7 @@
         evil-want-integration t
         evil-overriding-maps nil)
   :config
-  (use-package undo-tree
-    :init
-    (setq undo-tree-visualizer-diff t)
-    (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
-    (setq undo-tree-visualizer-timestamps t)
-    )
+
 
   (global-undo-tree-mode t)
   (evil-set-undo-system 'undo-tree)
@@ -619,23 +603,23 @@ If the scroll count is zero the command scrolls half the screen."
   (interactive)
   (cl-labels
       ((kill (buf)
-             (let ((buf-name (buffer-name buf)))
-               (when buf-name
-                 (let* ((window-buffers (mapcar #'window-buffer (window-list)))
-                        (window-buffer-names (mapcar #'buffer-name window-buffers))
-                        (tab-buffers (mapcar #'(lambda (tab) (get tab 'current-buffer))
-                                             (perspeen-tab-get-tabs)))
-                        (tab-buffer-names (mapcar #'buffer-name tab-buffers))
-                        (first-char (substring-no-properties buf-name 0 1)))
-                   (unless (or (string= " " first-char)
-                               (string= "*" first-char)
-                               (string= buf-name
-                                        (buffer-name (current-buffer)))
-                               (cl-find-if #'(lambda (bn) (string= bn buf-name))
-                                           tab-buffer-names)
-                               (cl-find-if #'(lambda (bn) (string= bn buf-name))
-                                           window-buffer-names))
-                     (kill-buffer buf)))))))
+         (let ((buf-name (buffer-name buf)))
+           (when buf-name
+             (let* ((window-buffers (mapcar #'window-buffer (window-list)))
+                    (window-buffer-names (mapcar #'buffer-name window-buffers))
+                    (tab-buffers (mapcar #'(lambda (tab) (get tab 'current-buffer))
+                                         (perspeen-tab-get-tabs)))
+                    (tab-buffer-names (mapcar #'buffer-name tab-buffers))
+                    (first-char (substring-no-properties buf-name 0 1)))
+               (unless (or (string= " " first-char)
+                           (string= "*" first-char)
+                           (string= buf-name
+                                    (buffer-name (current-buffer)))
+                           (cl-find-if #'(lambda (bn) (string= bn buf-name))
+                                       tab-buffer-names)
+                           (cl-find-if #'(lambda (bn) (string= bn buf-name))
+                                       window-buffer-names))
+                 (kill-buffer buf)))))))
     (let ((debug-on-error t)
           (buf-list (if perspeen-mode
                         (perspeen-ws-struct-buffers perspeen-current-ws)
@@ -677,6 +661,7 @@ If the scroll count is zero the command scrolls half the screen."
                       (read-from-minibuffer "Commit: " (car kill-ring)))))
 
 (use-package evil-leader
+  :ensure t
   :commands (global-evil-leader-mode)
   :init
   (add-hook 'after-init-hook 'global-evil-leader-mode)
@@ -735,6 +720,7 @@ If the scroll count is zero the command scrolls half the screen."
     "ml" 'open-junk-dir
     "mn" 'open-junk-file
     "pk" 'projectile-invalidate-cache
+    "pc" 'projectile-compile-project
     "r" 'create-restclient-buffer
     "s" 'create-eshell
     "ts" 'text-scale-adjust

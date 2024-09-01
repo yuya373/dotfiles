@@ -26,15 +26,15 @@
 (eval-when-compile
   (require 'evil))
 
-(el-get-bundle web-mode)
 (use-package web-mode
+  :ensure t
   :mode (("\\.erb\\'" . web-mode)
          ("\\.html?\\'" . web-mode))
   :init
   (setq web-mode-markup-indent-offset 2))
 
-(el-get-bundle scss-mode)
 (use-package scss-mode
+  :ensure t
   :mode (("\\.scss\\'" . scss-mode))
   :init
   (defun scss-mode-setup ()
@@ -42,8 +42,8 @@
     (setq-local scss-compile-at-save nil))
   (add-hook 'scss-mode-hook #'scss-mode-setup))
 
-(el-get-bundle json-mode)
 (use-package json-mode
+  :ensure t
   :mode (("\\.json\\'" . json-mode))
   :init
   (setq js-indent-level 2)

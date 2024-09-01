@@ -24,8 +24,8 @@
 
 ;;; Code:
 
-(el-get-bundle lua-mode)
 (use-package lua-mode
+  :ensure t
   :mode (("\\.lua$" . lua-mode)))
 
 (provide '36-lua)

@@ -27,8 +27,8 @@
 (eval-when-compile
   (require 'evil))
 
-(el-get-bundle easy-hugo)
 (use-package easy-hugo
+  :ensure t
   :commands (easy-hugo easy-hugo-newpost easy-hugo-github-deploy)
   :init
   (setq easy-hugo-postdir "content/posts")

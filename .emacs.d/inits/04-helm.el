@@ -25,8 +25,7 @@
 ;;; Code:
 
 (eval-when-compile
-  (require 'use-package)
-  (require 'el-get))
+  (require 'use-package))
 
 (defvar diary-root-dir (expand-file-name "~/dev/diary"))
 (defvar diary-year-format "%Y")
@@ -35,19 +34,6 @@
                                           diary-year-format
                                           diary-month-format)
                                   "/%d.md"))
-
-(el-get-bundle vertico)
-(el-get-bundle consult)
-(el-get-bundle consult-flycheck)
-(el-get-bundle consult-lsp)
-(el-get-bundle consult-dir)
-(el-get-bundle marginalia)
-(el-get-bundle orderless)
-(el-get-bundle embark)
-(el-get-bundle embark-consult)
-(el-get-bundle consult-projectile)
-(el-get-bundle all-the-icons)
-(el-get-bundle all-the-icons-completion)
 
 (defun consult-normalize-file-string (s)
   (let* ((splitted (split-string s ":"))
@@ -60,6 +46,7 @@
     (list path (when line (string-to-number line)) word)))
 
 (use-package orderless
+  :ensure t
   :after (vertico)
   :init
   (setq orderless-matching-styles
@@ -81,6 +68,7 @@
   (advice-add 'ffap-guesser :around 'my-ffap-guesser-current-file))
 
 (use-package vertico
+  :ensure t
   :init
   (vertico-mode)
   :config
@@ -111,14 +99,22 @@
   )
 
 (use-package marginalia
+  :ensure t
   :after (vertico)
   :config
   (setq all-the-icons-scale-factor 0.8)
-  (use-package all-the-icons)
-  (use-package all-the-icons-completion)
   (all-the-icons-completion-mode))
 
+(use-package all-the-icons
+  :ensure t
+  :after (marginalia))
+
+(use-package all-the-icons-completion
+  :ensure t
+  :after (marginalia))
+
 (use-package consult
+  :ensure t
   :after (vertico)
   :config
   (recentf-mode)
@@ -230,14 +226,20 @@
       "cll" 'consult-line-at-point
       "cL" 'consult-line-multi-at-point)))
 
-(use-package consult-flycheck :after (consult flycheck))
+(use-package consult-flycheck
+  :ensure t
+  :after (consult flycheck))
 
 (use-package consult-lsp
+  :ensure t
   :after (consult lsp-mode))
 
-(use-package consult-dir :after (consult))
+(use-package consult-dir
+  :ensure t
+  :after (consult))
 
 (use-package consult-projectile
+  :ensure t
   :after (consult projectile)
   :config
   (add-to-list 'consult-buffer-sources
@@ -245,6 +247,7 @@
                t))
 
 (use-package embark
+  :ensure t
   :after (consult)
   :bind (("C-a" . embark-act))
   :config
@@ -429,12 +432,13 @@ targets."
   (require 'embark-consult))
 
 (use-package embark-consult
+  :ensure t
   :after (consult embark)
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
-(el-get-bundle seudut/perspeen)
 (use-package perspeen
+  :ensure t
   :commands (perspeen-mode)
   :init
   (setq perspeen-use-tab t)

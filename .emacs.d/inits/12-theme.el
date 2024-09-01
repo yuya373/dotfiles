@@ -24,15 +24,10 @@
 ;;; Code:
 
 (eval-when-compile
-  (require 'evil)
-  ;; (el-get-bundle powerline)
-  ;; (el-get-bundle TheBB/spaceline)
-  ;; (require 'spaceline)
-  (el-get-bundle solarized-emacs)
-  )
+  (require 'evil))
 
-(el-get-bundle solarized-emacs)
 (use-package solarized
+  :ensure solarized-theme
   ;; :defer t
   :init
   (setq solarized-high-contrast-mode-line t)
@@ -99,13 +94,6 @@
           (set-face-background 'whitespace-tab magenta)
           (set-face-foreground 'whitespace-tab base03))))))
 
-
-;; (el-get-bundle material-theme)
-;; (use-package material-theme
-;;   :init
-;;   (unless window-system
-;;     (add-to-list 'custom-theme-load-path "~/.emacs.d/el-get/material-theme")
-;;     (add-hook 'after-init-hook #'(lambda () (load-theme 'material t)))))
 
 (provide '12-theme)
 ;;; 12-theme.el ends here

@@ -24,12 +24,10 @@
 
 ;;; Code:
 
-(el-get-bundle projectile)
-(el-get-bundle projectile-rails)
-(el-get-bundle f)
 
 
 (use-package projectile
+  :ensure t
   :commands (projectile-mode)
   :diminish projectile-mode
   :init
@@ -61,75 +59,71 @@
                  (format  "test -- %s" file)
                  source))
       source))
-
-  (use-package projectile
+  :config
+  (use-package consult
     :config
-
-
-
-    (use-package consult
-      :config
-      (define-compilation-mode consult-typescript-compilation-mode "consult-typescript-scripts"
-        "Rust compilation mode.
+    (define-compilation-mode consult-typescript-compilation-mode "consult-typescript-scripts"
+      "Rust compilation mode.
 
 Error matching regexes from compile.el are removed.")
-      (require 'ansi-color)
-      (defun consult-typescript-scripts ()
-        (interactive)
-        (let* ((source (typescript-projectile-build-consult-source))
-               (script (consult--read
-                        source
-                        :require-match t
-                        :prompt "Select command: "))
-               (out-buf (get-buffer-create "*consult-typescript-scripts*")))
-          (when script
-            (with-current-buffer out-buf
-              (setq buffer-read-only nil)
-              (erase-buffer)
-              (consult-typescript-compilation-mode)
-              (setq buffer-read-only t)
-              (goto-char (point-min)))
-            (let* ((run-cmd (split-string (gethash script source) " "))
-                   (cmd (car run-cmd))
-                   (args (cdr run-cmd))
-                   (process (apply #'start-file-process
-                                   "consult-typescript-scripts"
-                                   out-buf
-                                   (typescript-projectile-bundler-cmd)
-                                   "run"
-                                   cmd
-                                   args)))
-              (display-buffer out-buf)
-              (set-process-filter process
-                                  #'(lambda (process s)
+    (require 'ansi-color)
+    (defun consult-typescript-scripts ()
+      (interactive)
+      (let* ((source (typescript-projectile-build-consult-source))
+             (script (consult--read
+                      source
+                      :require-match t
+                      :prompt "Select command: "))
+             (out-buf (get-buffer-create "*consult-typescript-scripts*")))
+        (when script
+          (with-current-buffer out-buf
+            (setq buffer-read-only nil)
+            (erase-buffer)
+            (consult-typescript-compilation-mode)
+            (setq buffer-read-only t)
+            (goto-char (point-min)))
+          (let* ((run-cmd (split-string (gethash script source) " "))
+                 (cmd (car run-cmd))
+                 (args (cdr run-cmd))
+                 (process (apply #'start-file-process
+                                 "consult-typescript-scripts"
+                                 out-buf
+                                 (typescript-projectile-bundler-cmd)
+                                 "run"
+                                 cmd
+                                 args)))
+            (display-buffer out-buf)
+            (set-process-filter process
+                                #'(lambda (process s)
+                                    (when (buffer-live-p (process-buffer process))
+                                      (with-current-buffer (process-buffer process)
+                                        (setq buffer-read-only nil)
+                                        (goto-char (process-mark process))
+                                        (insert (ansi-color-filter-apply s))
+                                        (set-marker (process-mark process) (point))
+                                        (setq buffer-read-only t)))))
+
+            (set-process-sentinel process
+                                  #'(lambda (process event)
                                       (when (buffer-live-p (process-buffer process))
                                         (with-current-buffer (process-buffer process)
                                           (setq buffer-read-only nil)
-                                          (goto-char (process-mark process))
-                                          (insert (ansi-color-filter-apply s))
-                                          (set-marker (process-mark process) (point))
-                                          (setq buffer-read-only t)))))
+                                          (insert (format "\n`%s %s %s' %s"
+                                                          (typescript-projectile-bundler-cmd)
+                                                          cmd
+                                                          (mapconcat #'identity args " ")
+                                                          event))
 
-              (set-process-sentinel process
-                                    #'(lambda (process event)
-                                        (when (buffer-live-p (process-buffer process))
-                                          (with-current-buffer (process-buffer process)
-                                            (setq buffer-read-only nil)
-                                            (insert (format "\n`%s %s %s' %s"
-                                                           (typescript-projectile-bundler-cmd)
-                                                           cmd
-                                                           (mapconcat #'identity args " ")
-                                                           event))
+                                          (setq buffer-read-only t)))))))))
 
-                                            (setq buffer-read-only t)))))))))
-
-      (evil-define-key 'normal typescript-ts-mode-map
-        (kbd ",s") 'consult-typescript-scripts)
-      (evil-define-key 'normal tsx-ts-mode-map
-        (kbd ",s") 'consult-typescript-scripts)
-      )))
+    (evil-define-key 'normal typescript-ts-mode-map
+      (kbd ",s") 'consult-typescript-scripts)
+    (evil-define-key 'normal tsx-ts-mode-map
+      (kbd ",s") 'consult-typescript-scripts)
+    ))
 
 (use-package projectile-rails
+  :ensure t
   :commands (projectile-rails-global-mode)
   :diminish projectile-rails-mode
   :init

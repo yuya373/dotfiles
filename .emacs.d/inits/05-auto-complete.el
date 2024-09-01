@@ -27,44 +27,33 @@
 (eval-when-compile
   (require 'evil))
 
-(el-get-bundle yasnippet)
-(el-get-bundle yasnippet-snippets)
-(el-get-bundle company-mode)
-(el-get-bundle company-emoji)
-(el-get-bundle company-statistics)
-(el-get-bundle company-quickhelp)
-(el-get-bundle dash)
-(el-get-bundle s)
-(el-get-bundle editorconfig)
-(el-get-bundle copilot
-  :type github
-  :pkgname "zerolfx/copilot.el"
-  :branch "main"
-  )
-
-(use-package copilot
-  :init
-  (add-hook 'prog-mode-hook 'copilot-mode)
-  :config
-  ;; (defun my/copilot-tab ()
-  ;;   (interactive)
-  ;;   (or (copilot-accept-completion-by-word)
-  ;;       (indent-for-tab-command)))
-  (evil-define-key 'insert copilot-mode-map
-    (kbd "C-<tab>") #'copilot-accept-completion
-    ))
+;; (el-get-bundle copilot-emacs/copilot.el :name copilot)
+;; (use-package copilot
+;;   :init
+;;   (add-hook 'prog-mode-hook 'copilot-mode)
+;;   :config
+;;   ;; (defun my/copilot-tab ()
+;;   ;;   (interactive)
+;;   ;;   (or (copilot-accept-completion-by-word)
+;;   ;;       (indent-for-tab-command)))
+;;   (evil-define-key 'insert copilot-mode-map
+;;     (kbd "C-<tab>") #'copilot-accept-completion
+;;     ))
 
 
 (use-package yasnippet-snippets
+  :ensure t
   :after (yasnippet))
 
 (use-package yasnippet
+  :ensure t
   :commands (yas-global-mode)
   :diminish yas-minor-mode
   :init
   (add-hook 'after-init-hook 'yas-global-mode))
 
 (use-package company-statistics
+  :ensure t
   :commands (company-statistics-mode)
   :init
   (setq company-statistics-auto-save t)
@@ -77,6 +66,7 @@
   )
 
 (use-package company-quickhelp
+  :ensure t
   :commands (company-quickhelp-mode)
   :init
   (add-hook 'global-company-mode-hook 'company-quickhelp-mode)
@@ -86,6 +76,7 @@
   (add-to-list 'company-frontends 'company-quickhelp-frontend t))
 
 (use-package company
+  :ensure t
   :commands (company-mode global-company-mode)
   ;; :diminish company-mode
   :init
@@ -117,6 +108,7 @@
   ;;          ;; company-yasnippet
   ;;          )))
   (use-package company-emoji
+    :ensure t
     :commands (company-emoji)
     :init
     ;; (add-to-list 'company-backends 'company-emoji)
@@ -223,16 +215,18 @@
   ;;                     :foreground "white" :background "steelblue")
   (diminish 'abbrev-mode))
 
-(el-get-bundle know-your-http-well)
 (use-package know-your-http-well
+  :ensure t
   :defer t
   :init
   (add-to-list 'load-path
                (expand-file-name
                 (concat user-emacs-directory
                         "el-get/know-your-http-well/emacs"))))
-(el-get-bundle company-restclient)
+
+(use-package editorconfig :ensure t)
 (use-package company-restclient
+  :ensure t
   :commands (company-restclient)
   :init
   (defun my-comp-restclient ()
@@ -241,18 +235,11 @@
   (add-hook 'restclient-mode-hook 'my-comp-restclient))
 
 
-(el-get-bundle pos-tip
-  :type github
-  :pkgname "pitkali/pos-tip"
-  :name pos-tip)
-
-(el-get-bundle emacs-lsp/lsp-mode)
-(add-to-list 'load-path (expand-file-name (concat user-emacs-directory
-                                                  "el-get/lsp-mode/clients")))
-(el-get-bundle all-the-icons)
-(el-get-bundle emacs-lsp/lsp-ui)
-
+(use-package pos-tip :ensure t)
+(use-package lsp-treemacs :ensure t)
+(use-package dap-mode :ensure t)
 (use-package lsp-mode
+  :ensure t
   :commands (lsp)
   :diminish lsp-mode
   :init
@@ -263,6 +250,7 @@
   (add-hook 'enh-ruby-mode-hook 'lsp)
   (add-hook 'go-mode-hook 'lsp)
   (add-hook 'rustic-mode-hook 'lsp)
+  (add-hook 'scala-mode-hook 'lsp)
 
   (setq lsp-auto-guess-root t
         lsp-enable-snippet t
@@ -312,6 +300,7 @@
         lsp-rust-analyzer-display-parameter-hints t
         lsp-rust-analyzer-proc-macro-enable t
         lsp-rust-analyzer-experimental-proc-attr-macros t
+        lsp-rust-all-features t
         standard-indent 2
         )
   (defun my-lsp-inhibit-hooks ()
@@ -362,6 +351,7 @@
   )
 
 (use-package lsp-ui
+  :ensure t
   :commands (lsp-ui-mode)
   :init
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
@@ -372,10 +362,10 @@
 
   (setq lsp-ui-doc-position 'at-point
         lsp-ui-doc-show-with-cursor nil
-        lsp-ui-doc-alignment 'frame
+        lsp-ui-doc-alignment 'window
         lsp-ui-doc-header t
         lsp-ui-doc-include-signature t
-        lsp-ui-doc-delay 1
+        lsp-ui-doc-delay 0.2
         lsp-ui-doc-use-childframe t)
 
   (setq lsp-ui-sideline-show-diagnostics t)
@@ -447,6 +437,23 @@
     (kbd "RET") 'lsp-ui-peek--goto-xref
     (kbd "ESC") 'lsp-ui-peek--abort))
 
-
+(use-package lsp-metals
+  :ensure t
+  :custom
+  ;; You might set metals server options via -J arguments. This might not always work, for instance when
+  ;; metals is installed using nix. In this case you can use JAVA_TOOL_OPTIONS environment variable.
+  (lsp-metals-server-args '(;; Metals claims to support range formatting by default but it supports range
+                            ;; formatting of multiline strings only. You might want to disable it so that
+                            ;; emacs can use indentation provided by scala-mode.
+                            "-J-Dmetals.allow-multiline-string-formatting=off"
+                            ;; Enable unicode icons. But be warned that emacs might not render unicode
+                            ;; correctly in all cases.
+                            "-J-Dmetals.icons=unicode"))
+  ;; In case you want semantic highlighting. This also has to be enabled in lsp-mode using
+  ;; `lsp-semantic-tokens-enable' variable. Also you might want to disable highlighting of modifiers
+  ;; setting `lsp-semantic-tokens-apply-modifiers' to `nil' because metals sends `abstract' modifier
+  ;; which is mapped to `keyword' face.
+  (lsp-metals-enable-semantic-highlighting t)
+  )
 (provide '05-auto-complete)
 ;;; 05-auto-complete.el ends here

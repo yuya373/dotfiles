@@ -27,8 +27,8 @@
 (eval-when-compile
   (require 'evil))
 
-(el-get-bundle golden-ratio)
 (use-package golden-ratio
+  :ensure t
   :commands (golden-ratio-mode)
   :diminish golden-ratio-mode
   :init
@@ -61,8 +61,8 @@
   )
 
 
-(el-get-bundle shackle)
 (use-package shackle
+  :ensure t
   :commands (shackle-mode)
   :init
   (defun display-buffer-full-screen (buffer _alist)

@@ -25,8 +25,8 @@
 ;;; Code:
 
 
-(el-get-bundle nginx-mode)
 (use-package nginx-mode
+  :ensure t
   :mode (("/nginx/sites-\\(?:available\\|enabled\\)/" . nginx-mode)))
 
 (provide 'nginx)

@@ -25,12 +25,11 @@
 ;;; Code:
 
 ;; (eval-when-compile
-;;   (el-get-bundle slime)
 ;;   (require 'evil)
 ;;   (require 'slime))
 
-;; (el-get-bundle slime)
 ;; (use-package slime
+;;   :ensure t
 ;;   :commands (slime-mode)
 ;;   :init
 ;;   (add-hook 'lisp-mode-hook 'slime-mode)

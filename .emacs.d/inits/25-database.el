@@ -27,12 +27,8 @@
 (eval-when-compile
   (require 'evil))
 
-(el-get-bundle emacswiki:sql-indent)
-(el-get-bundle emacswiki:sql-complete)
-(el-get-bundle emacswiki:sql-transform)
-(el-get-bundle sqlformat)
-
 (use-package sql
+  :ensure t
   :commands (sql-postgres sql-mysql)
   :mode (("\\.sql\\'" . sql-mode))
   :init
@@ -95,9 +91,6 @@
   (setq sql-pop-to-buffer-after-send-region t)
   (setq sql-indent-offset 2)
   :config
-  (use-package sql-indent)
-  (load-library "sql-complete")
-  (use-package sql-transform)
   (evil-define-key 'normal sql-mode-map
     ",eb" 'sql-send-buffer
     ",ep" 'sql-send-paragraph
@@ -106,12 +99,40 @@
   (evil-define-key 'visual sql-mode-map
     ",er" 'sql-send-region))
 
+(use-package sql-indent
+  :ensure t
+  :after (sql))
+
 (use-package sqlformat
+  :ensure t
   :init
   (setq sqlformat-command 'sqlfluff)
   (setq sqlformat-args '("--dialect" "postgres"))
   (evil-define-key 'normal sql-mode-map
     ",f" 'sqlformat-buffer)
+  :config
+  (reformatter-define sqlformat
+    :program (pcase sqlformat-command
+               (`sqlformat "sqlformat")
+               (`pgformatter "pg_format")
+               (`sqlfluff "sqlfluff")
+               (`sql-formatter "sql-formatter"))
+    :args (pcase sqlformat-command
+            (`sqlformat  (append sqlformat-args '("-r" "-")))
+            (`pgformatter (append sqlformat-args '("-")))
+            (`sqlfluff (append '("format") sqlformat-args '("-")))
+            (`sql-formatter sqlformat-args))
+    :lighter " SQLFmt"
+    :group 'sqlformat
+    :exit-code-success-p (lambda (_x) t))
+
+
+  (defun around-sqlformat-region (orig-fun &rest args)
+    (let ((default-directory (or (vc-git-root (buffer-file-name)) default-directory)))
+      (apply orig-fun args)))
+
+  (advice-add 'sqlformat-region :around 'around-sqlformat-region)
+
   )
 
 (provide '25-database)

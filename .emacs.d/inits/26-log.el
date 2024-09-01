@@ -24,21 +24,21 @@
 
 ;;; Code:
 
-(el-get-bundle logview)
 (use-package logview
+  :ensure t
   :mode (("\\.log?\\'" . log4j-mode))
   :init
   (add-hook 'logview-mode-hook 'read-only-mode)
   )
 
-(el-get-bundle log4j-mode)
 (use-package log4j-mode
+  :ensure t
   :mode (("\\.log?\\'" . log4j-mode))
   :init
   (add-hook 'log4j-mode-hook 'read-only-mode))
 
-(el-get-bundle command-log-mode)
 (use-package command-log-mode
+  :ensure t
   :commands (clm/open-command-log-buffer
              global-command-log-mode)
   :diminish command-log-mode
@@ -49,15 +49,6 @@
   ;; (add-hook 'global-command-log-mode-hook 'clm/open-command-log-buffer)
   ;; (add-hook 'kill-emacs-hook 'clm/save-command-log)
   ;; (remove-hook 'kill-emacs-hook 'clm/save-command-log)
-  )
-
-(el-get-bundle yuya373/major-mode-log)
-(add-to-list 'load-path (concat user-emacs-directory
-                                "el-get/major-mode-log"))
-(use-package major-mode-log
-  :commands (global-major-mode-log-mode)
-  :init
-  ;; (add-hook 'after-init-hook 'global-major-mode-log-mode)
   )
 
 (provide '26-log)

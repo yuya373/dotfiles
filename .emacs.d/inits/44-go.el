@@ -23,12 +23,10 @@
 ;;
 
 ;;; Code:
-(require 'el-get)
 (require 'use-package)
 
-(el-get-bundle go-mode)
-
 (use-package go-mode
+  :ensure t
   :mode ((".go\\'" . go-mode))
   :init
   (defun init-go-mode ()

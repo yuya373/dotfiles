@@ -25,46 +25,23 @@
 ;;; Code:
 
 (eval-when-compile
-  (require 'evil)
-  (el-get-bundle fringe-helper)
-  (require 'fringe-helper))
+  (require 'evil))
 
-;; git
-(el-get-bundle git-commit)
-(el-get-bundle magit)
-;; (el-get-bundle magit-gh-pulls)
-(el-get-bundle gist)
-;; (el-get-bundle git-gutter)
-(el-get-bundle git-gutter-fringe+)
-(el-get-bundle git-messenger)
-
-;; (el-get-bundle pidu/git-timemachine)
-;; (use-package git-timemachine
-;;   :commands (git-timemachine)
-;;   :config
-;;   (evil-define-key 'normal git-timemachine-mode-map
-;;     ",p" 'git-timemachine-show-previous-revision
-;;     ",n" 'git-timemachine-show-next-revision
-;;     ",g" 'git-timemachine-show-nth-revision
-;;     ",q" 'git-timemachine-quit
-;;     ",w" 'git-timemachine-kill-abbreviated-revision
-;;     ",W" 'git-timemachine-kill-revision
-;;     ",b" 'git-timemachine-blame)
-;;   )
 
 (use-package git-messenger
+  :ensure t
   :commands (git-messenger:popup-message))
 
 (use-package smerge-mode
   :after (magit)
   :diminish smerge-mode)
 (use-package magit
+  :ensure t
   :commands (magit-status magit-blame)
   :init
   (add-hook 'magit-mode-hook '(lambda () (linum-mode -1)))
   (setq magit-push-always-verify t)
   (setq magit-branch-arguments nil)
-
 
   (setq magit-bury-buffer-function #'magit-restore-window-configuration)
   (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
@@ -104,9 +81,9 @@
     (let ((hash (magit-blame-chunk-get :hash)))
       (when hash
         (let* ((default-branch
-                 (shell-command-to-string
-                  (concat "git symbolic-ref refs/remotes/origin/HEAD "
-                          "| sed 's@^refs/remotes/origin/@@'")))
+                (shell-command-to-string
+                 (concat "git symbolic-ref refs/remotes/origin/HEAD "
+                         "| sed 's@^refs/remotes/origin/@@'")))
                (rev-range (format "%s...%s"
                                   hash
                                   (substring default-branch 0 -1)))
@@ -144,10 +121,12 @@
   )
 
 (use-package gist
+  :ensure t
   :commands (gist-list gist-region gist-region-private
                        gist-buffer gist-buffer-private))
 
 (use-package git-gutter+
+  :ensure t
   :commands (global-git-gutter+-mode)
   :diminish git-gutter+-mode
   :init
@@ -179,48 +158,51 @@
   (defun git-gutter+-remote-file-path (dir file)
     (let ((file (tramp-file-name-localname (tramp-dissect-file-name file))))
       (replace-regexp-in-string (concat "\\`" dir) "" file)))
+  )
 
-  (use-package git-gutter-fringe+
+(use-package git-gutter-fringe+
+  :after (git-gutter+)
+  :ensure t
+  :config
+  (use-package fringe-helper
     :config
-    (use-package fringe-helper
-      :config
-      (fringe-helper-define 'git-gutter-fr+-added nil
-        "........"
-        "...XX..."
-        "...XX..."
-        ".XXXXXX."
-        ".XXXXXX."
-        "...XX..."
-        "...XX..."
-        "........")
+    (fringe-helper-define 'git-gutter-fr+-added nil
+      "........"
+      "...XX..."
+      "...XX..."
+      ".XXXXXX."
+      ".XXXXXX."
+      "...XX..."
+      "...XX..."
+      "........")
 
-      (fringe-helper-define 'git-gutter-fr+-deleted nil
-        "........"
-        "........"
-        "........"
-        ".XXXXXX."
-        ".XXXXXX."
-        "........"
-        "........"
-        "........")
+    (fringe-helper-define 'git-gutter-fr+-deleted nil
+      "........"
+      "........"
+      "........"
+      ".XXXXXX."
+      ".XXXXXX."
+      "........"
+      "........"
+      "........")
 
-      (fringe-helper-define 'git-gutter-fr+-modified nil
-        "........"
-        "........"
-        "..XXXX.."
-        "..XXXX.."
-        "..XXXX.."
-        "..XXXX.."
-        "..XXXX.."
-        "........"))
-    (setq-default left-fringe-width 15)
-    (setq git-gutter-fr+-side 'left-fringe)
-    (set-face-foreground 'git-gutter-fr+-modified "#eee8d5")
-    (set-face-foreground 'git-gutter-fr+-added    "#859900")
-    (set-face-foreground 'git-gutter-fr+-deleted  "#dc322f")))
+    (fringe-helper-define 'git-gutter-fr+-modified nil
+      "........"
+      "........"
+      "..XXXX.."
+      "..XXXX.."
+      "..XXXX.."
+      "..XXXX.."
+      "..XXXX.."
+      "........"))
+  (setq-default left-fringe-width 15)
+  (setq git-gutter-fr+-side 'left-fringe)
+  (set-face-foreground 'git-gutter-fr+-modified "#eee8d5")
+  (set-face-foreground 'git-gutter-fr+-added    "#859900")
+  (set-face-foreground 'git-gutter-fr+-deleted  "#dc322f"))
 
-(el-get-bundle sshaw/git-link)
 (use-package git-link
+  :ensure t
   :commands (git-link git-link-commit git-link-homepage)
   :init
   (setq git-link-default-branch nil)

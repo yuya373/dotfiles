@@ -30,16 +30,6 @@
   (require 'evil)
   (require 'evil-common))
 
-(el-get-bundle bundler)
-(el-get-bundle rbenv)
-(el-get-bundle inf-ruby)
-(el-get-bundle enh-ruby-mode)
-(el-get-bundle ruby-test-mode)
-(el-get-bundle ruby-block
-  :github h3poteto/ruby-block.el)
-(el-get-bundle ruby-end)
-(el-get-bundle rspec-mode)
-(el-get-bundle ruby-mode)
 
 (defun my-ruby-modify-syntax (tables)
   (dolist (syntax-table tables)
@@ -47,6 +37,7 @@
       (modify-syntax-entry (car tbl) (cdr tbl) syntax-table))))
 
 (use-package ruby-end
+  :ensure t
   :commands (ruby-end-mode)
   :diminish ruby-end-mode
   :init
@@ -54,14 +45,8 @@
   (add-hook 'enh-ruby-mode-hook 'ruby-end-mode)
   )
 
-(use-package ruby-block
-  :commands (ruby-block-mode)
-  :diminish ruby-block-mode
-  :init
-  (setq ruby-block-highlight-toggle t)
-  (add-hook 'enh-ruby-mode-hook 'ruby-block-mode))
-
 (use-package rbenv
+  :ensure t
   :commands (global-rbenv-mode rbenv-use-global rbenv-use-corresponding)
   :init
   (setq rbenv-show-active-ruby-in-modeline nil)
@@ -72,6 +57,7 @@
   )
 
 (use-package inf-ruby
+  :ensure t
   :commands (inf-ruby inf-ruby-minor-mode inf-ruby-console-auto)
   :init
   (add-hook 'enh-ruby-mode-hook 'inf-ruby-minor-mode)
@@ -91,6 +77,7 @@
     ",er" 'ruby-send-region-and-go))
 
 (use-package bundler
+  :ensure t
   :commands (bundle-open bundle-exec bundle-check bundle-gemfile
                          bundle-update bundle-console bundle-install)
   :config
@@ -104,6 +91,7 @@
         '(projectile-rails-mode-map enh-ruby-mode-map)))
 
 (use-package ruby-mode
+  :ensure t
   :init
   (setq ruby-insert-encoding-magic-comment nil)
   (setq ruby-deep-indent-paren-style nil)
@@ -117,6 +105,7 @@
 See `font-lock-syntax-table'."))
 
 (use-package enh-ruby-mode
+  :ensure t
   :mode (("\\(Rake\\|Thor\\|Guard\\|Gem\\|Cap\\|Vagrant\\|Berks\\|Pod\\|Puppet\\)file\\'" . enh-ruby-mode)
          ("\\.\\(rb\\|rabl\\|ru\\|builder\\|rake\\|thor\\|gemspec\\|jbuilder\\|schema\\|cap\\)\\'" . enh-ruby-mode))
   :init
@@ -150,6 +139,7 @@ See `font-lock-syntax-table'."))
   )
 
 (use-package rspec-mode
+  :ensure t
   :init
   (setq rspec-use-docker-when-possible t)
   (setq rspec-docker-container "app")
@@ -207,13 +197,13 @@ See `font-lock-syntax-table'."))
 ;;                                  default-directory)))
 ;;       (compilation-start command t))))
 
-(el-get-bundle yaml-mode)
 (use-package yaml-mode
+  :ensure t
   :mode (("\\.yml\\'" . yaml-mode)
          ("\\.yaml\\'" . yaml-mode)))
 
-(el-get-bundle haml-mode)
 (use-package haml-mode
+  :ensure t
   :mode (("\\.haml\\'" . haml-mode))
   :init
   (defun my-haml-mode-modify-syntax ()
@@ -221,13 +211,13 @@ See `font-lock-syntax-table'."))
     (my-ruby-modify-syntax (list haml-mode-syntax-table)))
   (add-hook 'haml-mode-hook 'my-haml-mode-modify-syntax))
 
-(el-get-bundle slim-mode)
 (use-package slim-mode
+  :ensure t
   :mode (("\\.slim\\'" . slim-mode))
   )
 
-(el-get-bundle rufo)
 (use-package rufo
+  :ensure t
   :after (enh-ruby-mode)
   :commands (rufo-format)
   :init

@@ -60,6 +60,7 @@
                             (point-max))))
   (add-hook 'compilation-filter-hook 'compilation-filter-ansi)
   :config
+  (setq compilation-max-output-line-length nil)
   (setq compilation-scroll-output t))
 
 (provide '31-compilation)

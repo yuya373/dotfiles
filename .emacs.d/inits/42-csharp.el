@@ -23,27 +23,9 @@
 ;;
 
 ;;; Code:
-(if (< emacs-major-version 29)
-    (el-get-bundle csharp-mode))
-
-(use-package csharp-mode
-  :init
-  (defun my-csharp-mode-hook ()
-    (setq indent-tabs-mode nil)
-    (setq c-syntactic-indentation t)
-    (c-set-style "ellemtel")
-    (setq c-basic-offset 4)
-    (setq truncate-lines t)
-    (setq tab-width 4)
-    (setq evil-shift-width 4)
-    (setq-local helm-dash-docsets '("NET Framework" "Unity 3D"))
-    (omnisharp-mode))
-  (add-hook 'csharp-mode-hook
-            'my-csharp-mode-hook))
-
-(el-get-bundle omnisharp-mode :compile nil)
 
 (use-package omnisharp
+  :ensure t
   :commands (omnisharp-mode)
   :init
   (setq omnisharp-server-executable-path nil)

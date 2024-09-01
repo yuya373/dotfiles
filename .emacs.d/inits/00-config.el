@@ -42,15 +42,6 @@
 
 ;; encoding
 (set-language-environment "Japanese")
-(set-keyboard-coding-system 'utf-8)
-(setq locale-coding-system 'utf-8)
-(set-default-coding-systems 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(unless (eq system-type 'windows-nt)
-  (set-selection-coding-system 'utf-8))
-(prefer-coding-system 'utf-8)
-(setq coding-system-for-read 'utf-8)
-(setq coding-system-for-write 'utf-8)
 
 (setq require-final-newline t)
 (setq ad-redefinition-action 'accept)

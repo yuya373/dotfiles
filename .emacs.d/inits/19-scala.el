@@ -30,11 +30,9 @@
 (eval-when-compile
   (require 'evil))
 
-(el-get-bundle scala-mode)
-(el-get-bundle yasnippet)
-
 
 (use-package scala-mode
+  :ensure t
   :commands (scala-mode)
   :mode (("\\.scala\\'" . scala-mode))
   :init
@@ -55,6 +53,7 @@
   (add-hook 'scala-mode-hook #'my-scala-mode-hook))
 
 (use-package sbt-mode
+  :ensure t
   :mode (("\\.sbt\\'" . sbt-mode))
   :config
   (evil-define-key 'normal sbt-mode-map
@@ -62,6 +61,7 @@
     ",sc" 'sbt-command))
 
 (use-package yasnippet
+  :ensure t
   :commands (yas-minor-mode))
 
 (provide '19-scala)

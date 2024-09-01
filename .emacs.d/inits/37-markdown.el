@@ -26,10 +26,10 @@
 (eval-when-compile
   (require 'evil))
 (require 'use-package)
-(el-get-bundle markdown-mode)
 (el-get-bundle sindresorhus/github-markdown-css)
 
 (use-package markdown-mode
+  :ensure t
   :mode (("\\.markdown\\'" . gfm-mode)
          ("\\.md\\'" . gfm-mode)
          ("PULLREQ_MSG" . gfm-mode))

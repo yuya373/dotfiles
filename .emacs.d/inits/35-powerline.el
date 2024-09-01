@@ -30,8 +30,7 @@
   ;; (require 'spaceline)
   )
 
-(el-get-bundle powerline)
-(el-get-bundle TheBB/spaceline)
+(use-package spaceline :ensure t)
 (use-package spaceline-config
   :commands (spaceline-spacemacs-theme)
   :init

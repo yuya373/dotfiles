@@ -28,15 +28,16 @@
   (require 'el-get)
   (require 'use-package))
 
-(el-get-bundle tree-sitter-langs)
-(el-get-bundle tree-sitter)
 
 
 (use-package typescript-ts-mode
+  :ensure t
   :mode (("\\.ts\\'" . typescript-ts-mode)
          ("\\.tsx\\'" . tsx-ts-mode)))
 
+(use-package tree-sitter-langs :ensure t)
 (use-package tree-sitter
+  :ensure t
   :config
   (global-tree-sitter-mode)
   (tree-sitter-require 'tsx)

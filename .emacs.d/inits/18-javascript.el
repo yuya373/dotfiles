@@ -28,9 +28,8 @@
   (require 'evil)
   (require 'flycheck))
 
-(el-get-bundle js2-mode)
-
 (use-package js2-mode
+  :ensure t
   :mode (;; ("\\.js\\'" . js2-mode)
          ;; ("\\.jsx\\'" . js2-jsx-mode)
          ;; ("\\.jsx.js\\'" . js2-jsx-mode)
@@ -65,16 +64,16 @@
   (use-package js2-imenu-extras)
   (add-hook 'js2-mode-hook 'js2-imenu-extras-mode))
 
-(el-get-bundle felipeochoa/rjsx-mode)
 (use-package rjsx-mode
+  :ensure t
   :mode (("\\.jsx\\'" . rjsx-mode)
          ("\\.js\\'" . rjsx-mode))
   :commands (rjsx-minor-mode)
   :diminish rjsx-minor-mode
   )
 
-(el-get-bundle coffee-mode)
 (use-package coffee-mode
+  :ensure t
   :mode (("\\.coffee\\'" . coffee-mode))
   :init
   (setq coffee-tab-width 2)

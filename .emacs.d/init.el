@@ -47,28 +47,18 @@
 (setq el-get-use-autoloads nil)
 (setq el-get-is-lazy t)
 (setq el-get-notify-type 'message)
-(el-get-bundle pcre2el)
-
-;; el-get-lock
-(el-get-bundle el-get-lock
-  :type github
-  :pkgname "tarao/el-get-lock"
-  :name el-get-lock)
-(require 'el-get-lock)
-(el-get-lock)
 
 (el-get-bundle use-package)
-(el-get-bundle diminish)
-(require 'diminish)
 (require 'use-package)
+(use-package diminish :ensure t)
 ;; for debug
 ;; (setq el-get-verbose t)
 ;; (setq use-package-verbose t)
 
-(el-get-bundle queue)
 ;; initchart
 (el-get-bundle yuttie/initchart)
 (use-package initchart
+  :ensure t
   :commands (initchart-record-execution-time-of))
 (initchart-record-execution-time-of load file)
 (initchart-record-execution-time-of require feature)
@@ -111,6 +101,7 @@
 ;; init-loader
 (el-get-bundle init-loader)
 (use-package init-loader
+  :ensure t
   :commands (init-loader-load)
   :init
   (setq init-loader-show-log-after-init t)
@@ -166,4 +157,4 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(treesit-auto sqlformat wgrep-ag vertico tree-sitter-langs term-run rufo queue ox-gfm orderless oauth2 nlinum marginalia lv logview log4j-mode git-commit font-lock-studio eshell-prompt-extras embark-consult electric-operator easy-hugo csv-mode coverlay consult-projectile consult-lsp consult-flycheck consult-dir company-terraform codic auto-save-buffers-enhanced all-the-icons-completion)))
+   '(alert tree-sitter-langs omnisharp ddskk toml-mode rustic elpy sqlformat sql-transform sql-complete sbt-mode solarized-theme solarized rufo slim-mode haml-mode yaml-mode rspec-mode enh-ruby-mode bundler rbenv ruby-block ruby-end projectile-rails gist magit git-messenger git-link git-gutter-fringe+ company-terraform company-restclient editorconfig company-ispell company-emoji org-clock org-agenda flycheck-package flycheck-inline flycheck-aspell flycheck pkg-info lsp-metals dap-mode lsp-treemacs lsp-ui lsp-mode treesit-auto oauth2 lv coverlay)))

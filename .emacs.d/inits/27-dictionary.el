@@ -26,19 +26,8 @@
 (eval-when-compile
   (require 'evil))
 
-(el-get-bundle osx-dictionary)
-(use-package osx-dictionary
-  :commands (osx-dictionary-search-pointer osx-dictionary-search-input)
-  :config
-  (evil-define-key 'normal osx-dictionary-mode-map
-    "q" #'osx-dictionary-quit
-    "s" #'osx-dictionary-search-input
-    "o" #'osx-dictionary-open-dictionary.app
-    "r" #'osx-dictionary-read-word
-    "?" #'describe-mode))
-
-(el-get-bundle google-translate)
 (use-package google-translate
+  :ensure t
   :commands (google-translate-at-point
              google-translate-query-translate
              google-translate-query-translate-reverse
@@ -64,8 +53,8 @@
       (list (string-to-number (car nums))
             (string-to-number (car (cdr nums)))))))
 
-(el-get-bundle codic)
 (use-package codic
+  :ensure t
   :commands (codic codic-translate)
   :defer t
   )

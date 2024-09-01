@@ -148,7 +148,7 @@ the user activate the completion manually."
 
   (defun eshell-bind-keymap ()
     (evil-define-key 'normal eshell-mode-map
-      (kbd "C-c") 'eshell-exit)
+      (kbd "C-c") 'nil)
     (evil-define-key 'insert eshell-mode-map
       (kbd "C-n") 'eshell-next-matching-input-from-input))
 
@@ -180,8 +180,8 @@ the user activate the completion manually."
           ("ridgepole-test" "bundle exec rake db:ridgepole:apply[test]")
           ("ridgepole-dev" "bundle exec rake db:ridgepole:apply[development]"))))
 
-(el-get-bundle eshell-prompt-extras)
 (use-package eshell-prompt-extras
+  :ensure t
   :commands (epe-theme-dakrone epe-theme-lambda)
   :init
   (setq eshell-highlight-prompt nil)
@@ -198,8 +198,8 @@ the user activate the completion manually."
 ;;   (setq shell-pop-internal-mode-buffer "*eshell*")
 ;;   )
 
-(el-get-bundle term-run)
 (use-package term-run
+  :ensure t
   :commands (term-run term-run-shell-command))
 
 

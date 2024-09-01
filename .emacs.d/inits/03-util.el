@@ -27,8 +27,8 @@
   (require 'use-package)
   (require 'el-get))
 
-(el-get-bundle which-key)
 (use-package which-key
+  :ensure t
   :diminish which-key-mode
   :commands (which-key-mode)
   :init
@@ -74,8 +74,8 @@
     ", d" "Dired-Do")
   )
 
-(el-get-bundle DarthFennec/highlight-indent-guides)
 (use-package highlight-indent-guides
+  :ensure t
   :commands (highlight-indent-guides-mode)
   :init
   (setq highlight-indent-guides-responsive 'top)
@@ -84,8 +84,8 @@
   ;; (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
   (add-hook 'yaml-mode-hook 'highlight-indent-guides-mode))
 
-(el-get-bundle restclient)
 (use-package restclient
+  :ensure t
   :mode (("\\.restclient\\'" . restclient-mode))
   :init
   (setq restclient-dir "~/Dropbox/junk/")
@@ -106,13 +106,13 @@
     ",m"  'restclient-mark-current))
 
 ;; esup
-(el-get-bundle esup)
 (use-package esup
+  :ensure t
   :commands (esup))
 
 ;; auto-save
-(el-get-bundle auto-save-buffers-enhanced)
 (use-package auto-save-buffers-enhanced
+  :ensure t
   :init
   (setq make-backup-files nil)
   (setq auto-save-list-file-prefix nil)
@@ -141,8 +141,8 @@
       (server-start)))
   (add-hook 'after-init-hook 'start-server))
 
-(el-get-bundle emojify)
 (use-package emojify
+  :ensure t
   :commands (emojify-mode global-emojify-mode)
   :init
   (add-hook 'after-init-hook 'global-emojify-mode)
@@ -169,13 +169,12 @@
 ;;   ;; (add-hook 'after-init-hook 'emoji-cheat-sheet-plus-display-mode)
 ;;   )
 
-(el-get-bundle ag)
-(el-get-bundle wgrep-ag)
-
 (use-package wgrep-ag
+  :ensure t
   :commands (wgrep-ag-setup))
 
 (use-package ag
+  :ensure t
   :commands (ag)
   :init
   (add-hook 'ag-mode-hook 'wgrep-ag-setup)
@@ -212,26 +211,20 @@
   (require 'ls-lisp)
   (setq ls-lisp-use-insert-directory-program nil))
 
-(el-get-bundle dired-k)
 (use-package dired-k
+  :ensure t
   :commands (dired-k dired-k-no-revert)
   :init
   (add-hook 'dired-after-readin-hook 'dired-k-no-revert)
   (setq dired-k-style 'git)
   (setq dired-k-human-readable t))
 
-(el-get-bundle alpha22jp/atomic-chrome)
-(use-package atomic-chrome
-  :commands (atomic-chrome-start-server)
-  :init
-  (add-hook 'after-init-hook 'atomic-chrome-start-server))
-
-(el-get-bundle es-mode)
 (use-package es-mode
+  :ensure t
   :mode (("\\.es\\'" . es-mode)))
 
-(el-get-bundle sr-speedbar)
 (use-package sr-speedbar
+  :ensure t
   :commands (sr-speedbar-toggle)
   :config
   (evil-initial-state 'speedbar-mode 'normal)
@@ -247,9 +240,8 @@
     (kbd "C-h") 'evil-window-left
     (kbd "RET") 'speedbar-edit-line))
 
-(el-get-bundle imenu-anywhere)
-
 (use-package imenu-anywhere
+  :ensure t
   :commands (helm-imenu-anywhere))
 
 (use-package imenu
@@ -259,8 +251,8 @@
   (add-hook 'imenu-after-jump-hook '(lambda ()
                                       (recenter 10))))
 
-(el-get-bundle font-lock-studio)
 (use-package font-lock-studio
+  :ensure t
   :commands (font-lock-studio))
 
 (defun font-at-point ()
@@ -278,8 +270,9 @@
         (when file
           (helm-find-files-1 file))))))
 
-(el-get-bundle string-inflection)
-(use-package string-inflection)
+(use-package string-inflection
+  :ensure t
+  )
 
 (provide '03-util)
 ;;; 03-util.el ends here

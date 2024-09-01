@@ -42,8 +42,8 @@
           browse-url-generic-args     cmd-args
           browse-url-browser-function 'browse-url-generic)))
 
-(el-get-bundle migemo)
 (use-package migemo
+  :ensure t
   :commands (migemo-init)
   :init
   (setq migemo-options '("--quiet" "--emacs"))
@@ -53,8 +53,8 @@
   (setq migemo-coding-system 'utf-8-unix)
   (add-hook 'after-init-hook 'migemo-init))
 
-(el-get-bundle exec-path-from-shell)
 (use-package exec-path-from-shell
+  :ensure t
   ;; :commands (exec-path-from-shell-initialize)
   :init
   ;; (add-hook 'before-init-hook 'exec-path-from-shell-initialize)

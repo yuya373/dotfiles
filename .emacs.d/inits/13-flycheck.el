@@ -24,21 +24,11 @@
 
 ;;; Code:
 (eval-when-compile
-  (require 'el-get)
   (require 'use-package))
 
-(el-get-bundle flycheck)
-(el-get-bundle flycheck/flycheck-inline)
-(el-get-bundle alexmurray/evil-flycheck)
-(el-get-bundle package-lint)
-(el-get-bundle flycheck-package)
-(el-get-bundle pkg-info)
-
 (use-package pkg-info
+  :ensure t
   :after (flycheck))
-
-;; (use-package evil-flycheck
-;;   :after (flycheck))
 
 
 ;; Better to use https://github.com/tomoya/auto-fix.el
@@ -91,6 +81,7 @@
       (setq-local flycheck-javascript-eslint-executable eslint))))
 
 (use-package flycheck
+  :ensure t
   :diminish flycheck-mode
   :commands (flycheck-mode)
   :init
@@ -142,8 +133,8 @@
           (dolist (violation .violations)
             (let-alist violation
               (push (flycheck-error-new-at
-                     .line_no
-                     .line_pos
+                     .start_line_no
+                     .start_line_pos
                      (if (or (string= .code "TMP")
                              (string= .code "PRS"))
                          'error
@@ -157,6 +148,9 @@
       errors))
   (defun sqlfluff-exists-p ()
     (executable-find "sqlfluff"))
+  (defun flycheck-sqlfluff-working-directory (_checker)
+    (let ((dir (vc-git-root (buffer-file-name))))
+      dir))
   (flycheck-define-checker sql-sqlfluff
     "A Javascript syntax and style checker using eslint.
 See URL `https://eslint.org/'."
@@ -170,11 +164,18 @@ See URL `https://eslint.org/'."
               )
     :enabled sqlfluff-exists-p
     :error-parser flycheck-parse-sqlfluff
-    :modes (sql-mode))
+    :modes (sql-mode)
+    :working-directory flycheck-sqlfluff-working-directory)
   (add-to-list 'flycheck-checkers 'sql-sqlfluff)
+  (use-package flycheck-aspell
+    :ensure t
+    :config
+    (add-to-list 'flycheck-checkers 'c-aspell-dynamic)
+    (add-to-list 'flycheck-checkers 'markdown-aspell-dynamic))
   )
 
 (use-package flycheck-inline
+  :ensure t
   :commands (flycheck-inline-mode)
   :init
   (add-hook 'flycheck-mode-hook #'flycheck-inline-mode)
@@ -204,6 +205,7 @@ See URL `https://eslint.org/'."
 
 
 (use-package flycheck-package
+  :ensure t
   :commands (flycheck-package-setup)
   :init
   (add-hook 'flycheck-mode-hook 'flycheck-package-setup))

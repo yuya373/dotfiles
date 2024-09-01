@@ -24,19 +24,18 @@
 
 ;;; Code:
 
-(el-get-bundle project)
-(el-get-bundle rustic)
-(el-get-bundle xterm-color)
 (use-package rustic
+  :ensure t
   :init
   (setq rustic-lsp-setup-p t
         rustic-lsp-format t
         rustic-lsp-server 'rust-analyzer
         rustic-format-trigger 'on-compile
         )
-  (setq rustic-default-test-arguments "--benches --tests --all-features -- --nocapture")
-  (setq rustic-default-test-arguments nil)
+  (setq rustic-default-test-arguments "-- --nocapture")
+  ;; (setq rustic-default-test-arguments nil)
   (setq rustic-cargo-check-arguments "--benches --tests --all-features --workspace")
+  (setq rustic-default-clippy-arguments "--all --tests --workspace")
   (setq flycheck-rust-check-tests nil)
   ;; (defun rustic-init-flycheck ()
   ;;   (interactive)
@@ -68,6 +67,17 @@
   ;;                           :message (if has-toml "Found" "Missing")
   ;;                           :face (if has-toml 'success '(bold warning))))))))
 
+  (defun rustic-cargo-current-test ()
+    "Run 'cargo test' for the test near point."
+    (interactive)
+    (rustic-compilation-process-live)
+    (-if-let (test-to-run (setq rustic-test-arguments
+                                (format "%s"
+                                        (rustic-cargo--get-test-target)
+                                        )
+                                ))
+        (rustic-cargo-run-test test-to-run)
+      (message "Could not find test at point.")))
   (evil-define-key 'normal rustic-mode-map
     ",p" 'rustic-popup
     ",CC" 'rustic-compile
@@ -83,8 +93,8 @@
     ",f" 'rustic-cargo-fmt
     ))
 
-(el-get-bundle toml-mode)
 (use-package toml-mode
+  :ensure t
   :mode (("\\.toml\\'" . toml-mode)))
 
 (provide '28-rust)

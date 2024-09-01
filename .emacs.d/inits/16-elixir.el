@@ -27,14 +27,14 @@
 ;; (eval-when-compile
 ;;   (require 'evil))
 
-;; (el-get-bundle elixir-mode)
 ;; (use-package elixir-mode
+;;   :ensure t
 ;;   :mode (("\\.ex\\'" . elixir-mode)
 ;;          ("\\.exs\\'" . elixir-mode)
 ;;          ("\\.elixir\\'" . elixir-mode)))
 
-;; (el-get-bundle alchemist)
 ;; (use-package alchemist
+;;   :ensure t
 ;;   :commands (alchemist-mode)
 ;;   :init
 ;;   (add-hook 'elixir-mode-hook 'alchemist-mode)

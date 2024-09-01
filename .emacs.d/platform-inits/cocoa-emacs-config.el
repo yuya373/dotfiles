@@ -35,24 +35,14 @@
   ;;   (add-hook 'flycheck-mode-hook 'flycheck-pos-tip-mode))
   )
 
-(el-get-bundle emacschrome)
-(use-package edit-server
-  :commands (edit-server-start)
-  :init
-  (add-hook 'evil-mode-hook 'edit-server-start)
-  (setq edit-server-new-frame nil)
-  :config
-  (evil-define-key 'normal edit-server-text-mode-map
-    ",k" 'edit-server-abort
-    ",c" 'edit-server-done))
 
 (use-package ls-lisp
   :defer t
   :init
   (setq ls-lisp-use-insert-directory-program nil))
 
-(el-get-bundle exec-path-from-shell)
 (use-package exec-path-from-shell
+  :ensure t
   ;; :commands (exec-path-from-shell-initialize)
   :init
   ;; (add-hook 'before-init-hook 'exec-path-from-shell-initialize)
@@ -63,8 +53,8 @@
   (setenv "PKG_CONFIG_PATH" "/usr/local/opt/zlib/lib/pkgconfig:/usr/local/opt/libffi/lib/pkgconfig:/usr/local/lib/pkgconfig")
   (exec-path-from-shell-initialize))
 
-(el-get-bundle migemo)
 (use-package migemo
+  :ensure t
   :commands (migemo-init)
   :init
   (setq migemo-command "cmigemo")

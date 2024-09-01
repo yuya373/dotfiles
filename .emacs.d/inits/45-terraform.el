@@ -25,14 +25,14 @@
 ;;; Code:
 
 
-(el-get-bundle terraform-mode)
 (use-package terraform-mode
+  :ensure t
   :mode (("\\.tf\\(vars\\)?\\'" . terraform-mode))
   :init
   (setq terraform-format-on-save t))
 
-(el-get-bundle company-terraform)
 (use-package company-terraform
+  :ensure t
   :commands (company-terraform-init)
   :init
   (add-hook 'terraform-mode-hook 'company-terraform-init))

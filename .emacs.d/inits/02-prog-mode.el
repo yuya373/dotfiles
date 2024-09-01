@@ -46,8 +46,8 @@ http://www.emacswiki.org/emacs/AlignCommands"
                   (concat regexp "\\([[:space:]]*\\)")
                   1 spacing t)))
 ;; linum
-(el-get-bundle nlinum)
 (use-package nlinum
+  :ensure t
   :commands (nlinum-mode)
   :init
   (setq nlinum-eager nil)
@@ -56,6 +56,7 @@ http://www.emacswiki.org/emacs/AlignCommands"
   (add-hook 'prog-mode-hook 'nlinum-mode))
 
 (use-package elec-pair
+  :ensure t
   :commands (electric-pair-mode)
   :init
   (add-hook 'after-init-hook 'electric-pair-mode)
@@ -68,34 +69,35 @@ http://www.emacswiki.org/emacs/AlignCommands"
   :config
   (define-key electric-pair-mode-map (kbd "C-h") [backspace]))
 
-(el-get-bundle rainbow-delimiters)
 (use-package rainbow-delimiters
+  :ensure t
   :commands (rainbow-delimiters-mode)
   :init
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
 (use-package eldoc
+  :ensure t
   :diminish eldoc-mode
   :commands (eldoc-mode)
   :init
   (add-hook 'after-init-hook 'global-eldoc-mode))
 
-(el-get-bundle volatile-highlights)
 (use-package volatile-highlights
+  :ensure t
   :diminish volatile-highlights-mode
   :commands (volatile-highlights-mode)
   :init
   (add-hook 'prog-mode-hook 'volatile-highlights-mode))
 
-(el-get-bundle electric-operator)
 (use-package electric-operator
+  :ensure t
   :commands (electric-operator-mode)
   :init
   (add-hook 'ess-mode-hook 'electric-operator-mode)
   (add-hook 'python-mode-hook 'electric-operator-mode))
 
-(el-get-bundle quickrun)
 (use-package quickrun
+  :ensure t
   :commands (quickrun
              quickrun-region
              quickrun-with-arg
@@ -103,10 +105,8 @@ http://www.emacswiki.org/emacs/AlignCommands"
   :init
   (setq quickrun-focus-p nil))
 
-(el-get-bundle wbolster/emacs-direnv
-  :name direnv)
-
 (use-package direnv
+  :ensure t
   :commands (direnv-mode)
   :init
   (add-hook 'after-init-hook 'direnv-mode))

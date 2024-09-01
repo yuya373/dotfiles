@@ -26,9 +26,11 @@
 (eval-when-compile
   (require 'evil))
 
-(el-get-bundle ddskk)
+(use-package ddskk
+  :ensure t
+  :commands (skk-mode skk-auto-fill-mode))
+
 (use-package skk
-  :commands (skk-mode skk-auto-fill-mode)
   :init
   (setq skk-echo t)
   (setq skk-tut-file (concat user-emacs-directory
