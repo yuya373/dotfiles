@@ -143,6 +143,24 @@
   (apply #'set-face-attribute 'default nil spec)
   (apply #'set-face-attribute 'variable-pitch nil spec))
 
+;; http://xahlee.info/emacs/emacs/emacs_set_font_emoji.html
+(progn
+  ;; set font for emoji
+  ;; if before emacs 28, this should come after setting symbols, because emacs 28 now has 'emoji . before, emoji is part of 'symbol
+  (set-fontset-font
+   t
+   (if (version< emacs-version "28.1")
+       '(#x1f300 . #x1fad0)
+     'emoji
+     )
+   (cond
+    ((member "Apple Color Emoji" (font-family-list)) "Apple Color Emoji")
+    ((member "Noto Color Emoji" (font-family-list)) "Noto Color Emoji")
+    ((member "Noto Emoji" (font-family-list)) "Noto Emoji")
+    ((member "Segoe UI Emoji" (font-family-list)) "Segoe UI Emoji")
+    ((member "Symbola" (font-family-list)) "Symbola"))))
+
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -157,4 +175,4 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(alert tree-sitter-langs omnisharp ddskk toml-mode rustic elpy sqlformat sql-transform sql-complete sbt-mode solarized-theme solarized rufo slim-mode haml-mode yaml-mode rspec-mode enh-ruby-mode bundler rbenv ruby-block ruby-end projectile-rails gist magit git-messenger git-link git-gutter-fringe+ company-terraform company-restclient editorconfig company-ispell company-emoji org-clock org-agenda flycheck-package flycheck-inline flycheck-aspell flycheck pkg-info lsp-metals dap-mode lsp-treemacs lsp-ui lsp-mode treesit-auto oauth2 lv coverlay)))
+   '(rustic virtualenvwrapper alert tree-sitter-langs omnisharp ddskk toml-mode elpy sqlformat sql-transform sql-complete sbt-mode solarized-theme solarized rufo slim-mode haml-mode yaml-mode rspec-mode enh-ruby-mode bundler rbenv ruby-block ruby-end projectile-rails gist magit git-messenger git-link git-gutter-fringe+ company-terraform company-restclient editorconfig company-ispell company-emoji org-clock org-agenda flycheck-package flycheck-inline flycheck-aspell flycheck pkg-info lsp-metals dap-mode lsp-treemacs lsp-ui lsp-mode treesit-auto oauth2 lv coverlay)))
