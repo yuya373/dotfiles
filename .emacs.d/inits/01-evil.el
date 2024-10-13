@@ -537,6 +537,18 @@ If the scroll count is zero the command scrolls half the screen."
   ;; (define-key evil-normal-state-map (kbd "C-u") 'scroll-down-command)
   )
 
+(defun set-window-full-hd ()
+  (interactive)
+  (when window-system
+    (set-frame-parameter nil 'width '(text-pixels . 1920))
+    (set-frame-parameter nil 'height '(text-pixels . 1080))))
+
+(defun set-window-wqhd ()
+  (interactive)
+  (when window-system
+    (set-frame-parameter nil 'width '(text-pixels . 2560))
+    (set-frame-parameter nil 'height '(text-pixels . 1440))))
+
 (defun toggle-window-maximized ()
   (interactive)
   (if window-system
@@ -729,6 +741,8 @@ If the scroll count is zero the command scrolls half the screen."
     "wg" 'golden-ratio-mode
     "wk" 'kill-buffer-and-window
     "wm" 'toggle-window-maximized
+    "wf" 'set-window-full-hd
+    "wq" 'set-window-wqhd
     "wt" 'toggle-frame-alpha
     "ww" 'ace-window
 
