@@ -26,7 +26,6 @@
 
 (eval-when-compile
   (require 'use-package)
-  (require 'el-get)
   (require 'evil)
   (require 'evil-common))
 

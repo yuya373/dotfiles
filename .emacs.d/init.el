@@ -6,6 +6,14 @@
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
 ;; (package-initialize)
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+;; Comment/uncomment this line to enable MELPA Stable if desired.
+;; See `package-archive-priorities` and `package-pinned-packages`.
+;; Most users will not need or want to do this.
+;; (add-to-list 'package-archives
+;;              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(package-initialize)
 
 (setq default-directory "~/")
 (setq command-line-default-directory "~/")
@@ -35,79 +43,35 @@
 (when load-file-name
   (setq user-emacs-directory (file-name-directory load-file-name)))
 
-(add-to-list 'load-path (locate-user-emacs-file "el-get/el-get"))
-(unless (require 'el-get nil 'noerror)
-  (with-current-buffer
-      (url-retrieve-synchronously
-       "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
-    (goto-char (point-max))
-    (eval-print-last-sexp)))
-
-;; use use-package for config description and lazy loading
-(setq el-get-use-autoloads nil)
-(setq el-get-is-lazy t)
-(setq el-get-notify-type 'message)
-
-(el-get-bundle use-package)
 (require 'use-package)
 (use-package diminish :ensure t)
 ;; for debug
-;; (setq el-get-verbose t)
 ;; (setq use-package-verbose t)
 
 ;; initchart
-(el-get-bundle yuttie/initchart)
+(unless (package-installed-p 'initchart)
+  (package-vc-install "https://github.com/yuttie/initchart"))
 (use-package initchart
-  :ensure t
   :commands (initchart-record-execution-time-of))
 (initchart-record-execution-time-of load file)
 (initchart-record-execution-time-of require feature)
 
-(defun update-packages ()
-  (interactive)
-  (let ((packages (collect-packages)))
-    (message "Updating Packages: %s" packages)
-    (dolist (package packages)
-      (ignore-errors (el-get-update package)))))
-
-(defun collect-packages ()
-  (interactive)
-  (let ((packages))
-    (with-current-buffer (current-buffer)
-      (let ((regex "\(el-get-bundle \\(.*\\)\)"))
-        (goto-char (point-min))
-        (while (re-search-forward regex nil t)
-          (let ((name (split-string (match-string 1) "/")))
-            (if (< 1 (length name))
-                (push (cadr name) packages)
-              (push (car name) packages))))))
-    (cl-remove-duplicates packages :test #'string=)))
-
-(defun el-get-update-all (&optional no-prompt)
-  "Performs update of all installed packages."
-  (interactive)
-  (when (or no-prompt
-            (yes-or-no-p
-             "Doo you really want to update all installed packages? "))
-    (let ((el-get-elpa-do-refresh 'once)
-          errors)
-      (mapc #'(lambda (p) (condition-case e
-                             (el-get-update p)
-                           (error (push e errors))))
-            (el-get-list-package-names-with-status "installed"))
-      (message "Package Updated.")
-      (message "Errors: %s" errors))))
-
 ;; init-loader
-(el-get-bundle init-loader)
+(unless (package-installed-p 'init-loader)
+  (package-vc-install "https://github.com/emacs-jp/init-loader"))
 (use-package init-loader
-  :ensure t
   :commands (init-loader-load)
   :init
   (setq init-loader-show-log-after-init t)
   (setq init-loader-byte-compile nil))
 (init-loader-load (expand-file-name "~/.emacs.d/platform-inits"))
 (init-loader-load)
+;; (load (expand-file-name "~/.emacs.d/inits/00-config.el"))
+;; (load (expand-file-name "~/.emacs.d/inits/01-evil.el"))
+;; (load (expand-file-name "~/.emacs.d/inits/02-prog-mode.el"))
+;; (load (expand-file-name "~/.emacs.d/inits/03-util.el"))
+;; (load (expand-file-name "~/.emacs.d/inits/04-helm.el"))
+
 
 ;; [[Home] Copy And Paste](https://www.emacswiki.org/emacs/CopyAndPaste)
 ;; credit: yorickvP on Github
@@ -166,8 +130,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(perspeen-tab--header-line-active ((t (:inherit mode-line :background "#eee8d5" :foreground "#657b83" :weight bold))))
- '(perspeen-tab--powerline-inactive1 ((t (:inherit mode-line)))))
+ )
 (put 'list-timers 'disabled nil)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -175,4 +138,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(rustic virtualenvwrapper alert tree-sitter-langs omnisharp ddskk toml-mode elpy sqlformat sql-transform sql-complete sbt-mode solarized-theme solarized rufo slim-mode haml-mode yaml-mode rspec-mode enh-ruby-mode bundler rbenv ruby-block ruby-end projectile-rails gist magit git-messenger git-link git-gutter-fringe+ company-terraform company-restclient editorconfig company-ispell company-emoji org-clock org-agenda flycheck-package flycheck-inline flycheck-aspell flycheck pkg-info lsp-metals dap-mode lsp-treemacs lsp-ui lsp-mode treesit-auto oauth2 lv coverlay)))
+   '(command-log-mode elpy company-terraform terraform-mode tree-sitter tree-sitter-langs omnisharp ddskk rustic logview sqlformat rjsx-mode flycheck-package pkg-info yasnippet-snippets yaml-mode xterm-color which-key wgrep-ag web-mode volatile-highlights virtualenvwrapper vertico undo-tree tsc toml-mode term-run string-inflection sr-speedbar sql-indent spaceline solarized-theme slim-mode shackle scss-mode sbt-mode rufo ruby-end rspec-mode reformatter rbenv rainbow-delimiters quickrun python-mode projectile-rails perspeen package-lint orderless open-junk-file nlinum nginx-mode marginalia magit lua-mode lsp-ui lsp-metals log4j-mode json-mode js2-mode initchart init-loader imenu-anywhere highlight-indent-guides hcl-mode haml-mode google-translate golden-ratio go-mode git-messenger git-link gist font-lock-studio flycheck-inline flycheck-aspell extmap expand-region exec-path-from-shell evil-visualstar evil-surround evil-numbers evil-nerd-commenter evil-matchit evil-leader evil-indent-textobject evil-exchange evil-collection evil-args evil-anzu esup eshell-prompt-extras es-mode epl enh-ruby-mode emojify embark-consult electric-operator editorconfig easy-hugo dockerfile-mode direnv dired-k diminish csv-mode csharp-mode consult-projectile consult-lsp consult-flycheck consult-dir company-statistics company-restclient company-quickhelp company-emoji coffee-mode codic cdb bundler avy-migemo auto-save-buffers-enhanced all-the-icons-completion ag adoc-mode))
+ '(package-vc-selected-packages
+   '((font-lock-studio :vc-backend Git :url "https://github.com/Lindydancer/font-lock-studio")
+     (init-loader :vc-backend Git :url "https://github.com/emacs-jp/init-loader")
+     (initchart :vc-backend Git :url "https://github.com/yuttie/initchart"))))

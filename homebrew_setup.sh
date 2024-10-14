@@ -6,29 +6,16 @@ if ! which brew > /dev/null; then
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
-brew cask install \
-     dash alfred bettertouchtool \
-     aquaskk karabiner-elements bitbar \
-     google-chrome dropbox vlc handbrake \
-     trailer flux docker react-native-debugger \
+brew install --cask \
+     alfred bettertouchtool \
+     aquaskk karabiner-elements \
+     google-chrome dropbox vlc \
+     trailer flux docker \
      sketch amethyst kap \
-     virtualbox vagrant genymotion \
-     appcleaner
-
-# Vagrant plugin
-vagrant plugin install vagrant-disksize vagrant-mutagen
-
-# Android
-# brew cask install \
-#      android-platform-tools \
-#      android-sdk
 
 
 brew install \
-     pigz \
-     libdvdcss \
-     ffmpeg \
-     git hub tmux zsh vim \
+     git gh tmux zsh vim \
      coreutils cmigemo ispell \
      direnv global ctags \
      the_silver_searcher \

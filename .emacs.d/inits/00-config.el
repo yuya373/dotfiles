@@ -115,7 +115,8 @@
           (goto-char cur-point)))))
   (advice-add 'ert :around 'around-ert))
 
-(el-get-bundle font-lock-studio)
+(unless (package-installed-p 'font-lock-studio)
+  (package-vc-install "https://github.com/Lindydancer/font-lock-studio"))
 (use-package font-lock-studio
   :commands (font-lock-studio))
 

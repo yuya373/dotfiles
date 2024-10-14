@@ -26,7 +26,6 @@
 (eval-when-compile
   (require 'evil))
 (require 'use-package)
-(el-get-bundle sindresorhus/github-markdown-css)
 
 (use-package markdown-mode
   :ensure t
@@ -42,7 +41,7 @@
   (setq markdown-css-paths (list
                             ;; (expand-file-name "~/.emacs.d/el-get/primer-css/modules/primer/build/build.css")
                             "https://thomasf.github.io/solarized-css/solarized-light.min.css"
-                            (expand-file-name "~/.emacs.d/el-get/github-markdown-css/github-markdown.css")
+                            "https://github.com/sindresorhus/github-markdown-css/blob/main/github-markdown.css"
                             ))
   (defun my-gfm-mode-hook ()
     (whitespace-mode -1)

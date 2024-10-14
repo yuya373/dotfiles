@@ -24,8 +24,7 @@
 
 ;;; Code:
 (eval-when-compile
-  (require 'use-package)
-  (require 'el-get))
+  (require 'use-package))
 
 (use-package which-key
   :ensure t
@@ -105,12 +104,10 @@
     ",p"  'restclient-jump-prev
     ",m"  'restclient-mark-current))
 
-;; esup
 (use-package esup
   :ensure t
   :commands (esup))
 
-;; auto-save
 (use-package auto-save-buffers-enhanced
   :ensure t
   :init
@@ -124,8 +121,8 @@
   :config
   (defun auto-save-buffers-enhanced-save-buffers-if-normal-state ()
     (if (eq evil-state 'normal)
-      (ignore-errors
-        (auto-save-buffers-enhanced-save-buffers))))
+        (ignore-errors
+          (auto-save-buffers-enhanced-save-buffers))))
   (defun auto-save-buffers-enhanced (flag)
     (when flag
       (run-with-idle-timer
@@ -140,34 +137,6 @@
     (unless (server-running-p)
       (server-start)))
   (add-hook 'after-init-hook 'start-server))
-
-(use-package emojify
-  :ensure t
-  :commands (emojify-mode global-emojify-mode)
-  :init
-  (add-hook 'after-init-hook 'global-emojify-mode)
-  ;; (add-hook 'markdown-mode-hook 'emojify-mode)
-  ;; (add-hook 'git-commit-mode-hook 'emojify-mode)
-  ;; (add-hook 'magit-mode-hook 'emojify-mode)
-  ;; (add-hook 'text-mode 'emojify-mode)
-  (setq emojify-emoji-styles '(github))
-  (setq emojify-display-style 'image)
-  (defun emojify-inhibit-buffers-p (buffer)
-    (with-current-buffer buffer
-      (memq major-mode '(nov-mode magit-status-mode))))
-  (setq emojify-inhibit-in-buffer-functions '(emojify-inhibit-buffers-p))
-  ;; (setq emojify-inhibit-in-buffer-functions nil)
-  ;; (setq emojify-emoji-set "EmojiOne_4.0_32x32_png")
-  )
-
-;; (el-get-bundle syl20bnr/emacs-emoji-cheat-sheet-plus
-;;   :name emoji-cheat-sheet-plus)
-;; (use-package emoji-cheat-sheet-plus
-;;   :commands (emoji-cheat-sheet-plus-display-mode
-;;              emoji-cheat-sheet-plus-insert)
-;;   :init
-;;   ;; (add-hook 'after-init-hook 'emoji-cheat-sheet-plus-display-mode)
-;;   )
 
 (use-package wgrep-ag
   :ensure t
