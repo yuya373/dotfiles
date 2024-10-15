@@ -15,7 +15,6 @@ fzf
 git
 github-cli
 global
-hub
 imagemagick
 jq
 less
@@ -27,9 +26,7 @@ nkf-git
 nodenv
 nodenv-node-build
 npm
-openapi-generator
 openssh
-pgmodeler
 po4a
 poppler
 poppler-glib
