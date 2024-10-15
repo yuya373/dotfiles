@@ -215,14 +215,7 @@
   ;;                     :foreground "white" :background "steelblue")
   (diminish 'abbrev-mode))
 
-(use-package know-your-http-well
-  :ensure t
-  :defer t
-  :init
-  (add-to-list 'load-path
-               (expand-file-name
-                (concat user-emacs-directory
-                        "el-get/know-your-http-well/emacs"))))
+(use-package know-your-http-well :ensure t)
 
 (use-package editorconfig :ensure t)
 (use-package company-restclient

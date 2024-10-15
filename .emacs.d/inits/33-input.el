@@ -33,8 +33,6 @@
 (use-package skk
   :init
   (setq skk-echo t)
-  (setq skk-tut-file (concat user-emacs-directory
-                             "el-get/ddskk/etc/SKK.tut"))
   (setq define-input-method "japanese-skk")
 
   (setq skk-jisyo "~/Dropbox/skk-jisyo.ddskk"

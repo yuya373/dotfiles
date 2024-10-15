@@ -27,14 +27,13 @@
   (require 'use-package))
 
 (use-package pkg-info
-  :ensure t
-  :after (flycheck))
+  :ensure t)
 
 
 ;; Better to use https://github.com/tomoya/auto-fix.el
 (defun flycheck-eslint-fix ()
   (interactive)
-  (when (and flycheck-javascript-eslint-executable
+  when (and flycheck-javascript-eslint-executable
              (file-executable-p flycheck-javascript-eslint-executable))
     (let* (
            ;; (async-shell-command-display-buffer nil)
@@ -167,12 +166,14 @@ See URL `https://eslint.org/'."
     :modes (sql-mode)
     :working-directory flycheck-sqlfluff-working-directory)
   (add-to-list 'flycheck-checkers 'sql-sqlfluff)
-  (use-package flycheck-aspell
-    :ensure t
-    :config
-    (add-to-list 'flycheck-checkers 'c-aspell-dynamic)
-    (add-to-list 'flycheck-checkers 'markdown-aspell-dynamic))
   )
+
+  (use-package flycheck-aspell
+               :after (flycheck)
+               :ensure t
+               :config
+               (add-to-list 'flycheck-checkers 'c-aspell-dynamic)
+               (add-to-list 'flycheck-checkers 'markdown-aspell-dynamic))
 
 (use-package flycheck-inline
   :ensure t

@@ -25,7 +25,6 @@
 ;;; Code:
 
 (eval-when-compile
-  (require 'el-get)
   (require 'use-package))
 
 

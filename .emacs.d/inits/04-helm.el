@@ -69,8 +69,7 @@
 
 (use-package vertico
   :ensure t
-  :init
-  (vertico-mode)
+  :after (marginalia)
   :config
   (marginalia-mode)
   (savehist-mode)
@@ -97,21 +96,16 @@
               :filter-args
               #'my/vertico-truncate-candidates)
   )
+(vertico-mode)
 
 (use-package marginalia
   :ensure t
-  :after (vertico)
+  :after (all-the-icons-completion)
   :config
   (setq all-the-icons-scale-factor 0.8)
   (all-the-icons-completion-mode))
-
-(use-package all-the-icons
-  :ensure t
-  :after (marginalia))
-
-(use-package all-the-icons-completion
-  :ensure t
-  :after (marginalia))
+(use-package all-the-icons :ensure t)
+(use-package all-the-icons-completion :ensure t :after (all-the-icons))
 
 (use-package consult
   :ensure t
@@ -429,7 +423,7 @@ targets."
 
   (advice-add #'embark-completing-read-prompter
               :around #'embark-hide-which-key-indicator)
-  (require 'embark-consult))
+  )
 
 (use-package embark-consult
   :ensure t

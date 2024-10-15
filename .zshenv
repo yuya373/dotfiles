@@ -30,19 +30,20 @@ case ${OSTYPE} in
             export SYS_NOTIFIER=`which terminal-notifier`
         fi
 
-        export PATH=/usr/local/opt/texinfo/bin:$PATH
+        export PATH=/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH
+        # export PATH=/usr/local/opt/texinfo/bin:$PATH
 
-        if /usr/libexec/java_home > /dev/null 2> /dev/null; then
-            export JAVA_HOME=`/usr/libexec/java_home`
-            export PATH=$PATH:$JAVA_HOME/bin
-        fi
+        # if /usr/libexec/java_home > /dev/null 2> /dev/null; then
+        #     export JAVA_HOME=`/usr/libexec/java_home`
+        #     export PATH=$PATH:$JAVA_HOME/bin
+        # fi
 
-        export HOMEBREW_NO_ANALYTICS=1
-        export HOMEBREW_CASK_OPTS='--appdir=/Applications'
-        export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+        # export HOMEBREW_NO_ANALYTICS=1
+        # export HOMEBREW_CASK_OPTS='--appdir=/Applications'
+        # export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
         export TERM='xterm-256color'
         # export PATH="/usr/local/opt/llvm/bin:$PATH"
-        export PATH="/usr/local/opt/imagemagick@6/bin:$PATH"
+        # export PATH="/usr/local/opt/imagemagick@6/bin:$PATH"
 
         if [ -d /Applications/Genymotion.app/Contents/MacOS/tools ] ; then
             export PATH=$PATH:/Applications/Genymotion.app/Contents/MacOS/tools

@@ -2,11 +2,11 @@
 set -e
 case ${OSTYPE} in
     darwin*)
-        mkdir -p ~/.config/karabiner/
-        ln -sf ~/dotfiles/.config/karabiner/karabiner.json ~/.config/karabiner/karabiner.json
-        sudo ln -sf ~/dotfiles/Library/LaunchDaemons/limit.maxfiles.plist /Library/LaunchDaemons/limit.maxfiles.plist
-        mkdir -p ~/Library/Preferences/
-        ln -sf ~/dotfiles/home/Library/Preferences/com.amethyst.Amethyst.plist ~/Library/Preferences/com.amethyst.Amethyst.plist
+        # mkdir -p ~/.config/karabiner/
+        # ln -sf ~/dotfiles/.config/karabiner/karabiner.json ~/.config/karabiner/karabiner.json
+        # sudo ln -sf ~/dotfiles/Library/LaunchDaemons/limit.maxfiles.plist /Library/LaunchDaemons/limit.maxfiles.plist
+        # mkdir -p ~/Library/Preferences/
+        # ln -sf ~/dotfiles/home/Library/Preferences/com.amethyst.Amethyst.plist ~/Library/Preferences/com.amethyst.Amethyst.plist
         ;;
     linux*)
         ln -sf ~/dotfiles/.alacritty.yml ~/.alacritty.yml
