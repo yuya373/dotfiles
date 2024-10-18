@@ -25,9 +25,6 @@
 ;;; Code:
 (eval-when-compile
   (require 'evil)
-  ;; (el-get-bundle powerline)
-  ;; (el-get-bundle TheBB/spaceline)
-  ;; (require 'spaceline)
   )
 
 (use-package spaceline :ensure t)
@@ -39,6 +36,7 @@
   (setq powerline-default-separator 'contour)
   (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
   (add-hook 'after-init-hook 'setup-spaceline)
+  (add-hook 'perspeen-mode-hook 'setup-spaceline)
   (defvar slack-modeline "")
   (defun setup-spaceline ()
     (spaceline-spacemacs-theme)

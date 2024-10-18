@@ -446,6 +446,13 @@ targets."
   (setq perspeen-workspace-default-name "emacs")
   (add-hook 'evil-mode-hook 'perspeen-mode)
   :config
+  (set-face-attribute 'perspeen-tab--powerline-inactive1 nil
+                      :background 'unspecified
+                      :inherit 'mode-line-inactive)
+  (set-face-attribute 'perspeen-tab--header-line-inactive nil
+                      :inherit 'mode-line-inactive)
+  (set-face-attribute 'perspeen-tab--header-line-active nil
+                      :inherit 'mode-line-active)
   (defun perspeen-update-mode-string ()
     (setq perspeen-modestring ""))
 
