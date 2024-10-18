@@ -38,7 +38,10 @@
   (setq skk-echo t)
   (setq define-input-method "japanese-skk")
 
-  (setq skk-jisyo "~/Dropbox/skk-jisyo.ddskk"
+  (setq skk-jisyo
+        (if (string-match "-[Mm]icrosoft" operating-system-release)
+            "/mnt/c/Users/yuya373/Dropbox/skk-jisyo.ddskk"
+        "~/Dropbox/skk-jisyo.ddskk")
         skk-jisyo-code nil
         skk-share-private-jisyo t
         skk-save-jisyo-instantly t
