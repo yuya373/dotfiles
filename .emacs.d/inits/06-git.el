@@ -39,7 +39,6 @@
   :ensure t
   :commands (magit-status magit-blame)
   :init
-  (add-hook 'magit-mode-hook '(lambda () (linum-mode -1)))
   (setq magit-push-always-verify t)
   (setq magit-branch-arguments nil)
 

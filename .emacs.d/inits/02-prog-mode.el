@@ -46,14 +46,7 @@ http://www.emacswiki.org/emacs/AlignCommands"
                   (concat regexp "\\([[:space:]]*\\)")
                   1 spacing t)))
 ;; linum
-(use-package nlinum
-  :ensure t
-  :commands (nlinum-mode)
-  :init
-  (setq nlinum-eager nil)
-  (setq nlinum-format "%4d ")
-  (setq nlinum-delay t)
-  (add-hook 'prog-mode-hook 'nlinum-mode))
+(global-display-line-numbers-mode)
 
 (use-package elec-pair
   :ensure t

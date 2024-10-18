@@ -111,20 +111,20 @@
   (evil-define-key 'normal sql-mode-map
     ",f" 'sqlformat-buffer)
   :config
-  (reformatter-define sqlformat
-    :program (pcase sqlformat-command
-               (`sqlformat "sqlformat")
-               (`pgformatter "pg_format")
-               (`sqlfluff "sqlfluff")
-               (`sql-formatter "sql-formatter"))
-    :args (pcase sqlformat-command
-            (`sqlformat  (append sqlformat-args '("-r" "-")))
-            (`pgformatter (append sqlformat-args '("-")))
-            (`sqlfluff (append '("format") sqlformat-args '("-")))
-            (`sql-formatter sqlformat-args))
-    :lighter " SQLFmt"
-    :group 'sqlformat
-    :exit-code-success-p (lambda (_x) t))
+  ;; (reformatter-define sqlformat
+  ;;   :program (pcase sqlformat-command
+  ;;              (`sqlformat "sqlformat")
+  ;;              (`pgformatter "pg_format")
+  ;;              (`sqlfluff "sqlfluff")
+  ;;              (`sql-formatter "sql-formatter"))
+  ;;   :args (pcase sqlformat-command
+  ;;           (`sqlformat  (append sqlformat-args '("-r" "-")))
+  ;;           (`pgformatter (append sqlformat-args '("-")))
+  ;;           (`sqlfluff (append '("format") sqlformat-args '("-")))
+  ;;           (`sql-formatter sqlformat-args))
+  ;;   :lighter " SQLFmt"
+  ;;   :group 'sqlformat
+  ;;   :exit-code-success-p (lambda (_x) t))
 
 
   (defun around-sqlformat-region (orig-fun &rest args)
