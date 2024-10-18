@@ -26,13 +26,13 @@
 (eval-when-compile
   (require 'evil))
 
-(use-package solarized
-  :ensure solarized-theme
+(use-package solarized-theme
   ;; :defer t
   :init
   (setq solarized-high-contrast-mode-line t)
   (setq solarized-distinct-fringe-background t)
   (setq solarized-distinct-doc-face t)
+  (setq solarized-emphasize-indicators t)
 
   ;; (setq solarized-use-more-italic t)
   (when window-system

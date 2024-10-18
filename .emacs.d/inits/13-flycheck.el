@@ -33,7 +33,7 @@
 ;; Better to use https://github.com/tomoya/auto-fix.el
 (defun flycheck-eslint-fix ()
   (interactive)
-  when (and flycheck-javascript-eslint-executable
+  (when (and flycheck-javascript-eslint-executable
              (file-executable-p flycheck-javascript-eslint-executable))
     (let* (
            ;; (async-shell-command-display-buffer nil)
@@ -168,12 +168,12 @@ See URL `https://eslint.org/'."
   (add-to-list 'flycheck-checkers 'sql-sqlfluff)
   )
 
-  (use-package flycheck-aspell
-               :after (flycheck)
-               :ensure t
-               :config
-               (add-to-list 'flycheck-checkers 'c-aspell-dynamic)
-               (add-to-list 'flycheck-checkers 'markdown-aspell-dynamic))
+(use-package flycheck-aspell
+  :after (flycheck)
+  :ensure t
+  :config
+  (add-to-list 'flycheck-checkers 'c-aspell-dynamic)
+  (add-to-list 'flycheck-checkers 'markdown-aspell-dynamic))
 
 (use-package flycheck-inline
   :ensure t
@@ -207,9 +207,10 @@ See URL `https://eslint.org/'."
 
 (use-package flycheck-package
   :ensure t
+  :after (flycheck)
   :commands (flycheck-package-setup)
-  :init
-  (add-hook 'flycheck-mode-hook 'flycheck-package-setup))
+  :config
+  (flycheck-package-setup))
 
 ;; (use-package flycheck-tip
 ;;   :commands (flycheck-tip-display-current-line-error-message)

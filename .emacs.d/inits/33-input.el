@@ -26,11 +26,14 @@
 (eval-when-compile
   (require 'evil))
 
+;; (use-package ddskk
+;;   :ensure t
+;;   :commands (skk-mode skk-auto-fill-mode)
+;;   )
+
 (use-package ddskk
   :ensure t
-  :commands (skk-mode skk-auto-fill-mode))
-
-(use-package skk
+  :commands (skk-mode skk-auto-fill-mode)
   :init
   (setq skk-echo t)
   (setq define-input-method "japanese-skk")
@@ -97,6 +100,7 @@
   (defun skk-setup-modeline ()
     (setq skk-indicator-alist (skk-make-indicator-alist)))
   ;; (use-package skk-setup)
+  (use-package skk-version)
   (use-package ccc)
   (use-package skk-hint)
   (use-package skk-cus)

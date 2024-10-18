@@ -65,18 +65,20 @@
   (defun my-ffap-guesser-current-file (func &rest args)
     (let ((guess (apply func args)))
       (or guess (buffer-file-name))))
-  (advice-add 'ffap-guesser :around 'my-ffap-guesser-current-file))
+  ;; (advice-add 'ffap-guesser :around 'my-ffap-guesser-current-file)
+  ;; (advice-remove 'ffap-guesser 'my-ffap-guesser-current-file)
+  )
 
 (use-package vertico
   :ensure t
   :after (marginalia)
+  :init
+  (add-hook 'after-init-hook 'vertico-mode)
   :config
   (marginalia-mode)
   (savehist-mode)
   (setq vertico-count 20)
   (setq vertico-cycle t)
-  (define-key vertico-map
-    (kbd "C-l") 'vertico-directory-up)
   (defun my/vertico-truncate-candidates (args)
     ;; (message "ARGS: %s" args)
     (if-let ((arg (car args))
@@ -96,7 +98,12 @@
               :filter-args
               #'my/vertico-truncate-candidates)
   )
-(vertico-mode)
+
+(use-package vertico-directory
+  :after (vertico)
+  :bind (:map vertico-map
+              ("C-l" . vertico-directory-up)
+              ("\\d" . vertico-directory-delete-char)))
 
 (use-package marginalia
   :ensure t
@@ -113,23 +120,23 @@
   :config
   (recentf-mode)
   (define-key evil-normal-state-map
-    (kbd "C-b") 'consult-buffer)
+              (kbd "C-b") 'consult-buffer)
   (setq consult-goto-line-numbers nil)
   (setq consult--source-buffer-perspeen
         `(:name "Buffer"
-          :narrow   ?b
-          :category buffer
-          :face     consult-buffer
-          :history  buffer-name-history
-          :state    ,#'consult--buffer-state
-          :default  t
-          :items
-          ,(lambda ()
-             (let ((buffers (perspeen-ws-struct-buffers perspeen-current-ws)))
-               (consult--buffer-query :sort 'visibility
-                                      :predicate (lambda (buf) (member buf buffers))
-                                      :as 'buffer-name)))
-          ))
+                :narrow   ?b
+                :category buffer
+                :face     consult-buffer
+                :history  buffer-name-history
+                :state    ,#'consult--buffer-state
+                :default  t
+                :items
+                ,(lambda ()
+                   (let ((buffers (perspeen-ws-struct-buffers perspeen-current-ws)))
+                     (consult--buffer-query :sort 'visibility
+                                            :predicate (lambda (buf) (member buf buffers))
+                                            :as 'buffer-name)))
+                ))
   (setq consult-buffer-sources '(
                                  consult--source-buffer-perspeen
                                  ;; consult--source-hidden-buffer
@@ -302,19 +309,19 @@
               (select-window window))))))
 
   (define-key embark-file-map
-    (kbd "v") 'embark-find-file-vsplit)
+              (kbd "v") 'embark-find-file-vsplit)
   (define-key embark-file-map
-    (kbd "C-v") 'embark-find-file-vsplit)
+              (kbd "C-v") 'embark-find-file-vsplit)
   (define-key embark-file-map
-    (kbd "s") 'embark-find-file-split)
+              (kbd "s") 'embark-find-file-split)
   (define-key embark-file-map
-    (kbd "C-s") 'embark-find-file-split)
+              (kbd "C-s") 'embark-find-file-split)
   (define-key embark-file-map
-    (kbd "o") 'embark-find-file-other-window)
+              (kbd "o") 'embark-find-file-other-window)
   (define-key embark-file-map
-    (kbd "C-o") 'embark-find-file-other-window)
+              (kbd "C-o") 'embark-find-file-other-window)
   (define-key embark-file-map
-    (kbd "V") 'embark-vc-file-map)
+              (kbd "V") 'embark-vc-file-map)
 
   (defun embark-switch-to-buffer-split (buffer-or-name)
     (switch-window-if-gteq-3-windows)
@@ -337,17 +344,17 @@
         (switch-to-buffer buf))))
 
   (define-key embark-buffer-map
-    (kbd "v") 'embark-switch-to-buffer-vsplit)
+              (kbd "v") 'embark-switch-to-buffer-vsplit)
   (define-key embark-buffer-map
-    (kbd "C-v") 'embark-switch-to-buffer-vsplit)
+              (kbd "C-v") 'embark-switch-to-buffer-vsplit)
   (define-key embark-buffer-map
-    (kbd "s") 'embark-switch-to-buffer-split)
+              (kbd "s") 'embark-switch-to-buffer-split)
   (define-key embark-buffer-map
-    (kbd "C-s") 'embark-switch-to-buffer-split)
+              (kbd "C-s") 'embark-switch-to-buffer-split)
   (define-key embark-buffer-map
-    (kbd "o") 'embark-switch-to-buffer-other-window)
+              (kbd "o") 'embark-switch-to-buffer-other-window)
   (define-key embark-buffer-map
-    (kbd "C-o") 'embark-switch-to-buffer-other-window)
+              (kbd "C-o") 'embark-switch-to-buffer-other-window)
 
   (defvar-keymap embark-consult-grep-map
     :doc "Keymap for consult-grep actions."
@@ -374,17 +381,17 @@
       (when line (goto-line line))))
 
   (define-key embark-consult-grep-map
-    (kbd "v") 'embark-switch-to-file-vsplit)
+              (kbd "v") 'embark-switch-to-file-vsplit)
   (define-key embark-consult-grep-map
-    (kbd "C-v") 'embark-switch-to-file-vsplit)
+              (kbd "C-v") 'embark-switch-to-file-vsplit)
   (define-key embark-consult-grep-map
-    (kbd "s") 'embark-switch-to-file-split)
+              (kbd "s") 'embark-switch-to-file-split)
   (define-key embark-consult-grep-map
-    (kbd "C-s") 'embark-switch-to-file-split)
+              (kbd "C-s") 'embark-switch-to-file-split)
   (define-key embark-consult-grep-map
-    (kbd "o") 'embark-switch-to-file-window)
+              (kbd "o") 'embark-switch-to-file-window)
   (define-key embark-consult-grep-map
-    (kbd "C-o") 'embark-switch-to-file-window)
+              (kbd "C-o") 'embark-switch-to-file-window)
 
   (defun embark-which-key-indicator ()
     "An embark indicator that displays keymaps using which-key.
@@ -448,7 +455,6 @@ targets."
   (advice-add 'perspeen-tab--set-header-line-format
               :before
               'perspeen-tab--set-header-line-format-advice)
-
 
   (defun perspeen-tab-create-tab-advice (org-func &optional buffer marker switch-to-tab)
     ;; (unless buffer

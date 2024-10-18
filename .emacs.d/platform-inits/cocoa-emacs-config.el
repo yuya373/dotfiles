@@ -53,6 +53,8 @@
   (setenv "PKG_CONFIG_PATH" "/usr/local/opt/zlib/lib/pkgconfig:/usr/local/opt/libffi/lib/pkgconfig:/usr/local/lib/pkgconfig")
   (exec-path-from-shell-initialize))
 
+(use-package alert :ensure t)
+
 (use-package migemo
   :ensure t
   :commands (migemo-init)
