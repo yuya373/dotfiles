@@ -1,6 +1,5 @@
 case ${OSTYPE} in
     darwin*)
-	eval "$(/opt/homebrew/bin/brew shellenv)"
-        source ~/.zshenv
+        eval "$(/opt/homebrew/bin/brew shellenv)"
         ;;
 esac

@@ -80,5 +80,10 @@ fi
 source ~/dotfiles/.zenv
 
 if [ -e ${HOME}/.cargo/env ]; then
-  . "$HOME/.cargo/env"
+    . "$HOME/.cargo/env"
+fi
+
+if [ -d "/Users/yuya373/Library/pnpm" ]; then
+    export PNPM_HOME="/Users/yuya373/Library/pnpm"
+    export PATH="$PNPM_HOME:$PATH" ;
 fi
