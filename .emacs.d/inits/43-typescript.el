@@ -33,27 +33,52 @@
   :ensure t
   :mode (("\\.ts\\'" . typescript-ts-mode)
          ("\\.tsx\\'" . tsx-ts-mode)))
-
+(use-package treesit-auto
+  :ensure t
+  :init
+  (setq treesit-auto-install 'prompt)
+  :config
+  (global-treesit-auto-mode)
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (setq treesit-auto-recipe-list
+        (cl-remove-if (lambda (e)
+                        (or (eq 'typescript (treesit-auto-recipe-lang e))
+                            (eq 'tsx (treesit-auto-recipe-lang e))))
+                      treesit-auto-recipe-list))
+  (let ((revision "v0.20.3"))
+    (add-to-list 'treesit-auto-recipe-list
+                 (make-treesit-auto-recipe
+                  :lang 'tsx
+                  :ts-mode 'tsx-ts-mode
+                  :remap '(typescript-tsx-mode)
+                  :requires 'typescript
+                  :url "https://github.com/tree-sitter/tree-sitter-typescript"
+                  :revision revision
+                  :source-dir "tsx/src"
+                  :ext "\\.tsx\\'"))
+    (add-to-list 'treesit-auto-recipe-list
+                 (make-treesit-auto-recipe
+                  :lang 'typescript
+                  :ts-mode 'typescript-ts-mode
+                  :remap 'typescript-mode
+                  :requires 'tsx
+                  :url "https://github.com/tree-sitter/tree-sitter-typescript"
+                  :revision revision
+                  :source-dir "typescript/src"
+                  :ext "\\.ts\\'"))
+    )
+  )
 (use-package tree-sitter-langs :ensure t)
 (use-package tree-sitter
   :ensure t
-  :config
+  :hook ((typescript-ts-mode . tree-sitter-hl-mode)
+         (tsx-ts-mode . tree-sitter-hl-mode))
+  :init
+  (require 'tree-sitter)
   (global-tree-sitter-mode)
+  :config
   (tree-sitter-require 'tsx)
-  (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))
-  (defun around-tree-sitter--do-parse (func &rest args)
-    (ignore-errors
-      (apply func args)))
-  (advice-add 'tree-sitter--do-parse :around 'around-tree-sitter--do-parse)
-  (setq treesit-language-source-alist
-        '((tsx        "https://github.com/tree-sitter/tree-sitter-typescript"
-                      "v0.20.3"
-                      "tsx/src")
-          (typescript "https://github.com/tree-sitter/tree-sitter-typescript"
-                      "v0.20.3"
-                      "typescript/src")))
-
-  )
+  (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx)))
 
 (provide '43-typescript)
 ;;; 43-typescript.el ends here
