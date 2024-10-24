@@ -14,8 +14,9 @@ export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 
 export GOPATH=$HOME/go
 export ZPLUG_HOME=$HOME/zplug
-export EDITOR='emacsclient -n'
-export EDITOR=vim
+export EDITOR=emacsclient
+# export EDITOR='emacsclient -n'
+# export EDITOR=vim
 export LANG="ja_JP.UTF-8"
 
 export PATH=/usr/local/bin:${PATH}
