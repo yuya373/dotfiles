@@ -29,6 +29,7 @@
   :ensure t
   :mode ((".go\\'" . go-mode))
   :init
+  (setq  gofmt-show-errors 'echo)
   (defun init-go-mode ()
     (interactive)
     (setq-local helm-dash-docsets '("Go"))

@@ -37,14 +37,25 @@
   :ensure t
   :init
   (setq treesit-auto-install 'prompt)
+  (setq treesit-auto-langs '(typescript tsx))
   :config
   (global-treesit-auto-mode)
   (treesit-auto-add-to-auto-mode-alist 'all)
   (setq treesit-auto-recipe-list
         (cl-remove-if (lambda (e)
-                        (or (eq 'typescript (treesit-auto-recipe-lang e))
-                            (eq 'tsx (treesit-auto-recipe-lang e))))
+                        (let ((lang (treesit-auto-recipe-lang e)))
+                          (cl-member lang '(typescript tsx go))))
                       treesit-auto-recipe-list))
+  (let ((revision "v0.20.0"))
+    (add-to-list 'treesit-auto-recipe-list
+                 (make-treesit-auto-recipe
+                  :lang 'go
+                  :ts-mode 'go-ts-mode
+                  :remap 'go-mode
+                  :requires 'gomod
+                  :url "https://github.com/tree-sitter/tree-sitter-go"
+                  :revision revision
+                  :ext "\\.go\\'")))
   (let ((revision "v0.20.3"))
     (add-to-list 'treesit-auto-recipe-list
                  (make-treesit-auto-recipe
@@ -78,7 +89,9 @@
   (global-tree-sitter-mode)
   :config
   (tree-sitter-require 'tsx)
-  (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx)))
+  (add-to-list 'tree-sitter-major-mode-language-alist '(tsx-ts-mode . tsx))
+  (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-ts-mode . tsx))
+  )
 
 (provide '43-typescript)
 ;;; 43-typescript.el ends here
