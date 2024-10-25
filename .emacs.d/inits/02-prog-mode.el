@@ -108,5 +108,25 @@ http://www.emacswiki.org/emacs/AlignCommands"
   :ensure t
   :mode (("\\.graphqls\\'" . graphql-mode)))
 
+(use-package add-node-modules-path
+  :ensure t
+  :init
+  (add-to-list 'add-node-modules-path-command "yarn bin")
+  (with-eval-after-load 'typescript-ts-mode
+    (add-hook 'typescript-ts-mode 'add-node-modules-path))
+  )
+
+(use-package reformatter
+  :ensure t
+  :init
+  (require 'reformatter)
+  :config
+  (reformatter-define prettier
+    :program "prettier"
+    :args `("--stdin-filepath" ,buffer-file-name))
+  (with-eval-after-load 'typescript-ts-mode
+    (add-hook 'typescript-ts-mode 'prettier-on-save-mode))
+  )
+
 (provide '02-prog-mode)
 ;;; 02-prog-mode.el ends here
