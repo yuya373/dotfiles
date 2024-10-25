@@ -113,7 +113,8 @@ http://www.emacswiki.org/emacs/AlignCommands"
   :init
   (add-to-list 'add-node-modules-path-command "yarn bin")
   (with-eval-after-load 'typescript-ts-mode
-    (add-hook 'typescript-ts-mode 'add-node-modules-path))
+    (add-hook 'typescript-ts-mode-hook 'add-node-modules-path)
+    (add-hook 'tsx-ts-mode-hook 'add-node-modules-path))
   )
 
 (use-package reformatter
@@ -124,8 +125,18 @@ http://www.emacswiki.org/emacs/AlignCommands"
   (reformatter-define prettier
     :program "prettier"
     :args `("--stdin-filepath" ,buffer-file-name))
+  (reformatter-define eslint
+    :program "eslint"
+    :args `("--fix" ,buffer-file-name)
+    :stdin nil
+    :stdout nil
+    )
   (with-eval-after-load 'typescript-ts-mode
-    (add-hook 'typescript-ts-mode 'prettier-on-save-mode))
+    (add-hook 'typescript-ts-mode-hook 'prettier-on-save-mode)
+    (add-hook 'typescript-ts-mode-hook 'eslint-on-save-mode)
+    (add-hook 'tsx-ts-mode-hook 'prettier-on-save-mode)
+    (add-hook 'tsx-ts-mode-hook 'eslint-on-save-mode)
+    )
   )
 
 (provide '02-prog-mode)
