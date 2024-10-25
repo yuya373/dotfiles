@@ -29,10 +29,29 @@
 
 
 
+(use-package add-node-modules-path
+  :ensure t
+  :init
+  (add-to-list 'add-node-modules-path-command "yarn bin")
+  (with-eval-after-load 'typescript-ts-mode
+    (add-hook 'typescript-ts-mode-hook 'add-node-modules-path)
+    (add-hook 'tsx-ts-mode-hook 'add-node-modules-path))
+  )
+
 (use-package typescript-ts-mode
   :ensure t
   :mode (("\\.ts\\'" . typescript-ts-mode)
-         ("\\.tsx\\'" . tsx-ts-mode)))
+         ("\\.tsx\\'" . tsx-ts-mode))
+  :config
+  (defun eslint-fix ()
+    (call-process "eslint" nil "*ESLint Errors*" nil "--fix" buffer-file-name)
+    (revert-buffer t t t))
+  (defun enable-eslint-auto-fix ()
+    (add-hook 'after-save-hook 'eslint-fix nil t))
+  (add-hook 'typescript-ts-mode-hook 'enable-eslint-auto-fix)
+  (add-hook 'tsx-ts-mode-hook 'enable-eslint-auto-fix)
+  )
+
 (use-package treesit-auto
   :ensure t
   :init
