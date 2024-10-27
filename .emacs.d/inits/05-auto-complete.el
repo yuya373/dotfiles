@@ -242,6 +242,7 @@
   (add-hook 'web-mode-hook 'lsp)
   (add-hook 'enh-ruby-mode-hook 'lsp)
   (add-hook 'go-mode-hook 'lsp)
+  (add-hook 'go-ts-mode-hook 'lsp)
   (add-hook 'rustic-mode-hook 'lsp)
   (add-hook 'scala-mode-hook 'lsp)
 

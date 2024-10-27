@@ -104,5 +104,23 @@ http://www.emacswiki.org/emacs/AlignCommands"
   :init
   (add-hook 'after-init-hook 'direnv-mode))
 
+(use-package graphql-mode
+  :ensure t
+  :mode (("\\.graphqls\\'" . graphql-mode)))
+
+(use-package reformatter
+  :ensure t
+  :init
+  (require 'reformatter)
+  :config
+  (reformatter-define prettier
+    :program "prettier"
+    :args `("--stdin-filepath" ,buffer-file-name))
+  (with-eval-after-load 'typescript-ts-mode
+    (add-hook 'typescript-ts-mode-hook 'prettier-on-save-mode)
+    (add-hook 'tsx-ts-mode-hook 'prettier-on-save-mode)
+    )
+  )
+
 (provide '02-prog-mode)
 ;;; 02-prog-mode.el ends here

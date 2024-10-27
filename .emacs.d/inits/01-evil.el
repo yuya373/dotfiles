@@ -734,7 +734,9 @@ If the scroll count is zero the command scrolls half the screen."
     "pk" 'projectile-invalidate-cache
     "pc" 'projectile-compile-project
     "r" 'create-restclient-buffer
-    "s" 'create-eshell
+    "ss" 'create-eshell
+    "see" 'server-edit
+    "sea" 'server-edit-abort
     "ts" 'text-scale-adjust
     "wb" 'balance-windows
     "wc" 'whitespace-cleanup

@@ -43,7 +43,7 @@
 ;; encoding
 (set-language-environment "Japanese")
 
-(setq require-final-newline t)
+(setq require-final-newline nil)
 (setq ad-redefinition-action 'accept)
 
 (use-package recentf
