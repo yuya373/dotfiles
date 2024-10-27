@@ -144,6 +144,10 @@ See `font-lock-syntax-table'."))
   (setq rspec-docker-container "app")
   (setq rspec-docker-command "docker-compose run --rm")
   :config
+  (defun rspec-rails-env (func)
+    (concat "RAILS_ENV=test " (funcall func)))
+  (advice-add 'rspec-runner :around 'rspec-rails-env)
+
   (defun rspec-spec-file-p (a-file-name)
     "Return true if the specified A-FILE-NAME is a spec."
     (or (numberp (string-match rspec-spec-file-name-re a-file-name))
@@ -156,6 +160,7 @@ See `font-lock-syntax-table'."))
     (evil-define-key 'normal rspec-verifiable-mode-map
       ",tt" 'rspec-verify-single
       ",tb" 'rspec-verify)))
+
 
 ;; (use-package ruby-test-mode
 ;;   :diminish ruby-test-mode
