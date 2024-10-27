@@ -30,3 +30,4 @@ sudo usermod -aG docker $USER
 # WSL2で dbus と WSLg が使えなかったのをどうにかする | ぴんくいろにっき
 # https://blog.hinaloe.net/2024/01/24/wsl2-dbus-wslg/
 sudo systemctl mask tmp.mount
+ln -sf /mnt/c/Users/yuya373/Dropbox/ ~/Dropbox
