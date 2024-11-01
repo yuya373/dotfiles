@@ -32,6 +32,7 @@
 (use-package add-node-modules-path
   :ensure t
   :init
+  :config
   (add-to-list 'add-node-modules-path-command "yarn bin")
   (with-eval-after-load 'typescript-ts-mode
     (add-hook 'typescript-ts-mode-hook 'add-node-modules-path)
