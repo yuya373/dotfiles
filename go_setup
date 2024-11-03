@@ -3,5 +3,4 @@
 set -e
 
 go install golang.org/x/tools/gopls@latest
-go get -u github.com/rogpeppe/godef
-go install github.com/rogpeppe/godef
+go install github.com/rogpeppe/godef@latest
