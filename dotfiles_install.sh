@@ -79,16 +79,10 @@ if [[ ! -d ~/.tmux/plugins/tpm ]]; then
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 fi
 
-if [[ ! -d ~/tmux-powerline ]]; then
-    git clone https://github.com/erikw/tmux-powerline.git ~/tmux-powerline
-fi
-
 ln -sf ~/dotfiles/.tmux.conf ~/.tmux.conf
-if [[ ! -d ~/.config/tmux-powerline/themes ]]; then
-    mkdir -p ~/.config/tmux-powerline/themes
-fi
-ln -sf ~/dotfiles/.tmux-powerlinerc.default ~/.config/tmux-powerline/config.sh
-ln -sf ~/dotfiles/powerline/themes/mytheme.sh ~/.config/tmux-powerline/themes/mytheme.sh
+
+mkdir -p ~/.config/tmux-powerline
+ln -sf ~/dotfiles/tmux-powerline/config.sh ~/.config/tmux-powerline/config.sh
 
 # lisp
 if [[ ! -d ~/.config/common-lisp ]]; then

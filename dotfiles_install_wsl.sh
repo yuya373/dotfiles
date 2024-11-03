@@ -39,12 +39,10 @@ if [[ ! -d ~/.tmux/plugins/tpm ]]; then
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 fi
 
-if [[ ! -d ~/tmux-powerline ]]; then
-    git clone https://github.com/erikw/tmux-powerline.git ~/tmux-powerline
-fi
-
 ln -sf ~/dotfiles/.tmux.conf ~/.tmux.conf
-ln -sf ~/dotfiles/.tmux-powerlinerc.default ~/.tmux-powerlinerc
+
+mkdir -p ~/.config/tmux-powerline
+ln -sf ~/dotfiles/tmux-powerline/config.sh ~/.config/tmux-powerline/config.sh
 
 # emacs
 ln -sf ~/dotfiles/.emacs.d ~/.emacs.d
