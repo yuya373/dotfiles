@@ -45,12 +45,21 @@
          ("\\.tsx\\'" . tsx-ts-mode))
   :config
   (defun eslint-fix ()
+    (interactive)
     (call-process "eslint" nil "*ESLint Errors*" nil "--fix" buffer-file-name)
     (revert-buffer t t t))
-  (defun enable-eslint-auto-fix ()
-    (add-hook 'after-save-hook 'eslint-fix nil t))
-  (add-hook 'typescript-ts-mode-hook 'enable-eslint-auto-fix)
-  (add-hook 'tsx-ts-mode-hook 'enable-eslint-auto-fix)
+
+  (with-eval-after-load 'evil-collection
+    (evil-collection-define-key 'normal 'typescript-ts-mode-map
+      (kbd ",f") 'eslint-fix)
+    (evil-collection-define-key 'normal 'tsx-ts-mode-map
+      (kbd ",f") 'eslint-fix)
+    )
+
+  ;; (defun enable-eslint-auto-fix ()
+  ;;   (add-hook 'after-save-hook 'eslint-fix nil t))
+  ;; (add-hook 'typescript-ts-mode-hook 'enable-eslint-auto-fix)
+  ;; (add-hook 'tsx-ts-mode-hook 'enable-eslint-auto-fix)
   )
 
 (use-package treesit-auto

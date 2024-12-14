@@ -39,6 +39,8 @@
   :ensure t
   :commands (magit-status magit-blame)
   :init
+
+  (setq long-line-threshold (* 5 long-line-threshold))
   (setq magit-push-always-verify t)
   (setq magit-branch-arguments nil)
 

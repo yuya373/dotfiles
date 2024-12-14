@@ -28,18 +28,32 @@
   (require 'evil))
 
 ;; (el-get-bundle copilot-emacs/copilot.el :name copilot)
-;; (use-package copilot
-;;   :init
-;;   (add-hook 'prog-mode-hook 'copilot-mode)
-;;   :config
-;;   ;; (defun my/copilot-tab ()
-;;   ;;   (interactive)
-;;   ;;   (or (copilot-accept-completion-by-word)
-;;   ;;       (indent-for-tab-command)))
-;;   (evil-define-key 'insert copilot-mode-map
-;;     (kbd "C-<tab>") #'copilot-accept-completion
-;;     ))
-
+(use-package quelpa :ensure t)
+(use-package quelpa-use-package :ensure t)
+(require 'quelpa-use-package)
+(use-package copilot
+  :quelpa (copilot :fetcher github
+                   :repo "copilot-emacs/copilot.el"
+                   :branch "main"
+                   :files ("*.el"))
+  :init
+  (add-hook 'prog-mode-hook 'copilot-mode)
+  (add-hook 'text-mode-hook 'copilot-mode)
+  (add-to-list 'warning-suppress-types '(copilot copilot-exceeds-max-char))
+  (setq copilot-indent-offset-warning-disable t)
+  :config
+  ;; (defun my/copilot-tab ()
+  ;;   (interactive)
+  ;;   (or (copilot-accept-completion-by-word)
+  ;;       (indent-for-tab-command)))
+  (evil-define-key 'insert copilot-mode-map
+    (kbd "C-<tab>") #'copilot-accept-completion
+    )
+  (advice-add 'copilot-complete :around 'disable-copilot-complete-when-skk-henkan)
+  (defun disable-copilot-complete-when-skk-henkan (func &rest args)
+    (unless skk-henkan-mode
+        (apply func args)))
+  )
 
 (use-package yasnippet-snippets
   :ensure t
@@ -317,6 +331,7 @@
   (use-package lsp-headerline)
   (use-package lsp-diagnostics)
   (use-package lsp-completion)
+
   (defface my:lsp-modeline-code-actions-face-14
     '((t (:inherit homoglyph :foreground "#002b36" :bold t)))
     "Used to modeline code actions"
@@ -326,8 +341,9 @@
   (evil-collection-define-key 'normal 'lsp-mode-map
     ",hs" 'lsp-describe-session
     "K" 'lsp-describe-thing-at-point
-    ",a" 'lsp-execute-code-action
+    ",aa" 'lsp-execute-code-action
     ",R" 'lsp-rename
+    ",al" 'lsp-avy-lens
     "gd" 'lsp-find-definition
     "gD" 'lsp-find-declaration
     "gr" 'lsp-find-references
@@ -335,6 +351,7 @@
     "gi" 'lsp-find-implementation
     "gR" 'lsp-workspace-restart
     )
+
   ;; https://github.com/emacs-lsp/lsp-mode/issues/2681#issuecomment-1500173268
   ;; (advice-add 'json-parse-buffer :around
   ;;             (lambda (orig &rest rest)
@@ -342,6 +359,20 @@
   ;;                 (while (re-search-forward "\\\\u0000" nil t)
   ;;                   (replace-match "")))
   ;;               (apply orig rest)))
+  )
+
+(use-package lsp-treemacs
+  :after (lsp-mode)
+  :init
+  (setq lsp-treemacs-error-list-expand-depth 3)
+  (setq lsp-treemacs-call-hierarchy-expand-depth 3)
+  (setq lsp-treemacs-type-hierarchy-expand-depth 3)
+  (setq lsp-treemacs-java-deps-list-expand-depth 3)
+  :config
+
+  (evil-collection-define-key 'normal 'lsp-mode-map
+    ",el" 'lsp-treemacs-errors-list
+    )
   )
 
 (use-package lsp-ui
@@ -395,7 +426,6 @@
     "gi" 'lsp-ui-peek-find-implementation
     ",a" nil
     ",i" 'lsp-ui-imenu
-    ",le" 'lsp-ui-flycheck-list
     ",k" 'lsp-ui-doc-show
     )
   (defun lsp-ui-peek--goto-xref-vertical-window ()
