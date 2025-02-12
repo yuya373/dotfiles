@@ -1,8 +1,8 @@
 ;;; 04-helm.el ---                                   -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2015  南優也
+;; Copyright (C) 2015
 
-;; Author: 南優也 <yuyaminami@minamiyuunari-no-MacBook-Pro.local>
+;; Author: <yuyaminami@minamiyuunari-no-MacBook-Pro.local>
 ;; Keywords:
 
 ;; This program is free software; you can redistribute it and/or modify
@@ -523,18 +523,26 @@ targets."
   (use-package embark
     :config
     (defun embark-find-file-tab (filename &optional wildcards)
-      (perspeen-tab-create-tab
-       (find-file-noselect (expand-file-name filename))
-       0)
+      (message "embark-find-file-tab: %s" filename)
+      (let ((buf (find-file-noselect (expand-file-name filename))))
+        (perspeen-tab-create-tab buf 0))
+      (delete-other-windows)
       (perspeen-update-mode-string))
     (define-key embark-file-map (kbd "t") 'embark-find-file-tab)
     (defun embark-switch-to-buffer-tab (buffer-or-name)
-      (perspeen-tab-create-tab
-       (window-normalize-buffer-to-switch-to buffer-or-name)
-       0)
+      (message "embark-switch-to-buffer-tab")
+      (let* ((buffer (window-normalize-buffer-to-switch-to buffer-or-name))
+             (marker (with-current-buffer buffer (point-marker))))
+        (if marker
+            (perspeen-tab-create-tab buffer marker)
+          (perspeen-tab-create-tab buffer))
+
+        (delete-other-windows)
+        )
       (perspeen-update-mode-string))
     (define-key embark-buffer-map (kbd "t") 'embark-switch-to-buffer-tab)
     (defun embark-switch-to-file-tab (file-name)
+      (message "embark-switch-to-file-tab")
       (let* ((n (consult-normalize-file-string file-name))
              (path (car n))
              (line (cadr n))
@@ -545,6 +553,7 @@ targets."
         (perspeen-tab-create-tab
          (window-normalize-buffer-to-switch-to buffer)
          0)
+        (delete-other-windows)
         (perspeen-update-mode-string)
         (when line
           (goto-line line))))

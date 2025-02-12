@@ -120,6 +120,11 @@
         '("^/scp:" "^/ssh:" "/sudo:" "/multi:"))
   :config
   (defun auto-save-buffers-enhanced-save-buffers-if-normal-state ()
+    ;; (if-let* ((filename (buffer-file-name))
+    ;;           (modes (split-string (number-to-string (file-modes filename)) "" t))
+    ;;           (modes-symbolic (file-modes-number-to-symbolic (file-modes filename)))
+    ;;        )
+    ;;   (message "MODES: %s, %s" modes modes-symbolic))
     (if (eq evil-state 'normal)
         (ignore-errors
           (auto-save-buffers-enhanced-save-buffers))))

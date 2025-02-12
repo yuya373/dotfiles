@@ -107,7 +107,7 @@
   :ensure t
   :init
   (setq sqlformat-command 'sqlfluff)
-  (setq sqlformat-args '("--dialect" "postgres"))
+  (setq sqlformat-args '("--dialect" "mysql"))
   (evil-define-key 'normal sql-mode-map
     ",f" 'sqlformat-buffer)
   :config

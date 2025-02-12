@@ -95,7 +95,16 @@
     ",h" 'godoc-at-point
     ",c" 'go-compile
     ",r" 'go-run-file
-    ))
+    )
+  (defun my-indent-or-insert-tab (arg)
+    "Insert TAB if point is in a string, otherwise call
+`indent-for-tab-command'."
+    (interactive "P")
+    (if (nth 3 (syntax-ppss (point)))
+        (insert "\t")
+      (indent-for-tab-command arg)))
+  (add-hook 'go-mode-hook (lambda () (local-set-key (kbd "TAB") #'my-indent-or-insert-tab)))
+  )
 
 
 (provide '44-go)

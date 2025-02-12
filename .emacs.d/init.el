@@ -22,6 +22,8 @@
 (setq garbage-collection-messages nil)
 (setq read-process-output-max (* 1 (* 1024 1024))) ;; 1mb
 
+(setq menu-bar-mode t)
+
 (defvar before-gc-elapsed nil)
 (defvar before-pure-bytes-used nil)
 (defun notify-gc-finished ()

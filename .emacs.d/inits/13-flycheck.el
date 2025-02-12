@@ -150,6 +150,12 @@
   (defun flycheck-sqlfluff-working-directory (_checker)
     (let ((dir (vc-git-root (buffer-file-name))))
       dir))
+  (defun flycheck-sqlfluff-dialect ()
+    (if (boundp 'sql-product)
+      (cond ((string= sql-product "postgres") "postgres")
+            ((string= sql-product "mysql") "mysql")
+            (t "ansi"))
+      "ansi"))
   (flycheck-define-checker sql-sqlfluff
     "A Javascript syntax and style checker using eslint.
 See URL `https://eslint.org/'."
@@ -157,7 +163,7 @@ See URL `https://eslint.org/'."
               "sqlfluff" "lint"
               "--nofail"
               "--disable-progress-bar"
-              "--dialect" "postgres"
+              "--dialect" (eval (flycheck-sqlfluff-dialect))
               "--format" "json"
               source
               )
@@ -172,7 +178,6 @@ See URL `https://eslint.org/'."
   :after (flycheck)
   :ensure t
   :config
-  (add-to-list 'flycheck-checkers 'c-aspell-dynamic)
   (add-to-list 'flycheck-checkers 'markdown-aspell-dynamic))
 
 (use-package flycheck-inline

@@ -28,32 +28,32 @@
   (require 'evil))
 
 ;; (el-get-bundle copilot-emacs/copilot.el :name copilot)
-(use-package quelpa :ensure t)
-(use-package quelpa-use-package :ensure t)
-(require 'quelpa-use-package)
-(use-package copilot
-  :quelpa (copilot :fetcher github
-                   :repo "copilot-emacs/copilot.el"
-                   :branch "main"
-                   :files ("*.el"))
-  :init
-  (add-hook 'prog-mode-hook 'copilot-mode)
-  (add-hook 'text-mode-hook 'copilot-mode)
-  (add-to-list 'warning-suppress-types '(copilot copilot-exceeds-max-char))
-  (setq copilot-indent-offset-warning-disable t)
-  :config
-  ;; (defun my/copilot-tab ()
-  ;;   (interactive)
-  ;;   (or (copilot-accept-completion-by-word)
-  ;;       (indent-for-tab-command)))
-  (evil-define-key 'insert copilot-mode-map
-    (kbd "C-<tab>") #'copilot-accept-completion
-    )
-  (advice-add 'copilot-complete :around 'disable-copilot-complete-when-skk-henkan)
-  (defun disable-copilot-complete-when-skk-henkan (func &rest args)
-    (unless skk-henkan-mode
-        (apply func args)))
-  )
+;; (use-package quelpa :ensure t)
+;; (use-package quelpa-use-package :ensure t)
+;; (require 'quelpa-use-package)
+;; (use-package copilot
+;;   :quelpa (copilot :fetcher github
+;;                    :repo "copilot-emacs/copilot.el"
+;;                    :branch "main"
+;;                    :files ("*.el"))
+;;   :init
+;;   (add-hook 'prog-mode-hook 'copilot-mode)
+;;   (add-hook 'text-mode-hook 'copilot-mode)
+;;   (add-to-list 'warning-suppress-types '(copilot copilot-exceeds-max-char))
+;;   (setq copilot-indent-offset-warning-disable t)
+;;   :config
+;;   ;; (defun my/copilot-tab ()
+;;   ;;   (interactive)
+;;   ;;   (or (copilot-accept-completion-by-word)
+;;   ;;       (indent-for-tab-command)))
+;;   (evil-define-key 'insert copilot-mode-map
+;;     (kbd "C-<tab>") #'copilot-accept-completion
+;;     )
+;;   (advice-add 'copilot-complete :around 'disable-copilot-complete-when-skk-henkan)
+;;   (defun disable-copilot-complete-when-skk-henkan (func &rest args)
+;;     (unless skk-henkan-mode
+;;       (apply func args)))
+;;   )
 
 (use-package yasnippet-snippets
   :ensure t
@@ -117,10 +117,13 @@
   ;;          company-dabbrev
   ;;          company-files          ; files & directory
   ;;          company-keywords       ; keywords
-  ;;          company-gtags
-  ;;          company-etags
+  ;;          ;; company-gtags
+  ;;          ;; company-etags
   ;;          ;; company-yasnippet
   ;;          )))
+  ;; (setq company-backends (cons 'company-capf (delete 'company-capf company-backends)))
+  (setq company-backends '(company-capf company-files company-keywords company-dabbrev-code company-dabbrev))
+
   (use-package company-emoji
     :ensure t
     :commands (company-emoji)
@@ -139,28 +142,28 @@
   ;; (use-package company-yasnippet
   ;;   :config
   ;;   (add-to-list 'company-backends 'company-yasnippet))
-  (use-package company-ispell
-    :init
-    (defun toggle-company-ispell ()
-      (interactive)
-      (if (memq 'company-ispell company-backends)
-          (progn
-            (setq company-backends (delete 'company-ispell company-backends))
-            (message "Turn OFF `company-ispell'"))
-        (add-to-list 'company-backends 'company-ispell)
-        (message "Turn ON `company-ispell'")))
-    (defun add-company-ispell ()
-      (make-local-variable 'company-backends)
-      (add-to-list 'company-backends
-                   '(company-ispell
-                     company-files
-                     company-dabbrev
-                     )))
-    (add-hook 'text-mode-hook #'add-company-ispell)
-    ;; (add-hook 'gfm-mode-hook #'add-company-ispell)
-    ;; (add-hook 'markdown-mode-hook #'add-company-ispell)
-    ;; (add-hook 'org-mode-hook #'add-company-ispell)
-    )
+  ;; (use-package company-ispell
+  ;;   :init
+  ;;   (defun toggle-company-ispell ()
+  ;;     (interactive)
+  ;;     (if (memq 'company-ispell company-backends)
+  ;;         (progn
+  ;;           (setq company-backends (delete 'company-ispell company-backends))
+  ;;           (message "Turn OFF `company-ispell'"))
+  ;;       (add-to-list 'company-backends 'company-ispell)
+  ;;       (message "Turn ON `company-ispell'")))
+  ;;   (defun add-company-ispell ()
+  ;;     (make-local-variable 'company-backends)
+  ;;     (add-to-list 'company-backends
+  ;;                  '(company-ispell
+  ;;                    company-files
+  ;;                    company-dabbrev
+  ;;                    )))
+  ;;   (add-hook 'text-mode-hook #'add-company-ispell)
+  ;; (add-hook 'gfm-mode-hook #'add-company-ispell)
+  ;; (add-hook 'markdown-mode-hook #'add-company-ispell)
+  ;; (add-hook 'org-mode-hook #'add-company-ispell)
+  ;; )
 
   (defun company--insert-candidate2 (candidate)
     (when (> (length candidate) 0)
@@ -230,8 +233,9 @@
   (diminish 'abbrev-mode))
 
 (use-package know-your-http-well :ensure t)
-
-(use-package editorconfig :ensure t)
+(use-package editorconfig :ensure t
+  :config
+  (editorconfig-mode 1))
 (use-package company-restclient
   :ensure t
   :commands (company-restclient)
@@ -259,6 +263,9 @@
   (add-hook 'go-ts-mode-hook 'lsp)
   (add-hook 'rustic-mode-hook 'lsp)
   (add-hook 'scala-mode-hook 'lsp)
+  (add-hook 'yaml-mode-hook 'lsp)
+  (add-hook 'markdown-mode-hook 'lsp)
+  (add-hook 'text-mode-hook 'lsp)
 
   (setq lsp-auto-guess-root t
         lsp-enable-snippet t
@@ -292,7 +299,7 @@
         lsp-file-watch-threshold nil
         lsp-enable-file-watchers t
 
-        lsp-response-timeout 5
+        lsp-response-timeout 10
 
         ;; lsp-rust-clippy-preference "on"
         ;; lsp-rust-server 'rls
@@ -310,6 +317,7 @@
         lsp-rust-analyzer-experimental-proc-attr-macros t
         lsp-rust-all-features t
         standard-indent 2
+        lsp-copilot-enabled t
         )
   (defun my-lsp-inhibit-hooks ()
     (setq-local lsp-inhibit-lsp-hooks t))
@@ -442,9 +450,18 @@
     (interactive)
     (let ((display-buffer-alist
            '((t (lambda (buffer alist)
-                  (let ((marker (with-current-buffer buffer (point-marker))))
+                  (let ((marker (with-current-buffer buffer (point-marker)))
+                        )
                     (perspeen-tab-create-tab buffer marker)
-                    (selected-window)))))))
+                    (let ((window (selected-window)))
+                      (mapc (lambda (w)
+                              (unless (equal w window)
+                                (delete-window w)))
+                            (window-list))
+                      window)
+                    ;; (delete-other-windows)
+                    ;; (selected-window)
+                    ))))))
       (lsp-ui-peek--goto-xref-other-window)))
 
   (define-key lsp-ui-peek-mode-map
