@@ -55,9 +55,8 @@
 
 (use-package exec-path-from-shell
   :ensure t
-  ;; :commands (exec-path-from-shell-initialize)
   :init
-  ;; (add-hook 'before-init-hook 'exec-path-from-shell-initialize)
+  (setq exec-path-from-shell-arguments '("-l"))
   (setq exec-path-from-shell-variables
         '("PATH"
           "MANPATH"
@@ -68,7 +67,6 @@
           ))
   :config
   (exec-path-from-shell-initialize)
-  ;; (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
   )
 
 (provide 'linux-emacs-config)

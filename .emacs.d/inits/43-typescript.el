@@ -34,9 +34,23 @@
   :init
   :config
   (add-to-list 'add-node-modules-path-command "yarn bin")
+  (add-to-list 'add-node-modules-path-command "pnpm bin")
+
+  (defun vc-root-add-node-modules-path-command ()
+    (interactive)
+    (if-let((vc-root (vc-root-dir)))
+        (let ((default-directory vc-root))
+          (add-node-modules-path))
+      (if-let ((current (locate-dominating-file default-directory "package.json"))
+               (parent-dir (file-name-directory (directory-file-name current)))
+               (parent (locate-dominating-file parent-dir "package.json")))
+          (let ((default-directory parent))
+            (add-node-modules-path)))))
   (with-eval-after-load 'typescript-ts-mode
-    (add-hook 'typescript-ts-mode-hook 'add-node-modules-path)
-    (add-hook 'tsx-ts-mode-hook 'add-node-modules-path))
+    (add-hook 'typescript-ts-mode-hook 'add-node-modules-path -100)
+    (add-hook 'typescript-ts-mode-hook 'vc-root-add-node-modules-path-command -100)
+    (add-hook 'tsx-ts-mode-hook 'add-node-modules-path -100)
+    (add-hook 'tsx-ts-mode-hook 'vc-root-add-node-modules-path-command -100))
   )
 
 (use-package typescript-ts-mode
@@ -68,7 +82,6 @@
   (setq treesit-auto-install 'prompt)
   (setq treesit-auto-langs '(typescript tsx))
   :config
-  (global-treesit-auto-mode)
   (treesit-auto-add-to-auto-mode-alist 'all)
   (setq treesit-auto-recipe-list
         (cl-remove-if (lambda (e)
@@ -108,19 +121,20 @@
                   :ext "\\.ts\\'"))
     )
   )
-(use-package tree-sitter-langs :ensure t)
+(unless (package-installed-p 'tree-sitter-langs)
+  (package-vc-install "https://github.com/emacs-tree-sitter/tree-sitter-langs"))
+(use-package tree-sitter-langs)
 (use-package tree-sitter
   :ensure t
   :hook ((typescript-ts-mode . tree-sitter-hl-mode)
          (tsx-ts-mode . tree-sitter-hl-mode))
-  :init
-  (require 'tree-sitter)
-  (global-tree-sitter-mode)
   :config
   (tree-sitter-require 'tsx)
   (add-to-list 'tree-sitter-major-mode-language-alist '(tsx-ts-mode . tsx))
-  (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-ts-mode . tsx))
-  )
+  (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-ts-mode . tsx)))
+
+(global-treesit-auto-mode)
+(global-tree-sitter-mode)
 
 (provide '43-typescript)
 ;;; 43-typescript.el ends here

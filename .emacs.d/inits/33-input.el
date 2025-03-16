@@ -31,9 +31,9 @@
 ;;   :commands (skk-mode skk-auto-fill-mode)
 ;;   )
 
-(use-package ddskk
-  :ensure t
-  :commands (skk-mode skk-auto-fill-mode)
+(use-package ddskk :ensure t)
+(use-package skk
+  :ensure ddskk
   :init
   (setq skk-echo t)
   (setq define-input-method "japanese-skk")
@@ -53,7 +53,9 @@
   (setq skk-show-tooltip nil
         skk-show-inline nil
         skk-show-candidates-always-pop-to-buffer nil
-        skk-show-mode-show nil)
+        skk-show-mode-show nil
+        skk-show-icon nil
+        )
   (setq skk-dcomp-activate t
         skk-dcomp-multiple-activate t
         skk-dcomp-multiple-rows 10
@@ -62,7 +64,7 @@
         skk-comp-circulate t)
   (setq skk-sticky-key ";")
   (setq skk-previous-candidate-keys (list "x" "\C-p"))
-  (setq skk-isearch-mode-enable nil)
+  (setq skk-isearch-mode-enable t)
   (setq skk-check-okurigana-on-touroku 'auto)
   (setq skk-use-numeric-conversion t)
 
@@ -91,54 +93,44 @@
       (skk-mode 1)
       (skk-latin-mode 1)))
   (add-hook 'evil-insert-state-entry-hook 'enable-skk-when-insert)
-  ;; (add-hook 'skk-mode-hook
-  ;;           #'(lambda ()
-  ;;               (define-key skk-j-mode-map (kbd "C-h")
-  ;;                 'skk-delete-backward-char)
-  ;;               (evil-make-intercept-map skk-j-mode-map 'insert )))
   :config
-  (defun skk-setup-modeline ()
-    (setq skk-indicator-alist (skk-make-indicator-alist)))
-  ;; (use-package skk-setup)
-  (use-package skk-version)
-  (use-package ccc)
-  (use-package skk-hint)
-  (use-package skk-cus)
-  (use-package skk-macs)
-  (when window-system
-    (use-package skk-cursor))
-  (use-package skk-server-completion)
-  (use-package skk-kcode)
-  (use-package skk-annotation)
-  (use-package skk-study)
-  (use-package skk-cdb)
-  (use-package skk-num)
-  (use-package skk-dcomp)
-  (use-package skk-look)
-  (define-key skk-j-mode-map (kbd "C-h") 'skk-delete-backward-char)
+  (defun skk-isearch-setup-maybe ()
+    (require 'skk-vars)
+    (when (or (eq skk-isearch-mode-enable 'always)
+              (and (boundp 'skk-mode)
+                   skk-mode
+                   skk-isearch-mode-enable))
+      (skk-isearch-mode-setup)))
+  (defun skk-isearch-cleanup-maybe ()
+    (require 'skk-vars)
+    (when (and (featurep 'skk-isearch)
+               skk-isearch-mode-enable)
+      (skk-isearch-mode-cleanup)))
+  (add-hook 'isearch-mode-hook #'skk-isearch-setup-maybe)
+  (add-hook 'isearch-mode-end-hook #'skk-isearch-cleanup-maybe)
+
+
   (define-key minibuffer-local-map (kbd "C-j") 'skk-j-mode-on)
   ;; @@ server completion
   (add-to-list 'skk-search-prog-list
                '(skk-server-completion-search) t)
   (add-to-list 'skk-completion-prog-list
                '(skk-comp-by-server-completion) t)
+  (skk-setup-emulation-commands '(evil-delete-backward-char)
+                                'skk-delete-backward-char)
 
-  (defun my-skk-control ()
+  (defun evil-ensure-skk-latin-in-normal-mode ()
     (if (bound-and-true-p skk-mode)
         (skk-latin-mode 1)))
-  (add-hook 'evil-normal-state-entry-hook 'my-skk-control)
-  (defadvice evil-ex-search-update-pattern
-      (around evil-inhibit-ex-search-update-pattern-in-skk-henkan activate)
-    ;; SKKの未確定状態(skk-henkan-mode)ではない場合だけ, 検索パターンをアップデート
-    "Inhibit search pattern update during `skk-henkan-mode'.
-This is reasonable since inserted text during `skk-henkan-mode'
-is a kind of temporary one which is not confirmed yet."
+  (add-hook 'evil-normal-state-entry-hook 'evil-ensure-skk-latin-in-normal-mode)
+
+  ;; SKKの未確定状態(skk-henkan-mode)ではない場合だけ, 検索パターンをアップデート
+  (defun around-evil-ex-search-update-pattern-skk (orig-fun &rest args)
     (unless (bound-and-true-p skk-henkan-mode)
-      ad-do-it))
+      (apply orig-fun args)))
+  (advice-add 'evil-ex-search-update-pattern :around 'around-evil-ex-search-update-pattern-skk)
   (with-eval-after-load "markdown"
     (skk-wrap-newline-command markdown-enter-key)))
-
-
 
 (provide '33-input)
 ;;; 33-input.el ends here

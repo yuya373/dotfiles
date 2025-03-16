@@ -53,8 +53,7 @@
     (interactive)
     (let ((file (format "%sorg"
                         (format-time-string open-junk-file-format (current-time)))))
-      (when open-junk-file-make-directory
-        (make-directory (file-name-directory file) t))
+      (make-directory (file-name-directory file) t)
       (funcall open-junk-file-find-file-function file)))
 
   (defun open-junk-file ()
@@ -64,8 +63,7 @@
                        (filename (file-name-nondirectory path)))
                   (read-file-name "Junk Code (Enter extension): " dir nil nil
                                   filename))))
-      (when open-junk-file-make-directory
-        (make-directory (file-name-directory file) t))
+      (make-directory (file-name-directory file) t)
       (funcall open-junk-file-find-file-function file)))
   (defun open-junk-dir ()
     (interactive)

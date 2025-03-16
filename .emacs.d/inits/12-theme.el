@@ -27,6 +27,7 @@
   (require 'evil))
 
 (use-package solarized-theme
+             :ensure t
   ;; :defer t
   :init
   (setq solarized-high-contrast-mode-line t)
@@ -35,25 +36,7 @@
   (setq solarized-emphasize-indicators t)
 
   ;; (setq solarized-use-more-italic t)
-  (when window-system
-    (defun load-default-theme ()
-      (load-solarized-dark))
-    (defun load-solarized-dark ()
-      (setq solarized-use-less-bold t)
-      (load-theme 'solarized-dark t)
-      (setq current-theme 'solarized-dark))
-    (defun load-solarized-light ()
-      (setq solarized-use-less-bold nil)
-      (load-theme 'solarized-light t)
-      (setq current-theme 'solarized-light))
-    (defvar current-theme)
-    (defun toggle-theme ()
-      (interactive)
-      (cl-case current-theme
-        (solarized-dark (load-solarized-light))
-        (solarized-light (load-solarized-dark))
-        (t (load-default-theme))))
-    (add-hook 'after-init-hook #'load-default-theme))
+
   :config
   (use-package solarized-palettes)
   (use-package whitespace
@@ -94,6 +77,7 @@
           (set-face-background 'whitespace-tab magenta)
           (set-face-foreground 'whitespace-tab base03))))))
 
+(load-theme 'solarized-dark t)
 
 (provide '12-theme)
 ;;; 12-theme.el ends here

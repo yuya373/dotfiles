@@ -60,7 +60,26 @@ http://www.emacswiki.org/emacs/AlignCommands"
             'add-ruby-do-arg-pair)
   (setq electric-pair-open-newline-between-pairs t)
   :config
-  (define-key electric-pair-mode-map (kbd "C-h") [backspace]))
+  (define-key electric-pair-mode-map (kbd "C-h")
+              `(menu-item
+                "" electric-pair-delete-pair
+                :filter
+                ,(lambda (cmd)
+                   (let* ((prev (char-before))
+                          (next (char-after))
+                          (syntax-info (and prev
+                                            (electric-pair-syntax-info prev)))
+                          (syntax (car syntax-info))
+                          (pair (cadr syntax-info)))
+                     (and next pair
+                          (memq syntax '(?\( ?\" ?\$))
+                          (eq pair next)
+                          (if (functionp electric-pair-delete-adjacent-pairs)
+                              (funcall electric-pair-delete-adjacent-pairs)
+                            electric-pair-delete-adjacent-pairs)
+                          cmd))))
+              )
+  )
 
 (use-package rainbow-delimiters
   :ensure t
@@ -116,11 +135,22 @@ http://www.emacswiki.org/emacs/AlignCommands"
   (reformatter-define prettier
     :program "prettier"
     :args `("--stdin-filepath" ,buffer-file-name))
+  (reformatter-define biome-format
+    :program "biome"
+    :args `("format" "--stdin-file-path" ,(buffer-file-name)) ;; オプション引数のリスト、実行時に評価される
+    :lighter " BiomeFmt")
+
+  (defun reformatter-select-typescript-formatter ()
+    (cond ((executable-find "biome")
+           (biome-format-on-save-mode))
+          ((executable-find "prettier")
+           (prettier-on-save-mode))))
   (with-eval-after-load 'typescript-ts-mode
-    (add-hook 'typescript-ts-mode-hook 'prettier-on-save-mode)
-    (add-hook 'tsx-ts-mode-hook 'prettier-on-save-mode)
+    (add-hook 'typescript-ts-mode-hook 'reformatter-select-typescript-formatter)
+    (add-hook 'tsx-ts-mode-hook 'reformatter-select-typescript-formatter)
     )
   )
+
 
 (provide '02-prog-mode)
 ;;; 02-prog-mode.el ends here

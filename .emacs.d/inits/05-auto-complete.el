@@ -27,33 +27,30 @@
 (eval-when-compile
   (require 'evil))
 
-;; (el-get-bundle copilot-emacs/copilot.el :name copilot)
-;; (use-package quelpa :ensure t)
-;; (use-package quelpa-use-package :ensure t)
-;; (require 'quelpa-use-package)
-;; (use-package copilot
-;;   :quelpa (copilot :fetcher github
-;;                    :repo "copilot-emacs/copilot.el"
-;;                    :branch "main"
-;;                    :files ("*.el"))
-;;   :init
-;;   (add-hook 'prog-mode-hook 'copilot-mode)
-;;   (add-hook 'text-mode-hook 'copilot-mode)
-;;   (add-to-list 'warning-suppress-types '(copilot copilot-exceeds-max-char))
-;;   (setq copilot-indent-offset-warning-disable t)
-;;   :config
-;;   ;; (defun my/copilot-tab ()
-;;   ;;   (interactive)
-;;   ;;   (or (copilot-accept-completion-by-word)
-;;   ;;       (indent-for-tab-command)))
-;;   (evil-define-key 'insert copilot-mode-map
-;;     (kbd "C-<tab>") #'copilot-accept-completion
-;;     )
-;;   (advice-add 'copilot-complete :around 'disable-copilot-complete-when-skk-henkan)
-;;   (defun disable-copilot-complete-when-skk-henkan (func &rest args)
-;;     (unless skk-henkan-mode
-;;       (apply func args)))
-;;   )
+(unless (package-installed-p 'copilot)
+  (package-vc-install "https://github.com/copilot-emacs/copilot.el"))
+(use-package copilot
+  :init
+  (add-hook 'prog-mode-hook 'copilot-mode)
+  (add-hook 'text-mode-hook 'copilot-mode)
+  (add-to-list 'warning-suppress-types '(copilot copilot-exceeds-max-char))
+  (setq copilot-indent-offset-warning-disable t)
+  (setq copilot-idle-delay 0.5)
+  :config
+  (unless (file-exists-p (copilot-server-executable))
+    (copilot-install-server))
+  ;; (defun my/copilot-tab ()
+  ;;   (interactive)
+  ;;   (or (copilot-accept-completion-by-word)
+  ;;       (indent-for-tab-command)))
+  (evil-define-key 'insert copilot-mode-map
+    (kbd "C-<tab>") #'copilot-accept-completion
+    )
+  (advice-add 'copilot-complete :around 'disable-copilot-complete-when-skk-henkan)
+  (defun disable-copilot-complete-when-skk-henkan (func &rest args)
+    (unless skk-henkan-mode
+      (apply func args)))
+  )
 
 (use-package yasnippet-snippets
   :ensure t
@@ -265,7 +262,6 @@
   (add-hook 'scala-mode-hook 'lsp)
   (add-hook 'yaml-mode-hook 'lsp)
   (add-hook 'markdown-mode-hook 'lsp)
-  (add-hook 'text-mode-hook 'lsp)
 
   (setq lsp-auto-guess-root t
         lsp-enable-snippet t
@@ -317,7 +313,9 @@
         lsp-rust-analyzer-experimental-proc-attr-macros t
         lsp-rust-all-features t
         standard-indent 2
-        lsp-copilot-enabled t
+        lsp-copilot-enabled nil
+        lsp-inline-completion-enable nil
+        lsp-inline-completion-idle-delay 2
         )
   (defun my-lsp-inhibit-hooks ()
     (setq-local lsp-inhibit-lsp-hooks t))
@@ -339,6 +337,7 @@
   (use-package lsp-headerline)
   (use-package lsp-diagnostics)
   (use-package lsp-completion)
+  (use-package lsp-inline-completion)
 
   (defface my:lsp-modeline-code-actions-face-14
     '((t (:inherit homoglyph :foreground "#002b36" :bold t)))
@@ -359,6 +358,9 @@
     "gi" 'lsp-find-implementation
     "gR" 'lsp-workspace-restart
     )
+  ;; (evil-collection-define-key 'insert 'lsp-inline-completion-active-map
+  ;;   (kbd "C-<tab>") #'lsp-inline-completion-accept
+  ;;   )
 
   ;; https://github.com/emacs-lsp/lsp-mode/issues/2681#issuecomment-1500173268
   ;; (advice-add 'json-parse-buffer :around
