@@ -108,6 +108,13 @@ if [[ $# -ge 1 ]]; then
 --with-webp \
 --with-sqlite3"
     fi
+    if [[ $1 = "30" ]]; then
+      branch="emacs-30.1"
+      configure_opts="$configure_opts \
+        --with-tree-sitter \
+        --with-webp \
+        --with-sqlite3"
+    fi
 
     print_with_current_step "Update master $branch"
     git fetch -a
