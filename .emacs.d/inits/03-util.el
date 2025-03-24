@@ -42,7 +42,7 @@
   (add-hook 'evil-mode-hook 'which-key-mode)
   :config
   ;; (which-key-add-key-based-replacements "SPC r" " Rest")
-  (which-key-add-key-based-replacements "SPC a" " Ag")
+  (which-key-add-key-based-replacements "SPC a" " Ag, AI")
   (which-key-add-key-based-replacements "SPC d" " Dash")
   (which-key-add-key-based-replacements "SPC f" " Find-File")
   (which-key-add-key-based-replacements "SPC p" " Projectile")

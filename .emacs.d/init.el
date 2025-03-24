@@ -139,9 +139,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages '(copilot tree-sitter))
+ '(package-selected-packages '(copilot gptel gptel-quick tree-sitter))
  '(package-vc-selected-packages
-   '((copilot :vc-backend Git :url
+   '((gptel-quick :vc-backend Git :url
+                  "https://github.com/karthink/gptel-quick")
+     (copilot :vc-backend Git :url
               "https://github.com/copilot-emacs/copilot.el")
      (font-lock-studio :vc-backend Git :url
                        "https://github.com/Lindydancer/font-lock-studio")
