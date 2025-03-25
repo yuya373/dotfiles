@@ -138,4 +138,19 @@ make -j4
 print_with_current_step "Install emacs"
 make install
 
+print_with_current_step "Creating desktop file"
+sudo ln -sf $HOME/local/share/applications/emacs.desktop /usr/share/applications/emacs.desktop
+
+print_with_current_step "Linking Icon"
+sudo cp --remove-destination $HOME/local/share/icons/hicolor/scalable/apps/emacs.ico \
+     /usr/share/icons/hicolor/scalable/apps/emacs.ico
+sudo cp --remove-destination $HOME/local/share/icons/hicolor/scalable/apps/emacs.svg \
+     /usr/share/icons/hicolor/scalable/apps/emacs.svg
+sudo cp --remove-destination $HOME/local/share/icons/hicolor/128x128/apps/emacs.png \
+     /usr/share/icons/hicolor/128x128/apps/emacs.png
+sudo cp --remove-destination $HOME/local/share/icons/hicolor/128x128/apps/emacs.png /usr/share/pixmaps/emacs.png
+
+print_with_current_step "Update desktop database"
+update-desktop-database
+
 popd
