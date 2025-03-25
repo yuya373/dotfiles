@@ -248,5 +248,10 @@
   :ensure t
   )
 
+(use-package emojify
+  :ensure t
+  :init
+  (add-hook 'after-init-hook 'global-emojify-mode))
+
 (provide '03-util)
 ;;; 03-util.el ends here
