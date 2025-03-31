@@ -44,12 +44,15 @@
   (add-hook 'gptel-post-response-functions 'gptel-end-of-response)
   (defun gptel--api-key-anthropic ()
     (gptel-api-key-from-auth-source "api.anthropic.com" "apiKey"))
+  (defun gptel--api-key-gemini ()
+    (gptel-api-key-from-auth-source "generativelanguage.googleapis.com" "apiKey"))
+
+
   (defvar claude-3-7-sonnet (gptel-make-anthropic "Claude-sonnet-3-7"
                               :stream t
                               :models '(claude-3-7-sonnet-20250219)
                               :key #'gptel--api-key-anthropic
                               :header (lambda () (when-let* ((key (gptel--api-key-anthropic)))
-                                                   (message "KEY: %s" key)
                                                    `(("x-api-key" . ,key)
                                                      ("anthropic-version" . "2023-06-01")
                                                      ("anthropic-beta" . "pdfs-2024-09-25")
@@ -60,6 +63,11 @@
                               :stream t
                               :models '(claude-3-5-sonnet-20241022)
                               :key #'gptel--api-key-anthropic))
+
+  (defvar gemini-2-5-pro (gptel-make-gemini "Gemini"
+                           :stream t
+                           :models '(gemini-2.5-pro-exp-03-25)
+                           :key #'gptel--api-key-gemini))
 
 
   (setq gptel-backend claude-3-7-sonnet)
@@ -184,6 +192,20 @@
 (use-package gptel-quick
   :after (gptel)
   :config
+  (setq gptel-quick-timeout nil)
+  (setq gptel-quick-word-count 24)
+  (defun gptel-quick-directive-from-auth-source ()
+    (let ((secret (plist-get (car (auth-source-search
+                                   :host "gptel-quick.directive"
+                                   :user "default"
+                                   :require '(:secret)))
+                             :secret)))
+      (if (functionp secret)
+          (funcall secret)
+        secret)))
+  (setq gptel-quick-system-message
+        (lambda (count)
+          (format (gptel-quick-directive-from-auth-source) count)))
   (defun gptel-quick--callback-around (org-fun &rest args)
     (let ((response (car args)))
       (unless (and (consp response) (eq (car response) 'reasoning))
@@ -195,6 +217,112 @@
       ))
   )
 
+(use-package evedel
+  :ensure t
+  :after (gptel)
+  :config
+  (defun evedel--directive-llm-system-message (_directive)
+    (gptel-default-directive-from-auth-source))
+  (defun evedel--process-directive-llm-response-around (org-fun &rest args)
+    (let ((response (car args)))
+      (unless (and (consp response) (eq (car response) 'reasoning))
+        (apply org-fun args))))
+  (advice-add 'evedel--process-directive-llm-response :around 'evedel--process-directive-llm-response-around)
+
+  (with-eval-after-load 'which-key
+    (which-key-add-key-based-replacements "SPC a i e" "Evedel")
+    (which-key-add-key-based-replacements "SPC a i e r" "References")
+    (which-key-add-key-based-replacements "SPC a i e d" "Directives")
+    (which-key-add-key-based-replacements "SPC a i e t" "Tags")
+    (which-key-add-key-based-replacements "SPC a i e i" "Instructions"))
+
+  (with-eval-after-load 'evil
+    (evil-leader/set-key
+      "aiee" 'evedel-process-directives
+      "aieE" 'evedel-preview-directive-prompt
+
+      "aierc" 'evedel-create-reference
+      "aiere" 'evedel-modify-reference-commentary
+      "aiern" 'evedel-next-reference
+      "aierp" 'evedel-previous-reference
+
+      "aiedc" 'evedel-create-directive
+      "aiede" 'evedel-modify-directive
+      "aiedn" 'evedel-next-directive
+      "aiedp" 'evedel-previous-directive
+
+      "aietc" 'evedel-add-tags
+      "aietd" 'evedel-remove-tags
+
+      "aiec" 'evedel-convert-instructions
+
+      "aiex" 'evedel-delete-instructions
+      "aieX" 'evedel-delete-all-instructions
+
+      "aiein" 'evedel-next-instruction
+      "aieip" 'evedel-previous-instruction)))
+
+
+;; Install directly from GitHub
+(unless (package-installed-p 'claude-code)
+  (package-vc-install "https://github.com/stevemolitor/claude-code.el"))
+
+(use-package claude-code
+  :init
+  (setq claude-code-startup-delay 2)
+  (setq eat-input-chunk-size (/ 1024 8))
+  :config
+  (with-eval-after-load 'which-key
+    (which-key-add-key-based-replacements "SPC c c" "Claude"))
+
+  (with-eval-after-load 'evil
+    (evil-leader/set-key
+      "ccc" 'claude-code
+      "ccb" 'claude-code-switch-to-buffer
+      "cck" 'claude-code-kill
+      "ccs" 'claude-code-send-command
+      "ccS" 'claude-code-send-command-with-context
+      "ccr" 'claude-code-send-region
+      "cc/" 'claude-code-slash-commands
+      "ccm" 'claude-code-transient
+      "ccy" 'claude-code-send-return
+      "ccn" 'claude-code-send-escape
+      ))
+  )
+
+(use-package vterm
+  :ensure t
+  :config
+  (defun vterm-project-buffer-name ()
+    (if (projectile-project-p)
+        (format "*vterm-%s*" (file-name-nondirectory (directory-file-name (projectile-project-root))))))
+  (defun vterm-current-project ()
+    (interactive)
+    (if-let* ((buf-name (vterm-project-buffer-name))
+              (project-root (projectile-project-root))
+              (default-directory project-root))
+        (vterm buf-name)
+      (vterm)))
+  (defun vterm-toggle ()
+    (interactive)
+    (if-let* ((bufname (vterm-project-buffer-name))
+              (buf (get-buffer bufname))
+              (livep (buffer-live-p buf)))
+        (if-let* ((win (get-buffer-window buf))
+                  (livep (window-live-p win)))
+            (delete-window win)
+          (display-buffer buf))
+      (vterm-current-project)))
+  (with-eval-after-load 'evil
+    (evil-leader/set-key
+      "tt" 'vterm-toggle))
+  (define-key vterm-mode-map (kbd "C-h") 'vterm-send-backspace)
+  (with-eval-after-load 'evil-collection
+    (evil-collection-define-key 'insert 'vterm-mode-map
+      (kbd "C-n") 'vterm-send-down
+      (kbd "C-p") 'vterm-send-up
+      (kbd "C-h") 'vterm-send-backspace
+      )))
 
 (provide '47-llm)
 ;;; 47-llm.el ends here

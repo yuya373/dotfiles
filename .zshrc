@@ -1,5 +1,6 @@
 typeset -U path cdpath fpath manpath
 
+
 if [ ! -d $HOME/.zfunctions ]; then
     echo "creating $HOME/.zfunctions ..."
     mkdir -p $HOME/.zfunctions
@@ -105,28 +106,16 @@ fi
 # rust
 alias rust='cargo-script'
 
-eval "$(direnv hook zsh)"
-
-# OPAM configuration
-. /home/yuya373/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
-
-if (which nodenv > /dev/null) ;then
-   eval "$(nodenv init -)"
-fi
-
-
-if [ -e ${HOME}/.rbenv/bin ]; then
-    export PATH="$HOME/.rbenv/bin:$PATH"
-fi
-if (which rbenv > /dev/null) ;then
-   eval "$(rbenv init -)"
-fi
-
 # Fix zsh: command not found: tmuximum
 unalias t
 
-if (which anyenv > /dev/null) ;then
-   eval "$(anyenv init -)"
+if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
+  if [[ -n ${EMACS_VTERM_PATH} ]]; then
+    if [[ -f ${EMACS_VTERM_PATH}/etc/emacs-vterm-bash.sh ]]; then
+      source ${EMACS_VTERM_PATH}/etc/emacs-vterm-bash.sh
+    fi
+  fi
 fi
+
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

@@ -1,4 +1,8 @@
 start() {
+    # vterm内ではtmuxを起動しない
+    if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
+        return
+    fi
     if [[ ! -n $TMUX ]]; then
         # get the IDs
         ID="`tmux list-sessions`"
@@ -17,6 +21,7 @@ start() {
         fi
     fi
 }
+
 case $OSTYPE in
     linux*)
         if [[ $DISPLAY ]]; then

@@ -88,3 +88,21 @@ if [ -d "/Users/yuya373/Library/pnpm" ]; then
     export PNPM_HOME="/Users/yuya373/Library/pnpm"
     export PATH="$PNPM_HOME:$PATH" ;
 fi
+
+eval "$(direnv hook zsh)"
+
+# OPAM configuration
+. /home/yuya373/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+
+if (which nodenv > /dev/null) ;then
+   eval "$(nodenv init -)"
+fi
+
+
+if (which rbenv > /dev/null) ;then
+   eval "$(rbenv init -)"
+fi
+
+if (which anyenv > /dev/null) ;then
+   eval "$(anyenv init -)"
+fi
