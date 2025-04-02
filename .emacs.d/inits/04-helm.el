@@ -27,24 +27,6 @@
 (eval-when-compile
   (require 'use-package))
 
-(defvar diary-root-dir (expand-file-name "~/dev/diary"))
-(defvar diary-year-format "%Y")
-(defvar diary-month-format "%m")
-(defvar diary-file-format (concat (format "%s/%s"
-                                          diary-year-format
-                                          diary-month-format)
-                                  "/%d.md"))
-
-(defun consult-normalize-file-string (s)
-  (let* ((splitted (split-string s ":"))
-         (path (car splitted))
-         (line (cadr splitted))
-         (word (caddr splitted))
-         (path (if (file-name-absolute-p path)
-                   path
-                 (expand-file-name path default-directory))))
-    (list path (when line (string-to-number line)) word)))
-
 (use-package orderless
   :ensure t
   :after (vertico)
@@ -515,43 +497,28 @@ targets."
 
   (use-package embark
     :config
-    (defun embark-find-file-tab (filename &optional wildcards)
-      (message "embark-find-file-tab: %s" filename)
-      (let ((buf (find-file-noselect (expand-file-name filename))))
-        (perspeen-tab-create-tab buf 0))
-      (delete-other-windows)
-      (perspeen-update-mode-string))
+    (defun embark-find-file-tab ()
+      (interactive)
+      (perspeen-tab-create-tab)
+      (call-interactively #'find-file)
+      (perspeen-tab--set-header-line-format t))
     (define-key embark-file-map (kbd "t") 'embark-find-file-tab)
     (defun embark-switch-to-buffer-tab (buffer-or-name)
-      (message "embark-switch-to-buffer-tab")
-      (let* ((buffer (window-normalize-buffer-to-switch-to buffer-or-name))
-             (marker (with-current-buffer buffer (point-marker))))
-        (if marker
-            (perspeen-tab-create-tab buffer marker)
-          (perspeen-tab-create-tab buffer))
-
-        (delete-other-windows)
-        )
-      (perspeen-update-mode-string))
+      (let* ((buf (get-buffer buffer-or-name)))
+        (perspeen-tab-create-tab)
+        (set-window-buffer (get-buffer-window) buf)
+        (perspeen-tab--set-header-line-format t)))
     (define-key embark-buffer-map (kbd "t") 'embark-switch-to-buffer-tab)
     (defun embark-switch-to-file-tab (file-name)
-      (message "embark-switch-to-file-tab")
-      (let* ((n (consult-normalize-file-string file-name))
-             (path (car n))
-             (line (cadr n))
-             (path (if (file-name-absolute-p path)
-                       path
-                     (expand-file-name path default-directory)))
-             (buffer (find-file-noselect path)))
-        (perspeen-tab-create-tab
-         (window-normalize-buffer-to-switch-to buffer)
-         0)
-        (delete-other-windows)
-        (perspeen-update-mode-string)
-        (when line
-          (goto-line line))))
-    (define-key embark-consult-grep-map (kbd "t") 'embark-switch-to-file-tab)
-    )
+      (embark-evil-split)
+      (embark-consult-goto-grep file-name)
+      (let* ((win (get-buffer-window))
+             (buf (window-buffer win)))
+        (delete-window win)
+        (perspeen-tab-create-tab)
+        (set-window-buffer (get-buffer-window) buf)
+        (perspeen-tab--set-header-line-format t)))
+    (define-key embark-consult-grep-map (kbd "t") 'embark-switch-to-file-tab))
 
   (use-package consult
     :config

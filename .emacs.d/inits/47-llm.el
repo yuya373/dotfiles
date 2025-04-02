@@ -264,38 +264,38 @@
 
 
 ;; Install directly from GitHub
-(unless (package-installed-p 'claude-code)
-  (package-vc-install "https://github.com/stevemolitor/claude-code.el"))
+;; (unless (package-installed-p 'claude-code)
+;;   (package-vc-install "https://github.com/stevemolitor/claude-code.el"))
 
-(use-package claude-code
-  :init
-  (setq claude-code-startup-delay 2)
-  (setq eat-input-chunk-size (/ 1024 8))
-  :config
-  (with-eval-after-load 'which-key
-    (which-key-add-key-based-replacements "SPC c c" "Claude"))
+;; (use-package claude-code
+;;   :init
+;;   (setq claude-code-startup-delay 2)
+;;   (setq eat-input-chunk-size (/ 1024 8))
+;;   :config
+;;   (with-eval-after-load 'which-key
+;;     (which-key-add-key-based-replacements "SPC c c" "Claude"))
 
-  (with-eval-after-load 'evil
-    (evil-leader/set-key
-      "ccc" 'claude-code
-      "ccb" 'claude-code-switch-to-buffer
-      "cck" 'claude-code-kill
-      "ccs" 'claude-code-send-command
-      "ccS" 'claude-code-send-command-with-context
-      "ccr" 'claude-code-send-region
-      "cc/" 'claude-code-slash-commands
-      "ccm" 'claude-code-transient
-      "ccy" 'claude-code-send-return
-      "ccn" 'claude-code-send-escape
-      ))
-  )
+;;   (with-eval-after-load 'evil
+;;     (evil-leader/set-key
+;;       "ccc" 'claude-code
+;;       "ccb" 'claude-code-switch-to-buffer
+;;       "cck" 'claude-code-kill
+;;       "ccs" 'claude-code-send-command
+;;       "ccS" 'claude-code-send-command-with-context
+;;       "ccr" 'claude-code-send-region
+;;       "cc/" 'claude-code-slash-commands
+;;       "ccm" 'claude-code-transient
+;;       "ccy" 'claude-code-send-return
+;;       "ccn" 'claude-code-send-escape
+;;       ))
+;;   )
 
 (use-package vterm
   :ensure t
   :config
   (defun vterm-project-buffer-name ()
     (if (projectile-project-p)
-        (format "*vterm-%s*" (file-name-nondirectory (directory-file-name (projectile-project-root))))))
+        (format "*vterm-%s*" (projectile-project-root))))
   (defun vterm-current-project ()
     (interactive)
     (if-let* ((buf-name (vterm-project-buffer-name))
@@ -313,9 +313,32 @@
             (delete-window win)
           (display-buffer buf))
       (vterm-current-project)))
+  (defun vterm-claude-project-buffer-name ()
+    (if (projectile-project-p)
+        (format "*vterm-claude-%s*" (projectile-project-root))))
+  (defun vterm-claude-current-project ()
+    (interactive)
+    (if-let* ((buf-name (vterm-claude-project-buffer-name))
+              (project-root (projectile-project-root))
+              (default-directory project-root))
+        (vterm buf-name)
+      (vterm)))
+  (defun vterm-calude-toggle ()
+    (interactive)
+    (if-let* ((bufname (vterm-claude-project-buffer-name))
+              (buf (get-buffer bufname))
+              (livep (buffer-live-p buf)))
+        (if-let* ((win (get-buffer-window buf))
+                  (livep (window-live-p win)))
+            (delete-window win)
+          (display-buffer buf))
+      (vterm-claude-current-project))
+    )
   (with-eval-after-load 'evil
     (evil-leader/set-key
-      "tt" 'vterm-toggle))
+      "tt" 'vterm-toggle
+      "cc" 'vterm-calude-toggle
+      ))
   (define-key vterm-mode-map (kbd "C-h") 'vterm-send-backspace)
   (with-eval-after-load 'evil-collection
     (evil-collection-define-key 'insert 'vterm-mode-map
