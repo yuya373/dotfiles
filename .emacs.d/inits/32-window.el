@@ -130,11 +130,11 @@
                           (ag-mode :select t)
                           (consult-typescript-compilation-mode)
                           ("\\`\\*Claude.*\\*\\'" :regexp t :select t)
+                          (("\\`\\*vterm.*\\*\\'") :regexp t :select t)
                           ))
                 (mapcar (lambda (l) (append l shackle-rule-right-half))
                         '(((woman-mode
                             slack-message-attachment-preview-buffer-mode))
-                          (("\\`\\*vterm.*\\*\\'") :regexp t :select t)
                           ((slack-file-list-buffer-mode
                             slack-all-threads-buffer-mode
                             slack-thread-message-buffer-mode

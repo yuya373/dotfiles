@@ -251,7 +251,8 @@
 (use-package emojify
   :ensure t
   :init
-  (add-hook 'after-init-hook 'global-emojify-mode))
+  (add-hook 'after-init-hook 'global-emojify-mode)
+  (setq emojify-emoji-styles '(unicode github)))
 
 (provide '03-util)
 ;;; 03-util.el ends here
