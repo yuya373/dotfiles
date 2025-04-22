@@ -1,6 +1,5 @@
 typeset -U path cdpath fpath manpath
 
-
 if [ ! -d $HOME/.zfunctions ]; then
     echo "creating $HOME/.zfunctions ..."
     mkdir -p $HOME/.zfunctions

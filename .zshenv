@@ -106,3 +106,5 @@ fi
 if (which anyenv > /dev/null) ;then
    eval "$(anyenv init -)"
 fi
+
+source $HOME/.local/bin/env
