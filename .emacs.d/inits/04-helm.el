@@ -234,6 +234,7 @@
   :after (consult)
   :bind (("C-a" . embark-act))
   :config
+  (setq embark-help-key "?")
   (use-package ace-window)
   (use-package projectile)
   ;; (:orig-type multi-category :orig-target .emacs.d/elpa/consult-20220408.657/consult-imenu.eløˆ€€‚ :bounds nil :type file :target .emacs.d/elpa/consult-20220408.657/consult-imenu.el)

@@ -378,6 +378,7 @@
   (setq lsp-treemacs-call-hierarchy-expand-depth 3)
   (setq lsp-treemacs-type-hierarchy-expand-depth 3)
   (setq lsp-treemacs-java-deps-list-expand-depth 3)
+  (setq lsp-treemacs-error-list-current-project-only t)
   :config
 
   (evil-collection-define-key 'normal 'lsp-mode-map
