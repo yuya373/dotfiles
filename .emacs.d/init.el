@@ -140,8 +140,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(aider claude-code copilot emojify evedel gptel gptel-quick
-           tree-sitter vterm))
+   '(aider claude-code company-box copilot emojify evedel gptel
+           gptel-quick tree-sitter vterm))
  '(package-vc-selected-packages
    '((claude-code :vc-backend Git :url
                   "https://github.com/stevemolitor/claude-code.el")

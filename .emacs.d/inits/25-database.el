@@ -32,6 +32,7 @@
   :commands (sql-postgres sql-mysql)
   :mode (("\\.sql\\'" . sql-mode))
   :init
+  (setq sql-product 'mysql)
   (defun mysql-buffer ()
     (interactive)
     (mysql-get-interactive-buffer)

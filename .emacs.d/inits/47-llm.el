@@ -445,5 +445,48 @@
     )
   )
 
+(use-package minuet
+  :ensure t
+  :init
+  (add-hook 'prog-mode-hook 'minuet-auto-suggestion-mode)
+  :config
+
+  (define-key minuet-active-mode-map (kbd "TAB") 'minuet-next-suggestion)
+  (define-key minuet-active-mode-map [backtab] 'minuet-previous-suggestion)
+  (define-key minuet-active-mode-map (kbd "C-<tab>") 'minuet-accept-suggestion)
+  (define-key minuet-active-mode-map (kbd "C-c l") 'minuet-accept-suggestion-line)
+  (define-key minuet-active-mode-map (kbd "C-c q") 'minuet-dismiss-suggestion)
+  (setq minuet-provider 'gemini)
+
+  (defun minuet-gemini-api-key-from-auth-source ()
+    (let ((secret (plist-get (car (auth-source-search
+                                   :host "generativelanguage.googleapis.com"
+                                   :user "apiKey"
+                                   :require '(:secret)))
+                             :secret)))
+      (if (functionp secret)
+          (funcall secret)
+        secret)))
+  (plist-put minuet-gemini-options :api-key '(lambda () (minuet-gemini-api-key-from-auth-source)))
+  (plist-put minuet-gemini-options :model "gemini-2.5-flash-preview-04-17")
+  (minuet-set-optional-options
+   minuet-gemini-options :generationConfig
+   '(:maxOutputTokens 256
+                      :topP 0.9
+                      ;; When using `gemini-2.5-flash`, it is recommended to entirely
+                      ;; disable thinking for faster completion retrieval.
+                      :thinkingConfig (:thinkingBudget 0)))
+  (minuet-set-optional-options
+   minuet-gemini-options :safetySettings
+   [(:category "HARM_CATEGORY_DANGEROUS_CONTENT"
+               :threshold "BLOCK_NONE")
+    (:category "HARM_CATEGORY_HATE_SPEECH"
+               :threshold "BLOCK_NONE")
+    (:category "HARM_CATEGORY_HARASSMENT"
+               :threshold "BLOCK_NONE")
+    (:category "HARM_CATEGORY_SEXUALLY_EXPLICIT"
+               :threshold "BLOCK_NONE")])
+  )
+
 (provide '47-llm)
 ;;; 47-llm.el ends here
