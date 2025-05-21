@@ -3,7 +3,7 @@ start() {
     if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
         return
     fi
-    if [[ ! -n $TMUX ]]; then
+    if [[ ! -n $TMUX && $- == *l* ]]; then
         # get the IDs
         ID="`tmux list-sessions`"
         if [[ -z "$ID" ]]; then
