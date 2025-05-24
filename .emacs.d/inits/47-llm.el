@@ -414,6 +414,8 @@
 (use-package aider
   :ensure t
   :config
+  (setq aider-auto-trigger-prompt t)
+
   (with-eval-after-load 'which-key
     (which-key-add-key-based-replacements "SPC a i" "Aider")
     (which-key-add-key-based-replacements "SPC a i a" nil))

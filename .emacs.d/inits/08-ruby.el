@@ -220,16 +220,5 @@ See `font-lock-syntax-table'."))
   :mode (("\\.slim\\'" . slim-mode))
   )
 
-(use-package rufo
-  :ensure t
-  :after (enh-ruby-mode)
-  :commands (rufo-format)
-  :init
-  ;; (add-hook 'enh-ruby-mode-hook 'rufo-minor-mode)
-  (evil-collection-define-key 'normal 'enh-ruby-mode-map
-    ",f" 'rufo-format)
-  )
-
-
 (provide '08-ruby)
 ;;; 08-ruby.el ends here

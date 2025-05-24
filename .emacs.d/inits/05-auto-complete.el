@@ -269,6 +269,7 @@
   (add-hook 'markdown-mode-hook 'lsp)
 
   (setq lsp-auto-guess-root t
+        lsp-auto-touch-files nil
         lsp-enable-snippet t
         lsp-auto-configure t
         lsp-enable-xref t
