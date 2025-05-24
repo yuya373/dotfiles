@@ -3,5 +3,4 @@ set -e
 
 gem i \
     bundler \
-    rubocop \
     ruby-lsp
