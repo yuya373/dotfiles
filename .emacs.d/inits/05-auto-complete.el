@@ -72,8 +72,8 @@
   (add-hook 'company-mode-hook 'company-statistics-mode)
   :config
   (setq company-transformers '(company-sort-by-statistics
-                               company-sort-by-backend-importance
-                               company-sort-by-occurrence))
+                               company-sort-by-occurrence
+                               company-sort-by-backend-importance))
   )
 
 (use-package company-quickhelp
@@ -123,7 +123,7 @@
   ;;          ;; company-yasnippet
   ;;          )))
   ;; (setq company-backends (cons 'company-capf (delete 'company-capf company-backends)))
-  (setq company-backends '((company-capf company-files) company-keywords company-dabbrev-code company-dabbrev))
+  (setq company-backends '((company-capf company-files) company-keywords company-dabbrev-code company-dabbrev company-yasnippet))
 
   (use-package company-emoji
     :ensure t
@@ -250,7 +250,6 @@
 
 (use-package pos-tip :ensure t)
 (use-package lsp-treemacs :ensure t)
-(use-package dap-mode :ensure t)
 (use-package lsp-mode
   :ensure t
   :commands (lsp)

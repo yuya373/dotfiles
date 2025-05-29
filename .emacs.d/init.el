@@ -17,10 +17,6 @@
 
 (setq default-directory "~/")
 (setq command-line-default-directory "~/")
-(setq gc-cons-threshold (* (* 1 128) 1024 1024)) ;; 100mb
-(setq gc-cons-percentage nil)
-(setq garbage-collection-messages nil)
-(setq read-process-output-max (* 1 (* 1024 1024))) ;; 1mb
 
 (setq menu-bar-mode t)
 
@@ -140,8 +136,45 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(aider claude-code company-box copilot emojify evedel gptel
-           gptel-quick tree-sitter vterm))
+   '(add-node-modules-path adoc-mode ag aider all-the-icons-completion
+                           auto-save-buffers-enhanced avy-migemo
+                           bundler claude-code codic coffee-mode
+                           command-log-mode company-box company-emoji
+                           company-quickhelp company-restclient
+                           company-statistics company-terraform
+                           consult-dir consult-flycheck consult-lsp
+                           consult-projectile copilot csv-mode ddskk
+                           diminish dired-k direnv dockerfile-mode
+                           easy-hugo electric-operator elpy
+                           embark-consult emojify enh-ruby-mode
+                           es-mode eshell-prompt-extras esup evedel
+                           evil-anzu evil-args evil-collection
+                           evil-exchange evil-indent-textobject
+                           evil-leader evil-matchit
+                           evil-nerd-commenter evil-numbers
+                           evil-surround evil-visualstar
+                           exec-path-from-shell expand-region
+                           flycheck-aspell flycheck-inline
+                           flycheck-package font-lock-studio gist
+                           git-link git-messenger go-mode golden-ratio
+                           google-translate gptel-quick graphql-mode
+                           haml-mode highlight-indent-guides
+                           imenu-anywhere init-loader initchart
+                           json-mode log4j-mode logview lsp-metals
+                           lsp-ui lua-mode marginalia minuet
+                           nginx-mode omnisharp open-junk-file
+                           orderless perspeen pkg-info
+                           projectile-rails python-mode
+                           quelpa-use-package quickrun
+                           rainbow-delimiters rbenv rjsx-mode
+                           rspec-mode ruby-end rufo rustic sbt-mode
+                           scss-mode shackle slim-mode solarized-theme
+                           spaceline sql-indent sqlformat sr-speedbar
+                           string-inflection term-run toml-mode
+                           tree-sitter-langs treesit-auto undo-tree
+                           vertico virtualenvwrapper
+                           volatile-highlights vterm web-mode wgrep-ag
+                           yaml yaml-mode yasnippet-snippets))
  '(package-vc-selected-packages
    '((claude-code :vc-backend Git :url
                   "https://github.com/stevemolitor/claude-code.el")

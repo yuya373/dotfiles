@@ -427,6 +427,7 @@
       "aib" 'aider-switch-to-buffer
       "aiA" 'aider-add-files-in-current-window
       "aia" 'aider-add-current-file-or-dired-marked-files
+      "aim" 'aider-add-module
       "air" 'aider-function-or-region-refactor
       "aiR" 'aider-refactor-book-method
       "aiI" 'aider-implement-todo
@@ -436,6 +437,10 @@
       "aip" 'aider-open-prompt-file
       ))
   (with-eval-after-load 'evil-collection
+    (evil-collection-define-key 'visual 'aider-prompt-mode-map
+      (kbd ",c") 'aider-send-block-or-region
+      (kbd ",n") 'aider-send-line-or-region
+      )
     (evil-collection-define-key 'normal 'aider-prompt-mode-map
       (kbd ",c") 'aider-send-block-or-region
       (kbd ",n") 'aider-send-line-or-region
