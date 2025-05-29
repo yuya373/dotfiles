@@ -3,6 +3,7 @@
 /.emacs.d/*
 !/.emacs.d/el-get.lock
 !/.emacs.d/init.el
+!/.emacs.d/early-init.el
 !/.emacs.d/inits/
 !/.emacs.d/platform-inits
 /.emacs.d/inits/99-private.el
