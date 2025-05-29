@@ -12,7 +12,6 @@ export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
 export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
 export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 
-export GOPATH=$HOME/go
 export ZPLUG_HOME=$HOME/zplug
 export EDITOR=emacsclient
 # export EDITOR='emacsclient -n'
@@ -21,8 +20,6 @@ export LANG="ja_JP.UTF-8"
 
 export PATH=/usr/local/bin:${PATH}
 export PATH="$HOME/.cargo/bin:$PATH"
-mkdir -p $HOME/go/bin
-export PATH=$PATH:${GOPATH}/bin
 export PATH=$HOME/local/bin:$PATH
 
 case ${OSTYPE} in
@@ -109,5 +106,14 @@ fi
 if (which anyenv > /dev/null) ;then
    eval "$(anyenv init -)"
 fi
+
+if [ -d ${HOME}/.goenv ]; then
+  export GOENV_ROOT="$HOME/.goenv"
+  export PATH="$GOENV_ROOT/bin:$PATH"
+  eval "$(goenv init -)"
+  export PATH="$GOROOT/bin:$PATH"
+  export PATH="$PATH:$GOPATH/bin"
+fi
+
 
 source $HOME/.local/bin/env
