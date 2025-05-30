@@ -36,7 +36,9 @@
   (defun typescript-projectile-bundler-cmd ()
     (if (file-exists-p (expand-file-name "yarn.lock" (projectile-project-root)))
         "yarn"
-      "npm"))
+      (if (file-exists-p (expand-file-name "pnpm-lock.yaml" (projectile-project-root)))
+          "pnpm"
+        "npm")))
   (require 'f)
   (defun typescript-projectile-build-consult-source ()
     (let* ((dir (f-traverse-upwards (lambda (path)
@@ -117,9 +119,9 @@ Error matching regexes from compile.el are removed.")
                                           (setq buffer-read-only t)))))))))
 
     (evil-define-key 'normal typescript-ts-mode-map
-      (kbd ",s") 'consult-typescript-scripts)
+      (kbd ",r") 'consult-typescript-scripts)
     (evil-define-key 'normal tsx-ts-mode-map
-      (kbd ",s") 'consult-typescript-scripts)
+      (kbd ",r") 'consult-typescript-scripts)
     ))
 
 (use-package projectile-rails

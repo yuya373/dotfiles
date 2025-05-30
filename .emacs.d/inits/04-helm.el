@@ -179,8 +179,17 @@
             thing))
       (thing-at-point 'symbol t)))
 
-  (use-package evil-leader
-    :config
+  (with-eval-after-load 'which-key
+    (which-key-add-key-based-replacements "SPC c g" "Grep")
+    (which-key-add-key-based-replacements "SPC c l" "Line")
+    )
+  (with-eval-after-load 'evil-collection
+    (evil-collection-define-key 'normal 'lsp-mode-map
+      ",el" 'consult-lsp-diagnostics
+      ",s" 'consult-lsp-file-symbols
+      ",S" 'consult-lsp-symbols)
+    )
+  (with-eval-after-load 'evil-leader
     (evil-leader/set-key
       "cG" 'consult-grep
       "cg" nil
@@ -207,7 +216,8 @@
       "cgg" 'consult-git-grep-at-point
       "cgd" 'consult-grep-in-directory
       "cll" 'consult-line-at-point
-      "cL" 'consult-line-multi-at-point)))
+      "cL" 'consult-line-multi-at-point))
+  )
 
 (use-package consult-flycheck
   :ensure t

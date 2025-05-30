@@ -391,9 +391,6 @@
   (setq lsp-treemacs-error-list-current-project-only t)
   :config
 
-  (evil-collection-define-key 'normal 'lsp-mode-map
-    ",el" 'lsp-treemacs-errors-list
-    )
   )
 
 (use-package lsp-ui
