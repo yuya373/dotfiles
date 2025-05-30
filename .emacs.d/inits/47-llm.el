@@ -414,7 +414,42 @@
 (use-package aider
   :ensure t
   :config
-  (setq aider-auto-trigger-prompt t)
+  (setq aider-auto-trigger-prompt nil)
+  (defun aider-core--auto-trigger-command-completion ())
+  (defun aider-open-prompt-file ()
+    "Open aider prompt file under git repo root.
+If file doesn't exist, create it with command binding help and sample prompt."
+    (interactive)
+    (let* ((git-root (magit-toplevel)))
+      (if git-root
+          (let* ((prompt-file (expand-file-name aider-prompt-file-name git-root))
+                 (buf (if (file-exists-p prompt-file)
+                          (find-file-noselect prompt-file)
+                        (let* ((default-directory git-root)
+                               (buf (find-file-noselect prompt-file)))
+                          (with-current-buffer buf
+                            ;; Insert initial content for new file
+                            (insert "# Aider Prompt File - Command Reference:\n")
+                            (insert "# Edit command:\n")
+                            (insert "#   C-c C-i (or SPACE in evil-normal-mode): Insert prompt in mini buffer or with helm (if you use aider-helm.el)\n")
+                            (insert "#   C-c C-f: Insert file path under cursor\n")
+                            (insert "#   C-c C-y: Cycle through /add, /read-only, /drop\n")
+                            (insert "# Command to interact with aider session:\n")
+                            (insert "#   C-c C-n: Single line prompt: Send current line or selected region line by line as multiple prompts. If C-u pressed, send current paragraph line by line\n")
+                            (insert "#   C-c C-b: Send current paragraph line by line as multiple prompts\n")
+                            (insert "#   C-c C-c: Multi-line prompt: Send current block or selected region as a single prompt\n")
+                            (insert "#   C-c C-z: Switch to aider buffer\n")
+                            (insert "# If you have yasnippet installed, use these keybindings to access snippet functions in aider-prompt-mode:\n")
+                            (insert "#   yas-describe-tables: Show available snippets\n")
+                            (insert "#   yas-insert-snippet: Insert a snippet\n")
+                            (insert "#   yas-expand: Expand snippet at cursor\n")
+                            (insert "# Aider command reference: https://aider.chat/docs/usage/commands.html\n\n")
+                            (insert "* Sample task:\n\n")
+                            (insert "/ask explain to me what this repo is about?\n")
+                            (save-buffer))
+                          buf))))
+            (switch-to-buffer-other-window buf))
+        (message "Not in a git repository"))))
 
   (with-eval-after-load 'which-key
     (which-key-add-key-based-replacements "SPC a i" "Aider")
