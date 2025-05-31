@@ -122,6 +122,7 @@
                             slack-message-edit-buffer-mode
                             slack-message-share-buffer-mode)
                            :select t :size 0.3)
+                          ((claude-code-emacs-prompt-mode) :select t :size 0.3)
                           (rustic-format-mode)
                           (rustic-compilation-mode)
                           (rustic-cargo-test-mode)

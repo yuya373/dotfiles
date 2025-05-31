@@ -271,6 +271,9 @@
 ;;   :init
 ;;   (setq claude-code-startup-delay 2)
 ;;   (setq eat-input-chunk-size (/ 1024 8))
+;;   (defun eat-disable-line-numbers ()
+;;     (display-line-numbers-mode -1))
+;;   (add-hook 'eat-mode-hook 'eat-disable-line-numbers)
 ;;   :config
 ;;   (with-eval-after-load 'which-key
 ;;     (which-key-add-key-based-replacements "SPC c c" "Claude"))
@@ -315,7 +318,7 @@
       (vterm-current-project)))
   (with-eval-after-load 'evil
     (evil-leader/set-key
-      "tt" 'vterm-toggle
+      "t" 'vterm-toggle
       ))
   (define-key vterm-mode-map (kbd "C-h") 'vterm-send-backspace)
   (with-eval-after-load 'evil-collection
@@ -324,91 +327,16 @@
       (kbd "C-p") 'vterm-send-up
       (kbd "C-h") 'vterm-send-backspace
       ))
+  (defun vterm-disable-display-line-numbers ()
+    (display-line-numbers-mode -1))
+  (add-hook 'vterm-mode-hook 'vterm-disable-display-line-numbers)
+  (defun evil-collection-vterm-escape-stay ()
+    "Go back to normal state but don't move
+cursor backwards. Moving cursor backwards is the default vim behavior but it is
+not appropriate in some cases like terminals."
+    (setq-local evil-move-cursor-back nil))
 
-  ;;; vterm claude integration
-  (progn
-    (with-eval-after-load 'evil
-      (evil-leader/set-key
-        "cc" nil
-        "ccc" 'vterm-claude-toggle
-        "ccr" 'vterm-claude-send-region
-        "ccb" 'vterm-claude-text-buffer
-        ))
-
-    (defun vterm-claude-project-buffer-name ()
-      (if (projectile-project-p)
-          (format "*vterm-claude-%s*" (projectile-project-root))))
-    (defun vterm-claude-get-current-buffer ()
-      (if-let* ((bufname (vterm-claude-project-buffer-name))
-                (buf (get-buffer bufname))
-                (livep (buffer-live-p buf)))
-          buf))
-    (defun vterm-claude-current-project ()
-      (interactive)
-      (if-let* ((buf-name (vterm-claude-project-buffer-name))
-                (project-root (projectile-project-root))
-                (default-directory project-root))
-          (progn
-            (vterm buf-name)
-            (vterm-send-string "claude")
-            (vterm-send-return))
-        (error "No project found.")))
-    (defun vterm-claude-toggle ()
-      (interactive)
-      (if-let* ((buf (vterm-claude-get-current-buffer)))
-          (if-let* ((win (get-buffer-window buf))
-                    (livep (window-live-p win)))
-              (delete-window win)
-            (display-buffer buf))
-        (vterm-claude-current-project)))
-
-    (defun chunk-string (str chunk-size)
-      (if (<= chunk-size 0)
-          (error "chunk-size must be greater than 0")
-        (let ((len (length str))
-              (result '())
-              (start 0))
-          (while (< start len)
-            (let ((end (min (+ start chunk-size) len)))
-              (push (substring str start end) result)
-              (setq start end)))
-          (nreverse result))))
-
-    (defun vterm-claude-send-string (string &optional paste-p)
-      (if-let ((buf (vterm-claude-get-current-buffer))
-               (strings (chunk-string string 50)))
-          (with-current-buffer buf
-            (mapc (lambda (str)
-                    (vterm-send-string str paste-p))
-                  strings)
-            (vterm-send-return))
-        (error "No vterm-claude buffer found.")))
-
-    (defun vterm-claude-send-region ()
-      (interactive)
-      (let ((text (if (use-region-p)
-                      (buffer-substring-no-properties (region-beginning) (region-end))
-                    (buffer-substring-no-properties (point-min) (point-max)))))
-        (vterm-claude-send-string text t)))
-
-    (defun vterm-claude-text-buffer ()
-      (interactive)
-      (let* ((buf-name (format "%s-text-buffer" (vterm-claude-project-buffer-name)))
-             (buf (get-buffer-create buf-name)))
-        (with-current-buffer buf
-          (markdown-mode)
-          (vterm-claude-mode))
-        (display-buffer buf)))
-
-    (define-minor-mode vterm-claude-mode
-      "VTerm Claude"
-      :lighter " VTerm-C"
-      :keymap (let ((map (make-sparse-keymap)))
-                (define-key map (kbd "C-c C-c") 'vterm-claude-send-region)
-                map)
-      :group 'vterm-claude
-      :global t)
-    )
+  (add-hook 'vterm-mode-hook #'evil-collection-vterm-escape-stay)
   )
 
 (use-package aider
@@ -528,6 +456,25 @@ If file doesn't exist, create it with command binding help and sample prompt."
                :threshold "BLOCK_NONE")
     (:category "HARM_CATEGORY_SEXUALLY_EXPLICIT"
                :threshold "BLOCK_NONE")])
+  )
+
+(unless (require 'claude-code-emacs nil t)
+  (add-to-list 'load-path (expand-file-name "~/dev/claude-code-emacs")))
+(use-package claude-code-emacs
+  :config
+  (with-eval-after-load 'evil-leader
+    (evil-leader/set-key
+      "c c" 'claude-code-emacs-transient))
+  (with-eval-after-load 'evil-collection
+    (evil-collection-define-key 'visual 'claude-code-emacs-prompt-mode-map
+      ",m" 'claude-code-emacs-prompt-transient
+      ",r" 'claude-code-emacs-send-prompt-region
+      )
+    (evil-collection-define-key 'normal 'claude-code-emacs-prompt-mode-map
+      ",m" 'claude-code-emacs-prompt-transient
+      ",c" 'claude-code-emacs-send-prompt-at-point
+      )
+    )
   )
 
 (provide '47-llm)
