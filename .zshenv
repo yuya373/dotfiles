@@ -92,7 +92,7 @@ eval "$(direnv hook zsh)"
 . /home/yuya373/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
 if (which nodenv > /dev/null) ;then
-   eval "$(nodenv init -)"
+   eval "$(nodenv init - zsh)"
 fi
 
 if [ -d ${HOME}/.rbenv/bin ]; then
@@ -115,5 +115,8 @@ if [ -d ${HOME}/.goenv ]; then
   export PATH="$PATH:$GOPATH/bin"
 fi
 
+if [ -d ${HOME}/.npm-global ]; then
+    export PATH=~/.npm-global/bin:$PATH
+fi
 
 source $HOME/.local/bin/env
