@@ -1,6 +1,6 @@
 start() {
-    # vterm内ではtmuxを起動しない
-    if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
+    # emacs内ではtmuxを起動しない
+    if [[ -n "$INSIDE_EMACS" ]]; then
         return
     fi
     if [[ ! -n $TMUX && $- == *l* ]]; then
