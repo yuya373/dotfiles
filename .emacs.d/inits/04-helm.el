@@ -103,7 +103,7 @@
   (recentf-mode)
   (define-key evil-normal-state-map
               (kbd "C-b") 'consult-buffer)
-  (setq consult-goto-line-numbers nil)
+  (setq consult-goto-line-numbers t)
   (setq consult--source-buffer-perspeen
         `(:name "Buffer"
                 :narrow   ?b
@@ -185,7 +185,6 @@
     )
   (with-eval-after-load 'evil-collection
     (evil-collection-define-key 'normal 'lsp-mode-map
-      ",el" 'consult-lsp-diagnostics
       ",s" 'consult-lsp-file-symbols
       ",S" 'consult-lsp-symbols)
     )
@@ -206,17 +205,50 @@
       "cI" 'consult-imenu-multi
       "cf" 'consult-find
       "cl" nil
-      "cll" 'consult-line
+      ;; "cll" 'consult-line
+      "clg" 'consult-goto-line
+      "cll" 'consult-line-at-point
       "cld" 'consult-lsp-diagnostics
       "cls" 'consult-lsp-symbols
       "clfs" 'consult-lsp-file-symbols
-      "cL" 'consult-line-multi
+      ;; "cL" 'consult-line-multi
+      "cL" 'consult-line-multi-at-point
       "cy" 'consult-yank-from-kill-ring
       "cd" 'consult-dir
       "cgg" 'consult-git-grep-at-point
       "cgd" 'consult-grep-in-directory
-      "cll" 'consult-line-at-point
-      "cL" 'consult-line-multi-at-point))
+      ))
+
+  ;; (setq read-file-name-function #'consult-find-file-with-preview)
+  ;; (defun consult-find-file-with-preview (prompt &optional dir default mustmatch initial pred)
+  ;;   (interactive)
+  ;;   (let ((default-directory (or dir default-directory))
+  ;;         (minibuffer-completing-file-name t))
+  ;;     (consult--read #'read-file-name-internal :state (consult--file-preview)
+  ;;                    :prompt prompt
+  ;;                    :initial initial
+  ;;                    :require-match mustmatch
+  ;;                    :predicate pred)))
+  (setq project-read-file-name-function #'consult-project-find-file-with-preview)
+  (defun consult-project-find-file-with-preview (prompt all-files &optional pred hist _mb)
+    (let ((prompt (if (and all-files
+                           (file-name-absolute-p (car all-files)))
+                      prompt
+                    ( concat prompt
+                      ( format " in %s"
+                        (consult--fast-abbreviate-file-name default-directory)))))
+          (minibuffer-completing-file-name t))
+      (consult--read (mapcar
+                      (lambda (file)
+                        (file-relative-name file))
+                      all-files)
+                     :state (consult--file-preview)
+                     :prompt (concat prompt ": ")
+                     :require-match t
+                     :history hist
+                     :category 'file
+                     :predicate pred)))
+
   )
 
 (use-package consult-flycheck
@@ -528,7 +560,8 @@ targets."
         (delete-window win)
         (perspeen-tab-create-tab)
         (set-window-buffer (get-buffer-window) buf)
-        (perspeen-tab--set-header-line-format t)))
+        (with-current-buffer buf
+          (perspeen-tab--set-header-line-format t))))
     (define-key embark-consult-grep-map (kbd "t") 'embark-switch-to-file-tab))
 
   (use-package consult

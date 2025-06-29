@@ -421,8 +421,8 @@ If file doesn't exist, create it with command binding help and sample prompt."
   (add-hook 'prog-mode-hook 'minuet-auto-suggestion-mode)
   :config
 
-  (define-key minuet-active-mode-map (kbd "TAB") 'minuet-next-suggestion)
-  (define-key minuet-active-mode-map [backtab] 'minuet-previous-suggestion)
+  (define-key minuet-active-mode-map (kbd "C-c n") 'minuet-next-suggestion)
+  (define-key minuet-active-mode-map (kbd "C-c p") 'minuet-previous-suggestion)
   (define-key minuet-active-mode-map (kbd "C-<tab>") 'minuet-accept-suggestion)
   (define-key minuet-active-mode-map (kbd "C-c l") 'minuet-accept-suggestion-line)
   (define-key minuet-active-mode-map (kbd "C-c q") 'minuet-dismiss-suggestion)
@@ -462,16 +462,24 @@ If file doesn't exist, create it with command binding help and sample prompt."
   (add-to-list 'load-path (expand-file-name "~/dev/claude-code-emacs")))
 (use-package claude-code-emacs
   :config
+  (claude-code-emacs-mcp-events-enable)
+
   (with-eval-after-load 'evil-leader
     (evil-leader/set-key
       "c c" 'claude-code-emacs-transient))
+  (with-eval-after-load 'markdown-mode
+    (define-key markdown-mode-map (kbd "TAB") nil))
   (with-eval-after-load 'evil-collection
+    (evil-collection-define-key 'insert 'claude-code-emacs-prompt-mode-map
+      "@" 'claude-code-emacs-self-insert-@
+      )
     (evil-collection-define-key 'visual 'claude-code-emacs-prompt-mode-map
       ",m" 'claude-code-emacs-prompt-transient
       ",r" 'claude-code-emacs-send-prompt-region
       )
     (evil-collection-define-key 'normal 'claude-code-emacs-prompt-mode-map
-      ",m" 'claude-code-emacs-prompt-transient
+      ",m" nil
+      ",M" 'claude-code-emacs-prompt-transient
       ",c" 'claude-code-emacs-send-prompt-at-point
       )
     )

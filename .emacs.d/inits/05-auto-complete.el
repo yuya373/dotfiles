@@ -391,6 +391,9 @@
   (setq lsp-treemacs-error-list-current-project-only t)
   :config
 
+  (evil-collection-define-key 'normal 'lsp-mode-map
+    ",el" 'lsp-treemacs-errors-list
+    )
   )
 
 (use-package lsp-ui
@@ -460,12 +463,12 @@
     (interactive)
     (let ((display-buffer-alist
            '((t (lambda (buffer alist)
-                  (let ((marker (with-current-buffer buffer (point-marker)))
-                        )
+                  (let ((marker (with-current-buffer buffer (point-marker))))
                     (perspeen-tab-create-tab buffer marker)
                     (let ((window (selected-window)))
                       (mapc (lambda (w)
                               (unless (equal w window)
+                                (window-eq)
                                 (delete-window w)))
                             (window-list))
                       window)

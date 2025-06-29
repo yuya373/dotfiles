@@ -76,65 +76,6 @@
   ;; (add-hook 'tsx-ts-mode-hook 'enable-eslint-auto-fix)
   )
 
-(use-package treesit-auto
-  :ensure t
-  :init
-  (setq treesit-auto-install 'prompt)
-  (setq treesit-auto-langs '(typescript tsx))
-  :config
-  (treesit-auto-add-to-auto-mode-alist 'all)
-  (setq treesit-auto-recipe-list
-        (cl-remove-if (lambda (e)
-                        (let ((lang (treesit-auto-recipe-lang e)))
-                          (cl-member lang '(typescript tsx go))))
-                      treesit-auto-recipe-list))
-  (let ((revision "v0.20.0"))
-    (add-to-list 'treesit-auto-recipe-list
-                 (make-treesit-auto-recipe
-                  :lang 'go
-                  :ts-mode 'go-ts-mode
-                  :remap 'go-mode
-                  :requires 'gomod
-                  :url "https://github.com/tree-sitter/tree-sitter-go"
-                  :revision revision
-                  :ext "\\.go\\'")))
-  (let ((revision "v0.20.3"))
-    (add-to-list 'treesit-auto-recipe-list
-                 (make-treesit-auto-recipe
-                  :lang 'tsx
-                  :ts-mode 'tsx-ts-mode
-                  :remap '(typescript-tsx-mode)
-                  :requires 'typescript
-                  :url "https://github.com/tree-sitter/tree-sitter-typescript"
-                  :revision revision
-                  :source-dir "tsx/src"
-                  :ext "\\.tsx\\'"))
-    (add-to-list 'treesit-auto-recipe-list
-                 (make-treesit-auto-recipe
-                  :lang 'typescript
-                  :ts-mode 'typescript-ts-mode
-                  :remap 'typescript-mode
-                  :requires 'tsx
-                  :url "https://github.com/tree-sitter/tree-sitter-typescript"
-                  :revision revision
-                  :source-dir "typescript/src"
-                  :ext "\\.ts\\'"))
-    )
-  )
-(unless (package-installed-p 'tree-sitter-langs)
-  (package-vc-install "https://github.com/emacs-tree-sitter/tree-sitter-langs"))
-(use-package tree-sitter-langs)
-(use-package tree-sitter
-  :ensure t
-  :hook ((typescript-ts-mode . tree-sitter-hl-mode)
-         (tsx-ts-mode . tree-sitter-hl-mode))
-  :config
-  (tree-sitter-require 'tsx)
-  (add-to-list 'tree-sitter-major-mode-language-alist '(tsx-ts-mode . tsx))
-  (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-ts-mode . tsx)))
-
-(global-treesit-auto-mode)
-(global-tree-sitter-mode)
 
 (provide '43-typescript)
 ;;; 43-typescript.el ends here

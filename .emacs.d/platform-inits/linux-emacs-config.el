@@ -42,6 +42,23 @@
           browse-url-generic-args     cmd-args
           browse-url-browser-function 'browse-url-generic)))
 
+(use-package alert
+  :ensure t
+  :config
+  (defun alert-wsl-notifier (info)
+    (let ((title (plist-get info :title))
+          (message (plist-get info :message)))
+      (start-process "wsl-notifier"
+                     "alert-wsl-notifier"
+                     (format "%s/dotfiles/wsl_notify.sh" (getenv "HOME"))
+                     message
+                     title)))
+  (alert-define-style
+   'wsl
+   :title "wsl notifier to windows"
+   :notifier #'alert-wsl-notifier)
+  (setq alert-user-configuration '((((:category . "claude-code")) wsl nil))))
+
 (use-package migemo
   :ensure t
   :commands (migemo-init)
