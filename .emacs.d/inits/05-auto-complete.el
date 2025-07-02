@@ -394,6 +394,9 @@
   (evil-collection-define-key 'normal 'lsp-mode-map
     ",el" 'lsp-treemacs-errors-list
     )
+  (evil-collection-define-key 'normal 'treemacs-mode-map
+     "q" 'treemacs-kill-buffer
+    )
   )
 
 (use-package lsp-ui

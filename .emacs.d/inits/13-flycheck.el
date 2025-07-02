@@ -210,6 +210,7 @@ See URL `https://eslint.org/'."
   )
 
 
+(use-package package-lint :ensure t)
 (use-package flycheck-package
   :ensure t
   :after (flycheck)
