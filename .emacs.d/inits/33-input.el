@@ -38,11 +38,6 @@
   (setq skk-echo t)
   (setq define-input-method "japanese-skk")
 
-  (setq skk-jisyo "~/Dropbox/skk-jisyo.ddskk"
-        skk-jisyo-code nil
-        skk-share-private-jisyo t
-        skk-save-jisyo-instantly t
-        )
   (setq skk-egg-like-newline t
         skk-auto-insert-paren t
         skk-show-annotation t
@@ -68,26 +63,21 @@
   (setq skk-check-okurigana-on-touroku 'auto)
   (setq skk-use-numeric-conversion t)
 
-  ;; skk-server AquaSKK
+  ;; skk-server
+  ;; ~/dotfiles/start_yaskkserv.sh
   (setq skk-server-portnum 1178
         skk-server-host "0.0.0.0"
         skk-server-report-response t)
-  (setq skk-large-jisyo "~/Dropbox/skk/dict/SKK-JISYO.L")
-  (setq skk-itaiji-jisyo "~/Dropbox/skk/dict/SKK-JISYO.itaiji")
-  ;; (setq skk-extra-jisyo-file-list '(
-  ;;                                   "~/Dropbox/skk/dict/SKK-JISYO.mazegaki"
-  ;;                                   "~/Dropbox/skk/dict/SKK-JISYO.station"
-  ;;                                   "~/Dropbox/skk/dict/SKK-JISYO.zipcode"
-  ;;                                   "~/Dropbox/skk/dict/SKK-JISYO.fullname"
-  ;;                                   "~/Dropbox/skk/dict/SKK-JISYO.geo"
-  ;;                                   "~/Dropbox/skk/dict/SKK-JISYO.jinmei"
-  ;;                                   "~/Dropbox/skk/dict/SKK-JISYO.law"
-  ;;                                   "~/Dropbox/skk/dict/SKK-JISYO.propernoun"
-  ;;                                   ))
 
+  (setq
+        ;; skk-jisyo "~/Dropbox/skk-jisyo.ddskk"
+        skk-share-private-jisyo nil
+        skk-save-jisyo-instantly t
+        )
 
   (setq skk-japanese-message-and-error t
         skk-show-japanese-menu t)
+
   (defun enable-skk-when-insert ()
     (unless (bound-and-true-p skk-mode)
       (skk-mode 1)
@@ -108,14 +98,14 @@
       (skk-isearch-mode-cleanup)))
   (add-hook 'isearch-mode-hook #'skk-isearch-setup-maybe)
   (add-hook 'isearch-mode-end-hook #'skk-isearch-cleanup-maybe)
-
-
   (define-key minibuffer-local-map (kbd "C-j") 'skk-j-mode-on)
+
   ;; @@ server completion
   (add-to-list 'skk-search-prog-list
-               '(skk-server-completion-search) t)
+               '(skk-server-completion-search))
   (add-to-list 'skk-completion-prog-list
-               '(skk-comp-by-server-completion) t)
+               '(skk-comp-by-server-completion))
+
   (skk-setup-emulation-commands '(evil-delete-backward-char)
                                 'skk-delete-backward-char)
 
@@ -134,3 +124,4 @@
 
 (provide '33-input)
 ;;; 33-input.el ends here
+

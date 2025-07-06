@@ -35,7 +35,7 @@ sudo usermod -aG uinput $USER
 
 ~/dotfiles/dotfiles_install.sh
 sudo udevadm control --reload-rules && udevadm trigger
-systemctl --user enable xkeysnail
+systemctl -y-user enable xkeysnail
 systemctl --user start xkeysnail
 
 ~/dotfiles/powerline_fonts_install

@@ -91,6 +91,8 @@
                         '(((slack-message-buffer-mode
                             slack-search-result-buffer-mode)
                            :select t)))
+                (mapcar (lambda (l) (append l '(:align right :select nil :size 0.35 :popup t)))
+                        '((claude-code-emacs-vterm-mode)))
 
                 (mapcar (lambda (l) (append l shackle-rule-bottom))
                         '((timer-list-mode)
@@ -130,13 +132,11 @@
                           (apropos-mode :select t)
                           (ag-mode :select t)
                           (consult-typescript-compilation-mode)
-                          (("\\`\\*vterm-\[^claude\].*\\*\\'") :regexp t :select t)
                           ))
                 (mapcar (lambda (l) (append l shackle-rule-right-half))
                         '(((woman-mode
                             slack-message-attachment-preview-buffer-mode))
-                          (("\\`\\*vterm-claude-.*\\*\\'") :regexp t :select t)
-                          (("\\`\\*Claude.*\\*\\'" "\\`\\*Gemini*\\*\\'" "\\`\\*aider.*\\*\\'") :regexp t :select t)
+                          (("\\`\\*Gemini*\\*\\'" "\\`\\*aider.*\\*\\'") :regexp t :select t)
                           ((slack-file-list-buffer-mode
                             slack-all-threads-buffer-mode
                             slack-thread-message-buffer-mode

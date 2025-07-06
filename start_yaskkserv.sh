@@ -1,6 +1,5 @@
 #!/bin/bash
 
-/usr/bin/yaskkserv_hairy \
-    --google-japanese-input-timeout=1.0 \
+/usr/sbin/yaskkserv2 \
     --google-japanese-input=notfound \
-    ~/Dropbox/skk/dict/SKK-JISYO-MERGED.yaskkserv
+    "${HOME}/.config/yaskkserv2/dict.yaskkserv2"

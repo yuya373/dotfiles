@@ -418,14 +418,20 @@ If file doesn't exist, create it with command binding help and sample prompt."
 (use-package minuet
   :ensure t
   :init
-  (add-hook 'prog-mode-hook 'minuet-auto-suggestion-mode)
+  (progn
+    ;; (add-hook 'prog-mode-hook 'minuet-auto-suggestion-mode)
+    ;; (remove-hook 'prog-mode-hook 'minuet-auto-suggestion-mode)
+    )
   :config
 
-  (define-key minuet-active-mode-map (kbd "C-c n") 'minuet-next-suggestion)
-  (define-key minuet-active-mode-map (kbd "C-c p") 'minuet-previous-suggestion)
-  (define-key minuet-active-mode-map (kbd "C-<tab>") 'minuet-accept-suggestion)
-  (define-key minuet-active-mode-map (kbd "C-c l") 'minuet-accept-suggestion-line)
-  (define-key minuet-active-mode-map (kbd "C-c q") 'minuet-dismiss-suggestion)
+  (with-eval-after-load 'evil
+    (define-key evil-insert-state-map (kbd "C-.") 'minuet-complete-with-minibuffer))
+
+  ;; (define-key minuet-active-mode-map (kbd "C-c n") 'minuet-next-suggestion)
+  ;; (define-key minuet-active-mode-map (kbd "C-c p") 'minuet-previous-suggestion)
+  ;; (define-key minuet-active-mode-map (kbd "C-<tab>") 'minuet-accept-suggestion)
+  ;; (define-key minuet-active-mode-map (kbd "C-c l") 'minuet-accept-suggestion-line)
+  ;; (define-key minuet-active-mode-map (kbd "C-c q") 'minuet-dismiss-suggestion)
   (setq minuet-provider 'gemini)
 
   (defun minuet-gemini-api-key-from-auth-source ()
@@ -438,7 +444,7 @@ If file doesn't exist, create it with command binding help and sample prompt."
           (funcall secret)
         secret)))
   (plist-put minuet-gemini-options :api-key '(lambda () (minuet-gemini-api-key-from-auth-source)))
-  (plist-put minuet-gemini-options :model "gemini-2.5-flash-preview-04-17")
+  (plist-put minuet-gemini-options :model "gemini-2.5-flash")
   (minuet-set-optional-options
    minuet-gemini-options :generationConfig
    '(:maxOutputTokens 256
@@ -470,6 +476,18 @@ If file doesn't exist, create it with command binding help and sample prompt."
   (with-eval-after-load 'markdown-mode
     (define-key markdown-mode-map (kbd "TAB") nil))
   (with-eval-after-load 'evil-collection
+    (evil-collection-define-key 'normal 'claude-code-emacs-vterm-mode-map
+      "1" 'claude-code-emacs-send-1
+      "2" 'claude-code-emacs-send-2
+      "3" 'claude-code-emacs-send-3
+      "q" 'claude-code-emacs-close
+      "c" 'claude-code-emacs-clear
+      "k" nil
+      "e" 'claude-code-emacs-send-escape
+      "r" 'claude-code-emacs-send-ctrl-r
+      ",r" 'claude-code-emacs-send-ctrl-e
+      "m" 'claude-code-emacs-send-return
+      "a" 'claude-code-emacs-send-shift-tab)
     (evil-collection-define-key 'insert 'claude-code-emacs-prompt-mode-map
       "@" 'claude-code-emacs-self-insert-@
       )
@@ -478,8 +496,7 @@ If file doesn't exist, create it with command binding help and sample prompt."
       ",r" 'claude-code-emacs-send-prompt-region
       )
     (evil-collection-define-key 'normal 'claude-code-emacs-prompt-mode-map
-      ",m" nil
-      ",M" 'claude-code-emacs-prompt-transient
+      ",m" 'claude-code-emacs-prompt-transient
       ",c" 'claude-code-emacs-send-prompt-at-point
       )
     )

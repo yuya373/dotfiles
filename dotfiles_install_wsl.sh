@@ -16,6 +16,10 @@ case ${OSTYPE} in
             mkdir -p ~/.docker
         fi
         ln -sf ~/dotfiles/.docker/config.json  ~/.docker/config.json
+        mkdir -p ~/.config/systemd/user
+        ln -sf ~/dotfiles/.config/systemd/user/ssh-agent.service ~/.config/systemd/user/ssh-agent.service
+        ln -sf ~/dotfiles/.config/systemd/user/yaskkserv2.service ~/.config/systemd/user/yaskkserv2.service
+        ln -sf ~/dotfiles/.config/systemd/user/yaskkserv2.socket ~/.config/systemd/user/yaskkserv2.socket
         ;;
 esac
 
