@@ -70,10 +70,10 @@
         skk-server-report-response t)
 
   (setq
-        ;; skk-jisyo "~/Dropbox/skk-jisyo.ddskk"
-        skk-share-private-jisyo nil
-        skk-save-jisyo-instantly t
-        )
+   ;; skk-jisyo "~/Dropbox/skk-jisyo.ddskk"
+   skk-share-private-jisyo nil
+   skk-save-jisyo-instantly t
+   )
 
   (setq skk-japanese-message-and-error t
         skk-show-japanese-menu t)
@@ -124,4 +124,3 @@
 
 (provide '33-input)
 ;;; 33-input.el ends here
-

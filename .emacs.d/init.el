@@ -145,9 +145,9 @@
                            company-statistics company-terraform
                            consult-dir consult-flycheck consult-lsp
                            consult-projectile copilot csv-mode ddskk
-                           diminish dired-k direnv dockerfile-mode
-                           easy-hugo electric-operator elpy
-                           embark-consult emojify enh-ruby-mode
+                           ddskk-posframe diminish dired-k direnv
+                           dockerfile-mode easy-hugo electric-operator
+                           elpy embark-consult emojify enh-ruby-mode
                            es-mode eshell-prompt-extras esup evedel
                            evil-anzu evil-args evil-collection
                            evil-exchange evil-indent-textobject
@@ -172,12 +172,16 @@
                            scss-mode shackle slim-mode solarized-theme
                            spaceline sql-indent sqlformat sr-speedbar
                            string-inflection term-run toml-mode
-                           tree-sitter-langs treesit-auto undo-tree
-                           vertico virtualenvwrapper
+                           transient-posframe tree-sitter-langs
+                           treesit-auto undo-tree vertico
+                           vertico-posframe virtualenvwrapper
                            volatile-highlights vterm web-mode wgrep-ag
-                           yaml yaml-mode yasnippet-snippets))
+                           which-key-posframe yaml yaml-mode
+                           yasnippet-snippets))
  '(package-vc-selected-packages
-   '((claude-code :vc-backend Git :url
+   '((vertico-posframe :vc-backend Git :url
+                       "https://github.com/tumashu/vertico-posframe")
+     (claude-code :vc-backend Git :url
                   "https://github.com/stevemolitor/claude-code.el")
      (gptel-quick :vc-backend Git :url
                   "https://github.com/karthink/gptel-quick")
