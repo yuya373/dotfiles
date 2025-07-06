@@ -26,11 +26,6 @@
 (eval-when-compile
   (require 'evil))
 
-;; (use-package ddskk
-;;   :ensure t
-;;   :commands (skk-mode skk-auto-fill-mode)
-;;   )
-
 (use-package ddskk :ensure t)
 (use-package skk
   :ensure ddskk
@@ -41,7 +36,6 @@
   (setq skk-egg-like-newline t
         skk-auto-insert-paren t
         skk-show-annotation t
-        skk-annotation-show-wikipedia-url t
         skk-use-look t
         skk-look-recursive-search t
         )
@@ -62,6 +56,8 @@
   (setq skk-isearch-mode-enable t)
   (setq skk-check-okurigana-on-touroku 'auto)
   (setq skk-use-numeric-conversion t)
+  (setq skk-show-candidates-nth-henkan-char 2)
+  (setq skk-henkan-number-to-display-candidates 10)
 
   ;; skk-server
   ;; ~/dotfiles/start_yaskkserv.sh

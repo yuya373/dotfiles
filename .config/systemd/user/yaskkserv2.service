@@ -2,7 +2,7 @@
 Description=Yet Another SKK server2
 
 [Service]
-ExecStart=/usr/sbin/yaskkserv2 --no-daemonize --google-japanese-input=notfound /home/yuya373/.config/yaskkserv2/dict.yaskkserv2
+ExecStart=/usr/sbin/yaskkserv2 --no-daemonize --google-suggest --google-japanese-input=last --google-cache-filename=/tmp/yaskkserv2.cache /home/yuya373/.config/yaskkserv2/dict.yaskkserv2
 
 [Install]
 WantedBy=default.target
