@@ -132,6 +132,7 @@
                           (apropos-mode :select t)
                           (ag-mode :select t)
                           (consult-typescript-compilation-mode)
+                          (("\\`\\*vterm-\[^claude\].*\\*\\'") :regexp t :select t)
                           ))
                 (mapcar (lambda (l) (append l shackle-rule-right-half))
                         '(((woman-mode

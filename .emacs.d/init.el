@@ -128,7 +128,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(corfu-current ((t (:inherit corfu-default :extend t :inverse-video nil :weight bold))))
+ '(orderless-match-face-0 ((t (:foreground "#2aa198")))))
 (put 'list-timers 'disabled nil)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -139,12 +140,10 @@
    '(add-node-modules-path adoc-mode ag aider alert
                            all-the-icons-completion
                            auto-save-buffers-enhanced avy-migemo
-                           bundler claude-code codic coffee-mode
-                           command-log-mode company-box company-emoji
-                           company-quickhelp company-restclient
-                           company-statistics company-terraform
-                           consult-dir consult-flycheck consult-lsp
-                           consult-projectile copilot csv-mode ddskk
+                           bundler cape claude-code codic coffee-mode
+                           command-log-mode consult-dir
+                           consult-flycheck consult-lsp
+                           consult-projectile copilot corfu csv-mode
                            ddskk-posframe diminish dired-k direnv
                            dockerfile-mode easy-hugo electric-operator
                            elpy embark-consult emojify enh-ruby-mode
@@ -156,27 +155,30 @@
                            evil-surround evil-visualstar
                            exec-path-from-shell expand-region
                            flycheck-aspell flycheck-inline
-                           flycheck-package font-lock-studio gist
-                           git-link git-messenger go-mode golden-ratio
-                           google-translate gptel-quick graphql-mode
-                           haml-mode highlight-indent-guides
-                           imenu-anywhere init-loader initchart
-                           json-mode log4j-mode logview lsp-metals
-                           lsp-ui lua-mode marginalia minuet
+                           flycheck-package font-lock-studio
+                           frame-local gist git-link git-messenger
+                           go-mode golden-ratio google-translate
+                           gptel-quick graphql-mode haml-mode
+                           highlight-indent-guides imenu-anywhere
+                           init-loader initchart ivy-posframe
+                           json-mode know-your-http-well log4j-mode
+                           logview lsp-metals lsp-ui lua-mode
+                           marginalia minuet nerd-icons-corfu
                            nginx-mode omnisharp open-junk-file
-                           orderless perspeen pkg-info
+                           orderless perspeen pkg-info pos-tip
                            projectile-rails python-mode
                            quelpa-use-package quickrun
-                           rainbow-delimiters rbenv rjsx-mode
-                           rspec-mode ruby-end rufo rustic sbt-mode
-                           scss-mode shackle slim-mode solarized-theme
-                           spaceline sql-indent sqlformat sr-speedbar
-                           string-inflection term-run toml-mode
+                           rainbow-delimiters rbenv restclient
+                           rjsx-mode rspec-mode ruby-end rufo rustic
+                           sbt-mode scss-mode shackle slim-mode
+                           solarized-theme spaceline sql-indent
+                           sqlformat sr-speedbar string-inflection
+                           svg-lib term-run toml-mode
                            transient-posframe tree-sitter-langs
-                           treesit-auto undo-tree vertico
-                           vertico-posframe virtualenvwrapper
-                           volatile-highlights vterm web-mode wgrep-ag
-                           which-key-posframe yaml yaml-mode
+                           treesit-auto undo-tree vertico-posframe
+                           virtualenvwrapper volatile-highlights vterm
+                           web-mode websocket wgrep-ag
+                           which-key-posframe yaml-mode
                            yasnippet-snippets))
  '(package-vc-selected-packages
    '((vertico-posframe :vc-backend Git :url

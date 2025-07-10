@@ -63,189 +63,53 @@
   :init
   (add-hook 'after-init-hook 'yas-global-mode))
 
-(use-package company-statistics
+(use-package orderless
+  :ensure t)
+
+(use-package corfu
   :ensure t
-  :commands (company-statistics-mode)
-  :init
-  (setq company-statistics-auto-save t)
-  (setq company-statistics-auto-restore t)
-  (add-hook 'company-mode-hook 'company-statistics-mode)
   :config
-  (setq company-transformers '(company-sort-by-statistics
-                               company-sort-by-occurrence
-                               company-sort-by-backend-importance))
-  )
+  (setq corfu-auto t)
+  (setq corfu-auto-prefix 2)
+  (setq corfu-preview-current nil)
+  (setq corfu-cycle t)
+  (setq completion-styles '(orderless basic))
+  (setq tab-always-indent 'complete)
+  (define-key corfu-mode-map (kbd "C-n") 'corfu-next)
+  (define-key corfu-mode-map (kbd "C-p") 'corfu-previous)
+  (define-key corfu-mode-map (kbd "C-h") nil)
+  (define-key corfu-map (kbd "C-h") nil)
+  (defun corfu-mode-set-faces ()
+    (custom-set-faces
+     '(corfu-current ((t (:inherit corfu-default :extend t :inverse-video nil :weight bold))))
+     '(orderless-match-face-0 ((t (:foreground "#2aa198"))))))
+  (add-hook 'corfu-mode-hook 'corfu-mode-set-faces)
+  (global-corfu-mode))
 
-(use-package company-quickhelp
-  :ensure t
-  :commands (company-quickhelp-mode)
-  :init
-  (add-hook 'global-company-mode-hook 'company-quickhelp-mode)
-  (setq company-quickhelp-use-propertized-text t)
-  (setq company-quickhelp-delay 0.5)
+(use-package corfu-popupinfo
+  :after (corfu)
   :config
-  (add-to-list 'company-frontends 'company-quickhelp-frontend t))
-
-(use-package company-box
-  :ensure t
-  :hook (company-mode . company-box-mode))
-
-(use-package company
-  :ensure t
-  :commands (company-mode global-company-mode)
-  ;; :diminish company-mode
-  :init
-  (setq company-idle-delay 0.5) ; デフォルトは0.5
-  (setq company-minimum-prefix-length 1) ; デフォルトは4
-  (setq company-selection-wrap-around t) ; 候補の一番下でさらに下に行こうとすると一番上に戻る
-  (setq company-auto-complete nil)
-  (setq company-tooltip-align-annotations t)
-  (setq company-dabbrev-other-buffers t)
-  (setq company-dabbrev-ignore-case nil)
-  (setq company-dabbrev-downcase nil)
-  (setq company-frontends '(company-pseudo-tooltip-frontend
-                            company-echo-metadata-frontend))
-
-  ;; (add-to-list 'completion-styles 'initials)
-  (add-hook 'after-init-hook 'global-company-mode)
+  (define-key corfu-popupinfo-map (kbd "C-h") nil)
+  (corfu-popupinfo-mode))
+(use-package corfu-history
+  :after (corfu)
   :config
-  ;; (setq company-backends
-  ;;       '((company-capf
-  ;;          company-dabbrev-code
-  ;;          company-files
-  ;;          company-keywords)
-  ;;         (company-dabbrev-code
-  ;;          company-dabbrev
-  ;;          company-files          ; files & directory
-  ;;          company-keywords       ; keywords
-  ;;          ;; company-gtags
-  ;;          ;; company-etags
-  ;;          ;; company-yasnippet
-  ;;          )))
-  ;; (setq company-backends (cons 'company-capf (delete 'company-capf company-backends)))
-  (setq company-backends '((company-capf company-files) company-keywords company-dabbrev-code company-dabbrev company-yasnippet))
-
-  (use-package company-emoji
-    :ensure t
-    :commands (company-emoji)
-    :init
-    ;; (add-to-list 'company-backends 'company-emoji)
-    (setq company-emoji-insert-unicode nil)
-    ;; (defun add-company-emoji ()
-    ;;   (make-local-variable 'company-backends)
-    ;;   (add-to-list 'company-backends 'company-emoji))
-    ;; ;; (add-hook 'gfm-mode-hook #'add-company-emoji)
-    ;; ;; (add-hook 'slack-edit-message-mode-hook #'add-company-emoji)
-    ;; ;; (add-hook 'slack-mode-hook #'add-company-emoji)
-    ;; (add-hook 'git-commit-mode-hook #'add-company-emoji)
-    ;; (add-hook 'markdown-mode-hook #'add-company-emoji)
-    )
-  ;; (use-package company-yasnippet
-  ;;   :config
-  ;;   (add-to-list 'company-backends 'company-yasnippet))
-  ;; (use-package company-ispell
-  ;;   :init
-  ;;   (defun toggle-company-ispell ()
-  ;;     (interactive)
-  ;;     (if (memq 'company-ispell company-backends)
-  ;;         (progn
-  ;;           (setq company-backends (delete 'company-ispell company-backends))
-  ;;           (message "Turn OFF `company-ispell'"))
-  ;;       (add-to-list 'company-backends 'company-ispell)
-  ;;       (message "Turn ON `company-ispell'")))
-  ;;   (defun add-company-ispell ()
-  ;;     (make-local-variable 'company-backends)
-  ;;     (add-to-list 'company-backends
-  ;;                  '(company-ispell
-  ;;                    company-files
-  ;;                    company-dabbrev
-  ;;                    )))
-  ;;   (add-hook 'text-mode-hook #'add-company-ispell)
-  ;; (add-hook 'gfm-mode-hook #'add-company-ispell)
-  ;; (add-hook 'markdown-mode-hook #'add-company-ispell)
-  ;; (add-hook 'org-mode-hook #'add-company-ispell)
-  ;; )
-
-  (defun company--insert-candidate2 (candidate)
-    (when (> (length candidate) 0)
-      (setq candidate (substring-no-properties candidate))
-      (if (eq (company-call-backend 'ignore-case) 'keep-prefix)
-          (insert (company-strip-prefix candidate))
-        (if (equal company-prefix candidate)
-            (company-select-next)
-          (delete-region (- (point) (length company-prefix)) (point))
-          (insert candidate)))))
-
-  (defun company-complete-common2 ()
-    (interactive)
-    (when (company-manual-begin)
-      (if (and (not (cdr company-candidates))
-               (equal company-common (car company-candidates)))
-          (company-complete-selection)
-        (company--insert-candidate2 company-common))))
-
-  (define-key company-active-map (kbd "C-w") 'backward-kill-word)
-  (define-key company-active-map (kbd "C-h") 'delete-backward-char)
-  (define-key company-active-map (kbd "TAB") nil)
-  (define-key company-active-map [backtab] nil)
-  ;; (define-key company-active-map [tab] 'company-complete-common-or-cycle)
-  ;; (define-key company-active-map [backtab] 'company-select-previous)
-  ;; (define-key company-active-map (kbd "S-TAB") 'company-select-previous)
-  (define-key company-active-map (kbd "C-n") 'company-select-next)
-  (define-key company-active-map (kbd "C-p") 'company-select-previous)
-  (define-key company-search-map (kbd "C-w") 'backward-kill-word)
-  (define-key company-search-map (kbd "C-h") 'delete-backward-char)
-  ;; (define-key company-active-map [tab] 'company-complete-common2)
-  ;; (define-key company-search-map [tab] 'company-select-next)
-  ;; (define-key company-search-map [backtab] 'company-select-previous)
-  ;; (define-key company-search-map (kbd "S-TAB") 'company-select-previous)
-  (define-key company-search-map (kbd "C-n") 'company-select-next)
-  (define-key company-search-map (kbd "C-p") 'company-select-previous)
-
-  (set-face-attribute 'company-tooltip-mouse
-                      nil
-                      :foreground nil :background nil)
-  (set-face-attribute 'company-tooltip-common-selection nil
-                      :foreground "white" :background "#2aa198")
-  (set-face-attribute 'company-tooltip-selection nil
-                      :foreground "white" :background "#2aa198")
-  (set-face-attribute 'company-tooltip-annotation nil
-                      :foreground "#2aa198")
-  (set-face-attribute 'company-tooltip-annotation-selection nil
-                      :foreground "white")
-
-  ;; (set-face-attribute 'company-tooltip nil
-  ;;                     :foreground "black" :background "lightgrey")
-  ;; (set-face-attribute 'company-tooltip-common nil
-  ;;                     :foreground "black" :background "lightgrey")
-  ;; (set-face-attribute 'company-tooltip-common-selection nil
-  ;;                     :foreground "white" :background "steelblue")
-  ;; (set-face-attribute 'company-tooltip-selection nil
-  ;;                     :foreground "black" :background "steelblue")
-  ;; (set-face-attribute 'company-preview-common nil
-  ;;                     :background nil :foreground "lightgrey" :underline t)
-  ;; (set-face-attribute 'company-scrollbar-fg nil
-  ;;                     :background "orange")
-  ;; (set-face-attribute 'company-scrollbar-bg nil
-  ;;                     :background "gray40")
-  ;; (set-face-attribute 'company-tooltip-annotation nil
-  ;;                     :foreground "black" :background "lightgrey")
-  ;; (set-face-attribute 'company-tooltip-annotation-selection nil
-  ;;                     :foreground "white" :background "steelblue")
-  (diminish 'abbrev-mode))
+  (corfu-history-mode))
+(use-package nerd-icons-corfu
+  :ensure t
+  :config
+  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+(use-package cape
+  :ensure t
+  :after (corfu)
+  :init
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-file))
 
 (use-package know-your-http-well :ensure t)
 (use-package editorconfig :ensure t
   :config
   (editorconfig-mode 1))
-(use-package company-restclient
-  :ensure t
-  :commands (company-restclient)
-  :init
-  (defun my-comp-restclient ()
-    ;; (make-local-variable 'company-backends)
-    (add-to-list 'company-backends 'company-restclient))
-  (add-hook 'restclient-mode-hook 'my-comp-restclient))
 
 
 (use-package pos-tip :ensure t)
@@ -293,7 +157,9 @@
         lsp-eldoc-enable-hover nil
 
         lsp-completion-enable t
-        lsp-prefer-capf t
+        lsp-completion-provider :none
+
+        lsp-inline-completion-enable nil
 
         lsp-log-io nil
 
@@ -319,8 +185,6 @@
         lsp-rust-all-features t
         standard-indent 2
         lsp-copilot-enabled nil
-        lsp-inline-completion-enable nil
-        lsp-inline-completion-idle-delay 2
         )
   (defun my-lsp-inhibit-hooks ()
     (setq-local lsp-inhibit-lsp-hooks t))
@@ -342,12 +206,11 @@
   (use-package lsp-headerline)
   (use-package lsp-diagnostics)
   (use-package lsp-completion)
-  (use-package lsp-inline-completion)
 
-  (defun my-lsp-completion-mode-hook-fn ()
-    (interactive)
-    (setq-local company-backends (cl-remove 'company-capf company-backends)))
-  (add-hook 'lsp-completion-mode-hook 'my-lsp-completion-mode-hook-fn)
+  ;; (defun my-lsp-completion-mode-hook-fn ()
+  ;;   (interactive)
+  ;;   (setq-local company-backends (cl-remove 'company-capf company-backends)))
+  ;; (add-hook 'lsp-completion-mode-hook 'my-lsp-completion-mode-hook-fn)
 
   (defface my:lsp-modeline-code-actions-face-14
     '((t (:inherit homoglyph :foreground "#002b36" :bold t)))
@@ -395,7 +258,7 @@
     ",el" 'lsp-treemacs-errors-list
     )
   (evil-collection-define-key 'normal 'treemacs-mode-map
-     "q" 'treemacs-kill-buffer
+    "q" 'treemacs-kill-buffer
     )
   )
 

@@ -31,11 +31,6 @@
   :init
   (setq terraform-format-on-save t))
 
-(use-package company-terraform
-  :ensure t
-  :commands (company-terraform-init)
-  :init
-  (add-hook 'terraform-mode-hook 'company-terraform-init))
 
 (provide '45-terraform)
 ;;; 45-terraform.el ends here
