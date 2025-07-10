@@ -1,11 +1,76 @@
 #!/usr/bin/bash -eu
 
-if [[ -e ~/dotfiles/pacman.txt ]]; then
-    mv ~/dotfiles/pacman.txt ~/dotfiles/pacman.txt.bak
+# WSL環境かどうかを判定
+if grep -qi microsoft /proc/version 2>/dev/null; then
+    # WSL環境の場合
+    PACMAN_LIST="${HOME}/dotfiles/pacman_wsl.txt"
+    PACMAN_AUR_LIST="${HOME}/dotfiles/pacman_aur_wsl.txt"
+else
+    # 通常のLinux環境
+    PACMAN_LIST="${HOME}/dotfiles/pacman.txt"
+    PACMAN_AUR_LIST="${HOME}/dotfiles/pacman_aur.txt"
 fi
 
-pacman -Qqe > ~/dotfiles/pacman.txt
+# バックアップファイル
+BACKUP_FILE="${PACMAN_LIST}.bak"
+BACKUP_AUR_FILE="${PACMAN_AUR_LIST}.bak"
 
-if [[ -e ~/dotfiles/pacman.txt.bak ]]; then
-    rm  ~/dotfiles/pacman.txt.bak
+# 既存のファイルをバックアップ
+if [[ -e "$PACMAN_LIST" ]]; then
+    echo "📦 既存のパッケージリストをバックアップ中..."
+    cp "$PACMAN_LIST" "$BACKUP_FILE"
+fi
+
+if [[ -e "$PACMAN_AUR_LIST" ]]; then
+    cp "$PACMAN_AUR_LIST" "$BACKUP_AUR_FILE"
+fi
+
+echo "📋 パッケージリストを更新中..."
+
+# エラーハンドリングのためにtrapを設定
+trap 'echo "❌ エラーが発生しました。バックアップを保持します。"; exit 1' ERR
+
+# 全パッケージリスト（明示的にインストールされたもの）
+pacman -Qqe | sort > "$PACMAN_LIST"
+echo "✅ 全パッケージリスト: $(wc -l < "$PACMAN_LIST") 個"
+
+# AURパッケージのみ
+pacman -Qqem | sort > "$PACMAN_AUR_LIST" 2>/dev/null || true
+if [[ -s "$PACMAN_AUR_LIST" ]]; then
+    echo "🔧 AURパッケージ: $(wc -l < "$PACMAN_AUR_LIST") 個"
+else
+    echo "ℹ️  AURパッケージはありません"
+    rm -f "$PACMAN_AUR_LIST"
+fi
+
+# 正常に完了したらバックアップを削除
+if [[ -e "$BACKUP_FILE" ]]; then
+    echo "🗑️  バックアップを削除中..."
+    rm -f "$BACKUP_FILE"
+fi
+
+if [[ -e "$BACKUP_AUR_FILE" ]]; then
+    rm -f "$BACKUP_AUR_FILE"
+fi
+
+echo "✨ パッケージリストの更新が完了しました！"
+
+# git status を表示（変更があるかチェック）
+if command -v git &> /dev/null && [[ -d "${HOME}/dotfiles/.git" ]]; then
+    cd "${HOME}/dotfiles"
+    if grep -qi microsoft /proc/version 2>/dev/null; then
+        # WSL環境
+        if [[ -n $(git status --porcelain pacman*_wsl.txt 2>/dev/null) ]]; then
+            echo ""
+            echo "📝 変更されたファイル:"
+            git status --short pacman*_wsl.txt
+        fi
+    else
+        # 通常のLinux環境
+        if [[ -n $(git status --porcelain pacman*.txt 2>/dev/null | grep -v "_wsl.txt") ]]; then
+            echo ""
+            echo "📝 変更されたファイル:"
+            git status --short pacman*.txt | grep -v "_wsl.txt"
+        fi
+    fi
 fi

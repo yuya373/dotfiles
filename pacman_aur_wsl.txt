@@ -1,0 +1,13 @@
+cmigemo-git
+ghq-bin
+google-chrome
+imgcat
+ngrok
+nkf-git
+nodenv
+nodenv-node-build
+tfenv
+ttf-hackgen
+vacuum
+yaskkserv2-bin
+yay

@@ -1,0 +1,138 @@
+#!/usr/bin/bash -eu
+
+# 色付きメッセージ用の関数
+print_info() {
+    echo -e "\033[34m[INFO]\033[0m $1"
+}
+
+print_success() {
+    echo -e "\033[32m[SUCCESS]\033[0m $1"
+}
+
+print_error() {
+    echo -e "\033[31m[ERROR]\033[0m $1"
+}
+
+print_warning() {
+    echo -e "\033[33m[WARNING]\033[0m $1"
+}
+
+# WSL環境かどうかを判定
+if grep -qi microsoft /proc/version 2>/dev/null; then
+    # WSL環境の場合
+    PACMAN_LIST="${HOME}/dotfiles/pacman_wsl.txt"
+    PACMAN_AUR_LIST="${HOME}/dotfiles/pacman_aur_wsl.txt"
+    print_info "🖥️  WSL環境を検出しました"
+else
+    # 通常のLinux環境
+    PACMAN_LIST="${HOME}/dotfiles/pacman.txt"
+    PACMAN_AUR_LIST="${HOME}/dotfiles/pacman_aur.txt"
+    print_info "🐧 Linux環境を検出しました"
+fi
+
+# ファイルの存在確認
+if [[ ! -e "$PACMAN_LIST" ]]; then
+    print_error "❌ パッケージリストファイルが見つかりません: $PACMAN_LIST"
+    exit 1
+fi
+
+print_info "📋 パッケージリストを読み込み中: $PACMAN_LIST"
+
+# 公式リポジトリのパッケージを読み込み
+official_packages=""
+
+while IFS= read -r package; do
+    # 空行やコメント行をスキップ
+    [[ -z "$package" || "$package" =~ ^# ]] && continue
+
+    official_packages+="$package "
+done < "$PACMAN_LIST"
+
+# 公式リポジトリのパッケージをインストール
+if [[ -n "$official_packages" ]]; then
+    print_info "📦 公式リポジトリのパッケージを確認中..."
+    echo "対象: $official_packages"
+
+    # 確認を求める
+    read -p "これらのパッケージをインストールしますか？ [Y/n] " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]] || [[ -z $REPLY ]]; then
+        print_info "📦 インストール中（--neededで既存パッケージはスキップされます）..."
+        sudo pacman -S --needed $official_packages
+        print_success "✨ 公式パッケージのインストールが完了しました"
+    else
+        print_warning "⚠️  公式パッケージのインストールをスキップしました"
+    fi
+else
+    print_info "ℹ️  インストールする公式パッケージはありません"
+fi
+
+# AURパッケージの処理
+aur_packages=""
+
+# AURリストファイルがある場合は読み込み
+if [[ -e "$PACMAN_AUR_LIST" ]]; then
+    print_info "📋 AURパッケージリストを読み込み中: $PACMAN_AUR_LIST"
+    while IFS= read -r package; do
+        # 空行やコメント行をスキップ
+        [[ -z "$package" || "$package" =~ ^# ]] && continue
+
+        aur_packages+="$package "
+    done < "$PACMAN_AUR_LIST"
+fi
+
+# AURヘルパーの確認とインストール
+if [[ -n "$aur_packages" ]]; then
+    if ! command -v yay &> /dev/null && ! command -v paru &> /dev/null; then
+        print_warning "⚠️  AURヘルパーが見つかりません"
+        read -p "yayをインストールしますか？ [Y/n] " -n 1 -r
+        echo
+        if [[ $REPLY =~ ^[Yy]$ ]] || [[ -z $REPLY ]]; then
+            print_info "📦 yayをインストール中..."
+            cd /tmp
+            git clone https://aur.archlinux.org/yay.git
+            cd yay
+            makepkg -si --noconfirm
+            cd -
+            rm -rf /tmp/yay
+            print_success "✅ yayのインストールが完了しました"
+        else
+            print_error "❌ AURパッケージをインストールするにはAURヘルパーが必要です"
+            exit 1
+        fi
+    fi
+
+    # AURヘルパーを選択
+    if command -v paru &> /dev/null; then
+        AUR_HELPER="paru"
+    else
+        AUR_HELPER="yay"
+    fi
+    print_info "🔧 AURヘルパー: $AUR_HELPER を使用します"
+
+    # AURパッケージをインストール
+    print_info "🔧 AURパッケージを確認中..."
+    echo "対象: $aur_packages"
+
+    # 確認を求める
+    read -p "これらのAURパッケージをインストールしますか？ [Y/n] " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]] || [[ -z $REPLY ]]; then
+        print_info "🔧 インストール中（--neededで既存パッケージはスキップされます）..."
+        $AUR_HELPER -S --needed $aur_packages
+        print_success "✨ AURパッケージのインストールが完了しました"
+    else
+        print_warning "⚠️  AURパッケージのインストールをスキップしました"
+    fi
+else
+    print_info "ℹ️  インストールするAURパッケージはありません"
+fi
+
+print_success "🎉 パッケージの復元処理が完了しました！"
+
+# 現在のパッケージ数を表示
+echo ""
+print_info "📊 現在のパッケージ統計:"
+echo "  全パッケージ: $(pacman -Qqe | wc -l) 個"
+echo "  公式リポジトリ: $(pacman -Qqen | wc -l) 個"
+echo "  AURパッケージ: $(pacman -Qqem | wc -l) 個"
