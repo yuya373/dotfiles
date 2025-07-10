@@ -1,0 +1,48 @@
+#!/usr/bin/env zsh
+# fzf設定ファイル
+
+# fzfの補完とキーバインディング
+source "$ZPLUG_REPOS/junegunn/fzf/shell/completion.zsh"
+source "$ZPLUG_REPOS/junegunn/fzf/shell/key-bindings.zsh"
+
+# fzfの基本設定
+export FZF_COMPLETION_TRIGGER="**"
+export FZF_CTRL_R_OPTS="--no-sort --exact --preview 'echo {}' --preview-window down:3:wrap"
+export FZF_DEFAULT_OPTS=""\
+"  --height 80% --multi --reverse --style full --margin=0,1"\
+"  --preview \"$HOME/dotfiles/fzf-preview.sh {}\""\
+"  --bind ctrl-f:page-down,ctrl-b:page-up,ctrl-/:toggle-preview"\
+"  --bind ctrl-d:preview-page-down,ctrl-u:preview-page-up"\
+"  --marker=\"+ \" --pointer=\"> \" --prompt=\"❯ \""\
+"  --no-separator --scrollbar=\"█\""
+
+# Solarized Darkカラースキームの設定
+_gen_fzf_default_opts() {
+  local base03="234"
+  local base02="235"
+  local base01="240"
+  local base00="241"
+  local base0="244"
+  local base1="245"
+  local base2="254"
+  local base3="230"
+  local yellow="136"
+  local orange="166"
+  local red="160"
+  local magenta="125"
+  local violet="61"
+  local blue="33"
+  local cyan="37"
+  local green="64"
+
+  # Solarized Dark color scheme for fzf
+  export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS"\
+" --color fg:-1,bg:-1,hl:$cyan,fg+:$base2,bg+:$base02,hl+:$cyan"\
+" --color info:$yellow,prompt:$base3,pointer:$base3,marker:$base3,spinner:$yellow"
+}
+_gen_fzf_default_opts
+
+export FZF_COMPLETION_OPTS="$FZF_DEFAULT_OPTS"
+
+# .fzf.zshがあれば読み込む（システムによって生成される場合がある）
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

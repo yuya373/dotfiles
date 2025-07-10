@@ -9,7 +9,6 @@ bindkey '^m' do_enter
 bindkey '^n' history-substring-search-down
 bindkey '^p' history-substring-search-up
 bindkey '^r' fzf-history-widget
-bindkey '^i' fzf-completion
 bindkey '^f' vi-forward-word
 
 # use vim binding
@@ -18,7 +17,7 @@ bindkey -v
 # insert mode binding
 bindkey -M viins '^y' push-line
 bindkey -M viins '^m' do_enter
-bindkey -M viins '^o' fdr
+bindkey -M viins '^o' fzf-file-widget
 bindkey -M viins '^n' history-substring-search-down
 bindkey -M viins '^p' history-substring-search-up
 bindkey -M viins '^k' kill-line
@@ -28,12 +27,10 @@ bindkey -M viins '^f' vi-forward-word
 bindkey -M viins '^b' vi-backward-word
 bindkey -M viins '^r' fzf-history-widget
 bindkey -M viins '^d' delete-char
-bindkey -M viins '^i' fzf-completion
 
 # normal mode binding
 bindkey -M vicmd 'H' run-help
-bindkey -M vicmd '^o' fcdr
-# bindkey -M vicmd '^o' fd
+bindkey -M vicmd '^o' fzf-file-widget
 bindkey -M vicmd '^k' fzf-cd-widget
 bindkey -M vicmd '^r' fzf-history-widget
 
