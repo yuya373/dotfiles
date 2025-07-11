@@ -89,3 +89,8 @@ unalias t
 
 # fzf設定を読み込む
 source ~/dotfiles/.zsh_fzf
+
+claude() {
+    local latest=$(nodenv whence claude | sort -V | tail -n 1)
+    NODENV_VERSION="$latest" command claude "$@"
+}
