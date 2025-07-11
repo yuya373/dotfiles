@@ -1,70 +1,5 @@
 # -*- mode: sh -*-
 
-function gim() {
-    vim `git ls-files | peco`
-}
-
-function cdgem() {
-    local gem_name=$(bundle list | sed -e 's/^ *\* *//g' | peco | cut -d \  -f 1)
-    if [ -n "$gem_name" ]; then
-        local gem_dir=$(bundle show ${gem_name})
-        echo "cd to ${gem_dir}"
-        cd ${gem_dir}
-    fi
-}
-
-function pcd() {
-    local base="$1"
-    if [ ! -z "$1" ] ; then
-        cd
-    fi
-    local dir="$( find . -maxdepth 1 -type d | sed -e 's;\./;;' | peco )"
-    if [ ! -z "$dir" ] ; then
-        cd "$dir"
-    fi
-}
-
-function dev_pcd()
-{
-    cd ~/dev
-    pcd
-    my_reset_prompt
-}
-zle -N dev_pcd
-
-function peco-select-history() {
-    local tac
-    if which tac > /dev/null; then
-        tac="tac"
-    else
-        tac="tail -r"
-    fi
-    BUFFER=$(\history -n 1 | \
-                 eval $tac | \
-                 peco --query "$LBUFFER")
-    CURSOR=$#BUFFER
-    zle clear-screen
-}
-zle -N peco-select-history
-
-
-function peco-cdr () {
-    local selected_dir=$(cdr -l | awk '{ print $2 }' | peco)
-    if [ -n "$selected_dir" ]; then
-        BUFFER="cd ${selected_dir}"
-        zle accept-line
-    fi
-    zle clear-screen
-}
-zle -N peco-cdr
-
-
-function peco-find-file () {
-    ls | peco | xargs vim -nw
-    zle clear-screen
-}
-zle -N peco-find-file
-
 ls_abbrev() {
     if [[ ! -r $PWD ]]; then
         return
@@ -146,169 +81,8 @@ function my_reset_prompt()
     zle reset-prompt
 }
 
-function brew-file-brew()
-{
-    brew-file-install()
-    {
-        brew-file brew install $*
-    }
-    case "$1" in
-        install | i)
-            echo "Brew-file update Brewfile"
-            shift
-            brew-file-install $*
-            ;;
-        *)
-            brew $*
-    esac
-}
-
-# fe [FUZZY PATTERN] - Open the selected file with the default editor
-#   - Bypass fuzzy finder if there's only one match (--select-1)
-#   - Exit if there's no match (--exit-0)
-# fe() {
-#     IFS='
-# '
-#     local declare files=($(fzf --query="$1" --select-1 --exit-0))
-#     if [ -n "$files" ]; then
-#         ${=EDITOR} "${files[@]}"
-#     fi
-#     unset IFS
-# }
-
-# Modified version where you can press
-#   - CTRL-O to open with `open` command,
-#   - CTRL-E or Enter key to open with the $EDITOR
-fo() {
-    local out file key
-    out=$(fzf --query="$1" --exit-0 --expect=ctrl-o,ctrl-e)
-    key=$(head -1 <<< "$out")
-    file=$(head -2 <<< "$out" | tail -1)
-    if [ -n "$file" ]; then
-        [ "$key" = ctrl-o ] && open "$file" || ${=EDITOR} "$file"
-    fi
-}
-
-# fd - cd to selected directory
-fd() {
-    local dir
-    dir=$(find ${1:-.} -path '*/\.*' -prune -d 3 \
-               -o -type d -print 2> /dev/null | fzf +m) && cd "$dir"
-    my_reset_prompt
-}
-zle -N fd
-
-# fda - including hidden directories
-fda() {
-    local dir
-    dir=$(find ${1:-.} -type d 2> /dev/null | fzf +m) && cd "$dir"
-}
-
-fdr() {
-    local declare dirs=()
-    get_parent_dirs() {
-        if [[ -d "${1}" ]]; then dirs+=("$1"); else return; fi
-        if [[ "${1}" == '/' ]]; then
-            for _dir in "${dirs[@]}"; do echo $_dir; done
-        else
-            get_parent_dirs $(dirname "$1")
-        fi
-    }
-    local DIR=$(get_parent_dirs $(realpath "${1:-$(pwd)}") | fzf --tac)
-    cd "$DIR"
-}
-zle -N fdr
-
-# fs [FUZZY PATTERN] - Select selected tmux session
-#   - Bypass fuzzy finder if there's only one match (--select-1)
-#   - Exit if there's no match (--exit-0)
-fs() {
-    local session
-    session=$(tmux list-sessions | \
-                  fzf --query="$1" --select-1 --exit-0 | \
-                  awk -F: '{ print $1 }') &&
-        tmux switch-client -t "$session"
-
-}
-zle -N fs
-
-ftw() {
-    local window
-    window=$(tmux list-windows | \
-                 fzf --query="$1" --select-1 --exit-0 | \
-                 awk -F: '{ print $1 }') &&
-        tmux select-window -t "$window"
-}
-zle -N ftw
-
-# ftpane - switch pane (@george-b)
-ftpane() {
-    local panes current_window current_pane target target_window target_pane
-    panes=$(tmux list-panes -s -F '#I:#P - #{pane_current_path} #{pane_current_command}')
-    current_pane=$(tmux display-message -p '#I:#P')
-    current_window=$(tmux display-message -p '#I')
-
-    target=$(echo "$panes" | grep -v "$current_pane" | fzf +m --reverse) || return
-
-    target_window=$(echo $target | awk 'BEGIN{FS=":|-"} {print$1}')
-    target_pane=$(echo $target | awk 'BEGIN{FS=":|-"} {print$2}' | cut -c 1)
-
-    if [[ $current_window -eq $target_window ]]; then
-        tmux select-pane -t ${target_window}.${target_pane}
-    else
-        tmux select-pane -t ${target_window}.${target_pane} &&
-            tmux select-window -t $target_window
-    fi
-}
-
-# In tmux.conf
-# bind-key 0 run "tmux split-window -l 12 'bash -ci ftpane'"
-
-
-fcdr() {
-    local selected_dir=$(cdr -l | awk '{ print $2 }' | fzf +m)
-    if [ -n "$selected_dir" ]; then
-        BUFFER="cd ${selected_dir}"
-        zle accept-line
-    fi
-}
-zle -N fcdr
-
 pf() {
     ps aux | fzf -e
-}
-
-build_emacs() {
-    echo
-    echo "------------------------------------"
-    echo
-    echo "execute: make maintainer-clean"
-    make maintainer-clean
-    echo "finished: make maintainer-clean"
-    echo
-    echo "------------------------------------"
-    echo
-    echo "execute: ./autogen.sh"
-    ./autogen.sh
-    echo "finished: ./autogen.sh"
-    echo
-    echo "------------------------------------"
-    echo
-    echo "execute: configure"
-    ./configure --with-ns --without-x --with-imagemagick --with-xml2 --with-rsvg --disable-ns-self-contained  --with-modules
-    echo "finished: configure"
-    echo
-    echo "------------------------------------"
-    echo
-    echo "execute: make bootstrap"
-    make bootstrap
-    echo "finished: make bootstrap"
-    echo
-    echo "------------------------------------"
-    echo
-    echo "execute: make install"
-    make install
-    echo "finished: make install"
 }
 
 mem() {
@@ -326,14 +100,18 @@ man() {
     command man "$@"
 }
 
-fzf_src() {
-    local dir
-    dir=$(ghq list --full-path | fzf) && cd "$dir" && my_reset_prompt
-}
-zle -N fzf_src
-
 convert_to_gif() {
     input="$1"
     output="${2:-out.gif}"
     ffmpeg -i $input -vf scale=320:-1 -r 30 $output
 }
+
+# リポジトリを選択してcdする
+function ghq-fzf() {
+  local selected
+  selected=$(ghq list --full-path | fzf)
+  if [ -n "$selected" ]; then
+    cd "$selected"
+  fi
+}
+zle -N ghq-fzf

@@ -40,8 +40,8 @@ bindkey -M vicmd '^r' fzf-history-widget
 # zle -N tmuximumm
 # bindkey -M vicmd '^s' tmuximumm
 # bindkey -M viins '^s' tmuximumm
-bindkey -M vicmd '^s' fzf_src
-bindkey -M viins '^s' fzf_src
+bindkey -M vicmd '^s' ghq-fzf
+bindkey -M viins '^s' ghq-fzf
 
 # text object
 autoload -Uz select-quoted
