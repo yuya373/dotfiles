@@ -129,6 +129,9 @@ ln -sf ~/dotfiles/.zprofile ~/.zprofile
 ln -sf ~/dotfiles/.zprompt ~/.spaceshiprc.zsh
 ln -sf ~/dotfiles/.zpreztorc ~/.zpreztorc
 
+# bash
+ln -sf ~/dotfiles/.bashrc ~/.bashrc
+
 # tmux
 if [[ ! -d ~/.tmux/plugins/tpm ]]; then
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
