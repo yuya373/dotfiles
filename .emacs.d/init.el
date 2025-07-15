@@ -140,7 +140,7 @@
    '(add-node-modules-path adoc-mode ag aider alert
                            all-the-icons-completion
                            auto-save-buffers-enhanced avy-migemo
-                           bundler cape claude-code codic coffee-mode
+                           bundler cape codic coffee-mode
                            command-log-mode consult-dir
                            consult-flycheck consult-lsp
                            consult-projectile copilot corfu csv-mode

@@ -29,7 +29,6 @@
 
 (use-package orderless
   :ensure t
-  :after (vertico)
   :init
   (setq orderless-matching-styles
         '(

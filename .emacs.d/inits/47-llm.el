@@ -464,40 +464,40 @@ If file doesn't exist, create it with command binding help and sample prompt."
                :threshold "BLOCK_NONE")])
   )
 
-(unless (require 'claude-code-emacs nil t)
+(unless (require 'claude-code nil t)
   (add-to-list 'load-path (expand-file-name "~/dev/claude-code-emacs")))
-(use-package claude-code-emacs
+(use-package claude-code
   :config
-  (claude-code-emacs-mcp-events-enable)
+  (claude-code-mcp-events-enable)
 
   (with-eval-after-load 'evil-leader
     (evil-leader/set-key
-      "c c" 'claude-code-emacs-transient))
+      "c c" 'claude-code-transient))
   (with-eval-after-load 'markdown-mode
     (define-key markdown-mode-map (kbd "TAB") nil))
   (with-eval-after-load 'evil-collection
-    (evil-collection-define-key 'normal 'claude-code-emacs-vterm-mode-map
-      "1" 'claude-code-emacs-send-1
-      "2" 'claude-code-emacs-send-2
-      "3" 'claude-code-emacs-send-3
-      "q" 'claude-code-emacs-close
-      "c" 'claude-code-emacs-clear
+    (evil-collection-define-key 'normal 'claude-code-vterm-mode-map
+      "1" 'claude-code-send-1
+      "2" 'claude-code-send-2
+      "3" 'claude-code-send-3
+      "q" 'claude-code-close
+      "c" 'claude-code-clear
       "k" nil
-      "e" 'claude-code-emacs-send-escape
-      "r" 'claude-code-emacs-send-ctrl-r
-      ",r" 'claude-code-emacs-send-ctrl-e
-      "m" 'claude-code-emacs-send-return
-      "a" 'claude-code-emacs-send-shift-tab)
-    (evil-collection-define-key 'insert 'claude-code-emacs-prompt-mode-map
-      "@" 'claude-code-emacs-self-insert-@
+      "e" 'claude-code-send-escape
+      "r" 'claude-code-send-ctrl-r
+      ",r" 'claude-code-send-ctrl-e
+      "m" 'claude-code-send-return
+      "a" 'claude-code-send-shift-tab)
+    (evil-collection-define-key 'insert 'claude-code-prompt-mode-map
+      "@" 'claude-code-self-insert-@
       )
-    (evil-collection-define-key 'visual 'claude-code-emacs-prompt-mode-map
-      ",m" 'claude-code-emacs-prompt-transient
-      ",r" 'claude-code-emacs-send-prompt-region
+    (evil-collection-define-key 'visual 'claude-code-prompt-mode-map
+      ",m" 'claude-code-prompt-transient
+      ",r" 'claude-code-send-prompt-region
       )
-    (evil-collection-define-key 'normal 'claude-code-emacs-prompt-mode-map
-      ",m" 'claude-code-emacs-prompt-transient
-      ",c" 'claude-code-emacs-send-prompt-at-point
+    (evil-collection-define-key 'normal 'claude-code-prompt-mode-map
+      ",m" 'claude-code-prompt-transient
+      ",c" 'claude-code-send-prompt-at-point
       )
     )
   )

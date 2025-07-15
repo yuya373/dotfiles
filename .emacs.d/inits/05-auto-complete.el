@@ -63,9 +63,6 @@
   :init
   (add-hook 'after-init-hook 'yas-global-mode))
 
-(use-package orderless
-  :ensure t)
-
 (use-package corfu
   :ensure t
   :config
@@ -73,7 +70,6 @@
   (setq corfu-auto-prefix 2)
   (setq corfu-preview-current nil)
   (setq corfu-cycle t)
-  (setq completion-styles '(orderless basic))
   (setq tab-always-indent 'complete)
   (define-key corfu-mode-map (kbd "C-n") 'corfu-next)
   (define-key corfu-mode-map (kbd "C-p") 'corfu-previous)
@@ -141,6 +137,7 @@
         lsp-document-sync-method nil
         lsp-report-if-no-buffer t
         lsp-auto-execute-action nil
+        lsp-headerline-breadcrumb-enable nil
 
         lsp-lens-auto-enable t
         lsp-lens-check-interval 1
@@ -207,10 +204,12 @@
   (use-package lsp-diagnostics)
   (use-package lsp-completion)
 
-  ;; (defun my-lsp-completion-mode-hook-fn ()
-  ;;   (interactive)
-  ;;   (setq-local company-backends (cl-remove 'company-capf company-backends)))
-  ;; (add-hook 'lsp-completion-mode-hook 'my-lsp-completion-mode-hook-fn)
+  ;; https://github.com/minad/corfu/wiki#basic-example-configuration-with-orderless
+  (defun my/lsp-mode-setup-completion ()
+    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+          '(orderless))) ;; Configure orderless
+  (add-hook 'lsp-completion-mode-hook 'my/lsp-mode-setup-completion)
+
 
   (defface my:lsp-modeline-code-actions-face-14
     '((t (:inherit homoglyph :foreground "#002b36" :bold t)))

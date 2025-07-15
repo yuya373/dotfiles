@@ -694,12 +694,11 @@ If the scroll count is zero the command scrolls half the screen."
     "ci" nil
 
     "dd" 'consult-dir
-    "da" 'consult-apropos
     "db" 'describe-bindings
     "df" 'describe-function
     "dm" 'describe-mode
     "dp" 'describe-package
-    "ds" 'describe-syntax
+    "ds" 'describe-symbol
     "dv" 'describe-variable
 
     "ef" 'flycheck-eslint-fix

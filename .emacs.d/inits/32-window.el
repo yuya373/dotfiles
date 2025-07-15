@@ -92,7 +92,7 @@
                             slack-search-result-buffer-mode)
                            :select t)))
                 (mapcar (lambda (l) (append l '(:align right :select nil :size 0.35 :popup t)))
-                        '((claude-code-emacs-vterm-mode)))
+                        '((claude-code-vterm-mode)))
 
                 (mapcar (lambda (l) (append l shackle-rule-bottom))
                         '((timer-list-mode)
@@ -124,7 +124,7 @@
                             slack-message-edit-buffer-mode
                             slack-message-share-buffer-mode)
                            :select t :size 0.3)
-                          ((aider-prompt-mode claude-code-emacs-prompt-mode) :select t :size 0.3)
+                          ((aider-prompt-mode claude-code-prompt-mode) :select t :size 0.3)
                           (rustic-format-mode)
                           (rustic-compilation-mode)
                           (rustic-cargo-test-mode)
