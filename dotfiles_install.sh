@@ -161,4 +161,9 @@ ln -sf ~/dotfiles/.rubocop.yml ~/.rubocop.yml
 mkdir -p ~/.config/bat
 ln -sf ~/dotfiles/.config/bat/config ~/.config/bat/config
 
+# claude
+mkdir -p ~/.claude
+ln -sf ~/dotfiles/claude/CLAUDE.md ~/.claude/CLAUDE.md
+ln -sf ~/dotfiles/claude/settings.json ~/.claude/settings.json
+
 echo "✨ Finished"

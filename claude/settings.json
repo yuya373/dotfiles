@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash",
+      "mcp__emacs",
+      "WebFetch",
+      "WebSearch",
+      "Fetch"
+    ],
+    "deny": [
+      "Bash(rm:*)",
+      "Bash(git reset:*)"
+    ],
+    "defaultMode": "acceptEdits",
+    "additionalDirectories": [
+      "/tmp"
+    ]
+  },
+  "env": {
+    "SHELL": "/usr/sbin/bash"
+  },
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/dotfiles/claude_notify.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
