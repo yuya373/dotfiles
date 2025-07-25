@@ -27,6 +27,7 @@
   (setq ring-bell-function 'ignore)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
+  (menu-bar-mode t)
 
   ;; (el-get-bundle flycheck-pos-tip)
   ;; (use-package flycheck-pos-tip

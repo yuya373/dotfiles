@@ -27,7 +27,6 @@
   (require 'evil)
   )
 
-(spaceline-info-mode)
 (use-package spaceline :ensure t
   :init
   (setq anzu-cons-mode-line-p nil)
@@ -54,7 +53,6 @@
 (use-package spaceline-config
   :commands (spaceline-compile))
 
-(spaceline-info-mode)
 (defun setup-spaceline ()
   (spaceline-compile
     '((macrodef
@@ -89,7 +87,8 @@
       (hud
        :priority 60
        :when active)))
-  (setq-default mode-line-format '("%e" (:eval (spaceline-ml-main)))))
+  (setq-default mode-line-format '("%e" (:eval (spaceline-ml-main))))
+  (spaceline-info-mode))
 
 (setup-spaceline)
 

@@ -44,7 +44,7 @@
         (interactive)
         (dolist (grammar
                  '((css . ("https://github.com/tree-sitter/tree-sitter-css" "v0.20.0"))
-                   (bash "https://github.com/tree-sitter/tree-sitter-bash")
+                   (bash "https://github.com/tree-sitter/tree-sitter-bash" "v0.23.0")
                    (html . ("https://github.com/tree-sitter/tree-sitter-html" "v0.20.1"))
                    (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript" "v0.21.2" "src"))
                    (json . ("https://github.com/tree-sitter/tree-sitter-json" "v0.20.2"))
@@ -54,7 +54,7 @@
                    (make "https://github.com/alemuller/tree-sitter-make")
                    (elisp "https://github.com/Wilfred/tree-sitter-elisp")
                    (cmake "https://github.com/uyha/tree-sitter-cmake")
-                   (c "https://github.com/tree-sitter/tree-sitter-c")
+                   (c "https://github.com/tree-sitter/tree-sitter-c" "v0.23.0")
                    (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
                    (toml "https://github.com/tree-sitter/tree-sitter-toml")
                    (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "tsx/src"))

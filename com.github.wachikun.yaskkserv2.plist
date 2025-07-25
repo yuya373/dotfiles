@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.github.wachikun.yaskkserv2</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/local/bin/yaskkserv2</string>
+        <string>--no-daemonize</string>
+        <string>--google-japanese-input=last</string>
+        <string>--google-suggest</string>
+        <string>--google-cache-filename=/tmp/yaskkserv2.cache</string>
+        <string>/Users/yuya373/.config/yaskkserv2/dict.yaskkserv2</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>StandardErrorPath</key>
+    <string>/tmp/yaskkserv2.err</string>
+    <key>StandardOutPath</key>
+    <string>/tmp/yaskkserv2.out</string>
+</dict>
+</plist>

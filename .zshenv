@@ -119,4 +119,6 @@ if [ -d ${HOME}/.npm-global ]; then
     export PATH=~/.npm-global/bin:$PATH
 fi
 
-source $HOME/.local/bin/env
+if [ -e ${HOME}/.local/bin/env ]; then
+    source $HOME/.local/bin/env
+fi
