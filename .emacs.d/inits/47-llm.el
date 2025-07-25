@@ -466,6 +466,7 @@ If file doesn't exist, create it with command binding help and sample prompt."
 
 (unless (require 'claude-code nil t)
   (add-to-list 'load-path (expand-file-name "~/dev/claude-code-emacs")))
+(use-package websocket :ensure t)
 (use-package claude-code
   :config
   (claude-code-mcp-events-enable)
