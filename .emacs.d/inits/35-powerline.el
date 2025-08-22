@@ -51,9 +51,8 @@
       (string-trim skk-modeline-input-mode)))
   )
 (use-package spaceline-config
-  :commands (spaceline-compile))
-
-(defun setup-spaceline ()
+  :config
+  (spaceline-info-mode)
   (spaceline-compile
     '((macrodef
        :priority 80
@@ -87,10 +86,7 @@
       (hud
        :priority 60
        :when active)))
-  (setq-default mode-line-format '("%e" (:eval (spaceline-ml-main))))
-  (spaceline-info-mode))
-
-(setup-spaceline)
+  (setq-default mode-line-format '("%e" (:eval (spaceline-ml-main)))))
 
 (provide '35-powerline)
 ;;; 35-powerline.el ends here

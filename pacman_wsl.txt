@@ -1,3 +1,5 @@
+alsa-utils
+android-studio
 arch-install-scripts
 aspell-en
 aws-cli
@@ -23,13 +25,17 @@ gtk3
 hub
 imagemagick
 imgcat
+jdk17-openjdk
 jq
 less
+libbsd
 libgccjit
+libxkbfile
 libxpm
 lsof
 man-db
 man-pages
+mockoon-bin
 nano
 neovim
 ngrok
@@ -38,7 +44,6 @@ nodenv
 nodenv-node-build
 noto-fonts-emoji
 npm
-openapi-generator
 openssh
 pnpm
 po4a
@@ -46,6 +51,9 @@ poppler
 poppler-glib
 powerline-fonts
 protobuf
+pulseaudio
+pulseaudio-alsa
+python-lsp-server
 python-pip
 python-pygments
 reflector

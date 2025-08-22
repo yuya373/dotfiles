@@ -165,5 +165,6 @@ ln -sf ~/dotfiles/.config/bat/config ~/.config/bat/config
 mkdir -p ~/.claude
 ln -sf ~/dotfiles/claude/CLAUDE.md ~/.claude/CLAUDE.md
 ln -sf ~/dotfiles/claude/settings.json ~/.claude/settings.json
+ln -sf ~/dotfiles/claude/output-styles ~/.claude/output-styles
 
 echo "✨ Finished"

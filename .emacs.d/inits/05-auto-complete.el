@@ -126,6 +126,7 @@
   (add-hook 'scala-mode-hook 'lsp)
   (add-hook 'yaml-mode-hook 'lsp)
   (add-hook 'markdown-mode-hook 'lsp)
+  (add-hook 'python-ts-mode-hook 'lsp)
 
   (setq lsp-auto-guess-root t
         lsp-auto-touch-files nil

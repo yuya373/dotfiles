@@ -122,3 +122,13 @@ fi
 if [ -e ${HOME}/.local/bin/env ]; then
     source $HOME/.local/bin/env
 fi
+
+# if [ -d /mnt/c/Users/yuya373/AppData/Local/Android/Sdk ]; then
+#     export ANDROID_HOME="/mnt/c/Users/yuya373/AppData/Local/Android/Sdk"
+#     export PATH="$PATH:$ANDROID_HOME/platform-tools"
+# fi
+
+if [ -d ${HOME}/Android/Sdk ]; then
+    export ANDROID_HOME="${HOME}/Android/Sdk"
+    export PATH="$PATH:$ANDROID_HOME/platform-tools"
+fi

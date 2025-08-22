@@ -1,4 +1,8 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "env": {
+    "SHELL": "/usr/sbin/bash"
+  },
   "permissions": {
     "allow": [
       "Bash",
@@ -16,9 +20,6 @@
       "/tmp"
     ]
   },
-  "env": {
-    "SHELL": "/usr/sbin/bash"
-  },
   "hooks": {
     "Notification": [
       {
@@ -31,5 +32,9 @@
         ]
       }
     ]
-  }
+  },
+  "feedbackSurveyState": {
+    "lastShownTime": 1754131771113
+  },
+  "model": "opus"
 }

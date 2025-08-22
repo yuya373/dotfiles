@@ -1,7 +1,9 @@
+android-studio
 cmigemo-git
 ghq-bin
 google-chrome
 imgcat
+mockoon-bin
 ngrok
 nkf-git
 nodenv
