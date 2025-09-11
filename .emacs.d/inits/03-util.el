@@ -77,10 +77,11 @@
   :ensure t
   :commands (highlight-indent-guides-mode)
   :init
-  (setq highlight-indent-guides-responsive 'top)
+  (setq highlight-indent-guides-responsive nil)
   (setq highlight-indent-guides-method 'character)
   (setq highlight-indent-guides-character ?\|)
   ;; (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+  (add-hook 'python-ts-mode-hook 'highlight-indent-guides-mode)
   (add-hook 'yaml-mode-hook 'highlight-indent-guides-mode))
 
 (use-package restclient

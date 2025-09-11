@@ -383,6 +383,7 @@
         evil-overriding-maps nil)
   :config
   (define-key evil-insert-state-map (kbd "C-v") 'yank)
+  (define-key minibuffer-mode-map (kbd "C-v") 'yank)
 
   (global-undo-tree-mode t)
   (evil-set-undo-system 'undo-tree)
