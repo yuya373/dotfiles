@@ -62,6 +62,9 @@ case ${OSTYPE} in
             sudo ln -sf ~/dotfiles/etc/udev/rules.d/99-ergodox.rules /etc/udev/rules.d/99-ergodox.rules
         fi
 
+        # sysctl設定 (Linux共通 - WSL/物理環境両対応)
+        sudo ln -sf ~/dotfiles/etc/sysctl.d/99-pipe-max-size.conf /etc/sysctl.d/99-pipe-max-size.conf
+
         # fontconfig (Linux共通)
         if [[ ! -d ~/.config/fontconfig/conf.d ]]; then
             mkdir -p ~/.config/fontconfig/conf.d

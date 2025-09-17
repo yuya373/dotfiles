@@ -27,10 +27,11 @@
 (setenv "LSP_USE_PLISTS" "true")
 (setq lsp-use-plists t)
 
-(setq gc-cons-threshold (* (* 3 128) 1024 1024)) ;; 100mb
+(setq gc-cons-threshold (* 1024 1024 1024))  ; 1GB
+;; (setq gc-cons-threshold (* (* 3 128) 1024 1024)) ;; 400mb
 (setq gc-cons-percentage nil)
 (setq garbage-collection-messages nil)
-(setq read-process-output-max (* 8 (* 1024 1024))) ;; 1mb
+(setq read-process-output-max (* 8 (* 1024 1024))) ;; 8mb
 
 
 
