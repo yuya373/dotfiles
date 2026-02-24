@@ -97,8 +97,4 @@ fi
 
 # fzf設定を読み込む
 source ~/dotfiles/.zsh_fzf
-
-claude() {
-    local latest=$(nodenv whence claude | sort -V | tail -n 1)
-    NODENV_VERSION="$latest" command claude "$@"
-}
+alias claude='NODENV_VERSION=23.5.0 SHELL=/usr/sbin/bash claude'

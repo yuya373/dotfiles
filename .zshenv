@@ -107,12 +107,8 @@ if (which anyenv > /dev/null) ;then
    eval "$(anyenv init -)"
 fi
 
-if [ -d ${HOME}/.goenv ]; then
-  export GOENV_ROOT="$HOME/.goenv"
-  export PATH="$GOENV_ROOT/bin:$PATH"
-  eval "$(goenv init -)"
-  export PATH="$GOROOT/bin:$PATH"
-  export PATH="$PATH:$GOPATH/bin"
+if (which aqua > /dev/null) ;then
+    export PATH="$(aqua root-dir)/bin:$PATH"
 fi
 
 if [ -d ${HOME}/.npm-global ]; then
@@ -122,7 +118,6 @@ fi
 if [ -e ${HOME}/.local/bin/env ]; then
     source $HOME/.local/bin/env
 fi
-
 # if [ -d /mnt/c/Users/yuya373/AppData/Local/Android/Sdk ]; then
 #     export ANDROID_HOME="/mnt/c/Users/yuya373/AppData/Local/Android/Sdk"
 #     export PATH="$PATH:$ANDROID_HOME/platform-tools"
@@ -132,3 +127,12 @@ if [ -d ${HOME}/Android/Sdk ]; then
     export ANDROID_HOME="${HOME}/Android/Sdk"
     export PATH="$PATH:$ANDROID_HOME/platform-tools"
 fi
+
+if [ -d ${HOME}/.goenv ]; then
+  export GOENV_PATH_ORDER="front"
+  export GOENV_ROOT="$HOME/.goenv"
+  export PATH="$GOENV_ROOT/bin:$PATH"
+  eval "$(goenv init -)"
+fi
+
+export COREPACK_ENABLE_AUTO_PIN=0
