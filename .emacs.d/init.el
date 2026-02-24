@@ -33,7 +33,8 @@
   (setq before-gc-elapsed gc-elapsed)
   (setq before-pure-bytes-used pure-bytes-used)
   )
-(add-hook 'post-gc-hook #'notify-gc-finished)
+;; (add-hook 'post-gc-hook #'notify-gc-finished)
+;; (remove-hook 'post-gc-hook #'notify-gc-finished)
 
 (setq native-comp-async-report-warnings-errors 'silent)
 
