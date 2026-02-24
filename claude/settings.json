@@ -2,8 +2,8 @@
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "env": {
     "SHELL": "/usr/sbin/bash",
-    "DISABLE_MICROCOMPACT": 1,
-    "DISABLE_INTERLEAVED_THINKING": 1
+    "DISABLE_MICROCOMPACT": "1",
+    "DISABLE_INTERLEAVED_THINKING": "1"
   },
   "permissions": {
     "allow": [
@@ -11,10 +11,13 @@
       "mcp__emacs",
       "WebFetch",
       "WebSearch",
-      "Fetch"
+      "Fetch",
+      "Skill(*)",
+      "SlashCommand(*)",
+      "Search(*)",
+      "Search(pattern: *)"
     ],
     "deny": [
-      "Bash(rm:*)",
       "Bash(git reset:*)"
     ],
     "defaultMode": "acceptEdits",
@@ -40,8 +43,14 @@
     "command": "~/dotfiles/claude/statusline.sh",
     "padding": 0
   },
+  "enabledPlugins": {
+    "gopls-lsp@claude-plugins-official": true
+  },
+  "outputStyle": "gal",
+  "language": "Japanese",
+  "alwaysThinkingEnabled": true,
+  "skipDangerousModePermissionPrompt": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754131771113
-  },
-  "model": "opus"
+  }
 }
