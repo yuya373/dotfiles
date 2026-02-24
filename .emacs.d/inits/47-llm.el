@@ -469,6 +469,11 @@ If file doesn't exist, create it with command binding help and sample prompt."
 (use-package websocket :ensure t)
 (use-package claude-code
   :config
+  (defun claude-code-vterm-env-around (org-fn &rest args)
+    (let ((vterm-environment '("SHELL=/usr/sbin/bash" "NODENV_VERSION=23.5.0")))
+      (apply org-fn args)))
+  (advice-add 'claude-code-run :around 'claude-code-vterm-env-around)
+
   (claude-code-mcp-events-enable)
 
   (with-eval-after-load 'evil-leader
@@ -482,11 +487,12 @@ If file doesn't exist, create it with command binding help and sample prompt."
       "2" 'claude-code-send-2
       "3" 'claude-code-send-3
       "q" 'claude-code-close
-      "c" 'claude-code-clear
+      "K" 'claude-code-clear
       "k" nil
+      "H" 'claude-code-send-tab
       "e" 'claude-code-send-escape
-      "r" 'claude-code-send-ctrl-r
-      ",r" 'claude-code-send-ctrl-e
+      "o" 'claude-code-send-ctrl-o
+      "O" 'claude-code-send-ctrl-e
       "m" 'claude-code-send-return
       "a" 'claude-code-send-shift-tab)
     (evil-collection-define-key 'insert 'claude-code-prompt-mode-map
