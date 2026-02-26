@@ -136,3 +136,17 @@ if [ -d ${HOME}/.goenv ]; then
 fi
 
 export COREPACK_ENABLE_AUTO_PIN=0
+# Workaround to prevent Claude Code from repeatedly spawning powershell.exe.
+# ref: https://github.com/anthropics/claude-code/issues/14352
+export CLAUDE_CODE_SKIP_WINDOWS_PROFILE=1
+if [ -d "/mnt/c/Users/$(whoami)" ]; then
+  export USERPROFILE="/mnt/c/Users/$(whoami)"
+else
+  # システム系フォルダを除外して実ユーザーのディレクトリを探す
+  for dir in /mnt/c/Users/*/; do
+    case "${dir%/}" in
+      */Public|*/Default|*/Default\ User|*/All\ Users|*/defaultuser0|*/WsiAccount) continue ;;
+    esac
+    [ -d "$dir" ] && export USERPROFILE="${dir%/}" && break
+  done
+fi
