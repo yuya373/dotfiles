@@ -476,6 +476,10 @@ If file doesn't exist, create it with command binding help and sample prompt."
 
   (claude-code-mcp-events-enable)
 
+  ;; サイドウィンドウ（下）に表示
+  (setq claude-code-mcp-vc-diff-display-action
+        '((display-buffer-reuse-window display-buffer-pop-up-window)
+          (inhibit-same-window . t)))
   (with-eval-after-load 'evil-leader
     (evil-leader/set-key
       "c c" 'claude-code-transient))
