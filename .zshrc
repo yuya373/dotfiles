@@ -97,4 +97,6 @@ fi
 
 # fzf設定を読み込む
 source ~/dotfiles/.zsh_fzf
-alias claude='NODENV_VERSION=23.5.0 SHELL=/usr/sbin/bash claude'
+alias claude='SHELL=$(command -v bash) claude'
+
+eval "$(mise activate zsh)"
