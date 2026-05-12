@@ -169,9 +169,6 @@ mkdir -p ~/.config/mise
 ln -sf ~/dotfiles/.config/mise/config.toml ~/.config/mise/config.toml
 
 # claude
-mkdir -p ~/.claude
-ln -sf ~/dotfiles/claude/CLAUDE.md ~/.claude/CLAUDE.md
-ln -sf ~/dotfiles/claude/settings.json ~/.claude/settings.json
-ln -sf ~/dotfiles/claude/output-styles ~/.claude/output-styles
+~/dotfiles/claude_setup
 
 echo "✨ Finished"

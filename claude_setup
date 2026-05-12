@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -e
+
+# Claude Code 設定ファイルのセットアップスクリプト
+# dotfiles/claude 配下のファイルを ~/.claude にsymlinkする
+
+DOTFILES_CLAUDE_DIR="${HOME}/dotfiles/claude"
+CLAUDE_DIR="${HOME}/.claude"
+
+# symlink作成ヘルパー
+# 既存のファイル/ディレクトリがあれば .bak としてバックアップしてからsymlink作成
+link() {
+    local src="$1"
+    local dst="$2"
+
+    if [ -e "$dst" ] && [ ! -L "$dst" ]; then
+        echo "📦 Backing up existing: ${dst} → ${dst}.bak"
+        mv "$dst" "${dst}.bak"
+    fi
+
+    # -n を付けて symlink先がディレクトリの場合に中に新規作成されるのを防ぐ
+    ln -sfn "$src" "$dst"
+    echo "🔗 Linked: ${dst} → ${src}"
+}
+
+mkdir -p "${CLAUDE_DIR}"
+
+link "${DOTFILES_CLAUDE_DIR}/CLAUDE.md"      "${CLAUDE_DIR}/CLAUDE.md"
+link "${DOTFILES_CLAUDE_DIR}/settings.json"  "${CLAUDE_DIR}/settings.json"
+link "${DOTFILES_CLAUDE_DIR}/output-styles"  "${CLAUDE_DIR}/output-styles"
+link "${DOTFILES_CLAUDE_DIR}/statusline.sh"  "${CLAUDE_DIR}/statusline.sh"
+
+echo "✨ Claude setup completed"
