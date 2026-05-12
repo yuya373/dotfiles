@@ -40,8 +40,6 @@ nano
 neovim
 ngrok
 nkf-git
-nodenv
-nodenv-node-build
 noto-fonts-emoji
 npm
 openssh

@@ -6,8 +6,6 @@ imgcat
 mockoon-bin
 ngrok
 nkf-git
-nodenv
-nodenv-node-build
 tfenv
 ttf-hackgen
 vacuum

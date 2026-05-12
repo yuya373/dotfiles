@@ -1,0 +1,9 @@
+[tools]
+"aqua:moonrepo/moon" = "v1.41.8"
+go = "latest"
+"go:github.com/rogpeppe/godef" = "latest"
+"go:golang.org/x/tools/gopls" = "latest"
+node = "23.5.0"
+
+[settings]
+experimental = true

@@ -91,9 +91,6 @@ eval "$(direnv hook zsh)"
 # OPAM configuration
 . /home/yuya373/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 
-if (which nodenv > /dev/null) ;then
-   eval "$(nodenv init - zsh)"
-fi
 
 if [ -d ${HOME}/.rbenv/bin ]; then
     export PATH=${HOME}/.rbenv/bin:${PATH}
@@ -101,10 +98,6 @@ fi
 
 if (which rbenv > /dev/null) ;then
    eval "$(rbenv init -)"
-fi
-
-if (which anyenv > /dev/null) ;then
-   eval "$(anyenv init -)"
 fi
 
 if (which aqua > /dev/null) ;then
@@ -118,6 +111,10 @@ fi
 if [ -e ${HOME}/.local/bin/env ]; then
     source $HOME/.local/bin/env
 fi
+
+if [ -d ${HOME}/.local/share/mise/shims ]; then
+    export PATH="${HOME}/.local/share/mise/shims:${PATH}"
+fi
 # if [ -d /mnt/c/Users/yuya373/AppData/Local/Android/Sdk ]; then
 #     export ANDROID_HOME="/mnt/c/Users/yuya373/AppData/Local/Android/Sdk"
 #     export PATH="$PATH:$ANDROID_HOME/platform-tools"
@@ -126,13 +123,6 @@ fi
 if [ -d ${HOME}/Android/Sdk ]; then
     export ANDROID_HOME="${HOME}/Android/Sdk"
     export PATH="$PATH:$ANDROID_HOME/platform-tools"
-fi
-
-if [ -d ${HOME}/.goenv ]; then
-  export GOENV_PATH_ORDER="front"
-  export GOENV_ROOT="$HOME/.goenv"
-  export PATH="$GOENV_ROOT/bin:$PATH"
-  eval "$(goenv init -)"
 fi
 
 export COREPACK_ENABLE_AUTO_PIN=0

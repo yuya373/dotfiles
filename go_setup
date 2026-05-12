@@ -2,5 +2,7 @@
 
 set -e
 
-go install golang.org/x/tools/gopls@latest
+mise use -g go:golang.org/x/tools/gopls
+# go install golang.org/x/tools/gopls@latest
+mise use -g go:github.com/rogpeppe/godef
 go install github.com/rogpeppe/godef@latest

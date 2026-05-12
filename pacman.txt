@@ -32,8 +32,6 @@ lsof
 m4
 make
 nano
-nodenv
-nodenv-node-build
 npm
 openssh
 patch

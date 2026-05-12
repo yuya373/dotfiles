@@ -164,6 +164,10 @@ ln -sf ~/dotfiles/.rubocop.yml ~/.rubocop.yml
 mkdir -p ~/.config/bat
 ln -sf ~/dotfiles/.config/bat/config ~/.config/bat/config
 
+# mise
+mkdir -p ~/.config/mise
+ln -sf ~/dotfiles/.config/mise/config.toml ~/.config/mise/config.toml
+
 # claude
 mkdir -p ~/.claude
 ln -sf ~/dotfiles/claude/CLAUDE.md ~/.claude/CLAUDE.md

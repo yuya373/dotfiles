@@ -255,5 +255,11 @@
   (add-hook 'after-init-hook 'global-emojify-mode)
   (setq emojify-emoji-styles '(unicode github)))
 
+(use-package mise
+  :ensure t
+  :init
+  (add-hook 'after-init-hook #'global-mise-mode)
+  )
+
 (provide '03-util)
 ;;; 03-util.el ends here

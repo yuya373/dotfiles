@@ -164,7 +164,7 @@
                            init-loader initchart ivy-posframe
                            json-mode know-your-http-well log4j-mode
                            logview lsp-metals lsp-ui lua-mode
-                           marginalia minuet nerd-icons-corfu
+                           marginalia minuet mise nerd-icons-corfu
                            nginx-mode omnisharp open-junk-file
                            orderless perspeen pkg-info pos-tip
                            projectile-rails python-mode
