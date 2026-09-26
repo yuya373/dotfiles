@@ -13,7 +13,6 @@ configure_opts="\
 --with-xml2 \
 --with-xft \
 --with-zlib \
---with-json \
 --with-native-compilation \
 --with-threads \
 --prefix=$HOME/local \
@@ -66,7 +65,11 @@ print_colored() {
     echo "${normal}"
 }
 
-total_step="7"
+# 必ず実行するステップ数。Clone と Update は条件付きなので実行時に加算する
+total_step=8
+if [[ $# -ge 1 ]]; then
+    total_step=$(( total_step + 1 ))
+fi
 current_step=1
 
 print_with_current_step() {
@@ -81,7 +84,7 @@ emacs_dir="$HOME/dev/emacs"
 
 
 if [[ ! -d "$emacs_dir" ]]; then
-    total_step="8"
+    total_step=$(( total_step + 1 ))
     print_with_current_step "Cloning emacs repository"
     mkdir -p ~/dev
     git clone git://git.savannah.gnu.org/emacs.git $emacs_dir
@@ -97,19 +100,29 @@ if [[ $# -ge 1 ]]; then
     fi
     if [[ $1 = "27" ]]; then
         branch="emacs-27"
+        configure_opts="$configure_opts --with-json"
     fi
     if [[ $1 = "28" ]]; then
         branch="emacs-28"
+        configure_opts="$configure_opts --with-json"
     fi
     if [[ $1 = "29" ]]; then
       branch="emacs-29.4"
       configure_opts="$configure_opts \
+--with-json \
 --with-tree-sitter \
 --with-webp \
 --with-sqlite3"
     fi
     if [[ $1 = "30" ]]; then
       branch="emacs-30.1"
+      configure_opts="$configure_opts \
+        --with-tree-sitter \
+        --with-webp \
+        --with-sqlite3"
+    fi
+    if [[ $1 = "31" ]]; then
+      branch="emacs-31.1"
       configure_opts="$configure_opts \
         --with-tree-sitter \
         --with-webp \
@@ -123,17 +136,18 @@ if [[ $# -ge 1 ]]; then
 fi
 
 
-print_with_current_step "Executing 'make mostlyclean'"
-make mostlyclean
-
 print_with_current_step "Executing './autogen.sh'"
 ./autogen.sh
 
 print_with_current_step "Configure with $configure_opts"
 eval "./configure $configure_opts"
 
-print_with_current_step "Executing 'make -j4'"
-make -j4
+# checkout 直後の古い Makefile は新しいツリーと食い違って make 自体が失敗しうるので、
+# 上の configure で Makefile を作り直してから bootstrap する。
+# bootstrap は古い .elc / native-lisp を全部消してからビルドし直すので、
+# バージョンをまたいだ古いバイトコードの読み込みでコンパイルが落ちるのを防げる
+print_with_current_step "Executing 'make -j4 bootstrap'"
+make -j4 bootstrap
 
 print_with_current_step "Install emacs"
 make install
