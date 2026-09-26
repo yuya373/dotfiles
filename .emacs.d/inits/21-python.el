@@ -57,17 +57,5 @@
   (evil-define-key 'visual python-mode-map
     ",er" 'python-shell-send-region))
 
-(use-package elpy
-  :ensure t
-  :commands (elpy-mode elpy-enable)
-  :init
-  (setq elpy-modules '(elpy-module-sane-defaults
-                       elpy-module-eldoc
-                       elpy-module-highlight-indentation
-                       elpy-module-pyvenv
-                       elpy-module-company))
-  (add-hook 'python-mode-hook 'elpy-enable)
-  (add-hook 'python-mode-hook 'elpy-mode))
-
 (provide '21-python)
 ;;; 21-python.el ends here

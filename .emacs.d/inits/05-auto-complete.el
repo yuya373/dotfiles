@@ -27,31 +27,6 @@
 (eval-when-compile
   (require 'evil))
 
-;; (unless (package-installed-p 'copilot)
-;;   (package-vc-install "https://github.com/copilot-emacs/copilot.el"))
-;; (use-package copilot
-;;   :init
-;;   (add-hook 'prog-mode-hook 'copilot-mode)
-;;   (add-hook 'text-mode-hook 'copilot-mode)
-;;   (add-to-list 'warning-suppress-types '(copilot copilot-exceeds-max-char))
-;;   (setq copilot-indent-offset-warning-disable t)
-;;   (setq copilot-idle-delay 0.5)
-;;   :config
-;;   (unless (file-exists-p (copilot-server-executable))
-;;     (copilot-install-server))
-;;   ;; (defun my/copilot-tab ()
-;;   ;;   (interactive)
-;;   ;;   (or (copilot-accept-completion-by-word)
-;;   ;;       (indent-for-tab-command)))
-;;   (evil-define-key 'insert copilot-mode-map
-;;     (kbd "C-<tab>") #'copilot-accept-completion
-;;     )
-;;   (advice-add 'copilot-complete :around 'disable-copilot-complete-when-skk-henkan)
-;;   (defun disable-copilot-complete-when-skk-henkan (func &rest args)
-;;     (unless skk-henkan-mode
-;;       (apply func args)))
-;;   )
-
 (use-package yasnippet-snippets
   :ensure t
   :after (yasnippet))

@@ -124,7 +124,7 @@
                             slack-message-edit-buffer-mode
                             slack-message-share-buffer-mode)
                            :select t :size 0.3)
-                          ((aider-prompt-mode claude-code-prompt-mode) :select t :size 0.3)
+                          ((claude-code-prompt-mode) :select t :size 0.3)
                           (rustic-format-mode)
                           (rustic-compilation-mode)
                           (rustic-cargo-test-mode)
@@ -137,7 +137,7 @@
                 (mapcar (lambda (l) (append l shackle-rule-right-half))
                         '(((woman-mode
                             slack-message-attachment-preview-buffer-mode))
-                          (("\\`\\*Gemini*\\*\\'" "\\`\\*aider.*\\*\\'") :regexp t :select t)
+                          (("\\`\\*Gemini*\\*\\'") :regexp t :select t)
                           ((slack-file-list-buffer-mode
                             slack-all-threads-buffer-mode
                             slack-thread-message-buffer-mode

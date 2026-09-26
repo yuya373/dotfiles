@@ -1,4 +1,4 @@
-;;; init.el --- init.el
+;;; init.el --- init.el  -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;; Code:
 ;; Added by Package.el.  This must come before configurations of
@@ -138,17 +138,17 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(add-node-modules-path adoc-mode ag aider alert
+   '(add-node-modules-path adoc-mode ag alert
                            all-the-icons-completion
                            auto-save-buffers-enhanced avy-migemo
                            bundler cape codic coffee-mode
-                           command-log-mode consult-dir
+                           consult-dir
                            consult-flycheck consult-lsp
-                           consult-projectile copilot corfu csv-mode
+                           consult-projectile corfu csv-mode
                            ddskk-posframe diminish dired-k direnv
                            dockerfile-mode easy-hugo electric-operator
-                           elpy embark-consult emojify enh-ruby-mode
-                           es-mode eshell-prompt-extras esup evedel
+                           embark-consult emojify enh-ruby-mode
+                           es-mode eshell-prompt-extras esup
                            evil-anzu evil-args evil-collection
                            evil-exchange evil-indent-textobject
                            evil-leader evil-matchit
@@ -159,12 +159,12 @@
                            flycheck-package font-lock-studio
                            frame-local gist git-link git-messenger
                            go-mode golden-ratio google-translate
-                           gptel-quick graphql-mode haml-mode
+                           graphql-mode haml-mode
                            highlight-indent-guides imenu-anywhere
                            init-loader initchart ivy-posframe
                            json-mode know-your-http-well log4j-mode
                            logview lsp-metals lsp-ui lua-mode
-                           marginalia minuet mise nerd-icons-corfu
+                           marginalia mise nerd-icons-corfu
                            nginx-mode omnisharp open-junk-file
                            orderless perspeen pkg-info pos-tip
                            projectile-rails python-mode
@@ -186,10 +186,6 @@
                        "https://github.com/tumashu/vertico-posframe")
      (claude-code :vc-backend Git :url
                   "https://github.com/stevemolitor/claude-code.el")
-     (gptel-quick :vc-backend Git :url
-                  "https://github.com/karthink/gptel-quick")
-     (copilot :vc-backend Git :url
-              "https://github.com/copilot-emacs/copilot.el")
      (font-lock-studio :vc-backend Git :url
                        "https://github.com/Lindydancer/font-lock-studio")
      (init-loader :vc-backend Git :url

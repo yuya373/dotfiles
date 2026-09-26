@@ -37,19 +37,5 @@
   :init
   (add-hook 'log4j-mode-hook 'read-only-mode))
 
-(use-package command-log-mode
-  :ensure t
-  :commands (clm/open-command-log-buffer
-             global-command-log-mode)
-  :diminish command-log-mode
-  :init
-  (setq command-log-mode-auto-show nil)
-  (setq clm/logging-dir "~/.emacs.d/log/")
-  (add-hook 'window-setup-hook 'global-command-log-mode)
-  ;; (add-hook 'global-command-log-mode-hook 'clm/open-command-log-buffer)
-  ;; (add-hook 'kill-emacs-hook 'clm/save-command-log)
-  ;; (remove-hook 'kill-emacs-hook 'clm/save-command-log)
-  )
-
 (provide '26-log)
 ;;; 26-log.el ends here
