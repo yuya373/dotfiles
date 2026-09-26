@@ -78,6 +78,10 @@
           (set-face-foreground 'whitespace-tab base03))))))
 
 (load-theme 'solarized-dark t)
+;; solarized-theme が vertico の選択中候補に下線を付けるので消す
+(custom-theme-set-faces
+ 'solarized-dark
+ '(vertico-current ((t (:weight bold :background "#073642" :underline nil)))))
 
 (provide '12-theme)
 ;;; 12-theme.el ends here
